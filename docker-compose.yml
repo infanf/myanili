@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  app:
+    image: webdevops/php-apache-dev:7.4
+    ports:
+      - 4280:80
+      - 4200:4200
+    volumes: 
+      - ./backend:/app
+      - ./frontend:/frontend
+    
