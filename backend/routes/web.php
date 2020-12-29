@@ -49,14 +49,16 @@ $router->get('/auth', function () {
             $_SESSION['REFRESH_TOKEN'] = $accessToken->getRefreshToken();
             $_SESSION['EXPIRES_IN'] = $accessToken->getExpires();
             $_SESSION['EXPIRED'] = $accessToken->hasExpired();
-            exit;
+            $opener = env('APP_CLIENT');
+            $javascript = <<<JAVASCRIPT
+            window.opener.postMessage(true, "$opener");
+JAVASCRIPT;
+            return "<script>$javascript</script>";
         } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
 
             // Failed to get the access token or user details.
-            exit($e->getMessage());
-
+            return ($e->getMessage());
         }
-        return "<script>window.close()</script>";
     }
 });
 
@@ -70,6 +72,10 @@ $router->get('/list/{status}', function ($status) {
 
 $router->get('/anime/{id}', function ($id) {
     return AppServiceProvider::getAnimeDetails($id);
+});
+
+$router->get('/me', function () {
+    return AppServiceProvider::getMe();
 });
 
 $router->get('/', function () use ($router) {

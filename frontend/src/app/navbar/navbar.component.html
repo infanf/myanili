@@ -1,0 +1,31 @@
+<nav class="navbar navbar-dark navbar-expand bg-primary sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">MyAniLi</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link dropdown-toggle" id="animeDropdown" role="button" ngbDropdownToggle>
+              <span class="d-none d-sm-inline">Anime</span>
+              <app-icon class="d-sm-none" name="film"></app-icon>
+            </a>
+            <ul class="dropdown-menu"  ngbDropdownMenu aria-labelledby="animeDropdown">
+              <li><a class="dropdown-item" href="#">Watching</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link dropdown-toggle" id="mangaDropdown" role="button" ngbDropdownToggle>
+              <span class="d-none d-sm-inline">Manga</span>
+              <app-icon class="d-sm-none" name="book-half"></app-icon>
+            </a>
+            <ul class="dropdown-menu"  ngbDropdownMenu aria-labelledby="mangaDropdown">
+              <li><a class="dropdown-item" href="#">Reading</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>

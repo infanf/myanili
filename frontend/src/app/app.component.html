@@ -1,2 +1,11 @@
-
-<button (click)="authorize()">Start</button>
+<app-navbar></app-navbar>
+<ng-container *ngIf="loggedIn; then app; else login"> </ng-container>
+<ng-template #app>
+  <app-list></app-list>
+  <app-details></app-details>
+</ng-template>
+<ng-template #login>
+  <div>
+    <button (click)="malService.login()">Login</button>
+  </div>
+</ng-template>

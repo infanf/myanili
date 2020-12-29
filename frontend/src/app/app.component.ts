@@ -8,9 +8,10 @@ import { MalService } from './mal.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(public malService: MalService) {}
-
-  async authorize() {
-    window.location.href = 'http://localhost:4280/auth';
+  constructor(public malService: MalService) {
+    this.malService.loggedIn.subscribe(loggedIn => {
+      this.loggedIn = loggedIn;
+    });
   }
+  loggedIn?: string | false;
 }

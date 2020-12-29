@@ -43,6 +43,10 @@ class AppServiceProvider extends ServiceProvider
 
     private static function get(string $url, $params = null)
     {
+        if (!isset($_SESSION['ACCESS_TOKEN'])) {
+            return '{"auth": false}';
+        }
+
         if ($params) {
             $url = $url . '?' . http_build_query($params);
         }
@@ -73,12 +77,23 @@ class AppServiceProvider extends ServiceProvider
         return $list;
     }
 
-    public static function getAnimeDetails(int $id){
+    public static function getAnimeDetails(int $id)
+    {
         $params = ['fields' => 'id,title,main_picture,alternative_titles,start_date,end_date,synopsis,mean,rank,popularity,num_list_users,num_scoring_users,nsfw,created_at,updated_at,media_type,status,genres,my_list_status{comments},num_episodes,start_season,broadcast,source,average_episode_duration,rating,pictures,background,related_anime,related_manga,recommendations,studios,statistics,opening_themes,ending_themes'];
         $response = json_decode(
             self::get(
                 self::baseUrl . '/anime/' . $id,
                 $params
+            ), true
+        );
+        return $response;
+    }
+
+    public static function getMe()
+    {
+        $response = json_decode(
+            self::get(
+                self::baseUrl . '/users/@me',
             ), true
         );
         return $response;

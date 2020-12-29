@@ -1,0 +1,32 @@
+<section>
+  <table class="table table-sm table-hover table-striped table-responsive-md">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Episode</th>
+        <th>MAL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let anime of animes">
+        <tr
+          [class]="{
+            'font-weight-bold': anime.list_status.status === 'watching'
+          }"
+        >
+          <td>
+            {{ anime.node.title }}
+          </td>
+          <td style="white-space: nowrap">
+            {{ anime.list_status.num_episodes_watched }}
+          </td>
+          <td>
+            <span class="btn-link cursor-pointer">
+              {{ anime.node.id }}
+            </span>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</section>
