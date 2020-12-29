@@ -1,1 +1,166 @@
-<p>details works!</p>
+<div class="m-3">
+  <h2>{{ anime?.title || 'Loading…' }}</h2>
+  <hr />
+  <div class="row">
+    <div class="col-sm-6 mb-3">
+      <picture>
+        <source
+          *ngIf="anime && anime.main_picture"
+          srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
+        />
+        <source srcset="/assets/blank-poster.svg" />
+        <img
+          src="/assets/blank-poster.svg"
+          alt="poster"
+          width="100%"
+          style="border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem"
+        />
+      </picture>
+      <div
+        class="progress"
+        style="border-top-left-radius: 0; border-top-right-radius: 0; position: relative"
+      >
+        <div
+          *ngIf="anime"
+          class="progress-bar"
+          role="progressbar"
+          [ngClass]="{
+            'bg-success': anime.mean >= 8,
+            'bg-warning': anime.mean < 7 && anime.mean >= 5,
+            'bg-danger': anime.mean < 5
+          }"
+          [ngStyle]="{ 'width.%': anime.mean * 10 }"
+          aria-valuemin="0"
+          aria-valuemax="10"
+        >
+          {{ anime.mean }}
+          <ng-container *ngIf="anime && anime.my_list_status && anime.my_list_status.score"
+            >({{ anime.my_list_status.score }})</ng-container
+          >
+        </div>
+        <div
+          *ngIf="anime && anime.my_list_status && anime.my_list_status.score"
+          class="progress-personal border-end"
+          [ngClass]="{ 'border-primary': anime.my_list_status.score > anime.mean }"
+          [ngStyle]="{ 'width.%': anime.my_list_status.score * 10 }"
+        ></div>
+      </div>
+    </div>
+    <div class="col-sm-6 mb-3">
+      <div *ngIf="anime?.alternative_titles?.en">
+        <strong class="text-dark">English</strong> {{ anime?.alternative_titles?.en }}
+      </div>
+      <div *ngIf="anime?.alternative_titles?.ja">
+        <strong class="text-dark">Japanese</strong> {{ anime?.alternative_titles?.ja }}
+      </div>
+      <div *ngIf="anime">
+        <div>
+          <strong class="text-dark">Studio</strong>
+          <span *ngFor="let studio of anime.studios" class="ms-1 d-inline-block">
+            {{ studio.name }}
+          </span>
+        </div>
+      </div>
+      <div *ngIf="anime"><strong class="text-dark">Type</strong> {{ anime.media_type }}</div>
+      <div *ngIf="anime">
+        <div *ngIf="anime.status == 'finished_airing'">
+          <strong class="text-dark">Aired</strong>
+          {{ anime.start_date }}
+        </div>
+        <div><strong class="text-dark">Source</strong> {{ anime.source }}</div>
+        <div><strong class="text-dark">Rating</strong> {{ anime.rating }}</div>
+      </div>
+      <div>
+        <strong class="text-dark">My list </strong>
+        <span *ngIf="!anime?.my_list_status" class="text-danger">&#x274C;</span>
+        <span *ngIf="anime?.my_list_status">
+          {{ anime.my_list_status.status }}
+        </span>
+      </div>
+      <!-- <div *ngIf="anime && anime.simulDay && anime.simulTime">
+        <strong class="text-dark">Simulcast</strong> -->
+      <!-- {{ getDay(anime.simulDay) }}, -->
+      <!-- {{ anime.simulTime.substr(0, 5) | time }} -->
+      <!-- </div> -->
+      <span>
+        <strong class="text-dark">Episodes</strong>
+        {{ anime?.num_episodes || '?' }}
+      </span>
+      <span *ngIf="anime?.average_episode_duration"
+        >({{ anime.average_episode_duration / 60 | number: '1.0-0' }} min)</span
+      >
+      <div *ngIf="anime">
+        <div class="progress">
+          <div
+          *ngIf="anime.my_list_status?.num_episodes_watched"
+            class="progress-bar px-1"
+            [ngClass]="{
+              'bg-success': anime.my_list_status?.num_episodes_watched == anime.num_episodes && anime.num_episodes,
+              'bg-gradient': !anime.num_episodes
+            }"
+            [ngStyle]="{
+              'min-width.%':
+                anime.num_episodes || anime.my_list_status?.num_episodes_watched == 0
+                  ? (anime.my_list_status?.num_episodes_watched / anime.num_episodes) * 100
+                  : 30
+            }"
+          >
+            {{ anime.my_list_status?.num_episodes_watched }}/{{ anime.num_episodes || '?' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3" *ngIf="anime">
+    <span *ngFor="let genre of anime.genres" class="badge bg-primary me-1">
+      {{ genre.name }}
+    </span>
+  </div>
+
+  <div class="mb-3" *ngIf="anime" (click)="shortsyn = !shortsyn">
+    {{
+      shortsyn && anime.synopsis.length > 150 ? anime.synopsis.substr(0, 150) + '…' : anime.synopsis
+    }}
+  </div>
+
+  <div class="row" *ngIf="anime?.opening_themes || anime?.ending_themes">
+    <div class="col-sm-6 mb-3" *ngIf="anime.opening_themes?.length">
+      <strong class="text-dark">Opening{{ anime.opening_themes.length > 1 ? 's' : '' }}</strong>
+      <div *ngFor="let song of anime.opening_themes" class="mt-2">
+        {{ song.text }}
+      </div>
+    </div>
+    <div class="col-sm-6 mb-3" *ngIf="anime.ending_themes?.length">
+      <strong class="text-dark">Ending{{ anime.ending_themes.length > 1 ? 's' : '' }}</strong>
+      <div *ngFor="let song of anime.ending_themes" class="mt-2">
+        {{ song.text }}
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="anime?.related_anime">
+    <div *ngFor="let type of getRelatedAnimes()" class="mb-3">
+      <strong class="text-dark">{{ type.name }}</strong>
+      <div *ngFor="let related of type.entries" class="mt-2">
+        <a
+ routerLink="/anime/details/{{related.id}}"
+        >
+          {{ related.title }}
+      </a>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="anime?.related_manga">
+    <div *ngFor="let type of getRelatedMangas()" class="mb-3">
+      <strong class="text-dark">{{ type.name }}</strong>
+      <div *ngFor="let related of type.entries" class="mt-2">
+        <a
+ routerLink="/manga/details/{{related.id}}"
+        >
+          {{ related.title }}
+      </a>
+      </div>
+    </div>
+  </ng-container>
+</div>

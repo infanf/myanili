@@ -1,10 +1,21 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+import { DetailsComponent } from './details/details.component';
+import { ListComponent } from './list/list.component';
+import { WatchlistComponent } from './watchlist/watchlist.component';
+
+const routes: Routes = [
+  { path: 'anime/list', component: ListComponent, data: { type: 'anime' } },
+  { path: 'anime/list/:status', component: ListComponent },
+  { path: 'anime/watchlist', component: WatchlistComponent },
+  { path: 'anime/details/:id', component: DetailsComponent },
+  { path: '', redirectTo: '/anime/list', pathMatch: 'full' },
+  { path: 'anime', redirectTo: '/anime/list', pathMatch: 'full' },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

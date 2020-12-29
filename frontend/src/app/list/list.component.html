@@ -13,17 +13,13 @@
           [class]="{
             'font-weight-bold': anime.list_status.status === 'watching'
           }"
+          routerLink="/anime/details/{{anime.node.id}}"
         >
           <td>
             {{ anime.node.title }}
           </td>
           <td style="white-space: nowrap">
             {{ anime.list_status.num_episodes_watched }}
-          </td>
-          <td>
-            <span class="btn-link cursor-pointer">
-              {{ anime.node.id }}
-            </span>
           </td>
         </tr>
       </ng-container>

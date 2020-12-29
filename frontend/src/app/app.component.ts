@@ -13,5 +13,5 @@ export class AppComponent {
       this.loggedIn = loggedIn;
     });
   }
-  loggedIn?: string | false;
+  loggedIn?: string | false = 'loading';
 }

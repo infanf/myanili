@@ -45,8 +45,8 @@ interface AnimeInterface {
   pictures: Picture[];
   background?: string;
   related_anime: RelatedAnime[];
-  //   related_manga: [];
-  //   recommendations: [];
+  related_manga: RelatedAnime[];
+  recommendations: RelatedAnime[];
   studios: Studio[];
   statistics?: {
     status: {

@@ -16,7 +16,7 @@ export class MalService {
     this.checkLogin();
   }
 
-  private async get<T>(path: string): Promise<T> {
+  async get<T>(path: string): Promise<T> {
     return new Promise((res, rej) => {
       this.httpClient
         .get(`${this.backendUrl}${path}`, { withCredentials: true })
