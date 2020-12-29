@@ -5,6 +5,7 @@ export type ListStatus = 'watching' | 'completed' | 'on_hold' | 'droppped' | 'pl
 interface ListAnimeInterface {
   node: AnimeNode;
   list_status: MyAnimeStatus;
+  my_extension?: AnimeExtension;
 }
 
 export type ListAnime = ListAnimeInterface;
@@ -60,6 +61,7 @@ interface AnimeInterface {
   };
   opening_themes: AnimeTheme[];
   ending_themes: AnimeTheme[];
+  my_extension?: AnimeExtension;
 }
 
 export type Anime = AnimeInterface;
@@ -83,6 +85,20 @@ interface MyStatus {
 
 export type MyAnimeStatus = MyStatus;
 export type WatchStatus = 'watching' | 'completed' | 'on_hold' | 'dropped' | 'plan_to_watch';
+
+interface MyUpdate {
+  status: WatchStatus;
+  is_rewatching: boolean;
+  score: number;
+  num_watched_episodes: number;
+  priority: number;
+  num_times_rewatched: number;
+  rewatch_value: number;
+  tags: string;
+  comments: string;
+}
+
+export type MyAnimeUpdate = MyUpdate;
 
 interface SeasonInterface {
   year: number;
@@ -113,3 +129,16 @@ interface RelatedAnimeInterface {
 }
 
 export type RelatedAnime = RelatedAnimeInterface;
+
+interface AnimeExtensionInterface {
+  series: string;
+  seasonNumber: number;
+  episodeCorOffset: number;
+  externalStreaming?: string;
+  externalStreamingId?: string;
+  simulDay?: number;
+  simulTime?: string;
+  simulCountry?: string;
+}
+
+export type AnimeExtension = AnimeExtensionInterface;

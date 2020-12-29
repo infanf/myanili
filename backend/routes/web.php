@@ -3,6 +3,7 @@
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 use App\Providers\AppServiceProvider as AppServiceProvider;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,10 +75,18 @@ $router->get('/anime/{id}', function ($id) {
     return AppServiceProvider::getAnimeDetails($id);
 });
 
+$router->put('/anime/{id}', function ($id, Request $request) {
+    return AppServiceProvider::putAnimeDetails($id, $request);
+});
+
 $router->get('/me', function () {
     return AppServiceProvider::getMe();
 });
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
+});
+
+$router->get('/debug', function () use ($router) {
+    return $_SESSION['ACCESS_TOKEN'];
 });

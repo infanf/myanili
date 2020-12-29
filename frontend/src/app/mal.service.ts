@@ -27,6 +27,17 @@ export class MalService {
     });
   }
 
+  // tslint:disable-next-line:no-any
+  async put<T>(path: string, data: any): Promise<T> {
+    return new Promise((res, rej) => {
+      this.httpClient
+        .put(`${this.backendUrl}${path}`, data, { withCredentials: true })
+        .subscribe(value => {
+          res((value as unknown) as T);
+        });
+    });
+  }
+
   async checkLogin() {
     const response = await this.get<UserResponse>('me');
     if ('name' in response) {

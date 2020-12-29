@@ -57,9 +57,24 @@ class AppServiceProvider extends ServiceProvider
         return curl_exec($ch);
     }
 
+    private static function put(string $url, $params = null)
+    {
+        if (!isset($_SESSION['ACCESS_TOKEN'])) {
+            return '{"auth": false}';
+        }
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_SESSION['ACCESS_TOKEN']}"]);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+        return curl_exec($ch);
+    }
+
     public static function getMyList($status = null)
     {
-        $params = ["fields" => "num_episodes,list_status", "limit" => 1000];
+        $params = ["fields" => "num_episodes,list_status{comments}", "limit" => 1000];
         if ($status) {
             $params['status'] = $status;
         }
@@ -84,6 +99,18 @@ class AppServiceProvider extends ServiceProvider
             self::get(
                 self::baseUrl . '/anime/' . $id,
                 $params
+            ), true
+        );
+        return $response;
+    }
+
+    public static function putAnimeDetails(int $id, $request)
+    {
+        $requestParams = $request->all();
+        $response = json_decode(
+            self::put(
+                self::baseUrl . '/anime/' . $id . '/my_list_status',
+                $requestParams
             ), true
         );
         return $response;

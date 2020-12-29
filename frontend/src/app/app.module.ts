@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DetailsComponent } from './details/details.component';
+import { FlagPipe } from './flag.pipe';
 import { IconComponent } from './icon/icon.component';
 import { ListComponent } from './list/list.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -23,6 +24,7 @@ import { WatchlistComponent } from './watchlist/watchlist.component';
     DetailsComponent,
     IconComponent,
     WatchlistComponent,
+    FlagPipe,
   ],
   imports: [
     BrowserModule,

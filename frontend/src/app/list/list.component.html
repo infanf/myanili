@@ -9,6 +9,7 @@
     <tbody>
       <ng-container *ngFor="let anime of animes">
         <tr
+          class="cursor-pointer"
           [class]="{
             'fw-bold': anime.list_status.status === 'watching'
           }"

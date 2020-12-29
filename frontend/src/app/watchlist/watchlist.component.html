@@ -1,1 +1,65 @@
-<p>watchlist works!</p>
+<section>
+  <table class="table table-sm table-hover table-striped table-responsive-md">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th colspan="2">Episode</th>
+        <th colspan="2">
+          <span class="d-none d-md-inline">Streaming</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let anime of animes">
+        <tr
+          [class]="{
+            seen: isSeen(anime)
+          }"
+        >
+          <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
+            {{ anime.node.title }}
+          </td>
+          <td style="white-space: nowrap">
+            {{ anime.my_extension?.seasonNumber || 1 }}x{{
+              anime.list_status.num_episodes_watched + (isSeen(anime) ? 0 : 1)
+            }}
+          </td>
+          <td>
+            <circle-progress
+              *ngIf="anime.list_status.status === 'watching'"
+              [percent]="
+                anime.node.num_episodes
+                  ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
+                  : 0
+              "
+            ></circle-progress>
+          </td>
+          <td>
+            <span
+              class="d-inline-block"
+              style="position: relative"
+              *ngIf="anime.my_extension?.externalStreaming"
+            >
+              <img
+                class="d-md-inline d-none"
+                style="width: 5rem; height: 1rem; vertical-align: text-bottom"
+                alt="{{ anime.my_extension?.externalStreaming }}"
+                src="/assets/stream/{{ anime.my_extension?.externalStreaming || 'plex' }}.svg"
+              />
+              <img
+                class="d-md-none"
+                style="width: 1rem; height: 1rem; vertical-align: text-bottom"
+                alt="{{ anime.my_extension?.externalStreaming }}"
+                src="/assets/stream/icon-{{ anime.my_extension?.externalStreaming || 'plex' }}.svg"
+              />
+              <span class="flag">{{ anime.my_extension?.simulCountry || 'us' | flag: true }}</span>
+            </span>
+          </td>
+          <td>
+              <app-icon class="cursor-pointer" name="check2" *ngIf="!isSeen(anime)" (click)="markSeen(anime)"></app-icon>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</section>
