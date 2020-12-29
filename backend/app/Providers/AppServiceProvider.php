@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
 
     public static function getMyList($status = null)
     {
-        $params = ["fields" => "list_status", "limit" => 1000];
+        $params = ["fields" => "num_episodes,list_status", "limit" => 1000];
         if ($status) {
             $params['status'] = $status;
         }

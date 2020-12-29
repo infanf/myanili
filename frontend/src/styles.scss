@@ -2,3 +2,12 @@
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+circle-progress {
+  vertical-align: text-top;
+  line-height: 1;
+}

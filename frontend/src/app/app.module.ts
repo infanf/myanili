@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +31,21 @@ import { WatchlistComponent } from './watchlist/watchlist.component';
     NgbModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    NgCircleProgressModule.forRoot({
+      radius: 5,
+      outerStrokeWidth: 2,
+      innerStrokeWidth: 2,
+      space: -2,
+      showBackground: false,
+      showTitle: false,
+      showUnits: false,
+      showSubtitle: false,
+      outerStrokeColor: '#2c3e50',
+      innerStrokeColor: 'rgba(0,0,0,0.15)',
+      animation: false,
+      backgroundPadding: 0,
+      outerStrokeLinecap: 'butt',
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -29,7 +29,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest",
+              "manifest.webmanifest",
               {
                 "glob": "bootstrap-icons.svg",
                 "input": "./node_modules/bootstrap-icons/",
@@ -100,7 +100,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest"
+              "manifest.webmanifest"
             ],
             "styles": [
               "src/styles.scss"

@@ -103,6 +103,7 @@ interface AnimeNode {
   id: number;
   title: string;
   main_picture?: Picture;
+  num_episodes?: number;
 }
 
 interface RelatedAnimeInterface {

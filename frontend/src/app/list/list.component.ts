@@ -16,6 +16,14 @@ export class ListComponent implements OnInit {
 
   constructor(private animeService: AnimeService, private route: ActivatedRoute) {
     this.status = this.route?.snapshot?.paramMap?.get('status') as WatchStatus;
+    this.route.url.subscribe(url => {
+      const newStatus = this.route?.snapshot?.paramMap?.get('status') as WatchStatus;
+      if (newStatus !== this.status) {
+        this.status = newStatus;
+        this.animes = [];
+        this.ngOnInit();
+      }
+    });
   }
 
   async ngOnInit() {

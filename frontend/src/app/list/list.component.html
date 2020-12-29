@@ -4,22 +4,29 @@
       <tr>
         <th>Name</th>
         <th>Episode</th>
-        <th>MAL</th>
       </tr>
     </thead>
     <tbody>
       <ng-container *ngFor="let anime of animes">
         <tr
           [class]="{
-            'font-weight-bold': anime.list_status.status === 'watching'
+            'fw-bold': anime.list_status.status === 'watching'
           }"
-          routerLink="/anime/details/{{anime.node.id}}"
+          routerLink="/anime/details/{{ anime.node.id }}"
         >
           <td>
             {{ anime.node.title }}
           </td>
           <td style="white-space: nowrap">
-            {{ anime.list_status.num_episodes_watched }}
+            <circle-progress
+              *ngIf="anime.list_status.status === 'watching'"
+              [percent]="
+                anime.node.num_episodes
+                  ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
+                  : 0
+              "
+            ></circle-progress>
+            {{ anime.list_status.num_episodes_watched }}/{{ anime.node.num_episodes || '?' }}
           </td>
         </tr>
       </ng-container>
