@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { ListAnime, WatchStatus } from './models/anime';
 import { UserResponse } from './models/user';
@@ -9,7 +10,7 @@ import { UserResponse } from './models/user';
   providedIn: 'root',
 })
 export class MalService {
-  private backendUrl = 'http://localhost:4280/';
+  private backendUrl = environment.backend;
   private isLoggedIn = new BehaviorSubject<string | false>(false);
 
   constructor(private httpClient: HttpClient) {
@@ -43,7 +44,7 @@ export class MalService {
 
   async login() {
     return new Promise(r => {
-      const loginWindow = window.open('http://localhost:4280/auth');
+      const loginWindow = window.open(this.backendUrl + 'auth');
       window.addEventListener('message', async event => {
         if (event.data) {
           await this.checkLogin();

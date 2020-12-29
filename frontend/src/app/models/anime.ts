@@ -21,7 +21,7 @@ interface AnimeInterface {
   start_date?: Date;
   end_date?: Date;
   synopsis?: string;
-  mean?: number;
+  mean: number;
   rank?: number;
   popularity?: number;
   num_list_users: number;
