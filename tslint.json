@@ -1,0 +1,8 @@
+{
+  "extends": "@elunic/ecs-tslint/tslint.json",
+  "rules": {
+    "deprecation": {
+      "severity": "warning"
+    }
+}
+}

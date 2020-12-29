@@ -1,12 +1,16 @@
 {
   "name": "myanili-frontend",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
+    "dev": "ng serve --host=0.0.0.0",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
+    "build:production": "ng build --prod --aot",
+    "build:staging": "ng build -c staging",
+    "test": "ISTANBUL_ADD_REPORTERS=text-summary ng test",
+    "test:ci": "ISTANBUL_ADD_REPORTERS=text,json-summary KARMA_ADD_REPORTERS=junit ng test --watch=false --progress=false && npm run check",
+    "check": "ng lint --type-check --tslint-config tslint.fix.json --format codeFrame && prettier --config .prettierrc --check 'src/**/*.{ts,js,html,css,scss,sass,less}'",
+    "fix": "ng lint --type-check --fix --tslint-config tslint.fix.json --format codeFrame && prettier --config .prettierrc --write 'src/**/*.{ts,js,html,css,scss,sass,less}'",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -18,7 +22,10 @@
     "@angular/forms": "~11.0.3",
     "@angular/platform-browser": "~11.0.3",
     "@angular/platform-browser-dynamic": "~11.0.3",
+    "@angular/pwa": "^0.1100.5",
     "@angular/router": "~11.0.3",
+    "@angular/service-worker": "^11.0.5",
+    "idb": "^5.0.8",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
