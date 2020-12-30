@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ListAnime, MyAnimeUpdate } from '@models/anime';
 import * as moment from 'moment';
 
 import { AnimeService } from '../anime.service';
-import { ListAnime, MyAnimeUpdate } from '../models/anime';
 
 @Component({
   selector: 'app-watchlist',

@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Anime } from '@models/anime';
 
 import { AnimeService } from '../anime.service';
-import { Anime } from '../models/anime';
 
 @Component({
   selector: 'app-details',

@@ -7,14 +7,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
+import { DetailsComponent } from './anime/details/details.component';
+import { ListComponent } from './anime/list/list.component';
+import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DetailsComponent } from './details/details.component';
 import { FlagPipe } from './flag.pipe';
 import { IconComponent } from './icon/icon.component';
-import { ListComponent } from './list/list.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { WatchlistComponent } from './watchlist/watchlist.component';
 
 @NgModule({
   declarations: [

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DetailsComponent } from './details/details.component';
-import { ListComponent } from './list/list.component';
-import { WatchlistComponent } from './watchlist/watchlist.component';
+import { DetailsComponent } from './anime/details/details.component';
+import { ListComponent } from './anime/list/list.component';
+import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 
 const routes: Routes = [
   { path: 'anime/list', component: ListComponent, data: { type: 'anime' } },

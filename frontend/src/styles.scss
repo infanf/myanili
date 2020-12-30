@@ -1,6 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
+$theme-colors: (
+  "gray-dark": #231123,
+  "blue": #204a82,
+  "primary": #204a82,
+  "red": #82204a,
+  "danger": #82204a,
+  "green": #558c8c,
+  "success": #558c8c,
+  "yellow": #e8db7d,
+  "warning": #e8db7d,
+  "white": #eff7ff,
+);
+
 @import '~bootstrap/scss/bootstrap';
 
 .cursor-pointer {

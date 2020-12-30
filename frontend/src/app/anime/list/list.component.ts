@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ListAnime, WatchStatus } from '@models/anime';
 
 import { AnimeService } from '../anime.service';
-import { ListAnime, WatchStatus } from '../models/anime';
 
 @Component({
   selector: 'app-list',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { MalService } from './mal.service';
+import { MalService } from '../mal.service';
 import {
   Anime,
   AnimeExtension,
@@ -8,7 +8,7 @@ import {
   MyAnimeStatus,
   MyAnimeUpdate,
   WatchStatus,
-} from './models/anime';
+} from '../models/anime';
 
 @Injectable({
   providedIn: 'root',
