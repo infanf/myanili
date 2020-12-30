@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ListAnime, WatchStatus } from '@models/anime';
+import { MalUser, UserResponse } from '@models/user';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
-import { ListAnime, WatchStatus } from './models/anime';
-import { UserResponse } from './models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MalService {
   private backendUrl = environment.backend;
-  private isLoggedIn = new BehaviorSubject<string | false>(false);
+  private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
+  private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 
   constructor(private httpClient: HttpClient) {
     this.checkLogin();
@@ -42,8 +42,10 @@ export class MalService {
     const response = await this.get<UserResponse>('me');
     if ('name' in response) {
       this.isLoggedIn.next(response.name);
+      this.malUser.next(response);
     } else {
       this.isLoggedIn.next(false);
+      this.malUser.next(undefined);
     }
   }
 
@@ -67,5 +69,9 @@ export class MalService {
 
   get loggedIn() {
     return this.isLoggedIn.asObservable();
+  }
+
+  get user() {
+    return this.malUser.asObservable();
   }
 }

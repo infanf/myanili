@@ -1,6 +1,19 @@
 <div class="m-3">
-  <h2>{{ anime?.title || 'Loading…' }}</h2>
-  <hr />
+  <div class="d-flex">
+    <h2>{{ anime?.title || 'Loading…' }}</h2>
+    <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" (click)="editSave()">
+      <ng-container *ngIf="anime?.my_list_status; else add">
+        <app-icon
+          [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"
+          size="24"
+        ></app-icon>
+      </ng-container>
+      <ng-template #add>
+        <app-icon [name]="busy ? 'hourglass-split' : 'plus'" size="24"></app-icon>
+      </ng-template>
+    </div>
+  </div>
+  <hr class="mt-0" />
   <div class="row">
     <div class="col-sm-6 mb-3">
       <picture>

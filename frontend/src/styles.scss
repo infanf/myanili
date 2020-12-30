@@ -11,8 +11,17 @@ $theme-colors: (
   "success": #558c8c,
   "yellow": #e8db7d,
   "warning": #e8db7d,
-  "white": #eff7ff,
+  // "white": #eff7ff,
 );
+
+$primary: #204a82;
+$secondary: #e4e7eb;
+$info: #17a2b8;
+$success: #28a745;
+$warning: #e8db7d;
+$error: #82204a;
+// $body-bg: #eff7ff;
+$body-color: #231123;
 
 @import '~bootstrap/scss/bootstrap';
 

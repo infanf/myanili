@@ -1,65 +1,104 @@
-<nav class="navbar navbar-dark navbar-expand bg-primary sticky-top">
+<nav class="navbar navbar-dark navbar-expand bg-gray-dark sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">MyAniLi</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="animeDropdown" role="button" ngbDropdownToggle>
-            <span class="d-none d-sm-inline">Anime</span>
-            <app-icon class="d-sm-none" name="film"></app-icon>
-          </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="animeDropdown">
-            <li>
-              <a class="dropdown-item" routerLink="/anime/watchlist" routerLinkActive="active">
-                Watchlist
-              </a>
-            </li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <a class="dropdown-item" routerLink="/anime/list/watching" routerLinkActive="active">
-                Watching
-              </a>
-            </li>
-            <li>
+      <ng-container *ngIf="loggedIn; then app; else login"></ng-container>
+      <ng-template #app>
+        <ng-container *ngIf="loggedIn && loggedIn != '***loading***'">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item dropdown" ngbDropdown>
               <a
-                class="dropdown-item"
-                routerLink="/anime/list/plan_to_watch"
-                routerLinkActive="active"
+                class="nav-link dropdown-toggle"
+                id="animeDropdown"
+                role="button"
+                ngbDropdownToggle
               >
-                Plan to Watch
+                <span class="d-none d-sm-inline">Anime</span>
+                <app-icon class="d-sm-none" name="film"></app-icon>
               </a>
+              <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="animeDropdown">
+                <li>
+                  <a class="dropdown-item" routerLink="/anime/watchlist" routerLinkActive="active">
+                    Watchlist
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="/anime/list/watching"
+                    routerLinkActive="active"
+                  >
+                    Watching
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="/anime/list/plan_to_watch"
+                    routerLinkActive="active"
+                  >
+                    Plan to Watch
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="/anime/list/on_hold"
+                    routerLinkActive="active"
+                  >
+                    On Hold
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="/anime/list/completed"
+                    routerLinkActive="active"
+                  >
+                    Completed
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    routerLink="/anime/list/dropped"
+                    routerLinkActive="active"
+                  >
+                    Dropped
+                  </a>
+                </li>
+              </ul>
             </li>
-            <li>
-              <a class="dropdown-item" routerLink="/anime/list/on_hold" routerLinkActive="active">
-                On Hold
+            <li class="nav-item dropdown" ngbDropdown>
+              <a
+                class="nav-link dropdown-toggle"
+                id="mangaDropdown"
+                role="button"
+                ngbDropdownToggle
+              >
+                <span class="d-none d-sm-inline">Manga</span>
+                <app-icon class="d-sm-none" name="book-half"></app-icon>
               </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/anime/list/completed" routerLinkActive="active">
-                Completed
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/anime/list/dropped" routerLinkActive="active">
-                Dropped
-              </a>
+              <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="mangaDropdown">
+                <li><a class="dropdown-item" href="#">Reading</a></li>
+              </ul>
             </li>
           </ul>
-        </li>
-        <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="mangaDropdown" role="button" ngbDropdownToggle>
-            <span class="d-none d-sm-inline">Manga</span>
-            <app-icon class="d-sm-none" name="book-half"></app-icon>
-          </a>
-          <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="mangaDropdown">
-            <li><a class="dropdown-item" href="#">Reading</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+          <div class="d-flex" *ngIf="user">
+            <span class="my-auto me-3 text-white">{{ user!.name }}</span>
+            <img [src]="user!.picture" style="height: 32px; border-radius: 50%;" />
+          </div>
+        </ng-container>
+      </ng-template>
+      <ng-template #login>
+        <form class="d-flex ms-auto">
+          <button class="btn btn-outline-success" type="submit" (click)="malService.login()">
+            <app-icon name="person"></app-icon>
+            Login
+          </button>
+        </form>
+      </ng-template>
     </div>
   </div>
 </nav>

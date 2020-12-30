@@ -13,6 +13,8 @@ export class DetailsComponent implements OnInit {
   @Input() id!: number;
   anime?: Anime;
   shortsyn = true;
+  edit = false;
+  busy = false;
 
   constructor(private animeService: AnimeService, private route: ActivatedRoute) {
     this.id = Number(this.route?.snapshot?.paramMap?.get('id'));
@@ -57,5 +59,20 @@ export class DetailsComponent implements OnInit {
       relatedAnime.push({ name: type, entries: related });
     }
     return relatedAnime;
+  }
+
+  async editSave() {
+    if (this.busy) return;
+    if (this.anime?.my_list_status) {
+      if (this.edit) return this.save();
+      this.edit = true;
+    } else {
+      this.busy = true;
+    }
+  }
+
+  async save() {
+    if (!this.anime?.my_list_status) return;
+    this.busy = true;
   }
 }

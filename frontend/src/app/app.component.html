@@ -1,10 +1,4 @@
 <app-navbar></app-navbar>
-<ng-container *ngIf="loggedIn; then app; else login"> </ng-container>
-<ng-template #app>
+<ng-container *ngIf="loggedIn && loggedIn != '***loading***'">
   <router-outlet></router-outlet>
-</ng-template>
-<ng-template #login>
-  <div>
-    <button (click)="malService.login()">Login</button>
-  </div>
-</ng-template>
+</ng-container>
