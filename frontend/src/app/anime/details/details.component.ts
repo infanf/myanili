@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Anime } from '@models/anime';
+import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
 
 import { AnimeService } from '../anime.service';
 
@@ -15,6 +15,8 @@ export class DetailsComponent implements OnInit {
   shortsyn = true;
   edit = false;
   busy = false;
+  editBackup?: Partial<MyAnimeUpdate>;
+  editExtention?: AnimeExtension;
 
   constructor(private animeService: AnimeService, private route: ActivatedRoute) {
     this.id = Number(this.route?.snapshot?.paramMap?.get('id'));
@@ -65,14 +67,92 @@ export class DetailsComponent implements OnInit {
     if (this.busy) return;
     if (this.anime?.my_list_status) {
       if (this.edit) return this.save();
-      this.edit = true;
+      this.startEdit();
     } else {
-      this.busy = true;
+      this.addAnime();
+    }
+  }
+
+  async startEdit() {
+    if (!this.anime?.my_list_status) return;
+    this.edit = true;
+    this.editBackup = {
+      status: this.anime.my_list_status.status || 'plan_to_watch',
+      is_rewatching: this.anime.my_list_status.is_rewatching,
+      score: this.anime.my_list_status.score,
+      num_watched_episodes: this.anime.my_list_status.num_episodes_watched,
+      priority: this.anime.my_list_status.priority,
+      rewatch_value: this.anime.my_list_status.rewatch_value,
+      tags: this.anime.my_list_status.tags?.join(','),
+    };
+    try {
+      const extension = (JSON.parse(
+        atob(this.anime.my_list_status.comments),
+      ) as unknown) as Partial<AnimeExtension>;
+      this.editExtention = {
+        series: '',
+        seasonNumber: 1,
+        episodeCorOffset: 0,
+        ...extension,
+      };
+    } catch (e) {
+      this.editExtention = {
+        series: '',
+        seasonNumber: 1,
+        episodeCorOffset: 0,
+        externalStreaming: '',
+        externalStreamingId: '',
+        simulCountry: '',
+        simulDay: undefined,
+        simulTime: undefined,
+      };
     }
   }
 
   async save() {
     if (!this.anime?.my_list_status) return;
+    if (!this.editBackup) {
+      this.edit = false;
+      return;
+    }
     this.busy = true;
+    const updateData = {
+      comments: btoa(JSON.stringify(this.editExtention)),
+    } as Partial<MyAnimeUpdate>;
+    if (this.editBackup.status !== this.anime.my_list_status.status) {
+      updateData.status = this.editBackup?.status;
+    }
+    if (this.editBackup.is_rewatching !== this.anime.my_list_status.is_rewatching) {
+      updateData.is_rewatching = this.editBackup?.is_rewatching;
+    }
+    if (this.editBackup.score !== this.anime.my_list_status.score) {
+      updateData.score = this.editBackup?.score;
+    }
+    if (this.editBackup.num_watched_episodes !== this.anime.my_list_status.num_episodes_watched) {
+      updateData.num_watched_episodes = this.editBackup?.num_watched_episodes;
+    }
+    if (this.editBackup.priority !== this.anime.my_list_status.priority) {
+      updateData.priority = this.editBackup?.priority;
+    }
+    if (this.editBackup.rewatch_value !== this.anime.my_list_status.rewatch_value) {
+      updateData.rewatch_value = this.editBackup?.rewatch_value;
+    }
+    if (this.editBackup.tags !== this.anime.my_list_status.tags?.join(',')) {
+      updateData.tags = this.editBackup?.tags;
+    }
+    await this.animeService.updateAnime(this.anime.id, updateData);
+    this.edit = false;
+    delete this.editBackup;
+    delete this.editExtention;
+    await this.ngOnInit();
+    this.busy = false;
+  }
+
+  async addAnime() {
+    if (!this.anime) return;
+    this.busy = true;
+    await this.animeService.updateAnime(this.anime.id, { status: 'plan_to_watch' });
+    await this.ngOnInit();
+    this.busy = false;
   }
 }

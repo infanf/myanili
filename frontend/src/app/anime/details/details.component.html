@@ -60,50 +60,78 @@
       </div>
     </div>
     <div class="col-sm-6 mb-3">
-      <div *ngIf="anime?.alternative_titles?.en">
-        <strong class="text-dark">English</strong> {{ anime?.alternative_titles?.en }}
+      <div class="row" *ngIf="anime?.alternative_titles?.en">
+        <div class="col-3 fw-bold">English</div>
+        <div class="col-9">{{ anime?.alternative_titles?.en }}</div>
       </div>
-      <div *ngIf="anime?.alternative_titles?.ja">
-        <strong class="text-dark">Japanese</strong> {{ anime?.alternative_titles?.ja }}
+      <div class="row" *ngIf="anime?.alternative_titles?.ja">
+        <div class="col-3 fw-bold">Japanese</div>
+        <div class="col-9">{{ anime?.alternative_titles?.ja }}</div>
       </div>
-      <div *ngIf="anime">
-        <div>
-          <strong class="text-dark">Studio</strong>
-          <span *ngFor="let studio of anime!.studios" class="ms-1 d-inline-block">
+      <div class="row" *ngIf="anime?.studios && anime!.studios.length">
+        <div class="col-3 fw-bold">Studio</div>
+        <div class="col-9">
+          <a *ngFor="let studio of anime!.studios" class="d-inline-block me-1">
             {{ studio.name }}
-          </span>
+          </a>
         </div>
       </div>
-      <div *ngIf="anime"><strong class="text-dark">Type</strong> {{ anime!.media_type }}</div>
-      <div *ngIf="anime">
-        <div *ngIf="anime!.status == 'finished_airing'">
-          <strong class="text-dark">Aired</strong>
-          {{ anime!.start_date }}
-        </div>
-        <div><strong class="text-dark">Source</strong> {{ anime!.source }}</div>
-        <div><strong class="text-dark">Rating</strong> {{ anime!.rating }}</div>
+      <div class="row" *ngIf="anime">
+        <div class="col-3 fw-bold">Type</div>
+        <div class="col-9">{{ anime!.media_type.toUpperCase() }}</div>
       </div>
-      <div>
-        <strong class="text-dark">My list </strong>
-        <span *ngIf="!anime?.my_list_status" class="text-danger">&#x274C;</span>
-        <span *ngIf="anime?.my_list_status">
-          {{ anime!.my_list_status!.status }}
-        </span>
+      <div class="row" *ngIf="anime?.status == 'finished_airing'">
+        <div class="col-3 fw-bold">Aired</div>
+        <div class="col-9">{{ anime!.start_date | date }} &ndash; {{ anime!.end_date | date }}</div>
+      </div>
+      <div class="row" *ngIf="anime">
+        <div class="col-3 fw-bold">Source</div>
+        <div class="col-9">{{ anime!.source | mal: 'mediatype' }}</div>
+      </div>
+      <div class="row" *ngIf="anime?.rating">
+        <div class="col-3 fw-bold">Rating</div>
+        <div class="col-9">{{ anime!.rating!.toUpperCase().replace('_', ' ') }}</div>
+      </div>
+      <div class="row" *ngIf="anime?.my_list_status">
+        <div class="col-3 fw-bold">My&nbsp;List</div>
+        <div class="col-9">
+          <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
+          <ng-template #mylist>{{ anime!.my_list_status!.status | mal: 'mystatus' }}</ng-template>
+          <ng-template #mylistedit>
+            <select
+              class="form-control form-control-sm"
+              [(ngModel)]="editBackup!.status"
+              [disabled]="busy"
+            >
+              <option
+                *ngFor="
+                  let status of ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch']
+                "
+                [value]="status"
+              >
+                {{ status | mal: 'mystatus' }}
+              </option>
+            </select>
+          </ng-template>
+        </div>
       </div>
       <!-- <div *ngIf="anime && anime.simulDay && anime.simulTime">
         <strong class="text-dark">Simulcast</strong> -->
       <!-- {{ getDay(anime.simulDay) }}, -->
       <!-- {{ anime.simulTime.substr(0, 5) | time }} -->
       <!-- </div> -->
-      <span>
-        <strong class="text-dark">Episodes</strong>
-        {{ anime?.num_episodes || '?' }}
-      </span>
-      <span *ngIf="anime?.average_episode_duration"
-        >({{ (anime!.average_episode_duration || 0) / 60 | number: '1.0-0' }} min)</span
-      >
+      <div class="row" *ngIf="anime">
+        <div class="col-3 fw-bold">Episodes</div>
+        <div class="col-9">
+          {{ anime?.num_episodes || '?' }}
+          <span *ngIf="anime?.average_episode_duration">
+            &times; {{ (anime!.average_episode_duration || 0) / 60 | number: '1.0-0' }} min
+          </span>
+        </div>
+      </div>
+
       <div *ngIf="anime">
-        <div class="progress">
+        <div class="progress" *ngIf="!edit">
           <div
             *ngIf="anime?.my_list_status?.num_episodes_watched"
             class="progress-bar px-1"
@@ -121,6 +149,22 @@
             }"
           >
             {{ anime!.my_list_status?.num_episodes_watched }}/{{ anime!.num_episodes || '?' }}
+          </div>
+        </div>
+        <div class="row" *ngIf="edit && editBackup">
+          <div class="col-3 fw-bold">Progress</div>
+          <div class="col-9">
+            <div class="input-group input-group-sm">
+              <input
+                class="form-control"
+                type="number"
+                min="0"
+                [max]="anime!.num_episodes || 9999"
+                [(ngModel)]="editBackup!.num_watched_episodes"
+                [disabled]="busy"
+              />
+              <span class="input-group-text">/ {{ anime!.num_episodes || '?' }}</span>
+            </div>
           </div>
         </div>
       </div>

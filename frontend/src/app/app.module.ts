@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FlagPipe } from './flag.pipe';
 import { IconComponent } from './icon/icon.component';
+import { MalPipe } from './mal.pipe';
 import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     IconComponent,
     WatchlistComponent,
     FlagPipe,
+    MalPipe,
   ],
   imports: [
     BrowserModule,
