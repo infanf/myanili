@@ -46,10 +46,12 @@ $router->get('/auth', function () {
                 'code_verifier' => $code_verifier,
             ]);
 
-            $_SESSION['ACCESS_TOKEN'] = $accessToken->getToken();
-            $_SESSION['REFRESH_TOKEN'] = $accessToken->getRefreshToken();
-            $_SESSION['EXPIRES_IN'] = $accessToken->getExpires();
-            $_SESSION['EXPIRED'] = $accessToken->hasExpired();
+            setcookie('MAL_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
+            setcookie('REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires());
+            // $_SESSION['ACCESS_TOKEN'] = $accessToken->getToken();
+            // $_SESSION['REFRESH_TOKEN'] = $accessToken->getRefreshToken();
+            // $_SESSION['EXPIRES_IN'] = $accessToken->getExpires();
+            // $_SESSION['EXPIRED'] = $accessToken->hasExpired();
             $opener = env('APP_CLIENT');
             $javascript = <<<JAVASCRIPT
             window.opener.postMessage(true, "$opener");
@@ -81,6 +83,11 @@ $router->put('/anime/{id}', function ($id, Request $request) {
 
 $router->get('/me', function () {
     return AppServiceProvider::getMe();
+});
+
+$router->get('/logoff', function () {
+    setcookie('MAL_ACCESS_TOKEN', '', 0);
+    setcookie('REFRESH_TOKEN', '', 0);
 });
 
 $router->get('/', function () use ($router) {

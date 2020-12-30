@@ -141,11 +141,15 @@ export class DetailsComponent implements OnInit {
       updateData.tags = this.editBackup?.tags;
     }
     await this.animeService.updateAnime(this.anime.id, updateData);
+    this.stopEdit();
+    await this.ngOnInit();
+    this.busy = false;
+  }
+
+  stopEdit() {
     this.edit = false;
     delete this.editBackup;
     delete this.editExtention;
-    await this.ngOnInit();
-    this.busy = false;
   }
 
   async addAnime() {

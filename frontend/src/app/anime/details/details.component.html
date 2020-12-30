@@ -1,15 +1,21 @@
 <div class="m-3">
   <div class="d-flex">
     <h2>{{ anime?.title || 'Loading…' }}</h2>
-    <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" (click)="editSave()">
+    <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title">
       <ng-container *ngIf="anime?.my_list_status; else add">
         <app-icon
           [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"
           size="24"
+          (click)="editSave()"
         ></app-icon>
+        <app-icon *ngIf="edit" name="x" size="24" class="ms-3" (click)="stopEdit()"></app-icon>
       </ng-container>
       <ng-template #add>
-        <app-icon [name]="busy ? 'hourglass-split' : 'plus'" size="24"></app-icon>
+        <app-icon
+          [name]="busy ? 'hourglass-split' : 'plus'"
+          size="24"
+          (click)="editSave()"
+        ></app-icon>
       </ng-template>
     </div>
   </div>

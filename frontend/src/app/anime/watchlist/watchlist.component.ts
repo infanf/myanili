@@ -26,6 +26,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   async markSeen(anime: ListAnime) {
+    if (this.isSeen(anime)) return;
     const currentEpisode = anime.list_status.num_episodes_watched;
     const data = {
       num_watched_episodes: currentEpisode + 1,

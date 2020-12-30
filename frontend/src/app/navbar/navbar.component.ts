@@ -23,4 +23,11 @@ export class NavbarComponent implements OnInit {
       this.user = user;
     });
   }
+
+  async logoff() {
+    if (confirm(`Log out account ${this.user?.name}?`)) {
+      await this.malService.get('/logoff');
+      await this.malService.checkLogin();
+    }
+  }
 }

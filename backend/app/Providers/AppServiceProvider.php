@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
 
     private static function get(string $url, $params = null)
     {
-        if (!isset($_SESSION['ACCESS_TOKEN'])) {
+        if (!isset($_COOKIE['MAL_ACCESS_TOKEN'])) {
             return '{"auth": false}';
         }
 
@@ -53,18 +53,18 @@ class AppServiceProvider extends ServiceProvider
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_SESSION['ACCESS_TOKEN']}"]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_COOKIE['MAL_ACCESS_TOKEN']}"]);
         return curl_exec($ch);
     }
 
     private static function put(string $url, $params = null)
     {
-        if (!isset($_SESSION['ACCESS_TOKEN'])) {
+        if (!isset($_COOKIE['MAL_ACCESS_TOKEN'])) {
             return '{"auth": false}';
         }
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_SESSION['ACCESS_TOKEN']}"]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_COOKIE['MAL_ACCESS_TOKEN']}"]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));

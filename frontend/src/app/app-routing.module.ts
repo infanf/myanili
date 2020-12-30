@@ -10,8 +10,8 @@ const routes: Routes = [
   { path: 'anime/list/:status', component: ListComponent },
   { path: 'anime/watchlist', component: WatchlistComponent },
   { path: 'anime/details/:id', component: DetailsComponent },
-  { path: '', redirectTo: '/anime/list', pathMatch: 'full' },
-  { path: 'anime', redirectTo: '/anime/list', pathMatch: 'full' },
+  { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
+  { path: 'anime', redirectTo: '/anime/watchlist', pathMatch: 'full' },
 ];
 
 @NgModule({

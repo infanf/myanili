@@ -1,6 +1,9 @@
-<nav class="navbar navbar-dark navbar-expand bg-gray-dark sticky-top">
+<nav class="navbar navbar-dark navbar-expand bg-blue sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">MyAniLi</a>
+    <a class="navbar-brand" href="#">
+      <img src="assets/icon.svg" width="32" class="me-2" style="vertical-align: bottom;">
+       <span class="d-none d-sm-inline">MyAniLi</span>
+      </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ng-container *ngIf="loggedIn; then app; else login"></ng-container>
       <ng-template #app>
@@ -85,7 +88,7 @@
               </ul>
             </li>
           </ul>
-          <div class="d-flex" *ngIf="user">
+          <div class="d-flex cursor-pointer" *ngIf="user" (click)="logoff()">
             <span class="my-auto me-3 text-white">{{ user!.name }}</span>
             <img [src]="user!.picture" style="height: 32px; border-radius: 50%;" />
           </div>
