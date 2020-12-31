@@ -53,6 +53,7 @@ export class MalService {
     if (status) return this.get<ListAnime[]>(`list/${status}`);
     return this.get<ListAnime[]>('list');
   }
+
   async refreshTokens() {}
 
   async login() {

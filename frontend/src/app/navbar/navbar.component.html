@@ -1,9 +1,9 @@
 <nav class="navbar navbar-dark navbar-expand bg-blue sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-      <img src="assets/icon.svg" width="32" class="me-2" style="vertical-align: bottom;">
-       <span class="d-none d-sm-inline">MyAniLi</span>
-      </a>
+      <img src="assets/icon.svg" width="32" class="me-2" style="vertical-align: bottom" />
+      <span class="d-none d-sm-inline">MyAniLi</span>
+    </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ng-container *ngIf="loggedIn; then app; else login"></ng-container>
       <ng-template #app>
@@ -16,13 +16,18 @@
                 role="button"
                 ngbDropdownToggle
               >
-              <app-icon class="me-2" name="film"></app-icon>
+                <app-icon class="me-2" name="film"></app-icon>
                 <span class="d-none d-sm-inline">Anime</span>
               </a>
               <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="animeDropdown">
                 <li>
                   <a class="dropdown-item" routerLink="/anime/watchlist" routerLinkActive="active">
                     Watchlist
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" routerLink="/anime/schedule" routerLinkActive="active">
+                    Schedule
                   </a>
                 </li>
                 <li><hr class="dropdown-divider" /></li>
@@ -90,7 +95,7 @@
           </ul>
           <div class="d-flex cursor-pointer" *ngIf="user" (click)="logoff()">
             <span class="my-auto me-3 text-white">{{ user!.name }}</span>
-            <img [src]="user!.picture" style="height: 32px; border-radius: 50%;" />
+            <img [src]="user!.picture" style="height: 32px; border-radius: 50%" />
           </div>
         </ng-container>
       </ng-template>

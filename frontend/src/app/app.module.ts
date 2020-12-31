@@ -16,6 +16,7 @@ import { FlagPipe } from './flag.pipe';
 import { IconComponent } from './icon/icon.component';
 import { MalPipe } from './mal.pipe';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ScheduleComponent } from './schedule/schedule.component';
 import { StreamPipe } from './stream.pipe';
 import { TimePipe } from './time.pipe';
 
@@ -31,6 +32,7 @@ import { TimePipe } from './time.pipe';
     MalPipe,
     TimePipe,
     StreamPipe,
+    ScheduleComponent,
   ],
   imports: [
     BrowserModule,

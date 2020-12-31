@@ -1,0 +1,13 @@
+.entry {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .flag {
+    position: absolute;
+    right: -0.5rem;
+    bottom: 0;
+    font-size: 0.6rem;
+  }
+  
