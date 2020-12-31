@@ -9,7 +9,7 @@ import { IconComponent } from '../icon/icon.component';
   styleUrls: ['./icon-status.component.scss'],
 })
 export class IconStatusComponent extends IconComponent implements OnInit {
-  @Input() status!: WatchStatus;
+  @Input() status?: WatchStatus;
 
   ngOnInit() {
     switch (this.status) {

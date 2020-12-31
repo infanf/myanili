@@ -20,7 +20,7 @@
           <td>
             <app-icon-status
               *ngIf="anime.my_list_status"
-              [status]="anime.my_list_status.status"
+              [status]="anime.my_list_status!.status"
             ></app-icon-status>
           </td>
           <td>
@@ -31,7 +31,7 @@
               *ngIf="anime.my_list_status?.status === 'watching'"
               [percent]="
                 anime.num_episodes
-                  ? (anime.my_list_status?.num_episodes_watched / (anime.num_episodes || 0)) * 100
+                  ? ((anime.my_list_status?.num_episodes_watched || 0) / anime.num_episodes!) * 100
                   : 0
               "
             ></circle-progress>
