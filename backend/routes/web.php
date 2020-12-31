@@ -81,6 +81,10 @@ $router->put('/anime/{id}', function ($id, Request $request) {
     return AppServiceProvider::putAnimeDetails($id, $request);
 });
 
+$router->get('/animes/season/{year}/{season}', function (int $year, int $season) {
+    return AppServiceProvider::getListSeason($year, $season);
+});
+
 $router->get('/me', function () {
     return AppServiceProvider::getMe();
 });

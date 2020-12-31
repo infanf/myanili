@@ -92,6 +92,24 @@ class AppServiceProvider extends ServiceProvider
         return $list;
     }
 
+    public static function getListSeason(int $year, int $season)
+    {
+        $seasons = ['winter', 'spring', 'summer', 'fall'];
+        $params = ["fields" => "num_episodes,media_type,start_date,end_date,alternative_titles,my_list_status{comments}", "limit" => 500];
+        $response = json_decode(
+            self::get(
+                self::baseUrl . "/anime/season/$year/{$seasons[$season]}",
+                $params
+            ), true
+        );
+        $list = $response['data'];
+        while ($response['paging'] && isset($response['paging']['next'])) {
+            $response = json_decode(self::get($response['paging']['next']), true);
+            $list = array_merge($list, $response['data']);
+        }
+        return $list;
+    }
+
     public static function getAnimeDetails(int $id)
     {
         $params = ['fields' => 'id,title,main_picture,alternative_titles,start_date,end_date,synopsis,mean,rank,popularity,num_list_users,num_scoring_users,nsfw,created_at,updated_at,media_type,status,genres,my_list_status{comments},num_episodes,start_season,broadcast,source,average_episode_duration,rating,pictures,background,related_anime,related_manga,recommendations,studios,statistics,opening_themes,ending_themes'];

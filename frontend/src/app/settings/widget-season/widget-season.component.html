@@ -1,0 +1,20 @@
+<app-icon
+  name="calendar-range"
+  (click)="setCurrentSeason()"
+  class="me-1 cursor-pointer"
+  *ngIf="season.season !== currentSeason.season || season.year !== currentSeason.year"
+></app-icon>
+<app-icon
+  name="arrow-down-left-circle"
+  (click)="changeSeason(-1)"
+  class="me-1 cursor-pointer"
+></app-icon>
+<span>
+  <app-icon [name]="icons[season.season]"></app-icon>
+  {{ season.year }}
+</span>
+<app-icon
+  name="arrow-up-right-circle"
+  (click)="changeSeason(1)"
+  class="ms-1 cursor-pointer"
+></app-icon>

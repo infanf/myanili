@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-
-import { MalService } from '../mal.service';
 import {
   Anime,
   AnimeExtension,
+  AnimeNode,
   ListAnime,
   MyAnimeStatus,
   MyAnimeUpdate,
   WatchStatus,
-} from '../models/anime';
+} from '@models/anime';
+
+import { MalService } from '../mal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,21 @@ export class AnimeService {
         return { ...anime, my_extension } as ListAnime;
       } catch (e) {}
       return anime;
+    });
+  }
+  async season(year: number, season: number): Promise<Array<Partial<Anime>>> {
+    const animes = (
+      await this.malService.get<Array<{ node: AnimeNode }>>(`/animes/season/${year}/${season}`)
+    ).map(anime => anime.node);
+    return animes.map(anime => {
+      const comments = anime.my_list_status?.comments;
+      if (!comments) return anime;
+      try {
+        const json = atob(comments);
+        const my_extension = JSON.parse(json) as AnimeExtension;
+        return { ...anime, my_extension } as Anime;
+      } catch (e) {}
+      return anime as Anime;
     });
   }
 

@@ -1,0 +1,44 @@
+<section>
+  <table class="table table-sm table-hover table-striped table-responsive-md">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Episode</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let anime of animes">
+        <tr
+          class="cursor-pointer"
+          [class]="{
+            'fw-bold': anime.my_list_status?.status === 'watching',
+            'text-muted': anime.my_list_status?.status === 'dropped'
+          }"
+          routerLink="/anime/details/{{ anime.id }}"
+        >
+          <td>
+            <app-icon-status
+              *ngIf="anime.my_list_status"
+              [status]="anime.my_list_status.status"
+            ></app-icon-status>
+          </td>
+          <td>
+            {{ anime.title }}
+          </td>
+          <td style="white-space: nowrap">
+            <circle-progress
+              *ngIf="anime.my_list_status?.status === 'watching'"
+              [percent]="
+                anime.num_episodes
+                  ? (anime.my_list_status?.num_episodes_watched / (anime.num_episodes || 0)) * 100
+                  : 0
+              "
+            ></circle-progress>
+            {{ anime.my_list_status?.num_episodes_watched }}/{{ anime.num_episodes || '?' }}
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</section>

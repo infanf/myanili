@@ -35,7 +35,7 @@ interface AnimeInterface {
   genres: Genre[];
   my_list_status?: MyAnimeStatus;
   num_episodes: number;
-  start_season?: Season;
+  start_season?: MalSeason;
   broadcast?: {
     day_of_the_week: string;
     start_time?: string;
@@ -105,7 +105,7 @@ interface SeasonInterface {
   season: 'winter' | 'spring' | 'summer' | 'fall';
 }
 
-export type Season = SeasonInterface;
+export type MalSeason = SeasonInterface;
 
 interface Theme {
   id: number;
@@ -115,13 +115,14 @@ interface Theme {
 
 export type AnimeTheme = Theme;
 
-interface AnimeNode {
+export interface AnimeNode {
   id: number;
   title: string;
   main_picture?: Picture;
   num_episodes?: number;
   start_date?: Date;
   end_date?: Date;
+  my_list_status?: MyAnimeStatus;
 }
 
 interface RelatedAnimeInterface {

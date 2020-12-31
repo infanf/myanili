@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DetailsComponent } from './anime/details/details.component';
 import { ListComponent } from './anime/list/list.component';
+import { SeasonComponent } from './anime/season/season.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'anime/list/:status', component: ListComponent },
   { path: 'anime/watchlist', component: WatchlistComponent },
   { path: 'anime/schedule', component: ScheduleComponent },
+  { path: 'anime/season', component: SeasonComponent },
   { path: 'anime/details/:id', component: DetailsComponent },
   { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
   { path: 'anime', redirectTo: '/anime/watchlist', pathMatch: 'full' },
