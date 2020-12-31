@@ -20,8 +20,14 @@
             {{ anime.node.title }}
           </td>
           <td style="white-space: nowrap">
-            {{ anime.my_extension?.seasonNumber || 1 }}x{{
-              anime.list_status.num_episodes_watched + (isSeen(anime) ? 0 : 1)
+            {{
+              anime.my_extension?.seasonNumber === 0
+                ? anime.my_extension?.seasonNumber
+                : anime.my_extension?.seasonNumber || 1
+            }}x{{
+              anime.list_status.num_episodes_watched +
+                (anime.my_extension?.episodeCorOffset || 0) +
+                (isSeen(anime) ? 0 : 1)
             }}
           </td>
           <td>

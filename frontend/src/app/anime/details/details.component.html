@@ -95,6 +95,7 @@
             min="0"
             max="10"
             type="number"
+            [disabled]="busy"
           />
         </div>
       </div>
@@ -174,7 +175,11 @@
       <div class="row my-2" *ngIf="edit && editExtension">
         <div class="col-3 fw-bold">Simulcast</div>
         <div class="col-5">
-          <select class="form-control form-control-sm" [(ngModel)]="editExtension!.simulDay">
+          <select
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.simulDay"
+            [disabled]="busy"
+          >
             <option [value]="1">Monday</option>
             <option [value]="2">Tuesday</option>
             <option [value]="3">Wednesday</option>
@@ -189,6 +194,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.simulTime"
             type="time"
+            [disabled]="busy"
           />
         </div>
       </div>
@@ -227,6 +233,7 @@
           <select
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.externalStreaming"
+            [disabled]="busy"
           >
             <option *ngFor="let provider of streamPipe.streamingProviders" [value]="provider.id">
               {{ provider.name }}
@@ -234,7 +241,11 @@
           </select>
         </div>
         <div class="col-3">
-          <input class="form-control form-control-sm" [(ngModel)]="editExtension!.simulCountry" />
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.simulCountry"
+            [disabled]="busy"
+          />
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">
@@ -243,6 +254,7 @@
           <input
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.externalStreamingId"
+            [disabled]="busy"
           />
         </div>
       </div>
@@ -300,6 +312,7 @@
               class="form-control form-control-sm"
               [(ngModel)]="editExtension.seasonNumber"
               type="number"
+              [disabled]="busy"
             />
           </div>
           <div class="col-3 fw-bold">Offset</div>
@@ -308,6 +321,7 @@
               class="form-control form-control-sm"
               [(ngModel)]="editExtension.episodeCorOffset"
               type="number"
+              [disabled]="busy"
             />
           </div>
         </div>
