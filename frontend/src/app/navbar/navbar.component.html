@@ -16,8 +16,8 @@
                 role="button"
                 ngbDropdownToggle
               >
+              <app-icon class="me-2" name="film"></app-icon>
                 <span class="d-none d-sm-inline">Anime</span>
-                <app-icon class="d-sm-none" name="film"></app-icon>
               </a>
               <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="animeDropdown">
                 <li>
@@ -73,7 +73,7 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item dropdown" ngbDropdown>
+            <!-- <li class="nav-item dropdown" ngbDropdown>
               <a
                 class="nav-link dropdown-toggle"
                 id="mangaDropdown"
@@ -86,7 +86,7 @@
               <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="mangaDropdown">
                 <li><a class="dropdown-item" href="#">Reading</a></li>
               </ul>
-            </li>
+            </li> -->
           </ul>
           <div class="d-flex cursor-pointer" *ngIf="user" (click)="logoff()">
             <span class="my-auto me-3 text-white">{{ user!.name }}</span>

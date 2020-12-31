@@ -120,6 +120,8 @@ interface AnimeNode {
   title: string;
   main_picture?: Picture;
   num_episodes?: number;
+  start_date?: Date;
+  end_date?: Date;
 }
 
 interface RelatedAnimeInterface {

@@ -14,16 +14,36 @@ export class WatchlistComponent implements OnInit {
   constructor(private animeService: AnimeService) {}
 
   async ngOnInit() {
-    this.animes = await this.animeService.list('watching');
+    const animes = await this.animeService.list('watching');
+    this.animes = animes
+      .filter(anime => {
+        if (!anime.my_extension) return true;
+        if (
+          ((!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) ||
+            !anime.my_extension?.simulTime) &&
+          !this.isInSeason(anime)
+        ) {
+          return true;
+        }
+        return anime.my_extension.simulDay === this.getLast8am().day();
+      })
+      .sort(
+        (a, b) =>
+          Number(a.my_extension?.simulTime ? a.my_extension.simulTime.replace(/\D/g, '') : 0) -
+          Number(b.my_extension?.simulTime ? b.my_extension.simulTime.replace(/\D/g, '') : 0),
+      );
   }
 
   isSeen(anime: ListAnime): boolean {
     if (anime.list_status.num_episodes_watched === 0) return false;
+    const updateDate = moment(anime.list_status.updated_at);
+    return this.getLast8am() < updateDate;
+  }
+
+  getLast8am() {
     const now = moment();
     const eightAm = moment().hour(8).minute(0).second(0).millisecond(0);
-    const last8am = now > eightAm ? eightAm : eightAm.subtract(1, 'd');
-    const updateDate = moment(anime.list_status.updated_at);
-    return last8am < updateDate;
+    return now > eightAm ? eightAm : eightAm.subtract(1, 'd');
   }
 
   async markSeen(anime: ListAnime) {
@@ -37,5 +57,17 @@ export class WatchlistComponent implements OnInit {
     }
     await this.animeService.updateAnime(anime.node.id, data);
     this.ngOnInit();
+  }
+
+  isInSeason(anime: ListAnime): boolean {
+    if (anime.node.start_date) {
+      if (moment(anime.node.start_date).subtract(6, 'd') < moment()) {
+        if (anime.node.end_date && moment(anime.node.end_date).add(6, 'd') < moment()) {
+          return false;
+        }
+        return true;
+      }
+    }
+    return false;
   }
 }

@@ -122,6 +122,9 @@ export class DetailsComponent implements OnInit {
       return;
     }
     this.busy = true;
+    if (this.editExtension && this.editExtension.simulDay) {
+      this.editExtension.simulDay = Number(this.editExtension.simulDay);
+    }
     const updateData = {
       comments: btoa(JSON.stringify(this.editExtension)),
     } as Partial<MyAnimeUpdate>;
