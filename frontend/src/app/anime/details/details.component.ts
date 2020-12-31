@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
+import * as moment from 'moment';
+import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
 
@@ -16,9 +18,13 @@ export class DetailsComponent implements OnInit {
   edit = false;
   busy = false;
   editBackup?: Partial<MyAnimeUpdate>;
-  editExtention?: AnimeExtension;
+  editExtension?: AnimeExtension;
 
-  constructor(private animeService: AnimeService, private route: ActivatedRoute) {
+  constructor(
+    private animeService: AnimeService,
+    private route: ActivatedRoute,
+    public streamPipe: StreamPipe,
+  ) {
     this.id = Number(this.route?.snapshot?.paramMap?.get('id'));
     this.route.url.subscribe(url => {
       const newId = Number(this.route?.snapshot?.paramMap?.get('id'));
@@ -89,14 +95,14 @@ export class DetailsComponent implements OnInit {
       const extension = (JSON.parse(
         atob(this.anime.my_list_status.comments),
       ) as unknown) as Partial<AnimeExtension>;
-      this.editExtention = {
+      this.editExtension = {
         series: '',
         seasonNumber: 1,
         episodeCorOffset: 0,
         ...extension,
       };
     } catch (e) {
-      this.editExtention = {
+      this.editExtension = {
         series: '',
         seasonNumber: 1,
         episodeCorOffset: 0,
@@ -117,7 +123,7 @@ export class DetailsComponent implements OnInit {
     }
     this.busy = true;
     const updateData = {
-      comments: btoa(JSON.stringify(this.editExtention)),
+      comments: btoa(JSON.stringify(this.editExtension)),
     } as Partial<MyAnimeUpdate>;
     if (this.editBackup.status !== this.anime.my_list_status.status) {
       updateData.status = this.editBackup?.status;
@@ -149,7 +155,7 @@ export class DetailsComponent implements OnInit {
   stopEdit() {
     this.edit = false;
     delete this.editBackup;
-    delete this.editExtention;
+    delete this.editExtension;
   }
 
   async addAnime() {
@@ -158,5 +164,10 @@ export class DetailsComponent implements OnInit {
     await this.animeService.updateAnime(this.anime.id, { status: 'plan_to_watch' });
     await this.ngOnInit();
     this.busy = false;
+  }
+
+  getDay(day?: number): string {
+    if (!day) return '';
+    return moment().day(day).format('dddd');
   }
 }

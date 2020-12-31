@@ -52,7 +52,7 @@
                 alt="{{ anime.my_extension?.externalStreaming }}"
                 src="/assets/stream/icon-{{ anime.my_extension?.externalStreaming || 'plex' }}.svg"
               />
-              <span class="flag">{{ anime.my_extension?.simulCountry || 'us' | flag: true }}</span>
+              <span class="flag">{{ anime.my_extension?.simulCountry | flag: true }}</span>
             </span>
           </td>
           <td>

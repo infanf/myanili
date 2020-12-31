@@ -1,14 +1,20 @@
-<div class="m-3">
+<div class="container pt-2 mt-3 border-sm-x border-sm-y rounded">
   <div class="d-flex">
     <h2>{{ anime?.title || 'Loading…' }}</h2>
-    <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title">
+    <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" style="white-space: nowrap">
       <ng-container *ngIf="anime?.my_list_status; else add">
         <app-icon
           [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"
           size="24"
           (click)="editSave()"
         ></app-icon>
-        <app-icon *ngIf="edit" name="x" size="24" class="ms-3" (click)="stopEdit()"></app-icon>
+        <app-icon
+          *ngIf="edit && !busy"
+          name="x"
+          size="24"
+          class="ms-3"
+          (click)="stopEdit()"
+        ></app-icon>
       </ng-container>
       <ng-template #add>
         <app-icon
@@ -21,7 +27,7 @@
   </div>
   <hr class="mt-0" />
   <div class="row">
-    <div class="col-sm-6 mb-3">
+    <div class="col-sm-5 col-md-4 mb-3">
       <picture>
         <source
           *ngIf="anime && anime.main_picture"
@@ -64,8 +70,20 @@
           [ngStyle]="{ 'width.%': anime!.my_list_status!.score * 10 }"
         ></div>
       </div>
+      <div class="row mt-2" *ngIf="edit && editBackup">
+        <div class="col-5 fw-bold">My&nbsp;Score</div>
+        <div class="col-5">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editBackup.score"
+            min="0"
+            max="10"
+            type="number"
+          />
+        </div>
+      </div>
     </div>
-    <div class="col-sm-6 mb-3">
+    <div class="col-sm-7 col-md-8 mb-3">
       <div class="row" *ngIf="anime?.alternative_titles?.en">
         <div class="col-3 fw-bold">English</div>
         <div class="col-9">{{ anime?.alternative_titles?.en }}</div>
@@ -121,11 +139,97 @@
           </ng-template>
         </div>
       </div>
-      <!-- <div *ngIf="anime && anime.simulDay && anime.simulTime">
-        <strong class="text-dark">Simulcast</strong> -->
-      <!-- {{ getDay(anime.simulDay) }}, -->
-      <!-- {{ anime.simulTime.substr(0, 5) | time }} -->
-      <!-- </div> -->
+      <div
+        class="row"
+        *ngIf="
+          !edit &&
+          anime &&
+          anime.my_extension &&
+          anime.my_extension?.simulDay &&
+          anime.my_extension?.simulTime
+        "
+      >
+        <div class="col-3 fw-bold">Simulcast</div>
+        <div class="col-9">
+          {{ getDay(anime.my_extension.simulDay) }},
+          {{ anime.my_extension.simulTime?.substr(0, 5) | time }}
+        </div>
+      </div>
+      <div class="row" *ngIf="edit && editExtension">
+        <div class="col-3 fw-bold">Simulcast</div>
+        <div class="col-5">
+          <select class="form-control form-control-sm" [(ngModel)]="editExtension!.simulDay">
+            <option [value]="1">Monday</option>
+            <option [value]="2">Tuesday</option>
+            <option [value]="3">Wednesday</option>
+            <option [value]="4">Thursday</option>
+            <option [value]="5">Friday</option>
+            <option [value]="6">Saturday</option>
+            <option [value]="0">Sunday</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.simulTime"
+            type="time"
+          />
+        </div>
+      </div>
+      <div
+        class="row"
+        *ngIf="!edit && anime && anime.my_extension && anime.my_extension.externalStreaming"
+      >
+        <div class="col-3 fw-bold">Streaming</div>
+        <div class="col-9">
+          <a
+            *ngIf="anime.my_extension.externalStreamingId"
+            href="{{ anime.my_extension.externalStreaming | stream: 'urlprefix' }}{{
+              anime.my_extension.externalStreamingId
+            }}"
+            target="_blank"
+          >
+            <img
+              alt="{{ anime.my_extension.externalStreaming | stream: 'name' }}"
+              style="max-width: 5rem; max-height: 1rem"
+              class="ml-1"
+              src="/assets/stream/{{ anime.my_extension.externalStreaming }}.svg"
+            />
+          </a>
+          <img
+            *ngIf="!anime.my_extension.externalStreamingId"
+            alt="{{ anime.my_extension.externalStreaming | stream: 'name' }}"
+            style="max-width: 5rem; max-height: 1rem"
+            class="ml-1"
+            src="/assets/stream/{{ anime.my_extension.externalStreaming }}.svg"
+          />
+        </div>
+      </div>
+      <div class="row" *ngIf="edit && editExtension">
+        <div class="col-3 fw-bold">Streaming</div>
+        <div class="col-6">
+          <select
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.externalStreaming"
+          >
+            <option *ngFor="let provider of streamPipe.streamingProviders" [value]="provider.id">
+              {{ provider.name }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3">
+          <input class="form-control form-control-sm" [(ngModel)]="editExtension!.simulCountry" />
+        </div>
+      </div>
+      <div class="row" *ngIf="edit && editExtension">
+        <div class="col-3 fw-bold">Stream&nbsp;ID</div>
+        <div class="col-9">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.externalStreamingId"
+          />
+        </div>
+      </div>
       <div class="row" *ngIf="anime">
         <div class="col-3 fw-bold">Episodes</div>
         <div class="col-9">
@@ -171,6 +275,24 @@
               />
               <span class="input-group-text">/ {{ anime!.num_episodes || '?' }}</span>
             </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="edit && editExtension">
+          <div class="col-3 fw-bold">Seasonno</div>
+          <div class="col-3">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension.seasonNumber"
+              type="number"
+            />
+          </div>
+          <div class="col-3 fw-bold">Offset</div>
+          <div class="col-3">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension.episodeCorOffset"
+              type="number"
+            />
           </div>
         </div>
       </div>

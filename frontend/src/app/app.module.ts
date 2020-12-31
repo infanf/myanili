@@ -16,6 +16,8 @@ import { FlagPipe } from './flag.pipe';
 import { IconComponent } from './icon/icon.component';
 import { MalPipe } from './mal.pipe';
 import { NavbarComponent } from './navbar/navbar.component';
+import { StreamPipe } from './stream.pipe';
+import { TimePipe } from './time.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     WatchlistComponent,
     FlagPipe,
     MalPipe,
+    TimePipe,
+    StreamPipe,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +55,7 @@ import { NavbarComponent } from './navbar/navbar.component';
       outerStrokeLinecap: 'butt',
     }),
   ],
-  providers: [],
+  providers: [TimePipe, StreamPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

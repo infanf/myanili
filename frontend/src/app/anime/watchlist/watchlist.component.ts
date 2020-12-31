@@ -18,6 +18,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   isSeen(anime: ListAnime): boolean {
+    if (anime.list_status.num_episodes_watched === 0) return false;
     const now = moment();
     const eightAm = moment().hour(8).minute(0).second(0).millisecond(0);
     const last8am = now > eightAm ? eightAm : eightAm.subtract(1, 'd');

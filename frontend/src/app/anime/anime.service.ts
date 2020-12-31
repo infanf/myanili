@@ -31,7 +31,15 @@ export class AnimeService {
   }
 
   async getAnime(id: number) {
-    return this.malService.get<Anime>('anime/' + id);
+    const anime = await this.malService.get<Anime>('anime/' + id);
+    const comments = anime.my_list_status?.comments;
+    if (!comments) return anime;
+    try {
+      const json = atob(comments);
+      const my_extension = JSON.parse(json) as AnimeExtension;
+      return { ...anime, my_extension };
+    } catch (e) {}
+    return anime;
   }
 
   async updateAnime(id: number, data: Partial<MyAnimeUpdate>): Promise<MyAnimeStatus> {
