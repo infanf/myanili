@@ -16,6 +16,8 @@ export class SeasonComponent implements OnInit {
   season!: number;
   onlyInList = true;
 
+  lang = 'en';
+
   constructor(
     private animeService: AnimeService,
     private settings: SettingsService,
@@ -28,6 +30,7 @@ export class SeasonComponent implements OnInit {
       await this.update();
       this.glob.notbusy();
     });
+    this.settings.language.subscribe(lang => (this.lang = lang));
   }
 
   async ngOnInit() {}
