@@ -17,10 +17,10 @@ use Illuminate\Http\Request;
  */
 
 $router->get('/auth', function () {
+    $code_verifier = isset($_SESSION['verifier']) ? $_SESSION['verifier'] : rtrim(strtr(base64_encode(random_bytes(64)), "+/", "-_"), "=");
+    $_SESSION['verifier'] = $code_verifier;
     $provider = AppServiceProvider::getOauthProvider();
     if (!isset($_GET['code'])) {
-        $code_verifier = isset($_SESSION['verifier']) ? $_SESSION['verifier'] : rtrim(strtr(base64_encode(random_bytes(64)), "+/", "-_"), "=");
-        $_SESSION['verifier'] = $code_verifier;
         $authorizationUrl = $provider->getAuthorizationUrl([
             "code_challenge" => $code_verifier,
             'grant_type' => 'authorization_code',
