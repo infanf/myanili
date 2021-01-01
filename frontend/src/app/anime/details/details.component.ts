@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
 import * as moment from 'moment';
+import { GlobalService } from 'src/app/global.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
@@ -12,7 +13,7 @@ import { AnimeService } from '../anime.service';
   styleUrls: ['./details.component.scss'],
 })
 export class DetailsComponent implements OnInit {
-  @Input() id!: number;
+  @Input() id = 0;
   anime?: Anime;
   shortsyn = true;
   edit = false;
@@ -24,20 +25,22 @@ export class DetailsComponent implements OnInit {
     private animeService: AnimeService,
     private route: ActivatedRoute,
     public streamPipe: StreamPipe,
+    private glob: GlobalService,
   ) {
-    this.id = Number(this.route?.snapshot?.paramMap?.get('id'));
-    this.route.url.subscribe(url => {
-      const newId = Number(this.route?.snapshot?.paramMap?.get('id'));
+    this.route.paramMap.subscribe(async params => {
+      const newId = Number(params.get('id'));
       if (newId !== this.id) {
         this.id = newId;
         delete this.anime;
-        this.ngOnInit();
+        this.glob.busy();
+        await this.ngOnInit();
       }
     });
   }
 
   async ngOnInit() {
     this.anime = await this.animeService.getAnime(this.id);
+    this.glob.notbusy();
   }
 
   getRelatedAnimes() {

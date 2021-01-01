@@ -11,7 +11,7 @@ export class SettingsService {
     year: moment().year(),
     season: Math.floor(moment().month() / 3),
   });
-  private languageSubject = new BehaviorSubject<'default' | 'en' | 'ja'>('default');
+  private languageSubject = new BehaviorSubject<Language>('default');
 
   constructor() {
     try {
@@ -35,4 +35,10 @@ export class SettingsService {
   get language() {
     return this.languageSubject.asObservable();
   }
+
+  setLanguage(lang: Language) {
+    this.languageSubject.next(lang);
+  }
 }
+
+type Language = 'default' | 'en' | 'jp';

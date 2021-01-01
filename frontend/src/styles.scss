@@ -3,22 +3,23 @@
 /* Importing Bootstrap SCSS file. */
 $theme-colors: (
   "gray-dark": #231123,
+  "dark": #231123,
   "blue": #204a82,
   "primary": #204a82,
   "red": #82204a,
   "danger": #82204a,
-  "green": #558c8c,
-  "success": #558c8c,
-  "yellow": #e8db7d,
-  "warning": #e8db7d,
+  "green": #4a8220,
+  "success": #4a8220,
+  "yellow": #825820,
+  "warning": #825820,
   // "white": #eff7ff,
 );
 
 $primary: #204a82;
 $secondary: #e4e7eb;
 $info: #17a2b8;
-$success: #28a745;
-$warning: #e8db7d;
+$success: #4a8220;
+$warning: #825820;
 $error: #82204a;
 // $body-bg: #eff7ff;
 $body-color: #231123;

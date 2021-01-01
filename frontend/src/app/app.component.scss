@@ -1,0 +1,15 @@
+.busy-overlay {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 58px);
+  top: 58px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.8);
+
+  app-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -32px;
+  }
+}

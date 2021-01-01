@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ListAnime, MyAnimeUpdate } from '@models/anime';
 import * as moment from 'moment';
+import { GlobalService } from 'src/app/global.service';
 
 import { AnimeService } from '../anime.service';
 
@@ -11,7 +12,9 @@ import { AnimeService } from '../anime.service';
 })
 export class WatchlistComponent implements OnInit {
   animes: ListAnime[] = [];
-  constructor(private animeService: AnimeService) {}
+  constructor(private animeService: AnimeService, private glob: GlobalService) {
+    this.glob.busy();
+  }
 
   async ngOnInit() {
     const animes = await this.animeService.list('watching');
@@ -32,6 +35,7 @@ export class WatchlistComponent implements OnInit {
           Number(a.my_extension?.simulTime ? a.my_extension.simulTime.replace(/\D/g, '') : 0) -
           Number(b.my_extension?.simulTime ? b.my_extension.simulTime.replace(/\D/g, '') : 0),
       );
+    this.glob.notbusy();
   }
 
   isSeen(anime: ListAnime): boolean {

@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DetailsComponent } from './anime/details/details.component';
 import { ListComponent } from './anime/list/list.component';
+import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
-import { ScheduleComponent } from './schedule/schedule.component';
 
 const routes: Routes = [
   { path: 'anime/list', component: ListComponent, data: { type: 'anime' } },

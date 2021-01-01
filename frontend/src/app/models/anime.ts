@@ -123,6 +123,12 @@ export interface AnimeNode {
   start_date?: Date;
   end_date?: Date;
   my_list_status?: MyAnimeStatus;
+  alternative_titles?: {
+    synonyms?: string[];
+    en?: string;
+    ja?: string;
+  };
+  start_season?: MalSeason;
 }
 
 interface RelatedAnimeInterface {

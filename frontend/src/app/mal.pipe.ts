@@ -5,9 +5,10 @@ import { WatchStatus } from '@models/anime';
   name: 'mal',
 })
 export class MalPipe implements PipeTransform {
-  transform(value = '', type?: string): string {
+  transform(value: number | string = '', type?: 'mediatype' | 'mystatus' | 'seasonicon'): string {
     if (type === 'mystatus') return this.myStatus(value as WatchStatus);
-    if (type === 'mediatype') return this.mediaType(value);
+    if (type === 'mediatype') return this.mediaType(String(value));
+    if (type === 'seasonicon') return this.seasonIcon(value);
     return String(value);
   }
 
@@ -26,5 +27,21 @@ export class MalPipe implements PipeTransform {
       .map(word => word[0].toUpperCase() + word.slice(1))
       .join(' ');
     return status;
+  }
+
+  seasonIcon(value: number | string): string {
+    switch (value) {
+      case 'spring':
+      case 1:
+        return 'flower1';
+      case 'summer':
+      case 2:
+        return 'sun';
+      case 'fall':
+      case 3:
+        return 'cloud';
+      default:
+        return 'tree';
+    }
   }
 }

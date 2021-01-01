@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 
+import { GlobalService } from './global.service';
 import { MalService } from './mal.service';
 
 @Component({
@@ -9,13 +10,19 @@ import { MalService } from './mal.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(public malService: MalService, private swUpdate: SwUpdate) {
+  constructor(
+    public malService: MalService,
+    private swUpdate: SwUpdate,
+    private glob: GlobalService,
+  ) {
     this.malService.loggedIn.subscribe(loggedIn => {
       this.loggedIn = loggedIn;
     });
     this.setupUpdates();
+    this.glob.isBusy.subscribe(busy => (this.busy = busy));
   }
   loggedIn?: string | false = 'loading';
+  busy = true;
 
   setupUpdates() {
     this.swUpdate.available.subscribe(u => {

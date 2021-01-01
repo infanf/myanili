@@ -27,7 +27,7 @@ export class StreamPipe implements PipeTransform {
     },
     {
       id: '',
-      name: 'Plex',
+      name: 'Other',
     },
     {
       id: 'al',

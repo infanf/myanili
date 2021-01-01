@@ -74,7 +74,11 @@ class AppServiceProvider extends ServiceProvider
 
     public static function getMyList($status = null)
     {
-        $params = ["fields" => "num_episodes,start_date,end_date,alternative_titles,list_status{comments}", "limit" => 1000];
+        $params = [
+            "fields" => "num_episodes,start_season,start_date,end_date,alternative_titles,list_status{comments}",
+            "sort" => "anime_start_date",
+            "limit" => 1000,
+        ];
         if ($status) {
             $params['status'] = $status;
         }
@@ -95,7 +99,10 @@ class AppServiceProvider extends ServiceProvider
     public static function getListSeason(int $year, int $season)
     {
         $seasons = ['winter', 'spring', 'summer', 'fall'];
-        $params = ["fields" => "num_episodes,media_type,start_date,end_date,alternative_titles,my_list_status{comments}", "limit" => 500];
+        $params = [
+            "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments}",
+            "limit" => 500,
+        ];
         $response = json_decode(
             self::get(
                 self::baseUrl . "/anime/season/$year/{$seasons[$season]}",
@@ -107,6 +114,9 @@ class AppServiceProvider extends ServiceProvider
             $response = json_decode(self::get($response['paging']['next']), true);
             $list = array_merge($list, $response['data']);
         }
+        usort($list, function ($a, $b) {
+            return strcmp($a['node']['title'], $b['node']['title']);
+        });
         return $list;
     }
 

@@ -2,8 +2,14 @@
   <table class="table table-sm table-hover table-striped table-responsive-md">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Episode</th>
+        <th [class]="{ 'd-none': lang === 'en', 'd-md-table-cell': lang === 'en' }">Name</th>
+        <th>English Name</th>
+        <th>Japanese Name</th>
+        <th class="d-none d-sm-table-cell">Series</th>
+        <th>Season</th>
+        <th class="d-none d-md-table-cell">Streaming</th>
+        <th class="d-none d-md-table-cell">Episode</th>
+        <th colspan=2 class="d-md-none">Episode</th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +23,31 @@
         >
           <td>
             {{ anime.node.title }}
+          </td>
+          <td>
+            {{ anime.node.alternative_titles?.en || anime.node.title }}
+          </td>
+          <td>
+            {{ anime.node.alternative_titles?.ja }}
+          </td>
+          <td class="d-none d-sm-table-cell">
+            {{ anime.my_extension?.series || anime.node.title }}
+            <span
+              class="text-muted"
+              *ngIf="anime.my_extension?.seasonNumber && anime.my_extension?.seasonNumber != 1"
+              >S{{ anime.my_extension?.seasonNumber }}</span
+            >
+          </td>
+          <td style="white-space: nowrap">
+            {{ anime.node.start_season?.year }}
+            <app-icon class="d-sm-none" name="{{ anime.node.start_season?.season | mal:'seasonicon'}}"></app-icon>
+            <span class="d-none d-sm-inline">{{ anime.node.start_season?.season | titlecase }}</span>
+          </td>
+          <td>
+            <app-streaming
+              [provider]="anime.my_extension?.externalStreaming"
+              [country]="anime.my_extension?.simulCountry"
+            ></app-streaming>
           </td>
           <td style="white-space: nowrap">
             <circle-progress

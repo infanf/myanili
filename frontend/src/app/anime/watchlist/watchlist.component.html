@@ -4,8 +4,9 @@
       <tr>
         <th>Name</th>
         <th colspan="2">Episode</th>
-        <th colspan="2">
-          <span class="d-none d-md-inline">Streaming</span>
+        <th colspan="2">Stream<span class="d-none d-md-inline">ing</span></th>
+        <th>
+          <app-icon name="eye" class="mx-2" size="20"></app-icon>
         </th>
       </tr>
     </thead>
@@ -19,6 +20,16 @@
           <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
             {{ anime.node.title }}
           </td>
+          <td>
+            <circle-progress
+              *ngIf="anime.list_status.status === 'watching'"
+              [percent]="
+                anime.node.num_episodes
+                  ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
+                  : 0
+              "
+            ></circle-progress>
+          </td>
           <td style="white-space: nowrap">
             {{
               anime.my_extension?.seasonNumber === 0
@@ -31,35 +42,17 @@
             }}
           </td>
           <td>
-            <circle-progress
-              *ngIf="anime.list_status.status === 'watching'"
-              [percent]="
-                anime.node.num_episodes
-                  ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
-                  : 0
-              "
-            ></circle-progress>
+            
+            <app-streaming
+              [provider]="anime.my_extension?.externalStreaming"
+              [country]="anime.my_extension?.simulCountry"
+            ></app-streaming>
           </td>
           <td>
-            <span
-              class="d-inline-block"
-              style="position: relative"
-              *ngIf="anime.my_extension?.externalStreaming"
-            >
-              <img
-                class="d-md-inline d-none"
-                style="width: 5rem; height: 1rem; vertical-align: text-bottom"
-                alt="{{ anime.my_extension?.externalStreaming }}"
-                src="/assets/stream/{{ anime.my_extension?.externalStreaming || 'plex' }}.svg"
-              />
-              <img
-                class="d-md-none"
-                style="width: 1rem; height: 1rem; vertical-align: text-bottom"
-                alt="{{ anime.my_extension?.externalStreaming }}"
-                src="/assets/stream/icon-{{ anime.my_extension?.externalStreaming || 'plex' }}.svg"
-              />
-              <span class="flag">{{ anime.my_extension?.simulCountry | flag: true }}</span>
-            </span>
+            {{
+              (anime.my_extension?.simulTime ? anime.my_extension!.simulTime!.substr(0, 5) : '')
+                | time
+            }}
           </td>
           <td>
             <app-icon

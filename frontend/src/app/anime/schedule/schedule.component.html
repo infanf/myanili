@@ -1,0 +1,20 @@
+<div class="container-fluid mb-3">
+  <div *ngFor="let day of [0, 1, 2, 3, 4, 5, 6]" class="card mt-3">
+    <div class="card-header">
+      {{ getDay(day) }}
+    </div>
+
+    <div class="card-body" *ngIf="getAnimes((day + today) % 7).length">
+      <div *ngFor="let anime of getAnimes((day + today) % 7)" class="entry">
+        <span class="me-3">{{ anime.my_extension!.simulTime?.substr(0, 5) | time }}</span>
+        <app-streaming
+          [provider]="anime.my_extension?.externalStreaming"
+          [country]="anime.my_extension?.simulCountry"
+        ></app-streaming>
+        <span [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer">
+          {{ anime.title }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

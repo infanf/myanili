@@ -9,8 +9,10 @@ import { environment } from 'src/environments/environment';
 
 import { DetailsComponent } from './anime/details/details.component';
 import { ListComponent } from './anime/list/list.component';
+import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
+import { StreamingComponent } from './anime/widget/streaming/streaming.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FlagPipe } from './flag.pipe';
@@ -18,7 +20,6 @@ import { IconStatusComponent } from './icon-status/icon-status.component';
 import { IconComponent } from './icon/icon.component';
 import { MalPipe } from './mal.pipe';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ScheduleComponent } from './schedule/schedule.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 import { StreamPipe } from './stream.pipe';
@@ -41,6 +42,7 @@ import { TimePipe } from './time.pipe';
     SettingsComponent,
     IconStatusComponent,
     WidgetSeasonComponent,
+    StreamingComponent,
   ],
   imports: [
     BrowserModule,

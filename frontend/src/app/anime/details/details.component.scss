@@ -1,5 +1,9 @@
 .bg-gradient {
-  background: linear-gradient(90deg, rgba(32, 74, 130, 1) 70%, rgba(32, 74, 130, 0) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(32, 74, 130, 1) 70%,
+    rgba(32, 74, 130, 0) 100%
+  ) !important;
 }
 
 .progress-personal {
@@ -8,4 +12,9 @@
   top: 0;
   left: 0;
   border-right-width: 2px;
+}
+
+header {
+  top: 58px;
+  z-index: 900;
 }

@@ -1,5 +1,5 @@
-<div class="container pt-2 mt-sm-3 border-sm-x border-sm-y rounded">
-  <div class="d-flex">
+<div class="container mt-sm-3 border-sm-x border-sm-y rounded">
+  <header class="d-flex pt-2 mb-3 border-bottom sticky-top bg-white">
     <h2>
       {{ anime?.title || 'Loading…' }}
       <a [href]="'https://myanimelist.net/anime/' + id" target="_blank">
@@ -40,52 +40,54 @@
         ></app-icon>
       </ng-template>
     </div>
-  </div>
-  <hr class="mt-0" />
+  </header>
+  <!-- <hr class="mt-0" /> -->
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
-      <picture>
-        <source
-          *ngIf="anime && anime.main_picture"
-          srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
-        />
-        <source srcset="/assets/blank-poster.svg" />
-        <img
-          src="/assets/blank-poster.svg"
-          alt="poster"
-          width="100%"
-          style="border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem"
-        />
-      </picture>
-      <div
-        class="progress"
-        style="border-top-left-radius: 0; border-top-right-radius: 0; position: relative"
-      >
+      <ng-container *ngIf="!edit">
+        <picture>
+          <source
+            *ngIf="anime && anime.main_picture"
+            srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
+          />
+          <source srcset="/assets/blank-poster.svg" />
+          <img
+            src="/assets/blank-poster.svg"
+            alt="poster"
+            width="100%"
+            style="border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem"
+          />
+        </picture>
         <div
-          *ngIf="anime?.mean"
-          class="progress-bar"
-          role="progressbar"
-          [ngClass]="{
-            'bg-success': anime!.mean >= 8,
-            'bg-warning': anime!.mean < 7 && anime!.mean >= 5,
-            'bg-danger': anime!.mean < 5
-          }"
-          [ngStyle]="{ 'width.%': anime!.mean * 10 }"
-          aria-valuemin="0"
-          aria-valuemax="10"
+          class="progress"
+          style="border-top-left-radius: 0; border-top-right-radius: 0; position: relative"
         >
-          {{ anime!.mean }}
-          <ng-container *ngIf="anime && anime!.my_list_status && anime!.my_list_status!.score"
-            >({{ anime!.my_list_status!.score }})</ng-container
+          <div
+            *ngIf="anime?.mean"
+            class="progress-bar"
+            role="progressbar"
+            [ngClass]="{
+              'bg-success': anime!.mean >= 8,
+              'bg-warning': anime!.mean < 7 && anime!.mean >= 5,
+              'bg-danger': anime!.mean < 5
+            }"
+            [ngStyle]="{ 'width.%': anime!.mean * 10 }"
+            aria-valuemin="0"
+            aria-valuemax="10"
           >
+            {{ anime!.mean }}
+            <ng-container *ngIf="anime && anime!.my_list_status && anime!.my_list_status!.score"
+              >({{ anime!.my_list_status!.score }})</ng-container
+            >
+          </div>
+          <div
+            *ngIf="anime && anime!.my_list_status && anime!.my_list_status!.score"
+            class="progress-personal border-end"
+            [ngClass]="{ 'border-primary': anime!.my_list_status!.score > anime!.mean }"
+            [ngStyle]="{ 'width.%': anime!.my_list_status!.score * 10 }"
+          ></div>
         </div>
-        <div
-          *ngIf="anime && anime!.my_list_status && anime!.my_list_status!.score"
-          class="progress-personal border-end"
-          [ngClass]="{ 'border-primary': anime!.my_list_status!.score > anime!.mean }"
-          [ngStyle]="{ 'width.%': anime!.my_list_status!.score * 10 }"
-        ></div>
-      </div>
+      </ng-container>
       <div class="row mt-2" *ngIf="edit && editBackup">
         <div class="col-6 fw-bold">My&nbsp;Score</div>
         <div class="col-6">
@@ -108,6 +110,16 @@
       <div class="row" *ngIf="anime?.alternative_titles?.ja">
         <div class="col-3 fw-bold">Japanese</div>
         <div class="col-9">{{ anime?.alternative_titles?.ja }}</div>
+      </div>
+      <div class="row my-2" *ngIf="edit && editExtension">
+        <div class="col-3 fw-bold">Series</div>
+        <div class="col-9">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.series"
+            [disabled]="busy"
+          />
+        </div>
       </div>
       <div class="row" *ngIf="anime?.studios && anime!.studios.length">
         <div class="col-3 fw-bold">Studio</div>
@@ -329,53 +341,55 @@
     </div>
   </div>
 
-  <div class="mb-3" *ngIf="anime">
-    <span *ngFor="let genre of anime!.genres" class="badge bg-primary me-1">
-      {{ genre.name }}
-    </span>
-  </div>
+  <section *ngIf="!edit">
+    <div class="mb-3" *ngIf="anime">
+      <span *ngFor="let genre of anime!.genres" class="badge bg-primary me-1">
+        {{ genre.name }}
+      </span>
+    </div>
 
-  <div class="mb-3" *ngIf="anime?.synopsis" (click)="shortsyn = !shortsyn">
-    {{
-      shortsyn && anime!.synopsis!.length > 150
-        ? anime!.synopsis!.substr(0, 150) + '…'
-        : anime!.synopsis
-    }}
-  </div>
+    <div class="mb-3" *ngIf="anime?.synopsis" (click)="shortsyn = !shortsyn">
+      {{
+        shortsyn && anime!.synopsis!.length > 150
+          ? anime!.synopsis!.substr(0, 150) + '…'
+          : anime!.synopsis
+      }}
+    </div>
 
-  <div class="row" *ngIf="anime?.opening_themes || anime?.ending_themes">
-    <div class="col-sm-6 mb-3" *ngIf="anime!.opening_themes?.length">
-      <strong class="text-dark">Opening{{ anime!.opening_themes.length > 1 ? 's' : '' }}</strong>
-      <div *ngFor="let song of anime!.opening_themes" class="mt-2">
-        {{ song.text }}
+    <div class="row" *ngIf="anime?.opening_themes || anime?.ending_themes">
+      <div class="col-sm-6 mb-3" *ngIf="anime!.opening_themes?.length">
+        <strong class="text-dark">Opening{{ anime!.opening_themes.length > 1 ? 's' : '' }}</strong>
+        <div *ngFor="let song of anime!.opening_themes" class="mt-2">
+          {{ song.text }}
+        </div>
+      </div>
+      <div class="col-sm-6 mb-3" *ngIf="anime!.ending_themes?.length">
+        <strong class="text-dark">Ending{{ anime!.ending_themes.length > 1 ? 's' : '' }}</strong>
+        <div *ngFor="let song of anime!.ending_themes" class="mt-2">
+          {{ song.text }}
+        </div>
       </div>
     </div>
-    <div class="col-sm-6 mb-3" *ngIf="anime!.ending_themes?.length">
-      <strong class="text-dark">Ending{{ anime!.ending_themes.length > 1 ? 's' : '' }}</strong>
-      <div *ngFor="let song of anime!.ending_themes" class="mt-2">
-        {{ song.text }}
-      </div>
-    </div>
-  </div>
 
-  <ng-container *ngIf="anime?.related_anime">
-    <div *ngFor="let type of getRelatedAnimes()" class="mb-3">
-      <strong class="text-dark">{{ type.name }}</strong>
-      <div *ngFor="let related of type.entries" class="mt-2">
-        <a routerLink="/anime/details/{{ related.id }}">
-          {{ related.title }}
-        </a>
+    <ng-container *ngIf="anime?.related_anime">
+      <div *ngFor="let type of getRelatedAnimes()" class="mb-3">
+        <strong class="text-dark">{{ type.name }}</strong>
+        <div *ngFor="let related of type.entries" class="mt-2">
+          <a routerLink="/anime/details/{{ related.id }}">
+            {{ related.title }}
+          </a>
+        </div>
       </div>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="anime?.related_manga">
-    <div *ngFor="let type of getRelatedMangas()" class="mb-3">
-      <strong class="text-dark">{{ type.name }}</strong>
-      <div *ngFor="let related of type.entries" class="mt-2">
-        <a routerLink="/manga/details/{{ related.id }}">
-          {{ related.title }}
-        </a>
+    </ng-container>
+    <ng-container *ngIf="anime?.related_manga">
+      <div *ngFor="let type of getRelatedMangas()" class="mb-3">
+        <strong class="text-dark">{{ type.name }}</strong>
+        <div *ngFor="let related of type.entries" class="mt-2">
+          <a routerLink="/manga/details/{{ related.id }}">
+            {{ related.title }}
+          </a>
+        </div>
       </div>
-    </div>
-  </ng-container>
+    </ng-container>
+  </section>
 </div>
