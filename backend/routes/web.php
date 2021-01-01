@@ -17,10 +17,10 @@ use Illuminate\Http\Request;
  */
 
 $router->get('/auth', function () {
-    $code_verifier = isset($_SESSION['verifier']) ? $_SESSION['verifier'] : rtrim(strtr(base64_encode(random_bytes(64)), "+/", "-_"), "=");
-    $_SESSION['verifier'] = $code_verifier;
     $provider = AppServiceProvider::getOauthProvider();
     if (!isset($_GET['code'])) {
+        $code_verifier = isset($_SESSION['verifier']) ? $_SESSION['verifier'] : rtrim(strtr(base64_encode(random_bytes(64)), "+/", "-_"), "=");
+        $_SESSION['verifier'] = $code_verifier;
         $authorizationUrl = $provider->getAuthorizationUrl([
             "code_challenge" => $code_verifier,
             'grant_type' => 'authorization_code',
@@ -47,11 +47,7 @@ $router->get('/auth', function () {
             ]);
 
             setcookie('MAL_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
-            setcookie('REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires());
-            // $_SESSION['ACCESS_TOKEN'] = $accessToken->getToken();
-            // $_SESSION['REFRESH_TOKEN'] = $accessToken->getRefreshToken();
-            // $_SESSION['EXPIRES_IN'] = $accessToken->getExpires();
-            // $_SESSION['EXPIRED'] = $accessToken->hasExpired();
+            setcookie('MAL_REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires() + (30 * 24 * 60 * 60));
             $opener = env('APP_CLIENT');
             $javascript = <<<JAVASCRIPT
             window.opener.postMessage(true, "$opener");
@@ -86,6 +82,23 @@ $router->get('/animes/season/{year}/{season}', function (int $year, int $season)
 });
 
 $router->get('/me', function () {
+    $provider = AppServiceProvider::getOauthProvider();
+    if (!isset($_COOKIE['MAL_ACCESS_TOKEN']) && isset($_COOKIE['MAL_REFRESH_TOKEN'])) {
+        try {
+            $accessToken = $provider->getAccessToken('refresh_token', [
+                'refresh_token' => $_COOKIE['MAL_REFRESH_TOKEN'],
+            ]);
+
+            setcookie('MAL_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
+            $_COOKIE['MAL_ACCESS_TOKEN'] = $accessToken->getToken();
+            setcookie('MAL_REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires() + (30 * 24 * 60 * 60));
+        } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+
+            // Failed to get the access token or user details.
+            return ($e->getMessage());
+        }
+    }
+
     return AppServiceProvider::getMe();
 });
 

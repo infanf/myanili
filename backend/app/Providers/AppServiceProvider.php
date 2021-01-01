@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $config = [
             'clientId' => env('MAL_CLIENT_ID'),
             'clientSecret' => env('MAL_CLIENT_SECRET'),
-            'redirectUri' => http_protocol() . '://' . $_SERVER['HTTP_HOST'] . preg_replace('/[?#].+$/', '', $_SERVER['REQUEST_URI']),
+            'redirectUri' => http_protocol() . '://' . $_SERVER['HTTP_HOST'] . '/auth',
             'urlAuthorize' => 'https://myanimelist.net/v1/oauth2/authorize',
             'urlAccessToken' => 'https://myanimelist.net/v1/oauth2/token',
             'urlResourceOwnerDetails' => 'https://myanimelist.net/v1/oauth2/resource',
