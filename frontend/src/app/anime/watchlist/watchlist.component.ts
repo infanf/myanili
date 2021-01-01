@@ -52,14 +52,28 @@ export class WatchlistComponent implements OnInit {
 
   async markSeen(anime: ListAnime) {
     if (this.isSeen(anime)) return;
+    this.glob.busy();
     const currentEpisode = anime.list_status.num_episodes_watched;
     const data = {
       num_watched_episodes: currentEpisode + 1,
     } as Partial<MyAnimeUpdate>;
+    let completed = false;
     if (currentEpisode + 1 === anime.node.num_episodes) {
       data.status = 'completed';
+      completed = true;
     }
     await this.animeService.updateAnime(anime.node.id, data);
+    if (completed) {
+      const fullAnime = await this.animeService.getAnime(anime.node.id);
+      const sequels = fullAnime.related_anime.filter(related => related.relation_type === 'sequel');
+      if (sequels.length) {
+        const sequel = sequels[0];
+        const startSequel = confirm(`Start watching sequel "${sequel.node.title}"?`);
+        if (startSequel) {
+          await this.animeService.updateAnime(sequel.node.id, { status: 'watching' });
+        }
+      }
+    }
     this.ngOnInit();
   }
 

@@ -131,7 +131,7 @@
       </div>
       <div class="row" *ngIf="anime">
         <div class="col-3 fw-bold">Type</div>
-        <div class="col-9">{{ anime!.media_type.toUpperCase() }}</div>
+        <div class="col-9">{{ anime!.media_type | titlecase }}</div>
       </div>
       <div class="row" *ngIf="anime?.status == 'finished_airing'">
         <div class="col-3 fw-bold">Aired</div>
