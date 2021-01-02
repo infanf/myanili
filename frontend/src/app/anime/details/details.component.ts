@@ -6,6 +6,7 @@ import { GlobalService } from 'src/app/global.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
+import { TraktService } from '../trakt.service';
 
 @Component({
   selector: 'app-details',
@@ -20,12 +21,14 @@ export class DetailsComponent implements OnInit {
   busy = false;
   editBackup?: Partial<MyAnimeUpdate>;
   editExtension?: AnimeExtension;
+  traktUser?: string;
 
   constructor(
     private animeService: AnimeService,
     private route: ActivatedRoute,
     public streamPipe: StreamPipe,
     private glob: GlobalService,
+    private trakt: TraktService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -35,6 +38,9 @@ export class DetailsComponent implements OnInit {
         this.glob.busy();
         await this.ngOnInit();
       }
+    });
+    this.trakt.user.subscribe(user => {
+      this.traktUser = user;
     });
   }
 
@@ -170,6 +176,51 @@ export class DetailsComponent implements OnInit {
     await this.animeService.updateAnime(this.anime.id, { status: 'plan_to_watch' });
     await this.ngOnInit();
     this.busy = false;
+  }
+
+  async plusOne() {
+    if (!this.anime) return;
+    this.glob.busy();
+    const currentEpisode = this.anime.my_list_status?.num_episodes_watched || 0;
+    const data = {
+      num_watched_episodes: currentEpisode + 1,
+    } as Partial<MyAnimeUpdate>;
+    let completed = false;
+    if (currentEpisode + 1 === this.anime.num_episodes) {
+      data.status = 'completed';
+      completed = true;
+    }
+    await Promise.all([this.animeService.updateAnime(this.anime.id, data), this.scrobbleTrakt()]);
+    if (completed) {
+      const sequels = this.anime.related_anime.filter(
+        related => related.relation_type === 'sequel',
+      );
+      if (sequels.length) {
+        const sequel = sequels[0];
+        const startSequel = confirm(`Start watching sequel "${sequel.node.title}"?`);
+        if (startSequel) {
+          await this.animeService.updateAnime(sequel.node.id, { status: 'watching' });
+        }
+      }
+    }
+    this.ngOnInit();
+  }
+
+  async scrobbleTrakt(): Promise<boolean> {
+    if (!this.anime) return false;
+    return new Promise(async r => {
+      if (!this.anime) return r(false);
+      if (!this.traktUser || !this.anime.my_extension?.trakt) return r(false);
+      r(
+        await this.trakt.scrobble(
+          this.anime.my_extension.trakt,
+          this.anime.my_extension.seasonNumber,
+          (this.anime.my_list_status?.num_episodes_watched || 0) +
+            1 +
+            (this.anime.my_extension.episodeCorOffset || 0),
+        ),
+      );
+    });
   }
 
   getDay(day?: number): string {

@@ -3,7 +3,7 @@ import { Anime } from '@models/anime';
 import * as moment from 'moment';
 
 import { GlobalService } from '../../global.service';
-import { SettingsService } from '../../settings/settings.service';
+import { Language, SettingsService } from '../../settings/settings.service';
 import { AnimeService } from '../anime.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { AnimeService } from '../anime.service';
 export class ScheduleComponent {
   animes: Array<Partial<Anime>> = [];
   today = moment().day();
-  lang: 'jp' | 'en' = 'jp';
+  lang: Language = 'jp';
   year?: number;
   season?: number;
   constructor(
@@ -28,6 +28,9 @@ export class ScheduleComponent {
       this.glob.busy();
       await this.update();
       this.glob.notbusy();
+    });
+    this.settings.language.subscribe(lang => {
+      this.lang = lang;
     });
   }
 

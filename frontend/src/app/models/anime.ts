@@ -148,6 +148,7 @@ interface AnimeExtensionInterface {
   simulDay?: number;
   simulTime?: string;
   simulCountry?: string;
+  trakt?: string;
 }
 
 export type AnimeExtension = AnimeExtensionInterface;

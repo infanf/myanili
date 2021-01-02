@@ -18,3 +18,11 @@ header {
   top: 58px;
   z-index: 900;
 }
+
+a.link-red {
+  color: #ed1c24;
+
+  &:hover {
+    color: darken(#ed1c24, 10%);
+  }
+}

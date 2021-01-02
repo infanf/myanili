@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ListAnime, MyAnimeUpdate } from '@models/anime';
+import { Anime, ListAnime, MyAnimeUpdate } from '@models/anime';
 import * as moment from 'moment';
 import { GlobalService } from 'src/app/global.service';
+import { Language, SettingsService } from 'src/app/settings/settings.service';
 
 import { AnimeService } from '../anime.service';
+import { TraktService } from '../trakt.service';
 
 @Component({
   selector: 'app-watchlist',
@@ -12,8 +14,18 @@ import { AnimeService } from '../anime.service';
 })
 export class WatchlistComponent implements OnInit {
   animes: ListAnime[] = [];
-  constructor(private animeService: AnimeService, private glob: GlobalService) {
+  lang: Language = 'default';
+
+  constructor(
+    private animeService: AnimeService,
+    private settings: SettingsService,
+    private glob: GlobalService,
+    private trakt: TraktService,
+  ) {
     this.glob.busy();
+    this.settings.language.subscribe(lang => {
+      this.lang = lang;
+    });
   }
 
   async ngOnInit() {
@@ -62,9 +74,12 @@ export class WatchlistComponent implements OnInit {
       data.status = 'completed';
       completed = true;
     }
-    await this.animeService.updateAnime(anime.node.id, data);
+    const fullAnime = await this.animeService.getAnime(anime.node.id);
+    await Promise.all([
+      this.animeService.updateAnime(anime.node.id, data),
+      this.scrobbleTrakt(fullAnime, currentEpisode + 1),
+    ]);
     if (completed) {
-      const fullAnime = await this.animeService.getAnime(anime.node.id);
       const sequels = fullAnime.related_anime.filter(related => related.relation_type === 'sequel');
       if (sequels.length) {
         const sequel = sequels[0];
@@ -75,6 +90,21 @@ export class WatchlistComponent implements OnInit {
       }
     }
     this.ngOnInit();
+  }
+
+  async scrobbleTrakt(anime: Anime, episode: number): Promise<boolean> {
+    return new Promise(r => {
+      this.trakt.user.subscribe(async traktUser => {
+        if (!traktUser || !anime.my_extension?.trakt) return r(false);
+        r(
+          await this.trakt.scrobble(
+            anime.my_extension.trakt,
+            anime.my_extension.seasonNumber,
+            episode + (anime.my_extension.episodeCorOffset || 0),
+          ),
+        );
+      });
+    });
   }
 
   isInSeason(anime: ListAnime): boolean {

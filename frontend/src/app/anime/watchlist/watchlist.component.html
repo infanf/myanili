@@ -18,7 +18,13 @@
           }"
         >
           <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
-            {{ anime.node.title }}
+            {{
+              (lang === 'en'
+                ? anime.node.alternative_titles?.en
+                : lang === 'jp'
+                ? anime.node.alternative_titles?.ja
+                : anime.node.title )|| anime.node.title
+            }}
           </td>
           <td>
             <circle-progress
@@ -42,7 +48,6 @@
             }}
           </td>
           <td>
-            
             <app-streaming
               [provider]="anime.my_extension?.externalStreaming"
               [country]="anime.my_extension?.simulCountry"

@@ -68,6 +68,46 @@ export class TraktService {
     });
   }
 
+  async scrobble(show: string, season: number, episodeno: number): Promise<boolean> {
+    return new Promise((r, rj) => {
+      const headers = {
+        Authorization: `Bearer ${this.accessToken}`,
+        'trakt-api-version': '2',
+        'trakt-api-key': this.clientId,
+      };
+
+      try {
+        const episodeUrl = `${this.baseUrl}/shows/${show}/seasons/${season}/episodes/${episodeno}`;
+        this.http
+          .get<Episode>(episodeUrl, { headers })
+          .subscribe(result => {
+            if (result.ids.trakt) {
+              const episode = result;
+              this.http
+                .post<{ id: number; action: 'scrobble' }>(
+                  `${this.baseUrl}/scrobble/stop`,
+                  {
+                    episode,
+                    progress: 100,
+                  },
+                  { headers },
+                )
+                .subscribe(scrobbleResult => {
+                  if (scrobbleResult.id && scrobbleResult.action) {
+                    r(true);
+                  }
+                  r(false);
+                });
+            } else {
+              r(false);
+            }
+          });
+      } catch (e) {
+        rj(e.message);
+      }
+    });
+  }
+
   logoff() {
     this.clientId = '';
     this.accessToken = '';
@@ -77,4 +117,16 @@ export class TraktService {
     localStorage.removeItem('traktRefreshToken');
     localStorage.removeItem('traktClientId');
   }
+}
+
+interface Episode {
+  season: number;
+  number: number;
+  title: string;
+  ids: {
+    trakt: number;
+    tvdb: number;
+    imdb: string;
+    tmdb: number;
+  };
 }

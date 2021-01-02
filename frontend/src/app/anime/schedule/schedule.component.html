@@ -12,7 +12,13 @@
           [country]="anime.my_extension?.simulCountry"
         ></app-streaming>
         <span [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer">
-          {{ anime.title }}
+          {{
+            (lang === 'en'
+              ? anime.alternative_titles?.en
+              : lang === 'jp'
+              ? anime.alternative_titles?.ja
+              : anime.title )|| anime.title
+          }}
         </span>
       </div>
     </div>
