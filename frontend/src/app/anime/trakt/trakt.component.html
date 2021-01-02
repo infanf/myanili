@@ -1,5 +1,10 @@
 <div class="modal-header">
-  <h5 class="modal-title" id="modal-title">Find on Trakt: "{{ title }}"</h5>
+  <div class="input-group">
+    <input class="form-control" [(ngModel)]="title" />
+    <button class="btn btn-primary" (click)="ngOnInit()">
+      <app-icon name="search"></app-icon>
+    </button>
+  </div>
   <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss()">
     <span aria-hidden="true"></span>
   </button>

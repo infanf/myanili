@@ -155,7 +155,7 @@
           </ul>
           <app-widget-season class="me-3 text-white"></app-widget-season>
           <div class="d-flex cursor-pointer" *ngIf="user" routerLink="/settings">
-            <span class="my-auto me-3 text-white">{{ user!.name }}</span>
+            <span class="d-none d-sm-inline my-auto me-3 text-white">{{ user!.name }}</span>
             <img [src]="user!.picture" style="height: 32px; border-radius: 50%" />
           </div>
         </ng-container>

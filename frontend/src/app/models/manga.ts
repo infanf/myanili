@@ -43,7 +43,7 @@ interface MangaInterface {
   related_anime: RelatedAnime[];
   recommendations: RelatedManga[];
   authors?: Array<{ role: string; node: Person }>;
-  serialization: Studio[];
+  serialization: Array<{ node: Studio }>;
   statistics?: {
     status: {
       watching: number;

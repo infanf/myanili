@@ -112,7 +112,7 @@
         <div class="col-9">{{ manga?.alternative_titles?.ja }}</div>
       </div>
       <div class="row" *ngIf="manga?.authors && manga?.authors?.length">
-        <div class="col-3 fw-bold">Studio</div>
+        <div class="col-3 fw-bold">Author</div>
         <div class="col-9">
           <div *ngFor="let author of manga!.authors" class="d-inline-block me-1">
             {{ author.node.last_name }} {{ author.node.first_name }} ({{ author.role }})
@@ -122,6 +122,12 @@
       <div class="row" *ngIf="manga">
         <div class="col-3 fw-bold">Type</div>
         <div class="col-9">{{ manga!.media_type | titlecase }}</div>
+      </div>
+      <div class="row" *ngIf="manga?.serialization?.length">
+        <div class="col-3 fw-bold">Puplisher</div>
+        <div class="col-9">
+          <div *ngFor="let magazine of manga!.serialization!">{{ magazine.node.name }}</div>
+        </div>
       </div>
       <div class="row" *ngIf="manga?.status == 'finished'">
         <div class="col-3 fw-bold">Puplished</div>

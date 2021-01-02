@@ -140,6 +140,10 @@ export class MangaDetailsComponent implements OnInit {
       data.status = 'completed';
       if (this.manga.num_chapters) data.num_chapters_read = this.manga.num_chapters;
       completed = true;
+      if (!this.manga.my_list_status?.score) {
+        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
+        if (myScore > 0 && myScore <= 10) data.score = myScore;
+      }
     }
     await this.mangaService.updateManga(this.manga.id, data);
     this.ngOnInit();
@@ -157,6 +161,10 @@ export class MangaDetailsComponent implements OnInit {
       data.status = 'completed';
       if (this.manga.num_volumes) data.num_volumes_read = this.manga.num_volumes;
       completed = true;
+      if (!this.manga.my_list_status?.score) {
+        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
+        if (myScore > 0 && myScore <= 10) data.score = myScore;
+      }
     }
     await this.mangaService.updateManga(this.manga.id, data);
     this.ngOnInit();

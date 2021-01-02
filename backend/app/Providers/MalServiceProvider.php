@@ -169,7 +169,7 @@ class MalServiceProvider extends ServiceProvider
 
     public static function getMangaDetails(int $id)
     {
-        $params = ['fields' => 'id,title,main_picture,alternative_titles,start_date,end_date,synopsis,mean,rank,popularity,num_list_users,num_scoring_users,nsfw,created_at,updated_at,media_type,status,genres,my_list_status{comments},num_chapters,num_volumes,pictures,background,related_anime,related_manga,recommendations,authors{first_name,last_name},statistics'];
+        $params = ['fields' => 'id,title,main_picture,alternative_titles,start_date,end_date,synopsis,mean,rank,popularity,num_list_users,num_scoring_users,nsfw,created_at,updated_at,media_type,status,genres,my_list_status{comments},serialization,num_chapters,num_volumes,pictures,background,related_anime,related_manga,recommendations,authors{first_name,last_name},statistics'];
         $response = json_decode(
             self::get(
                 self::baseUrl . '/manga/' . $id,

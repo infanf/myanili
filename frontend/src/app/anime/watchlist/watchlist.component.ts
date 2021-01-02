@@ -73,6 +73,10 @@ export class WatchlistComponent implements OnInit {
     if (currentEpisode + 1 === anime.node.num_episodes) {
       data.status = 'completed';
       completed = true;
+      if (!anime.list_status?.score) {
+        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
+        if (myScore > 0 && myScore <= 10) data.score = myScore;
+      }
     }
     const fullAnime = await this.animeService.getAnime(anime.node.id);
     await Promise.all([

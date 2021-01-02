@@ -192,6 +192,10 @@ export class AnimeDetailsComponent implements OnInit {
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
       completed = true;
+      if (!this.anime.my_list_status?.score) {
+        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
+        if (myScore > 0 && myScore <= 10) data.score = myScore;
+      }
     }
     await Promise.all([this.animeService.updateAnime(this.anime.id, data), this.scrobbleTrakt()]);
     if (completed) {
