@@ -6,6 +6,7 @@ import { ListComponent } from './anime/list/list.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   { path: 'anime/list', component: ListComponent, data: { type: 'anime' } },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'anime/schedule', component: ScheduleComponent },
   { path: 'anime/season', component: SeasonComponent },
   { path: 'anime/details/:id', component: DetailsComponent },
+  { path: 'settings', component: SettingsComponent },
   { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
   { path: 'anime', redirectTo: '/anime/watchlist', pathMatch: 'full' },
 ];
