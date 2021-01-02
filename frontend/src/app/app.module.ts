@@ -11,6 +11,7 @@ import { DetailsComponent } from './anime/details/details.component';
 import { ListComponent } from './anime/list/list.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
+import { TraktComponent } from './anime/trakt/trakt.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { StreamingComponent } from './anime/widget/streaming/streaming.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -43,6 +44,7 @@ import { TimePipe } from './time.pipe';
     IconStatusComponent,
     WidgetSeasonComponent,
     StreamingComponent,
+    TraktComponent,
   ],
   imports: [
     BrowserModule,

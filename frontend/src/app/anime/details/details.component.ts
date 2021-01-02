@@ -1,12 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { GlobalService } from 'src/app/global.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
 import { TraktService } from '../trakt.service';
+import { TraktComponent } from '../trakt/trakt.component';
 
 @Component({
   selector: 'app-details',
@@ -29,6 +31,7 @@ export class DetailsComponent implements OnInit {
     public streamPipe: StreamPipe,
     private glob: GlobalService,
     private trakt: TraktService,
+    private modalService: NgbModal,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -220,6 +223,15 @@ export class DetailsComponent implements OnInit {
             (this.anime.my_extension.episodeCorOffset || 0),
         ),
       );
+    });
+  }
+
+  async findTrakt() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(TraktComponent);
+    modal.componentInstance.title = this.anime.my_extension?.series || this.anime.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.trakt = String(value);
     });
   }
 

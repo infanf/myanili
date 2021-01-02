@@ -68,6 +68,22 @@ export class TraktService {
     });
   }
 
+  async search(q: string): Promise<Show[]> {
+    return new Promise((r, rj) => {
+      const headers = {
+        'trakt-api-version': '2',
+        'trakt-api-key': this.clientId,
+      };
+      try {
+        this.http
+          .get<Show[]>(this.baseUrl + 'search/show?query=' + q, { headers })
+          .subscribe(r);
+      } catch (e) {
+        rj(e.message);
+      }
+    });
+  }
+
   async scrobble(show: string, season: number, episodeno: number): Promise<boolean> {
     return new Promise((r, rj) => {
       const headers = {
@@ -128,5 +144,21 @@ interface Episode {
     tvdb: number;
     imdb: string;
     tmdb: number;
+  };
+}
+
+export interface Show {
+  type: 'show';
+  score: number;
+  show: {
+    title: string;
+    year: number;
+    ids: {
+      trakt: number;
+      slug: string;
+      tvdb: number;
+      imdb: string;
+      tmdb: number;
+    };
   };
 }

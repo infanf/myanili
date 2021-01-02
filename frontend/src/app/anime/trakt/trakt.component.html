@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="modal-title">Find on Trakt: "{{ title }}"</h5>
+  <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss()">
+    <span aria-hidden="true"></span>
+  </button>
+</div>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Year</th>
+      <th>
+        <app-icon name="link" size=20></app-icon>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let show of shows">
+      <td>{{ show.show.title }}</td>
+      <td>{{ show.show.year }}</td>
+      <td>
+        <app-icon
+        class="cursor-pointer"
+        size=20
+          name="link"
+          (click)="modal.close(show.show.ids.slug || show.show.ids.trakt)"
+        ></app-icon>
+      </td>
+    </tr>
+  </tbody>
+</table>
