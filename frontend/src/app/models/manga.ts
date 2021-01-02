@@ -105,7 +105,7 @@ export interface MangaNode {
 
 interface MyStatus {
   status?: ReadStatus;
-  is_rewatching: boolean;
+  is_rereading: boolean;
   score: number;
   num_volumes_read: number;
   num_chapters_read: number;
