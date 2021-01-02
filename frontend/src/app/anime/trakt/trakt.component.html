@@ -10,7 +10,7 @@
       <th>Title</th>
       <th>Year</th>
       <th>
-        <app-icon name="link" size=20></app-icon>
+        <app-icon name="link" size="20"></app-icon>
       </th>
     </tr>
   </thead>
@@ -20,8 +20,8 @@
       <td>{{ show.show.year }}</td>
       <td>
         <app-icon
-        class="cursor-pointer"
-        size=20
+          class="cursor-pointer"
+          size="20"
           name="link"
           (click)="modal.close(show.show.ids.slug || show.show.ids.trakt)"
         ></app-icon>
