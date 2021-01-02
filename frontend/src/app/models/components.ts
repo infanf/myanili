@@ -8,10 +8,17 @@ interface Generic {
   name: string;
 }
 
+interface PersonInterface {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
+
 export type Picture = PictureInterface;
 export type Nsfw = 'white' | 'gray' | 'black';
 export type Genre = Generic;
 export type Studio = Generic;
+export type Person = PersonInterface;
 
 interface SeasonInterface {
   year: number;

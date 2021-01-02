@@ -1,7 +1,5 @@
 import { Genre, Nsfw, Picture, Studio } from './components';
 
-export type ListStatus = 'watching' | 'completed' | 'on_hold' | 'droppped' | 'plan_to_watch';
-
 interface ListAnimeInterface {
   node: AnimeNode;
   list_status: MyAnimeStatus;

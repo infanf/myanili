@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ListAnime, WatchStatus } from '@models/anime';
+import { ListManga, ReadStatus } from '@models/manga';
 import { MalUser, UserResponse } from '@models/user';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -10,6 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class MalService {
   private backendUrl = environment.backend;
+  private jikanUrl = 'https://api.jikan.moe/v3';
   private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 
@@ -38,6 +40,12 @@ export class MalService {
     });
   }
 
+  async getJikan(type: 'anime' | 'manga', id: number): Promise<JikanInstance> {
+    return new Promise((r, rj) => {
+      this.httpClient.get<JikanInstance>(`${this.jikanUrl}/${type}/${id}`).subscribe(r);
+    });
+  }
+
   async checkLogin() {
     const response = await this.get<UserResponse>('me');
     if ('name' in response) {
@@ -52,6 +60,11 @@ export class MalService {
   async myList(status?: WatchStatus) {
     if (status) return this.get<ListAnime[]>(`list/${status}`);
     return this.get<ListAnime[]>('list');
+  }
+
+  async myMangaList(status?: ReadStatus) {
+    if (status) return this.get<ListManga[]>(`mangalist/${status}`);
+    return this.get<ListManga[]>('mangalist');
   }
 
   async refreshTokens() {}
@@ -75,4 +88,15 @@ export class MalService {
   get user() {
     return this.malUser.asObservable();
   }
+}
+
+interface JikanInstance {
+  related: {
+    [key: string]: Array<{
+      mal_id: number;
+      type: 'manga' | 'anime';
+      name: string;
+      url: string;
+    }>;
+  };
 }

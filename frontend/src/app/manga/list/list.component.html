@@ -1,0 +1,58 @@
+<section>
+  <table class="table table-sm table-hover table-striped table-responsive-md">
+    <thead>
+      <tr>
+        <th
+          class="d-lg-table-cell"
+          [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
+        >
+          Name
+        </th>
+        <th class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">English Name</th>
+        <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Japanese Name</th>
+        <th class="d-none d-sm-table-cell">Author</th>
+        <th>Chapter</th>
+        <th>Volume</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let manga of mangas">
+        <tr
+          class="cursor-pointer"
+          [class]="{
+            'fw-bold': manga.list_status.status === 'reading'
+          }"
+          routerLink="/manga/details/{{ manga.node.id }}"
+        >
+          <td
+            class="d-lg-table-cell"
+            [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
+          >
+            {{ manga.node.title }}
+          </td>
+          <td class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">
+            {{ manga.node.alternative_titles?.en || manga.node.title }}
+          </td>
+          <td class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">
+            {{ manga.node.alternative_titles?.ja }}
+          </td>
+          <td class="d-none d-sm-table-cell">
+            <div *ngFor="let author of getAuthor(manga.node)">{{ author }}</div>
+          </td>
+          <td style="white-space: nowrap">
+            <circle-progress
+              *ngIf="manga.list_status.status === 'reading'"
+              [percent]="
+                manga.node.num_chapters
+                  ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
+                  : 0
+              "
+            ></circle-progress>
+            {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
+          </td>
+          <td>{{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</section>

@@ -7,8 +7,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
-import { DetailsComponent } from './anime/details/details.component';
-import { ListComponent } from './anime/list/list.component';
+import { AnimeDetailsComponent } from './anime/details/details.component';
+import { AnimeListComponent } from './anime/list/list.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { TraktComponent } from './anime/trakt/trakt.component';
@@ -20,6 +20,8 @@ import { FlagPipe } from './flag.pipe';
 import { IconStatusComponent } from './icon-status/icon-status.component';
 import { IconComponent } from './icon/icon.component';
 import { MalPipe } from './mal.pipe';
+import { MangaDetailsComponent } from './manga/details/details.component';
+import { MangaListComponent } from './manga/list/list.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
@@ -30,8 +32,8 @@ import { TimePipe } from './time.pipe';
   declarations: [
     AppComponent,
     NavbarComponent,
-    ListComponent,
-    DetailsComponent,
+    AnimeListComponent,
+    AnimeDetailsComponent,
     IconComponent,
     WatchlistComponent,
     FlagPipe,
@@ -45,6 +47,8 @@ import { TimePipe } from './time.pipe';
     WidgetSeasonComponent,
     StreamingComponent,
     TraktComponent,
+    MangaDetailsComponent,
+    MangaListComponent,
   ],
   imports: [
     BrowserModule,

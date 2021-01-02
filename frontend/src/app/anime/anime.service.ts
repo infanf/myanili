@@ -6,6 +6,7 @@ import {
   ListAnime,
   MyAnimeStatus,
   MyAnimeUpdate,
+  RelatedAnime,
   WatchStatus,
 } from '@models/anime';
 
@@ -49,6 +50,7 @@ export class AnimeService {
   async getAnime(id: number) {
     const anime = await this.malService.get<Anime>('anime/' + id);
     const comments = anime.my_list_status?.comments;
+    if (!anime.related_manga.length) anime.related_manga = await this.getManga(id);
     if (!comments) return anime;
     try {
       const json = atob(comments);
@@ -60,5 +62,23 @@ export class AnimeService {
 
   async updateAnime(id: number, data: Partial<MyAnimeUpdate>): Promise<MyAnimeStatus> {
     return this.malService.put<MyAnimeStatus>('anime/' + id, data);
+  }
+
+  async getManga(id: number): Promise<RelatedAnime[]> {
+    const jikanime = await this.malService.getJikan('anime', id);
+    const mangas = [] as RelatedAnime[];
+    for (const key in jikanime.related) {
+      if (!jikanime.related[key]) continue;
+      for (const related of jikanime.related[key]) {
+        if (related.type === 'manga') {
+          mangas.push({
+            node: { id: related.mal_id, title: related.name },
+            relation_type: key.replace(' ', '_').toLowerCase(),
+            relation_type_formatted: key,
+          });
+        }
+      }
+    }
+    return mangas;
   }
 }

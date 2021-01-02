@@ -15,7 +15,7 @@ import { TraktComponent } from '../trakt/trakt.component';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
 })
-export class DetailsComponent implements OnInit {
+export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
   anime?: Anime;
   shortsyn = true;

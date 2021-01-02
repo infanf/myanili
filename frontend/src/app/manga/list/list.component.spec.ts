@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnimeListComponent } from './list.component';
+import { MangaListComponent } from './list.component';
 
-describe('AnimeListComponent', () => {
-  let component: AnimeListComponent;
-  let fixture: ComponentFixture<AnimeListComponent>;
+describe('MangaListComponent', () => {
+  let component: MangaListComponent;
+  let fixture: ComponentFixture<MangaListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AnimeListComponent],
+      declarations: [MangaListComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnimeListComponent);
+    fixture = TestBed.createComponent(MangaListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

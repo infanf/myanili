@@ -1,33 +1,33 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ListAnime, WatchStatus } from '@models/anime';
+import { ListManga, MangaNode, ReadStatus } from '@models/manga';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
 
-import { AnimeService } from '../anime.service';
+import { MangaService } from '../manga.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
-export class AnimeListComponent implements OnInit {
-  @Input() status?: WatchStatus;
-  animes: ListAnime[] = [];
+export class MangaListComponent implements OnInit {
+  @Input() status?: ReadStatus;
+  mangas: ListManga[] = [];
 
   lang = 'en';
 
   constructor(
-    private animeService: AnimeService,
+    private mangaService: MangaService,
     private route: ActivatedRoute,
     private settings: SettingsService,
     private glob: GlobalService,
   ) {
     this.route.paramMap.subscribe(params => {
-      const newStatus = params.get('status') as WatchStatus;
+      const newStatus = params.get('status') as ReadStatus;
       if (newStatus !== this.status) {
         this.status = newStatus;
-        this.animes = [];
+        this.mangas = [];
         this.glob.busy();
         this.ngOnInit();
       }
@@ -36,7 +36,15 @@ export class AnimeListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.animes = await this.animeService.list(this.status);
+    this.mangas = await this.mangaService.list(this.status);
     this.glob.notbusy();
+  }
+
+  getAuthor(manga: MangaNode): string[] {
+    return (
+      manga.authors?.map(
+        author => `${author.node.last_name} ${author.node.first_name} (${author.role})`,
+      ) || []
+    );
   }
 }

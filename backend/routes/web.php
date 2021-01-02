@@ -70,12 +70,28 @@ $router->get('/list/{status}', function ($status) {
     return MalServiceProvider::getMyList($status);
 });
 
+$router->get('/mangalist', function () {
+    return MalServiceProvider::getMyMangaList();
+});
+
+$router->get('/mangalist/{status}', function ($status) {
+    return MalServiceProvider::getMyMangaList($status);
+});
+
 $router->get('/anime/{id}', function ($id) {
     return MalServiceProvider::getAnimeDetails($id);
 });
 
 $router->put('/anime/{id}', function ($id, Request $request) {
     return MalServiceProvider::putAnimeDetails($id, $request);
+});
+
+$router->get('/manga/{id}', function ($id) {
+    return MalServiceProvider::getMangaDetails($id);
+});
+
+$router->put('/manga/{id}', function ($id, Request $request) {
+    return MalServiceProvider::putMangaDetails($id, $request);
 });
 
 $router->get('/animes/season/{year}/{season}', function (int $year, int $season) {
