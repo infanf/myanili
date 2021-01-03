@@ -271,7 +271,10 @@ export class AnimeDetailsComponent implements OnInit {
 
   async setSongUrl(song: AnimeTheme) {
     this.glob.busy();
-    const spotify = prompt('Spotify URI', song.spotify);
+    const spotify = prompt('Spotify URI', song.spotify)?.replace(
+      /https:\/\/open.spotify.com\/track\/(\w+)(\?.+)?/,
+      'spotify:track:$1',
+    );
     if (!spotify?.match(/^spotify:track:\w+$/) || song.spotify === spotify) {
       this.glob.notbusy();
       return;

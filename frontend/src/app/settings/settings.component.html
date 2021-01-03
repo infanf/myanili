@@ -1,18 +1,25 @@
-<div class="container">
-  <div class="card mt-3">
+<div class="modal-header">
+  <h5 class="modal-title">Settings</h5>
+  <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss()">
+  </button>
+</div>
+<div class="modal-body">
+  <div class="card">
     <div class="card-header">Anime/Manga</div>
     <div class="card-body">
       <div class="row">
         <div class="col-5">Language</div>
         <div class="col-7">
           <select class="form-control" (change)="changeLang()" [(ngModel)]="lang">
-            <option value="default">Default</option>
+            <option value="default">Rōmaji</option>
             <option value="en">English</option>
             <option value="jp">Japanese</option>
           </select>
         </div>
       </div>
     </div>
+    </div>
+    <div class="card mt-3">
     <div class="card-header">Account</div>
     <div class="card-body">
       <div class="row mb-3">

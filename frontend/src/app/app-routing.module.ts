@@ -8,7 +8,6 @@ import { SeasonComponent } from './anime/season/season.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaListComponent } from './manga/list/list.component';
-import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   { path: 'anime/list', component: AnimeListComponent },
@@ -20,7 +19,6 @@ const routes: Routes = [
   { path: 'manga/list', component: MangaListComponent },
   { path: 'manga/list/:status', component: MangaListComponent },
   { path: 'manga/details/:id', component: MangaDetailsComponent },
-  { path: 'settings', component: SettingsComponent },
   { path: 'anime', redirectTo: '/anime/watchlist', pathMatch: 'full' },
   { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
 ];

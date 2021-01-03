@@ -8,7 +8,12 @@
       <a
         class="link-trakt"
         *ngIf="anime && anime.my_extension && anime.my_extension.trakt"
-        [href]="'https://trakt.tv/shows/' + anime.my_extension.trakt"
+        [href]="
+          'https://trakt.tv/shows/' +
+          anime.my_extension.trakt +
+          '/seasons/' +
+          (anime.my_extension.seasonNumber || 1)
+        "
         target="_blank"
       >
         <app-icon-trakt style="vertical-align: bottom; line-height: 0.5"></app-icon-trakt>

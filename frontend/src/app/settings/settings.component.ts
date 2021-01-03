@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MalUser } from '@models/user';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { TraktService } from '../anime/trakt.service';
 import { GlobalService } from '../global.service';
@@ -21,6 +22,7 @@ export class SettingsComponent implements OnInit {
     private glob: GlobalService,
     private mal: MalService,
     private trakt: TraktService,
+    public modal: NgbActiveModal,
   ) {
     this.settings.language.subscribe(lang => {
       this.lang = lang;

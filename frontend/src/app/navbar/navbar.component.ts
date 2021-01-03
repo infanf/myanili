@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MalUser } from '@models/user';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MalService } from '../mal.service';
+import { SettingsComponent } from '../settings/settings.component';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +11,7 @@ import { MalService } from '../mal.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  constructor(public malService: MalService) {
+  constructor(public malService: MalService, private modal: NgbModal) {
     this.loggedIn = 'loading';
   }
   loggedIn: string | false = 'loading';
@@ -22,5 +24,9 @@ export class NavbarComponent implements OnInit {
     this.malService.user.subscribe(user => {
       this.user = user;
     });
+  }
+
+  showSettings() {
+    this.modal.open(SettingsComponent);
   }
 }
