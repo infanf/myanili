@@ -152,6 +152,23 @@ class MalServiceProvider extends ServiceProvider
                 $params
             ), true
         );
+        // \var_dump($response); die;
+        if (isset($response['opening_themes'])) {
+            foreach ($response['opening_themes'] as $key => $op) {
+                if ($song = self::getSong($op['id'])) {
+                    $response['opening_themes'][$key]['spotify'] = $song;
+                }
+            }
+        }
+
+        if (isset($response['ending_themes'])) {
+            foreach ($response['ending_themes'] as $key => $op) {
+                if ($song = self::getSong($op['id'])) {
+                    $response['ending_themes'][$key]['spotify'] = $song;
+                }
+            }
+        }
+
         return $response;
     }
 
@@ -199,5 +216,16 @@ class MalServiceProvider extends ServiceProvider
             ), true
         );
         return $response;
+    }
+
+    public static function getSong(int $id)
+    {
+        $songs = \file_get_contents(dirname(dirname(__DIR__)) . '/resources/songs.json');
+        try {
+            $songsArray = json_decode($songs, true);
+            return (isset($songsArray[intval($id)])) ? $songsArray[intval($id)] : false;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }

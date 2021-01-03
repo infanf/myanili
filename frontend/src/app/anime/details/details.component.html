@@ -167,11 +167,14 @@ l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
       </div>
       <div class="row" *ngIf="anime">
         <div class="col-3 fw-bold">Type</div>
-        <div class="col-9">{{ anime!.media_type | titlecase }}</div>
+        <div class="col-9">{{ anime!.media_type | mal: 'mediatype' }}</div>
       </div>
-      <div class="row" *ngIf="anime?.status == 'finished_airing'">
+      <div class="row" *ngIf="anime && anime.start_date">
         <div class="col-3 fw-bold">Aired</div>
-        <div class="col-9">{{ anime!.start_date | date }} &ndash; {{ anime!.end_date | date }}</div>
+        <div class="col-9">
+          {{ anime.start_date | date }} &ndash;
+          <ng-container *ngIf="anime.end_date">{{ anime!.end_date | date }}</ng-container>
+        </div>
       </div>
       <div class="row" *ngIf="anime">
         <div class="col-3 fw-bold">Source</div>
@@ -185,7 +188,18 @@ l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
         <div class="col-3 fw-bold">My&nbsp;List</div>
         <div class="col-9">
           <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
-          <ng-template #mylist>{{ anime!.my_list_status!.status | mal: 'mystatus' }}</ng-template>
+          <ng-template #mylist>
+            {{ anime!.my_list_status!.status | mal: 'mystatus' }}
+            <app-icon
+              *ngIf="
+                anime!.my_list_status?.status === 'plan_to_watch' ||
+                anime!.my_list_status?.status === 'on_hold'
+              "
+              name="play-circle"
+              class="cursor-pointer me-1"
+              (click)="setWatching()"
+            ></app-icon>
+          </ng-template>
           <ng-template #mylistedit>
             <select
               class="form-control form-control-sm"
@@ -310,7 +324,12 @@ l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
         <div class="col-3 fw-bold">Trakt&nbsp;ID</div>
         <div class="col-9">
           <div class="input-group input-group-sm">
-            <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" readonly />
+            <input
+              class="form-control"
+              [(ngModel)]="editExtension!.trakt"
+              [disabled]="busy"
+              readonly
+            />
             <button class="btn btn-primary" (click)="findTrakt()">
               <svg
                 style="height: 1rem"
@@ -447,6 +466,9 @@ l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
         <strong class="text-dark">Opening{{ anime!.opening_themes.length > 1 ? 's' : '' }}</strong>
         <div *ngFor="let song of anime!.opening_themes" class="mt-2">
           {{ song.text }}
+          <a *ngIf="getSongUrl(song.spotify)" [href]="getSongUrl(song.spotify)" target="_blank">
+            <app-icon-spotify></app-icon-spotify>
+          </a>
         </div>
       </div>
       <div class="col-sm-6 mb-3" *ngIf="anime!.ending_themes?.length">

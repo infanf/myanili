@@ -109,6 +109,7 @@ interface Theme {
   id: number;
   anime_id: number;
   text: string;
+  spotify?: string;
 }
 
 export type AnimeTheme = Theme;

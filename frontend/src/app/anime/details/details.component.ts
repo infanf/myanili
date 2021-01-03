@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/global.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
@@ -32,6 +34,8 @@ export class AnimeDetailsComponent implements OnInit {
     private glob: GlobalService,
     private trakt: TraktService,
     private modalService: NgbModal,
+    private deviceDetector: DeviceDetectorService,
+    private sanitizer: DomSanitizer,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -181,6 +185,14 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = false;
   }
 
+  async setWatching() {
+    if (!this.anime) return;
+    this.busy = true;
+    await this.animeService.updateAnime(this.anime.id, { status: 'watching' });
+    await this.ngOnInit();
+    this.busy = false;
+  }
+
   async plusOne() {
     if (!this.anime) return;
     this.glob.busy();
@@ -242,5 +254,15 @@ export class AnimeDetailsComponent implements OnInit {
   getDay(day?: number): string {
     if (!day) return '';
     return moment().day(day).format('dddd');
+  }
+
+  getSongUrl(spotifyUri?: string): string | SafeUrl {
+    if (!spotifyUri) return '';
+    if (this.deviceDetector.isMobile()) return this.sanitizer.bypassSecurityTrustUrl(spotifyUri);
+    const parts = spotifyUri.split(':');
+    if (parts[0] === 'spotify' && parts.length === 3) {
+      return `https://open.spotify.com/${parts[1]}/${parts[2]}`;
+    }
+    return '';
   }
 }

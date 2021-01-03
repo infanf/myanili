@@ -1,7 +1,7 @@
 {
-  "name": "myani.li",
-  "version": "0.0.1",
-  "description": "",
+  "name": "myanili",
+  "version": "1.0.0",
+  "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker-compose build && docker-compose up -d && docker exec -ti -w /frontend -u application myanili_app_1 bash && docker-compose down",

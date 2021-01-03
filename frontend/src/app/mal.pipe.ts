@@ -24,11 +24,17 @@ export class MalPipe implements PipeTransform {
   }
 
   mediaType(value = ''): string {
-    const status = value
-      .split('_')
-      .map(word => word[0].toUpperCase() + word.slice(1))
-      .join(' ');
-    return status;
+    switch (value) {
+      case 'ona':
+      case 'ova':
+      case 'tv':
+        return value.toUpperCase();
+      default:
+        return value
+          .split('_')
+          .map(word => word[0].toUpperCase() + word.slice(1))
+          .join(' ');
+    }
   }
 
   seasonIcon(value: number | string): string {

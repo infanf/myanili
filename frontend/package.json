@@ -1,6 +1,6 @@
 {
   "name": "myanili-frontend",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --host=0.0.0.0",
@@ -33,6 +33,7 @@
     "idb": "^5.0.8",
     "moment": "^2.29.1",
     "ng-circle-progress": "^1.6.0",
+    "ngx-device-detector": "^2.0.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

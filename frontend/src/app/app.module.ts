@@ -19,6 +19,9 @@ import { AppComponent } from './app.component';
 import { FlagPipe } from './flag.pipe';
 import { IconStatusComponent } from './icon-status/icon-status.component';
 import { IconComponent } from './icon/icon.component';
+import { MalIconComponent } from './icon/mal/mal.component';
+import { SpotifyIconComponent } from './icon/spotify/spotify.component';
+import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaListComponent } from './manga/list/list.component';
@@ -49,6 +52,9 @@ import { TimePipe } from './time.pipe';
     TraktComponent,
     MangaDetailsComponent,
     MangaListComponent,
+    SpotifyIconComponent,
+    MalIconComponent,
+    TraktIconComponent,
   ],
   imports: [
     BrowserModule,
