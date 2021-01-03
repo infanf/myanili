@@ -8,6 +8,7 @@ import {
   MyMangaUpdate,
   ReadStatus,
 } from '@models/manga';
+import { Base64 } from 'js-base64';
 
 import { MalService } from '../mal.service';
 
@@ -23,7 +24,7 @@ export class MangaService {
       const comments = manga.list_status.comments;
       if (!comments) return manga;
       try {
-        const json = atob(comments);
+        const json = Base64.decode(comments);
         const my_extension = JSON.parse(json) as MangaExtension;
         return { ...manga, my_extension } as ListManga;
       } catch (e) {}
@@ -37,7 +38,7 @@ export class MangaService {
     if (!manga.related_anime.length) manga.related_anime = await this.getAnimes(id);
     if (!comments) return manga;
     try {
-      const json = atob(comments);
+      const json = Base64.decode(comments);
       const my_extension = JSON.parse(json) as MangaExtension;
       return { ...manga, my_extension };
     } catch (e) {}

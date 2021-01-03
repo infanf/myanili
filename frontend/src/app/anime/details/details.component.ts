@@ -3,6 +3,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/global.service';
@@ -109,7 +110,7 @@ export class AnimeDetailsComponent implements OnInit {
     };
     try {
       const extension = (JSON.parse(
-        atob(this.anime.my_list_status.comments),
+        Base64.decode(this.anime.my_list_status.comments),
       ) as unknown) as Partial<AnimeExtension>;
       this.editExtension = {
         series: '',
@@ -142,7 +143,7 @@ export class AnimeDetailsComponent implements OnInit {
       this.editExtension.simulDay = Number(this.editExtension.simulDay);
     }
     const updateData = {
-      comments: btoa(JSON.stringify(this.editExtension)),
+      comments: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyAnimeUpdate>;
     if (this.editBackup.status !== this.anime.my_list_status.status) {
       updateData.status = this.editBackup?.status;

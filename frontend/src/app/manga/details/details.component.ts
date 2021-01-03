@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Manga, MangaExtension, MyMangaUpdate } from '@models/manga';
+import { Base64 } from 'js-base64';
 import { GlobalService } from 'src/app/global.service';
 
 import { MangaService } from '../manga.service';
@@ -64,7 +65,7 @@ export class MangaDetailsComponent implements OnInit {
     };
     try {
       const extension = (JSON.parse(
-        atob(this.manga.my_list_status.comments),
+        Base64.decode(this.manga.my_list_status.comments),
       ) as unknown) as Partial<MangaExtension>;
       this.editExtension = {
         ...extension,
@@ -82,7 +83,7 @@ export class MangaDetailsComponent implements OnInit {
     }
     this.busy = true;
     const updateData = {
-      comments: btoa(JSON.stringify(this.editExtension)),
+      comments: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyMangaUpdate>;
     if (this.editBackup.status !== this.manga.my_list_status.status) {
       updateData.status = this.editBackup?.status;

@@ -9,6 +9,7 @@ import {
   RelatedAnime,
   WatchStatus,
 } from '@models/anime';
+import { Base64 } from 'js-base64';
 
 import { MalService } from '../mal.service';
 
@@ -24,7 +25,7 @@ export class AnimeService {
       const comments = anime.list_status.comments;
       if (!comments) return anime;
       try {
-        const json = atob(comments);
+        const json = Base64.decode(comments);
         const my_extension = JSON.parse(json) as AnimeExtension;
         return { ...anime, my_extension } as ListAnime;
       } catch (e) {}
@@ -39,7 +40,7 @@ export class AnimeService {
       const comments = anime.my_list_status?.comments;
       if (!comments) return anime;
       try {
-        const json = atob(comments);
+        const json = Base64.decode(comments);
         const my_extension = JSON.parse(json) as AnimeExtension;
         return { ...anime, my_extension } as Anime;
       } catch (e) {}
@@ -53,7 +54,7 @@ export class AnimeService {
     if (!anime.related_manga.length) anime.related_manga = await this.getManga(id);
     if (!comments) return anime;
     try {
-      const json = atob(comments);
+      const json = Base64.decode(comments);
       const my_extension = JSON.parse(json) as AnimeExtension;
       return { ...anime, my_extension };
     } catch (e) {}
