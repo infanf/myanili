@@ -15,7 +15,7 @@ import { TraktService } from '../trakt.service';
 import { TraktComponent } from '../trakt/trakt.component';
 
 @Component({
-  selector: 'app-details',
+  selector: 'app-anime-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
 })
@@ -28,6 +28,7 @@ export class AnimeDetailsComponent implements OnInit {
   editBackup?: Partial<MyAnimeUpdate>;
   editExtension?: AnimeExtension;
   traktUser?: string;
+  @Input() inModal = false;
 
   constructor(
     private malService: MalService,

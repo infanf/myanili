@@ -6,6 +6,7 @@ import { AnimeListComponent } from './anime/list/list.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
+import { MalComponent } from './mal/mal.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaListComponent } from './manga/list/list.component';
 
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'manga/list', component: MangaListComponent },
   { path: 'manga/list/:status', component: MangaListComponent },
   { path: 'manga/details/:id', component: MangaDetailsComponent },
+  { path: 'mal/:type', component: MalComponent },
   { path: 'anime', redirectTo: '/anime/watchlist', pathMatch: 'full' },
   { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
 ];

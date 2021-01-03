@@ -1,5 +1,5 @@
-<div class="container mt-sm-3 border-sm-x border-sm-y rounded">
-  <header class="d-flex pt-2 mb-3 border-bottom sticky-top bg-white">
+<div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{'modal-body':inModal}">
+  <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
       {{ manga?.title || 'Loading…' }}
       <a [href]="'https://myanimelist.net/manga/' + id" target="_blank">
@@ -262,7 +262,7 @@
       }}
     </div>
 
-    <ng-container *ngIf="manga?.related_manga">
+    <ng-container *ngIf="manga?.related_manga && !inModal">
       <div *ngFor="let type of getRelatedMangas()" class="mb-3">
         <strong class="text-dark">{{ type.name }}</strong>
         <div *ngFor="let related of type.entries" class="mt-2">
@@ -272,7 +272,7 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="manga?.related_anime">
+    <ng-container *ngIf="manga?.related_anime && !inModal">
       <div *ngFor="let type of getRelatedAnimes()" class="mb-3">
         <strong class="text-dark">{{ type.name }}</strong>
         <div *ngFor="let related of type.entries" class="mt-2">

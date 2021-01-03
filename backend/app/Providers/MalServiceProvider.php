@@ -228,4 +228,27 @@ class MalServiceProvider extends ServiceProvider
             return false;
         }
     }
+
+    public static function getList(string $type, string $query)
+    {
+        $type = $type === 'manga' ? 'manga' : 'anime';
+
+        $params = [
+            "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments}",
+            "limit" => 50,
+            "q" => $query,
+        ];
+        $response = json_decode(
+            self::get(
+                self::baseUrl . "/" . $type,
+                $params
+            ), true
+        );
+        $list = $response['data'];
+        // while ($response['paging'] && isset($response['paging']['next'])) {
+        //     $response = json_decode(self::get($response['paging']['next']), true);
+        //     $list = array_merge($list, $response['data']);
+        // }
+        return $list;
+    }
 }

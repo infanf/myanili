@@ -78,6 +78,14 @@ $router->get('/mangalist/{status}', function ($status) {
     return MalServiceProvider::getMyMangaList($status);
 });
 
+$router->get('/animes', function (Request $request) {
+    $params = $request->all();
+    if (isset($params['query'])) {
+        return MalServiceProvider::getList('anime', $params['query']);
+    }
+    return [];
+});
+
 $router->get('/anime/{id}', function ($id) {
     return MalServiceProvider::getAnimeDetails($id);
 });
@@ -98,6 +106,14 @@ $router->post('/song/{id}', function ($id, Request $request) {
         }
     } catch (Exception $e) {
     }
+});
+
+$router->get('/mangas', function (Request $request) {
+    $params = $request->all();
+    if (isset($params['query'])) {
+        return MalServiceProvider::getList('manga', $params['query']);
+    }
+    return [];
 });
 
 $router->get('/manga/{id}', function ($id) {

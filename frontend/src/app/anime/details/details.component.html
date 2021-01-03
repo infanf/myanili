@@ -1,5 +1,6 @@
-<div class="container mt-sm-3 border-sm-x border-sm-y rounded">
-  <header class="d-flex pt-2 mb-3 border-bottom sticky-top bg-white">
+<div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{'modal-body':inModal}">
+  <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white"
+  >
     <h2>
       {{ anime?.title || 'Loading…' }}
       <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="me-1">
@@ -443,7 +444,7 @@
       </div>
     </div>
   </div>
-  <section *ngIf="!edit">
+  <section *ngIf="!edit && !inModal">
     <ng-container *ngIf="anime?.related_anime">
       <div *ngFor="let type of getRelatedAnimes()" class="mb-3">
         <strong class="text-dark">{{ type.name }}</strong>

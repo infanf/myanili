@@ -7,12 +7,13 @@ import { GlobalService } from 'src/app/global.service';
 import { MangaService } from '../manga.service';
 
 @Component({
-  selector: 'app-details',
+  selector: 'app-manga-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
 })
 export class MangaDetailsComponent implements OnInit {
   @Input() id = 0;
+  @Input() inModal = false;
   manga?: Manga;
   shortsyn = true;
   edit = false;

@@ -36,6 +36,20 @@ circle-progress {
   line-height: 1;
 }
 
+.sticky-header {
+  position: sticky;
+  top: 58px;
+  z-index: 900;
+}
+
+thead.sticky th {
+  position: sticky;
+  top: 58px;
+  box-shadow: inset 0 -3px 0 -2px currentColor;
+  background-color: #fff;
+  border-bottom: none;
+}
+
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);

@@ -23,6 +23,7 @@ import { MalIconComponent } from './icon/mal/mal.component';
 import { SpotifyIconComponent } from './icon/spotify/spotify.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
+import { MalComponent } from './mal/mal.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -55,6 +56,7 @@ import { TimePipe } from './time.pipe';
     SpotifyIconComponent,
     MalIconComponent,
     TraktIconComponent,
+    MalComponent,
   ],
   imports: [
     BrowserModule,
