@@ -50,6 +50,11 @@ thead.sticky th {
   border-bottom: none;
 }
 
+.mal .modal-content {
+  margin-bottom: 5rem;
+  margin-top: 3rem;
+}
+
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);

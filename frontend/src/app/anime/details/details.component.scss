@@ -14,8 +14,13 @@
   border-right-width: 2px;
 }
 
-.modal-body header {
-  top: 0;
+.modal-body {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  header {
+    top: 0;
+  }
 }
 
 a.link-red {

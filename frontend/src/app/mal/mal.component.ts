@@ -48,6 +48,7 @@ export class MalComponent {
   open(id: number) {
     const modalRef = this.modal.open(
       this.type === 'manga' ? MangaDetailsComponent : AnimeDetailsComponent,
+      { windowClass: 'mal' },
     );
     modalRef.componentInstance.id = id;
     modalRef.componentInstance.inModal = true;
