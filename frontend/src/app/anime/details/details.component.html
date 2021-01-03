@@ -2,55 +2,16 @@
   <header class="d-flex pt-2 mb-3 border-bottom sticky-top bg-white">
     <h2>
       {{ anime?.title || 'Loading…' }}
-      <a [href]="'https://myanimelist.net/anime/' + id" target="_blank">
-        <svg
-          class="me-2 d-inline"
-          style="height: 1rem"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 651 304"
-          fill="currentColor"
-        >
-          <path d="M0 0v265h64V104l56.5 73 56.5-72.5V265h64V0h-63l-58 82L63 0z" />
-          <path
-            d="M296.5 304l52.5-39c-25.7-44-29-88-29-88h80v88h72V65h-71v56h-68s12.7-65 72-65h75L464 0h-55C246.9 0 227 184.4 296.5 304zM498 0v264h138l15-56h-89V0z"
-          />
-        </svg>
+      <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="me-1">
+        <app-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></app-icon-mal>
       </a>
       <a
-        class="link-red"
+        class="link-trakt"
         *ngIf="anime && anime.my_extension && anime.my_extension.trakt"
         [href]="'https://trakt.tv/shows/' + anime.my_extension.trakt"
         target="_blank"
       >
-        <svg
-          class="d-inline"
-          style="height: 1.2rem"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 144.8 144.8"
-        >
-          <g fill="currentColor">
-            <path
-              d="M29.5,111.8c10.6,11.6,25.9,18.8,42.9,18.8c8.7,0,16.9-1.9,24.3-5.3L56.3,85L29.5,111.8z"
-            />
-            <path
-              d="M56.1,60.6L25.5,91.1L21.4,87l32.2-32.2h0l37.6-37.6c-5.9-2-12.2-3.1-18.8-3.1c-32.2,0-58.3,26.1-58.3,58.3
-c0,13.1,4.3,25.2,11.7,35l30.5-30.5l2.1,2l43.7,43.7c0.9-0.5,1.7-1,2.5-1.6L56.3,72.7L27,102l-4.1-4.1l33.4-33.4l2.1,2l51,50.9
-c0.8-0.6,1.5-1.3,2.2-1.9l-55-55L56.1,60.6z"
-            />
-            <path
-              d="M115.7,111.4c9.3-10.3,15-24,15-39c0-23.4-13.8-43.5-33.6-52.8L60.4,56.2L115.7,111.4z M74.5,66.8l-4.1-4.1l28.9-28.9
-l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
-            />
-            <g>
-              <g>
-                <path
-                  d="M72.4,144.8C32.5,144.8,0,112.3,0,72.4C0,32.5,32.5,0,72.4,0s72.4,32.5,72.4,72.4C144.8,112.3,112.3,144.8,72.4,144.8z
-         M72.4,7.3C36.5,7.3,7.3,36.5,7.3,72.4s29.2,65.1,65.1,65.1s65.1-29.2,65.1-65.1S108.3,7.3,72.4,7.3z"
-                />
-              </g>
-            </g>
-          </g>
-        </svg>
+        <app-icon-trakt style="vertical-align: bottom; line-height: 0.5"></app-icon-trakt>
       </a>
     </h2>
     <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" style="white-space: nowrap">
@@ -331,34 +292,7 @@ l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
               readonly
             />
             <button class="btn btn-primary" (click)="findTrakt()">
-              <svg
-                style="height: 1rem"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 144.8 144.8"
-              >
-                <g fill="currentColor">
-                  <path
-                    d="M29.5,111.8c10.6,11.6,25.9,18.8,42.9,18.8c8.7,0,16.9-1.9,24.3-5.3L56.3,85L29.5,111.8z"
-                  />
-                  <path
-                    d="M56.1,60.6L25.5,91.1L21.4,87l32.2-32.2h0l37.6-37.6c-5.9-2-12.2-3.1-18.8-3.1c-32.2,0-58.3,26.1-58.3,58.3
-c0,13.1,4.3,25.2,11.7,35l30.5-30.5l2.1,2l43.7,43.7c0.9-0.5,1.7-1,2.5-1.6L56.3,72.7L27,102l-4.1-4.1l33.4-33.4l2.1,2l51,50.9
-c0.8-0.6,1.5-1.3,2.2-1.9l-55-55L56.1,60.6z"
-                  />
-                  <path
-                    d="M115.7,111.4c9.3-10.3,15-24,15-39c0-23.4-13.8-43.5-33.6-52.8L60.4,56.2L115.7,111.4z M74.5,66.8l-4.1-4.1l28.9-28.9
-l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
-                  />
-                  <g>
-                    <g>
-                      <path
-                        d="M72.4,144.8C32.5,144.8,0,112.3,0,72.4C0,32.5,32.5,0,72.4,0s72.4,32.5,72.4,72.4C144.8,112.3,112.3,144.8,72.4,144.8z
-       M72.4,7.3C36.5,7.3,7.3,36.5,7.3,72.4s29.2,65.1,65.1,65.1s65.1-29.2,65.1-65.1S108.3,7.3,72.4,7.3z"
-                      />
-                    </g>
-                  </g>
-                </g>
-              </svg>
+              <app-icon-trakt></app-icon-trakt>
             </button>
           </div>
         </div>
@@ -460,25 +394,51 @@ l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
           : anime!.synopsis
       }}
     </div>
+  </section>
 
-    <div class="row" *ngIf="anime?.opening_themes || anime?.ending_themes">
-      <div class="col-sm-6 mb-3" *ngIf="anime!.opening_themes?.length">
-        <strong class="text-dark">Opening{{ anime!.opening_themes.length > 1 ? 's' : '' }}</strong>
-        <div *ngFor="let song of anime!.opening_themes" class="mt-2">
-          {{ song.text }}
-          <a *ngIf="getSongUrl(song.spotify)" [href]="getSongUrl(song.spotify)" target="_blank">
-            <app-icon-spotify></app-icon-spotify>
-          </a>
-        </div>
-      </div>
-      <div class="col-sm-6 mb-3" *ngIf="anime!.ending_themes?.length">
-        <strong class="text-dark">Ending{{ anime!.ending_themes.length > 1 ? 's' : '' }}</strong>
-        <div *ngFor="let song of anime!.ending_themes" class="mt-2">
-          {{ song.text }}
-        </div>
+  <div class="row" *ngIf="anime?.opening_themes || anime?.ending_themes">
+    <div class="col-sm-6 mb-3" *ngIf="anime!.opening_themes?.length">
+      <strong class="text-dark">Opening{{ anime!.opening_themes.length > 1 ? 's' : '' }}</strong>
+      <div *ngFor="let song of anime!.opening_themes" class="mt-2">
+        {{ song.text }}
+        <a
+          class="link-spotify"
+          *ngIf="getSongUrl(song.spotify) && !edit"
+          [href]="getSongUrl(song.spotify)"
+          target="_blank"
+        >
+          <app-icon-spotify></app-icon-spotify>
+        </a>
+        <app-icon-spotify
+          *ngIf="edit"
+          class="cursor-pointer"
+          [class]="{ 'link-spotify': song.spotify }"
+          (click)="setSongUrl(song)"
+        ></app-icon-spotify>
       </div>
     </div>
-
+    <div class="col-sm-6 mb-3" *ngIf="anime!.ending_themes?.length">
+      <strong class="text-dark">Ending{{ anime!.ending_themes.length > 1 ? 's' : '' }}</strong>
+      <div *ngFor="let song of anime!.ending_themes" class="mt-2">
+        {{ song.text }}
+        <a
+          class="link-spotify"
+          *ngIf="getSongUrl(song.spotify) && !edit"
+          [href]="getSongUrl(song.spotify)"
+          target="_blank"
+        >
+          <app-icon-spotify></app-icon-spotify>
+        </a>
+        <app-icon-spotify
+          *ngIf="edit"
+          class="cursor-pointer"
+          [class]="{ 'link-spotify': song.spotify }"
+          (click)="setSongUrl(song)"
+        ></app-icon-spotify>
+      </div>
+    </div>
+  </div>
+  <section *ngIf="!edit">
     <ng-container *ngIf="anime?.related_anime">
       <div *ngFor="let type of getRelatedAnimes()" class="mb-3">
         <strong class="text-dark">{{ type.name }}</strong>

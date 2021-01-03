@@ -86,6 +86,20 @@ $router->put('/anime/{id}', function ($id, Request $request) {
     return MalServiceProvider::putAnimeDetails($id, $request);
 });
 
+$router->post('/song/{id}', function ($id, Request $request) {
+    $params = $request->toArray();
+    $filename = dirname(__DIR__) . '/resources/songs.json';
+    try {
+        $songsArray = filesize($filename) ? json_decode(file_get_contents($filename), true) : [];
+        if (isset($params['spotify'])) {
+            $songsArray[intval($id)] = $params['spotify'];
+            ksort($songsArray);
+            file_put_contents($filename, json_encode($songsArray));
+        }
+    } catch (Exception $e) {
+    }
+});
+
 $router->get('/manga/{id}', function ($id) {
     return MalServiceProvider::getMangaDetails($id);
 });
@@ -133,12 +147,12 @@ $router->get('/debug', function () use ($router) {
 });
 
 /*
-  _            _   _    _       
- | |_ _ _ __ _| |_| |_ | |___ __
- |  _| '_/ _` | / /  _||  _\ V /
-  \__|_| \__,_|_\_\\__(_)__|\_/ 
-                                
-  */
+_            _   _    _
+| |_ _ _ __ _| |_| |_ | |___ __
+|  _| '_/ _` | / /  _||  _\ V /
+\__|_| \__,_|_\_\\__(_)__|\_/
+
+ */
 
 $router->get('/traktauth', function () {
     $provider = TraktServiceProvider::getOauthProvider();

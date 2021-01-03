@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
+import { Anime, AnimeExtension, AnimeTheme, MyAnimeUpdate } from '@models/anime';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/global.service';
+import { MalService } from 'src/app/mal.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
@@ -29,6 +30,7 @@ export class AnimeDetailsComponent implements OnInit {
   traktUser?: string;
 
   constructor(
+    private malService: MalService,
     private animeService: AnimeService,
     private route: ActivatedRoute,
     public streamPipe: StreamPipe,
@@ -265,5 +267,17 @@ export class AnimeDetailsComponent implements OnInit {
       return `https://open.spotify.com/${parts[1]}/${parts[2]}`;
     }
     return '';
+  }
+
+  async setSongUrl(song: AnimeTheme) {
+    this.glob.busy();
+    const spotify = prompt('Spotify URI', song.spotify);
+    if (!spotify?.match(/^spotify:track:\w+$/) || song.spotify === spotify) {
+      this.glob.notbusy();
+      return;
+    }
+    await this.malService.post('song/' + song.id, { spotify });
+    this.glob.notbusy();
+    song.spotify = spotify;
   }
 }

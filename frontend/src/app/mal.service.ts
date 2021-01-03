@@ -40,6 +40,17 @@ export class MalService {
     });
   }
 
+  // tslint:disable-next-line:no-any
+  async post<T>(path: string, data: any): Promise<T> {
+    return new Promise((res, rej) => {
+      this.httpClient
+        .post(`${this.backendUrl}${path}`, data, { withCredentials: true })
+        .subscribe(value => {
+          res((value as unknown) as T);
+        });
+    });
+  }
+
   async getJikan(type: 'anime' | 'manga', id: number): Promise<JikanInstance> {
     return new Promise((r, rj) => {
       this.httpClient.get<JikanInstance>(`${this.jikanUrl}/${type}/${id}`).subscribe(r);
