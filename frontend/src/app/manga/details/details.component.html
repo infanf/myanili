@@ -1,4 +1,4 @@
-<div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{'modal-body':inModal}">
+<div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{ 'modal-body': inModal }">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
       {{ manga?.title || 'Loading…' }}
@@ -267,7 +267,8 @@
     ></div>
     <div class="mb-3" *ngIf="manga?.background">
       <strong>Background</strong>
-    <div [innerHTML]="manga?.background || '' | nl2br"></div></div>
+      <div [innerHTML]="manga?.background || '' | nl2br"></div>
+    </div>
 
     <ng-container *ngIf="manga?.related_manga && !inModal">
       <div *ngFor="let type of getRelatedMangas()" class="mb-3">
@@ -290,7 +291,10 @@
       </div>
     </ng-container>
   </section>
-  <section class="mb-3" *ngIf="!inModal&&!edit && manga && manga.recommendations && manga.recommendations.length">
+  <section
+    class="mb-3"
+    *ngIf="!inModal && !edit && manga && manga.recommendations && manga.recommendations.length"
+  >
     <strong>Recommendations</strong>
     <div class="overflow-auto mt-2">
       <div class="d-flex" [ngStyle]="{ 'width.rem': 11 * manga.recommendations.length }">
@@ -302,7 +306,11 @@
         >
           <img
             style="height: 16rem; object-fit: cover"
-            [src]="recom.node.main_picture.large || recom.node.main_picture.medium"
+            [src]="
+              recom.node.main_picture?.large ||
+              recom.node.main_picture?.medium ||
+              '/assets/blank-poster.svg'
+            "
             class="card-img-top"
             [alt]="recom.node.title"
           />

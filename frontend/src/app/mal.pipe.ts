@@ -6,7 +6,10 @@ import { ReadStatus } from '@models/manga';
   name: 'mal',
 })
 export class MalPipe implements PipeTransform {
-  transform(value: number | string = '', type?: 'mediatype' | 'mystatus' | 'seasonicon'): string {
+  transform(
+    value: number | string = '',
+    type?: 'mediatype' | 'mystatus' | 'seasonicon' | 'rating',
+  ): string {
     if (type === 'mystatus') return this.myStatus(value as WatchStatus | ReadStatus);
     if (type === 'mediatype') return this.mediaType(String(value));
     if (type === 'seasonicon') return this.seasonIcon(value);
