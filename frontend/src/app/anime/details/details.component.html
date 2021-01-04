@@ -141,7 +141,9 @@
         <div class="col-8">
           <span class="text-nowrap">{{ anime.start_date | date }}</span>
           <span *ngIf="anime.start_date !== anime.end_date">&ndash;</span>
-          <span class="text-nowrap" *ngIf="anime.end_date">{{ anime!.end_date | date }}</span>
+          <span class="text-nowrap" *ngIf="anime.end_date && anime.start_date !== anime.end_date">{{
+            anime!.end_date | date
+          }}</span>
         </div>
       </div>
       <div class="row" *ngIf="anime">

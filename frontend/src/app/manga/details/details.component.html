@@ -123,7 +123,9 @@
         <div class="col-8">
           <span class="text-nowrap">{{ manga.start_date | date }}</span>
           <span *ngIf="manga.start_date !== manga.end_date"> &ndash; </span>
-          <span class="text-nowrap" *ngIf="manga.end_date">{{ manga!.end_date | date }}</span>
+          <span class="text-nowrap" *ngIf="manga.end_date && manga.start_date !== manga.end_date">{{
+            manga!.end_date | date
+          }}</span>
         </div>
       </div>
       <div class="row" *ngIf="manga?.my_list_status" [class]="{ 'my-2': edit }">
