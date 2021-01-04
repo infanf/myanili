@@ -22,6 +22,7 @@
             <li class="nav-item dropdown" ngbDropdown>
               <a
                 class="nav-link dropdown-toggle"
+                [ngClass] ="{'active':module==='anime'}"
                 id="animeDropdown"
                 role="button"
                 ngbDropdownToggle
@@ -102,6 +103,7 @@
             <li class="nav-item dropdown" ngbDropdown>
               <a
                 class="nav-link dropdown-toggle"
+                [ngClass] ="{'active':module==='manga'}"
                 id="mangaDropdown"
                 role="button"
                 ngbDropdownToggle
@@ -164,7 +166,7 @@
               </ul>
             </li>
           </ul>
-          <app-widget-season class="me-3 text-white"></app-widget-season>
+          <app-widget-season class="me-3 text-white" *ngIf="module === 'anime'"></app-widget-season>
           <div class="d-flex cursor-pointer" *ngIf="user" (click)="showSettings()">
             <span class="d-none d-sm-inline my-auto me-3 text-white">{{ user!.name }}</span>
             <img [src]="user!.picture" style="height: 32px; border-radius: 50%" />
