@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Picture } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate } from '@models/manga';
+import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import { GlobalService } from 'src/app/global.service';
 
@@ -24,6 +26,7 @@ export class MangaDetailsComponent implements OnInit {
     private mangaService: MangaService,
     private route: ActivatedRoute,
     private glob: GlobalService,
+    private gallery: Gallery,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -200,5 +203,16 @@ export class MangaDetailsComponent implements OnInit {
       relatedAnime.push({ name: type, entries: related });
     }
     return relatedAnime;
+  }
+
+  showGallery() {
+    if (!this.manga || !this.manga.main_picture) return;
+    function picMap(pic: Picture) {
+      return { path: pic.large || pic.medium };
+    }
+    const prop = {
+      images: [picMap(this.manga.main_picture), ...this.manga.pictures.map(picMap)],
+    };
+    this.gallery.load(prop);
   }
 }

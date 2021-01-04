@@ -2,7 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Anime, AnimeExtension, AnimeTheme, MyAnimeUpdate } from '@models/anime';
+import { Picture } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -40,6 +42,7 @@ export class AnimeDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private deviceDetector: DeviceDetectorService,
     private sanitizer: DomSanitizer,
+    private gallery: Gallery,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -283,5 +286,16 @@ export class AnimeDetailsComponent implements OnInit {
     await this.malService.post('song/' + song.id, { spotify });
     this.glob.notbusy();
     song.spotify = spotify;
+  }
+
+  showGallery() {
+    if (!this.anime || !this.anime.main_picture) return;
+    function picMap(pic: Picture) {
+      return { path: pic.large || pic.medium };
+    }
+    const prop = {
+      images: [picMap(this.anime.main_picture), ...this.anime.pictures.map(picMap)],
+    };
+    this.gallery.load(prop);
   }
 }

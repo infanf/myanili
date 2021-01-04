@@ -1,6 +1,5 @@
-<div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{'modal-body':inModal}">
-  <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white"
-  >
+<div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{ 'modal-body': inModal }">
+  <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
       {{ anime?.title || 'Loading…' }}
       <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="me-1">
@@ -46,9 +45,9 @@
   </header>
   <!-- <hr class="mt-0" /> -->
   <div class="row">
-    <div class="col-sm-5 col-md-4 mb-3">
-      <ng-container *ngIf="!edit">
-        <picture>
+    <div class="col-sm-5 col-md-4 mb-3" [class]="{'d-none':edit,'d-sm-block':edit}">
+      <ng-container>
+        <picture (click)="!edit&&showGallery()" class="cursor-pointer">
           <source
             *ngIf="anime && anime.main_picture"
             srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
@@ -91,9 +90,14 @@
           ></div>
         </div>
       </ng-container>
-      <div class="row mt-2" *ngIf="edit && editBackup">
-        <div class="col-6 fw-bold">My&nbsp;Score</div>
-        <div class="col-6">
+    </div>
+
+    <!-- right column -->
+
+    <div class="col-sm-7 col-md-8 mb-3" [class]="{'col-12':edit}">
+      <div class="row" *ngIf="edit && editBackup">
+        <div class="col-4 fw-bold text-end">Score</div>
+        <div class="col-8">
           <input
             class="form-control form-control-sm"
             [(ngModel)]="editBackup.score"
@@ -104,19 +108,17 @@
           />
         </div>
       </div>
-    </div>
-    <div class="col-sm-7 col-md-8 mb-3">
       <div class="row" *ngIf="anime?.alternative_titles?.en">
-        <div class="col-3 fw-bold">English</div>
-        <div class="col-9">{{ anime?.alternative_titles?.en }}</div>
+        <div class="col-4 fw-bold text-end">English</div>
+        <div class="col-8">{{ anime?.alternative_titles?.en }}</div>
       </div>
       <div class="row" *ngIf="anime?.alternative_titles?.ja">
-        <div class="col-3 fw-bold">Japanese</div>
-        <div class="col-9">{{ anime?.alternative_titles?.ja }}</div>
+        <div class="col-4 fw-bold text-end">Japanese</div>
+        <div class="col-8">{{ anime?.alternative_titles?.ja }}</div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">
-        <div class="col-3 fw-bold">Series</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Series</div>
+        <div class="col-8">
           <input
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.series"
@@ -125,35 +127,34 @@
         </div>
       </div>
       <div class="row" *ngIf="anime?.studios && anime!.studios.length">
-        <div class="col-3 fw-bold">Studio</div>
-        <div class="col-9">
-          <a *ngFor="let studio of anime!.studios" class="d-inline-block me-1">
-            {{ studio.name }}
-          </a>
+        <div class="col-4 fw-bold text-end">Studio</div>
+        <div class="col-8">
+          <div *ngFor="let studio of anime!.studios">{{ studio.name }}</div>
         </div>
       </div>
       <div class="row" *ngIf="anime">
-        <div class="col-3 fw-bold">Type</div>
-        <div class="col-9">{{ anime!.media_type | mal: 'mediatype' }}</div>
+        <div class="col-4 fw-bold text-end">Type</div>
+        <div class="col-8">{{ anime!.media_type | mal: 'mediatype' }}</div>
       </div>
       <div class="row" *ngIf="anime && anime.start_date">
-        <div class="col-3 fw-bold">Aired</div>
-        <div class="col-9">
-          {{ anime.start_date | date }} &ndash;
-          <ng-container *ngIf="anime.end_date">{{ anime!.end_date | date }}</ng-container>
+        <div class="col-4 fw-bold text-end">Aired</div>
+        <div class="col-8">
+          <span class="text-nowrap">{{ anime.start_date | date }}</span>
+          <span *ngIf="anime.start_date !== anime.end_date">&ndash;</span>
+          <span class="text-nowrap" *ngIf="anime.end_date">{{ anime!.end_date | date }}</span>
         </div>
       </div>
       <div class="row" *ngIf="anime">
-        <div class="col-3 fw-bold">Source</div>
-        <div class="col-9">{{ anime!.source | mal: 'mediatype' }}</div>
+        <div class="col-4 fw-bold text-end">Source</div>
+        <div class="col-8">{{ anime!.source | mal: 'mediatype' }}</div>
       </div>
       <div class="row" *ngIf="anime?.rating">
-        <div class="col-3 fw-bold">Rating</div>
-        <div class="col-9">{{ anime!.rating!.toUpperCase().replace('_', ' ') }}</div>
+        <div class="col-4 fw-bold text-end">Rating</div>
+        <div class="col-8">{{ anime!.rating | mal:'rating' }}</div>
       </div>
       <div class="row" *ngIf="anime?.my_list_status" [class]="{ 'my-2': edit }">
-        <div class="col-3 fw-bold">My&nbsp;List</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">My&nbsp;List</div>
+        <div class="col-8">
           <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
           <ng-template #mylist>
             {{ anime!.my_list_status!.status | mal: 'mystatus' }}
@@ -195,15 +196,15 @@
           anime.my_extension?.simulTime
         "
       >
-        <div class="col-3 fw-bold">Simulcast</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Simulcast</div>
+        <div class="col-8">
           {{ getDay(anime.my_extension.simulDay) }},
           {{ anime.my_extension.simulTime?.substr(0, 5) | time }}
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">
-        <div class="col-3 fw-bold">Simulcast</div>
-        <div class="col-5">
+        <div class="col-4 fw-bold text-end">Simulcast</div>
+        <div class="col-4">
           <select
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.simulDay"
@@ -231,8 +232,8 @@
         class="row"
         *ngIf="!edit && anime && anime.my_extension && anime.my_extension.externalStreaming"
       >
-        <div class="col-3 fw-bold">Streaming</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Streaming</div>
+        <div class="col-8">
           <a
             *ngIf="anime.my_extension.externalStreamingId"
             href="{{ anime.my_extension.externalStreaming | stream: 'urlprefix' }}{{
@@ -257,8 +258,8 @@
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">
-        <div class="col-3 fw-bold">Streaming</div>
-        <div class="col-6">
+        <div class="col-4 fw-bold text-end">Streaming</div>
+        <div class="col-5">
           <select
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.externalStreaming"
@@ -278,8 +279,8 @@
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">
-        <div class="col-3 fw-bold">Stream&nbsp;ID</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Stream&nbsp;ID</div>
+        <div class="col-8">
           <input
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.externalStreamingId"
@@ -288,8 +289,8 @@
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension && traktUser">
-        <div class="col-3 fw-bold">Trakt&nbsp;ID</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Trakt&nbsp;ID</div>
+        <div class="col-8">
           <div class="input-group input-group-sm">
             <input
               class="form-control"
@@ -304,8 +305,8 @@
         </div>
       </div>
       <div class="row" *ngIf="anime">
-        <div class="col-3 fw-bold">Duration</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Duration</div>
+        <div class="col-8">
           <app-icon
             *ngIf="anime.my_list_status?.status === 'watching' && !edit"
             name="plus-square"
@@ -321,8 +322,8 @@
 
       <div *ngIf="anime">
         <div class="row" *ngIf="!edit">
-          <div class="col-3 fw-bold">Episodes</div>
-          <div class="col-9">
+          <div class="col-4 fw-bold text-end">Episodes</div>
+          <div class="col-8">
             <div class="progress my-1">
               <div
                 *ngIf="anime?.my_list_status?.num_episodes_watched"
@@ -347,8 +348,8 @@
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && editBackup">
-          <div class="col-3 fw-bold">Progress</div>
-          <div class="col-9">
+          <div class="col-4 fw-bold text-end">Progress</div>
+          <div class="col-8">
             <div class="input-group input-group-sm">
               <input
                 class="form-control"
@@ -363,7 +364,7 @@
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && editExtension">
-          <div class="col-3 fw-bold">Seasonno</div>
+          <div class="col-3 fw-bold text-end">Seasonno</div>
           <div class="col-3">
             <input
               class="form-control form-control-sm"
@@ -372,7 +373,7 @@
               [disabled]="busy"
             />
           </div>
-          <div class="col-3 fw-bold">Offset</div>
+          <div class="col-3 fw-bold text-end">Offset</div>
           <div class="col-3">
             <input
               class="form-control form-control-sm"
@@ -393,12 +394,19 @@
       </span>
     </div>
 
-    <div class="mb-3" *ngIf="anime?.synopsis" (click)="shortsyn = !shortsyn">
-      {{
-        shortsyn && anime!.synopsis!.length > 150
+    <div
+      class="mb-3"
+      *ngIf="anime?.synopsis"
+      (click)="shortsyn = !shortsyn"
+      [innerHTML]="
+        (shortsyn && anime!.synopsis!.length > 150
           ? anime!.synopsis!.substr(0, 150) + '…'
-          : anime!.synopsis
-      }}
+          : anime!.synopsis) || '' | nl2br
+      "
+    ></div>
+    <div class="mb-3" *ngIf="anime?.background">
+      <strong>Background</strong>
+      <div [innerHTML]="anime?.background || '' | nl2br"></div>
     </div>
   </section>
 

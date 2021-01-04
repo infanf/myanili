@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { IvyGalleryModule } from 'angular-gallery';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
@@ -27,6 +28,7 @@ import { MalComponent } from './mal/mal.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { Nl2brPipe } from './nl2br.pipe';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 import { StreamPipe } from './stream.pipe';
@@ -57,6 +59,7 @@ import { TimePipe } from './time.pipe';
     MalIconComponent,
     TraktIconComponent,
     MalComponent,
+    Nl2brPipe,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +83,7 @@ import { TimePipe } from './time.pipe';
       backgroundPadding: 0,
       outerStrokeLinecap: 'butt',
     }),
+    IvyGalleryModule,
   ],
   providers: [TimePipe, StreamPipe],
   bootstrap: [AppComponent],

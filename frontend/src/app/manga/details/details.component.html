@@ -34,7 +34,7 @@
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <ng-container *ngIf="!edit">
-        <picture>
+        <picture (click)="showGallery()">
           <source
             *ngIf="manga && manga.main_picture"
             srcset="{{ manga.main_picture.large || manga.main_picture.medium }}"
@@ -93,41 +93,42 @@
     </div>
     <div class="col-sm-7 col-md-8 mb-3">
       <div class="row" *ngIf="manga?.alternative_titles?.en">
-        <div class="col-3 fw-bold">English</div>
-        <div class="col-9">{{ manga?.alternative_titles?.en }}</div>
+        <div class="col-4 fw-bold text-end">English</div>
+        <div class="col-8">{{ manga?.alternative_titles?.en }}</div>
       </div>
       <div class="row" *ngIf="manga?.alternative_titles?.ja">
-        <div class="col-3 fw-bold">Japanese</div>
-        <div class="col-9">{{ manga?.alternative_titles?.ja }}</div>
+        <div class="col-4 fw-bold text-end">Japanese</div>
+        <div class="col-8">{{ manga?.alternative_titles?.ja }}</div>
       </div>
       <div class="row" *ngIf="manga?.authors && manga?.authors?.length">
-        <div class="col-3 fw-bold">Author</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Author</div>
+        <div class="col-8">
           <div *ngFor="let author of manga!.authors">
             {{ author.node.last_name }} {{ author.node.first_name }} ({{ author.role }})
           </div>
         </div>
       </div>
       <div class="row" *ngIf="manga">
-        <div class="col-3 fw-bold">Type</div>
-        <div class="col-9">{{ manga!.media_type | mal: 'mediatype' }}</div>
+        <div class="col-4 fw-bold text-end">Type</div>
+        <div class="col-8">{{ manga!.media_type | mal: 'mediatype' }}</div>
       </div>
       <div class="row" *ngIf="manga?.serialization?.length">
-        <div class="col-3 fw-bold">Serialization</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Serialization</div>
+        <div class="col-8">
           <div *ngFor="let magazine of manga!.serialization!">{{ magazine.node.name }}</div>
         </div>
       </div>
       <div class="row" *ngIf="manga && manga.start_date">
-        <div class="col-3 fw-bold">Puplished</div>
-        <div class="col-9">
-          {{ manga.start_date | date }} &ndash;
-          <ng-container *ngIf="manga.end_date">{{ manga!.end_date | date }}</ng-container>
+        <div class="col-4 fw-bold text-end">Published</div>
+        <div class="col-8">
+          <span class="text-nowrap">{{ manga.start_date | date }}</span>
+          <span *ngIf="manga.start_date !== manga.end_date"> &ndash; </span>
+          <span class="text-nowrap" *ngIf="manga.end_date">{{ manga!.end_date | date }}</span>
         </div>
       </div>
       <div class="row" *ngIf="manga?.my_list_status" [class]="{ 'my-2': edit }">
-        <div class="col-3 fw-bold">My&nbsp;List</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">My&nbsp;List</div>
+        <div class="col-8">
           <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
           <ng-template #mylist>{{ manga!.my_list_status!.status | mal: 'mystatus' }}</ng-template>
           <ng-template #mylistedit>
@@ -149,14 +150,14 @@
         </div>
       </div>
       <div class="row" *ngIf="!edit && manga && manga.my_extension?.platform">
-        <div class="col-3 fw-bold">Platform</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Platform</div>
+        <div class="col-8">
           {{ manga.my_extension?.platform }}
         </div>
       </div>
       <div class="row" *ngIf="edit && manga && editExtension">
-        <div class="col-3 fw-bold">Platform</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Platform</div>
+        <div class="col-8">
           <input
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.platform"
@@ -165,8 +166,8 @@
         </div>
       </div>
       <div class="row" *ngIf="manga && !edit">
-        <div class="col-3 fw-bold">Progress</div>
-        <div class="col-9">
+        <div class="col-4 fw-bold text-end">Progress</div>
+        <div class="col-8">
           <app-icon
             *ngIf="manga.my_list_status?.status === 'reading' && !edit"
             name="plus-square"
@@ -187,8 +188,8 @@
 
       <div *ngIf="manga">
         <div class="row" *ngIf="!edit">
-          <div class="col-3 fw-bold">Chapters</div>
-          <div class="col-9">
+          <div class="col-4 fw-bold text-end">Chapters</div>
+          <div class="col-8">
             <div class="progress my-1">
               <div
                 *ngIf="manga?.my_list_status?.num_chapters_read"
@@ -214,8 +215,8 @@
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && editBackup">
-          <div class="col-3 fw-bold">Chapters</div>
-          <div class="col-3">
+          <div class="col-4 fw-bold text-end">Chapters</div>
+          <div class="col-4">
             <div class="input-group input-group-sm">
               <input
                 class="form-control"
@@ -228,8 +229,8 @@
               <span class="input-group-text">/ {{ manga!.num_chapters || '?' }}</span>
             </div>
           </div>
-          <div class="col-3 fw-bold">Volumes</div>
-          <div class="col-3">
+          <div class="col-4 fw-bold text-end">Volumes</div>
+          <div class="col-4">
             <div class="input-group input-group-sm">
               <input
                 class="form-control"
@@ -254,13 +255,19 @@
       </span>
     </div>
 
-    <div class="mb-3" *ngIf="manga?.synopsis" (click)="shortsyn = !shortsyn">
-      {{
-        shortsyn && manga!.synopsis!.length > 150
+    <div
+      class="mb-3"
+      *ngIf="manga?.synopsis"
+      (click)="shortsyn = !shortsyn"
+      [innerHTML]="
+        (shortsyn && manga!.synopsis!.length > 150
           ? manga!.synopsis!.substr(0, 150) + '…'
-          : manga!.synopsis
-      }}
-    </div>
+          : manga!.synopsis) || '' | nl2br
+      "
+    ></div>
+    <div class="mb-3" *ngIf="manga?.background">
+      <strong>Background</strong>
+    <div [innerHTML]="manga?.background || '' | nl2br"></div></div>
 
     <ng-container *ngIf="manga?.related_manga && !inModal">
       <div *ngFor="let type of getRelatedMangas()" class="mb-3">

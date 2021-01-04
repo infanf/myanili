@@ -55,6 +55,22 @@ thead.sticky th {
   margin-top: 3rem;
 }
 
+overlay.overlay-shown {
+  z-index: 1300 !important;
+
+  // .carousel-close {
+  //   top: 68px !important;
+  // }
+
+  .carousel-backdrop {
+    opacity: 0.8 !important;
+  }
+}
+
+.col-4.fw-bold.text-end {
+  direction: rtl;
+}
+
 @each $breakpoint in map-keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);

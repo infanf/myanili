@@ -27,6 +27,7 @@
     "@angular/router": "~11.0.3",
     "@angular/service-worker": "^11.0.5",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
+    "angular-gallery": "^1.0.2",
     "bootstrap": "^5.0.0-beta1",
     "bootstrap-icons": "^1.2.2",
     "country-code-emoji": "^2.2.0",

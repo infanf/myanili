@@ -10,6 +10,7 @@ export class MalPipe implements PipeTransform {
     if (type === 'mystatus') return this.myStatus(value as WatchStatus | ReadStatus);
     if (type === 'mediatype') return this.mediaType(String(value));
     if (type === 'seasonicon') return this.seasonIcon(value);
+    if (type === 'rating') return this.rating(String(value));
     return String(value);
   }
 
@@ -51,5 +52,20 @@ export class MalPipe implements PipeTransform {
       default:
         return 'tree';
     }
+  }
+
+  rating(value: string): string {
+    const ratings = {
+      g: 'G - All Ages',
+      pg: 'PG - Children',
+      pg_13: 'pg_13 - Teens 13 and Older',
+      r: 'R - 17+ (violence & profanity)',
+      'r+': 'R+ - Profanity & Mild Nudity',
+      rx: 'Rx - Hentai',
+    } as { [key: string]: string };
+    if (value in ratings) {
+      return ratings[value];
+    }
+    return value;
   }
 }
