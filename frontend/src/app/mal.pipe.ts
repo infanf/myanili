@@ -58,7 +58,7 @@ export class MalPipe implements PipeTransform {
     const ratings = {
       g: 'G - All Ages',
       pg: 'PG - Children',
-      pg_13: 'pg_13 - Teens 13 and Older',
+      pg_13: 'PG 13 - Teens 13 and Older',
       r: 'R - 17+ (violence & profanity)',
       'r+': 'R+ - Profanity & Mild Nudity',
       rx: 'Rx - Hentai',
