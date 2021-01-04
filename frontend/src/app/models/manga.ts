@@ -41,7 +41,7 @@ interface MangaInterface {
   background?: string;
   related_manga: RelatedManga[];
   related_anime: RelatedAnime[];
-  recommendations: RelatedManga[];
+  recommendations: Array<{ node: MangaNode; num_recommendations: number }>;
   authors?: Array<{ role: string; node: Person }>;
   serialization: Array<{ node: Studio }>;
   statistics?: {
