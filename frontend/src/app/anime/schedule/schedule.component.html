@@ -5,22 +5,26 @@
     </div>
 
     <div class="card-body" *ngIf="getAnimes((day + today) % 7).length">
-      <div *ngFor="let anime of getAnimes((day + today) % 7)" class="entry">
-        <span class="me-3">{{ anime.my_extension!.simulTime?.substr(0, 5) | time }}</span>
-        <app-streaming
-          [provider]="anime.my_extension?.externalStreaming"
-          [country]="anime.my_extension?.simulCountry"
-        ></app-streaming>
-        <span [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer">
-          {{
-            (lang === 'en'
-              ? anime.alternative_titles?.en
-              : lang === 'jp'
-              ? anime.alternative_titles?.ja
-              : anime.title )|| anime.title
-          }}
-        </span>
-      </div>
+      <table class="table table-sm mb-0">
+        <tr *ngFor="let anime of getAnimes((day + today) % 7)">
+          <td>{{ anime.my_extension!.simulTime?.substr(0, 5) | time }}</td>
+          <td>
+            <app-streaming
+              [provider]="anime.my_extension?.externalStreaming"
+              [country]="anime.my_extension?.simulCountry"
+            ></app-streaming>
+          </td>
+          <td [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer entry">
+            {{
+              (lang === 'en'
+                ? anime.alternative_titles?.en
+                : lang === 'jp'
+                ? anime.alternative_titles?.ja
+                : anime.title) || anime.title
+            }}
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>

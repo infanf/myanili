@@ -1,13 +1,27 @@
 .entry {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.table {
+  table-layout: fixed;
+
+  td:first-child {
+    width: 3rem;
   }
-  
-  .flag {
-    position: absolute;
-    right: -0.5rem;
-    bottom: 0;
-    font-size: 0.6rem;
+  td:nth-child(2) {
+    width: 2rem;
   }
-  
+}
+
+.time {
+  display: inline-block;
+  width: 3.5rem;
+}
+
+.flag {
+  position: absolute;
+  right: -0.5rem;
+  bottom: 0;
+  font-size: 0.6rem;
+}
