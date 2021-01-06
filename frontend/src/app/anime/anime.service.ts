@@ -1,15 +1,18 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   Anime,
+  AnimeCharacter,
   AnimeExtension,
   AnimeNode,
   ListAnime,
   MyAnimeStatus,
   MyAnimeUpdate,
-  RelatedAnime,
   WatchStatus,
 } from '@models/anime';
+import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
+import { environment } from 'src/environments/environment';
 
 import { MalService } from '../mal.service';
 
@@ -17,7 +20,7 @@ import { MalService } from '../mal.service';
   providedIn: 'root',
 })
 export class AnimeService {
-  constructor(private malService: MalService) {}
+  constructor(private malService: MalService, private httpClient: HttpClient) {}
 
   async list(status?: WatchStatus) {
     const animes = await this.malService.myList(status);
@@ -65,9 +68,9 @@ export class AnimeService {
     return this.malService.put<MyAnimeStatus>('anime/' + id, data);
   }
 
-  async getManga(id: number): Promise<RelatedAnime[]> {
+  async getManga(id: number): Promise<RelatedManga[]> {
     const jikanime = await this.malService.getJikan('anime', id);
-    const mangas = [] as RelatedAnime[];
+    const mangas = [] as RelatedManga[];
     for (const key in jikanime.related) {
       if (!jikanime.related[key]) continue;
       for (const related of jikanime.related[key]) {
@@ -81,5 +84,17 @@ export class AnimeService {
       }
     }
     return mangas;
+  }
+
+  async getCharacters(id: number): Promise<AnimeCharacter[]> {
+    return new Promise((r, rj) => {
+      this.httpClient
+        .get<{ characters: AnimeCharacter[] }>(
+          `${environment.jikanUrl}anime/${id}/characters_staff`,
+        )
+        .subscribe(result => {
+          r(result.characters || []);
+        });
+    });
   }
 }

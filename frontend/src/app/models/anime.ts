@@ -1,4 +1,5 @@
 import { Genre, Nsfw, Picture, Studio } from './components';
+import { RelatedManga } from './manga';
 
 interface ListAnimeInterface {
   node: AnimeNode;
@@ -44,7 +45,7 @@ interface AnimeInterface {
   pictures: Picture[];
   background?: string;
   related_anime: RelatedAnime[];
-  related_manga: RelatedAnime[];
+  related_manga: RelatedManga[];
   recommendations: Array<{ node: AnimeNode; num_recommendations: number }>;
   studios: Studio[];
   statistics?: {
@@ -151,3 +152,24 @@ interface AnimeExtensionInterface {
 }
 
 export type AnimeExtension = AnimeExtensionInterface;
+
+interface Character {
+  mal_id: number;
+  url: string;
+  image_url: string;
+  name: string;
+  role: string;
+  voice_actors: VoiceActor[];
+}
+
+interface VoiceActor {
+  mal_id: number;
+  name: string;
+  url: string;
+  image_url: string;
+  language: string;
+}
+
+export type AnimeCharacter = Character;
+
+export type AnimeRecommendations = Array<{ node: AnimeNode; num_recommendations: number }>;

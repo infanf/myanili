@@ -389,127 +389,66 @@
     </div>
   </div>
 
-  <section *ngIf="!edit">
-    <div class="mb-3" *ngIf="anime">
-      <span *ngFor="let genre of anime!.genres" class="badge bg-primary me-1">
-        {{ genre.name }}
-      </span>
-    </div>
-
-    <div
-      class="mb-3"
-      *ngIf="anime?.synopsis"
-      (click)="shortsyn = !shortsyn"
-      [innerHTML]="
-        (shortsyn && anime!.synopsis!.length > 150
-          ? anime!.synopsis!.substr(0, 150) + '…'
-          : anime!.synopsis) || '' | nl2br
-      "
-    ></div>
-    <div class="mb-3" *ngIf="anime?.background">
-      <strong>Background</strong>
-      <div [innerHTML]="anime?.background || '' | nl2br"></div>
-    </div>
-  </section>
-
-  <div class="row" *ngIf="anime?.opening_themes || anime?.ending_themes">
-    <div class="col-sm-6 mb-3" *ngIf="anime!.opening_themes?.length">
-      <strong class="text-dark">Opening{{ anime!.opening_themes.length > 1 ? 's' : '' }}</strong>
-      <div *ngFor="let song of anime!.opening_themes" class="mt-2">
-        {{ song.text }}
-        <a
-          class="link-spotify"
-          *ngIf="getSongUrl(song.spotify) && !edit"
-          [href]="getSongUrl(song.spotify)"
-          target="_blank"
-        >
-          <app-icon-spotify></app-icon-spotify>
-        </a>
-        <app-icon-spotify
-          *ngIf="edit"
-          class="cursor-pointer"
-          [class]="{ 'link-spotify': song.spotify }"
-          (click)="setSongUrl(song)"
-        ></app-icon-spotify>
-      </div>
-    </div>
-    <div class="col-sm-6 mb-3" *ngIf="anime!.ending_themes?.length">
-      <strong class="text-dark">Ending{{ anime!.ending_themes.length > 1 ? 's' : '' }}</strong>
-      <div *ngFor="let song of anime!.ending_themes" class="mt-2">
-        {{ song.text }}
-        <a
-          class="link-spotify"
-          *ngIf="getSongUrl(song.spotify) && !edit"
-          [href]="getSongUrl(song.spotify)"
-          target="_blank"
-        >
-          <app-icon-spotify></app-icon-spotify>
-        </a>
-        <app-icon-spotify
-          *ngIf="edit"
-          class="cursor-pointer"
-          [class]="{ 'link-spotify': song.spotify }"
-          (click)="setSongUrl(song)"
-        ></app-icon-spotify>
-      </div>
-    </div>
+  <div class="mb-3" *ngIf="!edit && anime">
+    <span *ngFor="let genre of anime!.genres" class="badge bg-primary me-1">
+      {{ genre.name }}
+    </span>
   </div>
-  <section *ngIf="!edit && !inModal">
-    <ng-container *ngIf="anime?.related_anime">
-      <div *ngFor="let type of getRelatedAnimes()" class="mb-3">
-        <strong class="text-dark">{{ type.name }}</strong>
-        <div *ngFor="let related of type.entries" class="mt-2">
-          <a routerLink="/anime/details/{{ related.id }}">
-            {{ related.title }}
-          </a>
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="anime?.related_manga">
-      <div *ngFor="let type of getRelatedMangas()" class="mb-3">
-        <strong class="text-dark">{{ type.name }}</strong>
-        <div *ngFor="let related of type.entries" class="mt-2">
-          <a routerLink="/manga/details/{{ related.id }}">
-            {{ related.title }}
-          </a>
-        </div>
-      </div>
-    </ng-container>
-  </section>
-  <section
-    class="mb-3"
-    *ngIf="!inModal && !edit && anime && anime.recommendations && anime.recommendations.length"
-  >
-    <strong>Recommendations</strong>
-    <div class="overflow-auto mt-2">
-      <div class="d-flex" [ngStyle]="{ 'width.rem': 11 * anime.recommendations.length }">
-        <div
-          class="card me-3 cursor-pointer"
-          style="width: 10rem"
-          *ngFor="let recom of anime.recommendations"
-          [routerLink]="'/anime/details/' + recom.node.id"
-        >
-          <img
-            style="height: 16rem; object-fit: cover"
-            [src]="
-              recom.node.main_picture?.large ||
-              recom.node.main_picture?.medium ||
-              '/assets/blank-poster.svg'
-            "
-            class="card-img-top"
-            [alt]="recom.node.title"
-          />
-          <div class="card-body p-2">
-            <div>{{ recom.node.title }}</div>
-          </div>
-          <div
-            class="badge rounded-pill bg-primary"
-            style="position: absolute; top: 0.5rem; right: 0.5rem"
-          >
-            {{ recom.num_recommendations }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+
+  <ng-container *ngIf="!edit && anime">
+    <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+      <li [ngbNavItem]="1" *ngIf="anime.synopsis || anime.background">
+        <a ngbNavLink>Synopsis</a>
+        <ng-template ngbNavContent>
+          <section *ngIf="!edit">
+            <div
+              class="mb-3"
+              *ngIf="anime?.synopsis"
+              [innerHTML]="anime!.synopsis || '' | nl2br"
+            ></div>
+            <div class="mb-3" *ngIf="anime?.background">
+              <strong>Background</strong>
+              <div [innerHTML]="anime?.background || '' | nl2br"></div>
+            </div>
+          </section>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2" *ngIf="anime?.opening_themes || anime?.ending_themes">
+        <a ngbNavLink>Songs</a>
+        <ng-template ngbNavContent>
+          <app-anime-songs [anime]="anime"></app-anime-songs>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="3" *ngIf="anime.recommendations && anime.recommendations.length">
+        <a ngbNavLink>Characters</a>
+        <ng-template ngbNavContent>
+          <app-anime-characters [id]="id"></app-anime-characters>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="4" *ngIf="!inModal && (anime?.related_anime || anime?.related_manga)">
+        <a ngbNavLink>Related</a>
+        <ng-template ngbNavContent>
+          <section *ngIf="!inModal">
+            <app-anime-related [related_anime]="anime.related_anime"></app-anime-related>
+            <app-manga-related [related_manga]="anime.related_manga"></app-manga-related>
+          </section>
+        </ng-template>
+      </li>
+      <li
+        [ngbNavItem]="5"
+        *ngIf="!inModal && anime.recommendations && anime.recommendations.length"
+      >
+        <a ngbNavLink>Recommendations</a>
+        <ng-template ngbNavContent>
+          <app-anime-recommendations
+            [recommendations]="anime.recommendations"
+          ></app-anime-recommendations>
+        </ng-template>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </ng-container>
+
+  <app-anime-songs [anime]="anime" *ngIf="edit" [edit]="edit"></app-anime-songs>
 </div>

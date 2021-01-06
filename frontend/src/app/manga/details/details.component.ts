@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Picture } from '@models/components';
-import { Manga, MangaExtension, MyMangaUpdate } from '@models/manga';
+import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import { GlobalService } from 'src/app/global.service';
@@ -22,6 +22,7 @@ export class MangaDetailsComponent implements OnInit {
   busy = false;
   editBackup?: Partial<MyMangaUpdate>;
   editExtension?: MangaExtension;
+  activeTab = 1;
   constructor(
     private mangaService: MangaService,
     private route: ActivatedRoute,
@@ -50,7 +51,7 @@ export class MangaDetailsComponent implements OnInit {
       if (this.edit) return this.save();
       this.startEdit();
     } else {
-      this.addManga();
+      this.setStatus('plan_to_read');
     }
   }
 
@@ -125,10 +126,10 @@ export class MangaDetailsComponent implements OnInit {
     delete this.editExtension;
   }
 
-  async addManga() {
+  async setStatus(status: ReadStatus) {
     if (!this.manga) return;
     this.busy = true;
-    await this.mangaService.updateManga(this.manga.id, { status: 'plan_to_read' });
+    await this.mangaService.updateManga(this.manga.id, { status });
     await this.ngOnInit();
     this.busy = false;
   }

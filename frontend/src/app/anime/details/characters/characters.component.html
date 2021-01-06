@@ -1,0 +1,33 @@
+<section class="mb-3" *ngIf="characters.length">
+  <div class="overflow-auto mt-2">
+    <div class="d-flex" [ngStyle]="{ 'width.rem': 8 * characters.length }">
+      <div class="card me-3" style="width: 7rem" *ngFor="let character of characters">
+        <span class="cursor-pointer" [routerLink]="'/character/' + character.mal_id">
+          <img
+            style="height: 11rem; object-fit: cover"
+            [src]="character.image_url || '/assets/blank-poster.svg'"
+            class="card-img-top"
+            [alt]="character.name"
+          />
+          <div class="card-body p-2">
+            <div class="name">{{ character.name }}</div>
+            <div class="name text-muted">{{ character.role }}</div>
+          </div>
+        </span>
+        <ng-container *ngIf="getVoiceActor(character); let voiceActor">
+          <span class="cursor-pointer" [routerLink]="'/person/' + voiceActor.mal_id">
+            <img
+              style="height: 11rem; object-fit: cover"
+              [src]="voiceActor.image_url?.replace('/r/42x62/', '/') || '/assets/blank-poster.svg'"
+              class="card-img-top"
+              [alt]="voiceActor.name"
+            />
+            <div class="card-body p-2">
+              <div class="name">{{ voiceActor.name }}</div>
+            </div>
+          </span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</section>

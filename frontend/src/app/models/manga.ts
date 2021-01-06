@@ -41,7 +41,7 @@ interface MangaInterface {
   background?: string;
   related_manga: RelatedManga[];
   related_anime: RelatedAnime[];
-  recommendations: Array<{ node: MangaNode; num_recommendations: number }>;
+  recommendations: MangaRecommendations;
   authors?: Array<{ role: string; node: Person }>;
   serialization: Array<{ node: Studio }>;
   statistics?: {
@@ -135,3 +135,15 @@ interface MangaExtensionInterface {
 }
 
 export type MangaExtension = MangaExtensionInterface;
+
+export type MangaRecommendations = Array<{ node: MangaNode; num_recommendations: number }>;
+
+interface Character {
+  mal_id: number;
+  url: string;
+  image_url: string;
+  name: string;
+  role: string;
+}
+
+export type MangaCharacter = Character;

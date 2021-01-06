@@ -22,3 +22,9 @@
     top: 0;
   }
 }
+
+.nav {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}

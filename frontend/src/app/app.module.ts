@@ -8,7 +8,11 @@ import { IvyGalleryModule } from 'angular-gallery';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
+import { AnimeCharactersComponent } from './anime/details/characters/characters.component';
 import { AnimeDetailsComponent } from './anime/details/details.component';
+import { AnimeRecommendationsComponent } from './anime/details/recommendations/recommendations.component';
+import { AnimeRelatedComponent } from './anime/details/related/related.component';
+import { AnimeSongsComponent } from './anime/details/songs/songs.component';
 import { AnimeListComponent } from './anime/list/list.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
@@ -17,6 +21,7 @@ import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { StreamingComponent } from './anime/widget/streaming/streaming.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CharacterComponent } from './character/character.component';
 import { FlagPipe } from './flag.pipe';
 import { IconStatusComponent } from './icon-status/icon-status.component';
 import { IconComponent } from './icon/icon.component';
@@ -25,10 +30,14 @@ import { SpotifyIconComponent } from './icon/spotify/spotify.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
+import { MangaCharactersComponent } from './manga/details/characters/characters.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
+import { MangaRecommendationsComponent } from './manga/details/recommendations/recommendations.component';
+import { MangaRelatedComponent } from './manga/details/related/related.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { Nl2brPipe } from './nl2br.pipe';
+import { PersonComponent } from './person/person.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 import { StreamPipe } from './stream.pipe';
@@ -60,6 +69,15 @@ import { TimePipe } from './time.pipe';
     TraktIconComponent,
     MalComponent,
     Nl2brPipe,
+    AnimeCharactersComponent,
+    AnimeRecommendationsComponent,
+    AnimeRelatedComponent,
+    MangaRelatedComponent,
+    AnimeSongsComponent,
+    MangaRecommendationsComponent,
+    MangaCharactersComponent,
+    CharacterComponent,
+    PersonComponent,
   ],
   imports: [
     BrowserModule,

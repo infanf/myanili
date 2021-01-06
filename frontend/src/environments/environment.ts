@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   backend: 'http://localhost:4280/',
+  jikanUrl: 'https://api.jikan.moe/v3/',
 };
 
 /*

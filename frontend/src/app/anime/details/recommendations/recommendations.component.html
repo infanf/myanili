@@ -1,0 +1,36 @@
+
+  <section
+  class="mb-3"
+  *ngIf="recommendations.length"
+>
+  <div class="overflow-auto mt-2">
+    <div class="d-flex" [ngStyle]="{ 'width.rem': 11 * recommendations.length }">
+      <div
+        class="card me-3 cursor-pointer"
+        style="width: 10rem"
+        *ngFor="let recom of recommendations"
+        [routerLink]="'/anime/details/' + recom.node.id"
+      >
+        <img
+          style="height: 16rem; object-fit: cover"
+          [src]="
+            recom.node.main_picture?.large ||
+            recom.node.main_picture?.medium ||
+            '/assets/blank-poster.svg'
+          "
+          class="card-img-top"
+          [alt]="recom.node.title"
+        />
+        <div class="card-body p-2">
+          <div>{{ recom.node.title }}</div>
+        </div>
+        <div
+          class="badge rounded-pill bg-primary"
+          style="position: absolute; top: 0.5rem; right: 0.5rem"
+        >
+          {{ recom.num_recommendations }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

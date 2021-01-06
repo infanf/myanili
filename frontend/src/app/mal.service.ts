@@ -11,7 +11,6 @@ import { environment } from 'src/environments/environment';
 })
 export class MalService {
   private backendUrl = environment.backend;
-  private jikanUrl = 'https://api.jikan.moe/v3';
   private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 
@@ -53,7 +52,7 @@ export class MalService {
 
   async getJikan(type: 'anime' | 'manga', id: number): Promise<JikanInstance> {
     return new Promise((r, rj) => {
-      this.httpClient.get<JikanInstance>(`${this.jikanUrl}/${type}/${id}`).subscribe(r);
+      this.httpClient.get<JikanInstance>(`${environment.jikanUrl}${type}/${id}`).subscribe(r);
     });
   }
 
