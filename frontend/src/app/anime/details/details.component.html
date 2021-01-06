@@ -425,7 +425,7 @@
           <app-anime-characters [id]="id"></app-anime-characters>
         </ng-template>
       </li>
-      <li [ngbNavItem]="4" *ngIf="anime?.related_anime || anime?.related_manga">
+      <li [ngbNavItem]="4" *ngIf="!inModal && (anime?.related_anime || anime?.related_manga)">
         <a ngbNavLink>Related</a>
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">
@@ -434,7 +434,10 @@
           </section>
         </ng-template>
       </li>
-      <li [ngbNavItem]="5" *ngIf="anime.recommendations && anime.recommendations.length">
+      <li
+        [ngbNavItem]="5"
+        *ngIf="!inModal && anime.recommendations && anime.recommendations.length"
+      >
         <a ngbNavLink>Recommendations</a>
         <ng-template ngbNavContent>
           <app-anime-recommendations

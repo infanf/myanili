@@ -16,4 +16,17 @@ export class AnimeCharactersComponent implements OnInit {
   async ngOnInit() {
     this.characters = await this.animeService.getCharacters(this.id);
   }
+
+  getVoiceActor(
+    character: AnimeCharacter,
+  ):
+    | {
+        mal_id: number;
+        name: string;
+        image_url?: string;
+      }
+    | undefined {
+    const voiceActors = character.voice_actors.filter(actor => actor.language === 'Japanese');
+    return voiceActors.length ? voiceActors[0] : undefined;
+  }
 }
