@@ -103,7 +103,11 @@
       <div class="row" *ngIf="manga?.authors && manga?.authors?.length">
         <div class="col-4 fw-bold text-end">Author</div>
         <div class="col-8">
-          <div *ngFor="let author of manga!.authors">
+          <div
+            *ngFor="let author of manga!.authors"
+            class="cursor-pointer link-primary"
+            [routerLink]="'/person/' + author.id"
+          >
             {{ author.node.last_name }} {{ author.node.first_name }} ({{ author.role }})
           </div>
         </div>

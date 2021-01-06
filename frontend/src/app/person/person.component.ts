@@ -31,7 +31,7 @@ export class PersonComponent {
           .get<JikanPerson>(environment.jikanUrl + 'person/' + this.id)
           .subscribe(person => {
             this.person = person;
-            this.person.about = this.person.about.replace(/\\n/g, '');
+            this.person.about = this.person.about.replace(/\\n/g, '').trim();
             this.glob.notbusy();
           });
       }
