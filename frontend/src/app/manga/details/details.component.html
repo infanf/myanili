@@ -106,7 +106,7 @@
           <div
             *ngFor="let author of manga!.authors"
             class="cursor-pointer link-primary"
-            [routerLink]="'/person/' + author.id"
+            [routerLink]="'/person/' + author.node.id"
           >
             {{ author.node.last_name }} {{ author.node.first_name }} ({{ author.role }})
           </div>
