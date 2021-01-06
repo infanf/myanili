@@ -21,6 +21,7 @@ import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { StreamingComponent } from './anime/widget/streaming/streaming.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CharacterComponent } from './character/character.component';
 import { FlagPipe } from './flag.pipe';
 import { IconStatusComponent } from './icon-status/icon-status.component';
 import { IconComponent } from './icon/icon.component';
@@ -36,6 +37,7 @@ import { MangaRelatedComponent } from './manga/details/related/related.component
 import { MangaListComponent } from './manga/list/list.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { Nl2brPipe } from './nl2br.pipe';
+import { PersonComponent } from './person/person.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 import { StreamPipe } from './stream.pipe';
@@ -74,6 +76,8 @@ import { TimePipe } from './time.pipe';
     AnimeSongsComponent,
     MangaRecommendationsComponent,
     MangaCharactersComponent,
+    CharacterComponent,
+    PersonComponent,
   ],
   imports: [
     BrowserModule,

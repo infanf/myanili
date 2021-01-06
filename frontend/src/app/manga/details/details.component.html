@@ -132,7 +132,18 @@
         <div class="col-4 fw-bold text-end">My&nbsp;List</div>
         <div class="col-8">
           <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
-          <ng-template #mylist>{{ manga!.my_list_status!.status | mal: 'mystatus' }}</ng-template>
+          <ng-template #mylist
+            >{{ manga!.my_list_status!.status | mal: 'mystatus' }}
+            <app-icon
+              *ngIf="
+                manga!.my_list_status?.status === 'plan_to_read' ||
+                manga!.my_list_status?.status === 'on_hold'
+              "
+              name="play-circle"
+              class="cursor-pointer me-1"
+              (click)="setStatus('reading')"
+            ></app-icon
+          ></ng-template>
           <ng-template #mylistedit>
             <select
               class="form-control form-control-sm"
@@ -268,7 +279,10 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2" *ngIf="!inModal && (manga?.related_anime?.length || manga?.related_manga?.length)">
+      <li
+        [ngbNavItem]="2"
+        *ngIf="!inModal && (manga?.related_anime?.length || manga?.related_manga?.length)"
+      >
         <a ngbNavLink>Related</a>
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">

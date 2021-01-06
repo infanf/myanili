@@ -1,7 +1,7 @@
 <section class="mb-3" *ngIf="characters.length">
   <div class="overflow-auto mt-2">
     <div class="d-flex" [ngStyle]="{ 'width.rem': 8 * characters.length }">
-      <div class="card me-3" style="width: 7rem" *ngFor="let character of characters">
+      <div class="card me-3 cursor-pointer" style="width: 7rem" *ngFor="let character of characters" [routerLink]="'/character/' + character.mal_id">
         <img
           style="height: 11rem; object-fit: cover"
           [src]="character.image_url || '/assets/blank-poster.svg'"

@@ -1,22 +1,15 @@
-.entry {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 .table {
   table-layout: fixed;
 
-  td:first-child {
-    width: 3rem;
-  }
-  td:nth-child(2) {
-    width: 2rem;
-  }
-}
+  td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-.time {
-  display: inline-block;
-  width: 3.5rem;
+    &:first-child {
+      width: 3.5rem;
+    }
+  }
 }
 
 .flag {

@@ -13,15 +13,15 @@
               [provider]="anime.my_extension?.externalStreaming"
               [country]="anime.my_extension?.simulCountry"
             ></app-streaming>
-          </td>
-          <td [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer entry">
-            {{
-              (lang === 'en'
+            <span [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer entry">
+              {{
+                (lang === 'en'
                 ? anime.alternative_titles?.en
                 : lang === 'jp'
                 ? anime.alternative_titles?.ja
                 : anime.title) || anime.title
-            }}
+              }}
+            </span>
           </td>
         </tr>
       </table>
