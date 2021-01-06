@@ -1,4 +1,5 @@
 import { Genre, Nsfw, Picture, Studio } from './components';
+import { RelatedManga } from './manga';
 
 interface ListAnimeInterface {
   node: AnimeNode;
@@ -44,7 +45,7 @@ interface AnimeInterface {
   pictures: Picture[];
   background?: string;
   related_anime: RelatedAnime[];
-  related_manga: RelatedAnime[];
+  related_manga: RelatedManga[];
   recommendations: Array<{ node: AnimeNode; num_recommendations: number }>;
   studios: Studio[];
   statistics?: {

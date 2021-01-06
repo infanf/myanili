@@ -419,7 +419,7 @@
           <app-anime-songs [anime]="anime"></app-anime-songs>
         </ng-template>
       </li>
-      <li [ngbNavItem]="3" *ngIf="anime.recommendations && anime.recommendations.length">
+      <li [ngbNavItem]="3">
         <a ngbNavLink>Characters</a>
         <ng-template ngbNavContent>
           <app-anime-characters [id]="id"></app-anime-characters>

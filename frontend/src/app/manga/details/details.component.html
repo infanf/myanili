@@ -268,7 +268,7 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="3" *ngIf="!inModal && (manga?.related_anime || manga?.related_manga)">
+      <li [ngbNavItem]="2" *ngIf="!inModal && (manga?.related_anime?.length || manga?.related_manga?.length)">
         <a ngbNavLink>Related</a>
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">
@@ -277,15 +277,21 @@
           </section>
         </ng-template>
       </li>
+      <li [ngbNavItem]="3">
+        <a ngbNavLink>Characters</a>
+        <ng-template ngbNavContent>
+          <app-manga-characters [id]="id"></app-manga-characters>
+        </ng-template>
+      </li>
       <li
         [ngbNavItem]="4"
         *ngIf="!inModal && manga.recommendations && manga.recommendations.length"
       >
         <a ngbNavLink>Recommendations</a>
         <ng-template ngbNavContent>
-          <app-anime-recommendations
+          <app-manga-recommendations
             [recommendations]="manga.recommendations"
-          ></app-anime-recommendations>
+          ></app-manga-recommendations>
         </ng-template>
       </li>
     </ul>

@@ -1,14 +1,17 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RelatedAnime } from '@models/anime';
 import {
   ListManga,
   Manga,
+  MangaCharacter,
   MangaExtension,
   MyMangaStatus,
   MyMangaUpdate,
   ReadStatus,
 } from '@models/manga';
 import { Base64 } from 'js-base64';
+import { environment } from 'src/environments/environment';
 
 import { MalService } from '../mal.service';
 
@@ -16,7 +19,7 @@ import { MalService } from '../mal.service';
   providedIn: 'root',
 })
 export class MangaService {
-  constructor(private malService: MalService) {}
+  constructor(private malService: MalService, private httpClient: HttpClient) {}
 
   async list(status?: ReadStatus) {
     const mangas = await this.malService.myMangaList(status);
@@ -65,5 +68,15 @@ export class MangaService {
       }
     }
     return animes;
+  }
+
+  async getCharacters(id: number): Promise<MangaCharacter[]> {
+    return new Promise((r, rj) => {
+      this.httpClient
+        .get<{ characters: MangaCharacter[] }>(`${environment.jikanUrl}manga/${id}/characters`)
+        .subscribe(result => {
+          r(result.characters || []);
+        });
+    });
   }
 }

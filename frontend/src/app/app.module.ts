@@ -29,6 +29,7 @@ import { SpotifyIconComponent } from './icon/spotify/spotify.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
+import { MangaCharactersComponent } from './manga/details/characters/characters.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaRecommendationsComponent } from './manga/details/recommendations/recommendations.component';
 import { MangaRelatedComponent } from './manga/details/related/related.component';
@@ -72,6 +73,7 @@ import { TimePipe } from './time.pipe';
     MangaRelatedComponent,
     AnimeSongsComponent,
     MangaRecommendationsComponent,
+    MangaCharactersComponent,
   ],
   imports: [
     BrowserModule,

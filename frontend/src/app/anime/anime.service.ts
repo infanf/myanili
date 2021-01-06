@@ -8,9 +8,9 @@ import {
   ListAnime,
   MyAnimeStatus,
   MyAnimeUpdate,
-  RelatedAnime,
   WatchStatus,
 } from '@models/anime';
+import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
 import { environment } from 'src/environments/environment';
 
@@ -68,9 +68,9 @@ export class AnimeService {
     return this.malService.put<MyAnimeStatus>('anime/' + id, data);
   }
 
-  async getManga(id: number): Promise<RelatedAnime[]> {
+  async getManga(id: number): Promise<RelatedManga[]> {
     const jikanime = await this.malService.getJikan('anime', id);
-    const mangas = [] as RelatedAnime[];
+    const mangas = [] as RelatedManga[];
     for (const key in jikanime.related) {
       if (!jikanime.related[key]) continue;
       for (const related of jikanime.related[key]) {
