@@ -1,0 +1,10 @@
+<ng-container *ngIf="related_manga">
+  <div *ngFor="let type of getRelatedMangas()" class="mb-3">
+    <strong class="text-dark">{{ type.name }}</strong>
+    <div *ngFor="let related of type.entries" class="mt-2">
+      <a routerLink="/manga/details/{{ related.id }}">
+        {{ related.title }}
+      </a>
+    </div>
+  </div>
+</ng-container>

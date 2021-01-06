@@ -8,7 +8,11 @@ import { IvyGalleryModule } from 'angular-gallery';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
+import { AnimeCharactersComponent } from './anime/details/characters/characters.component';
 import { AnimeDetailsComponent } from './anime/details/details.component';
+import { AnimeRecommendationsComponent } from './anime/details/recommendations/recommendations.component';
+import { AnimeRelatedComponent } from './anime/details/related/related.component';
+import { AnimeSongsComponent } from './anime/details/songs/songs.component';
 import { AnimeListComponent } from './anime/list/list.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
@@ -26,6 +30,8 @@ import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
+import { MangaRecommendationsComponent } from './manga/details/recommendations/recommendations.component';
+import { MangaRelatedComponent } from './manga/details/related/related.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { Nl2brPipe } from './nl2br.pipe';
@@ -60,6 +66,12 @@ import { TimePipe } from './time.pipe';
     TraktIconComponent,
     MalComponent,
     Nl2brPipe,
+    AnimeCharactersComponent,
+    AnimeRecommendationsComponent,
+    AnimeRelatedComponent,
+    MangaRelatedComponent,
+    AnimeSongsComponent,
+    MangaRecommendationsComponent,
   ],
   imports: [
     BrowserModule,

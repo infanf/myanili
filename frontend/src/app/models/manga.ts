@@ -135,3 +135,5 @@ interface MangaExtensionInterface {
 }
 
 export type MangaExtension = MangaExtensionInterface;
+
+export type MangaRecommendations = Array<{ node: MangaNode; num_recommendations: number }>;

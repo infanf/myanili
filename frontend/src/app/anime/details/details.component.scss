@@ -30,3 +30,9 @@ a.link-red {
     color: darken(#ed1c24, 10%);
   }
 }
+
+.nav {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: visible;
+}

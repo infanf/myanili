@@ -1,15 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Anime, AnimeExtension, AnimeTheme, MyAnimeUpdate } from '@models/anime';
+import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
 import { Picture } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import * as moment from 'moment';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/global.service';
-import { MalService } from 'src/app/mal.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
@@ -24,24 +21,21 @@ import { TraktComponent } from '../trakt/trakt.component';
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
   anime?: Anime;
-  shortsyn = true;
   edit = false;
   busy = false;
   editBackup?: Partial<MyAnimeUpdate>;
   editExtension?: AnimeExtension;
   traktUser?: string;
+  activeTab = 1;
   @Input() inModal = false;
 
   constructor(
-    private malService: MalService,
     private animeService: AnimeService,
     private route: ActivatedRoute,
     public streamPipe: StreamPipe,
     private glob: GlobalService,
     private trakt: TraktService,
     private modalService: NgbModal,
-    private deviceDetector: DeviceDetectorService,
-    private sanitizer: DomSanitizer,
     private gallery: Gallery,
   ) {
     this.route.paramMap.subscribe(async params => {
@@ -49,6 +43,9 @@ export class AnimeDetailsComponent implements OnInit {
       if (newId !== this.id) {
         this.id = newId;
         delete this.anime;
+        this.busy = false;
+        this.edit = false;
+        this.activeTab = 1;
         this.glob.busy();
         await this.ngOnInit();
       }
@@ -61,35 +58,6 @@ export class AnimeDetailsComponent implements OnInit {
   async ngOnInit() {
     this.anime = await this.animeService.getAnime(this.id);
     this.glob.notbusy();
-  }
-
-  getRelatedAnimes() {
-    if (!this.anime?.related_anime?.length) return [];
-    const types = this.anime.related_anime
-      .map(an => an.relation_type_formatted)
-      .filter((value, index, self) => self.indexOf(value) === index);
-    const relatedAnime = [];
-    for (const type of types) {
-      const related = this.anime.related_anime
-        .filter(value => value.relation_type_formatted === type)
-        .map(an => an.node);
-      relatedAnime.push({ name: type, entries: related });
-    }
-    return relatedAnime;
-  }
-  getRelatedMangas() {
-    if (!this.anime?.related_manga?.length) return [];
-    const types = this.anime.related_manga
-      .map(an => an.relation_type_formatted)
-      .filter((value, index, self) => self.indexOf(value) === index);
-    const relatedAnime = [];
-    for (const type of types) {
-      const related = this.anime.related_manga
-        .filter(value => value.relation_type_formatted === type)
-        .map(an => an.node);
-      relatedAnime.push({ name: type, entries: related });
-    }
-    return relatedAnime;
   }
 
   async editSave() {
@@ -261,31 +229,6 @@ export class AnimeDetailsComponent implements OnInit {
   getDay(day?: number): string {
     if (!day) return '';
     return moment().day(day).format('dddd');
-  }
-
-  getSongUrl(spotifyUri?: string): string | SafeUrl {
-    if (!spotifyUri) return '';
-    if (this.deviceDetector.isMobile()) return this.sanitizer.bypassSecurityTrustUrl(spotifyUri);
-    const parts = spotifyUri.split(':');
-    if (parts[0] === 'spotify' && parts.length === 3) {
-      return `https://open.spotify.com/${parts[1]}/${parts[2]}`;
-    }
-    return '';
-  }
-
-  async setSongUrl(song: AnimeTheme) {
-    this.glob.busy();
-    const spotify = prompt('Spotify URI', song.spotify)?.replace(
-      /https:\/\/open.spotify.com\/track\/(\w+)(\?.+)?/,
-      'spotify:track:$1',
-    );
-    if (!spotify?.match(/^spotify:track:\w+$/) || song.spotify === spotify) {
-      this.glob.notbusy();
-      return;
-    }
-    await this.malService.post('song/' + song.id, { spotify });
-    this.glob.notbusy();
-    song.spotify = spotify;
   }
 
   showGallery() {

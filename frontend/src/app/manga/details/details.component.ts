@@ -22,6 +22,7 @@ export class MangaDetailsComponent implements OnInit {
   busy = false;
   editBackup?: Partial<MyMangaUpdate>;
   editExtension?: MangaExtension;
+  activeTab = 1;
   constructor(
     private mangaService: MangaService,
     private route: ActivatedRoute,

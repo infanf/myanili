@@ -250,83 +250,43 @@
     </div>
   </div>
 
-  <section *ngIf="!edit">
-    <div class="mb-3" *ngIf="manga">
+  <ng-container *ngIf="!edit && manga">
+    <div class="mb-3">
       <span *ngFor="let genre of manga!.genres" class="badge bg-primary me-1">
         {{ genre.name }}
       </span>
     </div>
 
-    <div
-      class="mb-3"
-      *ngIf="manga?.synopsis"
-      (click)="shortsyn = !shortsyn"
-      [innerHTML]="
-        (shortsyn && manga!.synopsis!.length > 150
-          ? manga!.synopsis!.substr(0, 150) + '…'
-          : manga!.synopsis) || '' | nl2br
-      "
-    ></div>
-    <div class="mb-3" *ngIf="manga?.background">
-      <strong>Background</strong>
-      <div [innerHTML]="manga?.background || '' | nl2br"></div>
-    </div>
+    <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+      <li [ngbNavItem]="1" *ngIf="manga.synopsis || manga.background">
+        <a ngbNavLink>Synopsis</a>
+        <ng-template ngbNavContent>
+          <div class="mb-3" *ngIf="manga.synopsis" [innerHTML]="manga.synopsis || '' | nl2br"></div>
+          <div class="mb-3" *ngIf="manga.background">
+            <strong>Background</strong>
+            <div [innerHTML]="manga.background || '' | nl2br"></div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="3" *ngIf="manga?.related_anime || manga?.related_manga">
+        <a ngbNavLink>Related</a>
+        <ng-template ngbNavContent>
+          <section *ngIf="!inModal">
+            <app-manga-related [related_manga]="manga.related_manga"></app-manga-related>
+            <app-anime-related [related_anime]="manga.related_anime"></app-anime-related>
+          </section>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="4" *ngIf="manga.recommendations && manga.recommendations.length">
+        <a ngbNavLink>Recommendations</a>
+        <ng-template ngbNavContent>
+          <app-anime-recommendations
+            [recommendations]="manga.recommendations"
+          ></app-anime-recommendations>
+        </ng-template>
+      </li>
+    </ul>
 
-    <ng-container *ngIf="manga?.related_manga && !inModal">
-      <div *ngFor="let type of getRelatedMangas()" class="mb-3">
-        <strong class="text-dark">{{ type.name }}</strong>
-        <div *ngFor="let related of type.entries" class="mt-2">
-          <a routerLink="/manga/details/{{ related.id }}">
-            {{ related.title }}
-          </a>
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="manga?.related_anime && !inModal">
-      <div *ngFor="let type of getRelatedAnimes()" class="mb-3">
-        <strong class="text-dark">{{ type.name }}</strong>
-        <div *ngFor="let related of type.entries" class="mt-2">
-          <a routerLink="/anime/details/{{ related.id }}">
-            {{ related.title }}
-          </a>
-        </div>
-      </div>
-    </ng-container>
-  </section>
-  <section
-    class="mb-3"
-    *ngIf="!inModal && !edit && manga && manga.recommendations && manga.recommendations.length"
-  >
-    <strong>Recommendations</strong>
-    <div class="overflow-auto mt-2">
-      <div class="d-flex" [ngStyle]="{ 'width.rem': 11 * manga.recommendations.length }">
-        <div
-          class="card me-3 cursor-pointer"
-          style="width: 10rem"
-          *ngFor="let recom of manga.recommendations"
-          [routerLink]="'/manga/details/' + recom.node.id"
-        >
-          <img
-            style="height: 16rem; object-fit: cover"
-            [src]="
-              recom.node.main_picture?.large ||
-              recom.node.main_picture?.medium ||
-              '/assets/blank-poster.svg'
-            "
-            class="card-img-top"
-            [alt]="recom.node.title"
-          />
-          <div class="card-body p-2">
-            <div>{{ recom.node.title }}</div>
-          </div>
-          <div
-            class="badge rounded-pill bg-primary"
-            style="position: absolute; top: 0.5rem; right: 0.5rem"
-          >
-            {{ recom.num_recommendations }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </ng-container>
 </div>

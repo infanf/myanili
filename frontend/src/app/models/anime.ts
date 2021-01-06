@@ -151,3 +151,24 @@ interface AnimeExtensionInterface {
 }
 
 export type AnimeExtension = AnimeExtensionInterface;
+
+interface Character {
+  mal_id: number;
+  url: string;
+  image_url: string;
+  name: string;
+  role: string;
+  voice_actors: VoiceActor[];
+}
+
+interface VoiceActor {
+  mal_id: number;
+  name: string;
+  url: string;
+  image_url: string;
+  language: string;
+}
+
+export type AnimeCharacter = Character;
+
+export type AnimeRecommendations = Array<{ node: AnimeNode; num_recommendations: number }>;
