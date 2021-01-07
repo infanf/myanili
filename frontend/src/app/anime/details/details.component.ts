@@ -237,8 +237,17 @@ export class AnimeDetailsComponent implements OnInit {
       return { path: pic.large || pic.medium };
     }
     const prop = {
-      images: [picMap(this.anime.main_picture), ...this.anime.pictures.map(picMap)],
+      images: [
+        picMap(this.anime.main_picture),
+        ...this.anime.pictures
+          .filter(pic => pic.medium !== this.anime?.main_picture?.medium)
+          .map(picMap),
+      ],
     };
     this.gallery.load(prop);
+  }
+
+  ngOnDestroy() {
+    this.gallery.close();
   }
 }

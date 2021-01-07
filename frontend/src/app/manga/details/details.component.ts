@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Picture } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
@@ -13,7 +13,7 @@ import { MangaService } from '../manga.service';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
 })
-export class MangaDetailsComponent implements OnInit {
+export class MangaDetailsComponent implements OnInit, OnDestroy {
   @Input() id = 0;
   @Input() inModal = false;
   manga?: Manga;
@@ -212,8 +212,17 @@ export class MangaDetailsComponent implements OnInit {
       return { path: pic.large || pic.medium };
     }
     const prop = {
-      images: [picMap(this.manga.main_picture), ...this.manga.pictures.map(picMap)],
+      images: [
+        picMap(this.manga.main_picture),
+        ...this.manga.pictures
+          .filter(pic => pic.medium !== this.manga?.main_picture?.medium)
+          .map(picMap),
+      ],
     };
     this.gallery.load(prop);
+  }
+
+  ngOnDestroy() {
+    this.gallery.close();
   }
 }

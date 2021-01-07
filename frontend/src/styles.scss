@@ -65,6 +65,10 @@ overlay.overlay-shown {
   .carousel-backdrop {
     opacity: 0.8 !important;
   }
+
+  img {
+    object-fit: contain !important;
+  }
 }
 
 .col-4.fw-bold.text-end {

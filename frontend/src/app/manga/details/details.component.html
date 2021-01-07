@@ -34,7 +34,7 @@
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <ng-container *ngIf="!edit">
-        <picture (click)="showGallery()">
+        <picture (click)="showGallery()" class="cursor-pointer">
           <source
             *ngIf="manga && manga.main_picture"
             srcset="{{ manga.main_picture.large || manga.main_picture.medium }}"
