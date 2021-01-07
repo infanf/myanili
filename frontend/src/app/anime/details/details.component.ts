@@ -162,6 +162,7 @@ export class AnimeDetailsComponent implements OnInit {
 
   async setWatching() {
     if (!this.anime) return;
+    this.glob.busy();
     this.busy = true;
     await this.animeService.updateAnime(this.anime.id, { status: 'watching' });
     await this.ngOnInit();

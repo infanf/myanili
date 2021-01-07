@@ -128,6 +128,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
 
   async setStatus(status: ReadStatus) {
     if (!this.manga) return;
+    this.glob.busy();
     this.busy = true;
     await this.mangaService.updateManga(this.manga.id, { status });
     await this.ngOnInit();
