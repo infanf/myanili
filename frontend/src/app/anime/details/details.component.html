@@ -139,10 +139,12 @@
       <div class="row" *ngIf="anime && anime.start_date">
         <div class="col-4 fw-bold text-end">Aired</div>
         <div class="col-8">
-          <span class="text-nowrap">{{ anime.start_date | date }}</span>
+          <span class="text-nowrap">{{
+            (anime.start_date + '').length === 10 ? (anime.start_date | date) : anime.start_date
+          }}</span>
           <span *ngIf="anime.start_date !== anime.end_date">&ndash;</span>
           <span class="text-nowrap" *ngIf="anime.end_date && anime.start_date !== anime.end_date">{{
-            anime!.end_date | date
+            (anime.end_date + '').length === 10 ? (anime.end_date | date) : anime.end_date
           }}</span>
         </div>
       </div>
@@ -194,7 +196,7 @@
           !edit &&
           anime &&
           anime.my_extension &&
-          anime.my_extension?.simulDay &&
+          (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0) &&
           anime.my_extension?.simulTime
         "
       >

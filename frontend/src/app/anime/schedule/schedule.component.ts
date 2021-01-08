@@ -44,7 +44,11 @@ export class ScheduleComponent {
   }
 
   getAnimes(day: number): Array<Partial<Anime>> {
-    return this.animes.filter(anime => Number(anime.my_extension?.simulDay) % 7 === day % 7);
+    return this.animes.filter(
+      anime =>
+        Number(anime.my_extension?.simulDay) % 7 === day % 7 &&
+        anime.my_list_status?.status !== 'dropped',
+    );
   }
 
   getDay(day: number): string {
