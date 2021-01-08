@@ -228,7 +228,7 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   getDay(day?: number): string {
-    if (!day) return '';
+    if (!day && day !== 0) return '';
     return moment().day(day).format('dddd');
   }
 
