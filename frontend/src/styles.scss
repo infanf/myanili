@@ -48,6 +48,7 @@ thead.sticky th {
   box-shadow: inset 0 -3px 0 -2px currentColor;
   background-color: #fff;
   border-bottom: none;
+  z-index: 800;
 }
 
 .mal .modal-content {

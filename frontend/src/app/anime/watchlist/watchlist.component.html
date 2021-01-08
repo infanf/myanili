@@ -14,7 +14,8 @@
       <ng-container *ngFor="let anime of animes">
         <tr
           [class]="{
-            seen: isSeen(anime)
+            seen: isSeen(anime),
+            'text-green':anime.list_status.num_episodes_watched===0
           }"
         >
           <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
@@ -23,7 +24,7 @@
                 ? anime.node.alternative_titles?.en
                 : lang === 'jp'
                 ? anime.node.alternative_titles?.ja
-                : anime.node.title )|| anime.node.title
+                : anime.node.title) || anime.node.title
             }}
           </td>
           <td>
