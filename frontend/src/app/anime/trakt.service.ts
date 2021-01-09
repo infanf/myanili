@@ -115,6 +115,7 @@ export class TraktService {
                   },
                   error => {
                     console.error(error.message);
+                    alert('Error scrobbling to trakt');
                     r(false);
                   },
                 );
