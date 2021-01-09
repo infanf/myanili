@@ -427,7 +427,7 @@
           <app-anime-characters [id]="id"></app-anime-characters>
         </ng-template>
       </li>
-      <li [ngbNavItem]="4" *ngIf="!inModal && (anime?.related_anime || anime?.related_manga)">
+      <li [ngbNavItem]="4" *ngIf="!inModal && (anime?.related_anime?.length || anime?.related_manga?.length)">
         <a ngbNavLink>Related</a>
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">

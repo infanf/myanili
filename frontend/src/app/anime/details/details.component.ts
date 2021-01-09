@@ -45,7 +45,6 @@ export class AnimeDetailsComponent implements OnInit {
         delete this.anime;
         this.busy = false;
         this.edit = false;
-        this.activeTab = 1;
         this.glob.busy();
         await this.ngOnInit();
       }

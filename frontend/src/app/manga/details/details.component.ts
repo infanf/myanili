@@ -143,6 +143,12 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       num_volumes_read: currentVolume + 1,
     } as Partial<MyMangaUpdate>;
     let completed = false;
+    if (this.manga.num_chapters && this.manga.num_volumes) {
+      data.num_chapters_read = Math.max(
+        this.manga.my_list_status?.num_chapters_read || 0,
+        Math.floor(((currentVolume + 1) / this.manga.num_volumes) * this.manga.num_chapters),
+      );
+    }
     if (currentVolume + 1 === this.manga.num_volumes) {
       data.status = 'completed';
       if (this.manga.num_chapters) data.num_chapters_read = this.manga.num_chapters;

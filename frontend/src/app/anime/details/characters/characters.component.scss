@@ -1,6 +1,5 @@
-div.name {
-  font-size: x-small;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.poster {
+  width: 6rem;
+  height:9rem;
+  object-fit: cover;
 }

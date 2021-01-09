@@ -4,7 +4,8 @@
   "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "docker-compose build && docker-compose up -d && docker exec -ti -w /frontend -u application myanili_app_1 bash && docker-compose down",
+    "build": "docker pull webdevops/php-apache-dev:7.4 && docker-compose build",
+    "dev": "npm run build && docker-compose up -d && docker exec -ti -w /frontend -u application myanili_app_1 bash && docker-compose down",
     "shell": "docker exec -ti -w /frontend -u application myanili_app_1 bash"
   },
   "author": "Christopher Schreiner",
