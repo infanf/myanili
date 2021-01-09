@@ -1,36 +1,38 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ magazine?.meta.name || 'Loading…' }}
+      {{ magazine?.meta?.name || 'Loading…' }}
       <a [href]="'https://myanimelist.net/manga/magazine/' + id" target="_blank">
         <app-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></app-icon-mal>
       </a>
     </h2>
   </header>
 
-  <div
-    *ngFor="let manga of magazine.manga"
-    class="mb-3 d-flex border rounded justify-content-between cursor-pointer"
-    [routerLink]="'/manga/details/' + manga.mal_id"
-  >
-    <img
-      [src]="manga.image_url || '/assets/blank-poster.svg'"
-      class="poster rounded-start cursor-pointer"
-    />
-    <div class="d-flex flex-fill justify-content-between flex-column p-3">
-      <div>
-        <div class="fw-bold">{{ manga.title }}</div>
-        <div><span class="text-muted">Type:</span> {{ manga.type }}</div>
-        <div><span class="text-muted">Year:</span> {{ manga.publishing_start | date: 'Y' }}</div>
-        <div class="d-flex">
-          <span class="text-muted me-1">Authors: </span>
-          <span class="d-inline-block">
-            <div *ngFor="let author of manga.authors">
-              {{ author.name }}
-            </div>
-          </span>
+  <ng-container *ngIf="magazine">
+    <div
+      *ngFor="let manga of magazine.manga"
+      class="mb-3 d-flex border rounded justify-content-between cursor-pointer"
+      [routerLink]="'/manga/details/' + manga.mal_id"
+    >
+      <img
+        [src]="manga.image_url || '/assets/blank-poster.svg'"
+        class="poster rounded-start cursor-pointer"
+      />
+      <div class="d-flex flex-fill justify-content-between flex-column p-3">
+        <div>
+          <div class="fw-bold">{{ manga.title }}</div>
+          <div><span class="text-muted">Type:</span> {{ manga.type }}</div>
+          <div><span class="text-muted">Year:</span> {{ manga.publishing_start | date: 'Y' }}</div>
+          <div class="d-flex">
+            <span class="text-muted me-1">Authors: </span>
+            <span class="d-inline-block">
+              <div *ngFor="let author of manga.authors">
+                {{ author.name }}
+              </div>
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>
