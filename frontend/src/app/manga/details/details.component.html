@@ -119,7 +119,13 @@
       <div class="row" *ngIf="manga?.serialization?.length">
         <div class="col-4 fw-bold text-end">Serialization</div>
         <div class="col-8">
-          <div *ngFor="let magazine of manga!.serialization!">{{ magazine.node.name }}</div>
+          <div
+            class="link-primary cursor-pointer"
+            *ngFor="let magazine of manga!.serialization!"
+            [routerLink]="'/manga/magazine/' + magazine.node.id"
+          >
+            {{ magazine.node.name }}
+          </div>
         </div>
       </div>
       <div class="row" *ngIf="manga && manga.start_date">

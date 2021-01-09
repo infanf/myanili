@@ -170,6 +170,16 @@ interface VoiceActor {
   language: string;
 }
 
+interface Staff {
+  mal_id: number;
+  url: string;
+  image_url: string;
+  name: string;
+  positions: string[];
+}
+
 export type AnimeCharacter = Character;
+
+export type AnimeStaff = Staff;
 
 export type AnimeRecommendations = Array<{ node: AnimeNode; num_recommendations: number }>;

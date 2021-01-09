@@ -13,6 +13,7 @@ import { AnimeDetailsComponent } from './anime/details/details.component';
 import { AnimeRecommendationsComponent } from './anime/details/recommendations/recommendations.component';
 import { AnimeRelatedComponent } from './anime/details/related/related.component';
 import { AnimeSongsComponent } from './anime/details/songs/songs.component';
+import { StaffComponent } from './anime/details/staff/staff.component';
 import { AnimeListComponent } from './anime/list/list.component';
 import { ProducerComponent } from './anime/producer/producer.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
@@ -82,6 +83,7 @@ import { TimePipe } from './time.pipe';
     PersonComponent,
     ProducerComponent,
     MagazineComponent,
+    StaffComponent,
   ],
   imports: [
     BrowserModule,

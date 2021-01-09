@@ -129,7 +129,13 @@
       <div class="row" *ngIf="anime?.studios && anime!.studios.length">
         <div class="col-4 fw-bold text-end">Studio</div>
         <div class="col-8">
-          <div *ngFor="let studio of anime!.studios">{{ studio.name }}</div>
+          <div
+            class="link-primary cursor-pointer"
+            *ngFor="let studio of anime!.studios"
+            [routerLink]="'/anime/producer/' + studio.id"
+          >
+            {{ studio.name }}
+          </div>
         </div>
       </div>
       <div class="row" *ngIf="anime">
@@ -427,7 +433,16 @@
           <app-anime-characters [id]="id"></app-anime-characters>
         </ng-template>
       </li>
-      <li [ngbNavItem]="4" *ngIf="!inModal && (anime?.related_anime?.length || anime?.related_manga?.length)">
+      <li [ngbNavItem]="6">
+        <a ngbNavLink>Staff</a>
+        <ng-template ngbNavContent>
+          <app-anime-staff [id]="id"></app-anime-staff>
+        </ng-template>
+      </li>
+      <li
+        [ngbNavItem]="4"
+        *ngIf="!inModal && (anime?.related_anime?.length || anime?.related_manga?.length)"
+      >
         <a ngbNavLink>Related</a>
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">

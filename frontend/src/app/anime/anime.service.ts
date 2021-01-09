@@ -5,6 +5,7 @@ import {
   AnimeCharacter,
   AnimeExtension,
   AnimeNode,
+  AnimeStaff,
   ListAnime,
   MyAnimeStatus,
   MyAnimeUpdate,
@@ -94,6 +95,15 @@ export class AnimeService {
         )
         .subscribe(result => {
           r(result.characters || []);
+        });
+    });
+  }
+  async getStaff(id: number): Promise<AnimeStaff[]> {
+    return new Promise((r, rj) => {
+      this.httpClient
+        .get<{ staff: AnimeStaff[] }>(`${environment.jikanUrl}anime/${id}/characters_staff`)
+        .subscribe(result => {
+          r(result.staff || []);
         });
     });
   }
