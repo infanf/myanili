@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AnimeDetailsComponent } from './anime/details/details.component';
 import { AnimeListComponent } from './anime/list/list.component';
+import { ProducerComponent } from './anime/producer/producer.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
@@ -10,6 +11,7 @@ import { CharacterComponent } from './character/character.component';
 import { MalComponent } from './mal/mal.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaListComponent } from './manga/list/list.component';
+import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PersonComponent } from './person/person.component';
 
 const routes: Routes = [
@@ -19,9 +21,11 @@ const routes: Routes = [
   { path: 'anime/schedule', component: ScheduleComponent },
   { path: 'anime/season', component: SeasonComponent },
   { path: 'anime/details/:id', component: AnimeDetailsComponent },
+  { path: 'anime/producer/:id', component: ProducerComponent },
   { path: 'manga/list', component: MangaListComponent },
   { path: 'manga/list/:status', component: MangaListComponent },
   { path: 'manga/details/:id', component: MangaDetailsComponent },
+  { path: 'manga/magazine/:id', component: MagazineComponent },
   { path: 'mal/:type', component: MalComponent },
   { path: 'character/:id', component: CharacterComponent },
   { path: 'person/:id', component: PersonComponent },

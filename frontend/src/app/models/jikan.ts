@@ -1,7 +1,4 @@
-interface Person {
-  request_hash: string;
-  request_cached: boolean;
-  request_cache_expiry: number;
+interface Person extends JikanResponse {
   mal_id: number;
   url: string;
   image_url?: string;
@@ -16,6 +13,12 @@ interface Person {
   voice_acting_roles: PersonRole[];
   anime_staff_positions: AnimePosition[];
   published_manga: MangaPosition[];
+}
+
+interface JikanResponse {
+  request_hash: string;
+  request_cached: boolean;
+  request_cache_expiry: number;
 }
 
 interface PersonRole {
@@ -36,16 +39,14 @@ interface MangaPosition {
 interface Node {
   mal_id: number;
   url: string;
-  image_url: string;
+  image_url?: string;
   name: string;
+  type?: string;
 }
 
 export type JikanPerson = Person;
 
-interface Character {
-  request_hash: string;
-  request_cached: boolean;
-  request_cache_expiry: number;
+interface Character extends JikanResponse {
   mal_id: number;
   url: string;
   image_url?: string;
@@ -68,3 +69,48 @@ interface VoiceActor extends Node {
 }
 
 export type JikanCharacter = Character;
+
+interface Producer extends JikanResponse {
+  meta: Node;
+  anime: Array<{
+    mal_id: number;
+    url: string;
+    title: string;
+    image_url: string;
+    synopsis: string;
+    type: string;
+    airing_start: Date;
+    episodes: number;
+    members: number;
+    genres: Node[];
+    source: string;
+    producers: Node[];
+    score: number;
+    licensors: Node[];
+    r18: false;
+    kids: false;
+  }>;
+}
+
+export type JikanProducer = Producer;
+
+interface Magazine extends JikanResponse {
+  meta: Node;
+  manga: Array<{
+    mal_id: number;
+    url: string;
+    title: string;
+    image_url: string;
+    synopsis: string;
+    type: string;
+    publishing_start: Date;
+    volumes: number;
+    members: number;
+    genres: Node[];
+    authors: Node[];
+    score: number;
+    serialization: string[];
+  }>;
+}
+
+export type JikanMagazine = Magazine;

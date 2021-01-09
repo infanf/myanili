@@ -14,6 +14,7 @@ import { AnimeRecommendationsComponent } from './anime/details/recommendations/r
 import { AnimeRelatedComponent } from './anime/details/related/related.component';
 import { AnimeSongsComponent } from './anime/details/songs/songs.component';
 import { AnimeListComponent } from './anime/list/list.component';
+import { ProducerComponent } from './anime/producer/producer.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { TraktComponent } from './anime/trakt/trakt.component';
@@ -35,6 +36,7 @@ import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaRecommendationsComponent } from './manga/details/recommendations/recommendations.component';
 import { MangaRelatedComponent } from './manga/details/related/related.component';
 import { MangaListComponent } from './manga/list/list.component';
+import { MagazineComponent } from './manga/magazine/magazine.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { Nl2brPipe } from './nl2br.pipe';
 import { PersonComponent } from './person/person.component';
@@ -78,6 +80,8 @@ import { TimePipe } from './time.pipe';
     MangaCharactersComponent,
     CharacterComponent,
     PersonComponent,
+    ProducerComponent,
+    MagazineComponent,
   ],
   imports: [
     BrowserModule,

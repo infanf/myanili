@@ -1,0 +1,28 @@
+<div class="container mt-sm-3 border-sm-x border-sm-y rounded">
+  <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
+    <h2>
+      {{ producer?.meta.name || 'Loading…' }}
+      <a [href]="'https://myanimelist.net/anime/producer/' + id" target="_blank">
+        <app-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></app-icon-mal>
+      </a>
+    </h2>
+  </header>
+
+  <div
+    *ngFor="let anime of producer.anime"
+    class="mb-3 d-flex border rounded justify-content-between cursor-pointer"
+    [routerLink]="'/anime/details/' + anime.mal_id"
+  >
+    <img
+      [src]="anime.image_url || '/assets/blank-poster.svg'"
+      class="poster rounded-start cursor-pointer"
+    />
+    <div class="d-flex flex-fill justify-content-between flex-column p-3">
+      <div>
+        <div class="fw-bold">{{ anime.title }}</div>
+        <div><span class="text-muted">Type:</span> {{ anime.type }}</div>
+        <div><span class="text-muted">Source:</span> {{ anime.source }}</div>
+      </div>
+    </div>
+  </div>
+</div>

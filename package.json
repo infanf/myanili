@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "docker pull webdevops/php-apache-dev:7.4 && docker-compose build",
-    "dev": "npm run build && docker-compose up -d && docker exec -ti -w /frontend -u application myanili_app_1 bash && docker-compose down",
+    "dev:build": "npm run build && npm run dev",
+    "dev": "docker-compose up -d && docker exec -ti -w /frontend -u application myanili_app_1 npm run dev && docker-compose down",
     "shell": "docker exec -ti -w /frontend -u application myanili_app_1 bash"
   },
   "author": "Christopher Schreiner",
