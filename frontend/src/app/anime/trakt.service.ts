@@ -74,13 +74,11 @@ export class TraktService {
         'trakt-api-version': '2',
         'trakt-api-key': this.clientId,
       };
-      try {
-        this.http
-          .get<Show[]>(this.baseUrl + 'search/show?query=' + q, { headers })
-          .subscribe(r);
-      } catch (e) {
-        rj(e.message);
-      }
+      this.http
+        .get<Show[]>(this.baseUrl + 'search/show?query=' + q, { headers })
+        .subscribe(r, e => {
+          r([]);
+        });
     });
   }
 
@@ -93,7 +91,7 @@ export class TraktService {
       };
 
       try {
-        const episodeUrl = `${this.baseUrl}/shows/${show}/seasons/${season}/episodes/${episodeno}`;
+        const episodeUrl = `${this.baseUrl}shows/${show}/seasons/${season}/episodes/${episodeno}`;
         this.http
           .get<Episode>(episodeUrl, { headers })
           .subscribe(result => {
@@ -101,19 +99,25 @@ export class TraktService {
               const episode = result;
               this.http
                 .post<{ id: number; action: 'scrobble' }>(
-                  `${this.baseUrl}/scrobble/stop`,
+                  `${this.baseUrl}scrobble/stop`,
                   {
                     episode,
                     progress: 100,
                   },
                   { headers },
                 )
-                .subscribe(scrobbleResult => {
-                  if (scrobbleResult.id && scrobbleResult.action) {
-                    r(true);
-                  }
-                  r(false);
-                });
+                .subscribe(
+                  scrobbleResult => {
+                    if (scrobbleResult.id && scrobbleResult.action) {
+                      r(true);
+                    }
+                    r(false);
+                  },
+                  error => {
+                    console.error(error.message);
+                    r(false);
+                  },
+                );
             } else {
               r(false);
             }
