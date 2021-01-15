@@ -17,6 +17,7 @@ export class SettingsComponent implements OnInit {
   lang: Language = 'default';
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
+  inlist = 'false';
   constructor(
     private settings: SettingsService,
     private glob: GlobalService,
@@ -33,6 +34,9 @@ export class SettingsComponent implements OnInit {
     this.trakt.user.subscribe(user => {
       this.traktLoggedIn = user;
     });
+    this.settings.onlyInList.subscribe(inList => {
+      this.inlist = JSON.stringify(inList);
+    });
   }
 
   async ngOnInit() {
@@ -41,6 +45,10 @@ export class SettingsComponent implements OnInit {
 
   changeLang() {
     this.settings.setLanguage(this.lang);
+  }
+
+  changeInList() {
+    this.settings.setInList(Boolean(JSON.parse(this.inlist)));
   }
 
   async malLogoff() {

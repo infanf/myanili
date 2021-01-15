@@ -31,6 +31,10 @@ export class SeasonComponent implements OnInit {
       this.glob.notbusy();
     });
     this.settings.language.subscribe(lang => (this.lang = lang));
+    this.settings.onlyInList.subscribe(inList => {
+      this.onlyInList = inList;
+      this.update();
+    });
   }
 
   async ngOnInit() {}

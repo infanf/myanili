@@ -14,6 +14,7 @@
         <th class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">English Name</th>
         <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Japanese Name</th>
         <th class="d-none d-sm-table-cell">Series</th>
+        <th>Type</th>
         <th class="d-none d-md-table-cell">Streaming</th>
         <th class="d-none d-md-table-cell">Episode</th>
         <th colspan="2" class="d-md-none">Episode</th>
@@ -31,7 +32,7 @@
         >
           <td>
             <app-icon-status
-            class="mx-2"
+              class="mx-2"
               *ngIf="anime.my_list_status"
               [status]="anime.my_list_status!.status"
             ></app-icon-status>
@@ -56,6 +57,7 @@
               >S{{ anime.my_extension?.seasonNumber }}</span
             >
           </td>
+          <td>{{ anime.media_type | mal: 'mediatype' }}</td>
           <td>
             <app-streaming
               [provider]="anime.my_extension?.externalStreaming"

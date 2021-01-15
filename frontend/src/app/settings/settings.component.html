@@ -17,6 +17,15 @@
           </select>
         </div>
       </div>
+      <div class="row mt-3">
+        <div class="col-5">Seasonal</div>
+        <div class="col-7">
+          <select class="form-control" (change)="changeInList()" [(ngModel)]="inlist">
+            <option value="false">Show all Airing</option>
+            <option value="true">Show only in my list</option>
+          </select>
+        </div>
+      </div>
     </div>
     </div>
     <div class="card mt-3">
