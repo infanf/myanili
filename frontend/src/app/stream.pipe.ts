@@ -50,6 +50,10 @@ export class StreamPipe implements PipeTransform {
       name: 'Netflix',
     },
     {
+      id: 'nhk',
+      name: 'NHK',
+    },
+    {
       id: 'yt',
       name: 'YouTube',
     },
