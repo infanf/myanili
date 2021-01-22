@@ -23,6 +23,7 @@
         <th class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">English Name</th>
         <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Japanese Name</th>
         <th>Type</th>
+        <th>Score</th>
         <th>Year</th>
       </tr>
     </thead>
@@ -58,6 +59,21 @@
             {{ result.alternative_titles?.ja }}
           </td>
           <td>{{ result.media_type | mal: 'mediatype' }}</td>
+          <td class="text-nowrap">
+            <circle-progress
+              [percent]="(result.mean || 0) * 10"
+              [outerStrokeColor]="
+                result!.mean >= 8
+                  ? '#4a8220'
+                  : result!.mean >= 7
+                  ? '#204a82'
+                  : result!.mean >= 5
+                  ? '#825820'
+                  : '#82204a'
+              "
+            ></circle-progress>
+            <span class="ms-1">{{ result.mean | number: '1.2-5' }}</span>
+          </td>
           <td>{{ result.start_date | date: 'y' }}</td>
         </tr>
       </ng-container>

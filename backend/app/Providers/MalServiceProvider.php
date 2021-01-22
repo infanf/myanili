@@ -234,7 +234,7 @@ class MalServiceProvider extends ServiceProvider
         $type = $type === 'manga' ? 'manga' : 'anime';
 
         $params = [
-            "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments}",
+            "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments},mean",
             "limit" => 50,
             "q" => $query,
         ];
