@@ -20,7 +20,7 @@
         <tr
           class="cursor-pointer"
           [class]="{
-            'fw-bold': manga.list_status.status === 'reading'
+            'fw-bold': manga.list_status.status === 'reading' && !manga.my_extension?.ongoing
           }"
           routerLink="/manga/details/{{ manga.node.id }}"
         >

@@ -239,7 +239,7 @@
         </div>
         <div class="row my-2" *ngIf="edit && editBackup">
           <div class="col-4 fw-bold text-end">Chapters</div>
-          <div class="col-4">
+          <div class="col-8">
             <div class="input-group input-group-sm">
               <input
                 class="form-control"
@@ -252,8 +252,10 @@
               <span class="input-group-text">/ {{ manga!.num_chapters || '?' }}</span>
             </div>
           </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && editBackup">
           <div class="col-4 fw-bold text-end">Volumes</div>
-          <div class="col-4">
+          <div class="col-8">
             <div class="input-group input-group-sm">
               <input
                 class="form-control"
@@ -264,6 +266,17 @@
                 [disabled]="busy"
               />
               <span class="input-group-text">/ {{ manga!.num_volumes || '?' }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && editBackup">
+          <div class="col-4 fw-bold text-end">Ongoing</div>
+          <div class="col-8">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="ongoing" [checked]="editExtension?.ongoing" (change)="changeOngoing()">
+              <label class="form-check-label" for="ongoing">
+                Regular updates
+              </label>
             </div>
           </div>
         </div>

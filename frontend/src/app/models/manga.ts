@@ -132,6 +132,7 @@ export type RelatedManga = RelatedMangaInterface;
 interface MangaExtensionInterface {
   platform?: string;
   platformId?: string;
+  ongoing?: boolean;
 }
 
 export type MangaExtension = MangaExtensionInterface;

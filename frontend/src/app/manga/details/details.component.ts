@@ -229,6 +229,12 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     this.gallery.load(prop);
   }
 
+  changeOngoing() {
+    const ongoing = !this.editExtension?.ongoing;
+    if (!this.editExtension) this.editExtension = { ongoing };
+    this.editExtension.ongoing = ongoing;
+  }
+
   ngOnDestroy() {
     this.gallery.close();
   }
