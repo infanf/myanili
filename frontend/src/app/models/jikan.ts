@@ -114,3 +114,31 @@ interface Magazine extends JikanResponse {
 }
 
 export type JikanMagazine = Magazine;
+
+interface ListManga {
+  added_to_list: boolean;
+  days?: number;
+  end_date: Date;
+  image_url: string;
+  is_rereading: boolean;
+  magazines: string[];
+  mal_id: number;
+  priority: string;
+  publishing_status: number;
+  read_chapters: number;
+  read_end_date?: Date;
+  read_start_date?: Date;
+  read_volumes?: number;
+  reading_status: number;
+  retail?: string;
+  score: number;
+  start_date?: Date;
+  tags?: string;
+  title: string;
+  total_chapters: number;
+  total_volumes: number;
+  type: string;
+  url: string;
+}
+
+export type JikanListManga = ListManga;

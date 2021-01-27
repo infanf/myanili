@@ -1,8 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { JikanListManga } from '@models/jikan';
 import { ListManga, MangaNode, ReadStatus } from '@models/manga';
+import { MalUser } from '@models/user';
 import { GlobalService } from 'src/app/global.service';
+import { MalService } from 'src/app/mal.service';
 import { SettingsService } from 'src/app/settings/settings.service';
+import { environment } from 'src/environments/environment';
 
 import { MangaService } from '../manga.service';
 
@@ -22,6 +27,8 @@ export class MangaListComponent implements OnInit {
     private route: ActivatedRoute,
     private settings: SettingsService,
     private glob: GlobalService,
+    private mal: MalService,
+    private httpClient: HttpClient,
   ) {
     this.route.paramMap.subscribe(params => {
       const newStatus = params.get('status') as ReadStatus;
@@ -37,6 +44,7 @@ export class MangaListComponent implements OnInit {
 
   async ngOnInit() {
     this.mangas = await this.mangaService.list(this.status);
+    this.completeMissing();
     this.glob.notbusy();
   }
 
@@ -46,5 +54,38 @@ export class MangaListComponent implements OnInit {
         author => `${author.node.last_name} ${author.node.first_name} (${author.role})`,
       ) || []
     );
+  }
+
+  async completeMissing() {
+    const user = (await new Promise(r => this.mal.user.subscribe(r))) as MalUser | undefined;
+    if (!user) return;
+
+    let url = environment.jikanUrl + 'user/' + user.name + '/mangalist';
+    if (this.status) url += '/' + this.status;
+    this.httpClient.get<{ manga: JikanListManga[] }>(url).subscribe(list => {
+      const existing = this.mangas.map(manga => manga.node.id);
+      for (const manga of list.manga) {
+        if (existing.includes(manga.mal_id)) continue;
+        this.mangas.push({
+          node: {
+            id: manga.mal_id,
+            title: manga.title,
+          },
+          list_status: {
+            status: this.status,
+            comments: '',
+            is_rereading: manga.is_rereading,
+            num_chapters_read: manga.read_chapters,
+            num_times_reread: 0,
+            num_volumes_read: manga.read_volumes || 0,
+            priority: 0,
+            reread_value: 0,
+            score: manga.score,
+            tags: manga.tags || '',
+            updated_at: new Date(),
+          },
+        });
+      }
+    });
   }
 }
