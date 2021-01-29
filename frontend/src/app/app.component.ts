@@ -20,9 +20,11 @@ export class AppComponent {
     });
     this.setupUpdates();
     this.glob.isBusy.subscribe(busy => (this.busy = busy));
+    this.glob.loadingPercent.subscribe(perc => (this.loadingPercent = perc));
   }
   loggedIn?: string | false = 'loading';
   busy = true;
+  loadingPercent = 0;
 
   setupUpdates() {
     this.swUpdate.available.subscribe(u => {

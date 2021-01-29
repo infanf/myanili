@@ -2,6 +2,14 @@
 <ng-container *ngIf="loggedIn && loggedIn != '***loading***'">
   <router-outlet></router-outlet>
   <div class="busy-overlay" *ngIf="busy">
-    <app-icon name="hourglass-split" size="64"></app-icon>
+    <app-icon *ngIf="!loadingPercent" name="hourglass-split" size="64"></app-icon>
+    <circle-progress
+      *ngIf="loadingPercent"
+      [percent]="loadingPercent"
+      [radius]="20"
+      [outerStrokeWidth]="8"
+      [innerStrokeWidth]="8"
+      [space]="-8"
+    ></circle-progress>
   </div>
 </ng-container>

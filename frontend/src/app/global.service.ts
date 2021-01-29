@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class GlobalService {
   private isBusySubject = new BehaviorSubject<boolean>(true);
+  private loadingPercentSubject = new BehaviorSubject<number>(0);
 
   constructor() {}
 
@@ -13,11 +14,17 @@ export class GlobalService {
     return this.isBusySubject.asObservable();
   }
 
-  busy() {
+  get loadingPercent() {
+    return this.loadingPercentSubject.asObservable();
+  }
+
+  busy(number = 0) {
     this.isBusySubject.next(true);
+    this.loadingPercentSubject.next(number);
   }
 
   notbusy() {
     this.isBusySubject.next(false);
+    this.loadingPercentSubject.next(0);
   }
 }

@@ -30,22 +30,21 @@ export class MangaListComponent implements OnInit {
     private mal: MalService,
     private httpClient: HttpClient,
   ) {
-    this.route.paramMap.subscribe(params => {
-      const newStatus = params.get('status') as ReadStatus;
-      if (newStatus !== this.status) {
-        this.status = newStatus;
-        this.mangas = [];
-        this.glob.busy();
-        this.ngOnInit();
-      }
-    });
     this.settings.language.subscribe(lang => (this.lang = lang));
   }
 
   async ngOnInit() {
-    this.mangas = await this.mangaService.list(this.status);
-    await this.completeMissing();
-    this.glob.notbusy();
+    this.route.paramMap.subscribe(async params => {
+      const newStatus = params.get('status') as ReadStatus;
+      if (newStatus !== this.status) {
+        this.status = newStatus;
+        this.mangas = [];
+        this.glob.busy(0.1);
+        this.mangas = await this.mangaService.list(this.status);
+        await this.completeMissing();
+        this.glob.notbusy();
+      }
+    });
   }
 
   getAuthor(manga: MangaNode): string[] {
@@ -61,14 +60,15 @@ export class MangaListComponent implements OnInit {
     if (!user) return;
 
     let url = environment.jikanUrl + 'user/' + user.name + '/mangalist';
-    if (this.status) url += '/' + this.status.replace('_', '');
+    if (this.status) url += '/' + this.status.replace(/_/g, '');
     const list = (await new Promise(r =>
       this.httpClient.get<{ manga: JikanListManga[] }>(url).subscribe(r),
     )) as { manga: JikanListManga[] };
+    const existing = this.mangas.map(m => m.node.id);
+    const mangas = list.manga.filter(m => !existing.includes(m.mal_id));
+    let percent = 0.1;
     await Promise.all(
-      list.manga.map(async manga => {
-        const existing = this.mangas.map(m => m.node.id);
-        if (existing.includes(manga.mal_id)) return;
+      mangas.map(async manga => {
         const mangaExtended = await this.mangaService.getManga(manga.mal_id, false);
         const existingNow = this.mangas.map(m => m.node.id);
         if (
@@ -103,6 +103,8 @@ export class MangaListComponent implements OnInit {
             ongoing: mangaExtended.my_extension?.ongoing,
           },
         });
+        percent += 99.9 / mangas.length;
+        this.glob.busy(percent);
       }),
     );
     this.mangas.sort((a, b) => {
