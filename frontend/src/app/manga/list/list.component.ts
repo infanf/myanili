@@ -44,7 +44,7 @@ export class MangaListComponent implements OnInit {
 
   async ngOnInit() {
     this.mangas = await this.mangaService.list(this.status);
-    this.completeMissing();
+    await this.completeMissing();
     this.glob.notbusy();
   }
 
@@ -61,18 +61,33 @@ export class MangaListComponent implements OnInit {
     if (!user) return;
 
     let url = environment.jikanUrl + 'user/' + user.name + '/mangalist';
-    if (this.status) url += '/' + this.status;
-    this.httpClient.get<{ manga: JikanListManga[] }>(url).subscribe(list => {
-      const existing = this.mangas.map(manga => manga.node.id);
-      for (const manga of list.manga) {
-        if (existing.includes(manga.mal_id)) continue;
+    if (this.status) url += '/' + this.status.replace('_', '');
+    const list = (await new Promise(r =>
+      this.httpClient.get<{ manga: JikanListManga[] }>(url).subscribe(r),
+    )) as { manga: JikanListManga[] };
+    await Promise.all(
+      list.manga.map(async manga => {
+        const existing = this.mangas.map(m => m.node.id);
+        if (existing.includes(manga.mal_id)) return;
+        const mangaExtended = await this.mangaService.getManga(manga.mal_id, false);
+        const existingNow = this.mangas.map(m => m.node.id);
+        if (
+          existingNow.includes(manga.mal_id) ||
+          mangaExtended.my_list_status?.status !== this.status
+        ) {
+          return;
+        }
         this.mangas.push({
           node: {
             id: manga.mal_id,
             title: manga.title,
+            alternative_titles: mangaExtended.alternative_titles,
+            num_chapters: manga.total_chapters,
+            num_volumes: manga.total_volumes,
+            authors: mangaExtended.authors,
           },
           list_status: {
-            status: this.status,
+            status: mangaExtended.my_list_status?.status,
             comments: '',
             is_rereading: manga.is_rereading,
             num_chapters_read: manga.read_chapters,
@@ -84,8 +99,16 @@ export class MangaListComponent implements OnInit {
             tags: manga.tags || '',
             updated_at: new Date(),
           },
+          my_extension: {
+            ongoing: mangaExtended.my_extension?.ongoing,
+          },
         });
-      }
+      }),
+    );
+    this.mangas.sort((a, b) => {
+      const textA = a.node.title.toUpperCase();
+      const textB = b.node.title.toUpperCase();
+      return textA < textB ? -1 : textA > textB ? 1 : 0;
     });
   }
 }
