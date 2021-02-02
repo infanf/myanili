@@ -78,6 +78,7 @@ class MalServiceProvider extends ServiceProvider
             "fields" => "num_episodes,start_season,start_date,end_date,alternative_titles,list_status{comments}",
             "sort" => "anime_start_date",
             "limit" => 1000,
+            "nsfw" => 1,
         ];
         if ($status) {
             $params['status'] = $status;
@@ -101,6 +102,7 @@ class MalServiceProvider extends ServiceProvider
         $params = [
             "fields" => "num_volumes,num_chapters,authors{first_name,last_name},start_date,end_date,alternative_titles,list_status{comments}",
             "limit" => 1000,
+            "nsfw" => 1,
         ];
         if ($status) {
             $params['status'] = $status;
@@ -125,6 +127,7 @@ class MalServiceProvider extends ServiceProvider
         $params = [
             "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments}",
             "limit" => 500,
+            "nsfw" => 1,
         ];
         $response = json_decode(
             self::get(
@@ -235,8 +238,9 @@ class MalServiceProvider extends ServiceProvider
 
         $params = [
             "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments},mean",
-            "limit" => 50,
+            "limit" => 500,
             "q" => $query,
+            "nsfw" => 1,
         ];
         $response = json_decode(
             self::get(

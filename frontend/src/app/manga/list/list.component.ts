@@ -89,15 +89,17 @@ export class MangaListComponent implements OnInit {
           list_status: {
             status: mangaExtended.my_list_status?.status,
             comments: '',
-            is_rereading: manga.is_rereading,
-            num_chapters_read: manga.read_chapters,
-            num_times_reread: 0,
-            num_volumes_read: manga.read_volumes || 0,
+            is_rereading: mangaExtended.my_list_status?.is_rereading || manga.is_rereading,
+            num_chapters_read:
+              mangaExtended.my_list_status?.num_chapters_read || manga.read_chapters,
+            num_times_reread: mangaExtended.my_list_status?.num_times_reread || 0,
+            num_volumes_read:
+              mangaExtended.my_list_status?.num_volumes_read || manga.read_volumes || 0,
             priority: 0,
             reread_value: 0,
-            score: manga.score,
+            score: mangaExtended.my_list_status?.score || manga.score,
             tags: manga.tags || '',
-            updated_at: new Date(),
+            updated_at: mangaExtended.my_list_status?.updated_at || new Date(),
           },
           my_extension: {
             ongoing: mangaExtended.my_extension?.ongoing,
