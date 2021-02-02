@@ -39,9 +39,9 @@ export class MangaListComponent implements OnInit {
       if (newStatus !== this.status) {
         this.status = newStatus;
         this.mangas = [];
-        this.glob.busy(0.1);
+        this.glob.busy();
         this.mangas = await this.mangaService.list(this.status);
-        await this.completeMissing();
+        // await this.completeMissing();
         this.glob.notbusy();
       }
     });
