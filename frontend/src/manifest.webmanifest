@@ -43,5 +43,51 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Anime",
+      "url": "/#/anime",
+      "icons": [
+        {
+          "src": "assets/icon-anime.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Manga",
+      "url": "/#/manga",
+      "icons": [
+        {
+          "src": "assets/icon-manga.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Seasonal",
+      "url": "/#/anime/season",
+      "icons": [
+        {
+          "src": "assets/icon-season.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Schedule",
+      "url": "/#/anime/schedule",
+      "icons": [
+        {
+          "src": "assets/icon-schedule.png",
+          "type": "image/png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }

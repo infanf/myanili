@@ -29,6 +29,7 @@ const routes: Routes = [
   { path: 'mal/:type', component: MalComponent },
   { path: 'character/:id', component: CharacterComponent },
   { path: 'person/:id', component: PersonComponent },
+  { path: 'manga', redirectTo: '/manga/reading', pathMatch: 'full' },
   { path: 'anime', redirectTo: '/anime/watchlist', pathMatch: 'full' },
   { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
 ];
