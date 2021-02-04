@@ -18,6 +18,7 @@ export class SettingsComponent implements OnInit {
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
   inlist = 'false';
+  layout = 'list';
   constructor(
     private settings: SettingsService,
     private glob: GlobalService,
@@ -37,6 +38,9 @@ export class SettingsComponent implements OnInit {
     this.settings.onlyInList.subscribe(inList => {
       this.inlist = JSON.stringify(inList);
     });
+    this.settings.layout.subscribe(layout => {
+      this.layout = layout || 'list';
+    });
   }
 
   async ngOnInit() {
@@ -49,6 +53,10 @@ export class SettingsComponent implements OnInit {
 
   changeInList() {
     this.settings.setInList(Boolean(JSON.parse(this.inlist)));
+  }
+
+  changeLayout() {
+    this.settings.setLayout(this.layout);
   }
 
   async malLogoff() {

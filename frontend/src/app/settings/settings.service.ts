@@ -13,11 +13,14 @@ export class SettingsService {
   });
   private languageSubject = new BehaviorSubject<Language>('default');
   private inList = new BehaviorSubject<boolean>(false);
+  private layoutSubject = new BehaviorSubject<string>('list');
 
   constructor() {
     try {
       const list = Boolean(JSON.parse(localStorage.getItem('inList') || 'false'));
       this.setInList(list);
+      const layout = String(localStorage.getItem('layout') || 'list');
+      this.setLayout(layout);
       const lang = String(localStorage.getItem('lang'));
       this.setLanguage(['default', 'en', 'jp'].includes(lang) ? (lang as Language) : 'default');
       const savedSeason = JSON.parse(String(localStorage.getItem('season')));
@@ -53,6 +56,15 @@ export class SettingsService {
   setInList(list: boolean) {
     this.inList.next(list);
     localStorage.setItem('inList', JSON.stringify(list));
+  }
+
+  get layout() {
+    return this.layoutSubject.asObservable();
+  }
+
+  setLayout(layout: string) {
+    this.layoutSubject.next(layout);
+    localStorage.setItem('layout', layout);
   }
 }
 
