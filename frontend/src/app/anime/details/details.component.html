@@ -12,7 +12,7 @@
           'https://trakt.tv/shows/' +
           anime.my_extension.trakt +
           '/seasons/' +
-          (anime.my_extension.seasonNumber || 1)
+          (anime.my_extension.seasonNumber === 0 ? 0 : anime.my_extension.seasonNumber || 1)
         "
         target="_blank"
       >
