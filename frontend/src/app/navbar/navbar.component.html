@@ -22,7 +22,7 @@
             <li class="nav-item dropdown" ngbDropdown>
               <a
                 class="nav-link dropdown-toggle"
-                [ngClass] ="{'active':module==='anime'}"
+                [ngClass]="{ active: module === 'anime' }"
                 id="animeDropdown"
                 role="button"
                 ngbDropdownToggle
@@ -103,15 +103,21 @@
             <li class="nav-item dropdown" ngbDropdown>
               <a
                 class="nav-link dropdown-toggle"
-                [ngClass] ="{'active':module==='manga'}"
+                [ngClass]="{ active: module === 'manga' }"
                 id="mangaDropdown"
                 role="button"
                 ngbDropdownToggle
               >
-              <app-icon class="me-2" name="book-half"></app-icon>
+                <app-icon class="me-2" name="book-half"></app-icon>
                 <span class="d-none d-sm-inline">Manga</span>
               </a>
               <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="mangaDropdown">
+                <li>
+                  <a class="dropdown-item" routerLink="/manga/readlist" routerLinkActive="active">
+                    Readlist
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
                 <li>
                   <a
                     class="dropdown-item"
@@ -169,7 +175,11 @@
           <app-widget-season class="me-3 text-white" *ngIf="module === 'anime'"></app-widget-season>
           <div class="d-flex cursor-pointer" *ngIf="user" (click)="showSettings()">
             <span class="d-none d-sm-inline my-auto me-3 text-white">{{ user!.name }}</span>
-            <img [src]="user!.picture" style="height: 32px; border-radius: 50%" />
+            <img
+              [src]="user!.picture"
+              style="height: 32px; border-radius: 50%"
+              alt="{{ user!.name }}"
+            />
           </div>
         </ng-container>
       </ng-template>

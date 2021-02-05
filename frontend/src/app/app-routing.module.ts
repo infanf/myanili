@@ -12,6 +12,7 @@ import { MalComponent } from './mal/mal.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
+import { ReadlistComponent } from './manga/readlist/readlist.component';
 import { PersonComponent } from './person/person.component';
 
 const routes: Routes = [
@@ -24,12 +25,13 @@ const routes: Routes = [
   { path: 'anime/producer/:id', component: ProducerComponent },
   { path: 'manga/list', component: MangaListComponent },
   { path: 'manga/list/:status', component: MangaListComponent },
+  { path: 'manga/readlist', component: ReadlistComponent },
   { path: 'manga/details/:id', component: MangaDetailsComponent },
   { path: 'manga/magazine/:id', component: MagazineComponent },
   { path: 'mal/:type', component: MalComponent },
   { path: 'character/:id', component: CharacterComponent },
   { path: 'person/:id', component: PersonComponent },
-  { path: 'manga', redirectTo: '/manga/list/reading', pathMatch: 'full' },
+  { path: 'manga', redirectTo: '/manga/readlist', pathMatch: 'full' },
   { path: 'anime', redirectTo: '/anime/watchlist', pathMatch: 'full' },
   { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
 ];

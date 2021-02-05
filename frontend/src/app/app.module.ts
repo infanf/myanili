@@ -38,6 +38,7 @@ import { MangaRecommendationsComponent } from './manga/details/recommendations/r
 import { MangaRelatedComponent } from './manga/details/related/related.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
+import { ReadlistComponent } from './manga/readlist/readlist.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { Nl2brPipe } from './nl2br.pipe';
 import { PersonComponent } from './person/person.component';
@@ -84,6 +85,7 @@ import { TimePipe } from './time.pipe';
     ProducerComponent,
     MagazineComponent,
     StaffComponent,
+    ReadlistComponent,
   ],
   imports: [
     BrowserModule,
