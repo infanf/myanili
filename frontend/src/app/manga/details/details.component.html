@@ -153,7 +153,15 @@
               class="cursor-pointer me-1"
               (click)="setStatus('reading')"
             ></app-icon
-          ></ng-template>
+          ><app-icon
+          *ngIf="
+            manga!.my_list_status?.status === 'reading'
+          "
+          name="pause-circle"
+          class="cursor-pointer me-1"
+          (click)="setStatus('on_hold')"
+        ></app-icon
+      ></ng-template>
           <ng-template #mylistedit>
             <select
               class="form-control form-control-sm"

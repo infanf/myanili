@@ -46,6 +46,10 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://www.crunchyroll.com/comics/manga/',
     },
     {
+      id: 'book',
+      name: 'Print',
+    },
+    {
       id: '',
       name: 'Other',
     },
