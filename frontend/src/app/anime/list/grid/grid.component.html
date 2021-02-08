@@ -1,0 +1,31 @@
+<div class="container-fluid my-3">
+  <div class="row row-cols-2 row-cols-sm-4 row-cols-md-6 g-3">
+    <div class="col" *ngFor="let anime of animes">
+      <div class="card h-100 cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
+        <picture>
+          <source
+            *ngIf="anime.node && anime.node.main_picture"
+            srcset="{{ anime.node.main_picture.medium || anime.node.main_picture.large }}"
+          />
+          <source srcset="/assets/blank-poster.svg" />
+          <img src="/assets/blank-poster.svg" alt="poster" class="card-img-top" />
+        </picture>
+        <div class="card-overlay">
+          {{
+            (lang === 'en'
+              ? anime.node.alternative_titles?.en
+              : lang === 'jp'
+              ? anime.node.alternative_titles?.ja
+              : anime.node.title) || anime.node.title
+          }}
+        </div>
+        <app-icon-status
+          class="badge rounded-pill bg-primary"
+          style="position: absolute; top: 0.5rem; right: 0.5rem"
+          *ngIf="anime.list_status"
+          [status]="anime.list_status.status"
+        ></app-icon-status>
+      </div>
+    </div>
+  </div>
+</div>

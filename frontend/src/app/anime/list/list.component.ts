@@ -14,8 +14,7 @@ import { AnimeService } from '../anime.service';
 export class AnimeListComponent implements OnInit {
   @Input() status?: WatchStatus;
   animes: ListAnime[] = [];
-
-  lang = 'en';
+  layout = 'list';
 
   constructor(
     private animeService: AnimeService,
@@ -32,7 +31,7 @@ export class AnimeListComponent implements OnInit {
         this.ngOnInit();
       }
     });
-    this.settings.language.subscribe(lang => (this.lang = lang));
+    this.settings.layout.subscribe(layout => (this.layout = layout));
   }
 
   async ngOnInit() {

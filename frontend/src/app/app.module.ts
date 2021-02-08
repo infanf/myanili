@@ -14,7 +14,9 @@ import { AnimeRecommendationsComponent } from './anime/details/recommendations/r
 import { AnimeRelatedComponent } from './anime/details/related/related.component';
 import { AnimeSongsComponent } from './anime/details/songs/songs.component';
 import { StaffComponent } from './anime/details/staff/staff.component';
+import { AnimeListGridComponent } from './anime/list/grid/grid.component';
 import { AnimeListComponent } from './anime/list/list.component';
+import { AnimeListListComponent } from './anime/list/list/list.component';
 import { ProducerComponent } from './anime/producer/producer.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
@@ -86,6 +88,8 @@ import { TimePipe } from './time.pipe';
     MagazineComponent,
     StaffComponent,
     ReadlistComponent,
+    AnimeListGridComponent,
+    AnimeListListComponent,
   ],
   imports: [
     BrowserModule,
