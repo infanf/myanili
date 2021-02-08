@@ -172,18 +172,88 @@
           </ng-template>
         </div>
       </div>
-      <div class="row" *ngIf="!edit && manga && manga.my_extension?.platform">
+      <div class="row" *ngIf="!edit && manga && manga.my_extension && manga.my_extension.platform">
         <div class="col-4 fw-bold text-end">Platform</div>
         <div class="col-8">
-          {{ manga.my_extension?.platform }}
+          <a
+            *ngIf="manga.my_extension.platformId"
+            href="{{ manga.my_extension.platform | platform: 'urlprefix' }}{{
+              manga.my_extension.platformId
+            }}"
+            target="_blank"
+          >
+            <img
+              alt="{{ manga.my_extension.platform | platform: 'name' }}"
+              style="max-width: 5rem; max-height: 1rem"
+              class="ml-1"
+              src="/assets/platform/{{ manga.my_extension.platform }}.svg"
+            />
+          </a>
+          <img
+            *ngIf="!manga.my_extension.platformId"
+            alt="{{ manga.my_extension.platform | platform: 'name' }}"
+            style="max-width: 5rem; max-height: 1rem"
+            class="ml-1"
+            src="/assets/platform/{{ manga.my_extension?.platform }}.svg"
+          />
         </div>
       </div>
-      <div class="row" *ngIf="edit && manga && editExtension">
+      <div class="row my-2" *ngIf="edit && manga && editExtension">
         <div class="col-4 fw-bold text-end">Platform</div>
+        <div class="col-8">
+          <select
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.platform"
+            [disabled]="busy"
+          >
+            <option *ngFor="let provider of platformPipe.platforms" [value]="provider.id">
+              {{ provider.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && manga && editExtension">
+        <div class="col-4 fw-bold text-end">ID</div>
         <div class="col-8">
           <input
             class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.platform"
+            [(ngModel)]="editExtension!.platformId"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
+      <div class="row" *ngIf="!edit && manga && manga.my_extension?.publisher">
+        <div class="col-4 fw-bold text-end">Publisher</div>
+        <div class="col-8">
+          <a
+            *ngIf="manga.my_extension?.publisherWebsite; else pubnolink"
+            [href]="manga.my_extension?.publisherWebsite"
+            target="_blank"
+            class="link-primary"
+          >
+            {{ manga.my_extension?.publisher }}
+          </a>
+          <ng-template #pubnolink>
+            {{ manga.my_extension?.publisher }}
+          </ng-template>
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && manga && editExtension">
+        <div class="col-4 fw-bold text-end">Publisher</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.publisher"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && manga && editExtension">
+        <div class="col-4 fw-bold text-end">Website</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.publisherWebsite"
             [disabled]="busy"
           />
         </div>
@@ -273,10 +343,14 @@
           <div class="col-4 fw-bold text-end">Ongoing</div>
           <div class="col-8">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="ongoing" [checked]="editExtension?.ongoing" (change)="changeOngoing()">
-              <label class="form-check-label" for="ongoing">
-                Regular updates
-              </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="ongoing"
+                [checked]="editExtension?.ongoing"
+                (change)="changeOngoing()"
+              />
+              <label class="form-check-label" for="ongoing"> Regular updates </label>
             </div>
           </div>
         </div>

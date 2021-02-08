@@ -133,6 +133,8 @@ interface MangaExtensionInterface {
   platform?: string;
   platformId?: string;
   ongoing?: boolean;
+  publisher?: string;
+  publisherWebsite?: string;
 }
 
 export type MangaExtension = MangaExtensionInterface;

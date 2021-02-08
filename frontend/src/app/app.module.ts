@@ -41,9 +41,11 @@ import { MangaRelatedComponent } from './manga/details/related/related.component
 import { MangaListComponent } from './manga/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
 import { ReadlistComponent } from './manga/readlist/readlist.component';
+import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { Nl2brPipe } from './nl2br.pipe';
 import { PersonComponent } from './person/person.component';
+import { PlatformPipe } from './platform.pipe';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 import { StreamPipe } from './stream.pipe';
@@ -61,6 +63,7 @@ import { TimePipe } from './time.pipe';
     MalPipe,
     TimePipe,
     StreamPipe,
+    PlatformPipe,
     ScheduleComponent,
     SeasonComponent,
     SettingsComponent,
@@ -90,6 +93,7 @@ import { TimePipe } from './time.pipe';
     ReadlistComponent,
     AnimeListGridComponent,
     AnimeListListComponent,
+    PlatformComponent,
   ],
   imports: [
     BrowserModule,
@@ -115,7 +119,7 @@ import { TimePipe } from './time.pipe';
     }),
     IvyGalleryModule,
   ],
-  providers: [TimePipe, StreamPipe],
+  providers: [TimePipe, StreamPipe, PlatformPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -5,6 +5,7 @@ import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga'
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import { GlobalService } from 'src/app/global.service';
+import { PlatformPipe } from 'src/app/platform.pipe';
 
 import { MangaService } from '../manga.service';
 
@@ -28,6 +29,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private glob: GlobalService,
     private gallery: Gallery,
+    public platformPipe: PlatformPipe,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
