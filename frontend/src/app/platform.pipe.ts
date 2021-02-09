@@ -46,6 +46,11 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://www.crunchyroll.com/comics/manga/',
     },
     {
+      id: 'renta',
+      name: 'Renta!',
+      urlprefix: 'https://www.ebookrenta.com/renta/sc/frm/item/',
+    },
+    {
       id: 'book',
       name: 'Print',
     },
