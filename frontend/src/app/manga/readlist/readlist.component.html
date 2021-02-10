@@ -35,7 +35,7 @@
           ></circle-progress>
           <app-icon
             (click)="plusOneChapter(manga)"
-            name="plus-square"
+            [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
             class="cursor-pointer mx-1"
           ></app-icon>
           {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
@@ -43,7 +43,7 @@
         <td class="text-nowrap">
           <app-icon
             (click)="plusOneVolume(manga)"
-            name="plus-square"
+            [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
             class="cursor-pointer me-1"
           ></app-icon>
           {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}
@@ -80,7 +80,7 @@
           ></circle-progress>
           <app-icon
             (click)="plusOneChapter(manga)"
-            name="plus-square"
+            [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
             class="cursor-pointer mx-1"
           ></app-icon>
           {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
@@ -88,7 +88,7 @@
         <td class="text-nowrap">
           <app-icon
             (click)="plusOneVolume(manga)"
-            name="plus-square"
+            [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
             class="cursor-pointer me-1"
           ></app-icon>
           {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}

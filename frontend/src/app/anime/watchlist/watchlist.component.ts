@@ -63,8 +63,8 @@ export class WatchlistComponent implements OnInit {
   }
 
   async markSeen(anime: ListAnime) {
-    if (this.isSeen(anime)) return;
-    this.glob.busy();
+    if (this.isSeen(anime) || anime.busy) return;
+    anime.busy = true;
     const currentEpisode = anime.list_status.num_episodes_watched;
     const data = {
       num_watched_episodes: currentEpisode + 1,
@@ -79,21 +79,25 @@ export class WatchlistComponent implements OnInit {
       }
     }
     const fullAnime = await this.animeService.getAnime(anime.node.id);
-    await Promise.all([
+    const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(anime.node.id, data),
       this.scrobbleTrakt(fullAnime, currentEpisode + 1),
     ]);
     if (completed) {
+      this.glob.busy();
       const sequels = fullAnime.related_anime.filter(related => related.relation_type === 'sequel');
       if (sequels.length) {
         const sequel = sequels[0];
         const startSequel = confirm(`Start watching sequel "${sequel.node.title}"?`);
         if (startSequel) {
           await this.animeService.updateAnime(sequel.node.id, { status: 'watching' });
+          this.ngOnInit();
         }
       }
     }
-    this.ngOnInit();
+    anime.list_status.num_episodes_watched = animeStatus.num_episodes_watched;
+    anime.list_status.updated_at = animeStatus.updated_at;
+    anime.busy = false;
   }
 
   async scrobbleTrakt(anime: Anime, episode: number): Promise<boolean> {

@@ -44,8 +44,8 @@ export class ReadlistComponent implements OnInit {
   }
 
   async plusOneVolume(manga: ListManga) {
-    if (!manga) return;
-    this.glob.busy();
+    if (!manga || manga.busy) return;
+    manga.busy = true;
     const currentVolume = manga.list_status?.num_volumes_read || 0;
     const data = {
       num_volumes_read: currentVolume + 1,
@@ -58,6 +58,7 @@ export class ReadlistComponent implements OnInit {
       );
     }
     if (currentVolume + 1 === manga.node.num_volumes) {
+      this.glob.busy();
       data.status = 'completed';
       if (manga.node.num_chapters) data.num_chapters_read = manga.node.num_chapters;
       completed = true;
@@ -66,19 +67,25 @@ export class ReadlistComponent implements OnInit {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    await this.mangaservice.updateManga(manga.node.id, data);
-    this.ngOnInit();
+    const statusResponse = await this.mangaservice.updateManga(manga.node.id, data);
+    manga.list_status.num_chapters_read = statusResponse.num_chapters_read;
+    manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
+    manga.busy = false;
+    if (statusResponse.status === 'completed') {
+      this.ngOnInit();
+    }
   }
 
   async plusOneChapter(manga: ListManga) {
-    if (!manga) return;
-    this.glob.busy();
+    if (!manga || manga.busy) return;
+    manga.busy = true;
     const currentChapter = manga.list_status?.num_chapters_read || 0;
     const data = {
       num_chapters_read: currentChapter + 1,
     } as Partial<MyMangaUpdate>;
     let completed = false;
     if (currentChapter + 1 === manga.node.num_chapters) {
+      this.glob.busy();
       data.status = 'completed';
       if (manga.node.num_volumes) data.num_volumes_read = manga.node.num_volumes;
       completed = true;
@@ -87,7 +94,12 @@ export class ReadlistComponent implements OnInit {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    await this.mangaservice.updateManga(manga.node.id, data);
-    this.ngOnInit();
+    const statusResponse = await this.mangaservice.updateManga(manga.node.id, data);
+    manga.list_status.num_chapters_read = statusResponse.num_chapters_read;
+    manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
+    manga.busy = false;
+    if (statusResponse.status === 'completed') {
+      this.ngOnInit();
+    }
   }
 }

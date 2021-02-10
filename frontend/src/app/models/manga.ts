@@ -7,6 +7,7 @@ interface ListMangaInterface {
   node: MangaNode;
   list_status: MyMangaStatus;
   my_extension?: MangaExtension;
+  busy?: boolean;
 }
 
 export type ListManga = ListMangaInterface;

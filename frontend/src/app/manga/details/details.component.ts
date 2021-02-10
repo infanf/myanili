@@ -138,7 +138,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   }
 
   async plusOneVolume() {
-    if (!this.manga) return;
+    if (!this.manga || !this.manga.my_list_status) return;
     this.glob.busy();
     const currentVolume = this.manga.my_list_status?.num_volumes_read || 0;
     const data = {
@@ -160,12 +160,16 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    await this.mangaService.updateManga(this.manga.id, data);
-    this.ngOnInit();
+    const statusResponse = await this.mangaService.updateManga(this.manga.id, data);
+    this.manga.my_list_status.num_chapters_read = statusResponse.num_chapters_read;
+    this.manga.my_list_status.num_volumes_read = statusResponse.num_volumes_read;
+    this.manga.my_list_status.status = statusResponse.status;
+    this.manga.my_list_status.score = statusResponse.score;
+    this.glob.notbusy();
   }
 
   async plusOneChapter() {
-    if (!this.manga) return;
+    if (!this.manga || !this.manga.my_list_status) return;
     this.glob.busy();
     const currentChapter = this.manga.my_list_status?.num_chapters_read || 0;
     const data = {
@@ -181,8 +185,12 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    await this.mangaService.updateManga(this.manga.id, data);
-    this.ngOnInit();
+    const statusResponse = await this.mangaService.updateManga(this.manga.id, data);
+    this.manga.my_list_status.num_chapters_read = statusResponse.num_chapters_read;
+    this.manga.my_list_status.num_volumes_read = statusResponse.num_volumes_read;
+    this.manga.my_list_status.status = statusResponse.status;
+    this.manga.my_list_status.score = statusResponse.score;
+    this.glob.notbusy();
   }
 
   getRelatedAnimes() {

@@ -5,6 +5,7 @@ interface ListAnimeInterface {
   node: AnimeNode;
   list_status: MyAnimeStatus;
   my_extension?: AnimeExtension;
+  busy?: boolean;
 }
 
 export type ListAnime = ListAnimeInterface;

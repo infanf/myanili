@@ -64,7 +64,7 @@
             <app-icon
               [class]="{ 'cursor-pointer': !isSeen(anime) }"
               class="mx-2"
-              [name]="isSeen(anime) ? 'check2' : 'eye'"
+              [name]="anime.busy ? 'hourglass-split':isSeen(anime) ? 'check2' : 'eye'"
               size="20"
               (click)="markSeen(anime)"
             ></app-icon>

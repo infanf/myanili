@@ -169,7 +169,7 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async plusOne() {
-    if (!this.anime) return;
+    if (!this.anime || !this.anime.my_list_status) return;
     this.glob.busy();
     const currentEpisode = this.anime.my_list_status?.num_episodes_watched || 0;
     const data = {
@@ -184,7 +184,10 @@ export class AnimeDetailsComponent implements OnInit {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    await Promise.all([this.animeService.updateAnime(this.anime.id, data), this.scrobbleTrakt()]);
+    const [animeStatus] = await Promise.all([
+      this.animeService.updateAnime(this.anime.id, data),
+      this.scrobbleTrakt(),
+    ]);
     if (completed) {
       const sequels = this.anime.related_anime.filter(
         related => related.relation_type === 'sequel',
@@ -197,7 +200,10 @@ export class AnimeDetailsComponent implements OnInit {
         }
       }
     }
-    this.ngOnInit();
+    this.anime.my_list_status.num_episodes_watched = animeStatus.num_episodes_watched;
+    this.anime.my_list_status.status = animeStatus.status;
+    this.anime.my_list_status.score = animeStatus.score;
+    this.glob.notbusy();
   }
 
   async scrobbleTrakt(): Promise<boolean> {
