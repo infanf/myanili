@@ -112,6 +112,16 @@
         <div class="col-4 fw-bold text-end">Display</div>
         <div class="col-8">{{ anime?.my_extension?.displayName }}</div>
       </div>
+      <div class="row my-2" *ngIf="edit && anime && editExtension">
+        <div class="col-4 fw-bold text-end">Display</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.displayName"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
       <div class="row" *ngIf="anime?.alternative_titles?.en">
         <div class="col-4 fw-bold text-end">English</div>
         <div class="col-8">{{ anime?.alternative_titles?.en }}</div>
