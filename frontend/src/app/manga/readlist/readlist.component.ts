@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ListManga, MyMangaUpdate } from '@models/manga';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
@@ -6,22 +6,14 @@ import { SettingsService } from 'src/app/settings/settings.service';
 import { MangaService } from '../manga.service';
 
 @Component({
-  selector: 'app-readlist',
-  templateUrl: './readlist.component.html',
-  styleUrls: ['./readlist.component.scss'],
+  selector: 'app-readlist-wrapper',
+  templateUrl: './readlist-wrapper.component.html',
+  styles: ['app-readlist {display: table-row-group;}'],
 })
-export class ReadlistComponent implements OnInit {
+export class ReadlistWrapperComponent implements OnInit {
   mangas: ListManga[] = [];
 
-  lang = 'en';
-
-  constructor(
-    private mangaservice: MangaService,
-    private settings: SettingsService,
-    private glob: GlobalService,
-  ) {
-    this.settings.language.subscribe(lang => (this.lang = lang));
-  }
+  constructor(private mangaservice: MangaService, private glob: GlobalService) {}
 
   async ngOnInit() {
     this.glob.busy();
@@ -41,6 +33,25 @@ export class ReadlistComponent implements OnInit {
         const textB = b.list_status.updated_at;
         return textA < textB ? -1 : textA > textB ? 1 : 0;
       });
+  }
+}
+
+@Component({
+  selector: 'app-readlist',
+  templateUrl: './readlist.component.html',
+  styleUrls: ['./readlist.component.scss'],
+})
+export class ReadlistComponent {
+  @Input() mangas: ListManga[] = [];
+
+  lang = 'en';
+
+  constructor(
+    private mangaservice: MangaService,
+    private settings: SettingsService,
+    private glob: GlobalService,
+  ) {
+    this.settings.language.subscribe(lang => (this.lang = lang));
   }
 
   async plusOneVolume(manga: ListManga) {
@@ -72,7 +83,7 @@ export class ReadlistComponent implements OnInit {
     manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
     manga.busy = false;
     if (statusResponse.status === 'completed') {
-      this.ngOnInit();
+      this.mangas = this.mangas.filter(m => m.list_status.status !== 'completed');
     }
   }
 
@@ -99,7 +110,7 @@ export class ReadlistComponent implements OnInit {
     manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
     manga.busy = false;
     if (statusResponse.status === 'completed') {
-      this.ngOnInit();
+      this.mangas = this.mangas.filter(m => m.list_status.status !== 'completed');
     }
   }
 }

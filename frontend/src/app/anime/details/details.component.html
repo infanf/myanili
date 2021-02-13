@@ -108,6 +108,10 @@
           />
         </div>
       </div>
+      <div class="row" *ngIf="anime?.my_extension?.displayName">
+        <div class="col-4 fw-bold text-end">Display</div>
+        <div class="col-8">{{ anime?.my_extension?.displayName }}</div>
+      </div>
       <div class="row" *ngIf="anime?.alternative_titles?.en">
         <div class="col-4 fw-bold text-end">English</div>
         <div class="col-8">{{ anime?.alternative_titles?.en }}</div>
@@ -115,6 +119,12 @@
       <div class="row" *ngIf="anime?.alternative_titles?.ja">
         <div class="col-4 fw-bold text-end">Japanese</div>
         <div class="col-8">{{ anime?.alternative_titles?.ja }}</div>
+      </div>
+      <div class="row" *ngIf="anime?.alternative_titles?.synonyms?.length">
+        <div class="col-4 fw-bold text-end">Synonyms</div>
+        <div class="col-8">
+          <div *ngFor="let title of anime?.alternative_titles?.synonyms" [innerHtml]="title"></div>
+        </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">
         <div class="col-4 fw-bold text-end">Series</div>

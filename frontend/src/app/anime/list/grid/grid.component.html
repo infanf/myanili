@@ -12,11 +12,13 @@
         </picture>
         <div class="card-overlay">
           {{
-            (lang === 'en'
-              ? anime.node.alternative_titles?.en
-              : lang === 'jp'
-              ? anime.node.alternative_titles?.ja
-              : anime.node.title) || anime.node.title
+            anime.my_extension?.displayName ||
+              (lang === 'en'
+                ? anime.node.alternative_titles?.en
+                : lang === 'jp'
+                ? anime.node.alternative_titles?.ja
+                : anime.node.title) ||
+              anime.node.title
           }}
         </div>
         <app-icon-status
