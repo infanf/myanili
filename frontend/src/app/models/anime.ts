@@ -62,6 +62,7 @@ interface AnimeInterface {
   opening_themes: AnimeTheme[];
   ending_themes: AnimeTheme[];
   my_extension?: AnimeExtension;
+  busy?: boolean;
 }
 
 export type Anime = AnimeInterface;

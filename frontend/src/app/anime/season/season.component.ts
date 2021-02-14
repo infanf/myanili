@@ -47,4 +47,14 @@ export class SeasonComponent implements OnInit {
       this.animes = animes;
     }
   }
+
+  async addToList(anime: Partial<Anime>) {
+    if (anime.my_list_status || anime.busy || !anime.id) return;
+    anime.busy = true;
+    const statusResponse = await this.animeService.updateAnime(anime.id, {
+      status: 'plan_to_watch',
+    });
+    anime.my_list_status = statusResponse;
+    delete anime.busy;
+  }
 }

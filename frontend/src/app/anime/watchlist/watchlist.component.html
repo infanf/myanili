@@ -15,7 +15,7 @@
         <tr
           [class]="{
             seen: isSeen(anime),
-            'text-green':anime.list_status.num_episodes_watched===0
+            'text-green': anime.list_status.num_episodes_watched === 0
           }"
         >
           <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
@@ -64,7 +64,7 @@
             <app-icon
               [class]="{ 'cursor-pointer': !isSeen(anime) }"
               class="mx-2"
-              [name]="anime.busy ? 'hourglass-split':isSeen(anime) ? 'check2' : 'eye'"
+              [name]="anime.busy ? 'hourglass-split' : isSeen(anime) ? 'check2' : 'eye'"
               size="20"
               (click)="markSeen(anime)"
             ></app-icon>
