@@ -7,8 +7,13 @@ import { BehaviorSubject } from 'rxjs';
 export class GlobalService {
   private isBusySubject = new BehaviorSubject<boolean>(true);
   private loadingPercentSubject = new BehaviorSubject<number>(0);
+  private darkModeSubject = new BehaviorSubject<boolean>(false);
 
-  constructor() {}
+  constructor() {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      this.darkModeSubject.next(e.matches);
+    });
+  }
 
   get isBusy() {
     return this.isBusySubject.asObservable();
@@ -16,6 +21,10 @@ export class GlobalService {
 
   get loadingPercent() {
     return this.loadingPercentSubject.asObservable();
+  }
+
+  get darkMode() {
+    return this.darkModeSubject.asObservable();
   }
 
   busy(number = 0) {

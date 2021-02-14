@@ -2,18 +2,18 @@
 
 /* Importing Bootstrap SCSS file. */
 $theme-colors: (
-  "gray-dark": #231123,
-  "dark": #231123,
-  "blue": #204a82,
-  "primary": #204a82,
-  "red": #82204a,
-  "danger": #82204a,
-  "green": #4a8220,
-  "success": #4a8220,
-  "yellow": #825820,
-  "warning": #825820,
-  "spotify": #1db954,
-  "trakt": #ed1c24,
+  'gray-dark': #231123,
+  'dark': #231123,
+  'blue': #204a82,
+  'primary': #204a82,
+  'red': #82204a,
+  'danger': #82204a,
+  'green': #4a8220,
+  'success': #4a8220,
+  'yellow': #825820,
+  'warning': #825820,
+  'spotify': #1db954,
+  'trakt': #ed1c24,
   // "white": #eff7ff,
 );
 
@@ -80,15 +80,31 @@ overlay.overlay-shown {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
-    .border#{$infix}-top {      border-top: $border-width solid $border-color !important; }
-    .border#{$infix}-end {    border-right: $border-width solid $border-color !important; }
-    .border#{$infix}-bottom {   border-bottom: $border-width solid $border-color !important; }
-    .border#{$infix}-start {     border-left: $border-width solid $border-color !important; }
+    .border#{$infix}-top {
+      border-top: $border-width solid $border-color !important;
+    }
+    .border#{$infix}-end {
+      border-right: $border-width solid $border-color !important;
+    }
+    .border#{$infix}-bottom {
+      border-bottom: $border-width solid $border-color !important;
+    }
+    .border#{$infix}-start {
+      border-left: $border-width solid $border-color !important;
+    }
 
-    .border#{$infix}-top-0 {    border-top: 0 !important; }
-    .border#{$infix}-end-0 {  border-right: 0 !important; }
-    .border#{$infix}-bottom-0 { border-bottom: 0 !important; }
-    .border#{$infix}-start-0 {   border-left: 0 !important; }
+    .border#{$infix}-top-0 {
+      border-top: 0 !important;
+    }
+    .border#{$infix}-end-0 {
+      border-right: 0 !important;
+    }
+    .border#{$infix}-bottom-0 {
+      border-bottom: 0 !important;
+    }
+    .border#{$infix}-start-0 {
+      border-left: 0 !important;
+    }
 
     .border#{$infix}-x {
       border-left: $border-width solid $border-color !important;
@@ -101,3 +117,5 @@ overlay.overlay-shown {
     }
   }
 }
+
+@import 'styles/dark-theme.scss';
