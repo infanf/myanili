@@ -92,6 +92,20 @@
       </div>
     </div>
     <div class="col-sm-7 col-md-8 mb-3">
+      <div class="row" *ngIf="manga?.my_extension?.displayName &&!edit">
+        <div class="col-4 fw-bold text-end">Display</div>
+        <div class="col-8">{{ manga?.my_extension?.displayName }}</div>
+      </div>
+      <div class="row my-2" *ngIf="edit && manga && editExtension">
+        <div class="col-4 fw-bold text-end">Display</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.displayName"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
       <div class="row" *ngIf="manga?.alternative_titles?.en">
         <div class="col-4 fw-bold text-end">English</div>
         <div class="col-8">{{ manga?.alternative_titles?.en }}</div>
@@ -99,6 +113,12 @@
       <div class="row" *ngIf="manga?.alternative_titles?.ja">
         <div class="col-4 fw-bold text-end">Japanese</div>
         <div class="col-8">{{ manga?.alternative_titles?.ja }}</div>
+      </div>
+      <div class="row" *ngIf="manga?.alternative_titles?.synonyms?.length">
+        <div class="col-4 fw-bold text-end">Synonyms</div>
+        <div class="col-8">
+          <div *ngFor="let title of manga?.alternative_titles?.synonyms" [innerHtml]="title"></div>
+        </div>
       </div>
       <div class="row" *ngIf="manga?.authors && manga?.authors?.length">
         <div class="col-4 fw-bold text-end">Author</div>

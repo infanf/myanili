@@ -31,11 +31,13 @@ export class AnimeListComponent implements OnInit {
         this.ngOnInit();
       }
     });
-    this.settings.layout.subscribe(layout => (this.layout = layout));
   }
 
   async ngOnInit() {
     this.animes = await this.animeService.list(this.status);
+    this.settings.layout.subscribe(
+      layout => (this.layout = this.animes.length > 50 ? 'list' : layout),
+    );
     this.glob.notbusy();
   }
 }

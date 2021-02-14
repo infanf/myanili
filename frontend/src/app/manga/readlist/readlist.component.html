@@ -1,99 +1,39 @@
-<section>
-  <table class="table table-sm table-hover table-striped table-responsive-md">
-    <thead class="sticky">
-      <tr>
-        <th colspan="4" class="text-center">Reading</th>
-      </tr>
-      <tr>
-        <th>Name</th>
-        <th><span class="d-none d-md-inline">Platform</span></th>
-        <th>Chapter</th>
-        <th>Volume</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let manga of reading">
-        <td routerLink="/manga/details/{{ manga.node.id }}" class="cursor-pointer">
-          {{
-            (lang === 'en'
-              ? manga.node.alternative_titles?.en
-              : lang === 'jp'
-              ? manga.node.alternative_titles?.ja
-              : manga.node.title) || manga.node.title
-          }}
-        </td>
-        <td>
-          <app-platform [provider]="manga.my_extension?.platform"> </app-platform>
-        </td>
-        <td class="text-nowrap">
-          <circle-progress
-            [percent]="
-              manga.node.num_chapters
-                ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
-                : 0
-            "
-          ></circle-progress>
-          <app-icon
-            (click)="plusOneChapter(manga)"
-            [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
-            class="cursor-pointer mx-1"
-          ></app-icon>
-          {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
-        </td>
-        <td class="text-nowrap">
-          <app-icon
-            (click)="plusOneVolume(manga)"
-            [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
-            class="cursor-pointer me-1"
-          ></app-icon>
-          {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}
-        </td>
-      </tr>
-    </tbody>
-    <thead>
-      <tr>
-        <th colspan="4" class="text-center">Ongoing</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let manga of ongoing">
-        <td routerLink="/manga/details/{{ manga.node.id }}" class="cursor-pointer">
-          {{
-            (lang === 'en'
-              ? manga.node.alternative_titles?.en
-              : lang === 'jp'
-              ? manga.node.alternative_titles?.ja
-              : manga.node.title) || manga.node.title
-          }}
-        </td>
-
-        <td>
-          <app-platform [provider]="manga.my_extension?.platform"> </app-platform>
-        </td>
-        <td class="text-nowrap">
-          <circle-progress
-            [percent]="
-              manga.node.num_chapters
-                ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
-                : 0
-            "
-          ></circle-progress>
-          <app-icon
-            (click)="plusOneChapter(manga)"
-            [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
-            class="cursor-pointer mx-1"
-          ></app-icon>
-          {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
-        </td>
-        <td class="text-nowrap">
-          <app-icon
-            (click)="plusOneVolume(manga)"
-            [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
-            class="cursor-pointer me-1"
-          ></app-icon>
-          {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</section>
+  <tr *ngFor="let manga of mangas">
+    <td routerLink="/manga/details/{{ manga.node.id }}" class="cursor-pointer">
+      {{
+        manga.my_extension?.displayName ||
+          (lang === 'en'
+            ? manga.node.alternative_titles?.en
+            : lang === 'jp'
+            ? manga.node.alternative_titles?.ja
+            : manga.node.title) ||
+          manga.node.title
+      }}
+    </td>
+    <td>
+      <app-platform [provider]="manga.my_extension?.platform"> </app-platform>
+    </td>
+    <td class="text-nowrap">
+      <circle-progress
+        [percent]="
+          manga.node.num_chapters
+            ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
+            : 0
+        "
+      ></circle-progress>
+      <app-icon
+        (click)="plusOneChapter(manga)"
+        [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
+        class="cursor-pointer mx-1"
+      ></app-icon>
+      {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
+    </td>
+    <td class="text-nowrap">
+      <app-icon
+        (click)="plusOneVolume(manga)"
+        [name]="manga.busy ? 'hourglass-split' : 'plus-square'"
+        class="cursor-pointer me-1"
+      ></app-icon>
+      {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}
+    </td>
+  </tr>

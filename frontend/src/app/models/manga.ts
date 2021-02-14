@@ -136,6 +136,7 @@ interface MangaExtensionInterface {
   ongoing?: boolean;
   publisher?: string;
   publisherWebsite?: string;
+  displayName?: string;
 }
 
 export type MangaExtension = MangaExtensionInterface;

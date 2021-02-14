@@ -151,6 +151,7 @@ interface AnimeExtensionInterface {
   simulTime?: string;
   simulCountry?: string;
   trakt?: string;
+  displayName?: string;
 }
 
 export type AnimeExtension = AnimeExtensionInterface;
