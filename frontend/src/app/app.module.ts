@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { IvyGalleryModule } from 'angular-gallery';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
@@ -119,6 +120,7 @@ import { TimePipe } from './time.pipe';
       outerStrokeLinecap: 'butt',
     }),
     IvyGalleryModule,
+    AngularSvgIconModule.forRoot(),
   ],
   providers: [TimePipe, StreamPipe, PlatformPipe],
   bootstrap: [AppComponent],

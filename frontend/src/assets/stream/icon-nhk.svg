@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" id="NHK World Japan" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg version="1.1" id="nhkicon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 300 300.3" style="enable-background:new 0 0 300 300.3;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FFFFFF;}
-	.st1{fill:#E6E6E6;}
-	.st2{fill:#727171;}
-	.st3{fill:#E60019;}
-	.st4{fill:#3E3A39;}
+	#nhkicon .st0{fill:#FFFFFF;}
+	#nhkicon .st1{fill:#E6E6E6;}
+	#nhkicon .st2{fill:#727171;}
+	#nhkicon .st3{fill:#E60019;}
+	#nhkicon .st4{fill:#3E3A39;}
 </style>
 <g>
 	<rect class="st0" width="300" height="300.3"/>

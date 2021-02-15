@@ -1,15 +1,12 @@
 <span class="d-inline-block me-2" style="position: relative" *ngIf="provider">
-    <img
-      class="d-md-inline d-none"
-      style="width: 5rem; height: 1rem; vertical-align: text-bottom"
-      alt="{{ provider }}"
-      src="/assets/platform/{{ provider || 'plex' }}.svg"
-    />
-    <img
-      class="d-md-none"
-      style="width: 1rem; height: 1rem; vertical-align: text-bottom"
-      alt="{{ provider }}"
-      src="/assets/platform/icon-{{ provider || 'plex' }}.svg"
-    />
-  </span>
-  
+  <svg-icon
+    class="d-md-inline d-none"
+    [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
+    src="/assets/platform/{{ provider || 'plex' }}.svg"
+  ></svg-icon>
+  <svg-icon
+    class="d-md-none"
+    [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
+    src="/assets/platform/icon-{{ provider || 'plex' }}.svg"
+  ></svg-icon>
+</span>

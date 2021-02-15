@@ -78,8 +78,8 @@
         </div>
       </ng-container>
       <div class="row mt-2" *ngIf="edit && editBackup">
-        <div class="col-6 fw-bold">My&nbsp;Score</div>
-        <div class="col-6">
+        <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
+        <div class="col-8">
           <input
             class="form-control form-control-sm"
             [(ngModel)]="editBackup.score"
@@ -92,7 +92,7 @@
       </div>
     </div>
     <div class="col-sm-7 col-md-8 mb-3">
-      <div class="row" *ngIf="manga?.my_extension?.displayName &&!edit">
+      <div class="row" *ngIf="manga?.my_extension?.displayName && !edit">
         <div class="col-4 fw-bold text-end">Display</div>
         <div class="col-8">{{ manga?.my_extension?.displayName }}</div>
       </div>
@@ -173,15 +173,13 @@
               class="cursor-pointer me-1"
               (click)="setStatus('reading')"
             ></app-icon
-          ><app-icon
-          *ngIf="
-            manga!.my_list_status?.status === 'reading'
-          "
-          name="pause-circle"
-          class="cursor-pointer me-1"
-          (click)="setStatus('on_hold')"
-        ></app-icon
-      ></ng-template>
+            ><app-icon
+              *ngIf="manga!.my_list_status?.status === 'reading'"
+              name="pause-circle"
+              class="cursor-pointer me-1"
+              (click)="setStatus('on_hold')"
+            ></app-icon
+          ></ng-template>
           <ng-template #mylistedit>
             <select
               class="form-control form-control-sm"
@@ -210,20 +208,18 @@
             }}"
             target="_blank"
           >
-            <img
-              alt="{{ manga.my_extension.platform | platform: 'name' }}"
-              style="max-width: 5rem; max-height: 1rem"
+            <svg-icon
+              [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
               class="ml-1"
               src="/assets/platform/{{ manga.my_extension.platform }}.svg"
-            />
+            ></svg-icon>
           </a>
-          <img
+          <svg-icon
             *ngIf="!manga.my_extension.platformId"
-            alt="{{ manga.my_extension.platform | platform: 'name' }}"
-            style="max-width: 5rem; max-height: 1rem"
+            [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
             class="ml-1"
             src="/assets/platform/{{ manga.my_extension?.platform }}.svg"
-          />
+          ></svg-icon>
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && manga && editExtension">
