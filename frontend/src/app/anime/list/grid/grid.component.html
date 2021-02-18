@@ -8,9 +8,9 @@
             srcset="{{ anime.node.main_picture.medium || anime.node.main_picture.large }}"
           />
           <source srcset="/assets/blank-poster.svg" />
-          <img src="/assets/blank-poster.svg" alt="poster" class="card-img-top" />
+          <img src="/assets/blank-poster.svg" alt="poster" class="card-img" />
         </picture>
-        <div class="card-overlay">
+        <div class="card-overlay rounded-bottom">
           {{
             anime.my_extension?.displayName ||
               (lang === 'en'
