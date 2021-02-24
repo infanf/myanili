@@ -52,6 +52,7 @@ export class StreamPipe implements PipeTransform {
     {
       id: 'nhk',
       name: 'NHK',
+      urlprefix: 'https://www3.nhk.or.jp/nhkworld/',
     },
     {
       id: 'yt',
