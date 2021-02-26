@@ -15,6 +15,11 @@ export class MalService {
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 
   constructor(private httpClient: HttpClient) {
+    const malUser = JSON.parse(localStorage.getItem('inList') || 'false') as MalUser | false;
+    if (malUser) {
+      this.isLoggedIn.next(malUser.name);
+      this.malUser.next(malUser);
+    }
     this.checkLogin();
   }
 
@@ -60,9 +65,11 @@ export class MalService {
     const response = await this.get<UserResponse>('me');
     if ('name' in response) {
       this.isLoggedIn.next(response.name);
+      localStorage.setItem('malUser', JSON.stringify(response));
       this.malUser.next(response);
     } else {
       this.isLoggedIn.next(false);
+      localStorage.removeItem('malUser');
       this.malUser.next(undefined);
     }
   }

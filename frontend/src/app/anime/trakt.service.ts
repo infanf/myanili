@@ -16,9 +16,16 @@ export class TraktService {
     this.clientId = String(localStorage.getItem('traktClientId'));
     this.accessToken = String(localStorage.getItem('traktAccessToken'));
     this.refreshToken = String(localStorage.getItem('traktRefreshToken'));
-    this.checkLogin().then(user => {
-      this.userSubject.next(user);
-    });
+    if (this.accessToken) {
+      this.checkLogin()
+        .then(user => {
+          this.userSubject.next(user);
+        })
+        .catch(e => {
+          alert('Could not connect to trakt, please check your account settings.');
+          localStorage.removeItem('traktAccessToken');
+        });
+    }
   }
 
   async login() {
