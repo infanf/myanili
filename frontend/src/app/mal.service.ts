@@ -15,7 +15,7 @@ export class MalService {
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 
   constructor(private httpClient: HttpClient) {
-    const malUser = JSON.parse(localStorage.getItem('inList') || 'false') as MalUser | false;
+    const malUser = JSON.parse(localStorage.getItem('malUser') || 'false') as MalUser | false;
     if (malUser) {
       this.isLoggedIn.next(malUser.name);
       this.malUser.next(malUser);
