@@ -1,8 +1,9 @@
 <section class="container-fluid sticky-header py-3 bg-white">
   <form class="input-group" (submit)="search()">
-    <input class="form-control" [(ngModel)]="query" [ngModelOptions]="{ standalone: true }" />
+    <input class="form-control" [(ngModel)]="query" [ngModelOptions]="{ standalone: true }" #searchbar />
+    {{ searchbar.focus() }}
     <button class="btn btn-primary" (click)="search()">
-      <app-icon-mal size="32"></app-icon-mal>
+      <app-icon name="search"></app-icon>
     </button>
   </form>
 </section>
