@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AnilistUser } from '@models/anilist';
 import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { AnilistService, AnilistUser } from '../anilist.service';
+import { AnilistService } from '../anilist.service';
 import { TraktService } from '../anime/trakt.service';
 import { GlobalService } from '../global.service';
 import { MalService } from '../mal.service';

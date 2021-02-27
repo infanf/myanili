@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { AnilistMediaListStatus, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
+import { WatchStatus } from '@models/anime';
+import { ReadStatus } from '@models/manga';
 import { Apollo, gql } from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -11,7 +14,8 @@ export class AnilistService {
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<AnilistUser | undefined>(undefined);
-  constructor(private client: Apollo) {
+  loggedIn = false;
+  constructor(public client: Apollo) {
     this.clientId = String(localStorage.getItem('anilistClientId'));
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
@@ -72,6 +76,7 @@ export class AnilistService {
           r(result.data.Viewer);
         });
     });
+    this.loggedIn = !!requestResult;
     return requestResult;
   }
 
@@ -80,16 +85,145 @@ export class AnilistService {
     this.accessToken = '';
     this.refreshToken = '';
     this.userSubject.next(undefined);
+    this.loggedIn = false;
     localStorage.removeItem('anilistAccessToken');
     localStorage.removeItem('anilistRefreshToken');
     localStorage.removeItem('anilistClientId');
   }
-}
 
-export interface AnilistUser {
-  id: number;
-  name: string;
-  avatar: {
-    medium: string;
-  };
+  async getId(idMal: number, type: 'ANIME' | 'MANGA'): Promise<number | undefined> {
+    const requestResult = await new Promise<number | undefined>(r => {
+      this.client
+        .query<{ Media?: { id: number } }>({
+          query: gql`
+            query Media($idMal: Int, $type: MediaType) {
+              Media(idMal: $idMal, type: $type) {
+                id
+              }
+            }
+          `,
+          variables: { idMal, type },
+        })
+        .subscribe(result => {
+          r(result.data.Media?.id);
+        });
+    });
+    return requestResult;
+  }
+
+  async updateEntry(id: number, data: Partial<AnilistSaveMedialistEntry>) {
+    data.mediaId = id;
+    const variables = JSON.parse(JSON.stringify(data));
+    this.client
+      .mutate({
+        mutation: gql`
+          mutation(
+            $id: Int
+            $mediaId: Int
+            $status: MediaListStatus
+            $score: Float
+            $progress: Int
+            $progressVolumes: Int
+            $repeat: Int
+            $private: Boolean
+            $notes: String
+            $customLists: [String]
+            $hiddenFromStatusLists: Boolean
+            $advancedScores: [Float]
+            $startedAt: FuzzyDateInput
+            $completedAt: FuzzyDateInput
+          ) {
+            SaveMediaListEntry(
+              id: $id
+              mediaId: $mediaId
+              status: $status
+              score: $score
+              progress: $progress
+              progressVolumes: $progressVolumes
+              repeat: $repeat
+              private: $private
+              notes: $notes
+              customLists: $customLists
+              hiddenFromStatusLists: $hiddenFromStatusLists
+              advancedScores: $advancedScores
+              startedAt: $startedAt
+              completedAt: $completedAt
+            ) {
+              id
+              mediaId
+              status
+              score
+              advancedScores
+              progress
+              progressVolumes
+              repeat
+              priority
+              private
+              hiddenFromStatusLists
+              customLists
+              notes
+              updatedAt
+              startedAt {
+                year
+                month
+                day
+              }
+              completedAt {
+                year
+                month
+                day
+              }
+              user {
+                id
+                name
+              }
+              media {
+                id
+                title {
+                  userPreferred
+                }
+                coverImage {
+                  large
+                }
+                type
+                format
+                status
+                episodes
+                volumes
+                chapters
+                averageScore
+                popularity
+                isAdult
+                startDate {
+                  year
+                }
+              }
+            }
+          }
+        `,
+        variables,
+      })
+      .subscribe();
+  }
+
+  statusFromMal(
+    malStatus: WatchStatus | ReadStatus | undefined,
+  ): AnilistMediaListStatus | undefined {
+    switch (malStatus) {
+      case 'plan_to_read':
+      case 'plan_to_watch':
+        return 'PLANNING';
+      case 'completed':
+        return 'COMPLETED';
+      case 'dropped':
+        return 'DROPPED';
+      case 'on_hold':
+        return 'PAUSED';
+      case 'reading':
+      case 'watching':
+        return 'CURRENT';
+      default:
+        return undefined;
+    }
+  }
 }
