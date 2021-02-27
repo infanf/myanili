@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Apollo, gql } from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -7,12 +7,11 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AnilistService {
-  private readonly baseUrl = 'https://graphql.anilist.co';
   private clientId = '';
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<AnilistUser | undefined>(undefined);
-  constructor(private http: HttpClient) {
+  constructor(private client: Apollo) {
     this.clientId = String(localStorage.getItem('anilistClientId'));
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
@@ -52,32 +51,12 @@ export class AnilistService {
     return this.userSubject.asObservable();
   }
 
-  async checkLogin(): Promise<
-    | {
-        id: number;
-        name: string;
-        avatar: {
-          medium: string;
-        };
-      }
-    | undefined
-  > {
-    return new Promise((r, rj) => {
-      const headers = {
-        Authorization: `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      };
-      try {
-        this.http
-          .post<{
-            data: {
-              Viewer: AnilistUser;
-            };
-          }>(
-            this.baseUrl,
+  async checkLogin(): Promise<AnilistUser | undefined> {
+    const requestResult = await new Promise<AnilistUser>(r => {
+      this.client
+        .query<{ Viewer: AnilistUser }>({
+          query: gql`
             {
-              query: `{
               Viewer {
                 id
                 name
@@ -87,21 +66,13 @@ export class AnilistService {
                 }
               }
             }
-            `,
-            },
-            { headers },
-          )
-          .subscribe(result => {
-            if (result.data.Viewer) {
-              r(result.data.Viewer);
-            } else {
-              r(undefined);
-            }
-          });
-      } catch (e) {
-        rj(e.message);
-      }
+          `,
+        })
+        .subscribe(result => {
+          r(result.data.Viewer);
+        });
     });
+    return requestResult;
   }
 
   logoff() {

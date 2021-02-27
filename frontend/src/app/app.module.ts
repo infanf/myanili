@@ -28,6 +28,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
 import { FlagPipe } from './flag.pipe';
+import { GraphQLModule } from './graphql/graphql.module';
 import { IconStatusComponent } from './icon-status/icon-status.component';
 import { IconComponent } from './icon/icon.component';
 import { MalIconComponent } from './icon/mal/mal.component';
@@ -121,6 +122,7 @@ import { TimePipe } from './time.pipe';
     }),
     IvyGalleryModule,
     AngularSvgIconModule.forRoot(),
+    GraphQLModule,
   ],
   providers: [TimePipe, StreamPipe, PlatformPipe],
   bootstrap: [AppComponent],
