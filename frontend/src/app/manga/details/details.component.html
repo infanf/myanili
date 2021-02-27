@@ -205,7 +205,7 @@
             *ngIf="manga.my_extension.platformId"
             href="{{ manga.my_extension.platform | platform: 'urlprefix' }}{{
               manga.my_extension.platformId
-            }}"
+            }}{{ manga.my_extension.platform | platform: 'urlprefix' }}"
             target="_blank"
           >
             <svg-icon

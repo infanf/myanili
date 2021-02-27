@@ -44,6 +44,7 @@ export class PlatformPipe implements PipeTransform {
       id: 'cr',
       name: 'Crunchyroll',
       urlprefix: 'https://www.crunchyroll.com/comics/manga/',
+      urlpostfix: 'volumes',
     },
     {
       id: 'renta',
@@ -53,6 +54,7 @@ export class PlatformPipe implements PipeTransform {
     {
       id: 'book',
       name: 'Print',
+      urlprefix: 'https://amazon.de/dp/',
     },
     {
       id: '',
@@ -68,6 +70,7 @@ export class PlatformPipe implements PipeTransform {
         return String(provider[type]);
       }
     }
+    if (type === 'urlprefix' || type === 'urlpostfix') return '';
     return id;
   }
 }
@@ -76,4 +79,5 @@ interface PlatformingProvider {
   id: string;
   name: string;
   urlprefix?: string;
+  urlpostfix?: string;
 }

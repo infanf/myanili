@@ -32,22 +32,27 @@ export class StreamPipe implements PipeTransform {
     {
       id: 'al',
       name: 'animelab',
+      urlprefix: 'https://www.animelab.com/shows/',
     },
     {
       id: 'aod',
       name: 'Anime-on-demand',
+      urlprefix: 'https://anime-on-demand.de/anime/',
     },
     {
       id: 'fun',
       name: 'Funimation',
+      urlprefix: 'https://www.funimation.com/shows/',
     },
     {
       id: 'hulu',
       name: 'hulu',
+      urlprefix: 'https://www.hulu.com/series/',
     },
     {
       id: 'nf',
       name: 'Netflix',
+      urlprefix: 'https://www.netflix.com/title/',
     },
     {
       id: 'nhk',
