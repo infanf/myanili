@@ -58,7 +58,7 @@ export class MangaService {
       this.malService.put<MyMangaStatus>('manga/' + id, data),
       (async () => {
         if (this.anilist.loggedIn) {
-          const anilistId = await this.anilist.getId(id, 'ANIME');
+          const anilistId = await this.anilist.getId(id, 'MANGA');
           if (!anilistId) return;
           return this.anilist.updateEntry(anilistId, {
             progress: data.num_chapters_read,
