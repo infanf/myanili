@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import * as moment from 'moment';
+import { AnilistService } from 'src/app/anilist.service';
 import { GlobalService } from 'src/app/global.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
@@ -20,6 +21,7 @@ import { TraktComponent } from '../trakt/trakt.component';
 })
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
+  anilistId?: number;
   anime?: Anime;
   edit = false;
   busy = false;
@@ -37,6 +39,7 @@ export class AnimeDetailsComponent implements OnInit {
     private trakt: TraktService,
     private modalService: NgbModal,
     private gallery: Gallery,
+    private anilist: AnilistService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -55,7 +58,12 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.anime = await this.animeService.getAnime(this.id);
+    const [anime, anilistId] = await Promise.all([
+      this.animeService.getAnime(this.id),
+      this.anilist.getId(this.id, 'ANIME'),
+    ]);
+    this.anime = anime;
+    this.anilistId = anilistId;
     this.glob.notbusy();
   }
 

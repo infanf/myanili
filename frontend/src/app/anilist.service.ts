@@ -25,7 +25,7 @@ export class AnilistService {
           this.userSubject.next(user);
         })
         .catch(e => {
-          alert('Could not connect to anilist, please check your account settings.');
+          alert('Could not connect to AniList, please check your account settings.');
           localStorage.removeItem('anilistAccessToken');
         });
     }
@@ -59,6 +59,7 @@ export class AnilistService {
     const requestResult = await new Promise<AnilistUser>(r => {
       this.client
         .query<{ Viewer: AnilistUser }>({
+          errorPolicy: 'ignore',
           query: gql`
             {
               Viewer {
@@ -95,6 +96,7 @@ export class AnilistService {
     const requestResult = await new Promise<number | undefined>(r => {
       this.client
         .query<{ Media?: { id: number } }>({
+          errorPolicy: 'ignore',
           query: gql`
             query Media($idMal: Int, $type: MediaType) {
               Media(idMal: $idMal, type: $type) {
@@ -117,6 +119,7 @@ export class AnilistService {
       const variables = JSON.parse(JSON.stringify(data));
       this.client
         .mutate({
+          errorPolicy: 'ignore',
           mutation: gql`
             mutation(
               $id: Int
