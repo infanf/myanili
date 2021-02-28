@@ -54,20 +54,25 @@ export class MangaService {
   }
 
   async updateManga(id: number, data: Partial<MyMangaUpdate>): Promise<MyMangaStatus> {
-    if (this.anilist.loggedIn) {
-      this.anilist.getId(id, 'MANGA').then(anilistId => {
-        if (!anilistId) return;
-        this.anilist.updateEntry(anilistId, {
-          progress: data.num_chapters_read,
-          progressVolumes: data.num_volumes_read,
-          scoreRaw: data.score ? data.score * 10 : undefined,
-          status: this.anilist.statusFromMal(data.status),
-          notes: data.comments,
-          repeat: data.num_times_reread,
-        });
-      });
-    }
-    return this.malService.put<MyMangaStatus>('manga/' + id, data);
+    const [malResponse] = await Promise.all([
+      this.malService.put<MyMangaStatus>('manga/' + id, data),
+      (async () => {
+        if (this.anilist.loggedIn) {
+          const anilistId = await this.anilist.getId(id, 'ANIME');
+          if (!anilistId) return;
+          return this.anilist.updateEntry(anilistId, {
+            progress: data.num_chapters_read,
+            progressVolumes: data.num_volumes_read,
+            scoreRaw: data.score ? data.score * 10 : undefined,
+            status: this.anilist.statusFromMal(data.status),
+            notes: data.comments,
+            repeat: data.num_times_reread,
+          });
+        }
+        return;
+      })(),
+    ]);
+    return malResponse;
   }
 
   async getAnimes(id: number): Promise<RelatedAnime[]> {

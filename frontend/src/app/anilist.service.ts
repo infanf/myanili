@@ -112,98 +112,100 @@ export class AnilistService {
   }
 
   async updateEntry(id: number, data: Partial<AnilistSaveMedialistEntry>) {
-    data.mediaId = id;
-    const variables = JSON.parse(JSON.stringify(data));
-    this.client
-      .mutate({
-        mutation: gql`
-          mutation(
-            $id: Int
-            $mediaId: Int
-            $status: MediaListStatus
-            $score: Float
-            $progress: Int
-            $progressVolumes: Int
-            $repeat: Int
-            $private: Boolean
-            $notes: String
-            $customLists: [String]
-            $hiddenFromStatusLists: Boolean
-            $advancedScores: [Float]
-            $startedAt: FuzzyDateInput
-            $completedAt: FuzzyDateInput
-          ) {
-            SaveMediaListEntry(
-              id: $id
-              mediaId: $mediaId
-              status: $status
-              score: $score
-              progress: $progress
-              progressVolumes: $progressVolumes
-              repeat: $repeat
-              private: $private
-              notes: $notes
-              customLists: $customLists
-              hiddenFromStatusLists: $hiddenFromStatusLists
-              advancedScores: $advancedScores
-              startedAt: $startedAt
-              completedAt: $completedAt
+    return new Promise(r => {
+      data.mediaId = id;
+      const variables = JSON.parse(JSON.stringify(data));
+      this.client
+        .mutate({
+          mutation: gql`
+            mutation(
+              $id: Int
+              $mediaId: Int
+              $status: MediaListStatus
+              $score: Float
+              $progress: Int
+              $progressVolumes: Int
+              $repeat: Int
+              $private: Boolean
+              $notes: String
+              $customLists: [String]
+              $hiddenFromStatusLists: Boolean
+              $advancedScores: [Float]
+              $startedAt: FuzzyDateInput
+              $completedAt: FuzzyDateInput
             ) {
-              id
-              mediaId
-              status
-              score
-              advancedScores
-              progress
-              progressVolumes
-              repeat
-              priority
-              private
-              hiddenFromStatusLists
-              customLists
-              notes
-              updatedAt
-              startedAt {
-                year
-                month
-                day
-              }
-              completedAt {
-                year
-                month
-                day
-              }
-              user {
+              SaveMediaListEntry(
+                id: $id
+                mediaId: $mediaId
+                status: $status
+                score: $score
+                progress: $progress
+                progressVolumes: $progressVolumes
+                repeat: $repeat
+                private: $private
+                notes: $notes
+                customLists: $customLists
+                hiddenFromStatusLists: $hiddenFromStatusLists
+                advancedScores: $advancedScores
+                startedAt: $startedAt
+                completedAt: $completedAt
+              ) {
                 id
-                name
-              }
-              media {
-                id
-                title {
-                  userPreferred
-                }
-                coverImage {
-                  large
-                }
-                type
-                format
+                mediaId
                 status
-                episodes
-                volumes
-                chapters
-                averageScore
-                popularity
-                isAdult
-                startDate {
+                score
+                advancedScores
+                progress
+                progressVolumes
+                repeat
+                priority
+                private
+                hiddenFromStatusLists
+                customLists
+                notes
+                updatedAt
+                startedAt {
                   year
+                  month
+                  day
+                }
+                completedAt {
+                  year
+                  month
+                  day
+                }
+                user {
+                  id
+                  name
+                }
+                media {
+                  id
+                  title {
+                    userPreferred
+                  }
+                  coverImage {
+                    large
+                  }
+                  type
+                  format
+                  status
+                  episodes
+                  volumes
+                  chapters
+                  averageScore
+                  popularity
+                  isAdult
+                  startDate {
+                    year
+                  }
                 }
               }
             }
-          }
-        `,
-        variables,
-      })
-      .subscribe();
+          `,
+          variables,
+        })
+        .subscribe(r);
+    });
   }
 
   statusFromMal(
