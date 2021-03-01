@@ -98,6 +98,7 @@ export class WatchlistComponent implements OnInit {
     anime.list_status.num_episodes_watched = animeStatus.num_episodes_watched;
     anime.list_status.updated_at = animeStatus.updated_at;
     anime.busy = false;
+    this.glob.notbusy();
   }
 
   async scrobbleTrakt(anime: Anime, episode: number): Promise<boolean> {

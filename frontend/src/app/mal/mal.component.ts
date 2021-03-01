@@ -43,7 +43,11 @@ export class MalComponent implements AfterViewInit {
   }
 
   async search() {
-    if (!this.query) return;
+    if (!this.query) {
+      this.sb.first.nativeElement.focus();
+      return;
+    }
+    this.sb.first.nativeElement.blur();
     this.glob.busy();
     this.results = (
       await this.malService.get<Array<{ node: Anime | Manga }>>(this.type + 's?query=' + this.query)

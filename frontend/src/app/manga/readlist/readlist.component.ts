@@ -85,6 +85,7 @@ export class ReadlistComponent {
     if (statusResponse.status === 'completed') {
       this.mangas = this.mangas.filter(m => m.list_status.status !== 'completed');
     }
+    this.glob.notbusy();
   }
 
   async plusOneChapter(manga: ListManga) {
@@ -112,5 +113,6 @@ export class ReadlistComponent {
     if (statusResponse.status === 'completed') {
       this.mangas = this.mangas.filter(m => m.list_status.status !== 'completed');
     }
+    this.glob.notbusy();
   }
 }
