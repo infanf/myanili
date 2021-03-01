@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Anime } from '@models/anime';
 import { Manga } from '@models/manga';
@@ -15,11 +15,13 @@ import { Language, SettingsService } from '../settings/settings.service';
   templateUrl: './mal.component.html',
   styleUrls: ['./mal.component.scss'],
 })
-export class MalComponent {
+export class MalComponent implements AfterViewInit {
   @Input() type: 'anime' | 'manga' = 'anime';
   lang: Language = 'default';
   results: Array<Anime | Manga> = [];
   query = '';
+  // tslint:disable-next-line:no-any
+  @ViewChildren('searchbar') sb: any;
 
   constructor(
     private malService: MalService,
@@ -34,6 +36,10 @@ export class MalComponent {
     });
     this.settings.language.subscribe(lang => (this.lang = lang));
     this.glob.notbusy();
+  }
+
+  ngAfterViewInit() {
+    this.sb.first.nativeElement.focus();
   }
 
   async search() {
