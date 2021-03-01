@@ -125,7 +125,7 @@ export class AnilistService {
               $id: Int
               $mediaId: Int
               $status: MediaListStatus
-              $score: Float
+              $scoreRaw: Int
               $progress: Int
               $progressVolumes: Int
               $repeat: Int
@@ -141,7 +141,7 @@ export class AnilistService {
                 id: $id
                 mediaId: $mediaId
                 status: $status
-                score: $score
+                scoreRaw: $scoreRaw
                 progress: $progress
                 progressVolumes: $progressVolumes
                 repeat: $repeat
