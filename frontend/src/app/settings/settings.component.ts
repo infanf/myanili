@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AnilistUser } from '@models/anilist';
 import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { AnilistService } from '../anilist.service';
 import { TraktService } from '../anime/trakt.service';
 import { GlobalService } from '../global.service';
 import { MalService } from '../mal.service';
@@ -17,6 +19,7 @@ export class SettingsComponent implements OnInit {
   lang: Language = 'default';
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
+  anilistLoggedIn?: AnilistUser;
   inlist = 'false';
   layout = 'list';
   constructor(
@@ -24,6 +27,7 @@ export class SettingsComponent implements OnInit {
     private glob: GlobalService,
     private mal: MalService,
     private trakt: TraktService,
+    private anilist: AnilistService,
     public modal: NgbActiveModal,
   ) {
     this.settings.language.subscribe(lang => {
@@ -34,6 +38,9 @@ export class SettingsComponent implements OnInit {
     });
     this.trakt.user.subscribe(user => {
       this.traktLoggedIn = user;
+    });
+    this.anilist.user.subscribe(user => {
+      this.anilistLoggedIn = user;
     });
     this.settings.onlyInList.subscribe(inList => {
       this.inlist = JSON.stringify(inList);
@@ -77,5 +84,15 @@ export class SettingsComponent implements OnInit {
 
   async traktLogoff() {
     this.trakt.logoff();
+  }
+
+  async anilistConnect() {
+    this.glob.busy();
+    await this.anilist.login();
+    this.glob.notbusy();
+  }
+
+  async anilistLogoff() {
+    this.anilist.logoff();
   }
 }

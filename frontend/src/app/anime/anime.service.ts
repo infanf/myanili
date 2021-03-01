@@ -15,13 +15,18 @@ import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
 import { environment } from 'src/environments/environment';
 
+import { AnilistService } from '../anilist.service';
 import { MalService } from '../mal.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnimeService {
-  constructor(private malService: MalService, private httpClient: HttpClient) {}
+  constructor(
+    private malService: MalService,
+    private httpClient: HttpClient,
+    private anilist: AnilistService,
+  ) {}
 
   async list(status?: WatchStatus) {
     const animes = await this.malService.myList(status);
@@ -66,7 +71,24 @@ export class AnimeService {
   }
 
   async updateAnime(id: number, data: Partial<MyAnimeUpdate>): Promise<MyAnimeStatus> {
-    return this.malService.put<MyAnimeStatus>('anime/' + id, data);
+    const [malResponse] = await Promise.all([
+      this.malService.put<MyAnimeStatus>('anime/' + id, data),
+      (async () => {
+        if (this.anilist.loggedIn) {
+          const anilistId = await this.anilist.getId(id, 'ANIME');
+          if (!anilistId) return;
+          return this.anilist.updateEntry(anilistId, {
+            progress: data.num_watched_episodes,
+            scoreRaw: data.score ? data.score * 10 : undefined,
+            status: this.anilist.statusFromMal(data.status),
+            notes: data.comments,
+            repeat: data.num_times_rewatched,
+          });
+        }
+        return;
+      })(),
+    ]);
+    return malResponse;
   }
 
   async getManga(id: number): Promise<RelatedManga[]> {

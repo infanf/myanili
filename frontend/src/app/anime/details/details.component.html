@@ -5,6 +5,9 @@
       <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="me-1">
         <app-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></app-icon-mal>
       </a>
+      <a class="me-1" *ngIf="anilistId" [href]="'https://anilist.co/anime/' + anilistId" target="_blank">
+        <app-icon-anilist size=24 style="vertical-align: text-bottom; line-height: 0.625"></app-icon-anilist>
+      </a>
       <a
         class="link-trakt"
         *ngIf="anime && anime.my_extension && anime.my_extension.trakt"

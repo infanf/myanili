@@ -4,6 +4,7 @@ import { Picture } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
+import { AnilistService } from 'src/app/anilist.service';
 import { GlobalService } from 'src/app/global.service';
 import { PlatformPipe } from 'src/app/platform.pipe';
 
@@ -18,6 +19,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   @Input() id = 0;
   @Input() inModal = false;
   manga?: Manga;
+  anilistId?: number;
   shortsyn = true;
   edit = false;
   busy = false;
@@ -30,6 +32,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     private glob: GlobalService,
     private gallery: Gallery,
     public platformPipe: PlatformPipe,
+    private anilist: AnilistService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -43,7 +46,12 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.manga = await this.mangaService.getManga(this.id);
+    const [manga, anilistId] = await Promise.all([
+      this.mangaService.getManga(this.id),
+      this.anilist.getId(this.id, 'MANGA'),
+    ]);
+    this.manga = manga;
+    this.anilistId = anilistId;
     this.glob.notbusy();
   }
 
