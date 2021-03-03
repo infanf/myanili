@@ -8,6 +8,7 @@ import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
 import { GlobalService } from 'src/app/global.service';
+import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
@@ -22,6 +23,7 @@ import { TraktComponent } from '../trakt/trakt.component';
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
   anilistId?: number;
+  kitsuId?: number;
   anime?: Anime;
   edit = false;
   busy = false;
@@ -40,6 +42,7 @@ export class AnimeDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private gallery: Gallery,
     private anilist: AnilistService,
+    private kitsu: KitsuService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -58,12 +61,14 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const [anime, anilistId] = await Promise.all([
+    const [anime, anilistId, kitsuId] = await Promise.all([
       this.animeService.getAnime(this.id),
       this.anilist.getId(this.id, 'ANIME'),
+      this.kitsu.getId(this.id, 'anime'),
     ]);
     this.anime = anime;
     this.anilistId = anilistId;
+    this.kitsuId = kitsuId;
     this.glob.notbusy();
   }
 

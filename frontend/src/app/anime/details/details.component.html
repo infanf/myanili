@@ -5,8 +5,19 @@
       <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="me-1">
         <app-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></app-icon-mal>
       </a>
-      <a class="me-1" *ngIf="anilistId" [href]="'https://anilist.co/anime/' + anilistId" target="_blank">
-        <app-icon-anilist size=24 style="vertical-align: text-bottom; line-height: 0.625"></app-icon-anilist>
+      <a
+        class="me-1"
+        *ngIf="anilistId"
+        [href]="'https://anilist.co/anime/' + anilistId"
+        target="_blank"
+      >
+        <app-icon-anilist
+          size="24"
+          style="vertical-align: text-bottom; line-height: 0.625"
+        ></app-icon-anilist>
+      </a>
+      <a class="me-1" *ngIf="kitsuId" [href]="'https://kitsu.io/anime/' + kitsuId" target="_blank">
+        Kitsu
       </a>
       <a
         class="link-trakt"
@@ -275,18 +286,18 @@
             }}"
             target="_blank"
           >
+            <svg-icon
+              [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+              class="ml-1"
+              src="/assets/stream/{{ anime.my_extension.externalStreaming }}.svg"
+            ></svg-icon>
+          </a>
           <svg-icon
+            *ngIf="!anime.my_extension.externalStreamingId"
             [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
             class="ml-1"
-            src="/assets/stream/{{ anime.my_extension.externalStreaming }}.svg"
+            src="/assets/stream/{{ anime.my_extension?.externalStreaming }}.svg"
           ></svg-icon>
-        </a>
-        <svg-icon
-          *ngIf="!anime.my_extension.externalStreamingId"
-          [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-          class="ml-1"
-          src="/assets/stream/{{ anime.my_extension?.externalStreaming }}.svg"
-        ></svg-icon>
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">
