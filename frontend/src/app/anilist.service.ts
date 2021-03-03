@@ -212,14 +212,15 @@ export class AnilistService {
   }
 
   statusFromMal(
-    malStatus: WatchStatus | ReadStatus | undefined,
+    malStatus?: WatchStatus | ReadStatus,
+    repeating = false,
   ): AnilistMediaListStatus | undefined {
     switch (malStatus) {
       case 'plan_to_read':
       case 'plan_to_watch':
         return 'PLANNING';
       case 'completed':
-        return 'COMPLETED';
+        return repeating ? 'REPEATING' : 'COMPLETED';
       case 'dropped':
         return 'DROPPED';
       case 'on_hold':
@@ -227,6 +228,27 @@ export class AnilistService {
       case 'reading':
       case 'watching':
         return 'CURRENT';
+      default:
+        return undefined;
+    }
+  }
+
+  statusToMal(
+    alStatus?: AnilistMediaListStatus,
+    type: 'ANIME' | 'MANGA' = 'ANIME',
+  ): WatchStatus | ReadStatus | undefined {
+    switch (alStatus) {
+      case 'PLANNING':
+        return type === 'MANGA' ? 'plan_to_read' : 'plan_to_watch';
+      case 'CURRENT':
+        return type === 'MANGA' ? 'reading' : 'watching';
+      case 'REPEATING':
+      case 'COMPLETED':
+        return 'completed';
+      case 'PAUSED':
+        return 'on_hold';
+      case 'DROPPED':
+        return 'dropped';
       default:
         return undefined;
     }
