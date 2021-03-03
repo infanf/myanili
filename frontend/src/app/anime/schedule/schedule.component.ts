@@ -47,6 +47,7 @@ export class ScheduleComponent {
     return this.animes.filter(
       anime =>
         Number(anime.my_extension?.simulDay) % 7 === day % 7 &&
+        anime.my_extension?.simulDay !== null &&
         anime.my_list_status?.status !== 'dropped',
     );
   }
