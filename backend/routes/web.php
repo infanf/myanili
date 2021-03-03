@@ -2,9 +2,9 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Providers\AnilistServiceProvider as AnilistServiceProvider;
 use App\Providers\MalServiceProvider as MalServiceProvider;
 use App\Providers\TraktServiceProvider as TraktServiceProvider;
-use App\Providers\AnilistServiceProvider as AnilistServiceProvider;
 use Illuminate\Http\Request;
 
 /*
@@ -50,10 +50,13 @@ $router->get('/auth', function () {
 
             setcookie('MAL_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
             setcookie('MAL_REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires() + (30 * 24 * 60 * 60));
-            $opener = env('APP_CLIENT');
-            $javascript = <<<JAVASCRIPT
-            window.opener.postMessage(true, "$opener");
+            $javascript = "";
+            foreach (explode(',', env('APP_CLIENT')) as $opener) {
+                $javascript .= <<<JAVASCRIPT
+                    window.opener.postMessage(true, "$opener");
 JAVASCRIPT;
+            }
+
             return "<script>$javascript</script>";
         } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
 
@@ -199,11 +202,13 @@ $router->get('/traktauth', function () {
 
             setcookie('TRAKT_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
             setcookie('TRAKT_REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires() + (30 * 24 * 60 * 60));
-            $opener = env('APP_CLIENT');
+            $javascript = "";
             $clientId = env('TRAKT_CLIENT_ID');
-            $javascript = <<<JAVASCRIPT
-            window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ex:"{$accessToken->getExpires()}",ci:"{$clientId}"}, "$opener");
+            foreach (explode(',', env('APP_CLIENT')) as $opener) {
+                $javascript .= <<<JAVASCRIPT
+                    window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ex:"{$accessToken->getExpires()}",ci:"{$clientId}"}, "$opener");
 JAVASCRIPT;
+            }
             return "<script>$javascript</script>";
         } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
 
@@ -214,10 +219,10 @@ JAVASCRIPT;
 });
 
 /*
-    _        _ _ _    _    _   
-   /_\  _ _ (_) | |  (_)__| |_ 
-  / _ \| ' \| | | |__| (_-<  _|
- /_/ \_\_||_|_|_|____|_/__/\__|
+   _        _ _ _    _    _
+  /_\  _ _ (_) | |  (_)__| |_
+ / _ \| ' \| | | |__| (_-<  _|
+/_/ \_\_||_|_|_|____|_/__/\__|
 
  */
 
@@ -249,11 +254,13 @@ $router->get('/anilistauth', function () {
 
             setcookie('ANILIST_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
             setcookie('ANILIST_REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires() + (30 * 24 * 60 * 60));
-            $opener = env('APP_CLIENT');
+            $javascript = "";
             $clientId = env('ANILIST_CLIENT_ID');
-            $javascript = <<<JAVASCRIPT
-            window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ex:"{$accessToken->getExpires()}",ci:"{$clientId}"}, "$opener");
+            foreach (explode(',', env('APP_CLIENT')) as $opener) {
+                $javascript .= <<<JAVASCRIPT
+                    window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ex:"{$accessToken->getExpires()}",ci:"{$clientId}"}, "$opener");
 JAVASCRIPT;
+            }
             return "<script>$javascript</script>";
         } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
 
@@ -262,4 +269,3 @@ JAVASCRIPT;
         }
     }
 });
-
