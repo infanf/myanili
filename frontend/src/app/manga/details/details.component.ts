@@ -6,6 +6,7 @@ import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
 import { GlobalService } from 'src/app/global.service';
+import { KitsuService } from 'src/app/kitsu.service';
 import { PlatformPipe } from 'src/app/platform.pipe';
 
 import { MangaService } from '../manga.service';
@@ -20,6 +21,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   @Input() inModal = false;
   manga?: Manga;
   anilistId?: number;
+  kitsuId?: string;
   shortsyn = true;
   edit = false;
   busy = false;
@@ -33,6 +35,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     private gallery: Gallery,
     public platformPipe: PlatformPipe,
     private anilist: AnilistService,
+    private kitsu: KitsuService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -46,12 +49,14 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    const [manga, anilistId] = await Promise.all([
+    const [manga, anilistId, kitsuId] = await Promise.all([
       this.mangaService.getManga(this.id),
       this.anilist.getId(this.id, 'MANGA'),
+      this.kitsu.getId(this.id, 'manga'),
     ]);
     this.manga = manga;
     this.anilistId = anilistId;
+    this.kitsuId = kitsuId;
     this.glob.notbusy();
   }
 

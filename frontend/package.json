@@ -36,6 +36,7 @@
     "country-code-emoji": "^2.2.0",
     "graphql": "^15.5.0",
     "js-base64": "^3.6.0",
+    "kitsu": "^10.0.0-alpha.10",
     "moment": "^2.29.1",
     "ng-circle-progress": "^1.6.0",
     "ngx-device-detector": "^2.0.5",
