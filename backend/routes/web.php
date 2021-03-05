@@ -18,6 +18,14 @@ use Illuminate\Http\Request;
 |
  */
 
+/*
+ *  __  __   _   _    
+ * |  \/  | /_\ | |   
+ * | |\/| |/ _ \| |__ 
+ * |_|  |_/_/ \_\____|
+ * 
+ */
+
 $router->get('/auth', function () {
     $code_verifier = isset($_SESSION['verifier']) ? $_SESSION['verifier'] : rtrim(strtr(base64_encode(random_bytes(64)), "+/", "-_"), "=");
     $_SESSION['verifier'] = $code_verifier;
@@ -167,11 +175,11 @@ $router->get('/debug', function () use ($router) {
 });
 
 /*
-_            _   _    _
-| |_ _ _ __ _| |_| |_ | |___ __
-|  _| '_/ _` | / /  _||  _\ V /
-\__|_| \__,_|_\_\\__(_)__|\_/
-
+ *   _            _   _    _
+ *  | |_ _ _ __ _| |_| |_ | |___ __
+ *  |  _| '_/ _` | / /  _||  _\ V /
+ *   \__|_| \__,_|_\_\\__(_)__|\_/
+ *
  */
 
 $router->get('/traktauth', function () {
@@ -219,11 +227,11 @@ JAVASCRIPT;
 });
 
 /*
-   _        _ _ _    _    _
-  /_\  _ _ (_) | |  (_)__| |_
- / _ \| ' \| | | |__| (_-<  _|
-/_/ \_\_||_|_|_|____|_/__/\__|
-
+ *     _        _ _    _    _
+ *    /_\  _ _ (_) |  (_)__| |_
+ *   / _ \| ' \| | |__| (_-<  _|
+ *  /_/ \_\_||_|_|____|_/__/\__|
+ *
  */
 
 $router->get('/anilistauth', function () {
