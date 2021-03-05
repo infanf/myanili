@@ -23,7 +23,7 @@ import { TraktComponent } from '../trakt/trakt.component';
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
   anilistId?: number;
-  kitsuId?: number;
+  kitsuId?: string;
   anime?: Anime;
   edit = false;
   busy = false;

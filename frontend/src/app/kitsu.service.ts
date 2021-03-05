@@ -32,7 +32,7 @@ export class KitsuService {
     externalId: number,
     type: 'anime' | 'manga',
     externalSite = 'myanimelist',
-  ): Promise<number | undefined> {
+  ): Promise<string | undefined> {
     const result = await fetch(
       `${this.baseUrl}mappings?externalSite=${externalSite}/${type}&filter[externalId]=${externalId}`,
     );
@@ -45,9 +45,11 @@ export class KitsuService {
         if (!mappings.length) return undefined;
         const newUrl = mappings[0].relationships.item.links.related;
         const newResult = await fetch(newUrl);
-        const animeResponse = ((await newResult.json()) as unknown) as { data?: { id: string } };
+        const animeResponse = ((await newResult.json()) as unknown) as {
+          data?: { id: string; attributes: { slug: string } };
+        };
         if (newResult.ok && animeResponse.data) {
-          return Number(animeResponse.data.id);
+          return animeResponse.data.attributes.slug || animeResponse.data.id;
         }
       }
     }

@@ -32,6 +32,7 @@ import { GraphQLModule } from './graphql/graphql.module';
 import { IconStatusComponent } from './icon-status/icon-status.component';
 import { AnilistIconComponent } from './icon/anilist/anilist.component';
 import { IconComponent } from './icon/icon.component';
+import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
 import { MalIconComponent } from './icon/mal/mal.component';
 import { SpotifyIconComponent } from './icon/spotify/spotify.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
@@ -99,6 +100,7 @@ import { TimePipe } from './time.pipe';
     AnimeListListComponent,
     PlatformComponent,
     AnilistIconComponent,
+    KitsuIconComponent,
   ],
   imports: [
     BrowserModule,

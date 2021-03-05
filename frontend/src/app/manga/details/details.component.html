@@ -2,12 +2,6 @@
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
       {{ manga?.title || 'Loading…' }}
-      <a [href]="'https://myanimelist.net/manga/' + id" target="_blank">
-        <app-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></app-icon-mal>
-      </a>
-      <a class="me-1" *ngIf="anilistId" [href]="'https://anilist.co/manga/' + anilistId" target="_blank">
-        <app-icon-anilist size=24 style="vertical-align: text-bottom; line-height: 0.625"></app-icon-anilist>
-      </a>
     </h2>
     <div class="ms-auto ps-3 cursor-pointer" *ngIf="manga?.title" style="white-space: nowrap">
       <ng-container *ngIf="manga?.my_list_status; else add">
@@ -378,6 +372,27 @@
                 (change)="changeOngoing()"
               />
               <label class="form-check-label" for="ongoing"> Regular updates </label>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="!edit">
+          <div class="col-4 fw-bold text-end">Links</div>
+          <div class="col-8">
+            <div>
+              <app-icon-mal class="text-primary"></app-icon-mal>
+              <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
+                >MyAnimeList</a
+              >
+            </div>
+            <div *ngIf="anilistId">
+              <app-icon-anilist></app-icon-anilist>
+              <a class="ms-1" [href]="'https://anilist.co/manga/' + anilistId" target="_blank"
+                >AniList</a
+              >
+            </div>
+            <div *ngIf="kitsuId">
+              <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
+              <a class="ms-1" [href]="'https://kitsu.io/manga/' + kitsuId" target="_blank">Kitsu</a>
             </div>
           </div>
         </div>
