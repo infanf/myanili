@@ -66,7 +66,7 @@ export class MangaService {
             progress: data.num_chapters_read,
             progressVolumes: data.num_volumes_read,
             scoreRaw: data.score ? data.score * 10 : undefined,
-            status: this.anilist.statusFromMal(data.status),
+            status: this.anilist.statusFromMal(data.status, data.is_rereading),
             notes: data.comments,
             repeat: data.num_times_reread,
           });

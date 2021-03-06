@@ -182,7 +182,13 @@
               "
               name="play-circle"
               class="cursor-pointer me-1"
-              (click)="setWatching()"
+              (click)="setStatus('watching')"
+            ></app-icon>
+            <app-icon
+              *ngIf="anime!.my_list_status?.status === 'watching'"
+              name="pause-circle"
+              class="cursor-pointer me-1"
+              (click)="setStatus('on_hold')"
             ></app-icon>
             <app-icon
               *ngIf="
@@ -333,7 +339,11 @@
         <div class="col-4 fw-bold text-end">Duration</div>
         <div class="col-8">
           <app-icon
-            *ngIf="(anime.my_list_status?.status === 'watching'||anime.my_list_status?.is_rewatching) && !edit"
+            *ngIf="
+              (anime.my_list_status?.status === 'watching' ||
+                anime.my_list_status?.is_rewatching) &&
+              !edit
+            "
             name="plus-square"
             class="cursor-pointer me-1"
             (click)="plusOne()"

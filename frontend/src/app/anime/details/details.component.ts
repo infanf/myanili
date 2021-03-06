@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
+import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { Picture } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Gallery } from 'angular-gallery';
@@ -172,11 +172,11 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = false;
   }
 
-  async setWatching() {
+  async setStatus(status: WatchStatus) {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
-    await this.animeService.updateAnime(this.anime.id, { status: 'watching' });
+    await this.animeService.updateAnime(this.anime.id, { status });
     await this.ngOnInit();
     this.busy = false;
   }

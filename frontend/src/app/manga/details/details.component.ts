@@ -150,47 +150,48 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     this.busy = false;
   }
 
-  async plusOneVolume() {
+  async reread() {
+    if (!this.manga) return;
+    this.glob.busy();
+    this.busy = true;
+    await this.mangaService.updateManga(this.manga.id, {
+      status: 'completed',
+      is_rereading: true,
+      num_chapters_read: 0,
+      num_volumes_read: 0,
+    });
+    await this.ngOnInit();
+    this.busy = false;
+  }
+
+  async plusOne(type: 'chapter' | 'volume') {
     if (!this.manga || !this.manga.my_list_status) return;
     this.glob.busy();
+    const currentChapter = this.manga.my_list_status?.num_chapters_read || 0;
     const currentVolume = this.manga.my_list_status?.num_volumes_read || 0;
-    const data = {
-      num_volumes_read: currentVolume + 1,
-    } as Partial<MyMangaUpdate>;
+    const data = {} as Partial<MyMangaUpdate>;
+    if (type === 'volume') {
+      data.num_volumes_read = currentVolume + 1;
+    } else {
+      data.num_chapters_read = currentChapter + 1;
+    }
     let completed = false;
-    if (this.manga.num_chapters && this.manga.num_volumes) {
+    if (type === 'volume' && this.manga.num_chapters && this.manga.num_volumes) {
       data.num_chapters_read = Math.max(
         this.manga.my_list_status?.num_chapters_read || 0,
         Math.floor(((currentVolume + 1) / this.manga.num_volumes) * this.manga.num_chapters),
       );
     }
-    if (currentVolume + 1 === this.manga.num_volumes) {
+    if (
+      data.num_volumes_read === this.manga.num_volumes ||
+      data.num_chapters_read === this.manga.num_chapters
+    ) {
       data.status = 'completed';
-      if (this.manga.num_chapters) data.num_chapters_read = this.manga.num_chapters;
-      completed = true;
-      if (!this.manga.my_list_status?.score) {
-        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
-        if (myScore > 0 && myScore <= 10) data.score = myScore;
+      data.is_rereading = false;
+      if (this.manga.my_list_status.is_rereading) {
+        data.num_times_reread = this.manga.my_list_status.num_times_reread + 1 || 1;
       }
-    }
-    const statusResponse = await this.mangaService.updateManga(this.manga.id, data);
-    this.manga.my_list_status.num_chapters_read = statusResponse.num_chapters_read;
-    this.manga.my_list_status.num_volumes_read = statusResponse.num_volumes_read;
-    this.manga.my_list_status.status = statusResponse.status;
-    this.manga.my_list_status.score = statusResponse.score;
-    this.glob.notbusy();
-  }
-
-  async plusOneChapter() {
-    if (!this.manga || !this.manga.my_list_status) return;
-    this.glob.busy();
-    const currentChapter = this.manga.my_list_status?.num_chapters_read || 0;
-    const data = {
-      num_chapters_read: currentChapter + 1,
-    } as Partial<MyMangaUpdate>;
-    let completed = false;
-    if (currentChapter + 1 === this.manga.num_chapters) {
-      data.status = 'completed';
+      if (this.manga.num_chapters) data.num_chapters_read = this.manga.num_chapters;
       if (this.manga.num_volumes) data.num_volumes_read = this.manga.num_volumes;
       completed = true;
       if (!this.manga.my_list_status?.score) {
@@ -203,6 +204,8 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     this.manga.my_list_status.num_volumes_read = statusResponse.num_volumes_read;
     this.manga.my_list_status.status = statusResponse.status;
     this.manga.my_list_status.score = statusResponse.score;
+    this.manga.my_list_status.num_times_reread = statusResponse.num_times_reread;
+    this.manga.my_list_status.is_rereading = statusResponse.is_rereading;
     this.glob.notbusy();
   }
 

@@ -160,7 +160,11 @@
         <div class="col-8">
           <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
           <ng-template #mylist
-            >{{ manga!.my_list_status!.status | mal: 'mystatus' }}
+            >{{
+              manga!.my_list_status!.is_rereading
+                ? 'Rewatching'
+                : (manga!.my_list_status!.status | mal: 'mystatus')
+            }}
             <app-icon
               *ngIf="
                 manga!.my_list_status?.status === 'plan_to_read' ||
@@ -169,14 +173,24 @@
               name="play-circle"
               class="cursor-pointer me-1"
               (click)="setStatus('reading')"
-            ></app-icon
-            ><app-icon
+            ></app-icon>
+            <app-icon
               *ngIf="manga!.my_list_status?.status === 'reading'"
               name="pause-circle"
               class="cursor-pointer me-1"
               (click)="setStatus('on_hold')"
-            ></app-icon
-          ></ng-template>
+            ></app-icon>
+
+            <app-icon
+              *ngIf="
+                manga!.my_list_status?.status === 'completed' &&
+                !manga!.my_list_status?.is_rereading
+              "
+              name="arrow-counterclockwise"
+              class="cursor-pointer me-1"
+              (click)="reread()"
+            ></app-icon>
+          </ng-template>
           <ng-template #mylistedit>
             <select
               class="form-control form-control-sm"
@@ -283,18 +297,24 @@
         <div class="col-4 fw-bold text-end">Progress</div>
         <div class="col-8">
           <app-icon
-            *ngIf="manga.my_list_status?.status === 'reading' && !edit"
+            *ngIf="
+              (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) &&
+              !edit
+            "
             name="plus-square"
             class="cursor-pointer me-1"
-            (click)="plusOneChapter()"
+            (click)="plusOne('chapter')"
           ></app-icon>
           {{ manga!.my_list_status?.num_chapters_read || 0 }}/{{ manga!.num_chapters || '?' }}
           &middot;
           <app-icon
-            *ngIf="manga.my_list_status?.status === 'reading' && !edit"
+            *ngIf="
+              (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) &&
+              !edit
+            "
             name="plus-square"
             class="cursor-pointer me-1"
-            (click)="plusOneVolume()"
+            (click)="plusOne('volume')"
           ></app-icon>
           {{ manga!.my_list_status?.num_volumes_read || 0 }}/{{ manga!.num_volumes || '?' }}
         </div>
