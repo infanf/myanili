@@ -56,7 +56,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     ]);
     this.manga = manga;
     this.anilistId = anilistId;
-    this.kitsuId = kitsuId;
+    this.kitsuId = kitsuId?.kitsuId;
     this.glob.notbusy();
   }
 

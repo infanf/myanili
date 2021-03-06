@@ -66,35 +66,7 @@
           </ng-container>
           <ng-template #traktConnectTemplate>
             <button class="btn btn-sm btn-primary" (click)="traktConnect()">
-              <svg
-                class="d-inline"
-                style="width: 1rem"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 144.8 144.8"
-              >
-                <g fill="currentColor">
-                  <path
-                    d="M29.5,111.8c10.6,11.6,25.9,18.8,42.9,18.8c8.7,0,16.9-1.9,24.3-5.3L56.3,85L29.5,111.8z"
-                  />
-                  <path
-                    d="M56.1,60.6L25.5,91.1L21.4,87l32.2-32.2h0l37.6-37.6c-5.9-2-12.2-3.1-18.8-3.1c-32.2,0-58.3,26.1-58.3,58.3
-      c0,13.1,4.3,25.2,11.7,35l30.5-30.5l2.1,2l43.7,43.7c0.9-0.5,1.7-1,2.5-1.6L56.3,72.7L27,102l-4.1-4.1l33.4-33.4l2.1,2l51,50.9
-      c0.8-0.6,1.5-1.3,2.2-1.9l-55-55L56.1,60.6z"
-                  />
-                  <path
-                    d="M115.7,111.4c9.3-10.3,15-24,15-39c0-23.4-13.8-43.5-33.6-52.8L60.4,56.2L115.7,111.4z M74.5,66.8l-4.1-4.1l28.9-28.9
-      l4.1,4.1L74.5,66.8z M101.9,27.1L68.6,60.4l-4.1-4.1L97.8,23L101.9,27.1z"
-                  />
-                  <g>
-                    <g>
-                      <path
-                        d="M72.4,144.8C32.5,144.8,0,112.3,0,72.4C0,32.5,32.5,0,72.4,0s72.4,32.5,72.4,72.4C144.8,112.3,112.3,144.8,72.4,144.8z
-               M72.4,7.3C36.5,7.3,7.3,36.5,7.3,72.4s29.2,65.1,65.1,65.1s65.1-29.2,65.1-65.1S108.3,7.3,72.4,7.3z"
-                      />
-                    </g>
-                  </g>
-                </g>
-              </svg>
+              <app-icon-trakt></app-icon-trakt>
               Connect
             </button>
           </ng-template>
@@ -107,43 +79,16 @@
             <a href="https://anilist.co/user/{{ anilistLoggedIn.name }}" target="_blank">{{
               anilistLoggedIn.name
             }}</a>
-            <app-icon class="cursor-pointer" name="x" size="20" (click)="anilistLogoff()"></app-icon>
+            <app-icon
+              class="cursor-pointer"
+              name="x"
+              size="20"
+              (click)="anilistLogoff()"
+            ></app-icon>
           </ng-container>
           <ng-template #anilistConnectTemplate>
             <button class="btn btn-sm btn-primary" (click)="anilistConnect()">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                viewBox="0 0 172 172"
-                style="width: 1rem;"
-              >
-                <defs>
-                  <style>
-                    .cls-1 {
-                      fill: #02a9ff;
-                    }
-
-                    .cls-1,
-                    .cls-2 {
-                      fill-rule: evenodd;
-                    }
-
-                    .cls-2 {
-                      fill: #fefefe;
-                    }
-                  </style>
-                </defs>
-                <g>
-                  <path
-                    d="M111.322,111.157 L111.322,41.029 C111.322,37.010 109.105,34.792 105.086,34.792 L91.365,34.792 C87.346,34.792 85.128,37.010 85.128,41.029 C85.128,41.029 85.128,56.337 85.128,74.333 C85.128,75.271 94.165,79.626 94.401,80.547 C101.286,107.449 95.897,128.980 89.370,129.985 C100.042,130.513 101.216,135.644 93.267,132.138 C94.483,117.784 99.228,117.812 112.869,131.610 C112.986,131.729 115.666,137.351 115.833,137.351 C131.170,137.351 148.050,137.351 148.050,137.351 C152.069,137.351 154.286,135.134 154.286,131.115 L154.286,117.394 C154.286,113.375 152.069,111.157 148.050,111.157 L111.322,111.157 Z"
-                    class="cls-1"
-                  />
-                  <path
-                    d="M54.365,34.792 L18.331,137.351 L46.327,137.351 L52.425,119.611 L82.915,119.611 L88.875,137.351 L116.732,137.351 L80.836,34.792 L54.365,34.792 ZM58.800,96.882 L67.531,68.470 L77.094,96.882 L58.800,96.882 Z"
-                    class="cls-2"
-                  />
-                </g>
-              </svg>
+              <app-icon-anilist></app-icon-anilist>
               Connect
             </button>
           </ng-template>
@@ -153,13 +98,32 @@
         <div class="col-5">Kitsu</div>
         <div class="col-7">
           <ng-container *ngIf="kitsuLoggedIn; else kitsuConnectTemplate">
-            <a href="https://anilist.co/user/{{ kitsuLoggedIn }}" target="_blank">{{
-              kitsuLoggedIn
-            }}</a>
+            <a
+              href="https://kitsu.io/users/{{ kitsuLoggedIn.attributes.name || kitsuLoggedIn.id }}"
+              target="_blank"
+              >{{ kitsuLoggedIn.attributes.name || kitsuLoggedIn.id }}</a
+            >
             <app-icon class="cursor-pointer" name="x" size="20" (click)="kitsuLogoff()"></app-icon>
           </ng-container>
           <ng-template #kitsuConnectTemplate>
-            <button class="btn btn-sm btn-primary" (click)="kitsuConnect()">
+            <ng-container *ngIf="kitsuData">
+              <input
+                class="form-control mb-1"
+                placeholder="username"
+                [(ngModel)]="kitsuData.username"
+              />
+              <input
+                class="form-control mb-1"
+                placeholder="password"
+                type="password"
+                [(ngModel)]="kitsuData.password"
+              />
+            </ng-container>
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="kitsuConnect()"
+              [disabled]="kitsuData && (!kitsuData.username || !kitsuData.password)"
+            >
               <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
               Connect
             </button>

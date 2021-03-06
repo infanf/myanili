@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AnilistUser } from '@models/anilist';
+import { KitsuUser } from '@models/kitsu';
 import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,7 +22,8 @@ export class SettingsComponent implements OnInit {
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
   anilistLoggedIn?: AnilistUser;
-  kitsuLoggedIn?: string;
+  kitsuLoggedIn?: KitsuUser;
+  kitsuData?: { username: string; password: string };
   inlist = 'false';
   layout = 'list';
   constructor(
@@ -44,6 +46,9 @@ export class SettingsComponent implements OnInit {
     });
     this.anilist.user.subscribe(user => {
       this.anilistLoggedIn = user;
+    });
+    this.kitsu.user.subscribe(user => {
+      this.kitsuLoggedIn = user;
     });
     this.settings.onlyInList.subscribe(inList => {
       this.inlist = JSON.stringify(inList);
@@ -100,8 +105,16 @@ export class SettingsComponent implements OnInit {
   }
 
   async kitsuConnect() {
+    if (!this.kitsuData) {
+      this.kitsuData = {
+        username: '',
+        password: '',
+      };
+      return;
+    }
+    if (!this.kitsuData.username || !this.kitsuData.password) return;
     this.glob.busy();
-    await this.kitsu.login(prompt('username') || '', prompt('password') || '');
+    await this.kitsu.login(this.kitsuData?.username, this.kitsuData?.password);
     this.glob.notbusy();
   }
 
