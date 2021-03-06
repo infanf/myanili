@@ -48,6 +48,7 @@
         <div class="col-5">MyAnimeList</div>
         <div class="col-7">
           <ng-container *ngIf="malLoggedIn">
+            <app-icon-mal class="me-1 text-primary"></app-icon-mal>
             <a href="https://myanimelist.net/profile/{{ malLoggedIn.name }}" target="_blank">{{
               malLoggedIn.name
             }}</a>
@@ -55,27 +56,11 @@
           </ng-container>
         </div>
       </div>
-      <div class="row my-3">
-        <div class="col-5">Trakt.tv</div>
-        <div class="col-7">
-          <ng-container *ngIf="traktLoggedIn; else traktConnectTemplate">
-            <a href="https://trakt.tv/users/{{ traktLoggedIn }}" target="_blank">{{
-              traktLoggedIn
-            }}</a>
-            <app-icon class="cursor-pointer" name="x" size="20" (click)="traktLogoff()"></app-icon>
-          </ng-container>
-          <ng-template #traktConnectTemplate>
-            <button class="btn btn-sm btn-primary" (click)="traktConnect()">
-              <app-icon-trakt></app-icon-trakt>
-              Connect
-            </button>
-          </ng-template>
-        </div>
-      </div>
       <div class="row mt-3">
         <div class="col-5">AniList</div>
         <div class="col-7">
           <ng-container *ngIf="anilistLoggedIn; else anilistConnectTemplate">
+            <app-icon-anilist class="me-1"></app-icon-anilist>
             <a href="https://anilist.co/user/{{ anilistLoggedIn.name }}" target="_blank">{{
               anilistLoggedIn.name
             }}</a>
@@ -98,6 +83,7 @@
         <div class="col-5">Kitsu</div>
         <div class="col-7">
           <ng-container *ngIf="kitsuLoggedIn; else kitsuConnectTemplate">
+            <app-icon-kitsu style="color: #e75e45" class="me-1"></app-icon-kitsu>
             <a
               href="https://kitsu.io/users/{{ kitsuLoggedIn.attributes.name || kitsuLoggedIn.id }}"
               target="_blank"
@@ -109,12 +95,12 @@
             <ng-container *ngIf="kitsuData">
               <input
                 class="form-control mb-1"
-                placeholder="username"
+                placeholder="Email"
                 [(ngModel)]="kitsuData.username"
               />
               <input
                 class="form-control mb-1"
-                placeholder="password"
+                placeholder="Password"
                 type="password"
                 [(ngModel)]="kitsuData.password"
               />
@@ -125,6 +111,24 @@
               [disabled]="kitsuData && (!kitsuData.username || !kitsuData.password)"
             >
               <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
+              Connect
+            </button>
+          </ng-template>
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-5">Trakt.tv</div>
+        <div class="col-7">
+          <ng-container *ngIf="traktLoggedIn; else traktConnectTemplate">
+            <app-icon-trakt class="me-1 link-trakt"></app-icon-trakt>
+            <a href="https://trakt.tv/users/{{ traktLoggedIn }}" target="_blank">{{
+              traktLoggedIn
+            }}</a>
+            <app-icon class="cursor-pointer" name="x" size="20" (click)="traktLogoff()"></app-icon>
+          </ng-container>
+          <ng-template #traktConnectTemplate>
+            <button class="btn btn-sm btn-primary" (click)="traktConnect()">
+              <app-icon-trakt></app-icon-trakt>
               Connect
             </button>
           </ng-template>
