@@ -82,7 +82,7 @@ export class AnimeService {
           return this.anilist.updateEntry(anilistId, {
             progress: data.num_watched_episodes,
             scoreRaw: data.score ? data.score * 10 : undefined,
-            status: this.anilist.statusFromMal(data.status),
+            status: this.anilist.statusFromMal(data.status, data.is_rewatching),
             notes: data.comments,
             repeat: data.num_times_rewatched,
           });

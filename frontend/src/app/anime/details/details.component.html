@@ -27,7 +27,6 @@
       </ng-template>
     </div>
   </header>
-  <!-- <hr class="mt-0" /> -->
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3" [class]="{ 'd-none': edit, 'd-sm-block': edit }">
       <ng-container>
@@ -171,7 +170,11 @@
         <div class="col-8">
           <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
           <ng-template #mylist>
-            {{ anime!.my_list_status!.status | mal: 'mystatus' }}
+            {{
+              anime!.my_list_status!.is_rewatching
+                ? 'Rewatching'
+                : (anime!.my_list_status!.status | mal: 'mystatus')
+            }}
             <app-icon
               *ngIf="
                 anime!.my_list_status?.status === 'plan_to_watch' ||
@@ -180,6 +183,15 @@
               name="play-circle"
               class="cursor-pointer me-1"
               (click)="setWatching()"
+            ></app-icon>
+            <app-icon
+              *ngIf="
+                anime!.my_list_status?.status === 'completed' &&
+                !anime!.my_list_status?.is_rewatching
+              "
+              name="arrow-counterclockwise"
+              class="cursor-pointer me-1"
+              (click)="rewatch()"
             ></app-icon>
           </ng-template>
           <ng-template #mylistedit>
@@ -321,7 +333,7 @@
         <div class="col-4 fw-bold text-end">Duration</div>
         <div class="col-8">
           <app-icon
-            *ngIf="anime.my_list_status?.status === 'watching' && !edit"
+            *ngIf="(anime.my_list_status?.status === 'watching'||anime.my_list_status?.is_rewatching) && !edit"
             name="plus-square"
             class="cursor-pointer me-1"
             (click)="plusOne()"

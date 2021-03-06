@@ -181,6 +181,19 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = false;
   }
 
+  async rewatch() {
+    if (!this.anime) return;
+    this.glob.busy();
+    this.busy = true;
+    await this.animeService.updateAnime(this.anime.id, {
+      status: 'completed',
+      is_rewatching: true,
+      num_watched_episodes: 0,
+    });
+    await this.ngOnInit();
+    this.busy = false;
+  }
+
   async plusOne() {
     if (!this.anime || !this.anime.my_list_status) return;
     this.glob.busy();
@@ -191,6 +204,10 @@ export class AnimeDetailsComponent implements OnInit {
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
+      data.is_rewatching = false;
+      if (this.anime.my_list_status.is_rewatching) {
+        data.num_times_rewatched = this.anime.my_list_status.num_times_rewatched + 1 || 1;
+      }
       completed = true;
       if (!this.anime.my_list_status?.score) {
         const myScore = Math.round(Number(prompt('Your score (1-10)?')));
@@ -216,6 +233,8 @@ export class AnimeDetailsComponent implements OnInit {
     this.anime.my_list_status.num_episodes_watched = animeStatus.num_episodes_watched;
     this.anime.my_list_status.status = animeStatus.status;
     this.anime.my_list_status.score = animeStatus.score;
+    this.anime.my_list_status.is_rewatching = animeStatus.is_rewatching;
+    this.anime.my_list_status.num_times_rewatched = animeStatus.num_times_rewatched;
     this.glob.notbusy();
   }
 

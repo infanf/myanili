@@ -75,6 +75,7 @@ interface MyStatus {
   score: number;
   num_episodes_watched: number;
   is_rewatching: boolean;
+  num_times_rewatched: number;
   start_date?: Date;
   finish_date?: Date;
   priority: number;
