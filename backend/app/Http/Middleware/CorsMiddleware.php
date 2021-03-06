@@ -16,11 +16,15 @@ class CorsMiddleware
     {
         $corsAllowed = explode(',', env('APP_CLIENT'));
 
-        foreach ($corsAllowed as $origin) {
-            if (strpos($_SERVER['HTTP_REFERER'], $origin) !== false) {
-                $corsAllowed = $origin;
-                break;
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            foreach ($corsAllowed as $origin) {
+                if (strpos($_SERVER['HTTP_REFERER'], $origin) !== false) {
+                    $corsAllowed = $origin;
+                    break;
+                }
             }
+        } else {
+            $corsAllowed = "*";
         }
         $headers = [
             'Access-Control-Allow-Origin' => $corsAllowed,
