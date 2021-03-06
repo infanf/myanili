@@ -16,6 +16,7 @@ import { Base64 } from 'js-base64';
 import { environment } from 'src/environments/environment';
 
 import { AnilistService } from '../anilist.service';
+import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 
 @Injectable({
@@ -26,6 +27,7 @@ export class AnimeService {
     private malService: MalService,
     private httpClient: HttpClient,
     private anilist: AnilistService,
+    private kitsu: KitsuService,
   ) {}
 
   async list(status?: WatchStatus) {
@@ -86,6 +88,18 @@ export class AnimeService {
           });
         }
         return;
+      })(),
+      (async () => {
+        const kitsuId = await this.kitsu.getId(id, 'anime');
+        if (!kitsuId) return;
+        return this.kitsu.updateEntry(Number(kitsuId.kitsuId), 'anime', {
+          progress: data.num_watched_episodes,
+          ratingTwenty: (data.score || 0) * 2 || undefined,
+          status: this.kitsu.statusFromMal(data.status),
+          notes: data.comments,
+          reconsuming: data.is_rewatching,
+          reconsumeCount: data.num_times_rewatched,
+        });
       })(),
     ]);
     return malResponse;

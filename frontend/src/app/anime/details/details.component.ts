@@ -68,7 +68,7 @@ export class AnimeDetailsComponent implements OnInit {
     ]);
     this.anime = anime;
     this.anilistId = anilistId;
-    this.kitsuId = kitsuId;
+    this.kitsuId = kitsuId?.kitsuId;
     this.glob.notbusy();
   }
 

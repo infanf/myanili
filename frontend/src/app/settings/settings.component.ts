@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AnilistUser } from '@models/anilist';
+import { KitsuUser } from '@models/kitsu';
 import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AnilistService } from '../anilist.service';
 import { TraktService } from '../anime/trakt.service';
 import { GlobalService } from '../global.service';
+import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 
 import { Language, SettingsService } from './settings.service';
@@ -20,6 +22,8 @@ export class SettingsComponent implements OnInit {
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
   anilistLoggedIn?: AnilistUser;
+  kitsuLoggedIn?: KitsuUser;
+  kitsuData?: { username: string; password: string };
   inlist = 'false';
   layout = 'list';
   constructor(
@@ -28,6 +32,7 @@ export class SettingsComponent implements OnInit {
     private mal: MalService,
     private trakt: TraktService,
     private anilist: AnilistService,
+    private kitsu: KitsuService,
     public modal: NgbActiveModal,
   ) {
     this.settings.language.subscribe(lang => {
@@ -41,6 +46,9 @@ export class SettingsComponent implements OnInit {
     });
     this.anilist.user.subscribe(user => {
       this.anilistLoggedIn = user;
+    });
+    this.kitsu.user.subscribe(user => {
+      this.kitsuLoggedIn = user;
     });
     this.settings.onlyInList.subscribe(inList => {
       this.inlist = JSON.stringify(inList);
@@ -94,5 +102,23 @@ export class SettingsComponent implements OnInit {
 
   async anilistLogoff() {
     this.anilist.logoff();
+  }
+
+  async kitsuConnect() {
+    if (!this.kitsuData) {
+      this.kitsuData = {
+        username: '',
+        password: '',
+      };
+      return;
+    }
+    if (!this.kitsuData.username || !this.kitsuData.password) return;
+    this.glob.busy();
+    await this.kitsu.login(this.kitsuData?.username, this.kitsuData?.password);
+    this.glob.notbusy();
+  }
+
+  async kitsuLogoff() {
+    this.kitsu.logoff();
   }
 }

@@ -1,58 +1,263 @@
 import { Injectable } from '@angular/core';
-import { KitsuMappingResponse } from '@models/kitsu';
+import { WatchStatus } from '@models/anime';
+import {
+  KitsuEntry,
+  KitsuEntryAttributes,
+  KitsuMappingResponse,
+  KitsuStatus,
+  KitsuUser,
+} from '@models/kitsu';
+import { ReadStatus } from '@models/manga';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KitsuService {
   private baseUrl = 'https://kitsu.io/api/edge/';
-  // private clientId = '';
-  // private accessToken = '';
-  // private refreshToken = '';
-  // private userSubject = new BehaviorSubject<string | undefined>(undefined);
-  // loggedIn = false;
+  private accessToken = '';
+  private refreshToken = '';
+  private readonly clientId = 'dd031b32d2f56c990b1425efe6c42ad847e7fe3ab46bf1299f05ecd856bdb7dd';
+  private readonly clientSecret =
+    '54d7307928f63414defd96399fc31ba847961ceaecef3a5fd93144e960c0e151';
+  private userSubject = new BehaviorSubject<KitsuUser | undefined>(undefined);
+  loggedIn = false;
 
   constructor() {
-    // this.clientId = String(localStorage.getItem('kitsuClientId'));
-    // this.accessToken = String(localStorage.getItem('kitsuAccessToken'));
-    // this.refreshToken = String(localStorage.getItem('kitsuRefreshToken'));
-    // if (this.accessToken) {
-    //   this.checkLogin()
-    //     .then(user => {
-    //       this.userSubject.next(user);
-    //     })
-    //     .catch(e => {
-    //       alert('Could not connect to Kitsu, please check your account settings.');
-    //       localStorage.removeItem('kitsuAccessToken');
-    //     });
-    // }
+    this.accessToken = String(localStorage.getItem('kitsuAccessToken'));
+    this.refreshToken = String(localStorage.getItem('kitsuRefreshToken'));
+    if (this.accessToken) {
+      this.checkLogin()
+        .then(user => {
+          this.userSubject.next(user);
+        })
+        .catch(e => {
+          alert('Could not connect to Kitsu, please check your account settings.');
+          localStorage.removeItem('kitsuAccessToken');
+        });
+    }
   }
 
   async getId(
     externalId: number,
     type: 'anime' | 'manga',
     externalSite = 'myanimelist',
-  ): Promise<string | undefined> {
+  ): Promise<{ kitsuId: string; entryId?: string } | undefined> {
     const result = await fetch(
-      `${this.baseUrl}mappings?externalSite=${externalSite}/${type}&filter[externalId]=${externalId}`,
+      `${this.baseUrl}mappings?filter[externalSite]=${externalSite}/${type}&filter[externalId]=${externalId}`,
     );
     if (result.ok) {
       const response = ((await result.json()) as unknown) as KitsuMappingResponse;
       if (response.data.length) {
-        const mappings = response.data.filter(
-          elem => elem.attributes.externalSite === `${externalSite}/${type}`,
-        );
-        if (!mappings.length) return undefined;
-        const newUrl = mappings[0].relationships.item.links.related;
+        const newUrl = response.data[0].relationships.item.links.related;
         const newResult = await fetch(newUrl);
         const animeResponse = ((await newResult.json()) as unknown) as {
           data?: { id: string; attributes: { slug: string } };
         };
         if (newResult.ok && animeResponse.data) {
-          return animeResponse.data.attributes.slug || animeResponse.data.id;
+          return { kitsuId: animeResponse.data.id };
         }
       }
     }
     return undefined;
   }
+
+  async login(username: string, password: string) {
+    const details = {
+      grant_type: 'password',
+      username,
+      password,
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+    } as { [key: string]: string };
+
+    const formBody = [];
+    for (const property in details) {
+      if (!details[property]) continue;
+      const encodedKey = encodeURIComponent(property);
+      const encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + '=' + encodedValue);
+    }
+    const body = formBody.join('&');
+    const result = await fetch('https://kitsu.io/api/oauth/token', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+      body,
+    });
+    if (result.ok) {
+      const response = (await result.json()) as OauthResponse;
+      this.accessToken = response.access_token;
+      localStorage.setItem('kitsuAccessToken', this.accessToken);
+      this.refreshToken = response.refresh_token;
+      localStorage.setItem('kitsuRefreshToken', this.refreshToken);
+      await this.checkLogin();
+    }
+  }
+
+  logoff() {
+    this.accessToken = '';
+    this.refreshToken = '';
+    this.userSubject.next(undefined);
+    this.loggedIn = false;
+    localStorage.removeItem('kitsuAccessToken');
+    localStorage.removeItem('kitsuRefreshToken');
+  }
+
+  async checkLogin(): Promise<KitsuUser | undefined> {
+    const result = await fetch(`${this.baseUrl}users?filter[self]=true`, {
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+      }),
+    });
+    if (result.ok) {
+      const response = (await result.json()) as { data: KitsuUser[] };
+      if (response.data.length) {
+        const userdata = response.data[0];
+        this.userSubject.next(userdata);
+        return userdata;
+      }
+    }
+    return;
+  }
+
+  get user() {
+    return this.userSubject.asObservable();
+  }
+
+  async getEntry(id: number, type: 'anime' | 'manga' = 'anime'): Promise<KitsuEntry | undefined> {
+    const user = await new Promise<{ id: string } | undefined>(r => this.user.subscribe(r));
+    if (!user?.id) return;
+    const result = await fetch(
+      `${this.baseUrl}library-entries?filter[userId]=${user?.id}&filter[${type}Id]=${id}`,
+      {
+        headers: new Headers({
+          Authorization: `Bearer ${this.accessToken}`,
+        }),
+      },
+    );
+    if (result.ok) {
+      const response = (await result.json()) as { data: KitsuEntry[] };
+      if (response.data.length) {
+        return response.data[0];
+      }
+    }
+    return;
+  }
+
+  async updateEntry(
+    id: number,
+    type: 'anime' | 'manga' = 'anime',
+    attributes: Partial<KitsuEntryAttributes>,
+  ): Promise<KitsuEntry | undefined> {
+    const existing = await this.getEntry(id, type);
+    if (!existing) {
+      return this.createEntry(id, type, attributes);
+    }
+    const data = {
+      attributes,
+      id: existing.id,
+      type: 'libraryEntries',
+    };
+    const result = await fetch(`${this.baseUrl}library-entries/${existing.id}`, {
+      method: 'PATCH',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/vnd.api+json',
+      }),
+      body: JSON.stringify({ data }),
+    });
+    if (result.ok) {
+      const { data: response } = (await result.json()) as { data: KitsuEntry };
+      return response;
+    }
+    return;
+  }
+
+  async createEntry(
+    id: number,
+    type: 'anime' | 'manga' = 'anime',
+    attributes: Partial<KitsuEntryAttributes>,
+  ): Promise<KitsuEntry | undefined> {
+    const user = await new Promise<{ id: string } | undefined>(r => this.user.subscribe(r));
+    if (!user?.id) return;
+    const data = {
+      attributes,
+      type: 'libraryEntries',
+      relationships: {
+        user: {
+          data: {
+            id: String(user.id),
+            type: 'users',
+          },
+        },
+        media: {
+          data: {
+            id: String(id),
+            type,
+          },
+        },
+      },
+    };
+    const result = await fetch(
+      `${this.baseUrl}library-entries?filter[userId]=${user?.id}&filter[${type}Id]=${id}`,
+      {
+        method: 'POST',
+        headers: new Headers({
+          Authorization: `Bearer ${this.accessToken}`,
+          'Content-Type': 'application/vnd.api+json',
+        }),
+        body: JSON.stringify({ data }),
+      },
+    );
+    if (result.ok) {
+      const { data: response } = (await result.json()) as { data: KitsuEntry };
+      return response;
+    }
+    return;
+  }
+
+  statusFromMal(malStatus?: WatchStatus | ReadStatus): KitsuStatus | undefined {
+    switch (malStatus) {
+      case 'plan_to_read':
+      case 'plan_to_watch':
+        return 'planned';
+      case 'reading':
+      case 'watching':
+        return 'current';
+      case 'completed':
+      case 'dropped':
+      case 'on_hold':
+        return malStatus;
+      default:
+        return undefined;
+    }
+  }
+
+  statusToMal(
+    kitsuStatus?: KitsuStatus,
+    type: 'anime' | 'manga' = 'anime',
+  ): WatchStatus | ReadStatus | undefined {
+    switch (kitsuStatus) {
+      case 'planned':
+        return type === 'manga' ? 'plan_to_read' : 'plan_to_watch';
+      case 'current':
+        return type === 'manga' ? 'reading' : 'watching';
+      case 'completed':
+      case 'dropped':
+      case 'on_hold':
+        return kitsuStatus;
+      default:
+        return undefined;
+    }
+  }
+}
+
+interface OauthResponse {
+  access_token: string;
+  created_at: number;
+  expires_in: number;
+  refresh_token: string;
+  scope: string;
 }
