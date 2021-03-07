@@ -20,8 +20,6 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   @Input() id = 0;
   @Input() inModal = false;
   manga?: Manga;
-  anilistId?: number;
-  kitsuId?: string;
   shortsyn = true;
   edit = false;
   busy = false;
@@ -49,14 +47,21 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    const [manga, anilistId, kitsuId] = await Promise.all([
-      this.mangaService.getManga(this.id),
-      this.anilist.getId(this.id, 'MANGA'),
-      this.kitsu.getId(this.id, 'manga'),
-    ]);
+    const manga = await this.mangaService.getManga(this.id);
     this.manga = manga;
-    this.anilistId = anilistId;
-    this.kitsuId = kitsuId?.kitsuId;
+    if (!this.manga.my_extension) {
+      this.manga.my_extension = {
+        malId: manga.id,
+      };
+    }
+    if (!this.manga.my_extension.kitsuId || !this.manga.my_extension.anilistId) {
+      const [anilistId, kitsuId] = await Promise.all([
+        this.anilist.getId(this.id, 'MANGA'),
+        this.kitsu.getId(this.id, 'manga'),
+      ]);
+      this.manga.my_extension.anilistId = anilistId;
+      this.manga.my_extension.kitsuId = kitsuId;
+    }
     this.glob.notbusy();
   }
 
@@ -88,6 +93,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
         Base64.decode(this.manga.my_list_status.comments),
       ) as unknown) as Partial<MangaExtension>;
       this.editExtension = {
+        ...this.manga.my_extension,
         ...extension,
       };
     } catch (e) {
@@ -129,7 +135,14 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     if (this.editBackup.tags !== this.manga.my_list_status.tags) {
       updateData.tags = this.editBackup?.tags;
     }
-    await this.mangaService.updateManga(this.manga.id, updateData);
+    await this.mangaService.updateManga(
+      {
+        malId: this.manga.id,
+        anilistId: this.manga.my_extension?.anilistId,
+        kitsuId: this.manga.my_extension?.kitsuId,
+      },
+      updateData,
+    );
     this.stopEdit();
     await this.ngOnInit();
     this.busy = false;
@@ -145,7 +158,14 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     if (!this.manga) return;
     this.glob.busy();
     this.busy = true;
-    await this.mangaService.updateManga(this.manga.id, { status });
+    await this.mangaService.updateManga(
+      {
+        malId: this.manga.id,
+        anilistId: this.manga.my_extension?.anilistId,
+        kitsuId: this.manga.my_extension?.kitsuId,
+      },
+      { status },
+    );
     await this.ngOnInit();
     this.busy = false;
   }
@@ -154,12 +174,19 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     if (!this.manga) return;
     this.glob.busy();
     this.busy = true;
-    await this.mangaService.updateManga(this.manga.id, {
-      status: 'completed',
-      is_rereading: true,
-      num_chapters_read: 0,
-      num_volumes_read: 0,
-    });
+    await this.mangaService.updateManga(
+      {
+        malId: this.manga.id,
+        anilistId: this.manga.my_extension?.anilistId,
+        kitsuId: this.manga.my_extension?.kitsuId,
+      },
+      {
+        status: 'completed',
+        is_rereading: true,
+        num_chapters_read: 0,
+        num_volumes_read: 0,
+      },
+    );
     await this.ngOnInit();
     this.busy = false;
   }
@@ -199,7 +226,14 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const statusResponse = await this.mangaService.updateManga(this.manga.id, data);
+    const statusResponse = await this.mangaService.updateManga(
+      {
+        malId: this.manga.id,
+        anilistId: this.manga.my_extension?.anilistId,
+        kitsuId: this.manga.my_extension?.kitsuId,
+      },
+      data,
+    );
     this.manga.my_list_status.num_chapters_read = statusResponse.num_chapters_read;
     this.manga.my_list_status.num_volumes_read = statusResponse.num_volumes_read;
     this.manga.my_list_status.status = statusResponse.status;

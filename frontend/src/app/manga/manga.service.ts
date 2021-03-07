@@ -55,14 +55,23 @@ export class MangaService {
     return manga;
   }
 
-  async updateManga(id: number, data: Partial<MyMangaUpdate>): Promise<MyMangaStatus> {
+  async updateManga(
+    ids: {
+      malId: number;
+      anilistId?: number;
+      kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+    },
+    data: Partial<MyMangaUpdate>,
+  ): Promise<MyMangaStatus> {
     const [malResponse] = await Promise.all([
-      this.malService.put<MyMangaStatus>('manga/' + id, data),
+      this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
-          const anilistId = await this.anilist.getId(id, 'MANGA');
-          if (!anilistId) return;
-          return this.anilist.updateEntry(anilistId, {
+          if (!ids.anilistId) {
+            ids.anilistId = await this.anilist.getId(ids.malId, 'MANGA');
+          }
+          if (!ids.anilistId) return;
+          return this.anilist.updateEntry(ids.anilistId, {
             progress: data.num_chapters_read,
             progressVolumes: data.num_volumes_read,
             scoreRaw: data.score ? data.score * 10 : undefined,
@@ -74,9 +83,11 @@ export class MangaService {
         return;
       })(),
       (async () => {
-        const kitsuId = await this.kitsu.getId(id, 'manga');
-        if (!kitsuId) return;
-        return this.kitsu.updateEntry(kitsuId, 'manga', {
+        if (!ids.kitsuId) {
+          ids.kitsuId = await this.kitsu.getId(ids.malId, 'manga');
+        }
+        if (!ids.kitsuId) return;
+        return this.kitsu.updateEntry(ids.kitsuId, 'manga', {
           progress: data.num_chapters_read,
           ratingTwenty: (data.score || 0) * 2 || undefined,
           status: this.kitsu.statusFromMal(data.status),

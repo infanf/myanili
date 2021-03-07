@@ -51,7 +51,7 @@ export class QuickaddComponent {
     } else if (type === 'manga') {
       const manga = await this.manga.getManga(id);
       if (!manga.my_list_status) {
-        await this.manga.updateManga(id, { status: 'plan_to_read' });
+        await this.manga.updateManga({ malId: id }, { status: 'plan_to_read' });
       }
       this._router.navigate(['manga', 'details', id]);
     }
@@ -77,7 +77,7 @@ export class QuickaddComponent {
       if (!malId) return;
       const manga = await this.manga.getManga(malId);
       if (!manga.my_list_status) {
-        await this.manga.updateManga(malId, { status: 'plan_to_read' });
+        await this.manga.updateManga({ malId, anilistId: id }, { status: 'plan_to_read' });
       }
       this._router.navigate(['manga', 'details', malId]);
     }
@@ -107,7 +107,7 @@ export class QuickaddComponent {
     } else if (type === 'manga') {
       const manga = await this.manga.getManga(malId);
       if (!manga.my_list_status) {
-        await this.manga.updateManga(malId, { status: 'plan_to_read' });
+        await this.manga.updateManga({ malId }, { status: 'plan_to_read' });
       }
       this._router.navigate(['manga', 'details', malId]);
     }

@@ -61,8 +61,11 @@ export class AnimeDetailsComponent implements OnInit {
   async ngOnInit() {
     const anime = await this.animeService.getAnime(this.id);
     this.anime = anime;
-    if (!this.anime.my_extension) this.anime.my_extension = {};
-    this.anime.my_extension.malId = anime.id;
+    if (!this.anime.my_extension) {
+      this.anime.my_extension = {
+        malId: anime.id,
+      };
+    }
     if (!this.anime.my_extension.kitsuId || !this.anime.my_extension.anilistId) {
       const [anilistId, kitsuId] = await Promise.all([
         this.anilist.getId(this.id, 'ANIME'),

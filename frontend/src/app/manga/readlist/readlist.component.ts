@@ -78,7 +78,14 @@ export class ReadlistComponent {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const statusResponse = await this.mangaservice.updateManga(manga.node.id, data);
+    const statusResponse = await this.mangaservice.updateManga(
+      {
+        malId: manga.node.id,
+        anilistId: manga.my_extension?.anilistId,
+        kitsuId: manga.my_extension?.kitsuId,
+      },
+      data,
+    );
     manga.list_status.num_chapters_read = statusResponse.num_chapters_read;
     manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
     manga.busy = false;
@@ -106,7 +113,7 @@ export class ReadlistComponent {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const statusResponse = await this.mangaservice.updateManga(manga.node.id, data);
+    const statusResponse = await this.mangaservice.updateManga({ malId: manga.node.id }, data);
     manga.list_status.num_chapters_read = statusResponse.num_chapters_read;
     manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
     manga.busy = false;
