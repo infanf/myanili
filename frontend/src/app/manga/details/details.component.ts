@@ -53,6 +53,8 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       this.manga.my_extension = {
         malId: manga.id,
       };
+    } else {
+      this.manga.my_extension.malId = manga.id;
     }
     if (!this.manga.my_extension.kitsuId || !this.manga.my_extension.anilistId) {
       const [anilistId, kitsuId] = await Promise.all([

@@ -65,6 +65,8 @@ export class AnimeDetailsComponent implements OnInit {
       this.anime.my_extension = {
         malId: anime.id,
       };
+    } else {
+      this.anime.my_extension.malId = anime.id;
     }
     if (!this.anime.my_extension.kitsuId || !this.anime.my_extension.anilistId) {
       const [anilistId, kitsuId] = await Promise.all([

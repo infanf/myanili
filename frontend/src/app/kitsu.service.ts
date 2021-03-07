@@ -54,7 +54,10 @@ export class KitsuService {
         const newResult = await fetch(newUrl);
         const animeResponse = (await newResult.json()) as KitsuResponse<KitsuEntry>;
         if (newResult.ok && animeResponse.data) {
-          return { kitsuId: animeResponse.data.id };
+          return {
+            kitsuId: animeResponse.data.id,
+            entryId: (await this.getEntry(Number(animeResponse.data.id), type))?.id,
+          };
         }
       }
     }
