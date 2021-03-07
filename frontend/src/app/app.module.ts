@@ -47,6 +47,7 @@ import { MagazineComponent } from './manga/magazine/magazine.component';
 import { ReadlistComponent, ReadlistWrapperComponent } from './manga/readlist/readlist.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
 import { Nl2brPipe } from './nl2br.pipe';
 import { PersonComponent } from './person/person.component';
 import { PlatformPipe } from './platform.pipe';
@@ -101,6 +102,7 @@ import { TimePipe } from './time.pipe';
     PlatformComponent,
     AnilistIconComponent,
     KitsuIconComponent,
+    QuickaddComponent,
   ],
   imports: [
     BrowserModule,

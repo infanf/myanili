@@ -1,5 +1,5 @@
-interface MappingResponse {
-  data: MappingData[];
+interface Response<T> {
+  data: T;
   meta: { count: number };
   links: {
     first: string;
@@ -25,7 +25,9 @@ interface MappingData {
   };
 }
 
-export type KitsuMappingResponse = MappingResponse;
+export type KitsuMappingData = MappingData;
+
+export type KitsuResponse<T> = Response<T>;
 
 export type KitsuStatus = 'current' | 'planned' | 'completed' | 'on_hold' | 'dropped';
 

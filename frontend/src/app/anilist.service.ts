@@ -125,6 +125,33 @@ export class AnilistService {
     return requestResult;
   }
 
+  async getMalId(id: number, type: 'ANIME' | 'MANGA'): Promise<number | undefined> {
+    const requestResult = await new Promise<number | undefined>(r => {
+      this.client
+        .query<{ Media?: { idMal: number } }>({
+          errorPolicy: 'ignore',
+          query: gql`
+            query Media($id: Int, $type: MediaType) {
+              Media(id: $id, type: $type) {
+                idMal
+              }
+            }
+          `,
+          variables: { id, type },
+        })
+        .subscribe(
+          result => {
+            r(result.data.Media?.idMal);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
+    });
+    return requestResult;
+  }
+
   async updateEntry(id: number, data: Partial<AnilistSaveMedialistEntry>) {
     return new Promise(r => {
       data.mediaId = id;

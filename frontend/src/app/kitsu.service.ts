@@ -3,7 +3,8 @@ import { WatchStatus } from '@models/anime';
 import {
   KitsuEntry,
   KitsuEntryAttributes,
-  KitsuMappingResponse,
+  KitsuMappingData,
+  KitsuResponse,
   KitsuStatus,
   KitsuUser,
 } from '@models/kitsu';
@@ -47,16 +48,38 @@ export class KitsuService {
       `${this.baseUrl}mappings?filter[externalSite]=${externalSite}/${type}&filter[externalId]=${externalId}`,
     );
     if (result.ok) {
-      const response = ((await result.json()) as unknown) as KitsuMappingResponse;
+      const response = ((await result.json()) as unknown) as KitsuResponse<KitsuMappingData[]>;
       if (response.data.length) {
         const newUrl = response.data[0].relationships.item.links.related;
         const newResult = await fetch(newUrl);
-        const animeResponse = ((await newResult.json()) as unknown) as {
-          data?: { id: string; attributes: { slug: string } };
-        };
+        const animeResponse = (await newResult.json()) as KitsuResponse<KitsuEntry>;
         if (newResult.ok && animeResponse.data) {
           return { kitsuId: animeResponse.data.id };
         }
+      }
+    }
+    return undefined;
+  }
+
+  async getIdFromSlug(slug: string, type: 'anime' | 'manga'): Promise<number | undefined> {
+    const result = await fetch(`${this.baseUrl}${type}?filter[slug]=${slug}`);
+    if (result.ok) {
+      const response = (await result.json()) as KitsuResponse<KitsuEntry[]>;
+      if (response.data.length) {
+        return Number(response.data[0].id);
+      }
+    }
+    return undefined;
+  }
+
+  async getExternalId(id: number, type: 'anime' | 'manga', externalSite = 'myanimelist') {
+    const result = await fetch(
+      `${this.baseUrl}${type}/${id}/mappings?filter[externalSite]=${externalSite}/${type}`,
+    );
+    if (result.ok) {
+      const response = ((await result.json()) as unknown) as KitsuResponse<KitsuMappingData[]>;
+      if (response.data.length) {
+        return Number(response.data[0].attributes.externalId);
       }
     }
     return undefined;
@@ -112,7 +135,7 @@ export class KitsuService {
       }),
     });
     if (result.ok) {
-      const response = (await result.json()) as { data: KitsuUser[] };
+      const response = (await result.json()) as KitsuResponse<KitsuUser[]>;
       if (response.data.length) {
         const userdata = response.data[0];
         this.userSubject.next(userdata);
@@ -138,7 +161,7 @@ export class KitsuService {
       },
     );
     if (result.ok) {
-      const response = (await result.json()) as { data: KitsuEntry[] };
+      const response = (await result.json()) as KitsuResponse<KitsuEntry[]>;
       if (response.data.length) {
         return response.data[0];
       }
@@ -169,7 +192,7 @@ export class KitsuService {
       body: JSON.stringify({ data }),
     });
     if (result.ok) {
-      const { data: response } = (await result.json()) as { data: KitsuEntry };
+      const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
       return response;
     }
     return;
@@ -212,7 +235,7 @@ export class KitsuService {
       },
     );
     if (result.ok) {
-      const { data: response } = (await result.json()) as { data: KitsuEntry };
+      const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
       return response;
     }
     return;
