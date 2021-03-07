@@ -35,7 +35,7 @@ export class AnilistService {
     return new Promise(r => {
       const loginWindow = window.open(environment.backend + 'anilistauth');
       window.addEventListener('message', async event => {
-        if (event.data) {
+        if (event.data && event.data.anilist) {
           const data = event.data as { at: string; rt: string; ex: number; ci: string };
           this.accessToken = data.at;
           localStorage.setItem('anilistAccessToken', this.accessToken);
