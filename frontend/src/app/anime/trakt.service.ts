@@ -53,7 +53,15 @@ export class TraktService {
   }
 
   async checkLogin(): Promise<string | undefined> {
-    return new Promise((r, rj) => {
+    if (
+      !this.accessToken ||
+      !this.clientId ||
+      this.accessToken === 'null' ||
+      this.clientId === 'null'
+    ) {
+      return;
+    }
+    return new Promise(r => {
       const headers = {
         Authorization: `Bearer ${this.accessToken}`,
         'trakt-api-version': '2',
@@ -62,15 +70,22 @@ export class TraktService {
       try {
         this.http
           .get<{ user?: { username?: string } }>(this.baseUrl + 'users/settings', { headers })
-          .subscribe(result => {
-            if (result.user) {
-              r(result.user.username);
-            } else {
+          .subscribe(
+            result => {
+              if (result.user) {
+                r(result.user.username);
+              } else {
+                r(undefined);
+              }
+            },
+            error => {
+              console.log({ error });
               r(undefined);
-            }
-          });
-      } catch (e) {
-        rj(e.message);
+            },
+          );
+      } catch (error) {
+        console.log({ error });
+        r(undefined);
       }
     });
   }
