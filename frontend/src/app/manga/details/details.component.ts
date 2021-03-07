@@ -97,7 +97,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
         ...extension,
       };
     } catch (e) {
-      this.editExtension = {};
+      this.editExtension = { ...this.manga.my_extension };
     }
   }
 

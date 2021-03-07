@@ -120,6 +120,7 @@ export class AnimeDetailsComponent implements OnInit {
         simulCountry: '',
         simulDay: undefined,
         simulTime: undefined,
+        ...this.anime.my_extension,
       };
     }
   }
