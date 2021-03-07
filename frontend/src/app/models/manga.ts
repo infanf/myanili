@@ -137,6 +137,9 @@ interface MangaExtensionInterface {
   publisher?: string;
   publisherWebsite?: string;
   displayName?: string;
+  anilistId?: number;
+  malId?: number;
+  kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
 }
 
 export type MangaExtension = MangaExtensionInterface;

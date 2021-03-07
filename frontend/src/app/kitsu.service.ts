@@ -170,20 +170,23 @@ export class KitsuService {
   }
 
   async updateEntry(
-    id: number,
+    ids: { kitsuId: number | string; entryId?: string | undefined },
     type: 'anime' | 'manga' = 'anime',
     attributes: Partial<KitsuEntryAttributes>,
   ): Promise<KitsuEntry | undefined> {
-    const existing = await this.getEntry(id, type);
-    if (!existing) {
-      return this.createEntry(id, type, attributes);
+    if (!ids.entryId) {
+      const existing = await this.getEntry(Number(ids.kitsuId), type);
+      if (!existing) {
+        return this.createEntry(Number(ids.kitsuId), type, attributes);
+      }
+      ids.entryId = existing?.id;
     }
     const data = {
       attributes,
-      id: existing.id,
+      id: ids.entryId,
       type: 'libraryEntries',
     };
-    const result = await fetch(`${this.baseUrl}library-entries/${existing.id}`, {
+    const result = await fetch(`${this.baseUrl}library-entries/${ids.entryId}`, {
       method: 'PATCH',
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,

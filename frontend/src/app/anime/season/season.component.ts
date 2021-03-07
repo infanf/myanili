@@ -51,9 +51,16 @@ export class SeasonComponent implements OnInit {
   async addToList(anime: Partial<Anime>) {
     if (anime.my_list_status || anime.busy || !anime.id) return;
     anime.busy = true;
-    const statusResponse = await this.animeService.updateAnime(anime.id, {
-      status: 'plan_to_watch',
-    });
+    const statusResponse = await this.animeService.updateAnime(
+      {
+        malId: anime.id,
+        anilistId: anime.my_extension?.anilistId,
+        kitsuId: anime.my_extension?.kitsuId,
+      },
+      {
+        status: 'plan_to_watch',
+      },
+    );
     anime.my_list_status = statusResponse;
     delete anime.busy;
   }

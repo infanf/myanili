@@ -45,7 +45,7 @@ export class QuickaddComponent {
     if (type === 'anime') {
       const anime = await this.anime.getAnime(id);
       if (!anime.my_list_status) {
-        await this.anime.updateAnime(id, { status: 'plan_to_watch' });
+        await this.anime.updateAnime({ malId: id }, { status: 'plan_to_watch' });
       }
       this._router.navigate(['anime', 'details', id]);
     } else if (type === 'manga') {
@@ -69,7 +69,7 @@ export class QuickaddComponent {
       if (!malId) return;
       const anime = await this.anime.getAnime(malId);
       if (!anime.my_list_status) {
-        await this.anime.updateAnime(malId, { status: 'plan_to_watch' });
+        await this.anime.updateAnime({ malId, anilistId: id }, { status: 'plan_to_watch' });
       }
       this._router.navigate(['anime', 'details', malId]);
     } else if (type === 'manga') {
@@ -101,7 +101,7 @@ export class QuickaddComponent {
     if (type === 'anime') {
       const anime = await this.anime.getAnime(malId);
       if (!anime.my_list_status) {
-        await this.anime.updateAnime(malId, { status: 'plan_to_watch' });
+        await this.anime.updateAnime({ malId }, { status: 'plan_to_watch' });
       }
       this._router.navigate(['anime', 'details', malId]);
     } else if (type === 'manga') {

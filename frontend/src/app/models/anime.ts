@@ -143,15 +143,18 @@ interface RelatedAnimeInterface {
 export type RelatedAnime = RelatedAnimeInterface;
 
 interface AnimeExtensionInterface {
-  series: string;
-  seasonNumber: number;
-  episodeCorOffset: number;
+  series?: string;
+  seasonNumber?: number;
+  episodeCorOffset?: number;
   externalStreaming?: string;
   externalStreamingId?: string;
   simulDay?: number;
   simulTime?: string;
   simulCountry?: string;
   trakt?: string;
+  anilistId?: number;
+  malId?: number;
+  kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
   displayName?: string;
 }
 

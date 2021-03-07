@@ -427,15 +427,15 @@
                 >MyAnimeList</a
               >
             </div>
-            <div *ngIf="anilistId">
+            <div *ngIf="anime.my_extension?.anilistId">
               <app-icon-anilist></app-icon-anilist>
-              <a class="ms-1" [href]="'https://anilist.co/anime/' + anilistId" target="_blank"
+              <a class="ms-1" [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId" target="_blank"
                 >AniList</a
               >
             </div>
-            <div *ngIf="kitsuId">
+            <div *ngIf="anime.my_extension?.kitsuId">
               <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
-              <a class="ms-1" [href]="'https://kitsu.io/anime/' + kitsuId" target="_blank">Kitsu</a>
+              <a class="ms-1" [href]="'https://kitsu.io/anime/' + anime.my_extension!.kitsuId!.kitsuId" target="_blank">Kitsu</a>
             </div>
             <div *ngIf="anime && anime.my_extension && anime.my_extension.trakt">
               <app-icon-trakt style="color: #ed1c24"></app-icon-trakt>
