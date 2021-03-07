@@ -214,7 +214,7 @@ $router->get('/traktauth', function () {
             $clientId = env('TRAKT_CLIENT_ID');
             foreach (explode(',', env('APP_CLIENT')) as $opener) {
                 $javascript .= <<<JAVASCRIPT
-                    window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ex:"{$accessToken->getExpires()}",ci:"{$clientId}"}, "$opener");
+                    window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ex:"{$accessToken->getExpires()}",ci:"{$clientId}",trakt:true}, "$opener");
 JAVASCRIPT;
             }
             return "<script>$javascript</script>";
@@ -266,7 +266,7 @@ $router->get('/anilistauth', function () {
             $clientId = env('ANILIST_CLIENT_ID');
             foreach (explode(',', env('APP_CLIENT')) as $opener) {
                 $javascript .= <<<JAVASCRIPT
-                    window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ex:"{$accessToken->getExpires()}",ci:"{$clientId}"}, "$opener");
+                    window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ex:"{$accessToken->getExpires()}",ci:"{$clientId}",anilist:true}, "$opener");
 JAVASCRIPT;
             }
             return "<script>$javascript</script>";

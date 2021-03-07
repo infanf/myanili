@@ -32,7 +32,7 @@ export class TraktService {
     return new Promise(r => {
       const loginWindow = window.open(environment.backend + 'traktauth');
       window.addEventListener('message', async event => {
-        if (event.data) {
+        if (event.data && event.data.trakt) {
           const data = event.data as { at: string; rt: string; ex: number; ci: string };
           this.accessToken = data.at;
           localStorage.setItem('traktAccessToken', this.accessToken);
