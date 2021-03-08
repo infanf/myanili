@@ -87,7 +87,10 @@ export class WatchlistComponent implements OnInit {
         data,
       ),
       this.scrobbleTrakt(fullAnime, currentEpisode + 1),
-      this.simkl.scrobble(anime.my_extension?.simklId, currentEpisode + 1),
+      this.simkl.scrobble(
+        { simkl: anime.my_extension?.simklId, mal: anime.node.id },
+        currentEpisode + 1,
+      ),
     ]);
     if (completed) {
       this.glob.busy();

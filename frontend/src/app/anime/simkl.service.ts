@@ -109,16 +109,11 @@ export class SimklService {
     });
   }
 
-  async scrobble(simkl?: number, number?: number): Promise<boolean> {
-    if (!this.clientId || !this.accessToken || !simkl || !number) return false;
+  async scrobble(ids: { simkl?: number; mal?: number }, number?: number): Promise<boolean> {
+    if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal) || !number) return false;
     return new Promise<boolean>(r => {
       const data = {
-        shows: [
-          {
-            ids: { simkl },
-            seasons: [{ number: 1, episodes: [{ number }] }],
-          },
-        ],
+        shows: [{ ids, seasons: [{ number: 1, episodes: [{ number }] }] }],
       };
       const headers = {
         Authorization: `Bearer ${this.accessToken}`,

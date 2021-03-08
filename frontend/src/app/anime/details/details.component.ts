@@ -270,7 +270,10 @@ export class AnimeDetailsComponent implements OnInit {
         data,
       ),
       this.scrobbleTrakt(),
-      this.simkl.scrobble(this.anime.my_extension?.simklId, currentEpisode + 1),
+      this.simkl.scrobble(
+        { simkl: this.anime.my_extension?.simklId, mal: this.anime.id },
+        currentEpisode + 1,
+      ),
     ]);
     if (completed) {
       const sequels = this.anime.related_anime.filter(
