@@ -5,6 +5,7 @@ import { GlobalService } from 'src/app/global.service';
 import { Language, SettingsService } from 'src/app/settings/settings.service';
 
 import { AnimeService } from '../anime.service';
+import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class WatchlistComponent implements OnInit {
     private settings: SettingsService,
     private glob: GlobalService,
     private trakt: TraktService,
+    private simkl: SimklService,
   ) {
     this.glob.busy();
     this.settings.language.subscribe(lang => {
@@ -85,6 +87,7 @@ export class WatchlistComponent implements OnInit {
         data,
       ),
       this.scrobbleTrakt(fullAnime, currentEpisode + 1),
+      this.simkl.scrobble(anime.my_extension?.simklId, currentEpisode + 1),
     ]);
     if (completed) {
       this.glob.busy();

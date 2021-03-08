@@ -109,6 +109,48 @@ export class SimklService {
     });
   }
 
+  async scrobble(simkl?: number, number?: number): Promise<boolean> {
+    if (!this.clientId || !this.accessToken || !simkl || !number) return false;
+    return new Promise<boolean>(r => {
+      const data = {
+        shows: [
+          {
+            ids: { simkl },
+            seasons: [{ number: 1, episodes: [{ number }] }],
+          },
+        ],
+      };
+      const headers = {
+        Authorization: `Bearer ${this.accessToken}`,
+        'simkl-api-key': this.clientId,
+      };
+      try {
+        this.http
+          .post<{ added: { shows: number }; not_found: { shows: [] } }>(
+            this.baseUrl + 'sync/history',
+            data,
+            { headers },
+          )
+          .subscribe(
+            result => {
+              if (result.added.shows) {
+                r(true);
+              } else {
+                r(false);
+              }
+            },
+            error => {
+              console.log({ error });
+              r(false);
+            },
+          );
+      } catch (error) {
+        console.log({ error });
+        r(false);
+      }
+    });
+  }
+
   logoff() {
     this.clientId = '';
     this.accessToken = '';

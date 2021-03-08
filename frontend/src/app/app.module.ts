@@ -34,6 +34,7 @@ import { AnilistIconComponent } from './icon/anilist/anilist.component';
 import { IconComponent } from './icon/icon.component';
 import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
 import { MalIconComponent } from './icon/mal/mal.component';
+import { SimklIconComponent } from './icon/simkl/simkl.component';
 import { SpotifyIconComponent } from './icon/spotify/spotify.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
@@ -103,6 +104,7 @@ import { TimePipe } from './time.pipe';
     AnilistIconComponent,
     KitsuIconComponent,
     QuickaddComponent,
+    SimklIconComponent,
   ],
   imports: [
     BrowserModule,
