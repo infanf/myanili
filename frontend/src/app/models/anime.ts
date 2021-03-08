@@ -155,6 +155,7 @@ interface AnimeExtensionInterface {
   anilistId?: number;
   malId?: number;
   kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+  simklId?: number;
   displayName?: string;
 }
 

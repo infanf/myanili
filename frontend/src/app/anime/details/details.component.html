@@ -451,6 +451,11 @@
                 >Trakt</a
               >
             </div>
+            <div *ngIf="anime.my_extension?.simklId">
+              <a class="ms-1" [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId" target="_blank"
+                >SIMKL</a
+              >
+            </div>
           </div>
         </div>
       </div>

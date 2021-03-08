@@ -12,6 +12,7 @@ import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
+import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 import { TraktComponent } from '../trakt/trakt.component';
 
@@ -41,6 +42,7 @@ export class AnimeDetailsComponent implements OnInit {
     private gallery: Gallery,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private simkl: SimklService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -75,6 +77,13 @@ export class AnimeDetailsComponent implements OnInit {
       ]);
       this.anime.my_extension.anilistId = anilistId;
       this.anime.my_extension.kitsuId = kitsuId;
+    }
+    if (!this.anime.my_extension.simklId) {
+      this.simkl.getId(this.id).then(simklId => {
+        if (this.anime && this.anime.my_extension) {
+          this.anime.my_extension.simklId = simklId;
+        }
+      });
     }
     this.glob.notbusy();
   }
