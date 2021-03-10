@@ -10,9 +10,13 @@ export class GlobalService {
   private darkModeSubject = new BehaviorSubject<boolean>(false);
 
   constructor() {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      this.darkModeSubject.next(e.matches);
-    });
+    try {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        this.darkModeSubject.next(e.matches);
+      });
+    } catch (e) {
+      console.error("Apparently you are using an Apple Product. Please don't");
+    }
   }
 
   get isBusy() {
