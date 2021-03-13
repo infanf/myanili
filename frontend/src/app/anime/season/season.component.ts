@@ -56,6 +56,7 @@ export class SeasonComponent implements OnInit {
         malId: anime.id,
         anilistId: anime.my_extension?.anilistId,
         kitsuId: anime.my_extension?.kitsuId,
+        simklId: anime.my_extension?.simklId,
       },
       {
         status: 'plan_to_watch',
