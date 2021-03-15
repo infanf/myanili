@@ -63,7 +63,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     ) {
       const [anilistId, kitsuId] = await Promise.all([
         this.anilist.getId(this.id, 'MANGA'),
-        this.kitsu.getId(this.id, 'manga'),
+        this.kitsu.getId(this.id, 'manga', 'myanimelist', this.manga.my_extension.kitsuId?.kitsuId),
       ]);
       this.manga.my_extension.anilistId = anilistId;
       this.manga.my_extension.kitsuId = kitsuId;
