@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { BehaviorSubject } from 'rxjs';
@@ -13,7 +12,7 @@ export class SimklService {
   private accessToken = '';
   private userSubject = new BehaviorSubject<number | undefined>(undefined);
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.clientId = String(localStorage.getItem('simklClientId'));
     this.accessToken = String(localStorage.getItem('simklAccessToken'));
     if (this.accessToken) {
@@ -59,55 +58,31 @@ export class SimklService {
     ) {
       return;
     }
-    return new Promise(r => {
-      const headers = {
+    const result = await fetch(`${this.baseUrl}users/settings`, {
+      headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
         'simkl-api-key': this.clientId,
-      };
-      try {
-        this.http
-          .get<{ account?: { id?: number } }>(this.baseUrl + 'users/settings', { headers })
-          .subscribe(
-            result => {
-              if (result.account) {
-                r(result.account.id);
-              } else {
-                r(undefined);
-              }
-            },
-            error => {
-              console.log({ error });
-              r(undefined);
-            },
-          );
-      } catch (error) {
-        console.log({ error });
-        r(undefined);
-      }
+      }),
     });
+    if (result.ok) {
+      const response = (await result.json()) as { account?: { id?: number } };
+      return response?.account?.id;
+    }
+    return;
   }
 
   async getId(malId: number): Promise<number | undefined> {
     if (!this.clientId) return;
-    return new Promise((r, rj) => {
-      const headers = {
-        'simkl-api-key': this.clientId,
-      };
-      this.http
-        .get<IdSearch[]>(this.baseUrl + 'search/id?mal=' + malId, { headers })
-        .subscribe(
-          res => {
-            if (res.length) {
-              r(res[0].ids.simkl);
-            } else {
-              r(undefined);
-            }
-          },
-          e => {
-            r(undefined);
-          },
-        );
+    const result = await fetch(`${this.baseUrl}search/id?mal=${malId}`, {
+      headers: new Headers({ 'simkl-api-key': this.clientId }),
     });
+    if (result.ok) {
+      const response = (await result.json()) as IdSearch[];
+      if (response?.length) {
+        return response[0].ids.simkl;
+      }
+    }
+    return;
   }
 
   async scrobble(ids: { simkl?: number; mal?: number }, number?: number) {
