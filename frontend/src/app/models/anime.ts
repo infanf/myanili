@@ -75,6 +75,7 @@ interface MyStatus {
   score: number;
   num_episodes_watched: number;
   is_rewatching: boolean;
+  num_times_rewatched: number;
   start_date?: Date;
   finish_date?: Date;
   priority: number;
@@ -142,15 +143,19 @@ interface RelatedAnimeInterface {
 export type RelatedAnime = RelatedAnimeInterface;
 
 interface AnimeExtensionInterface {
-  series: string;
-  seasonNumber: number;
-  episodeCorOffset: number;
+  series?: string;
+  seasonNumber?: number;
+  episodeCorOffset?: number;
   externalStreaming?: string;
   externalStreamingId?: string;
   simulDay?: number;
   simulTime?: string;
   simulCountry?: string;
   trakt?: string;
+  anilistId?: number;
+  malId?: number;
+  kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+  simklId?: number;
   displayName?: string;
 }
 

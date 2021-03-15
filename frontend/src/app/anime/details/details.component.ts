@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Anime, AnimeExtension, MyAnimeUpdate } from '@models/anime';
+import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { Picture } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Gallery } from 'angular-gallery';
@@ -12,6 +12,7 @@ import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
+import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 import { TraktComponent } from '../trakt/trakt.component';
 
@@ -22,8 +23,6 @@ import { TraktComponent } from '../trakt/trakt.component';
 })
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
-  anilistId?: number;
-  kitsuId?: string;
   anime?: Anime;
   edit = false;
   busy = false;
@@ -43,6 +42,7 @@ export class AnimeDetailsComponent implements OnInit {
     private gallery: Gallery,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private simkl: SimklService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -61,14 +61,44 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const [anime, anilistId, kitsuId] = await Promise.all([
-      this.animeService.getAnime(this.id),
-      this.anilist.getId(this.id, 'ANIME'),
-      this.kitsu.getId(this.id, 'anime'),
-    ]);
-    this.anime = anime;
-    this.anilistId = anilistId;
-    this.kitsuId = kitsuId?.kitsuId;
+    const anime = await this.animeService.getAnime(this.id);
+    this.anime = { ...anime };
+    if (!this.anime.my_extension) {
+      this.anime.my_extension = {
+        malId: anime.id,
+      };
+    } else {
+      this.anime.my_extension.malId = anime.id;
+    }
+    if (
+      !this.anime.my_extension.kitsuId ||
+      !this.anime.my_extension.anilistId ||
+      !this.anime.my_extension.simklId
+    ) {
+      const [anilistId, kitsuId, simklId] = await Promise.all([
+        this.anilist.getId(this.id, 'ANIME'),
+        this.kitsu.getId(this.id, 'anime'),
+        this.simkl.getId(this.id),
+      ]);
+      this.anime.my_extension.anilistId = anilistId;
+      this.anime.my_extension.kitsuId = kitsuId;
+      this.anime.my_extension.simklId = simklId;
+      if (anime.my_extension) {
+        await this.animeService.updateAnime(
+          { malId: anime.id, kitsuId, simklId, anilistId },
+          {
+            comments: Base64.encode(
+              JSON.stringify({
+                ...anime.my_extension,
+                kitsuId,
+                anilistId,
+                simklId,
+              }),
+            ),
+          },
+        );
+      }
+    }
     this.glob.notbusy();
   }
 
@@ -102,6 +132,7 @@ export class AnimeDetailsComponent implements OnInit {
         series: '',
         seasonNumber: 1,
         episodeCorOffset: 0,
+        ...this.anime.my_extension,
         ...extension,
       };
     } catch (e) {
@@ -114,6 +145,7 @@ export class AnimeDetailsComponent implements OnInit {
         simulCountry: '',
         simulDay: undefined,
         simulTime: undefined,
+        ...this.anime.my_extension,
       };
     }
   }
@@ -152,7 +184,15 @@ export class AnimeDetailsComponent implements OnInit {
     if (this.editBackup.tags !== this.anime.my_list_status.tags?.join(',')) {
       updateData.tags = this.editBackup?.tags;
     }
-    await this.animeService.updateAnime(this.anime.id, updateData);
+    await this.animeService.updateAnime(
+      {
+        malId: this.anime.id,
+        anilistId: this.anime.my_extension?.anilistId,
+        kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
+      },
+      updateData,
+    );
     this.stopEdit();
     await this.ngOnInit();
     this.busy = false;
@@ -167,16 +207,53 @@ export class AnimeDetailsComponent implements OnInit {
   async addAnime() {
     if (!this.anime) return;
     this.busy = true;
-    await this.animeService.updateAnime(this.anime.id, { status: 'plan_to_watch' });
+    await this.animeService.updateAnime(
+      {
+        malId: this.anime.id,
+        anilistId: this.anime.my_extension?.anilistId,
+        kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
+      },
+      { status: 'plan_to_watch' },
+    );
     await this.ngOnInit();
     this.busy = false;
   }
 
-  async setWatching() {
+  async setStatus(status: WatchStatus) {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
-    await this.animeService.updateAnime(this.anime.id, { status: 'watching' });
+    await this.animeService.updateAnime(
+      {
+        malId: this.anime.id,
+        anilistId: this.anime.my_extension?.anilistId,
+        kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
+      },
+      { status },
+    );
+    await this.ngOnInit();
+    this.busy = false;
+  }
+
+  async rewatch() {
+    if (!this.anime) return;
+    this.glob.busy();
+    this.busy = true;
+    await this.animeService.updateAnime(
+      {
+        malId: this.anime.id,
+        anilistId: this.anime.my_extension?.anilistId,
+        kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
+      },
+      {
+        status: 'completed',
+        is_rewatching: true,
+        num_watched_episodes: 0,
+      },
+    );
     await this.ngOnInit();
     this.busy = false;
   }
@@ -191,6 +268,10 @@ export class AnimeDetailsComponent implements OnInit {
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
+      data.is_rewatching = false;
+      if (this.anime.my_list_status.is_rewatching) {
+        data.num_times_rewatched = this.anime.my_list_status.num_times_rewatched + 1 || 1;
+      }
       completed = true;
       if (!this.anime.my_list_status?.score) {
         const myScore = Math.round(Number(prompt('Your score (1-10)?')));
@@ -198,8 +279,20 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     const [animeStatus] = await Promise.all([
-      this.animeService.updateAnime(this.anime.id, data),
+      this.animeService.updateAnime(
+        {
+          malId: this.anime.id,
+          anilistId: this.anime.my_extension?.anilistId,
+          kitsuId: this.anime.my_extension?.kitsuId,
+          simklId: this.anime.my_extension?.simklId,
+        },
+        data,
+      ),
       this.scrobbleTrakt(),
+      this.simkl.scrobble(
+        { simkl: this.anime.my_extension?.simklId, mal: this.anime.id },
+        currentEpisode + 1,
+      ),
     ]);
     if (completed) {
       const sequels = this.anime.related_anime.filter(
@@ -209,13 +302,15 @@ export class AnimeDetailsComponent implements OnInit {
         const sequel = sequels[0];
         const startSequel = confirm(`Start watching sequel "${sequel.node.title}"?`);
         if (startSequel) {
-          await this.animeService.updateAnime(sequel.node.id, { status: 'watching' });
+          await this.animeService.updateAnime({ malId: sequel.node.id }, { status: 'watching' });
         }
       }
     }
     this.anime.my_list_status.num_episodes_watched = animeStatus.num_episodes_watched;
     this.anime.my_list_status.status = animeStatus.status;
     this.anime.my_list_status.score = animeStatus.score;
+    this.anime.my_list_status.is_rewatching = animeStatus.is_rewatching;
+    this.anime.my_list_status.num_times_rewatched = animeStatus.num_times_rewatched;
     this.glob.notbusy();
   }
 
@@ -227,7 +322,7 @@ export class AnimeDetailsComponent implements OnInit {
       r(
         await this.trakt.scrobble(
           this.anime.my_extension.trakt,
-          this.anime.my_extension.seasonNumber,
+          this.anime.my_extension.seasonNumber || 1,
           (this.anime.my_list_status?.num_episodes_watched || 0) +
             1 +
             (this.anime.my_extension.episodeCorOffset || 0),

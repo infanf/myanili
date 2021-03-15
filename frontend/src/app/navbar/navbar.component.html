@@ -28,7 +28,7 @@
                 ngbDropdownToggle
               >
                 <app-icon class="me-2" name="film"></app-icon>
-                <span class="d-none d-sm-inline">Anime</span>
+                <span class="d-none d-md-inline">Anime</span>
               </a>
               <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="animeDropdown">
                 <li>
@@ -109,7 +109,7 @@
                 ngbDropdownToggle
               >
                 <app-icon class="me-2" name="book-half"></app-icon>
-                <span class="d-none d-sm-inline">Manga</span>
+                <span class="d-none d-md-inline">Manga</span>
               </a>
               <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="mangaDropdown">
                 <li>
@@ -170,6 +170,9 @@
                   </a>
                 </li>
               </ul>
+            </li>
+            <li class="nav-item">
+              <app-navbar-quickadd class="nav-link "></app-navbar-quickadd>
             </li>
           </ul>
           <app-widget-season class="me-3 text-white" *ngIf="module === 'anime'"></app-widget-season>

@@ -19,6 +19,8 @@ import { AnilistService } from '../anilist.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 
+import { SimklService } from './simkl.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +30,7 @@ export class AnimeService {
     private httpClient: HttpClient,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private simkl: SimklService,
   ) {}
 
   async list(status?: WatchStatus) {
@@ -72,17 +75,27 @@ export class AnimeService {
     return anime;
   }
 
-  async updateAnime(id: number, data: Partial<MyAnimeUpdate>): Promise<MyAnimeStatus> {
+  async updateAnime(
+    ids: {
+      malId: number;
+      anilistId?: number;
+      kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+      simklId?: number;
+    },
+    data: Partial<MyAnimeUpdate>,
+  ): Promise<MyAnimeStatus> {
     const [malResponse] = await Promise.all([
-      this.malService.put<MyAnimeStatus>('anime/' + id, data),
+      this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
-          const anilistId = await this.anilist.getId(id, 'ANIME');
-          if (!anilistId) return;
-          return this.anilist.updateEntry(anilistId, {
+          if (!ids.anilistId) {
+            ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME');
+          }
+          if (!ids.anilistId) return;
+          return this.anilist.updateEntry(ids.anilistId, {
             progress: data.num_watched_episodes,
             scoreRaw: data.score ? data.score * 10 : undefined,
-            status: this.anilist.statusFromMal(data.status),
+            status: this.anilist.statusFromMal(data.status, data.is_rewatching),
             notes: data.comments,
             repeat: data.num_times_rewatched,
           });
@@ -90,9 +103,11 @@ export class AnimeService {
         return;
       })(),
       (async () => {
-        const kitsuId = await this.kitsu.getId(id, 'anime');
-        if (!kitsuId) return;
-        return this.kitsu.updateEntry(Number(kitsuId.kitsuId), 'anime', {
+        if (!ids.kitsuId) {
+          ids.kitsuId = await this.kitsu.getId(ids.malId, 'anime');
+        }
+        if (!ids.kitsuId) return;
+        return this.kitsu.updateEntry(ids.kitsuId, 'anime', {
           progress: data.num_watched_episodes,
           ratingTwenty: (data.score || 0) * 2 || undefined,
           status: this.kitsu.statusFromMal(data.status),
@@ -101,6 +116,7 @@ export class AnimeService {
           reconsumeCount: data.num_times_rewatched,
         });
       })(),
+      this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
     ]);
     return malResponse;
   }

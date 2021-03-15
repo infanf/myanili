@@ -56,7 +56,7 @@ export class AnilistService {
   }
 
   async checkLogin(): Promise<AnilistUser | undefined> {
-    const requestResult = await new Promise<AnilistUser>(r => {
+    const requestResult = await new Promise<AnilistUser | undefined>(r => {
       this.client
         .query<{ Viewer: AnilistUser }>({
           errorPolicy: 'ignore',
@@ -73,9 +73,15 @@ export class AnilistService {
             }
           `,
         })
-        .subscribe(result => {
-          r(result.data.Viewer);
-        });
+        .subscribe(
+          result => {
+            r(result.data.Viewer);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
     });
     this.loggedIn = !!requestResult;
     return requestResult;
@@ -106,9 +112,42 @@ export class AnilistService {
           `,
           variables: { idMal, type },
         })
-        .subscribe(result => {
-          r(result.data.Media?.id);
-        });
+        .subscribe(
+          result => {
+            r(result.data.Media?.id);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
+    });
+    return requestResult;
+  }
+
+  async getMalId(id: number, type: 'ANIME' | 'MANGA'): Promise<number | undefined> {
+    const requestResult = await new Promise<number | undefined>(r => {
+      this.client
+        .query<{ Media?: { idMal: number } }>({
+          errorPolicy: 'ignore',
+          query: gql`
+            query Media($id: Int, $type: MediaType) {
+              Media(id: $id, type: $type) {
+                idMal
+              }
+            }
+          `,
+          variables: { id, type },
+        })
+        .subscribe(
+          result => {
+            r(result.data.Media?.idMal);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
     });
     return requestResult;
   }
@@ -207,7 +246,10 @@ export class AnilistService {
           `,
           variables,
         })
-        .subscribe(r);
+        .subscribe(r, error => {
+          console.log({ error });
+          r(undefined);
+        });
     });
   }
 

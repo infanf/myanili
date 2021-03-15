@@ -22,15 +22,21 @@ export class ReadlistWrapperComponent implements OnInit {
   }
 
   get reading(): ListManga[] {
-    return this.mangas.filter(manga => !manga.my_extension?.ongoing);
+    return this.mangas
+      .filter(manga => !manga.my_extension?.ongoing)
+      .sort((a, b) => {
+        const textA = a.my_extension?.displayName || a.node.title;
+        const textB = b.my_extension?.displayName || b.node.title;
+        return textA < textB ? -1 : textA > textB ? 1 : 0;
+      });
   }
 
   get ongoing(): ListManga[] {
     return this.mangas
       .filter(manga => manga.my_extension?.ongoing)
       .sort((a, b) => {
-        const textA = a.list_status.updated_at;
-        const textB = b.list_status.updated_at;
+        const textA = a.my_extension?.displayName || a.node.title;
+        const textB = b.my_extension?.displayName || b.node.title;
         return textA < textB ? -1 : textA > textB ? 1 : 0;
       });
   }
@@ -78,7 +84,14 @@ export class ReadlistComponent {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const statusResponse = await this.mangaservice.updateManga(manga.node.id, data);
+    const statusResponse = await this.mangaservice.updateManga(
+      {
+        malId: manga.node.id,
+        anilistId: manga.my_extension?.anilistId,
+        kitsuId: manga.my_extension?.kitsuId,
+      },
+      data,
+    );
     manga.list_status.num_chapters_read = statusResponse.num_chapters_read;
     manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
     manga.busy = false;
@@ -106,7 +119,7 @@ export class ReadlistComponent {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const statusResponse = await this.mangaservice.updateManga(manga.node.id, data);
+    const statusResponse = await this.mangaservice.updateManga({ malId: manga.node.id }, data);
     manga.list_status.num_chapters_read = statusResponse.num_chapters_read;
     manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
     manga.busy = false;

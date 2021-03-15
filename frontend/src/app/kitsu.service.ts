@@ -3,7 +3,8 @@ import { WatchStatus } from '@models/anime';
 import {
   KitsuEntry,
   KitsuEntryAttributes,
-  KitsuMappingResponse,
+  KitsuMappingData,
+  KitsuResponse,
   KitsuStatus,
   KitsuUser,
 } from '@models/kitsu';
@@ -47,16 +48,41 @@ export class KitsuService {
       `${this.baseUrl}mappings?filter[externalSite]=${externalSite}/${type}&filter[externalId]=${externalId}`,
     );
     if (result.ok) {
-      const response = ((await result.json()) as unknown) as KitsuMappingResponse;
+      const response = ((await result.json()) as unknown) as KitsuResponse<KitsuMappingData[]>;
       if (response.data.length) {
         const newUrl = response.data[0].relationships.item.links.related;
         const newResult = await fetch(newUrl);
-        const animeResponse = ((await newResult.json()) as unknown) as {
-          data?: { id: string; attributes: { slug: string } };
-        };
+        const animeResponse = (await newResult.json()) as KitsuResponse<KitsuEntry>;
         if (newResult.ok && animeResponse.data) {
-          return { kitsuId: animeResponse.data.id };
+          return {
+            kitsuId: animeResponse.data.id,
+            entryId: (await this.getEntry(Number(animeResponse.data.id), type))?.id,
+          };
         }
+      }
+    }
+    return undefined;
+  }
+
+  async getIdFromSlug(slug: string, type: 'anime' | 'manga'): Promise<number | undefined> {
+    const result = await fetch(`${this.baseUrl}${type}?filter[slug]=${slug}`);
+    if (result.ok) {
+      const response = (await result.json()) as KitsuResponse<KitsuEntry[]>;
+      if (response.data.length) {
+        return Number(response.data[0].id);
+      }
+    }
+    return undefined;
+  }
+
+  async getExternalId(id: number, type: 'anime' | 'manga', externalSite = 'myanimelist') {
+    const result = await fetch(
+      `${this.baseUrl}${type}/${id}/mappings?filter[externalSite]=${externalSite}/${type}`,
+    );
+    if (result.ok) {
+      const response = ((await result.json()) as unknown) as KitsuResponse<KitsuMappingData[]>;
+      if (response.data.length) {
+        return Number(response.data[0].attributes.externalId);
       }
     }
     return undefined;
@@ -112,7 +138,7 @@ export class KitsuService {
       }),
     });
     if (result.ok) {
-      const response = (await result.json()) as { data: KitsuUser[] };
+      const response = (await result.json()) as KitsuResponse<KitsuUser[]>;
       if (response.data.length) {
         const userdata = response.data[0];
         this.userSubject.next(userdata);
@@ -138,7 +164,7 @@ export class KitsuService {
       },
     );
     if (result.ok) {
-      const response = (await result.json()) as { data: KitsuEntry[] };
+      const response = (await result.json()) as KitsuResponse<KitsuEntry[]>;
       if (response.data.length) {
         return response.data[0];
       }
@@ -147,20 +173,23 @@ export class KitsuService {
   }
 
   async updateEntry(
-    id: number,
+    ids: { kitsuId: number | string; entryId?: string | undefined },
     type: 'anime' | 'manga' = 'anime',
     attributes: Partial<KitsuEntryAttributes>,
   ): Promise<KitsuEntry | undefined> {
-    const existing = await this.getEntry(id, type);
-    if (!existing) {
-      return this.createEntry(id, type, attributes);
+    if (!ids.entryId) {
+      const existing = await this.getEntry(Number(ids.kitsuId), type);
+      if (!existing) {
+        return this.createEntry(Number(ids.kitsuId), type, attributes);
+      }
+      ids.entryId = existing?.id;
     }
     const data = {
       attributes,
-      id: existing.id,
+      id: ids.entryId,
       type: 'libraryEntries',
     };
-    const result = await fetch(`${this.baseUrl}library-entries/${existing.id}`, {
+    const result = await fetch(`${this.baseUrl}library-entries/${ids.entryId}`, {
       method: 'PATCH',
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
@@ -169,7 +198,7 @@ export class KitsuService {
       body: JSON.stringify({ data }),
     });
     if (result.ok) {
-      const { data: response } = (await result.json()) as { data: KitsuEntry };
+      const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
       return response;
     }
     return;
@@ -212,7 +241,7 @@ export class KitsuService {
       },
     );
     if (result.ok) {
-      const { data: response } = (await result.json()) as { data: KitsuEntry };
+      const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
       return response;
     }
     return;

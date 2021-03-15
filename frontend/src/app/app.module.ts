@@ -34,6 +34,7 @@ import { AnilistIconComponent } from './icon/anilist/anilist.component';
 import { IconComponent } from './icon/icon.component';
 import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
 import { MalIconComponent } from './icon/mal/mal.component';
+import { SimklIconComponent } from './icon/simkl/simkl.component';
 import { SpotifyIconComponent } from './icon/spotify/spotify.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
@@ -47,6 +48,7 @@ import { MagazineComponent } from './manga/magazine/magazine.component';
 import { ReadlistComponent, ReadlistWrapperComponent } from './manga/readlist/readlist.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
 import { Nl2brPipe } from './nl2br.pipe';
 import { PersonComponent } from './person/person.component';
 import { PlatformPipe } from './platform.pipe';
@@ -101,6 +103,8 @@ import { TimePipe } from './time.pipe';
     PlatformComponent,
     AnilistIconComponent,
     KitsuIconComponent,
+    QuickaddComponent,
+    SimklIconComponent,
   ],
   imports: [
     BrowserModule,

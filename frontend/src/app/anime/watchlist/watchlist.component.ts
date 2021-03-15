@@ -5,6 +5,7 @@ import { GlobalService } from 'src/app/global.service';
 import { Language, SettingsService } from 'src/app/settings/settings.service';
 
 import { AnimeService } from '../anime.service';
+import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class WatchlistComponent implements OnInit {
     private settings: SettingsService,
     private glob: GlobalService,
     private trakt: TraktService,
+    private simkl: SimklService,
   ) {
     this.glob.busy();
     this.settings.language.subscribe(lang => {
@@ -76,8 +78,20 @@ export class WatchlistComponent implements OnInit {
     }
     const fullAnime = await this.animeService.getAnime(anime.node.id);
     const [animeStatus] = await Promise.all([
-      this.animeService.updateAnime(anime.node.id, data),
+      this.animeService.updateAnime(
+        {
+          malId: anime.node.id,
+          anilistId: anime.my_extension?.anilistId,
+          kitsuId: anime.my_extension?.kitsuId,
+          simklId: anime.my_extension?.simklId,
+        },
+        data,
+      ),
       this.scrobbleTrakt(fullAnime, currentEpisode + 1),
+      this.simkl.scrobble(
+        { simkl: anime.my_extension?.simklId, mal: anime.node.id },
+        currentEpisode + 1,
+      ),
     ]);
     if (completed) {
       this.glob.busy();
@@ -86,7 +100,7 @@ export class WatchlistComponent implements OnInit {
         const sequel = sequels[0];
         const startSequel = confirm(`Start watching sequel "${sequel.node.title}"?`);
         if (startSequel) {
-          await this.animeService.updateAnime(sequel.node.id, { status: 'watching' });
+          await this.animeService.updateAnime({ malId: sequel.node.id }, { status: 'watching' });
           this.ngOnInit();
         }
       }
@@ -104,7 +118,7 @@ export class WatchlistComponent implements OnInit {
         r(
           await this.trakt.scrobble(
             anime.my_extension.trakt,
-            anime.my_extension.seasonNumber,
+            anime.my_extension.seasonNumber || 1,
             episode + (anime.my_extension.episodeCorOffset || 0),
           ),
         );

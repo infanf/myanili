@@ -27,7 +27,6 @@
       </ng-template>
     </div>
   </header>
-  <!-- <hr class="mt-0" /> -->
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3" [class]="{ 'd-none': edit, 'd-sm-block': edit }">
       <ng-container>
@@ -171,7 +170,11 @@
         <div class="col-8">
           <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
           <ng-template #mylist>
-            {{ anime!.my_list_status!.status | mal: 'mystatus' }}
+            {{
+              anime!.my_list_status!.is_rewatching
+                ? 'Rewatching'
+                : (anime!.my_list_status!.status | mal: 'mystatus')
+            }}
             <app-icon
               *ngIf="
                 anime!.my_list_status?.status === 'plan_to_watch' ||
@@ -179,7 +182,22 @@
               "
               name="play-circle"
               class="cursor-pointer me-1"
-              (click)="setWatching()"
+              (click)="setStatus('watching')"
+            ></app-icon>
+            <app-icon
+              *ngIf="anime!.my_list_status?.status === 'watching'"
+              name="pause-circle"
+              class="cursor-pointer me-1"
+              (click)="setStatus('on_hold')"
+            ></app-icon>
+            <app-icon
+              *ngIf="
+                anime!.my_list_status?.status === 'completed' &&
+                !anime!.my_list_status?.is_rewatching
+              "
+              name="arrow-counterclockwise"
+              class="cursor-pointer me-1"
+              (click)="rewatch()"
             ></app-icon>
           </ng-template>
           <ng-template #mylistedit>
@@ -321,7 +339,11 @@
         <div class="col-4 fw-bold text-end">Duration</div>
         <div class="col-8">
           <app-icon
-            *ngIf="anime.my_list_status?.status === 'watching' && !edit"
+            *ngIf="
+              (anime.my_list_status?.status === 'watching' ||
+                anime.my_list_status?.is_rewatching) &&
+              !edit
+            "
             name="plus-square"
             class="cursor-pointer me-1"
             (click)="plusOne()"
@@ -405,15 +427,15 @@
                 >MyAnimeList</a
               >
             </div>
-            <div *ngIf="anilistId">
+            <div *ngIf="anime.my_extension?.anilistId">
               <app-icon-anilist></app-icon-anilist>
-              <a class="ms-1" [href]="'https://anilist.co/anime/' + anilistId" target="_blank"
+              <a class="ms-1" [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId" target="_blank"
                 >AniList</a
               >
             </div>
-            <div *ngIf="kitsuId">
+            <div *ngIf="anime.my_extension?.kitsuId">
               <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
-              <a class="ms-1" [href]="'https://kitsu.io/anime/' + kitsuId" target="_blank">Kitsu</a>
+              <a class="ms-1" [href]="'https://kitsu.io/anime/' + anime.my_extension!.kitsuId!.kitsuId" target="_blank">Kitsu</a>
             </div>
             <div *ngIf="anime && anime.my_extension && anime.my_extension.trakt">
               <app-icon-trakt style="color: #ed1c24"></app-icon-trakt>
@@ -427,6 +449,12 @@
                 "
                 target="_blank"
                 >Trakt</a
+              >
+            </div>
+            <div *ngIf="anime.my_extension?.simklId">
+              <app-icon-simkl></app-icon-simkl>
+              <a class="ms-1" [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId" target="_blank"
+                >SIMKL</a
               >
             </div>
           </div>
