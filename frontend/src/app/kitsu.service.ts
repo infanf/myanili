@@ -43,7 +43,14 @@ export class KitsuService {
     externalId: number,
     type: 'anime' | 'manga',
     externalSite = 'myanimelist',
+    kitsu?: number | string,
   ): Promise<{ kitsuId: string; entryId?: string } | undefined> {
+    if (kitsu) {
+      return {
+        kitsuId: String(kitsu),
+        entryId: (await this.getEntry(Number(kitsu), type))?.id,
+      };
+    }
     const result = await fetch(
       `${this.baseUrl}mappings?filter[externalSite]=${externalSite}/${type}&filter[externalId]=${externalId}`,
     );
