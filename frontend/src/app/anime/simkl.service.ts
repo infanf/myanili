@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -109,40 +110,57 @@ export class SimklService {
     });
   }
 
-  async scrobble(ids: { simkl?: number; mal?: number }, number?: number): Promise<boolean> {
-    if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal) || !number) return false;
-    return new Promise<boolean>(r => {
-      const data = {
-        shows: [{ ids, seasons: [{ number: 1, episodes: [{ number }] }] }],
-      };
-      const headers = {
+  async scrobble(ids: { simkl?: number; mal?: number }, number?: number) {
+    if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal) || !number) return;
+    const scrobbleData = { shows: [{ ids, seasons: [{ number: 1, episodes: [{ number }] }] }] };
+    return fetch(`${this.baseUrl}sync/history`, {
+      method: 'POST',
+      headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
         'simkl-api-key': this.clientId,
-      };
-      try {
-        this.http
-          .post<{ added: { shows: number }; not_found: { shows: [] } }>(
-            this.baseUrl + 'sync/history',
-            data,
-            { headers },
-          )
-          .subscribe(
-            result => {
-              if (result.added.shows) {
-                r(true);
-              } else {
-                r(false);
-              }
-            },
-            error => {
-              console.log({ error });
-              r(false);
-            },
-          );
-      } catch (error) {
-        console.log({ error });
-        r(false);
-      }
+      }),
+      body: JSON.stringify(scrobbleData),
+    });
+  }
+
+  async updateEntry(ids: { simkl?: number; mal?: number }, data: Partial<MyAnimeUpdate>) {
+    if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal)) return;
+    const promises = [];
+    if (data.status) {
+      promises.push(this.addToList(ids, this.statusFromMal(data.status)));
+    }
+    if (data.score) {
+      promises.push(this.addRating(ids, data.score));
+    }
+    if (data.num_watched_episodes) {
+      promises.push(this.scrobble(ids, data.num_watched_episodes));
+    }
+    await Promise.all(promises);
+  }
+
+  async addToList(ids: { simkl?: number; mal?: number }, list?: SimklList) {
+    if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal) || !list) return;
+    const toListData = { shows: [{ to: list, ids }] };
+    return fetch(`${this.baseUrl}sync/add-to-list`, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'simkl-api-key': this.clientId,
+      }),
+      body: JSON.stringify(toListData),
+    });
+  }
+
+  async addRating(ids: { simkl?: number; mal?: number }, rating: number) {
+    if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal)) return;
+    const ratingData = { shows: [{ rating, ids }] };
+    return fetch(`${this.baseUrl}sync/ratings`, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'simkl-api-key': this.clientId,
+      }),
+      body: JSON.stringify(ratingData),
     });
   }
 
@@ -153,6 +171,38 @@ export class SimklService {
     localStorage.removeItem('simklAccessToken');
     localStorage.removeItem('simklClientId');
   }
+
+  statusFromMal(malStatus?: WatchStatus): SimklList | undefined {
+    switch (malStatus) {
+      case 'plan_to_watch':
+        return 'plantowatch';
+      case 'on_hold':
+        return 'hold';
+      case 'dropped':
+        return 'notinteresting';
+      case 'watching':
+      case 'completed':
+        return malStatus;
+      default:
+        return undefined;
+    }
+  }
+
+  statusToMal(simklStatus?: SimklList): WatchStatus | undefined {
+    switch (simklStatus) {
+      case 'plantowatch':
+        return 'plan_to_watch';
+      case 'hold':
+        return 'on_hold';
+      case 'notinteresting':
+        return 'dropped';
+      case 'completed':
+      case 'watching':
+        return simklStatus;
+      default:
+        return undefined;
+    }
+  }
 }
 
 interface IdSearch {
@@ -160,3 +210,5 @@ interface IdSearch {
     simkl: number;
   };
 }
+
+export type SimklList = 'plantowatch' | 'completed' | 'watching' | 'hold' | 'notinteresting';

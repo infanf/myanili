@@ -62,7 +62,7 @@ export class AnimeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     const anime = await this.animeService.getAnime(this.id);
-    this.anime = anime;
+    this.anime = { ...anime };
     if (!this.anime.my_extension) {
       this.anime.my_extension = {
         malId: anime.id,
@@ -70,20 +70,34 @@ export class AnimeDetailsComponent implements OnInit {
     } else {
       this.anime.my_extension.malId = anime.id;
     }
-    if (!this.anime.my_extension.kitsuId || !this.anime.my_extension.anilistId) {
-      const [anilistId, kitsuId] = await Promise.all([
+    if (
+      !this.anime.my_extension.kitsuId ||
+      !this.anime.my_extension.anilistId ||
+      !this.anime.my_extension.simklId
+    ) {
+      const [anilistId, kitsuId, simklId] = await Promise.all([
         this.anilist.getId(this.id, 'ANIME'),
         this.kitsu.getId(this.id, 'anime'),
+        this.simkl.getId(this.id),
       ]);
       this.anime.my_extension.anilistId = anilistId;
       this.anime.my_extension.kitsuId = kitsuId;
-    }
-    if (!this.anime.my_extension.simklId) {
-      this.simkl.getId(this.id).then(simklId => {
-        if (this.anime && this.anime.my_extension) {
-          this.anime.my_extension.simklId = simklId;
-        }
-      });
+      this.anime.my_extension.simklId = simklId;
+      if (anime.my_extension) {
+        await this.animeService.updateAnime(
+          { malId: anime.id, kitsuId, simklId, anilistId },
+          {
+            comments: Base64.encode(
+              JSON.stringify({
+                ...anime.my_extension,
+                kitsuId,
+                anilistId,
+                simklId,
+              }),
+            ),
+          },
+        );
+      }
     }
     this.glob.notbusy();
   }
@@ -175,6 +189,7 @@ export class AnimeDetailsComponent implements OnInit {
         malId: this.anime.id,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
       },
       updateData,
     );
@@ -197,6 +212,7 @@ export class AnimeDetailsComponent implements OnInit {
         malId: this.anime.id,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
       },
       { status: 'plan_to_watch' },
     );
@@ -213,6 +229,7 @@ export class AnimeDetailsComponent implements OnInit {
         malId: this.anime.id,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
       },
       { status },
     );
@@ -229,6 +246,7 @@ export class AnimeDetailsComponent implements OnInit {
         malId: this.anime.id,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
       },
       {
         status: 'completed',
@@ -266,6 +284,7 @@ export class AnimeDetailsComponent implements OnInit {
           malId: this.anime.id,
           anilistId: this.anime.my_extension?.anilistId,
           kitsuId: this.anime.my_extension?.kitsuId,
+          simklId: this.anime.my_extension?.simklId,
         },
         data,
       ),
