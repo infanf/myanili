@@ -406,14 +406,42 @@
             </div>
             <div *ngIf="manga.my_extension?.anilistId">
               <app-icon-anilist></app-icon-anilist>
-              <a class="ms-1" [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId" target="_blank"
+              <a
+                class="ms-1"
+                [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
+                target="_blank"
                 >AniList</a
               >
             </div>
             <div *ngIf="manga.my_extension?.kitsuId">
               <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
-              <a class="ms-1" [href]="'https://kitsu.io/manga/' + manga.my_extension!.kitsuId!.kitsuId" target="_blank">Kitsu</a>
+              <a
+                class="ms-1"
+                [href]="'https://kitsu.io/manga/' + manga.my_extension!.kitsuId!.kitsuId"
+                target="_blank"
+                >Kitsu</a
+              >
             </div>
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && manga && editExtension">
+          <div class="col-4 fw-bold text-end">Anilist</div>
+          <div class="col-8">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.anilistId"
+              [disabled]="busy"
+            />
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && manga && editExtension && enableKitsu()">
+          <div class="col-4 fw-bold text-end">Kitsu</div>
+          <div class="col-8">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.kitsuId!.kitsuId"
+              [disabled]="busy"
+            />
           </div>
         </div>
       </div>

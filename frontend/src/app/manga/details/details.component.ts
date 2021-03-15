@@ -48,7 +48,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const manga = await this.mangaService.getManga(this.id);
-    this.manga = manga;
+    this.manga = { ...manga };
     if (!this.manga.my_extension) {
       this.manga.my_extension = {
         malId: manga.id,
@@ -56,13 +56,31 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.manga.my_extension.malId = manga.id;
     }
-    if (!this.manga.my_extension.kitsuId || !this.manga.my_extension.anilistId) {
+    if (
+      !this.manga.my_extension.kitsuId ||
+      !this.manga.my_extension.kitsuId.entryId ||
+      !this.manga.my_extension.anilistId
+    ) {
       const [anilistId, kitsuId] = await Promise.all([
         this.anilist.getId(this.id, 'MANGA'),
         this.kitsu.getId(this.id, 'manga'),
       ]);
       this.manga.my_extension.anilistId = anilistId;
       this.manga.my_extension.kitsuId = kitsuId;
+      if (manga.my_extension) {
+        await this.mangaService.updateManga(
+          { malId: manga.id, kitsuId, anilistId },
+          {
+            comments: Base64.encode(
+              JSON.stringify({
+                ...manga.my_extension,
+                kitsuId,
+                anilistId,
+              }),
+            ),
+          },
+        );
+      }
     }
     this.glob.notbusy();
   }
@@ -101,6 +119,14 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     } catch (e) {
       this.editExtension = { ...this.manga.my_extension };
     }
+  }
+
+  enableKitsu() {
+    if (!this.editExtension) return false;
+    if (!this.editExtension.kitsuId) {
+      this.editExtension.kitsuId = { kitsuId: '' };
+    }
+    return true;
   }
 
   async save() {

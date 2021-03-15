@@ -22,15 +22,21 @@ export class ReadlistWrapperComponent implements OnInit {
   }
 
   get reading(): ListManga[] {
-    return this.mangas.filter(manga => !manga.my_extension?.ongoing);
+    return this.mangas
+      .filter(manga => !manga.my_extension?.ongoing)
+      .sort((a, b) => {
+        const textA = a.my_extension?.displayName || a.node.title;
+        const textB = b.my_extension?.displayName || b.node.title;
+        return textA < textB ? -1 : textA > textB ? 1 : 0;
+      });
   }
 
   get ongoing(): ListManga[] {
     return this.mangas
       .filter(manga => manga.my_extension?.ongoing)
       .sort((a, b) => {
-        const textA = a.list_status.updated_at;
-        const textB = b.list_status.updated_at;
+        const textA = a.my_extension?.displayName || a.node.title;
+        const textB = b.my_extension?.displayName || b.node.title;
         return textA < textB ? -1 : textA > textB ? 1 : 0;
       });
   }
