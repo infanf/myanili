@@ -320,19 +320,48 @@
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension && traktUser">
-        <div class="col-4 fw-bold text-end">Trakt&nbsp;ID</div>
+        <div class="col-4 fw-bold text-end">Trakt</div>
         <div class="col-8">
           <div class="input-group input-group-sm">
             <input
               class="form-control"
               [(ngModel)]="editExtension!.trakt"
               [disabled]="busy"
-              readonly
             />
             <button class="btn btn-primary" (click)="findTrakt()">
               <app-icon-trakt></app-icon-trakt>
             </button>
           </div>
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && anime && editExtension">
+        <div class="col-4 fw-bold text-end">Anilist</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.anilistId"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && anime && editExtension && enableKitsu()">
+        <div class="col-4 fw-bold text-end">Kitsu</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.kitsuId!.kitsuId"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && anime && editExtension">
+        <div class="col-4 fw-bold text-end">SIMKL</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.simklId"
+            [disabled]="busy"
+          />
         </div>
       </div>
       <div class="row" *ngIf="anime">

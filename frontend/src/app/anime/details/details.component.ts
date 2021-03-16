@@ -204,6 +204,14 @@ export class AnimeDetailsComponent implements OnInit {
     delete this.editExtension;
   }
 
+  enableKitsu() {
+    if (!this.editExtension) return false;
+    if (!this.editExtension.kitsuId) {
+      this.editExtension.kitsuId = { kitsuId: '' };
+    }
+    return true;
+  }
+
   async addAnime() {
     if (!this.anime) return;
     this.busy = true;
