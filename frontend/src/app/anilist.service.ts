@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AnilistMediaListStatus, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
 import { WatchStatus } from '@models/anime';
+import { ExtRating } from '@models/components';
 import { ReadStatus } from '@models/manga';
 import { Apollo, gql } from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
@@ -250,6 +251,41 @@ export class AnilistService {
           console.log({ error });
           r(undefined);
         });
+    });
+  }
+
+  async getRating(id?: number, type: 'ANIME' | 'MANGA' = 'ANIME'): Promise<ExtRating | undefined> {
+    if (!id) return;
+    return new Promise(r => {
+      this.client
+        .query<{ Media?: { averageScore: number } }>({
+          errorPolicy: 'ignore',
+          query: gql`
+            query Media($id: Int, $type: MediaType) {
+              Media(idMal: $id, type: $type) {
+                averageScore
+              }
+            }
+          `,
+          variables: { id, type },
+        })
+        .subscribe(
+          result => {
+            if (result.data.Media?.averageScore) {
+              r({
+                nom: result.data.Media?.averageScore,
+                norm: result.data.Media?.averageScore,
+                unit: '%',
+              });
+            } else {
+              r(undefined);
+            }
+          },
+          e => {
+            console.log({ e });
+            r(undefined);
+          },
+        );
     });
   }
 

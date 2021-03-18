@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { WatchStatus } from '@models/anime';
+import { ExtRating } from '@models/components';
 import {
   KitsuEntry,
   KitsuEntryAttributes,
   KitsuMappingData,
+  KitsuMedia,
   KitsuResponse,
   KitsuStatus,
   KitsuUser,
@@ -250,6 +252,23 @@ export class KitsuService {
     if (result.ok) {
       const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
       return response;
+    }
+    return;
+  }
+
+  async getRating(id?: number, type: 'anime' | 'manga' = 'anime'): Promise<ExtRating | undefined> {
+    if (!id) return;
+    const result = await fetch(`${this.baseUrl}${type}/${id}`, {
+      headers: new Headers({ 'Content-Type': 'application/vnd.api+json' }),
+    });
+    if (result.ok) {
+      const response = (await result.json()) as KitsuResponse<KitsuMedia>;
+      if (response.data.attributes.averageRating) {
+        return {
+          nom: response.data.attributes.averageRating,
+          norm: response.data.attributes.averageRating,
+        };
+      }
     }
     return;
   }

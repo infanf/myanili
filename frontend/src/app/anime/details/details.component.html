@@ -73,6 +73,7 @@
           ></div>
         </div>
       </ng-container>
+      <div *ngFor="let rating of ratings">{{ rating.provider }}: {{ rating.rating.norm }}</div>
     </div>
 
     <!-- right column -->
@@ -323,11 +324,7 @@
         <div class="col-4 fw-bold text-end">Trakt</div>
         <div class="col-8">
           <div class="input-group input-group-sm">
-            <input
-              class="form-control"
-              [(ngModel)]="editExtension!.trakt"
-              [disabled]="busy"
-            />
+            <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" />
             <button class="btn btn-primary" (click)="findTrakt()">
               <app-icon-trakt></app-icon-trakt>
             </button>
@@ -458,13 +455,21 @@
             </div>
             <div *ngIf="anime.my_extension?.anilistId">
               <app-icon-anilist></app-icon-anilist>
-              <a class="ms-1" [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId" target="_blank"
+              <a
+                class="ms-1"
+                [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId"
+                target="_blank"
                 >AniList</a
               >
             </div>
             <div *ngIf="anime.my_extension?.kitsuId">
               <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
-              <a class="ms-1" [href]="'https://kitsu.io/anime/' + anime.my_extension!.kitsuId!.kitsuId" target="_blank">Kitsu</a>
+              <a
+                class="ms-1"
+                [href]="'https://kitsu.io/anime/' + anime.my_extension!.kitsuId!.kitsuId"
+                target="_blank"
+                >Kitsu</a
+              >
             </div>
             <div *ngIf="anime && anime.my_extension && anime.my_extension.trakt">
               <app-icon-trakt style="color: #ed1c24"></app-icon-trakt>
@@ -482,7 +487,10 @@
             </div>
             <div *ngIf="anime.my_extension?.simklId">
               <app-icon-simkl></app-icon-simkl>
-              <a class="ms-1" [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId" target="_blank"
+              <a
+                class="ms-1"
+                [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId"
+                target="_blank"
                 >SIMKL</a
               >
             </div>
