@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Picture } from '@models/components';
+import { ExtRating, Picture } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
@@ -25,6 +25,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   busy = false;
   editBackup?: Partial<MyMangaUpdate>;
   editExtension?: MangaExtension;
+  ratings: Array<{ provider: string; rating: ExtRating }> = [];
   activeTab = 1;
   constructor(
     private mangaService: MangaService,
@@ -48,6 +49,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const manga = await this.mangaService.getManga(this.id);
+    if (manga.mean) this.setRating('mal', { nom: manga.mean, norm: manga.mean * 10 });
     this.manga = { ...manga };
     if (!this.manga.my_extension) {
       this.manga.my_extension = {
@@ -83,6 +85,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       }
     }
     this.glob.notbusy();
+    await this.getRatings();
   }
 
   async editSave() {
@@ -315,6 +318,34 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       ],
     };
     this.gallery.load(prop);
+  }
+
+  async getRatings() {
+    this.anilist.getRating(this.manga?.my_extension?.anilistId, 'MANGA').then(rating => {
+      this.setRating('anilist', rating);
+    });
+    this.kitsu
+      .getRating(Number(this.manga?.my_extension?.kitsuId?.kitsuId), 'manga')
+      .then(rating => {
+        this.setRating('kitsu', rating);
+      });
+  }
+
+  getRating(provider: string): { provider: string; rating: ExtRating } | undefined {
+    return this.ratings.filter(rat => rat.provider === provider).pop();
+  }
+
+  setRating(provider: string, rating?: ExtRating) {
+    if (rating) {
+      let exists = false;
+      this.ratings.forEach(rat => {
+        if (rat.provider === provider) {
+          rat.rating = rating;
+          exists = true;
+        }
+      });
+      if (!exists) this.ratings.push({ provider, rating });
+    }
   }
 
   changeOngoing() {

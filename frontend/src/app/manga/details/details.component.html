@@ -398,29 +398,50 @@
         <div class="row" *ngIf="!edit">
           <div class="col-4 fw-bold text-end">Links</div>
           <div class="col-8">
-            <div>
-              <app-icon-mal class="text-primary"></app-icon-mal>
-              <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
-                >MyAnimeList</a
-              >
+            <div class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('mal')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-mal class="text-primary"></app-icon-mal>
+                <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
+                  >MyAnimeList</a
+                >
+              </div>
             </div>
-            <div *ngIf="manga.my_extension?.anilistId">
-              <app-icon-anilist></app-icon-anilist>
-              <a
-                class="ms-1"
-                [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
-                target="_blank"
-                >AniList</a
-              >
+            <div *ngIf="manga.my_extension?.anilistId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('anilist')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-anilist></app-icon-anilist>
+                <a
+                  class="ms-1"
+                  [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
+                  target="_blank"
+                  >AniList</a
+                >
+              </div>
             </div>
-            <div *ngIf="manga.my_extension?.kitsuId">
-              <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
-              <a
-                class="ms-1"
-                [href]="'https://kitsu.io/manga/' + manga.my_extension!.kitsuId!.kitsuId"
-                target="_blank"
-                >Kitsu</a
-              >
+            <div *ngIf="manga.my_extension?.kitsuId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('kitsu')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
+                <a
+                  class="ms-1"
+                  [href]="'https://kitsu.io/manga/' + manga.my_extension!.kitsuId!.kitsuId"
+                  target="_blank"
+                  >Kitsu</a
+                >
+              </div>
             </div>
           </div>
         </div>
