@@ -377,20 +377,28 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async getRatings() {
-    this.trakt
-      .getRating(this.anime?.my_extension?.trakt, this.anime?.my_extension?.seasonNumber || 1)
-      .then(rating => {
-        this.setRating('trakt', rating);
+    if (!this.getRating('trakt')) {
+      this.trakt
+        .getRating(this.anime?.my_extension?.trakt, this.anime?.my_extension?.seasonNumber || 1)
+        .then(rating => {
+          this.setRating('trakt', rating);
+        });
+    }
+    if (!this.getRating('anilist')) {
+      this.anilist.getRating(this.anime?.my_extension?.anilistId).then(rating => {
+        this.setRating('anilist', rating);
       });
-    this.anilist.getRating(this.anime?.my_extension?.anilistId).then(rating => {
-      this.setRating('anilist', rating);
-    });
-    this.kitsu.getRating(Number(this.anime?.my_extension?.kitsuId?.kitsuId)).then(rating => {
-      this.setRating('kitsu', rating);
-    });
-    this.simkl.getRating(this.anime?.my_extension?.simklId).then(rating => {
-      this.setRating('simkl', rating);
-    });
+    }
+    if (!this.getRating('kitsu')) {
+      this.kitsu.getRating(Number(this.anime?.my_extension?.kitsuId?.kitsuId)).then(rating => {
+        this.setRating('kitsu', rating);
+      });
+    }
+    if (!this.getRating('simkl')) {
+      this.simkl.getRating(this.anime?.my_extension?.simklId).then(rating => {
+        this.setRating('simkl', rating);
+      });
+    }
   }
 
   getRating(provider: string): { provider: string; rating: ExtRating } | undefined {

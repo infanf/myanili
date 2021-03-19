@@ -321,14 +321,18 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   }
 
   async getRatings() {
-    this.anilist.getRating(this.manga?.my_extension?.anilistId, 'MANGA').then(rating => {
-      this.setRating('anilist', rating);
-    });
-    this.kitsu
-      .getRating(Number(this.manga?.my_extension?.kitsuId?.kitsuId), 'manga')
-      .then(rating => {
-        this.setRating('kitsu', rating);
+    if (!this.getRating('anilist')) {
+      this.anilist.getRating(this.manga?.my_extension?.anilistId, 'MANGA').then(rating => {
+        this.setRating('anilist', rating);
       });
+    }
+    if (!this.getRating('kitsu')) {
+      this.kitsu
+        .getRating(Number(this.manga?.my_extension?.kitsuId?.kitsuId), 'manga')
+        .then(rating => {
+          this.setRating('kitsu', rating);
+        });
+    }
   }
 
   getRating(provider: string): { provider: string; rating: ExtRating } | undefined {

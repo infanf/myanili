@@ -154,7 +154,11 @@ export class TraktService {
 
   async getRating(show?: string, season = 1): Promise<ExtRating | undefined> {
     if (!this.clientId || !show) return;
-    const result = await fetch(`${this.baseUrl}shows/${show}/seasons/${season}/ratings`, {
+    const url =
+      season === 1
+        ? `${this.baseUrl}shows/${show}/ratings`
+        : `${this.baseUrl}shows/${show}/seasons/${season}/ratings`;
+    const result = await fetch(url, {
       headers: new Headers({
         'trakt-api-version': '2',
         'trakt-api-key': this.clientId,
@@ -163,7 +167,7 @@ export class TraktService {
     if (result.ok) {
       const response = (await result.json()) as Ratings;
       if (response.rating) {
-        return { nom: response.rating, norm: response.rating * 10 };
+        return { nom: Math.round(response.rating * 10), norm: response.rating * 10, unit: '%' };
       }
     }
     return;
