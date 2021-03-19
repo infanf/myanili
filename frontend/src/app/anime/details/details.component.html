@@ -323,11 +323,7 @@
         <div class="col-4 fw-bold text-end">Trakt</div>
         <div class="col-8">
           <div class="input-group input-group-sm">
-            <input
-              class="form-control"
-              [(ngModel)]="editExtension!.trakt"
-              [disabled]="busy"
-            />
+            <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" />
             <button class="btn btn-primary" (click)="findTrakt()">
               <app-icon-trakt></app-icon-trakt>
             </button>
@@ -450,41 +446,89 @@
         <div class="row" *ngIf="!edit">
           <div class="col-4 fw-bold text-end">Links</div>
           <div class="col-8">
-            <div>
-              <app-icon-mal class="text-primary"></app-icon-mal>
-              <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="ms-1"
-                >MyAnimeList</a
-              >
+            <div class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('mal')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-mal class="text-primary"></app-icon-mal>
+                <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="ms-1"
+                  >MyAnimeList</a
+                >
+              </div>
             </div>
-            <div *ngIf="anime.my_extension?.anilistId">
-              <app-icon-anilist></app-icon-anilist>
-              <a class="ms-1" [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId" target="_blank"
-                >AniList</a
-              >
+            <div *ngIf="anime.my_extension?.anilistId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('anilist')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-anilist></app-icon-anilist>
+                <a
+                  class="ms-1"
+                  [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId"
+                  target="_blank"
+                  >AniList</a
+                >
+              </div>
             </div>
-            <div *ngIf="anime.my_extension?.kitsuId">
-              <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
-              <a class="ms-1" [href]="'https://kitsu.io/anime/' + anime.my_extension!.kitsuId!.kitsuId" target="_blank">Kitsu</a>
+            <div *ngIf="anime.my_extension?.kitsuId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('kitsu')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
+                <a
+                  class="ms-1"
+                  [href]="'https://kitsu.io/anime/' + anime.my_extension!.kitsuId!.kitsuId"
+                  target="_blank"
+                  >Kitsu</a
+                >
+              </div>
             </div>
-            <div *ngIf="anime && anime.my_extension && anime.my_extension.trakt">
-              <app-icon-trakt style="color: #ed1c24"></app-icon-trakt>
-              <a
-                class="ms-1"
-                [href]="
-                  'https://trakt.tv/shows/' +
-                  anime.my_extension.trakt +
-                  '/seasons/' +
-                  (anime.my_extension.seasonNumber === 0 ? 0 : anime.my_extension.seasonNumber || 1)
-                "
-                target="_blank"
-                >Trakt</a
-              >
+            <div *ngIf="anime && anime.my_extension && anime.my_extension.trakt" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('trakt')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-trakt style="color: #ed1c24"></app-icon-trakt>
+                <a
+                  class="ms-1"
+                  [href]="
+                    'https://trakt.tv/shows/' +
+                    anime.my_extension.trakt +
+                    '/seasons/' +
+                    (anime.my_extension.seasonNumber === 0
+                      ? 0
+                      : anime.my_extension.seasonNumber || 1)
+                  "
+                  target="_blank"
+                  >Trakt</a
+                >
+              </div>
             </div>
-            <div *ngIf="anime.my_extension?.simklId">
-              <app-icon-simkl></app-icon-simkl>
-              <a class="ms-1" [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId" target="_blank"
-                >SIMKL</a
-              >
+            <div *ngIf="anime.my_extension?.simklId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('simkl')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-simkl></app-icon-simkl>
+                <a
+                  class="ms-1"
+                  [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId"
+                  target="_blank"
+                  >SIMKL</a
+                >
+              </div>
             </div>
           </div>
         </div>
