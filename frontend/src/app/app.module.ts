@@ -56,6 +56,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 import { StreamPipe } from './stream.pipe';
 import { TimePipe } from './time.pipe';
+import { ExternalRatingComponent } from './widget/external-rating/external-rating.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { TimePipe } from './time.pipe';
     KitsuIconComponent,
     QuickaddComponent,
     SimklIconComponent,
+    ExternalRatingComponent,
   ],
   imports: [
     BrowserModule,

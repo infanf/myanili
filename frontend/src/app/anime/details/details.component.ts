@@ -388,6 +388,13 @@ export class AnimeDetailsComponent implements OnInit {
     this.kitsu.getRating(Number(this.anime?.my_extension?.kitsuId?.kitsuId)).then(rating => {
       this.setRating('kitsu', rating);
     });
+    this.simkl.getRating(this.anime?.my_extension?.simklId).then(rating => {
+      this.setRating('simkl', rating);
+    });
+  }
+
+  getRating(provider: string): { provider: string; rating: ExtRating } | undefined {
+    return this.ratings.filter(rat => rat.provider === provider).pop();
   }
 
   setRating(provider: string, rating?: ExtRating) {

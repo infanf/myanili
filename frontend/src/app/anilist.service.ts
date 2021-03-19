@@ -262,7 +262,7 @@ export class AnilistService {
           errorPolicy: 'ignore',
           query: gql`
             query Media($id: Int, $type: MediaType) {
-              Media(idMal: $id, type: $type) {
+              Media(id: $id, type: $type) {
                 averageScore
               }
             }
