@@ -75,7 +75,8 @@ export class AnimeDetailsComponent implements OnInit {
     if (
       !this.anime.my_extension.kitsuId ||
       !this.anime.my_extension.anilistId ||
-      !this.anime.my_extension.simklId
+      !this.anime.my_extension.simklId ||
+      !this.anime.my_extension.annictId
     ) {
       const [anilistId, kitsuId, simklId, annictId] = await Promise.all([
         this.anilist.getId(this.id, 'ANIME'),
