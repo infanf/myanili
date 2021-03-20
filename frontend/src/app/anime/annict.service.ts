@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment';
 })
 export class AnnictService {
   private accessToken?: string;
-  private clientId?: string;
   private readonly baseUrl = 'https://api.annict.com/v1/';
   private readonly graphqlUrl = 'https://api.annict.com/graphql';
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
@@ -43,8 +42,7 @@ export class AnnictService {
           const data = event.data as { at: string; ci: string };
           this.accessToken = data.at;
           localStorage.setItem('annictAccessToken', this.accessToken);
-          this.clientId = data.ci;
-          localStorage.setItem('annictClientId', this.clientId);
+          localStorage.setItem('annictClientId', data.ci);
           this.userSubject.next(await this.checkLogin());
         }
         loginWindow?.close();
@@ -54,7 +52,7 @@ export class AnnictService {
   }
 
   async checkLogin(): Promise<string | undefined> {
-    if (!this.clientId || !this.accessToken) return;
+    if (!this.accessToken) return;
     const result = await fetch(`${this.baseUrl}me?access_token=${this.accessToken}`);
     if (result.ok) {
       const response = (await result.json()) as { name?: string };
@@ -64,7 +62,6 @@ export class AnnictService {
   }
 
   logoff() {
-    this.clientId = '';
     this.accessToken = '';
     this.userSubject.next(undefined);
     localStorage.removeItem('annictAccessToken');
