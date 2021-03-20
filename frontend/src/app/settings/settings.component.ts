@@ -5,6 +5,7 @@ import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AnilistService } from '../anilist.service';
+import { AnnictService } from '../anime/annict.service';
 import { SimklService } from '../anime/simkl.service';
 import { TraktService } from '../anime/trakt.service';
 import { GlobalService } from '../global.service';
@@ -22,6 +23,7 @@ export class SettingsComponent implements OnInit {
   lang: Language = 'default';
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
+  annictLoggedIn?: string;
   simklLoggedIn?: number;
   anilistLoggedIn?: AnilistUser;
   kitsuLoggedIn?: KitsuUser;
@@ -36,6 +38,7 @@ export class SettingsComponent implements OnInit {
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private simkl: SimklService,
+    private annict: AnnictService,
     public modal: NgbActiveModal,
   ) {
     this.settings.language.subscribe(lang => {
@@ -55,6 +58,9 @@ export class SettingsComponent implements OnInit {
     });
     this.kitsu.user.subscribe(user => {
       this.kitsuLoggedIn = user;
+    });
+    this.annict.user.subscribe(user => {
+      this.annictLoggedIn = user;
     });
     this.settings.onlyInList.subscribe(inList => {
       this.inlist = JSON.stringify(inList);
@@ -99,6 +105,7 @@ export class SettingsComponent implements OnInit {
   async traktLogoff() {
     this.trakt.logoff();
   }
+
   async simklConnect() {
     this.glob.busy();
     await this.simkl.login();
@@ -107,6 +114,16 @@ export class SettingsComponent implements OnInit {
 
   async simklLogoff() {
     this.simkl.logoff();
+  }
+
+  async annictConnect() {
+    this.glob.busy();
+    await this.annict.login();
+    this.glob.notbusy();
+  }
+
+  async annictLogoff() {
+    this.annict.logoff();
   }
 
   async anilistConnect() {

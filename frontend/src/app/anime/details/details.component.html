@@ -360,6 +360,16 @@
           />
         </div>
       </div>
+      <div class="row my-2" *ngIf="edit && anime && editExtension">
+        <div class="col-4 fw-bold text-end">Annict</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.annictId"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
       <div class="row" *ngIf="anime">
         <div class="col-4 fw-bold text-end">Duration</div>
         <div class="col-8">
@@ -527,6 +537,22 @@
                   [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId"
                   target="_blank"
                   >SIMKL</a
+                >
+              </div>
+            </div>
+            <div *ngIf="anime.my_extension?.annictId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('annict')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-annict></app-icon-annict>
+                <a
+                  class="ms-1"
+                  [href]="'https://annict.com/works/' + anime.my_extension!.annictId"
+                  target="_blank"
+                  >Annict</a
                 >
               </div>
             </div>
