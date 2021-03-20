@@ -540,11 +540,21 @@
                 >
               </div>
             </div>
-            <div *ngIf="anime.my_extension?.annictId">
-              <app-icon-annict></app-icon-annict>
-              <a class="ms-1" [href]="'https://annict.com/works/' + anime.my_extension!.annictId" target="_blank"
-                >Annict</a
-              >
+            <div *ngIf="anime.my_extension?.annictId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('annict')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-annict></app-icon-annict>
+                <a
+                  class="ms-1"
+                  [href]="'https://annict.com/works/' + anime.my_extension!.annictId"
+                  target="_blank"
+                  >Annict</a
+                >
+              </div>
             </div>
           </div>
         </div>

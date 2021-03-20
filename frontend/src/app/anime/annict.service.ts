@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -64,13 +65,13 @@ export class AnnictService {
 
   async getId(malId: number, title: string): Promise<number | undefined> {
     if (!malId || !title || !this.accessToken) return;
+    title = title.replace('!', '！').replace('?', '');
     const query = `
       query {
         searchWorks(titles: ["${title}","${title.replace(/\s/g, '')}"]) {
           nodes {
             annictId
             malAnimeId
-            title
           }
         }
       }
@@ -100,5 +101,32 @@ export class AnnictService {
 
   get user() {
     return this.userSubject.asObservable();
+  }
+
+  async getRating(id?: number): Promise<ExtRating | undefined> {
+    if (!id || !this.accessToken) return;
+    const query = `
+      query {
+        searchWorks(annictIds: [${id}]) {
+          nodes {
+            satisfactionRate
+          }
+        }
+      }
+    `;
+    const result = await fetch(this.graphqlUrl, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({ query, variables: {} }),
+    });
+    if (!result.ok) return;
+    const response = (await result.json()) as {
+      data: { searchWorks: { nodes: Array<{ satisfactionRate?: number }> } };
+    };
+    const rating = response.data?.searchWorks?.nodes[0]?.satisfactionRate;
+    return rating ? { nom: rating, norm: rating, unit: '%' } : undefined;
   }
 }

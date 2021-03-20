@@ -405,6 +405,11 @@ export class AnimeDetailsComponent implements OnInit {
         this.setRating('simkl', rating);
       });
     }
+    if (!this.getRating('annict')) {
+      this.annict.getRating(this.anime?.my_extension?.annictId).then(rating => {
+        this.setRating('annict', rating);
+      });
+    }
   }
 
   getRating(provider: string): { provider: string; rating: ExtRating } | undefined {
