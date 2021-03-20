@@ -12,6 +12,7 @@ import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
+import { AnnictService } from '../annict.service';
 import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 import { TraktComponent } from '../trakt/trakt.component';
@@ -43,6 +44,7 @@ export class AnimeDetailsComponent implements OnInit {
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private simkl: SimklService,
+    private annict: AnnictService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -75,14 +77,16 @@ export class AnimeDetailsComponent implements OnInit {
       !this.anime.my_extension.anilistId ||
       !this.anime.my_extension.simklId
     ) {
-      const [anilistId, kitsuId, simklId] = await Promise.all([
+      const [anilistId, kitsuId, simklId, annictId] = await Promise.all([
         this.anilist.getId(this.id, 'ANIME'),
         this.kitsu.getId(this.id, 'anime'),
         this.simkl.getId(this.id),
+        this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title),
       ]);
       this.anime.my_extension.anilistId = anilistId;
       this.anime.my_extension.kitsuId = kitsuId;
       this.anime.my_extension.simklId = simklId;
+      this.anime.my_extension.annictId = annictId;
       if (anime.my_extension) {
         await this.animeService.updateAnime(
           { malId: anime.id, kitsuId, simklId, anilistId },
@@ -93,6 +97,7 @@ export class AnimeDetailsComponent implements OnInit {
                 kitsuId,
                 anilistId,
                 simklId,
+                annictId,
               }),
             ),
           },

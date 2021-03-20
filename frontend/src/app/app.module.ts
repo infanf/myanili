@@ -31,6 +31,7 @@ import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
 import { IconStatusComponent } from './icon-status/icon-status.component';
 import { AnilistIconComponent } from './icon/anilist/anilist.component';
+import { AnnictIconComponent } from './icon/annict/annict.component';
 import { IconComponent } from './icon/icon.component';
 import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
 import { MalIconComponent } from './icon/mal/mal.component';
@@ -105,6 +106,7 @@ import { TimePipe } from './time.pipe';
     KitsuIconComponent,
     QuickaddComponent,
     SimklIconComponent,
+    AnnictIconComponent,
   ],
   imports: [
     BrowserModule,

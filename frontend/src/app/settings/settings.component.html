@@ -152,6 +152,24 @@
           </ng-template>
         </div>
       </div>
+      <div class="row my-3">
+        <div class="col-5">Annict</div>
+        <div class="col-7">
+          <ng-container *ngIf="annictLoggedIn; else annictConnectTemplate">
+            <app-icon-annict class="me-1"></app-icon-annict>
+            <a href="https://annict.com/@{{ annictLoggedIn }}" target="_blank">{{
+              annictLoggedIn
+            }}</a>
+            <app-icon class="cursor-pointer" name="x" size="20" (click)="annictLogoff()"></app-icon>
+          </ng-container>
+          <ng-template #annictConnectTemplate>
+            <button class="btn btn-sm btn-primary" (click)="annictConnect()">
+              <app-icon-annict></app-icon-annict>
+              Connect
+            </button>
+          </ng-template>
+        </div>
+      </div>
     </div>
   </div>
 </div>
