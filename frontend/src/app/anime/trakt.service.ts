@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -151,6 +152,27 @@ export class TraktService {
     });
   }
 
+  async getRating(show?: string, season = 1): Promise<ExtRating | undefined> {
+    if (!this.clientId || !show) return;
+    const url =
+      season === 1
+        ? `${this.baseUrl}shows/${show}/ratings`
+        : `${this.baseUrl}shows/${show}/seasons/${season}/ratings`;
+    const result = await fetch(url, {
+      headers: new Headers({
+        'trakt-api-version': '2',
+        'trakt-api-key': this.clientId,
+      }),
+    });
+    if (result.ok) {
+      const response = (await result.json()) as Ratings;
+      if (response.rating) {
+        return { nom: Math.round(response.rating * 10), norm: response.rating * 10, unit: '%' };
+      }
+    }
+    return;
+  }
+
   logoff() {
     this.clientId = '';
     this.accessToken = '';
@@ -171,6 +193,23 @@ interface Episode {
     tvdb: number;
     imdb: string;
     tmdb: number;
+  };
+}
+
+interface Ratings {
+  rating: number;
+  votes: number;
+  distribution: {
+    '1': number;
+    '2': number;
+    '3': number;
+    '4': number;
+    '5': number;
+    '6': number;
+    '7': number;
+    '8': number;
+    '9': number;
+    '10': number;
   };
 }
 

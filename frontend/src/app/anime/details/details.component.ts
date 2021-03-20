@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
-import { Picture } from '@models/components';
+import { ExtRating, Picture } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
@@ -31,6 +31,7 @@ export class AnimeDetailsComponent implements OnInit {
   editExtension?: AnimeExtension;
   traktUser?: string;
   activeTab = 1;
+  ratings: Array<{ provider: string; rating: ExtRating }> = [];
   @Input() inModal = false;
 
   constructor(
@@ -64,6 +65,7 @@ export class AnimeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     const anime = await this.animeService.getAnime(this.id);
+    if (anime.mean) this.setRating('mal', { nom: anime.mean, norm: anime.mean * 10 });
     this.anime = { ...anime };
     if (!this.anime.my_extension) {
       this.anime.my_extension = {
@@ -106,6 +108,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     this.glob.notbusy();
+    await this.getRatings();
   }
 
   async editSave() {
@@ -377,5 +380,47 @@ export class AnimeDetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.gallery.close();
+  }
+
+  async getRatings() {
+    if (!this.getRating('trakt')) {
+      this.trakt
+        .getRating(this.anime?.my_extension?.trakt, this.anime?.my_extension?.seasonNumber || 1)
+        .then(rating => {
+          this.setRating('trakt', rating);
+        });
+    }
+    if (!this.getRating('anilist')) {
+      this.anilist.getRating(this.anime?.my_extension?.anilistId).then(rating => {
+        this.setRating('anilist', rating);
+      });
+    }
+    if (!this.getRating('kitsu')) {
+      this.kitsu.getRating(Number(this.anime?.my_extension?.kitsuId?.kitsuId)).then(rating => {
+        this.setRating('kitsu', rating);
+      });
+    }
+    if (!this.getRating('simkl')) {
+      this.simkl.getRating(this.anime?.my_extension?.simklId).then(rating => {
+        this.setRating('simkl', rating);
+      });
+    }
+  }
+
+  getRating(provider: string): { provider: string; rating: ExtRating } | undefined {
+    return this.ratings.filter(rat => rat.provider === provider).pop();
+  }
+
+  setRating(provider: string, rating?: ExtRating) {
+    if (rating) {
+      let exists = false;
+      this.ratings.forEach(rat => {
+        if (rat.provider === provider) {
+          rat.rating = rating;
+          exists = true;
+        }
+      });
+      if (!exists) this.ratings.push({ provider, rating });
+    }
   }
 }
