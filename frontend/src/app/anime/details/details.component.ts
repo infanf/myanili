@@ -50,6 +50,7 @@ export class AnimeDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
+        this.ratings = [];
         this.id = newId;
         delete this.anime;
         this.busy = false;

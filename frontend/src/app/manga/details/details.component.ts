@@ -39,6 +39,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
+        this.ratings = [];
         this.id = newId;
         delete this.manga;
         this.glob.busy();
