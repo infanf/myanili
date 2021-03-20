@@ -92,7 +92,7 @@ export class AnimeDetailsComponent implements OnInit {
       this.anime.my_extension.annictId = annictId;
       if (anime.my_extension) {
         await this.animeService.updateAnime(
-          { malId: anime.id, kitsuId, simklId, anilistId },
+          { malId: anime.id, kitsuId, simklId, anilistId, annictId },
           {
             comments: Base64.encode(
               JSON.stringify({
@@ -199,6 +199,7 @@ export class AnimeDetailsComponent implements OnInit {
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
       },
       updateData,
     );
@@ -230,6 +231,7 @@ export class AnimeDetailsComponent implements OnInit {
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
       },
       { status: 'plan_to_watch' },
     );
@@ -247,6 +249,7 @@ export class AnimeDetailsComponent implements OnInit {
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
       },
       { status },
     );
@@ -264,6 +267,7 @@ export class AnimeDetailsComponent implements OnInit {
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
       },
       {
         status: 'completed',
@@ -302,6 +306,7 @@ export class AnimeDetailsComponent implements OnInit {
           anilistId: this.anime.my_extension?.anilistId,
           kitsuId: this.anime.my_extension?.kitsuId,
           simklId: this.anime.my_extension?.simklId,
+          annictId: this.anime.my_extension?.annictId,
         },
         data,
       ),
