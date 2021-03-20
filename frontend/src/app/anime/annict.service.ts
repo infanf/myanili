@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -25,6 +26,13 @@ export class AnnictService {
           localStorage.removeItem('annictAccessToken');
         });
     }
+  }
+
+  private getFetchHeader() {
+    return new Headers({
+      Authorization: `Bearer ${this.accessToken}`,
+      'Content-Type': 'application/json',
+    });
   }
 
   async login() {
@@ -116,10 +124,7 @@ export class AnnictService {
     `;
     const result = await fetch(this.graphqlUrl, {
       method: 'POST',
-      headers: new Headers({
-        Authorization: `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/json',
-      }),
+      headers: this.getFetchHeader(),
       body: JSON.stringify({ query, variables: {} }),
     });
     if (!result.ok) return;
@@ -129,4 +134,106 @@ export class AnnictService {
     const rating = response.data?.searchWorks?.nodes[0]?.satisfactionRate;
     return rating ? { nom: rating, norm: rating, unit: '%' } : undefined;
   }
+
+  async updateEntry(annictId?: number, data?: Partial<MyAnimeUpdate>) {
+    if (!annictId || !this.accessToken) return;
+    if (data?.num_watched_episodes) {
+      this.updateProgress(annictId, data?.num_watched_episodes);
+    }
+    if (data?.status) {
+      this.updateStatus(annictId, this.statusFromMal(data.status));
+    }
+  }
+
+  async updateStatus(annictId: number, status?: AnnictStatus) {
+    if (!this.accessToken || !status) return;
+    await fetch(`${this.baseUrl}me/statuses?work_id=${annictId}&kind=${status}`, {
+      method: 'POST',
+      headers: this.getFetchHeader(),
+    });
+  }
+
+  async updateProgress(annictId: number, episodeMin: number, episodeMax?: number) {
+    if (!this.accessToken) return;
+    const episodes = await this.getEpisodeIds(annictId, episodeMin, episodeMax);
+    for (const episode of episodes) {
+      fetch(`${this.baseUrl}me/records?episode_id=${episode}`, {
+        method: 'POST',
+        headers: this.getFetchHeader(),
+      });
+    }
+  }
+
+  async getEpisodeIds(
+    annictId: number,
+    episodeMin: number,
+    episodeMax?: number,
+  ): Promise<number[]> {
+    if (!this.accessToken) return [];
+    if (!episodeMax) episodeMax = episodeMin;
+    const episodes: number[] = [];
+    const perPage = 50;
+    if (Math.ceil(episodeMin / perPage) < Math.ceil(episodeMax / perPage)) {
+      const newMax = Math.ceil(episodeMin / perPage) * perPage;
+      episodes.push(...(await this.getEpisodeIds(annictId, episodeMin, newMax)));
+    }
+    const result = await fetch(
+      `${this.baseUrl}episodes?filter_work_id=${annictId}&per_page=${perPage}&page=${Math.ceil(
+        episodeMax / perPage,
+      )}&sort_sort_number=asc`,
+      { headers: this.getFetchHeader() },
+    );
+    if (result.ok) {
+      const response = (await result.json()) as {
+        episodes?: Array<{ id: number; number: number }>;
+      };
+      if (!response.episodes) return [];
+      const filtered = response.episodes.filter(
+        ep => ep.number <= (episodeMax || episodeMin) && ep.number >= episodeMin,
+      );
+      episodes.push(...filtered.map(ep => ep.id));
+    }
+    return episodes;
+  }
+
+  statusFromMal(malStatus?: WatchStatus): AnnictStatus | undefined {
+    switch (malStatus) {
+      case 'plan_to_watch':
+        return 'wanna_watch';
+      case 'dropped':
+        return 'stop_watching';
+      case 'completed':
+        return 'watched';
+      case 'on_hold':
+      case 'watching':
+        return malStatus;
+      default:
+        return undefined;
+    }
+  }
+
+  statusToMal(simklStatus?: AnnictStatus): WatchStatus | undefined {
+    switch (simklStatus) {
+      case 'wanna_watch':
+        return 'plan_to_watch';
+      case 'stop_watching':
+      case 'no_select':
+        return 'dropped';
+      case 'watched':
+        return 'completed';
+      case 'on_hold':
+      case 'watching':
+        return simklStatus;
+      default:
+        return undefined;
+    }
+  }
 }
+
+export type AnnictStatus =
+  | 'wanna_watch'
+  | 'watching'
+  | 'watched'
+  | 'on_hold'
+  | 'stop_watching'
+  | 'no_select';
