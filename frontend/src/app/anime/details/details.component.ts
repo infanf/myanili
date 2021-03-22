@@ -201,6 +201,10 @@ export class AnimeDetailsComponent implements OnInit {
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
+        trakt: {
+          id: this.anime.my_extension?.trakt,
+          season: this.anime.my_extension?.seasonNumber,
+        },
       },
       updateData,
     );
