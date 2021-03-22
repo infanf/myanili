@@ -21,6 +21,7 @@ import { MalService } from '../mal.service';
 
 import { AnnictService } from './annict.service';
 import { SimklService } from './simkl.service';
+import { TraktService } from './trakt.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,7 @@ export class AnimeService {
     private kitsu: KitsuService,
     private simkl: SimklService,
     private annict: AnnictService,
+    private trakt: TraktService,
   ) {}
 
   async list(status?: WatchStatus) {
@@ -84,6 +86,7 @@ export class AnimeService {
       kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
       simklId?: number;
       annictId?: number;
+      trakt?: { id?: string; season?: number };
     },
     data: Partial<MyAnimeUpdate>,
   ): Promise<MyAnimeStatus> {
@@ -121,6 +124,7 @@ export class AnimeService {
       })(),
       this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
       this.annict.updateEntry(ids.annictId, data),
+      this.trakt.updateEntry(ids.trakt, data),
     ]);
     return malResponse;
   }

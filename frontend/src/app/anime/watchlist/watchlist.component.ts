@@ -85,6 +85,10 @@ export class WatchlistComponent implements OnInit {
           kitsuId: anime.my_extension?.kitsuId,
           simklId: anime.my_extension?.simklId,
           annictId: anime.my_extension?.annictId,
+          trakt: {
+            id: anime.my_extension?.trakt,
+            season: anime.my_extension?.seasonNumber,
+          },
         },
         data,
       ),

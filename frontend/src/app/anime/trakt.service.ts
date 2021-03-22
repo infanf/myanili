@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MyAnimeUpdate } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -13,7 +13,7 @@ export class TraktService {
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
-  constructor(private http: HttpClient) {
+  constructor() {
     this.clientId = String(localStorage.getItem('traktClientId'));
     this.accessToken = String(localStorage.getItem('traktAccessToken'));
     this.refreshToken = String(localStorage.getItem('traktRefreshToken'));
@@ -62,94 +62,66 @@ export class TraktService {
     ) {
       return;
     }
-    return new Promise(r => {
-      const headers = {
-        Authorization: `Bearer ${this.accessToken}`,
-        'trakt-api-version': '2',
-        'trakt-api-key': this.clientId,
-      };
-      try {
-        this.http
-          .get<{ user?: { username?: string } }>(this.baseUrl + 'users/settings', { headers })
-          .subscribe(
-            result => {
-              if (result.user) {
-                r(result.user.username);
-              } else {
-                r(undefined);
-              }
-            },
-            error => {
-              console.log({ error });
-              r(undefined);
-            },
-          );
-      } catch (error) {
-        console.log({ error });
-        r(undefined);
-      }
-    });
+    const headers = {
+      Authorization: `Bearer ${this.accessToken}`,
+      'trakt-api-version': '2',
+      'trakt-api-key': this.clientId,
+    };
+    const result = await fetch(`${this.baseUrl}users/settings`, { headers });
+    if (result.ok) {
+      const response = (await result.json()) as { user?: { username?: string } };
+      if (response.user) return response.user.username;
+    }
+    return;
   }
 
   async search(q: string): Promise<Show[]> {
-    return new Promise((r, rj) => {
-      const headers = {
-        'trakt-api-version': '2',
-        'trakt-api-key': this.clientId,
-      };
-      this.http
-        .get<Show[]>(this.baseUrl + 'search/show?query=' + q, { headers })
-        .subscribe(r, e => {
-          r([]);
-        });
+    const headers = new Headers({
+      'trakt-api-version': '2',
+      'trakt-api-key': this.clientId,
     });
+    const result = await fetch(`${this.baseUrl}search/show?query=${q}`, { headers });
+    if (result.ok) {
+      return result.json() as Promise<Show[]>;
+    }
+    return [];
   }
 
   async scrobble(show: string, season: number, episodeno: number): Promise<boolean> {
-    return new Promise((r, rj) => {
-      const headers = {
-        Authorization: `Bearer ${this.accessToken}`,
-        'trakt-api-version': '2',
-        'trakt-api-key': this.clientId,
-      };
-
-      try {
-        const episodeUrl = `${this.baseUrl}shows/${show}/seasons/${season}/episodes/${episodeno}`;
-        this.http
-          .get<Episode>(episodeUrl, { headers })
-          .subscribe(result => {
-            if (result.ids.trakt) {
-              const episode = result;
-              this.http
-                .post<{ id: number; action: 'scrobble' }>(
-                  `${this.baseUrl}scrobble/stop`,
-                  {
-                    episode,
-                    progress: 100,
-                  },
-                  { headers },
-                )
-                .subscribe(
-                  scrobbleResult => {
-                    if (scrobbleResult.id && scrobbleResult.action) {
-                      r(true);
-                    }
-                    r(false);
-                  },
-                  error => {
-                    console.error(error.message);
-                    alert('Error scrobbling to trakt');
-                    r(false);
-                  },
-                );
-            } else {
-              r(false);
-            }
-          });
-      } catch (e) {
-        rj(e.message);
+    const headers = {
+      Authorization: `Bearer ${this.accessToken}`,
+      'trakt-api-version': '2',
+      'trakt-api-key': this.clientId,
+      'Content-Type': 'application/json',
+    };
+    const result = await fetch(
+      `${this.baseUrl}shows/${show}/seasons/${season}/episodes/${episodeno}`,
+      { headers },
+    );
+    if (result.ok) {
+      const episode = (await result.json()) as Episode;
+      if (episode.ids.trakt) {
+        const scrobbleResult = await fetch(`${this.baseUrl}scrobble/stop`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            episode,
+            progress: 100,
+          }),
+        });
+        if (scrobbleResult.ok) {
+          const scrobbleResponse = (await scrobbleResult.json()) as {
+            id: number;
+            action: 'scrobble';
+          };
+          if (scrobbleResponse.id && scrobbleResponse.action) {
+            return true;
+          }
+        }
       }
-    });
+    }
+
+    return false;
   }
 
   async getRating(show?: string, season = 1): Promise<ExtRating | undefined> {
@@ -171,6 +143,39 @@ export class TraktService {
       }
     }
     return;
+  }
+
+  async updateEntry(trakt?: { id?: string; season?: number }, data?: Partial<MyAnimeUpdate>) {
+    if (!trakt || !trakt.id || !this.accessToken) return;
+    // if (data?.num_watched_episodes) {
+    //   this.scrobble(trakt.id, trakt.season||1, data?.num_watched_episodes);
+    // }
+    if (data?.score) {
+      this.addRating(data.score, trakt.id, trakt.season);
+    }
+  }
+
+  async addRating(rating: number, slug?: string, number = 1) {
+    if (!this.clientId || !this.accessToken || !slug) return;
+    const headers = {
+      Authorization: `Bearer ${this.accessToken}`,
+      'trakt-api-version': '2',
+      'trakt-api-key': this.clientId,
+      'Content-Type': 'application/json',
+    };
+    const data = {
+      shows: [{ ids: { slug }, seasons: [{ number, rating }] }],
+    } as {
+      shows: Array<{
+        rating?: number;
+        ids: { slug: string };
+        seasons?: Array<{ number: number; rating: number }>;
+      }>;
+    };
+    if (number === 1) {
+      data.shows.push({ rating, ids: { slug } });
+    }
+    fetch(`${this.baseUrl}sync/ratings`, { method: 'POST', headers, body: JSON.stringify(data) });
   }
 
   logoff() {
