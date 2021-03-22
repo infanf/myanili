@@ -140,6 +140,9 @@ export class AnnictService {
     if (data?.status) {
       this.updateStatus(annictId, this.statusFromMal(data.status));
     }
+    if (data?.score) {
+      this.addRating(annictId, data.score);
+    }
   }
 
   async updateStatus(annictId: number, status?: AnnictStatus) {
@@ -159,6 +162,16 @@ export class AnnictService {
         headers: this.getFetchHeader(),
       });
     }
+  }
+
+  async addRating(annictId: number, rating: number) {
+    if (!this.accessToken || !rating) return;
+    const annictRating =
+      rating < 5 ? 'bad' : rating < 7 ? 'average' : rating < 9 ? 'good' : 'great';
+    fetch(
+      `${this.baseUrl}me/reviews?work_id=${annictId}&rating_overall_state=${annictRating}&body=-`,
+      { method: 'POST', headers: this.getFetchHeader() },
+    );
   }
 
   async getEpisodeIds(
