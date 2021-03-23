@@ -6,7 +6,10 @@
 
     <div class="card-body" *ngIf="getAnimes((day + today) % 7).length">
       <table class="table table-sm mb-0">
-        <tr *ngFor="let anime of getAnimes((day + today) % 7)">
+        <tr
+          *ngFor="let anime of getAnimes((day + today) % 7)"
+          [ngStyle]="{ opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1 }"
+        >
           <td>{{ anime.my_extension!.simulTime?.substr(0, 5) | time }}</td>
           <td>
             <app-streaming
@@ -16,10 +19,10 @@
             <span [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer entry">
               {{
                 (lang === 'en'
-                ? anime.alternative_titles?.en
-                : lang === 'jp'
-                ? anime.alternative_titles?.ja
-                : anime.title) || anime.title
+                  ? anime.alternative_titles?.en
+                  : lang === 'jp'
+                  ? anime.alternative_titles?.ja
+                  : anime.title) || anime.title
               }}
             </span>
           </td>
