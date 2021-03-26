@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
+import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -137,6 +138,23 @@ export class SimklService {
       }),
       body: JSON.stringify(ratingData),
     });
+  }
+
+  async getRating(id?: number): Promise<ExtRating | undefined> {
+    if (!this.clientId || !id) return;
+    const result = await fetch(`${this.baseUrl}ratings?simkl=${id}`, {
+      headers: new Headers({
+        'simkl-api-key': this.clientId,
+      }),
+    });
+    if (result.ok) {
+      const response = (await result.json()) as { simkl?: { rating: number; votes: number } };
+      if (response.simkl?.rating) {
+        const nom = response.simkl?.rating;
+        return { nom, norm: nom * 10, ratings: response.simkl.votes };
+      }
+    }
+    return;
   }
 
   logoff() {

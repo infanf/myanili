@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Anime } from '@models/anime';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
@@ -10,7 +10,7 @@ import { AnimeService } from '../anime.service';
   templateUrl: './season.component.html',
   styleUrls: ['./season.component.scss'],
 })
-export class SeasonComponent implements OnInit {
+export class SeasonComponent {
   animes: Array<Partial<Anime>> = [];
   year!: number;
   season!: number;
@@ -27,25 +27,28 @@ export class SeasonComponent implements OnInit {
       this.year = season.year;
       this.season = season.season;
       this.glob.busy();
+      if (await this.update(season.year, season.season)) {
+        this.glob.notbusy();
+      }
+    });
+    this.settings.language.subscribe(lang => (this.lang = lang));
+    this.settings.onlyInList.subscribe(async inList => {
+      this.onlyInList = inList;
+      this.glob.busy();
       await this.update();
       this.glob.notbusy();
     });
-    this.settings.language.subscribe(lang => (this.lang = lang));
-    this.settings.onlyInList.subscribe(inList => {
-      this.onlyInList = inList;
-      this.update();
-    });
   }
 
-  async ngOnInit() {}
-
-  async update() {
+  async update(year?: number, season?: number): Promise<boolean | undefined> {
     const animes = await this.animeService.season(this.year, this.season);
+    if (year && season && (year !== this.year || season !== this.season)) return;
     if (this.onlyInList) {
       this.animes = animes.filter(anime => anime.my_list_status);
     } else {
       this.animes = animes;
     }
+    return true;
   }
 
   async addToList(anime: Partial<Anime>) {
@@ -57,6 +60,7 @@ export class SeasonComponent implements OnInit {
         anilistId: anime.my_extension?.anilistId,
         kitsuId: anime.my_extension?.kitsuId,
         simklId: anime.my_extension?.simklId,
+        annictId: anime.my_extension?.annictId,
       },
       {
         status: 'plan_to_watch',

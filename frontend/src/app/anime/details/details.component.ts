@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
-import { Picture } from '@models/components';
+import { ExtRating, Picture } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
@@ -12,6 +12,7 @@ import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
+import { AnnictService } from '../annict.service';
 import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 import { TraktComponent } from '../trakt/trakt.component';
@@ -30,6 +31,7 @@ export class AnimeDetailsComponent implements OnInit {
   editExtension?: AnimeExtension;
   traktUser?: string;
   activeTab = 1;
+  ratings: Array<{ provider: string; rating: ExtRating }> = [];
   @Input() inModal = false;
 
   constructor(
@@ -43,10 +45,12 @@ export class AnimeDetailsComponent implements OnInit {
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private simkl: SimklService,
+    private annict: AnnictService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
+        this.ratings = [];
         this.id = newId;
         delete this.anime;
         this.busy = false;
@@ -62,6 +66,12 @@ export class AnimeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     const anime = await this.animeService.getAnime(this.id);
+    if (anime.mean)
+      this.setRating('mal', {
+        nom: anime.mean,
+        norm: anime.mean * 10,
+        ratings: anime.num_scoring_users,
+      });
     this.anime = { ...anime };
     if (!this.anime.my_extension) {
       this.anime.my_extension = {
@@ -73,19 +83,22 @@ export class AnimeDetailsComponent implements OnInit {
     if (
       !this.anime.my_extension.kitsuId ||
       !this.anime.my_extension.anilistId ||
-      !this.anime.my_extension.simklId
+      !this.anime.my_extension.simklId ||
+      !this.anime.my_extension.annictId
     ) {
-      const [anilistId, kitsuId, simklId] = await Promise.all([
+      const [anilistId, kitsuId, simklId, annictId] = await Promise.all([
         this.anilist.getId(this.id, 'ANIME'),
         this.kitsu.getId(this.id, 'anime'),
         this.simkl.getId(this.id),
+        this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title),
       ]);
       this.anime.my_extension.anilistId = anilistId;
       this.anime.my_extension.kitsuId = kitsuId;
       this.anime.my_extension.simklId = simklId;
+      this.anime.my_extension.annictId = annictId;
       if (anime.my_extension) {
         await this.animeService.updateAnime(
-          { malId: anime.id, kitsuId, simklId, anilistId },
+          { malId: anime.id, kitsuId, simklId, anilistId, annictId },
           {
             comments: Base64.encode(
               JSON.stringify({
@@ -93,6 +106,7 @@ export class AnimeDetailsComponent implements OnInit {
                 kitsuId,
                 anilistId,
                 simklId,
+                annictId,
               }),
             ),
           },
@@ -100,6 +114,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     this.glob.notbusy();
+    await this.getRatings();
   }
 
   async editSave() {
@@ -190,6 +205,11 @@ export class AnimeDetailsComponent implements OnInit {
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
+        trakt: {
+          id: this.anime.my_extension?.trakt,
+          season: this.anime.my_extension?.seasonNumber,
+        },
       },
       updateData,
     );
@@ -204,6 +224,14 @@ export class AnimeDetailsComponent implements OnInit {
     delete this.editExtension;
   }
 
+  enableKitsu() {
+    if (!this.editExtension) return false;
+    if (!this.editExtension.kitsuId) {
+      this.editExtension.kitsuId = { kitsuId: '' };
+    }
+    return true;
+  }
+
   async addAnime() {
     if (!this.anime) return;
     this.busy = true;
@@ -213,6 +241,7 @@ export class AnimeDetailsComponent implements OnInit {
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
       },
       { status: 'plan_to_watch' },
     );
@@ -230,6 +259,7 @@ export class AnimeDetailsComponent implements OnInit {
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
       },
       { status },
     );
@@ -247,6 +277,7 @@ export class AnimeDetailsComponent implements OnInit {
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
       },
       {
         status: 'completed',
@@ -285,6 +316,7 @@ export class AnimeDetailsComponent implements OnInit {
           anilistId: this.anime.my_extension?.anilistId,
           kitsuId: this.anime.my_extension?.kitsuId,
           simklId: this.anime.my_extension?.simklId,
+          annictId: this.anime.my_extension?.annictId,
         },
         data,
       ),
@@ -363,5 +395,63 @@ export class AnimeDetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.gallery.close();
+  }
+
+  async getRatings() {
+    if (!this.getRating('trakt')) {
+      this.trakt
+        .getRating(this.anime?.my_extension?.trakt, this.anime?.my_extension?.seasonNumber || 1)
+        .then(rating => {
+          this.setRating('trakt', rating);
+        });
+    }
+    if (!this.getRating('anilist')) {
+      this.anilist.getRating(this.anime?.my_extension?.anilistId).then(rating => {
+        this.setRating('anilist', rating);
+      });
+    }
+    if (!this.getRating('kitsu')) {
+      this.kitsu.getRating(Number(this.anime?.my_extension?.kitsuId?.kitsuId)).then(rating => {
+        this.setRating('kitsu', rating);
+      });
+    }
+    if (!this.getRating('simkl')) {
+      this.simkl.getRating(this.anime?.my_extension?.simklId).then(rating => {
+        this.setRating('simkl', rating);
+      });
+    }
+    if (!this.getRating('annict')) {
+      this.annict.getRating(this.anime?.my_extension?.annictId).then(rating => {
+        this.setRating('annict', rating);
+      });
+    }
+  }
+
+  get meanRating(): number {
+    if (this.anime?.my_list_status?.score) return this.anime?.my_list_status?.score * 10;
+    let count = 0;
+    const weighted = this.ratings.map(rating => {
+      count += rating.rating.ratings || 0;
+      return rating.rating.norm * (rating.rating.ratings || 0);
+    });
+    if (count) return weighted.reduce((prev, curr) => prev + curr) / count;
+    return 0;
+  }
+
+  getRating(provider: string): { provider: string; rating: ExtRating } | undefined {
+    return this.ratings.filter(rat => rat.provider === provider).pop();
+  }
+
+  setRating(provider: string, rating?: ExtRating) {
+    if (rating) {
+      let exists = false;
+      this.ratings.forEach(rat => {
+        if (rat.provider === provider) {
+          rat.rating = rating;
+          exists = true;
+        }
+      });
+      if (!exists) this.ratings.push({ provider, rating });
+    }
   }
 }

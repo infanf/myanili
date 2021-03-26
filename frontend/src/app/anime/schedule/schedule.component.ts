@@ -26,21 +26,25 @@ export class ScheduleComponent {
       this.year = season.year;
       this.season = season.season;
       this.glob.busy();
-      await this.update();
-      this.glob.notbusy();
+      if (await this.update(season.year, season.season)) {
+        this.glob.notbusy();
+      }
     });
     this.settings.language.subscribe(lang => {
       this.lang = lang;
     });
   }
 
-  async update() {
+  async update(year?: number, season?: number): Promise<boolean | undefined> {
     if (!this.year || (this.season !== 0 && !this.season)) return;
-    this.animes = (await this.animeService.season(this.year, this.season)).sort(
+    const allAnime = await this.animeService.season(this.year, this.season);
+    if (year && season && (year !== this.year || season !== this.season)) return;
+    this.animes = allAnime.sort(
       (a, b) =>
         Number(a.my_extension?.simulTime ? a.my_extension.simulTime.replace(/\D/g, '') : 0) -
         Number(b.my_extension?.simulTime ? b.my_extension.simulTime.replace(/\D/g, '') : 0),
     );
+    return true;
   }
 
   getAnimes(day: number): Array<Partial<Anime>> {

@@ -48,30 +48,22 @@
           class="progress"
           style="border-top-left-radius: 0; border-top-right-radius: 0; position: relative"
         >
-          <div
-            *ngIf="manga?.mean"
-            class="progress-bar"
-            role="progressbar"
-            [ngClass]="{
-              'bg-success': manga!.mean >= 8,
-              'bg-warning': manga!.mean < 7 && manga!.mean >= 5,
-              'bg-danger': manga!.mean < 5
-            }"
-            [ngStyle]="{ 'width.%': manga!.mean * 10 }"
-            aria-valuemin="0"
-            aria-valuemax="10"
-          >
-            {{ manga!.mean }}
-            <ng-container *ngIf="manga && manga!.my_list_status && manga!.my_list_status!.score"
-              >({{ manga!.my_list_status!.score }})</ng-container
-            >
-          </div>
-          <div
-            *ngIf="manga && manga!.my_list_status && manga!.my_list_status!.score"
-            class="progress-personal border-end"
-            [ngClass]="{ 'border-primary': manga!.my_list_status!.score > manga!.mean }"
-            [ngStyle]="{ 'width.%': manga!.my_list_status!.score * 10 }"
-          ></div>
+        <div
+          *ngIf="meanRating"
+          class="progress-bar"
+          role="progressbar"
+          [ngClass]="{
+            'bg-success': meanRating >= 80,
+            'bg-warning': meanRating < 70 && meanRating >= 50,
+            'bg-danger': meanRating < 50,
+            'progress-bar-striped': !manga?.my_list_status?.score
+          }"
+          [ngStyle]="{ 'width.%': meanRating }"
+          aria-valuemin="0"
+          aria-valuemax="10"
+        >
+          {{ meanRating / 10 | number: '1.0-2' }}
+        </div>
         </div>
       </ng-container>
       <div class="row mt-2" *ngIf="edit && editBackup">
@@ -398,29 +390,50 @@
         <div class="row" *ngIf="!edit">
           <div class="col-4 fw-bold text-end">Links</div>
           <div class="col-8">
-            <div>
-              <app-icon-mal class="text-primary"></app-icon-mal>
-              <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
-                >MyAnimeList</a
-              >
+            <div class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('mal')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-mal class="text-primary"></app-icon-mal>
+                <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
+                  >MyAnimeList</a
+                >
+              </div>
             </div>
-            <div *ngIf="manga.my_extension?.anilistId">
-              <app-icon-anilist></app-icon-anilist>
-              <a
-                class="ms-1"
-                [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
-                target="_blank"
-                >AniList</a
-              >
+            <div *ngIf="manga.my_extension?.anilistId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('anilist')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-anilist></app-icon-anilist>
+                <a
+                  class="ms-1"
+                  [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
+                  target="_blank"
+                  >AniList</a
+                >
+              </div>
             </div>
-            <div *ngIf="manga.my_extension?.kitsuId">
-              <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
-              <a
-                class="ms-1"
-                [href]="'https://kitsu.io/manga/' + manga.my_extension!.kitsuId!.kitsuId"
-                target="_blank"
-                >Kitsu</a
-              >
+            <div *ngIf="manga.my_extension?.kitsuId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('kitsu')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
+                <a
+                  class="ms-1"
+                  [href]="'https://kitsu.io/manga/' + manga.my_extension!.kitsuId!.kitsuId"
+                  target="_blank"
+                  >Kitsu</a
+                >
+              </div>
             </div>
           </div>
         </div>

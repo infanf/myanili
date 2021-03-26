@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Picture } from '@models/components';
+import { ExtRating, Picture } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
@@ -25,6 +25,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
   busy = false;
   editBackup?: Partial<MyMangaUpdate>;
   editExtension?: MangaExtension;
+  ratings: Array<{ provider: string; rating: ExtRating }> = [];
   activeTab = 1;
   constructor(
     private mangaService: MangaService,
@@ -38,6 +39,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
+        this.ratings = [];
         this.id = newId;
         delete this.manga;
         this.glob.busy();
@@ -48,6 +50,12 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const manga = await this.mangaService.getManga(this.id);
+    if (manga.mean)
+      this.setRating('mal', {
+        nom: manga.mean,
+        norm: manga.mean * 10,
+        ratings: manga.num_scoring_users,
+      });
     this.manga = { ...manga };
     if (!this.manga.my_extension) {
       this.manga.my_extension = {
@@ -83,6 +91,7 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       }
     }
     this.glob.notbusy();
+    await this.getRatings();
   }
 
   async editSave() {
@@ -315,6 +324,49 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       ],
     };
     this.gallery.load(prop);
+  }
+
+  async getRatings() {
+    if (!this.getRating('anilist')) {
+      this.anilist.getRating(this.manga?.my_extension?.anilistId, 'MANGA').then(rating => {
+        this.setRating('anilist', rating);
+      });
+    }
+    if (!this.getRating('kitsu')) {
+      this.kitsu
+        .getRating(Number(this.manga?.my_extension?.kitsuId?.kitsuId), 'manga')
+        .then(rating => {
+          this.setRating('kitsu', rating);
+        });
+    }
+  }
+
+  get meanRating(): number {
+    if (this.manga?.my_list_status?.score) return this.manga?.my_list_status?.score * 10;
+    let count = 0;
+    const weighted = this.ratings.map(rating => {
+      count += rating.rating.ratings || 0;
+      return rating.rating.norm * (rating.rating.ratings || 0);
+    });
+    if (count) return weighted.reduce((prev, curr) => prev + curr) / count;
+    return 0;
+  }
+
+  getRating(provider: string): { provider: string; rating: ExtRating } | undefined {
+    return this.ratings.filter(rat => rat.provider === provider).pop();
+  }
+
+  setRating(provider: string, rating?: ExtRating) {
+    if (rating) {
+      let exists = false;
+      this.ratings.forEach(rat => {
+        if (rat.provider === provider) {
+          rat.rating = rating;
+          exists = true;
+        }
+      });
+      if (!exists) this.ratings.push({ provider, rating });
+    }
   }
 
   changeOngoing() {

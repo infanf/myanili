@@ -60,6 +60,98 @@ interface EntryAttributes {
 
 export type KitsuEntryAttributes = EntryAttributes;
 
+interface Media {
+  id: number;
+  type: 'anime' | 'manga';
+  attributes: {
+    createdAt: Date;
+    updatedAt: Date;
+    slug: string;
+    synopsis: string;
+    coverImageTopOffset: number;
+    titles: {
+      en: string;
+      en_jp: string;
+      ja_jp: string;
+    };
+    canonicalTitle: string;
+    abbreviatedTitles: string[];
+    averageRating: number;
+    ratingFrequencies: {
+      [key: number]: number;
+    };
+    userCount: number;
+    favoritesCount: number;
+    startDate: Date;
+    endDate: Date;
+    popularityRank: number;
+    ratingRank: number;
+    ageRating: string;
+    ageRatingGuide: string;
+    subtype: 'TV';
+    status: 'finished';
+    tba: '';
+    posterImage: Image;
+    coverImage: Image;
+    episodeCount: number;
+    episodeLength: number;
+    youtubeVideoId: string;
+    showType: string;
+    nsfw: boolean;
+  };
+  relationships: {
+    genres: Link;
+    categories: Link;
+    castings: Link;
+    installments: Link;
+    mappings: Link;
+    reviews: Link;
+    mediaRelationships: Link;
+    episodes: Link;
+    streamingLinks: Link;
+    animeProductions: Link;
+    animeCharacters: Link;
+    animeStaff: Link;
+  };
+}
+
+interface Link {
+  links: {
+    self: string;
+    related: string;
+  };
+}
+
+interface Image {
+  tiny: string;
+  small: string;
+  medium: string;
+  large: string;
+  original: string;
+  meta: {
+    dimensions: {
+      tiny: {
+        width: null;
+        height: null;
+      };
+      small: {
+        width: null;
+        height: null;
+      };
+      medium: {
+        width: null;
+        height: null;
+      };
+      large: {
+        width: null;
+        height: null;
+      };
+    };
+  };
+}
+
+export type KitsuMedia = Media;
+
 interface User {
   id: string;
   attributes: {

@@ -1,0 +1,13 @@
+<circle-progress
+  [percent]="rating?.rating?.norm || 0"
+  [outerStrokeColor]="
+    (rating?.rating?.norm || 0) >= 80
+      ? '#4a8220'
+      : (rating?.rating?.norm || 0) >= 70
+      ? '#204a82'
+      : (rating?.rating?.norm || 0) >= 50
+      ? '#825820'
+      : '#82204a'
+  "
+></circle-progress>
+<span class="ms-1" *ngIf="rating?.rating?.norm">{{ rating?.rating?.nom || 0 | number: '1.0-2' }} {{rating?.rating?.unit}}</span>
