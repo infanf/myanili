@@ -18,12 +18,12 @@ class MalServiceProvider extends ServiceProvider
 
     private const baseUrl = "https://api.myanimelist.net/v2";
 
-    public static function getOauthProvider()
+    public static function getOauthProvider($https = false)
     {
-        function http_protocol()
+        function http_protocol($https)
         {
             $isSecure = false;
-            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            if ($https || isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
                 $isSecure = true;
             } elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
                 $isSecure = true;
@@ -33,7 +33,7 @@ class MalServiceProvider extends ServiceProvider
         $config = [
             'clientId' => env('MAL_CLIENT_ID'),
             'clientSecret' => env('MAL_CLIENT_SECRET'),
-            'redirectUri' => http_protocol() . '://' . $_SERVER['HTTP_HOST'] . '/auth',
+            'redirectUri' => http_protocol($https) . '://' . $_SERVER['HTTP_HOST'] . '/auth',
             'urlAuthorize' => 'https://myanimelist.net/v1/oauth2/authorize',
             'urlAccessToken' => 'https://myanimelist.net/v1/oauth2/token',
             'urlResourceOwnerDetails' => 'https://myanimelist.net/v1/oauth2/resource',
