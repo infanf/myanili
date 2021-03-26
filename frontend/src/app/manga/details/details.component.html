@@ -48,30 +48,22 @@
           class="progress"
           style="border-top-left-radius: 0; border-top-right-radius: 0; position: relative"
         >
-          <div
-            *ngIf="manga?.mean"
-            class="progress-bar"
-            role="progressbar"
-            [ngClass]="{
-              'bg-success': manga!.mean >= 8,
-              'bg-warning': manga!.mean < 7 && manga!.mean >= 5,
-              'bg-danger': manga!.mean < 5
-            }"
-            [ngStyle]="{ 'width.%': manga!.mean * 10 }"
-            aria-valuemin="0"
-            aria-valuemax="10"
-          >
-            {{ manga!.mean }}
-            <ng-container *ngIf="manga && manga!.my_list_status && manga!.my_list_status!.score"
-              >({{ manga!.my_list_status!.score }})</ng-container
-            >
-          </div>
-          <div
-            *ngIf="manga && manga!.my_list_status && manga!.my_list_status!.score"
-            class="progress-personal border-end"
-            [ngClass]="{ 'border-primary': manga!.my_list_status!.score > manga!.mean }"
-            [ngStyle]="{ 'width.%': manga!.my_list_status!.score * 10 }"
-          ></div>
+        <div
+          *ngIf="meanRating"
+          class="progress-bar"
+          role="progressbar"
+          [ngClass]="{
+            'bg-success': meanRating >= 80,
+            'bg-warning': meanRating < 70 && meanRating >= 50,
+            'bg-danger': meanRating < 50,
+            'progress-bar-striped': !manga?.my_list_status?.score
+          }"
+          [ngStyle]="{ 'width.%': meanRating }"
+          aria-valuemin="0"
+          aria-valuemax="10"
+        >
+          {{ meanRating / 10 | number: '1.0-2' }}
+        </div>
         </div>
       </ng-container>
       <div class="row mt-2" *ngIf="edit && editBackup">

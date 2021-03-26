@@ -139,7 +139,12 @@ export class TraktService {
     if (result.ok) {
       const response = (await result.json()) as Ratings;
       if (response.rating) {
-        return { nom: Math.round(response.rating * 10), norm: response.rating * 10, unit: '%' };
+        return {
+          nom: Math.round(response.rating * 10),
+          norm: response.rating * 10,
+          unit: '%',
+          ratings: response.votes,
+        };
       }
     }
     return;

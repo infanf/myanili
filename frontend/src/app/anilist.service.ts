@@ -258,12 +258,20 @@ export class AnilistService {
     if (!id) return;
     return new Promise(r => {
       this.client
-        .query<{ Media?: { averageScore: number } }>({
+        .query<{
+          Media?: { averageScore: number; stats: { scoreDistribution: Array<{ amount: number }> } };
+        }>({
           errorPolicy: 'ignore',
           query: gql`
             query Media($id: Int, $type: MediaType) {
               Media(id: $id, type: $type) {
                 averageScore
+                stats {
+                  scoreDistribution {
+                    amount
+                    score
+                  }
+                }
               }
             }
           `,
@@ -276,6 +284,9 @@ export class AnilistService {
                 nom: result.data.Media?.averageScore,
                 norm: result.data.Media?.averageScore,
                 unit: '%',
+                ratings: result.data.Media.stats.scoreDistribution
+                  .map(a => a.amount)
+                  .reduce((a, b) => a + b),
               });
             } else {
               r(undefined);

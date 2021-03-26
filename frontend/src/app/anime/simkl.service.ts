@@ -148,10 +148,10 @@ export class SimklService {
       }),
     });
     if (result.ok) {
-      const response = (await result.json()) as { simkl?: { rating: number } };
+      const response = (await result.json()) as { simkl?: { rating: number; votes: number } };
       if (response.simkl?.rating) {
         const nom = response.simkl?.rating;
-        return { nom, norm: nom * 10 };
+        return { nom, norm: nom * 10, ratings: response.simkl.votes };
       }
     }
     return;

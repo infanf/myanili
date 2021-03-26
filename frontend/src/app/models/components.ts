@@ -31,6 +31,7 @@ interface Rating {
   norm: number; // mapped to 100 point rating system
   nom: number; // rating system used by provider
   unit?: string; // rating unit used by provider (eg. %)
+  ratings?: number;
 }
 
 export type ExtRating = Rating;

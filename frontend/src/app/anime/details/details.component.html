@@ -48,29 +48,21 @@
           style="border-top-left-radius: 0; border-top-right-radius: 0; position: relative"
         >
           <div
-            *ngIf="anime?.mean"
+            *ngIf="meanRating"
             class="progress-bar"
             role="progressbar"
             [ngClass]="{
-              'bg-success': anime!.mean >= 8,
-              'bg-warning': anime!.mean < 7 && anime!.mean >= 5,
-              'bg-danger': anime!.mean < 5
+              'bg-success': meanRating >= 80,
+              'bg-warning': meanRating < 70 && meanRating >= 50,
+              'bg-danger': meanRating < 50,
+              'progress-bar-striped': !anime?.my_list_status?.score
             }"
-            [ngStyle]="{ 'width.%': anime!.mean * 10 }"
+            [ngStyle]="{ 'width.%': meanRating }"
             aria-valuemin="0"
             aria-valuemax="10"
           >
-            {{ anime!.mean }}
-            <ng-container *ngIf="anime && anime!.my_list_status && anime!.my_list_status!.score"
-              >({{ anime!.my_list_status!.score }})</ng-container
-            >
+            {{ meanRating / 10 | number: '1.0-2' }}
           </div>
-          <div
-            *ngIf="anime && anime!.my_list_status && anime!.my_list_status!.score"
-            class="progress-personal border-end"
-            [ngClass]="{ 'border-primary': anime!.my_list_status!.score > anime!.mean }"
-            [ngStyle]="{ 'width.%': anime!.my_list_status!.score * 10 }"
-          ></div>
         </div>
       </ng-container>
     </div>

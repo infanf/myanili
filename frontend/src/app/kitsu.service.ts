@@ -264,9 +264,16 @@ export class KitsuService {
     if (result.ok) {
       const response = (await result.json()) as KitsuResponse<KitsuMedia>;
       if (response.data.attributes.averageRating) {
+        let ratings = 0;
+        for (const rating in response.data.attributes.ratingFrequencies) {
+          if (response.data.attributes.ratingFrequencies[rating]) {
+            ratings += Number(response.data.attributes.ratingFrequencies[rating]) || 0;
+          }
+        }
         return {
-          nom: response.data.attributes.averageRating,
-          norm: response.data.attributes.averageRating,
+          nom: Number(response.data.attributes.averageRating),
+          norm: Number(response.data.attributes.averageRating),
+          ratings,
         };
       }
     }

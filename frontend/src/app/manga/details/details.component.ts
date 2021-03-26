@@ -50,7 +50,12 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const manga = await this.mangaService.getManga(this.id);
-    if (manga.mean) this.setRating('mal', { nom: manga.mean, norm: manga.mean * 10 });
+    if (manga.mean)
+      this.setRating('mal', {
+        nom: manga.mean,
+        norm: manga.mean * 10,
+        ratings: manga.num_scoring_users,
+      });
     this.manga = { ...manga };
     if (!this.manga.my_extension) {
       this.manga.my_extension = {
@@ -334,6 +339,17 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
           this.setRating('kitsu', rating);
         });
     }
+  }
+
+  get meanRating(): number {
+    if (this.manga?.my_list_status?.score) return this.manga?.my_list_status?.score * 10;
+    let count = 0;
+    const weighted = this.ratings.map(rating => {
+      count += rating.rating.ratings || 0;
+      return rating.rating.norm * (rating.rating.ratings || 0);
+    });
+    if (count) return weighted.reduce((prev, curr) => prev + curr) / count;
+    return 0;
   }
 
   getRating(provider: string): { provider: string; rating: ExtRating } | undefined {

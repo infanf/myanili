@@ -115,6 +115,7 @@ export class AnnictService {
         searchWorks(annictIds: [${id}]) {
           nodes {
             satisfactionRate
+            reviewsCount
           }
         }
       }
@@ -126,10 +127,17 @@ export class AnnictService {
     });
     if (!result.ok) return;
     const response = (await result.json()) as {
-      data: { searchWorks: { nodes: Array<{ satisfactionRate?: number }> } };
+      data: { searchWorks: { nodes: Array<{ satisfactionRate?: number; reviewsCount?: number }> } };
     };
     const rating = response.data?.searchWorks?.nodes[0]?.satisfactionRate;
-    return rating ? { nom: rating, norm: rating, unit: '%' } : undefined;
+    return rating
+      ? {
+          nom: rating,
+          norm: rating,
+          unit: '%',
+          ratings: response.data.searchWorks.nodes[0].reviewsCount,
+        }
+      : undefined;
   }
 
   async updateEntry(annictId?: number, data?: Partial<MyAnimeUpdate>) {

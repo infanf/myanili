@@ -66,7 +66,12 @@ export class AnimeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     const anime = await this.animeService.getAnime(this.id);
-    if (anime.mean) this.setRating('mal', { nom: anime.mean, norm: anime.mean * 10 });
+    if (anime.mean)
+      this.setRating('mal', {
+        nom: anime.mean,
+        norm: anime.mean * 10,
+        ratings: anime.num_scoring_users,
+      });
     this.anime = { ...anime };
     if (!this.anime.my_extension) {
       this.anime.my_extension = {
@@ -420,6 +425,17 @@ export class AnimeDetailsComponent implements OnInit {
         this.setRating('annict', rating);
       });
     }
+  }
+
+  get meanRating(): number {
+    if (this.anime?.my_list_status?.score) return this.anime?.my_list_status?.score * 10;
+    let count = 0;
+    const weighted = this.ratings.map(rating => {
+      count += rating.rating.ratings || 0;
+      return rating.rating.norm * (rating.rating.ratings || 0);
+    });
+    if (count) return weighted.reduce((prev, curr) => prev + curr) / count;
+    return 0;
   }
 
   getRating(provider: string): { provider: string; rating: ExtRating } | undefined {
