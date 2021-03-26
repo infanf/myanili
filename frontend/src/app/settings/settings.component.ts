@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AnilistUser } from '@models/anilist';
+import { MainService } from '@models/components';
 import { KitsuUser } from '@models/kitsu';
 import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -30,6 +31,7 @@ export class SettingsComponent implements OnInit {
   kitsuData?: { username: string; password: string };
   inlist = 'false';
   layout = 'list';
+  mainService: MainService = 'mal';
   constructor(
     private settings: SettingsService,
     private glob: GlobalService,
@@ -68,6 +70,9 @@ export class SettingsComponent implements OnInit {
     this.settings.layout.subscribe(layout => {
       this.layout = layout || 'list';
     });
+    this.settings.mainService.subscribe(service => {
+      this.mainService = service || 'mal';
+    });
   }
 
   async ngOnInit() {
@@ -84,6 +89,10 @@ export class SettingsComponent implements OnInit {
 
   changeLayout() {
     this.settings.setLayout(this.layout);
+  }
+
+  changeMainService() {
+    this.settings.setMainService(this.mainService);
   }
 
   async malLogoff() {

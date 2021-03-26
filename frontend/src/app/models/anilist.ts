@@ -36,3 +36,57 @@ export type AnilistMediaListStatus =
   | 'DROPPED'
   | 'PAUSED'
   | 'REPEATING';
+
+interface MediaListCollection {
+  lists: MediaListGroup[];
+}
+
+export type AnilistMediaListCollection = MediaListCollection;
+
+interface MediaListGroup {
+  entries: MediaList[];
+}
+
+export type AnilistMediaListGroup = MediaListGroup;
+
+interface MediaList {
+  status: AnilistMediaListStatus;
+  progress: number;
+  score: number;
+  notes: string;
+  media: Media;
+}
+
+interface Media {
+  id: number;
+  idMal?: number;
+  title: MediaTitle;
+  episodes: number;
+  coverImage: MediaCoverImage;
+  startDate: FuzzyDate;
+  endDate: FuzzyDate;
+  season: Season;
+  seasonYear: number;
+}
+
+interface MediaTitle {
+  romaji: string;
+  english: string;
+  native: string;
+  userPreferred: string;
+}
+
+interface MediaCoverImage {
+  extraLarge?: string;
+  large: string;
+  medium: string;
+  color: string;
+}
+
+interface FuzzyDate {
+  year: number;
+  month: number;
+  day: number;
+}
+
+type Season = 'WINTER' | 'SPRING' | 'SUMMER' | 'FALL';

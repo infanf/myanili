@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AnilistMediaListStatus, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
-import { WatchStatus } from '@models/anime';
+import {
+  AnilistMediaListCollection,
+  AnilistMediaListStatus,
+  AnilistSaveMedialistEntry,
+  AnilistUser,
+} from '@models/anilist';
+import { ListAnime, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { ReadStatus } from '@models/manga';
 import { Apollo, gql } from 'apollo-angular';
@@ -251,6 +256,120 @@ export class AnilistService {
           console.log({ error });
           r(undefined);
         });
+    });
+  }
+
+  async myList(malStatus?: WatchStatus, type: 'ANIME' | 'MANGA' = 'ANIME'): Promise<ListAnime[]> {
+    const status = this.statusFromMal(malStatus);
+    return new Promise(async r => {
+      this.user.subscribe(user => {
+        this.client
+          .query<{
+            MediaListCollection: AnilistMediaListCollection;
+          }>({
+            errorPolicy: 'ignore',
+            query: gql`
+              query MediaListCollection($status: MediaListStatus, $userId: Int, $type: MediaType) {
+                MediaListCollection(status: $status, userId: $userId, type: $type) {
+                  lists {
+                    entries {
+                      status
+                      progress
+                      score(format: POINT_10)
+                      notes
+                      media {
+                        id
+                        idMal
+                        title {
+                          romaji
+                          english
+                          native
+                          userPreferred
+                        }
+                        episodes
+                        coverImage {
+                          extraLarge
+                          large
+                          medium
+                          color
+                        }
+                        startDate {
+                          year
+                          month
+                          day
+                        }
+                        endDate {
+                          year
+                          month
+                          day
+                        }
+                        season
+                        seasonYear
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+            variables: {
+              userId: user?.id,
+              status,
+              type,
+            },
+          })
+          .subscribe(result => {
+            if (result.data) {
+              const malList: ListAnime[] = [];
+              for (const list of result.data.MediaListCollection.lists) {
+                for (const entry of list.entries) {
+                  const media = entry.media;
+                  malList.push({
+                    node: {
+                      id: media.idMal || 0,
+                      title: media.title.romaji,
+                      alternative_titles: {
+                        en: media.title.english,
+                        ja: media.title.native,
+                      },
+                      num_episodes: media.episodes,
+                      main_picture: media.coverImage
+                        ? {
+                            medium: media.coverImage.large,
+                            large: media.coverImage.extraLarge,
+                          }
+                        : undefined,
+                      start_date: undefined,
+                      end_date: undefined,
+                      start_season: {
+                        season: (media.season || '').toLowerCase() as
+                          | 'winter'
+                          | 'spring'
+                          | 'summer'
+                          | 'fall',
+                        year: media.seasonYear,
+                      },
+                    },
+                    list_status: {
+                      comments: entry.notes,
+                      is_rewatching: false,
+                      num_episodes_watched: entry.progress,
+                      num_times_rewatched: 0,
+                      priority: 0,
+                      rewatch_value: 0,
+                      score: 0,
+                      tags: [],
+                      updated_at: new Date(),
+                      finish_date: new Date(),
+                      start_date: undefined,
+                      status: this.statusToMal(entry.status, type) as WatchStatus,
+                    },
+                  });
+                }
+              }
+              r(malList);
+            }
+          });
+      });
     });
   }
 

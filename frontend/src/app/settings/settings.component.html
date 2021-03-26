@@ -45,6 +45,16 @@
     <div class="card-header">Account</div>
     <div class="card-body">
       <div class="row mb-3">
+        <div class="col-5">Main Data Source</div>
+        <div class="col-7">
+          <select class="form-control" (change)="changeMainService()" [(ngModel)]="mainService">
+            <option value="mal">MyAnimeList</option>
+            <option value="anilist" [disabled]="!anilistLoggedIn">AniList</option>
+            <option value="kitsu" [disabled]="!kitsuLoggedIn">Kitsu</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mb-3">
         <div class="col-5">MyAnimeList</div>
         <div class="col-7">
           <ng-container *ngIf="malLoggedIn">

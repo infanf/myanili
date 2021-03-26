@@ -35,3 +35,5 @@ interface Rating {
 }
 
 export type ExtRating = Rating;
+
+export type MainService = 'mal' | 'anilist' | 'kitsu';

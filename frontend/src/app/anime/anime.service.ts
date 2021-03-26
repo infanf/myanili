@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { AnilistService } from '../anilist.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
+import { SettingsService } from '../settings/settings.service';
 
 import { AnnictService } from './annict.service';
 import { SimklService } from './simkl.service';
@@ -27,18 +28,36 @@ import { TraktService } from './trakt.service';
   providedIn: 'root',
 })
 export class AnimeService {
+  private mainService: 'mal' | 'anilist' | 'kitsu' = 'mal';
+
   constructor(
-    private malService: MalService,
     private httpClient: HttpClient,
+    private mal: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private simkl: SimklService,
     private annict: AnnictService,
     private trakt: TraktService,
-  ) {}
+    private settings: SettingsService,
+  ) {
+    this.settings.mainService.subscribe(service => {
+      this.mainService = service;
+    });
+  }
 
   async list(status?: WatchStatus) {
-    const animes = await this.malService.myList(status);
+    let animes = [] as ListAnime[];
+    switch (this.mainService) {
+      case 'anilist':
+        animes = await this.anilist.myList(status);
+        break;
+      case 'kitsu':
+        // animes=await this.kitsu.myList(status)
+        break;
+      default:
+        animes = await this.mal.myList(status);
+        break;
+    }
     return animes.map(anime => {
       const comments = anime.list_status.comments;
       if (!comments) return anime;
@@ -52,7 +71,7 @@ export class AnimeService {
   }
   async season(year: number, season: number): Promise<Array<Partial<Anime>>> {
     const animes = (
-      await this.malService.get<Array<{ node: AnimeNode }>>(`/animes/season/${year}/${season}`)
+      await this.mal.get<Array<{ node: AnimeNode }>>(`/animes/season/${year}/${season}`)
     ).map(anime => anime.node);
     return animes.map(anime => {
       const comments = anime.my_list_status?.comments;
@@ -67,7 +86,7 @@ export class AnimeService {
   }
 
   async getAnime(id: number) {
-    const anime = await this.malService.get<Anime>('anime/' + id);
+    const anime = await this.mal.get<Anime>('anime/' + id);
     const comments = anime.my_list_status?.comments;
     if (!anime.related_manga.length) anime.related_manga = await this.getManga(id);
     if (!comments) return anime;
@@ -91,7 +110,7 @@ export class AnimeService {
     data: Partial<MyAnimeUpdate>,
   ): Promise<MyAnimeStatus> {
     const [malResponse] = await Promise.all([
-      this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),
+      this.mal.put<MyAnimeStatus>('anime/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
           if (!ids.anilistId) {
@@ -130,7 +149,7 @@ export class AnimeService {
   }
 
   async getManga(id: number): Promise<RelatedManga[]> {
-    const jikanime = await this.malService.getJikan('anime', id);
+    const jikanime = await this.mal.getJikan('anime', id);
     const mangas = [] as RelatedManga[];
     for (const key in jikanime.related) {
       if (!jikanime.related[key]) continue;
