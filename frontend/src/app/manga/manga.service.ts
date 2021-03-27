@@ -16,20 +16,38 @@ import { environment } from 'src/environments/environment';
 import { AnilistService } from '../anilist.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MangaService {
+  private mainService: 'mal' | 'anilist' | 'kitsu' = 'mal';
   constructor(
-    private malService: MalService,
+    private mal: MalService,
     private httpClient: HttpClient,
     private anilist: AnilistService,
     private kitsu: KitsuService,
-  ) {}
+    private settings: SettingsService,
+  ) {
+    this.settings.mainService.subscribe(service => {
+      this.mainService = service;
+    });
+  }
 
   async list(status?: ReadStatus) {
-    const mangas = await this.malService.myMangaList(status);
+    let mangas = [] as ListManga[];
+    switch (this.mainService) {
+      case 'anilist':
+        mangas = await this.anilist.myMangaList(status);
+        break;
+      case 'kitsu':
+        // manga=await this.kitsu.myMangaList(status)
+        break;
+      default:
+        mangas = await this.mal.myMangaList(status);
+        break;
+    }
     return mangas.map(manga => {
       const comments = manga.list_status.comments;
       if (!comments) return manga;
@@ -43,7 +61,7 @@ export class MangaService {
   }
 
   async getManga(id: number, extend = true) {
-    const manga = await this.malService.get<Manga>('manga/' + id);
+    const manga = await this.mal.get<Manga>('manga/' + id);
     const comments = manga.my_list_status?.comments;
     if (!manga.related_anime.length && extend) manga.related_anime = await this.getAnimes(id);
     if (!comments) return manga;
@@ -64,7 +82,7 @@ export class MangaService {
     data: Partial<MyMangaUpdate>,
   ): Promise<MyMangaStatus> {
     const [malResponse] = await Promise.all([
-      this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
+      this.mal.put<MyMangaStatus>('manga/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
           if (!ids.anilistId) {
@@ -101,7 +119,7 @@ export class MangaService {
   }
 
   async getAnimes(id: number): Promise<RelatedAnime[]> {
-    const jikmanga = await this.malService.getJikan('manga', id);
+    const jikmanga = await this.mal.getJikan('manga', id);
     const animes = [] as RelatedAnime[];
     for (const key in jikmanga.related) {
       if (!jikmanga.related[key]) continue;

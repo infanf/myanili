@@ -52,8 +52,11 @@ export type AnilistMediaListGroup = MediaListGroup;
 interface MediaList {
   status: AnilistMediaListStatus;
   progress: number;
+  progressVolumes?: number;
   score: number;
   notes: string;
+  updatedAt: number;
+  comletedAt?: FuzzyDate;
   media: Media;
 }
 
@@ -61,12 +64,36 @@ interface Media {
   id: number;
   idMal?: number;
   title: MediaTitle;
-  episodes: number;
+  staff: StaffConnection;
+  episodes?: number;
+  chapters?: number;
+  volumes?: number;
   coverImage: MediaCoverImage;
   startDate: FuzzyDate;
   endDate: FuzzyDate;
   season: Season;
   seasonYear: number;
+}
+
+interface StaffConnection {
+  edges: StaffEdge[];
+}
+
+interface StaffEdge {
+  node: Staff;
+  role: string;
+}
+
+interface Staff {
+  id: number;
+  name: StaffName;
+}
+
+interface StaffName {
+  first: string;
+  last: string;
+  full: string;
+  native: string;
 }
 
 interface MediaTitle {
