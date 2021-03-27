@@ -270,8 +270,12 @@ export class AnilistService {
           }>({
             errorPolicy: 'ignore',
             query: gql`
-              query MediaListCollection($status: MediaListStatus, $userId: Int, $type: MediaType) {
-                MediaListCollection(status: $status, userId: $userId, type: $type) {
+              query MediaListCollection(
+                $status: [MediaListStatus]
+                $userId: Int
+                $type: MediaType
+              ) {
+                MediaListCollection(status_in: $status, userId: $userId, type: $type) {
                   lists {
                     entries {
                       status
@@ -320,7 +324,7 @@ export class AnilistService {
             `,
             variables: {
               userId: user?.id,
-              status,
+              status: status === 'CURRENT' ? [status, 'REPEATING'] : [status],
               type: 'ANIME',
             },
           })
@@ -395,8 +399,12 @@ export class AnilistService {
           }>({
             errorPolicy: 'ignore',
             query: gql`
-              query MediaListCollection($status: MediaListStatus, $userId: Int, $type: MediaType) {
-                MediaListCollection(status: $status, userId: $userId, type: $type) {
+              query MediaListCollection(
+                $status: [MediaListStatus]
+                $userId: Int
+                $type: MediaType
+              ) {
+                MediaListCollection(status_in: $status, userId: $userId, type: $type) {
                   lists {
                     name
                     isCustomList
@@ -464,7 +472,7 @@ export class AnilistService {
             `,
             variables: {
               userId: user?.id,
-              status,
+              status: status === 'CURRENT' ? [status, 'REPEATING'] : [status],
               type: 'MANGA',
             },
           })

@@ -41,9 +41,9 @@ export class MangaService {
       case 'anilist':
         mangas = await this.anilist.myMangaList(status);
         break;
-      case 'kitsu':
-        // manga=await this.kitsu.myMangaList(status)
-        break;
+      // case 'kitsu':
+      //   mangas = await this.kitsu.myMangaList(status);
+      //   break;
       default:
         mangas = await this.mal.myMangaList(status);
         break;

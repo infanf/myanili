@@ -51,9 +51,9 @@ export class AnimeService {
       case 'anilist':
         animes = await this.anilist.myList(status);
         break;
-      case 'kitsu':
-        // animes=await this.kitsu.myList(status)
-        break;
+      // case 'kitsu':
+      //   animes = await this.kitsu.myList(status);
+      //   break;
       default:
         animes = await this.mal.myList(status);
         break;

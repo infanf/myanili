@@ -60,6 +60,8 @@ interface MediaList {
   media: Media;
 }
 
+export type AnilistMediaList = MediaList;
+
 interface Media {
   id: number;
   idMal?: number;
@@ -73,7 +75,10 @@ interface Media {
   endDate: FuzzyDate;
   season: Season;
   seasonYear: number;
+  mediaListEntry?: MediaList;
 }
+
+export type AnilistMedia = Media;
 
 interface StaffConnection {
   edges: StaffEdge[];

@@ -50,7 +50,7 @@
           <select class="form-control" (change)="changeMainService()" [(ngModel)]="mainService">
             <option value="mal">MyAnimeList</option>
             <option value="anilist" [disabled]="!anilistLoggedIn">AniList</option>
-            <option value="kitsu" [disabled]="!kitsuLoggedIn">Kitsu</option>
+            <option value="kitsu" [disabled]="!kitsuLoggedIn||true">Kitsu</option>
           </select>
         </div>
       </div>
