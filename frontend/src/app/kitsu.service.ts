@@ -271,9 +271,10 @@ export class KitsuService {
           }
         }
         return {
-          nom: Number(response.data.attributes.averageRating),
+          nom: Math.round(Number(response.data.attributes.averageRating) / 10) / 2,
           norm: Number(response.data.attributes.averageRating),
           ratings,
+          unit: '/ 5',
         };
       }
     }
