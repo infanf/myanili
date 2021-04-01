@@ -124,10 +124,63 @@ export class TraktService {
     return false;
   }
 
+  async searchMovie(q: string): Promise<Show[]> {
+    const headers = new Headers({
+      'trakt-api-version': '2',
+      'trakt-api-key': this.clientId,
+    });
+    const result = await fetch(`${this.baseUrl}search/movie?query=${q}`, { headers });
+    if (result.ok) {
+      const response = result.json() as Promise<Movie[]>;
+      return (await response).map(movie => ({
+        score: movie.score,
+        type: 'show',
+        show: movie.movie,
+      }));
+    }
+    return [];
+  }
+
+  async scrobbleMovie(movieId: string): Promise<boolean> {
+    const headers = {
+      Authorization: `Bearer ${this.accessToken}`,
+      'trakt-api-version': '2',
+      'trakt-api-key': this.clientId,
+      'Content-Type': 'application/json',
+    };
+    const result = await fetch(`${this.baseUrl}movies/${movieId}`, { headers });
+    if (result.ok) {
+      const movie = (await result.json()) as Movie['movie'];
+      if (movie.ids.trakt) {
+        const scrobbleResult = await fetch(`${this.baseUrl}scrobble/stop`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            movie,
+            progress: 100,
+          }),
+        });
+        if (scrobbleResult.ok) {
+          const scrobbleResponse = (await scrobbleResult.json()) as {
+            id: number;
+            action: 'scrobble';
+          };
+          if (scrobbleResponse.id && scrobbleResponse.action) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
   async getRating(show?: string, season = 1): Promise<ExtRating | undefined> {
     if (!this.clientId || !show) return;
     const url =
-      season === 1
+      season < 0
+        ? `${this.baseUrl}movies/${show}/ratings`
+        : season === 1
         ? `${this.baseUrl}shows/${show}/ratings`
         : `${this.baseUrl}shows/${show}/seasons/${season}/ratings`;
     const result = await fetch(url, {
@@ -227,6 +280,22 @@ export interface Show {
   type: 'show';
   score: number;
   show: {
+    title: string;
+    year: number;
+    ids: {
+      trakt: number;
+      slug: string;
+      tvdb: number;
+      imdb: string;
+      tmdb: number;
+    };
+  };
+}
+
+export interface Movie {
+  type: 'movie';
+  score: number;
+  movie: {
     title: string;
     year: number;
     ids: {

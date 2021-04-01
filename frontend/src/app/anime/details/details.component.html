@@ -504,6 +504,8 @@
                 <a
                   class="ms-1"
                   [href]="
+                  anime.media_type==='movie' ? 'https://trakt.tv/movies/' +
+                  anime.my_extension.trakt :
                     'https://trakt.tv/shows/' +
                     anime.my_extension.trakt +
                     '/seasons/' +
