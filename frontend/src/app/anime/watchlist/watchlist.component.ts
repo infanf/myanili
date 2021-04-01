@@ -121,11 +121,13 @@ export class WatchlistComponent implements OnInit {
       this.trakt.user.subscribe(async traktUser => {
         if (!traktUser || !anime.my_extension?.trakt) return r(false);
         r(
-          await this.trakt.scrobble(
-            anime.my_extension.trakt,
-            anime.my_extension.seasonNumber || 1,
-            episode + (anime.my_extension.episodeCorOffset || 0),
-          ),
+          anime.media_type === 'movie'
+            ? await this.trakt.scrobbleMovie(anime.my_extension.trakt)
+            : await this.trakt.scrobble(
+                anime.my_extension.trakt,
+                anime.my_extension.seasonNumber || 1,
+                episode + (anime.my_extension.episodeCorOffset || 0),
+              ),
         );
       });
     });

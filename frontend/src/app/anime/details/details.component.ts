@@ -66,12 +66,13 @@ export class AnimeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     const anime = await this.animeService.getAnime(this.id);
-    if (anime.mean)
+    if (anime.mean) {
       this.setRating('mal', {
         nom: anime.mean,
         norm: anime.mean * 10,
         ratings: anime.num_scoring_users,
       });
+    }
     this.anime = { ...anime };
     if (!this.anime.my_extension) {
       this.anime.my_extension = {
@@ -352,13 +353,15 @@ export class AnimeDetailsComponent implements OnInit {
       if (!this.anime) return r(false);
       if (!this.traktUser || !this.anime.my_extension?.trakt) return r(false);
       r(
-        await this.trakt.scrobble(
-          this.anime.my_extension.trakt,
-          this.anime.my_extension.seasonNumber || 1,
-          (this.anime.my_list_status?.num_episodes_watched || 0) +
-            1 +
-            (this.anime.my_extension.episodeCorOffset || 0),
-        ),
+        this.anime.media_type === 'movie'
+          ? await this.trakt.scrobbleMovie(this.anime.my_extension.trakt)
+          : await this.trakt.scrobble(
+              this.anime.my_extension.trakt,
+              this.anime.my_extension.seasonNumber || 1,
+              (this.anime.my_list_status?.num_episodes_watched || 0) +
+                1 +
+                (this.anime.my_extension.episodeCorOffset || 0),
+            ),
       );
     });
   }
@@ -366,6 +369,7 @@ export class AnimeDetailsComponent implements OnInit {
   async findTrakt() {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(TraktComponent);
+    modal.componentInstance.isMovie = this.anime.media_type === 'movie';
     modal.componentInstance.title = this.anime.my_extension?.series || this.anime.title;
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.trakt = String(value);
@@ -400,7 +404,10 @@ export class AnimeDetailsComponent implements OnInit {
   async getRatings() {
     if (!this.getRating('trakt')) {
       this.trakt
-        .getRating(this.anime?.my_extension?.trakt, this.anime?.my_extension?.seasonNumber || 1)
+        .getRating(
+          this.anime?.my_extension?.trakt,
+          this.anime?.media_type === 'movie' ? -1 : this.anime?.my_extension?.seasonNumber || 1,
+        )
         .then(rating => {
           this.setRating('trakt', rating);
         });
