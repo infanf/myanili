@@ -126,6 +126,7 @@ export interface AnimeNode {
   start_date?: Date;
   end_date?: Date;
   my_list_status?: MyAnimeStatus;
+  media_type?: AnimeType;
   alternative_titles?: {
     synonyms?: string[];
     en?: string;

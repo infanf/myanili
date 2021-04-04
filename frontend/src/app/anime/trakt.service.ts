@@ -223,17 +223,30 @@ export class TraktService {
     };
     const data = {
       shows: [{ ids: { slug }, seasons: [{ number, rating }] }],
+      movies: [],
     } as {
       shows: Array<{
         rating?: number;
         ids: { slug: string };
         seasons?: Array<{ number: number; rating: number }>;
       }>;
+      movies: Array<{
+        rating?: number;
+        ids: { slug: string };
+      }>;
     };
     if (number === 1) {
       data.shows.push({ rating, ids: { slug } });
     }
-    fetch(`${this.baseUrl}sync/ratings`, { method: 'POST', headers, body: JSON.stringify(data) });
+    if (number < 0) {
+      data.shows = [];
+      data.movies.push({ rating, ids: { slug } });
+    }
+    fetch(`${this.baseUrl}sync/ratings`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(data),
+    });
   }
 
   logoff() {

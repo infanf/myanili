@@ -209,7 +209,7 @@ export class AnimeDetailsComponent implements OnInit {
         annictId: this.anime.my_extension?.annictId,
         trakt: {
           id: this.anime.my_extension?.trakt,
-          season: this.anime.my_extension?.seasonNumber,
+          season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
         },
       },
       updateData,

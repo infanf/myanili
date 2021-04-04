@@ -65,7 +65,7 @@ class MalServiceProvider extends ServiceProvider
     public static function getMyList($status = null)
     {
         $params = [
-            "fields" => "num_episodes,start_season,start_date,end_date,alternative_titles,list_status{comments}",
+            "fields" => "num_episodes,start_season,start_date,end_date,alternative_titles,media_type,list_status{comments}",
             "sort" => "anime_start_date",
             "limit" => 1000,
             "nsfw" => 1,
