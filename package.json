@@ -1,10 +1,10 @@
 {
   "name": "myanili",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "docker pull webdevops/php-apache-dev:7.4 && docker-compose build",
+    "build": "docker pull webdevops/php-apache-dev:8.0 && docker-compose build",
     "dev:build": "npm run build && npm run dev",
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
@@ -22,6 +22,6 @@
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
     "tslint": "^6.1.3",
-    "typescript": "~4.1.0"
+    "typescript": "^4.1.5"
   }
 }

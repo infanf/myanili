@@ -85,11 +85,11 @@
   .modal-content {
     background-color: $background-color;
   }
-  
+
   .text-dark,
   .table,
   .table-hover > tbody > tr:hover,
-  .table-striped > tbody > tr:nth-of-type(odd) {
+  .table-striped > tbody > tr:nth-of-type(odd):not(.text-green) {
     color: $text-color !important;
   }
 }

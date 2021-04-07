@@ -10,11 +10,16 @@ import { Show, TraktService } from '../trakt.service';
 })
 export class TraktComponent implements OnInit {
   @Input() title?: string;
+  @Input() isMovie = false;
   shows: Show[] = [];
 
   constructor(public modal: NgbActiveModal, private trakt: TraktService) {}
 
   async ngOnInit() {
-    if (this.title) this.shows = await this.trakt.search(this.title);
+    if (this.title) {
+      this.shows = this.isMovie
+        ? await this.trakt.searchMovie(this.title)
+        : await this.trakt.search(this.title);
+    }
   }
 }
