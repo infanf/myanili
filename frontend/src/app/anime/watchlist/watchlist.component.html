@@ -31,7 +31,10 @@
           </td>
           <td>
             <circle-progress
-              *ngIf="anime.list_status.status === 'watching'"
+              *ngIf="
+                anime.node.num_episodes !== 1 &&
+                (anime.list_status.status === 'watching' || anime.list_status.is_rewatching)
+              "
               [percent]="
                 anime.node.num_episodes
                   ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
@@ -40,15 +43,17 @@
             ></circle-progress>
           </td>
           <td style="white-space: nowrap">
-            {{
-              anime.my_extension?.seasonNumber === 0
-                ? anime.my_extension?.seasonNumber
-                : anime.my_extension?.seasonNumber || 1
-            }}x{{
-              anime.list_status.num_episodes_watched +
-                (anime.my_extension?.episodeCorOffset || 0) +
-                (isSeen(anime) ? 0 : 1)
-            }}
+            <ng-container *ngIf="anime.node.media_type !== 'movie'">
+              {{
+                anime.my_extension?.seasonNumber === 0
+                  ? anime.my_extension?.seasonNumber
+                  : anime.my_extension?.seasonNumber || 1
+              }}x{{
+                anime.list_status.num_episodes_watched +
+                  (anime.my_extension?.episodeCorOffset || 0) +
+                  (isSeen(anime) ? 0 : 1)
+              }}
+            </ng-container>
           </td>
           <td>
             <app-streaming
