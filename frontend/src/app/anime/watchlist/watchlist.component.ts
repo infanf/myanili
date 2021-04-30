@@ -70,6 +70,10 @@ export class WatchlistComponent implements OnInit {
     let completed = false;
     if (currentEpisode + 1 === anime.node.num_episodes) {
       data.status = 'completed';
+      data.is_rewatching = false;
+      if (anime.list_status.is_rewatching) {
+        data.num_times_rewatched = anime.list_status.num_times_rewatched + 1 || 1;
+      }
       completed = true;
       if (!anime.list_status?.score) {
         const myScore = Math.round(Number(prompt('Your score (1-10)?')));
@@ -99,17 +103,29 @@ export class WatchlistComponent implements OnInit {
       ),
     ]);
     if (completed) {
+      animeStatus.is_rewatching = false;
       this.glob.busy();
       const sequels = fullAnime.related_anime.filter(related => related.relation_type === 'sequel');
       if (sequels.length) {
-        const sequel = sequels[0];
-        const startSequel = confirm(`Start watching sequel "${sequel.node.title}"?`);
-        if (startSequel) {
-          await this.animeService.updateAnime({ malId: sequel.node.id }, { status: 'watching' });
-          this.ngOnInit();
+        const sequel = await this.animeService.getAnime(sequels[0].node.id);
+        if (sequel.my_list_status?.status === 'completed') {
+          const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
+          if (startSequel) {
+            await this.animeService.updateAnime(
+              { malId: sequel.id },
+              { status: 'completed', is_rewatching: true, num_watched_episodes: 0 },
+            );
+          }
+        } else {
+          const startSequel = confirm(`Start watching sequel "${sequel.title}"?`);
+          if (startSequel) {
+            await this.animeService.updateAnime({ malId: sequel.id }, { status: 'watching' });
+          }
         }
+        this.ngOnInit();
       }
     }
+    anime.list_status.is_rewatching = animeStatus.is_rewatching;
     anime.list_status.num_episodes_watched = animeStatus.num_episodes_watched;
     anime.list_status.updated_at = animeStatus.updated_at;
     anime.busy = false;
