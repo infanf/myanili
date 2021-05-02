@@ -63,7 +63,7 @@ export class MalService {
 
   async checkLogin() {
     const response = await this.get<UserResponse>('me');
-    if ('name' in response) {
+    if (response && 'name' in response) {
       this.isLoggedIn.next(response.name);
       localStorage.setItem('malUser', JSON.stringify(response));
       this.malUser.next(response);

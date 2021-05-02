@@ -46,7 +46,7 @@
           >
         </td>
         <td style="white-space: nowrap">
-          {{ anime.node.start_season?.year }}
+          {{ anime.node.start_season?.year || anime.node.start_date }}
           <app-icon
             class="d-sm-none"
             name="{{ anime.node.start_season?.season | mal: 'seasonicon' }}"

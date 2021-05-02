@@ -43,6 +43,7 @@ class MalServiceProvider extends ServiceProvider
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi");
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_COOKIE['MAL_ACCESS_TOKEN']}"]);
         return curl_exec($ch);
     }
@@ -54,6 +55,7 @@ class MalServiceProvider extends ServiceProvider
         }
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi");
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_COOKIE['MAL_ACCESS_TOKEN']}"]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
