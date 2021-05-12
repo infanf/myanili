@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnilistService } from 'src/app/anilist.service';
-import { AnimeService } from 'src/app/anime/anime.service';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
-import { MangaService } from 'src/app/manga/manga.service';
 
 @Component({
   selector: 'app-navbar-quickadd',
@@ -13,8 +11,6 @@ import { MangaService } from 'src/app/manga/manga.service';
 })
 export class QuickaddComponent {
   constructor(
-    private anime: AnimeService,
-    private manga: MangaService,
     private _router: Router,
     private glob: GlobalService,
     private kitsu: KitsuService,
@@ -43,16 +39,8 @@ export class QuickaddComponent {
     const id = Number(idStr);
     if (!all || !id) return;
     if (type === 'anime') {
-      const anime = await this.anime.getAnime(id);
-      if (!anime.my_list_status) {
-        await this.anime.updateAnime({ malId: id }, { status: 'plan_to_watch' });
-      }
       this._router.navigate(['anime', 'details', id]);
     } else if (type === 'manga') {
-      const manga = await this.manga.getManga(id);
-      if (!manga.my_list_status) {
-        await this.manga.updateManga({ malId: id }, { status: 'plan_to_read' });
-      }
       this._router.navigate(['manga', 'details', id]);
     }
   }
@@ -67,18 +55,10 @@ export class QuickaddComponent {
     if (type === 'anime') {
       const malId = await this.anilist.getMalId(id, 'ANIME');
       if (!malId) return;
-      const anime = await this.anime.getAnime(malId);
-      if (!anime.my_list_status) {
-        await this.anime.updateAnime({ malId, anilistId: id }, { status: 'plan_to_watch' });
-      }
       this._router.navigate(['anime', 'details', malId]);
     } else if (type === 'manga') {
       const malId = await this.anilist.getMalId(id, 'MANGA');
       if (!malId) return;
-      const manga = await this.manga.getManga(malId);
-      if (!manga.my_list_status) {
-        await this.manga.updateManga({ malId, anilistId: id }, { status: 'plan_to_read' });
-      }
       this._router.navigate(['manga', 'details', malId]);
     }
   }
@@ -99,16 +79,8 @@ export class QuickaddComponent {
     const malId = await this.kitsu.getExternalId(id, type, 'myanimelist');
     if (!malId) return;
     if (type === 'anime') {
-      const anime = await this.anime.getAnime(malId);
-      if (!anime.my_list_status) {
-        await this.anime.updateAnime({ malId }, { status: 'plan_to_watch' });
-      }
       this._router.navigate(['anime', 'details', malId]);
     } else if (type === 'manga') {
-      const manga = await this.manga.getManga(malId);
-      if (!manga.my_list_status) {
-        await this.manga.updateManga({ malId }, { status: 'plan_to_read' });
-      }
       this._router.navigate(['manga', 'details', malId]);
     }
   }

@@ -69,7 +69,7 @@ export class PlatformPipe implements PipeTransform {
     {
       id: 'book',
       name: 'Print',
-      urlprefix: 'https://amazon.de/dp/',
+      urlprefix: 'https://amazon.de/gp/bookseries/',
     },
     {
       id: '',
