@@ -81,6 +81,7 @@ export class WatchlistComponent implements OnInit {
       }
     }
     const fullAnime = await this.animeService.getAnime(anime.node.id);
+    if (!fullAnime) return;
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
         {
@@ -108,6 +109,7 @@ export class WatchlistComponent implements OnInit {
       const sequels = fullAnime.related_anime.filter(related => related.relation_type === 'sequel');
       if (sequels.length) {
         const sequel = await this.animeService.getAnime(sequels[0].node.id);
+        if (!sequel) return;
         if (sequel.my_list_status?.status === 'completed') {
           const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
           if (startSequel) {

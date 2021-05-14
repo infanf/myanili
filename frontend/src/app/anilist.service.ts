@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import {
+  AnilistMedia,
   AnilistMediaListCollection,
   AnilistMediaListStatus,
+  AnilistMediaStatus,
   AnilistSaveMedialistEntry,
   AnilistUser,
 } from '@models/anilist';
-import { ListAnime, WatchStatus } from '@models/anime';
+import { Anime, AnimeStatus, ListAnime, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
-import { ListManga, ReadStatus } from '@models/manga';
+import { ListManga, MangaStatus, ReadStatus } from '@models/manga';
 import { Apollo, gql } from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -259,6 +261,193 @@ export class AnilistService {
     });
   }
 
+  async getAnime(id: number) {
+    return this.get<Anime>(id, 'ANIME');
+  }
+
+  async get<T>(id: number, type: 'ANIME' | 'MANGA'): Promise<T | undefined> {
+    const requestResult = await new Promise<T | undefined>(r => {
+      this.client
+        .query<{ Media?: AnilistMedia }>({
+          errorPolicy: 'ignore',
+          query: gql`
+            query media($id: Int, $type: MediaType, $isAdult: Boolean) {
+              Media(id: $id, type: $type, isAdult: $isAdult) {
+                id
+                title {
+                  userPreferred
+                  romaji
+                  english
+                  native
+                }
+                coverImage {
+                  extraLarge
+                  large
+                }
+                startDate {
+                  year
+                  month
+                  day
+                }
+                endDate {
+                  year
+                  month
+                  day
+                }
+                description
+                season
+                seasonYear
+                type
+                format
+                status(version: 2)
+                episodes
+                duration
+                chapters
+                volumes
+                genres
+                synonyms
+                source(version: 2)
+                meanScore
+                popularity
+                favourites
+                countryOfOrigin
+                studios {
+                  edges {
+                    isMain
+                    node {
+                      id
+                      name
+                    }
+                  }
+                }
+                rankings {
+                  id
+                  rank
+                  type
+                  format
+                  year
+                  season
+                  allTime
+                  context
+                }
+                tags {
+                  id
+                  name
+                  description
+                  rank
+                  isMediaSpoiler
+                  isGeneralSpoiler
+                }
+                mediaListEntry {
+                  id
+                  status
+                  score
+                  repeat
+                  progress
+                  progressVolumes
+                  priority
+                  notes
+                  updatedAt
+                  createdAt
+                }
+                stats {
+                  statusDistribution {
+                    status
+                    amount
+                  }
+                  scoreDistribution {
+                    score
+                    amount
+                  }
+                }
+              }
+            }
+          `,
+          variables: { id, type },
+        })
+        .subscribe(
+          result => {
+            const alAnime = result.data.Media;
+            if (!alAnime) return r(undefined);
+            const malAnime: Anime = {
+              id: alAnime.id,
+              id_mal: alAnime.idMal,
+              title: alAnime.title.romaji,
+              alternative_titles: {
+                en: alAnime.title.english,
+                ja: alAnime.title.native,
+                synonyms: alAnime.synonyms,
+              },
+              average_episode_duration: alAnime.duration,
+              genres: alAnime.genres.map(genre => ({ id: 0, name: genre })),
+              mean: alAnime.meanScore / 10,
+              source: alAnime.source,
+              main_picture: {
+                medium: alAnime.coverImage.large,
+                large: alAnime.coverImage.extraLarge,
+              },
+              synopsis: alAnime.description,
+              pictures: [],
+              related_anime: [],
+              related_manga: [],
+              recommendations: [],
+              studios: [],
+              opening_themes: [],
+              ending_themes: [],
+              num_episodes: alAnime.episodes || 0,
+              num_list_users: alAnime.popularity,
+              num_scoring_users: 0,
+              created_at: alAnime.mediaListEntry?.updatedAt
+                ? new Date(alAnime.mediaListEntry?.updatedAt * 1000)
+                : new Date(),
+              updated_at: alAnime.mediaListEntry?.updatedAt
+                ? new Date(alAnime.mediaListEntry?.updatedAt * 1000)
+                : new Date(),
+              media_type: 'tv',
+              status: this.mediaStatusToMal(alAnime.status) as AnimeStatus,
+              my_list_status: alAnime.mediaListEntry
+                ? // ? type === 'ANIME'
+                  {
+                    status: this.statusToMal(alAnime.mediaListEntry.status) as WatchStatus,
+                    comments: alAnime.mediaListEntry.notes,
+                    is_rewatching: alAnime.mediaListEntry.status === 'REPEATING',
+                    score: alAnime.mediaListEntry.score,
+                    num_episodes_watched: alAnime.mediaListEntry.progress,
+                    num_times_rewatched: alAnime.mediaListEntry.repeat,
+                    priority: 0,
+                    rewatch_value: 0,
+                    tags: [],
+                    updated_at: alAnime.mediaListEntry?.updatedAt
+                      ? new Date(alAnime.mediaListEntry?.updatedAt * 1000)
+                      : new Date(),
+                  }
+                : // : {
+                  //     comments: alAnime.mediaListEntry.notes,
+                  //     is_rereading: alAnime.mediaListEntry.status === 'REPEATING',
+                  //     score: alAnime.mediaListEntry.score,
+                  //     num_chapters_read: alAnime.mediaListEntry.progress,
+                  //     num_volumes_read: alAnime.mediaListEntry.progressVolumes||0,
+                  //     num_times_reread: alAnime.mediaListEntry.repeat,
+                  //     priority: 0,
+                  //     reread_value: 0,
+                  //     tags: '',
+                  //     updated_at: alAnime.mediaListEntry?.updatedAt
+                  //       ? new Date(alAnime.mediaListEntry?.updatedAt * 1000)
+                  //       : new Date(),
+                  //   }
+                  undefined,
+            };
+            r((malAnime as unknown) as T);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
+    });
+    return requestResult;
+  }
+
   async myList(malStatus?: WatchStatus): Promise<ListAnime[]> {
     const status = this.statusFromMal(malStatus);
     return new Promise(async r => {
@@ -336,7 +525,8 @@ export class AnilistService {
                   const media = entry.media;
                   malList.push({
                     node: {
-                      id: media.idMal || 0,
+                      id: media.id,
+                      id_mal: media.idMal,
                       title: media.title.romaji,
                       alternative_titles: {
                         en: media.title.english,
@@ -624,6 +814,22 @@ export class AnilistService {
         return 'dropped';
       default:
         return undefined;
+    }
+  }
+
+  mediaStatusToMal(
+    alStatus?: AnilistMediaStatus,
+    type: 'ANIME' | 'MANGA' = 'ANIME',
+  ): AnimeStatus | MangaStatus {
+    switch (alStatus) {
+      case 'FINISHED':
+      case 'CANCELLED':
+        return type === 'ANIME' ? 'finished_airing' : 'finished';
+      case 'HIATUS':
+      case 'RELEASING':
+        return type === 'ANIME' ? 'currently_airing' : 'currently_publishing';
+      default:
+        return type === 'ANIME' ? 'not_yet_aired' : 'not_yet_published';
     }
   }
 }

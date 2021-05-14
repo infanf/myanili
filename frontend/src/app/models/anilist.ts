@@ -37,6 +37,13 @@ export type AnilistMediaListStatus =
   | 'PAUSED'
   | 'REPEATING';
 
+export type AnilistMediaStatus =
+  | 'FINISHED'
+  | 'RELEASING'
+  | 'NOT_YET_RELEASED'
+  | 'CANCELLED'
+  | 'HIATUS';
+
 interface MediaListCollection {
   lists: MediaListGroup[];
 }
@@ -58,6 +65,7 @@ interface MediaList {
   updatedAt: number;
   comletedAt?: FuzzyDate;
   media: Media;
+  repeat: number;
 }
 
 export type AnilistMediaList = MediaList;
@@ -66,13 +74,21 @@ interface Media {
   id: number;
   idMal?: number;
   title: MediaTitle;
+  synonyms?: string[];
+  description?: string;
+  duration?: number;
   staff: StaffConnection;
+  genres: string[];
   episodes?: number;
   chapters?: number;
   volumes?: number;
   coverImage: MediaCoverImage;
   startDate: FuzzyDate;
   endDate: FuzzyDate;
+  meanScore: number;
+  source?: string;
+  popularity: number;
+  status: AnilistMediaStatus;
   season: Season;
   seasonYear: number;
   mediaListEntry?: MediaList;

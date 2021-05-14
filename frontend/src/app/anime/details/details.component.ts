@@ -66,6 +66,7 @@ export class AnimeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     const anime = await this.animeService.getAnime(this.id);
+    if (!anime) return;
     if (anime.mean) {
       this.setRating('mal', {
         nom: anime.mean,
@@ -334,18 +335,20 @@ export class AnimeDetailsComponent implements OnInit {
       );
       if (sequels.length) {
         const sequel = await this.animeService.getAnime(sequels[0].node.id);
-        if (sequel.my_list_status?.status === 'completed') {
-          const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
-          if (startSequel) {
-            await this.animeService.updateAnime(
-              { malId: sequel.id },
-              { status: 'completed', is_rewatching: true, num_watched_episodes: 0 },
-            );
-          }
-        } else {
-          const startSequel = confirm(`Start watching sequel "${sequel.title}"?`);
-          if (startSequel) {
-            await this.animeService.updateAnime({ malId: sequel.id }, { status: 'watching' });
+        if (sequel) {
+          if (sequel.my_list_status?.status === 'completed') {
+            const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
+            if (startSequel) {
+              await this.animeService.updateAnime(
+                { malId: sequel.id },
+                { status: 'completed', is_rewatching: true, num_watched_episodes: 0 },
+              );
+            }
+          } else {
+            const startSequel = confirm(`Start watching sequel "${sequel.title}"?`);
+            if (startSequel) {
+              await this.animeService.updateAnime({ malId: sequel.id }, { status: 'watching' });
+            }
           }
         }
         this.ngOnInit();

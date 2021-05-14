@@ -86,9 +86,21 @@ export class AnimeService {
   }
 
   async getAnime(id: number) {
-    const anime = await this.mal.get<Anime>('anime/' + id);
+    let anime: Anime | undefined;
+    switch (this.mainService) {
+      case 'anilist':
+        anime = await this.anilist.getAnime(id);
+        break;
+      // case 'kitsu':
+      //   animes = await this.kitsu.myList(status);
+      //   break;
+      default:
+        anime = await this.mal.get<Anime>('anime/' + id);
+        if (!anime.related_manga.length) anime.related_manga = await this.getManga(id);
+        break;
+    }
+    if (!anime) return undefined;
     const comments = anime.my_list_status?.comments;
-    if (!anime.related_manga.length) anime.related_manga = await this.getManga(id);
     if (!comments) return anime;
     try {
       const json = Base64.decode(comments);
