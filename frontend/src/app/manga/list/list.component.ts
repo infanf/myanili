@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ListManga, MangaNode, ReadStatus } from '@models/manga';
+import { ListManga, MangaNode, ReadStatus } from '@models/mal-manga';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
 

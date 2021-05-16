@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Anime } from '@models/anime';
+import { Media } from '@models/media';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
 
@@ -11,7 +11,7 @@ import { AnimeService } from '../anime.service';
   styleUrls: ['./season.component.scss'],
 })
 export class SeasonComponent {
-  animes: Array<Partial<Anime>> = [];
+  animes: Array<Partial<Media>> = [];
   year!: number;
   season!: number;
   onlyInList = true;
@@ -51,7 +51,7 @@ export class SeasonComponent {
     return true;
   }
 
-  async addToList(anime: Partial<Anime>) {
+  async addToList(anime: Partial<Media>) {
     if (anime.my_list_status || anime.busy || !anime.id) return;
     anime.busy = true;
     const statusResponse = await this.animeService.updateAnime(
@@ -63,10 +63,16 @@ export class SeasonComponent {
         annictId: anime.my_extension?.annictId,
       },
       {
-        status: 'plan_to_watch',
+        status: 'planning',
       },
     );
-    anime.my_list_status = statusResponse;
+    if (statusResponse) {
+      anime.my_list_status = {
+        ...statusResponse,
+        tags: [''],
+        updated_at: new Date(),
+      };
+    }
     delete anime.busy;
   }
 }

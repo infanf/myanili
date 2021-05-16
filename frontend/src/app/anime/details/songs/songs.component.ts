@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Anime, AnimeTheme } from '@models/anime';
+import { Media, MediaTheme } from '@models/media';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/global.service';
 import { MalService } from 'src/app/mal.service';
@@ -11,7 +11,7 @@ import { MalService } from 'src/app/mal.service';
   styleUrls: ['./songs.component.scss'],
 })
 export class AnimeSongsComponent {
-  @Input() anime?: Anime;
+  @Input() anime?: Media;
   @Input() edit = false;
   constructor(
     private deviceDetector: DeviceDetectorService,
@@ -30,7 +30,7 @@ export class AnimeSongsComponent {
     return '';
   }
 
-  async setSongUrl(song: AnimeTheme) {
+  async setSongUrl(song: MediaTheme) {
     this.glob.busy();
     const spotify = prompt('Spotify URI', song.spotify)?.replace(
       /https:\/\/open.spotify.com\/track\/(\w+)(\?.+)?/,

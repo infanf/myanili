@@ -25,7 +25,7 @@
         <tr
           class="cursor-pointer"
           [class]="{
-            'fw-bold': anime.my_list_status?.status === 'watching',
+            'fw-bold': anime.my_list_status?.status === 'current',
             'text-muted': anime.my_list_status?.status === 'dropped'
           }"
         >
@@ -77,15 +77,15 @@
           <td style="white-space: nowrap">
             <ng-container *ngIf="anime.my_list_status; else addanime">
               <circle-progress
-                *ngIf="anime.my_list_status?.status === 'watching'"
+                *ngIf="anime.my_list_status?.status === 'current'"
                 [percent]="
-                  anime.num_episodes
-                    ? ((anime.my_list_status?.num_episodes_watched || 0) / anime.num_episodes!) *
+                  anime.num_parts
+                    ? ((anime.my_list_status?.progress || 0) / anime.num_parts!) *
                       100
                     : 0
                 "
               ></circle-progress>
-              {{ anime.my_list_status?.num_episodes_watched }}/{{ anime.num_episodes || '?' }}
+              {{ anime.my_list_status?.progress }}/{{ anime.num_parts || '?' }}
             </ng-container>
             <ng-template #addanime>
               <app-icon

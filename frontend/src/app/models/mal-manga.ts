@@ -1,5 +1,5 @@
-import { RelatedAnime } from './anime';
 import { Genre, Nsfw, Person, Picture, Studio } from './components';
+import { RelatedAnime } from './mal-anime';
 
 export type ReadStatus = 'reading' | 'completed' | 'on_hold' | 'dropped' | 'plan_to_read';
 

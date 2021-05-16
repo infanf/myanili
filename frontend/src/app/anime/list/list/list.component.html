@@ -21,7 +21,7 @@
       <tr
         class="cursor-pointer"
         [class]="{
-          'fw-bold': anime.list_status.status === 'watching'
+          'fw-bold': anime.list_status.status === 'current'
         }"
         routerLink="/anime/details/{{ anime.node.id }}"
       >
@@ -61,14 +61,14 @@
         </td>
         <td style="white-space: nowrap">
           <circle-progress
-            *ngIf="anime.list_status.status === 'watching'"
+            *ngIf="anime.list_status.status === 'current'"
             [percent]="
-              anime.node.num_episodes
-                ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
+              anime.node.num_parts
+                ? (anime.list_status.progress / (anime.node.num_parts || 0)) * 100
                 : 0
             "
           ></circle-progress>
-          {{ anime.list_status.num_episodes_watched }}/{{ anime.node.num_episodes || '?' }}
+          {{ anime.list_status.progress }}/{{ anime.node.num_parts || '?' }}
         </td>
       </tr>
     </ng-container>

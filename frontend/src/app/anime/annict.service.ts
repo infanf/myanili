@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
+import { MyMediaUpdate, PersonalStatus } from '@models/media';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -140,13 +140,13 @@ export class AnnictService {
       : undefined;
   }
 
-  async updateEntry(annictId?: number, data?: Partial<MyAnimeUpdate>) {
+  async updateEntry(annictId?: number, data?: Partial<MyMediaUpdate>) {
     if (!annictId || !this.accessToken) return;
-    if (data?.num_watched_episodes) {
-      this.updateProgress(annictId, data?.num_watched_episodes);
+    if (data?.progress) {
+      this.updateProgress(annictId, data?.progress);
     }
     if (data?.status) {
-      this.updateStatus(annictId, this.statusFromMal(data.status));
+      this.updateStatus(annictId, this.statusToAnnict(data.status));
     }
     if (data?.score) {
       this.addRating(annictId, data.score);
@@ -214,34 +214,36 @@ export class AnnictService {
     return episodes;
   }
 
-  statusFromMal(malStatus?: WatchStatus): AnnictStatus | undefined {
-    switch (malStatus) {
-      case 'plan_to_watch':
+  statusToAnnict(status?: PersonalStatus): AnnictStatus | undefined {
+    switch (status) {
+      case 'planning':
         return 'wanna_watch';
       case 'dropped':
         return 'stop_watching';
       case 'completed':
         return 'watched';
+      case 'current':
+        return 'watching';
       case 'on_hold':
-      case 'watching':
-        return malStatus;
+        return 'on_hold';
       default:
         return undefined;
     }
   }
 
-  statusToMal(simklStatus?: AnnictStatus): WatchStatus | undefined {
-    switch (simklStatus) {
+  statusFromAnnict(status?: AnnictStatus): PersonalStatus | undefined {
+    switch (status) {
       case 'wanna_watch':
-        return 'plan_to_watch';
+        return 'planning';
       case 'stop_watching':
       case 'no_select':
         return 'dropped';
       case 'watched':
         return 'completed';
       case 'on_hold':
+        return 'on_hold';
       case 'watching':
-        return simklStatus;
+        return 'current';
       default:
         return undefined;
     }

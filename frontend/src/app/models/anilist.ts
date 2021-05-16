@@ -8,7 +8,7 @@ export interface User {
 
 export type AnilistUser = User;
 
-interface SaveMedialistEntry {
+interface SaveMediaListEntry {
   id: number;
   mediaId: number;
   status: AnilistMediaListStatus;
@@ -27,7 +27,7 @@ interface SaveMedialistEntry {
   completedAt: Date;
 }
 
-export type AnilistSaveMedialistEntry = SaveMedialistEntry;
+export type AnilistSaveMediaListEntry = SaveMediaListEntry;
 
 export type AnilistMediaListStatus =
   | 'CURRENT'
@@ -73,6 +73,7 @@ export type AnilistMediaList = MediaList;
 interface Media {
   id: number;
   idMal?: number;
+  type: 'ANIME' | 'MANGA';
   title: MediaTitle;
   synonyms?: string[];
   description?: string;

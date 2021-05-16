@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RelatedAnime } from '@models/anime';
+import { RelatedAnime } from '@models/mal-anime';
 import {
   ListManga,
   Manga,
@@ -9,7 +9,7 @@ import {
   MyMangaStatus,
   MyMangaUpdate,
   ReadStatus,
-} from '@models/manga';
+} from '@models/mal-manga';
 import { Base64 } from 'js-base64';
 import { environment } from 'src/environments/environment';
 

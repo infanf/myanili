@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Anime } from '@models/anime';
+import { Media } from '@models/media';
 import * as moment from 'moment';
 
 import { GlobalService } from '../../global.service';
@@ -12,7 +12,7 @@ import { AnimeService } from '../anime.service';
   styleUrls: ['./schedule.component.scss'],
 })
 export class ScheduleComponent {
-  animes: Array<Partial<Anime>> = [];
+  animes: Array<Partial<Media>> = [];
   today = moment().day();
   lang: Language = 'jp';
   year?: number;
@@ -47,7 +47,7 @@ export class ScheduleComponent {
     return true;
   }
 
-  getAnimes(day: number): Array<Partial<Anime>> {
+  getAnimes(day: number): Array<Partial<Media>> {
     return this.animes.filter(
       anime =>
         Number(anime.my_extension?.simulDay) % 7 === day % 7 &&

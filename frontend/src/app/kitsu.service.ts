@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import {
   KitsuEntry,
@@ -10,7 +9,9 @@ import {
   KitsuStatus,
   KitsuUser,
 } from '@models/kitsu';
-import { ReadStatus } from '@models/manga';
+import { WatchStatus } from '@models/mal-anime';
+import { ReadStatus } from '@models/mal-manga';
+import { PersonalStatus } from '@models/media';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -279,6 +280,11 @@ export class KitsuService {
       }
     }
     return;
+  }
+
+  toKitsuStatus(status?: PersonalStatus): KitsuStatus | undefined {
+    if (status === 'planning') return 'planned';
+    return status;
   }
 
   statusFromMal(malStatus?: WatchStatus | ReadStatus): KitsuStatus | undefined {

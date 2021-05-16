@@ -1,18 +1,18 @@
-import { Genre, Nsfw, Picture, Studio } from './components';
-import { RelatedManga } from './manga';
+import { Company, Nsfw, Person, Picture } from './components';
 
-interface ListAnimeInterface {
-  node: AnimeNode;
-  list_status: MyAnimeStatus;
-  my_extension?: AnimeExtension;
+interface ListMediaInterface {
+  node: MediaNode;
+  list_status: MyMediaStatus;
+  my_extension?: MediaExtension;
   busy?: boolean;
 }
 
-export type ListAnime = ListAnimeInterface;
+export type ListMedia = ListMediaInterface;
 
-interface AnimeInterface {
+interface MediaInterface {
   id: number;
   id_mal?: number;
+  type: 'anime' | 'manga';
   title: string;
   main_picture?: Picture;
   alternative_titles?: {
@@ -31,11 +31,15 @@ interface AnimeInterface {
   nsfw?: Nsfw;
   created_at: Date;
   updated_at: Date;
-  media_type: AnimeType;
-  status: AnimeStatus;
-  genres: Genre[];
-  my_list_status?: MyAnimeStatus;
-  num_episodes: number;
+  media_type: MediaType;
+  status: MediaStatus;
+  genres: string[];
+  my_list_status?: MyMediaStatus;
+  /**
+   * Episodes for Anime or Chapters for Manga
+   */
+  num_parts: number;
+  num_volumes?: number;
   start_season?: MalSeason;
   broadcast?: {
     day_of_the_week: string;
@@ -46,62 +50,82 @@ interface AnimeInterface {
   rating?: string;
   pictures: Picture[];
   background?: string;
-  related_anime: RelatedAnime[];
-  related_manga: RelatedManga[];
-  recommendations: Array<{ node: AnimeNode; num_recommendations: number }>;
-  studios: Studio[];
+  related: RelatedMedia[];
+  recommendations: MediaRecommendations;
+  /**
+   * Studios for Anime or Magazines for Manga
+   */
+  companies: Company[];
   statistics?: {
     status: {
-      watching: number;
+      current: number;
       completed: number;
       on_hold: number;
       dropped: number;
-      plan_to_watch: number;
+      planning: number;
     };
     num_list_users: number;
   };
-  opening_themes: AnimeTheme[];
-  ending_themes: AnimeTheme[];
-  my_extension?: AnimeExtension;
+  opening_themes?: MediaTheme[];
+  ending_themes?: MediaTheme[];
   busy?: boolean;
+  authors?: Array<{ role: string; node: Person }>;
+  my_extension?: MediaExtension;
 }
 
-export type Anime = AnimeInterface;
+export type Media = MediaInterface;
 
-export type AnimeType = 'unknown' | 'tv' | 'ova' | 'movie' | 'special' | 'ona' | 'music';
-export type AnimeStatus = 'finished_airing' | 'currently_airing' | 'not_yet_aired';
+type MangaType =
+  | 'unknown'
+  | 'manga'
+  | 'novel'
+  | 'one_shot'
+  | 'doujinshi'
+  | 'manhwa'
+  | 'manhua'
+  | 'oel';
+
+type AnimeType = 'unknown' | 'tv' | 'ova' | 'movie' | 'special' | 'ona' | 'music';
+
+export type MediaType = AnimeType | MangaType;
+export type MediaStatus = 'finished' | 'current' | 'not_yet_released' | 'cancelled' | 'hiatus';
 
 interface MyStatus {
-  status?: WatchStatus;
+  status?: PersonalStatus;
+  /**
+   * normalized to 0-10
+   */
   score: number;
-  num_episodes_watched: number;
-  is_rewatching: boolean;
-  num_times_rewatched: number;
+  progress: number;
+  progress_volumes?: number;
+  repeating: boolean;
+  repeats: number;
   start_date?: Date;
   finish_date?: Date;
   priority: number;
-  rewatch_value: number;
+  repeat_value: number;
   tags: string[];
   updated_at: Date;
   comments: string;
 }
 
-export type MyAnimeStatus = MyStatus;
-export type WatchStatus = 'watching' | 'completed' | 'on_hold' | 'dropped' | 'plan_to_watch';
+export type MyMediaStatus = MyStatus;
+export type PersonalStatus = 'current' | 'completed' | 'on_hold' | 'dropped' | 'planning';
 
 interface MyUpdate {
-  status: WatchStatus;
-  is_rewatching: boolean;
+  status: PersonalStatus;
+  repeating: boolean;
   score: number;
-  num_watched_episodes: number;
+  progress: number;
+  progress_volumes?: number;
   priority: number;
-  num_times_rewatched: number;
-  rewatch_value: number;
+  repeats: number;
+  repeat_value: number;
   tags: string;
   comments: string;
 }
 
-export type MyAnimeUpdate = MyUpdate;
+export type MyMediaUpdate = MyUpdate;
 
 interface SeasonInterface {
   year: number;
@@ -117,18 +141,22 @@ interface Theme {
   spotify?: string;
 }
 
-export type AnimeTheme = Theme;
+export type MediaTheme = Theme;
 
-export interface AnimeNode {
+export interface MediaNode {
   id: number;
   id_mal?: number;
   title: string;
   main_picture?: Picture;
-  num_episodes?: number;
+  /**
+   * Episodes for Anime or Chapters for Manga
+   */
+  num_parts: number;
+  num_volumes?: number;
   start_date?: Date;
   end_date?: Date;
-  my_list_status?: MyAnimeStatus;
-  media_type?: AnimeType;
+  my_list_status?: MyMediaStatus;
+  media_type?: MediaType;
   alternative_titles?: {
     synonyms?: string[];
     en?: string;
@@ -137,15 +165,15 @@ export interface AnimeNode {
   start_season?: MalSeason;
 }
 
-interface RelatedAnimeInterface {
-  node: AnimeNode;
+interface RelatedMediaInterface {
+  node: MediaNode;
   relation_type: string;
   relation_type_formatted: string;
 }
 
-export type RelatedAnime = RelatedAnimeInterface;
+export type RelatedMedia = RelatedMediaInterface;
 
-interface AnimeExtensionInterface {
+interface MediaExtensionInterface {
   series?: string;
   seasonNumber?: number;
   episodeCorOffset?: number;
@@ -163,7 +191,7 @@ interface AnimeExtensionInterface {
   displayName?: string;
 }
 
-export type AnimeExtension = AnimeExtensionInterface;
+export type MediaExtension = MediaExtensionInterface;
 
 interface Character {
   mal_id: number;
@@ -190,8 +218,8 @@ interface Staff {
   positions: string[];
 }
 
-export type AnimeCharacter = Character;
+export type MediaCharacter = Character;
 
-export type AnimeStaff = Staff;
+export type MediaStaff = Staff;
 
-export type AnimeRecommendations = Array<{ node: AnimeNode; num_recommendations: number }>;
+export type MediaRecommendations = Array<{ node: MediaNode; num_recommendations: number }>;

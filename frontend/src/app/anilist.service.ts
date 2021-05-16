@@ -4,12 +4,13 @@ import {
   AnilistMediaListCollection,
   AnilistMediaListStatus,
   AnilistMediaStatus,
-  AnilistSaveMedialistEntry,
+  AnilistSaveMediaListEntry,
   AnilistUser,
 } from '@models/anilist';
-import { Anime, AnimeStatus, ListAnime, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
-import { ListManga, MangaStatus, ReadStatus } from '@models/manga';
+import { WatchStatus } from '@models/mal-anime';
+import { ListManga, ReadStatus } from '@models/mal-manga';
+import { ListMedia, Media, MediaStatus, PersonalStatus } from '@models/media';
 import { Apollo, gql } from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -160,12 +161,15 @@ export class AnilistService {
     return requestResult;
   }
 
-  async updateEntry(id: number, data: Partial<AnilistSaveMedialistEntry>) {
+  async updateEntry(
+    id: number,
+    data: Partial<AnilistSaveMediaListEntry>,
+  ): Promise<AnilistSaveMediaListEntry | undefined> {
     return new Promise(r => {
       data.mediaId = id;
       const variables = JSON.parse(JSON.stringify(data));
       this.client
-        .mutate({
+        .mutate<{ SaveMediaListEntry: AnilistSaveMediaListEntry }>({
           errorPolicy: 'ignore',
           mutation: gql`
             mutation(
@@ -254,19 +258,20 @@ export class AnilistService {
           `,
           variables,
         })
-        .subscribe(r, error => {
-          console.log({ error });
-          r(undefined);
-        });
+        .subscribe(
+          result => {
+            r(result?.data?.SaveMediaListEntry);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
     });
   }
 
-  async getAnime(id: number) {
-    return this.get<Anime>(id, 'ANIME');
-  }
-
-  async get<T>(id: number, type: 'ANIME' | 'MANGA'): Promise<T | undefined> {
-    const requestResult = await new Promise<T | undefined>(r => {
+  async get(id: number, type: 'ANIME' | 'MANGA'): Promise<Media | undefined> {
+    const requestResult = await new Promise<Media | undefined>(r => {
       this.client
         .query<{ Media?: AnilistMedia }>({
           errorPolicy: 'ignore',
@@ -367,77 +372,64 @@ export class AnilistService {
         })
         .subscribe(
           result => {
-            const alAnime = result.data.Media;
-            if (!alAnime) return r(undefined);
-            const malAnime: Anime = {
-              id: alAnime.id,
-              id_mal: alAnime.idMal,
-              title: alAnime.title.romaji,
+            const alMedia = result.data.Media;
+            if (!alMedia) return r(undefined);
+            const malMedia: Media = {
+              id: alMedia.id,
+              id_mal: alMedia.idMal,
+              type: alMedia.type === 'ANIME' ? 'anime' : 'manga',
+              title: alMedia.title.romaji,
               alternative_titles: {
-                en: alAnime.title.english,
-                ja: alAnime.title.native,
-                synonyms: alAnime.synonyms,
+                en: alMedia.title.english,
+                ja: alMedia.title.native,
+                synonyms: alMedia.synonyms,
               },
-              average_episode_duration: alAnime.duration,
-              genres: alAnime.genres.map(genre => ({ id: 0, name: genre })),
-              mean: alAnime.meanScore / 10,
-              source: alAnime.source,
+              average_episode_duration: (alMedia.duration || 0) * 60,
+              genres: alMedia.genres,
+              mean: alMedia.meanScore / 10,
+              source: alMedia.source,
               main_picture: {
-                medium: alAnime.coverImage.large,
-                large: alAnime.coverImage.extraLarge,
+                medium: alMedia.coverImage.large,
+                large: alMedia.coverImage.extraLarge,
               },
-              synopsis: alAnime.description,
+              synopsis: alMedia.description,
               pictures: [],
-              related_anime: [],
-              related_manga: [],
+              related: [],
               recommendations: [],
-              studios: [],
+              companies: [],
               opening_themes: [],
               ending_themes: [],
-              num_episodes: alAnime.episodes || 0,
-              num_list_users: alAnime.popularity,
+              num_parts: alMedia.episodes || alMedia.chapters || 0,
+              num_volumes: alMedia.volumes,
+              num_list_users: alMedia.popularity,
               num_scoring_users: 0,
-              created_at: alAnime.mediaListEntry?.updatedAt
-                ? new Date(alAnime.mediaListEntry?.updatedAt * 1000)
+              created_at: alMedia.mediaListEntry?.updatedAt
+                ? new Date(alMedia.mediaListEntry?.updatedAt * 1000)
                 : new Date(),
-              updated_at: alAnime.mediaListEntry?.updatedAt
-                ? new Date(alAnime.mediaListEntry?.updatedAt * 1000)
+              updated_at: alMedia.mediaListEntry?.updatedAt
+                ? new Date(alMedia.mediaListEntry?.updatedAt * 1000)
                 : new Date(),
               media_type: 'tv',
-              status: this.mediaStatusToMal(alAnime.status) as AnimeStatus,
-              my_list_status: alAnime.mediaListEntry
-                ? // ? type === 'ANIME'
-                  {
-                    status: this.statusToMal(alAnime.mediaListEntry.status) as WatchStatus,
-                    comments: alAnime.mediaListEntry.notes,
-                    is_rewatching: alAnime.mediaListEntry.status === 'REPEATING',
-                    score: alAnime.mediaListEntry.score,
-                    num_episodes_watched: alAnime.mediaListEntry.progress,
-                    num_times_rewatched: alAnime.mediaListEntry.repeat,
+              status: this.mediaStatusfromAl(alMedia.status),
+              my_list_status: alMedia.mediaListEntry
+                ? {
+                    status: this.fromAlStatus(alMedia.mediaListEntry.status),
+                    comments: alMedia.mediaListEntry.notes,
+                    repeating: alMedia.mediaListEntry.status === 'REPEATING',
+                    score: alMedia.mediaListEntry.score,
+                    progress: alMedia.mediaListEntry.progress,
+                    progress_volumes: alMedia.mediaListEntry.progressVolumes,
+                    repeats: alMedia.mediaListEntry.repeat,
                     priority: 0,
-                    rewatch_value: 0,
+                    repeat_value: 0,
                     tags: [],
-                    updated_at: alAnime.mediaListEntry?.updatedAt
-                      ? new Date(alAnime.mediaListEntry?.updatedAt * 1000)
+                    updated_at: alMedia.mediaListEntry?.updatedAt
+                      ? new Date(alMedia.mediaListEntry?.updatedAt * 1000)
                       : new Date(),
                   }
-                : // : {
-                  //     comments: alAnime.mediaListEntry.notes,
-                  //     is_rereading: alAnime.mediaListEntry.status === 'REPEATING',
-                  //     score: alAnime.mediaListEntry.score,
-                  //     num_chapters_read: alAnime.mediaListEntry.progress,
-                  //     num_volumes_read: alAnime.mediaListEntry.progressVolumes||0,
-                  //     num_times_reread: alAnime.mediaListEntry.repeat,
-                  //     priority: 0,
-                  //     reread_value: 0,
-                  //     tags: '',
-                  //     updated_at: alAnime.mediaListEntry?.updatedAt
-                  //       ? new Date(alAnime.mediaListEntry?.updatedAt * 1000)
-                  //       : new Date(),
-                  //   }
-                  undefined,
+                : undefined,
             };
-            r((malAnime as unknown) as T);
+            r(malMedia);
           },
           error => {
             console.log({ error });
@@ -448,8 +440,11 @@ export class AnilistService {
     return requestResult;
   }
 
-  async myList(malStatus?: WatchStatus): Promise<ListAnime[]> {
-    const status = this.statusFromMal(malStatus);
+  async myList(
+    mediaStatus?: PersonalStatus,
+    type: 'ANIME' | 'MANGA' = 'ANIME',
+  ): Promise<ListMedia[]> {
+    const status = this.toAlStatus(mediaStatus);
     return new Promise(async r => {
       this.user.subscribe(user => {
         if (!user) return;
@@ -514,12 +509,12 @@ export class AnilistService {
             variables: {
               userId: user?.id,
               status: status === 'CURRENT' ? [status, 'REPEATING'] : [status],
-              type: 'ANIME',
+              type,
             },
           })
           .subscribe(result => {
             if (result.data) {
-              const malList: ListAnime[] = [];
+              const malList: ListMedia[] = [];
               for (const list of result.data.MediaListCollection.lists) {
                 for (const entry of list.entries) {
                   const media = entry.media;
@@ -532,7 +527,8 @@ export class AnilistService {
                         en: media.title.english,
                         ja: media.title.native,
                       },
-                      num_episodes: media.episodes,
+                      num_parts: media.episodes || media.chapters || 0,
+                      num_volumes: media.volumes,
                       main_picture: media.coverImage
                         ? {
                             medium: media.coverImage.large,
@@ -552,21 +548,22 @@ export class AnilistService {
                     },
                     list_status: {
                       comments: entry.notes,
-                      is_rewatching: false,
-                      num_episodes_watched: entry.progress,
-                      num_times_rewatched: 0,
+                      repeating: false,
+                      progress: entry.progress,
+                      progress_volumes: entry.progressVolumes,
+                      repeats: 0,
                       priority: 0,
-                      rewatch_value: 0,
-                      score: 0,
+                      repeat_value: 0,
+                      score: entry.score / 10,
                       tags: [],
-                      updated_at: new Date(entry.updatedAt),
+                      updated_at: new Date(entry.updatedAt * 1000),
                       finish_date: entry.comletedAt
                         ? new Date(
                             `${entry.comletedAt.year}-${entry.comletedAt.month}-${entry.comletedAt.day}`,
                           )
                         : undefined,
                       start_date: undefined,
-                      status: this.statusToMal(entry.status, 'ANIME') as WatchStatus,
+                      status: this.fromAlStatus(entry.status),
                     },
                   });
                 }
@@ -774,6 +771,37 @@ export class AnilistService {
     });
   }
 
+  toAlStatus(mediaStatus?: PersonalStatus, repeating = false): AnilistMediaListStatus | undefined {
+    switch (mediaStatus) {
+      case 'on_hold':
+        return 'PAUSED';
+      case 'completed':
+        return repeating ? 'REPEATING' : 'COMPLETED';
+      case 'current':
+      case 'dropped':
+      case 'planning':
+        return mediaStatus.toUpperCase() as AnilistMediaListStatus;
+      default:
+        return undefined;
+    }
+  }
+
+  fromAlStatus(mediaStatus?: AnilistMediaListStatus): PersonalStatus | undefined {
+    switch (mediaStatus) {
+      case 'PAUSED':
+        return 'on_hold';
+      case 'REPEATING':
+        return 'completed';
+      case 'COMPLETED':
+      case 'CURRENT':
+      case 'DROPPED':
+      case 'PLANNING':
+        return mediaStatus.toLowerCase() as PersonalStatus;
+      default:
+        return undefined;
+    }
+  }
+
   statusFromMal(
     malStatus?: WatchStatus | ReadStatus,
     repeating = false,
@@ -817,19 +845,18 @@ export class AnilistService {
     }
   }
 
-  mediaStatusToMal(
-    alStatus?: AnilistMediaStatus,
-    type: 'ANIME' | 'MANGA' = 'ANIME',
-  ): AnimeStatus | MangaStatus {
+  mediaStatusfromAl(alStatus?: AnilistMediaStatus): MediaStatus {
     switch (alStatus) {
       case 'FINISHED':
+        return 'finished';
       case 'CANCELLED':
-        return type === 'ANIME' ? 'finished_airing' : 'finished';
+        return 'cancelled';
       case 'HIATUS':
+        return 'hiatus';
       case 'RELEASING':
-        return type === 'ANIME' ? 'currently_airing' : 'currently_publishing';
+        return 'current';
       default:
-        return type === 'ANIME' ? 'not_yet_aired' : 'not_yet_published';
+        return 'not_yet_released';
     }
   }
 }

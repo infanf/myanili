@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ExtRating, Picture } from '@models/components';
-import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
+import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/mal-manga';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
@@ -50,12 +50,13 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const manga = await this.mangaService.getManga(this.id);
-    if (manga.mean)
+    if (manga.mean) {
       this.setRating('mal', {
         nom: manga.mean,
         norm: manga.mean * 10,
         ratings: manga.num_scoring_users,
       });
+    }
     this.manga = { ...manga };
     if (!this.manga.my_extension) {
       this.manga.my_extension = {

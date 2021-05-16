@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RelatedAnime } from '@models/anime';
+import { RelatedMedia } from '@models/media';
 
 @Component({
   selector: 'app-anime-related',
@@ -7,7 +7,7 @@ import { RelatedAnime } from '@models/anime';
   styleUrls: ['./related.component.scss'],
 })
 export class AnimeRelatedComponent {
-  @Input() related_anime: RelatedAnime[] = [];
+  @Input() related_anime: RelatedMedia[] = [];
   getRelatedAnimes() {
     if (!this.related_anime?.length) return [];
     const types = this.related_anime

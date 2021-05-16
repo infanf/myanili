@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { WatchStatus } from '@models/anime';
-import { ReadStatus } from '@models/manga';
+import { WatchStatus } from '@models/mal-anime';
+import { ReadStatus } from '@models/mal-manga';
+import { PersonalStatus } from '@models/media';
 
 import { IconComponent } from '../icon/icon.component';
 
@@ -10,12 +11,13 @@ import { IconComponent } from '../icon/icon.component';
   styleUrls: ['./icon-status.component.scss'],
 })
 export class IconStatusComponent extends IconComponent implements OnInit {
-  @Input() status?: WatchStatus | ReadStatus;
+  @Input() status?: PersonalStatus | WatchStatus | ReadStatus;
 
   ngOnInit() {
     switch (this.status) {
       case 'watching':
       case 'reading':
+      case 'current':
         this.name = 'eye';
         break;
       case 'on_hold':
@@ -29,6 +31,7 @@ export class IconStatusComponent extends IconComponent implements OnInit {
         break;
       case 'plan_to_watch':
       case 'plan_to_read':
+      case 'planning':
         this.name = 'clock';
         break;
       default:

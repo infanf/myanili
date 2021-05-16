@@ -15,7 +15,7 @@
         <tr
           [class]="{
             seen: isSeen(anime),
-            'text-green': anime.list_status.num_episodes_watched === 0
+            'text-green': anime.list_status.progress === 0
           }"
         >
           <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
@@ -32,12 +32,12 @@
           <td>
             <circle-progress
               *ngIf="
-                anime.node.num_episodes !== 1 &&
-                (anime.list_status.status === 'watching' || anime.list_status.is_rewatching)
+                anime.node.num_parts !== 1 &&
+                (anime.list_status.status === 'current' || anime.list_status.repeating)
               "
               [percent]="
-                anime.node.num_episodes
-                  ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
+                anime.node.num_parts
+                  ? (anime.list_status.progress / (anime.node.num_parts || 0)) * 100
                   : 0
               "
             ></circle-progress>
@@ -49,7 +49,7 @@
                   ? anime.my_extension?.seasonNumber
                   : anime.my_extension?.seasonNumber || 1
               }}x{{
-                anime.list_status.num_episodes_watched +
+                anime.list_status.progress +
                   (anime.my_extension?.episodeCorOffset || 0) +
                   (isSeen(anime) ? 0 : 1)
               }}

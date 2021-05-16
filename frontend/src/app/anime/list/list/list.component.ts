@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ListAnime } from '@models/anime';
+import { ListMedia } from '@models/media';
 import { SettingsService } from 'src/app/settings/settings.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { SettingsService } from 'src/app/settings/settings.service';
   styleUrls: ['./list.component.scss'],
 })
 export class AnimeListListComponent {
-  @Input() animes: ListAnime[] = [];
+  @Input() animes: ListMedia[] = [];
 
   lang = 'en';
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AnimeStaff } from '@models/anime';
+import { AnimeStaff } from '@models/mal-anime';
 
 import { AnimeService } from '../../anime.service';
 
