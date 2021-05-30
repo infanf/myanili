@@ -80,7 +80,7 @@
               *ngIf="!(anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)"
               class="cursor-pointer mx-2"
               [name]="anime.busy ? 'hourglass-split' : 'plus-square'"
-              size="20"
+              style="padding: 2px;"
               (click)="markSeen(anime)"
             ></app-icon>
           </td>
