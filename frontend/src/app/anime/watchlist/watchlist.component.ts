@@ -61,7 +61,12 @@ export class WatchlistComponent implements OnInit {
   }
 
   async markSeen(anime: ListAnime) {
-    if (this.isSeen(anime) || anime.busy) return;
+    if (
+      (this.isSeen(anime) &&
+        (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)) ||
+      anime.busy
+    )
+      return;
     anime.busy = true;
     const currentEpisode = anime.list_status.num_episodes_watched;
     const data = {
