@@ -29,7 +29,6 @@ import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
 import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
-import { IconStatusComponent } from './icon-status/icon-status.component';
 import { AnilistIconComponent } from './icon/anilist/anilist.component';
 import { AnnictIconComponent } from './icon/annict/annict.component';
 import { IconComponent } from './icon/icon.component';
@@ -37,6 +36,7 @@ import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
 import { MalIconComponent } from './icon/mal/mal.component';
 import { SimklIconComponent } from './icon/simkl/simkl.component';
 import { SpotifyIconComponent } from './icon/spotify/spotify.component';
+import { IconStatusComponent } from './icon/status/icon-status.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
@@ -126,7 +126,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
       showTitle: false,
       showUnits: false,
       showSubtitle: false,
-      outerStrokeColor: '#2c3e50',
+      outerStrokeColor: 'currentColor',
       innerStrokeColor: 'rgba(0,0,0,0.15)',
       animation: false,
       backgroundPadding: 0,
