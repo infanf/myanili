@@ -20,6 +20,8 @@ import { AnimeListComponent } from './anime/list/list.component';
 import { AnimeListListComponent } from './anime/list/list/list.component';
 import { ProducerComponent } from './anime/producer/producer.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
+import { SeasonGridComponent } from './anime/season/grid/grid.component';
+import { SeasonListComponent } from './anime/season/list/list.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { TraktComponent } from './anime/trakt/trakt.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
@@ -109,6 +111,8 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     SimklIconComponent,
     AnnictIconComponent,
     ExternalRatingComponent,
+    SeasonGridComponent,
+    SeasonListComponent,
   ],
   imports: [
     BrowserModule,

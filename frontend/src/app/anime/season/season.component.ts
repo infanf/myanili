@@ -17,6 +17,7 @@ export class SeasonComponent {
   onlyInList = true;
 
   lang = 'en';
+  layout = 'list';
 
   constructor(
     private animeService: AnimeService,
@@ -32,6 +33,7 @@ export class SeasonComponent {
       }
     });
     this.settings.language.subscribe(lang => (this.lang = lang));
+    this.settings.layout.subscribe(layout => (this.layout = layout));
     this.settings.onlyInList.subscribe(async inList => {
       this.onlyInList = inList;
       this.glob.busy();

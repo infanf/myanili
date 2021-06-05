@@ -1,0 +1,42 @@
+<div class="container-fluid my-3">
+  <div class="row row-cols-2 row-cols-sm-4 row-cols-md-6 g-3">
+    <div class="col" *ngFor="let anime of animes">
+      <div class="card h-100 cursor-pointer">
+        <picture routerLink="/anime/details/{{ anime.id }}">
+          <source
+            *ngIf="anime && anime.main_picture"
+            srcset="{{ anime.main_picture.medium || anime.main_picture.large }}"
+          />
+          <source srcset="/assets/blank-poster.svg" />
+          <img src="/assets/blank-poster.svg" alt="poster" class="card-img" />
+        </picture>
+        <div class="card-overlay rounded-bottom" routerLink="/anime/details/{{ anime.id }}">
+          {{
+            anime.my_extension?.displayName ||
+              (lang === 'en'
+                ? anime.alternative_titles?.en
+                : lang === 'jp'
+                ? anime.alternative_titles?.ja
+                : anime.title) ||
+              anime.title
+          }}
+        </div>
+        <app-icon-status
+          class="badge rounded-pill"
+          [class]="classColor(anime)"
+          style="position: absolute; top: 0.5rem; right: 0.5rem; height: 2rem; padding-top: 0.5rem"
+          *ngIf="anime.my_list_status"
+          [status]="anime.my_list_status.status"
+          routerLink="/anime/details/{{ anime.id }}"
+        ></app-icon-status>
+        <app-icon
+          class="badge rounded-pill bg-white text-dark"
+          style="position: absolute; top: 0.5rem; right: 0.5rem; height: 2rem; padding-top: 0.5rem"
+          *ngIf="!anime.my_list_status"
+          [name]="anime.busy ? 'hourglass-split' : 'plus'"
+          (click)="addToList(anime)"
+        ></app-icon>
+      </div>
+    </div>
+  </div>
+</div>
