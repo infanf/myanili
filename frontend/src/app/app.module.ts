@@ -33,6 +33,7 @@ import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
 import { AnilistIconComponent } from './icon/anilist/anilist.component';
 import { AnnictIconComponent } from './icon/annict/annict.component';
+import { BakamangaIconComponent } from './icon/bakamanga/bakamanga.component';
 import { IconComponent } from './icon/icon.component';
 import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
 import { LivechartIconComponent } from './icon/livechart/livechart.component';
@@ -115,6 +116,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     SeasonGridComponent,
     SeasonListComponent,
     LivechartIconComponent,
+    BakamangaIconComponent,
   ],
   imports: [
     BrowserModule,
