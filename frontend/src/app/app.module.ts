@@ -35,6 +35,7 @@ import { AnilistIconComponent } from './icon/anilist/anilist.component';
 import { AnnictIconComponent } from './icon/annict/annict.component';
 import { IconComponent } from './icon/icon.component';
 import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
+import { LivechartIconComponent } from './icon/livechart/livechart.component';
 import { MalIconComponent } from './icon/mal/mal.component';
 import { SimklIconComponent } from './icon/simkl/simkl.component';
 import { SpotifyIconComponent } from './icon/spotify/spotify.component';
@@ -113,6 +114,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ExternalRatingComponent,
     SeasonGridComponent,
     SeasonListComponent,
+    LivechartIconComponent,
   ],
   imports: [
     BrowserModule,
