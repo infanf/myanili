@@ -24,6 +24,7 @@ export class WatchlistComponent implements OnInit {
     private trakt: TraktService,
     private simkl: SimklService,
   ) {
+    this.glob.setTitle('Watchlist – Today');
     this.glob.busy();
     this.settings.language.subscribe(lang => {
       this.lang = lang;
@@ -65,8 +66,9 @@ export class WatchlistComponent implements OnInit {
       (this.isSeen(anime) &&
         (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)) ||
       anime.busy
-    )
+    ) {
       return;
+    }
     anime.busy = true;
     const currentEpisode = anime.list_status.num_episodes_watched;
     const data = {

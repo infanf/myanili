@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { IvyGalleryModule } from 'angular-gallery';
@@ -144,7 +144,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     AngularSvgIconModule.forRoot(),
     GraphQLModule,
   ],
-  providers: [TimePipe, StreamPipe, PlatformPipe],
+  providers: [TimePipe, StreamPipe, PlatformPipe, Title],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
