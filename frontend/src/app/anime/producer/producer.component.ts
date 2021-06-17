@@ -31,6 +31,7 @@ export class ProducerComponent {
           .subscribe(producer => {
             this.producer = producer;
             this.glob.notbusy();
+            this.glob.setTitle(producer.meta.name);
           });
       }
     });

@@ -50,13 +50,17 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const manga = await this.mangaService.getManga(this.id);
-    if (manga.mean)
+    if (manga.mean) {
       this.setRating('mal', {
         nom: manga.mean,
         norm: manga.mean * 10,
         ratings: manga.num_scoring_users,
       });
+    }
     this.manga = { ...manga };
+    if (this.manga?.title) {
+      this.glob.setTitle(this.manga.title);
+    }
     if (!this.manga.my_extension) {
       this.manga.my_extension = {
         malId: manga.id,
@@ -118,9 +122,9 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       tags: this.manga.my_list_status.tags,
     };
     try {
-      const extension = (JSON.parse(
+      const extension = JSON.parse(
         Base64.decode(this.manga.my_list_status.comments),
-      ) as unknown) as Partial<MangaExtension>;
+      ) as unknown as Partial<MangaExtension>;
       this.editExtension = {
         ...this.manga.my_extension,
         ...extension,

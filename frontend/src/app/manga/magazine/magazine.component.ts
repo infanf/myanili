@@ -30,6 +30,7 @@ export class MagazineComponent {
           .subscribe(magazine => {
             this.magazine = magazine;
             this.glob.notbusy();
+            this.glob.setTitle(magazine.meta.name);
           });
       }
     });

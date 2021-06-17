@@ -32,6 +32,7 @@ export class MalComponent implements AfterViewInit {
   ) {
     this.route.paramMap.subscribe(params => {
       this.type = params.get('type') === 'manga' ? 'manga' : 'anime';
+      this.glob.setTitle(`Search ${this.type}`);
       this.results = [];
     });
     this.settings.language.subscribe(lang => (this.lang = lang));
@@ -49,6 +50,7 @@ export class MalComponent implements AfterViewInit {
     }
     this.sb.first.nativeElement.blur();
     this.glob.busy();
+    this.glob.setTitle(`Search: ${this.query}`);
     this.results = (
       await this.malService.get<Array<{ node: Anime | Manga }>>(this.type + 's?query=' + this.query)
     ).map(result => result.node);
