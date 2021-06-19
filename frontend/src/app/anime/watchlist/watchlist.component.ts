@@ -39,14 +39,30 @@ export class WatchlistComponent implements OnInit {
         if (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) {
           return true;
         }
-        return anime.my_extension.simulDay === this.getLast8am().day();
+        if (anime.my_extension.simulDay === this.getLast8am().day()) return true;
+        if ((anime.my_extension.simulDay % 7) + 3 < this.getLast8am().day() + 7) {
+          return moment(anime.list_status.updated_at) < moment().subtract(7, 'd');
+        }
+        return false;
       })
-      .sort(
-        (a, b) =>
-          Number(a.my_extension?.simulTime ? a.my_extension.simulTime.replace(/\D/g, '') : 0) -
-          Number(b.my_extension?.simulTime ? b.my_extension.simulTime.replace(/\D/g, '') : 0),
-      );
+      .sort((a, b) => this.toSortIndex(a) - this.toSortIndex(b));
     this.glob.notbusy();
+  }
+
+  toSortIndex(anime: ListAnime): number {
+    if (!anime.my_extension) return 0;
+    if (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) {
+      return 0;
+    }
+    if (anime.my_extension.simulDay === this.getLast8am().day()) {
+      return Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0);
+    }
+    return (
+      anime.my_extension.simulDay +
+      7 -
+      this.getLast8am().day() +
+      Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0) / 10000
+    );
   }
 
   isSeen(anime: ListAnime): boolean {

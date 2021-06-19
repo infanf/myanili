@@ -29,6 +29,7 @@ import { StreamingComponent } from './anime/widget/streaming/streaming.component
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
+import { DayPipe } from './day.pipe';
 import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
 import { AnilistIconComponent } from './icon/anilist/anilist.component';
@@ -74,6 +75,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     FlagPipe,
     MalPipe,
     TimePipe,
+    DayPipe,
     StreamPipe,
     PlatformPipe,
     ScheduleComponent,
@@ -144,7 +146,8 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     AngularSvgIconModule.forRoot(),
     GraphQLModule,
   ],
-  providers: [TimePipe, StreamPipe, PlatformPipe, Title],
+  providers: [TimePipe, StreamPipe, PlatformPipe, Title, DayPipe],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}
