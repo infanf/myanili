@@ -33,6 +33,7 @@ export class PersonComponent {
             this.person = person;
             this.person.about = (this.person.about || '').replace(/\\n/g, '').trim();
             this.glob.notbusy();
+            this.glob.setTitle(person.name);
           });
       }
     });

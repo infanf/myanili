@@ -33,6 +33,7 @@ export class CharacterComponent {
             this.character = character;
             this.character.about = this.character.about.replace(/\\n/g, '').trim();
             this.glob.notbusy();
+            this.glob.setTitle(character.name);
           });
       }
     });

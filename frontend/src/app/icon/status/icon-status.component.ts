@@ -3,7 +3,7 @@ import { WatchStatus } from '@models/mal-anime';
 import { ReadStatus } from '@models/mal-manga';
 import { PersonalStatus } from '@models/media';
 
-import { IconComponent } from '../icon/icon.component';
+import { IconComponent } from '../icon.component';
 
 @Component({
   selector: 'app-icon-status',

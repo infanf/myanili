@@ -58,6 +58,9 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       });
     }
     this.manga = { ...manga };
+    if (this.manga?.title) {
+      this.glob.setTitle(this.manga.title);
+    }
     if (!this.manga.my_extension) {
       this.manga.my_extension = {
         malId: manga.id,
@@ -119,9 +122,9 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
       tags: this.manga.my_list_status.tags,
     };
     try {
-      const extension = (JSON.parse(
+      const extension = JSON.parse(
         Base64.decode(this.manga.my_list_status.comments),
-      ) as unknown) as Partial<MangaExtension>;
+      ) as unknown as Partial<MangaExtension>;
       this.editExtension = {
         ...this.manga.my_extension,
         ...extension,

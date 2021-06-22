@@ -1,28 +1,28 @@
 <div class="container-fluid my-3">
   <div class="row row-cols-2 row-cols-sm-4 row-cols-md-6 g-3">
     <div class="col" *ngFor="let anime of animes">
-      <div class="card h-100 cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
-        <picture>
+      <div class="card h-100 cursor-pointer">
+        <picture routerLink="/anime/details/{{ anime.id }}">
           <source
-            *ngIf="anime.node && anime.node.main_picture"
-            srcset="{{ anime.node.main_picture.medium || anime.node.main_picture.large }}"
+            *ngIf="anime && anime.main_picture"
+            srcset="{{ anime.main_picture.medium || anime.main_picture.large }}"
           />
           <source srcset="/assets/blank-poster.svg" />
           <img src="/assets/blank-poster.svg" alt="poster" class="card-img" />
         </picture>
-        <div class="card-overlay rounded-bottom">
+        <div class="card-overlay rounded-bottom" routerLink="/anime/details/{{ anime.id }}">
           {{
             anime.my_extension?.displayName ||
               (lang === 'en'
-                ? anime.node.alternative_titles?.en
+                ? anime.alternative_titles?.en
                 : lang === 'jp'
-                ? anime.node.alternative_titles?.ja
-                : anime.node.title) ||
-              anime.node.title
+                ? anime.alternative_titles?.ja
+                : anime.title) ||
+              anime.title
           }}
         </div>
-        <ng-container *ngIf="anime.list_status">
-          <ng-container *ngIf="anime.list_status.status === 'current'; else statusicon">
+        <ng-container *ngIf="anime.my_list_status">
+          <ng-container *ngIf="anime.my_list_status.status === 'current'; else statusicon">
             <div
               style="
                 position: absolute;
@@ -32,32 +32,35 @@
                 overflow: hidden;
                 line-height: 1;
               "
+              routerLink="/anime/details/{{ anime.id }}"
             >
               <circle-progress
                 [percent]="
-                  anime.node.num_parts
-                    ? ((anime.list_status?.progress || 0) / anime.node.num_parts!) *
+                  anime.num_parts
+                    ? ((anime.my_list_status?.progress || 0) / anime.num_parts!) *
                       100
                     : 0
                 "
                 [radius]="14"
                 [title]="
                   '' +
-                  anime.list_status?.progress +
+                  anime.my_list_status?.progress +
                   '/' +
-                  (anime.node.num_parts || '?')
+                  (anime.num_parts || '?')
                 "
                 [showTitle]="true"
                 [titleColor]="'currentColor'"
                 [titleFontSize]="'8px'"
-                style="border-radius: 50%;"
-              class="text-white bg-primary"
+                style="border-radius: 50%"
+                class="text-white bg-primary"
               ></circle-progress>
             </div>
           </ng-container>
           <ng-template #statusicon>
             <app-icon-status
-              class="badge rounded-pill bg-primary"
+              routerLink="/anime/details/{{ anime.id }}"
+              class="badge rounded-pill"
+              [class]="classColor(anime)"
               style="
                 position: absolute;
                 top: 0.5rem;
@@ -65,10 +68,18 @@
                 height: 2rem;
                 padding-top: 0.5rem;
               "
-              [status]="anime.list_status.status"
+              *ngIf="anime.my_list_status"
+              [status]="anime.my_list_status.status"
             ></app-icon-status>
           </ng-template>
         </ng-container>
+        <app-icon
+          class="badge rounded-pill bg-white text-dark"
+          style="position: absolute; top: 0.5rem; right: 0.5rem; height: 2rem; padding-top: 0.5rem"
+          *ngIf="!anime.my_list_status"
+          [name]="anime.busy ? 'hourglass-split' : 'plus'"
+          (click)="addToList(anime)"
+        ></app-icon>
       </div>
     </div>
   </div>

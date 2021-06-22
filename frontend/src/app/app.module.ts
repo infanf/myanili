@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { IvyGalleryModule } from 'angular-gallery';
@@ -20,6 +20,8 @@ import { AnimeListComponent } from './anime/list/list.component';
 import { AnimeListListComponent } from './anime/list/list/list.component';
 import { ProducerComponent } from './anime/producer/producer.component';
 import { ScheduleComponent } from './anime/schedule/schedule.component';
+import { SeasonGridComponent } from './anime/season/grid/grid.component';
+import { SeasonListComponent } from './anime/season/list/list.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { TraktComponent } from './anime/trakt/trakt.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
@@ -27,16 +29,19 @@ import { StreamingComponent } from './anime/widget/streaming/streaming.component
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
+import { DayPipe } from './day.pipe';
 import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
-import { IconStatusComponent } from './icon-status/icon-status.component';
 import { AnilistIconComponent } from './icon/anilist/anilist.component';
 import { AnnictIconComponent } from './icon/annict/annict.component';
+import { BakamangaIconComponent } from './icon/bakamanga/bakamanga.component';
 import { IconComponent } from './icon/icon.component';
 import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
+import { LivechartIconComponent } from './icon/livechart/livechart.component';
 import { MalIconComponent } from './icon/mal/mal.component';
 import { SimklIconComponent } from './icon/simkl/simkl.component';
 import { SpotifyIconComponent } from './icon/spotify/spotify.component';
+import { IconStatusComponent } from './icon/status/icon-status.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
@@ -70,6 +75,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     FlagPipe,
     MalPipe,
     TimePipe,
+    DayPipe,
     StreamPipe,
     PlatformPipe,
     ScheduleComponent,
@@ -109,6 +115,10 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     SimklIconComponent,
     AnnictIconComponent,
     ExternalRatingComponent,
+    SeasonGridComponent,
+    SeasonListComponent,
+    LivechartIconComponent,
+    BakamangaIconComponent,
   ],
   imports: [
     BrowserModule,
@@ -126,7 +136,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
       showTitle: false,
       showUnits: false,
       showSubtitle: false,
-      outerStrokeColor: '#2c3e50',
+      outerStrokeColor: 'currentColor',
       innerStrokeColor: 'rgba(0,0,0,0.15)',
       animation: false,
       backgroundPadding: 0,
@@ -136,7 +146,8 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     AngularSvgIconModule.forRoot(),
     GraphQLModule,
   ],
-  providers: [TimePipe, StreamPipe, PlatformPipe],
+  providers: [TimePipe, StreamPipe, PlatformPipe, Title, DayPipe],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}
