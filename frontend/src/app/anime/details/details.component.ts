@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ExtRating, Picture } from '@models/components';
+import { ExtRating, MainService, Picture } from '@models/components';
 import { AnimeExtension } from '@models/mal-anime';
 import { Media, MediaExtension, MyMediaUpdate, PersonalStatus } from '@models/media';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,7 +25,9 @@ import { TraktComponent } from '../trakt/trakt.component';
 })
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
+  @Input() service: MainService = 'mal';
   anime?: Media;
+
   edit = false;
   busy = false;
   editBackup?: Partial<MyMediaUpdate>;
@@ -49,10 +51,11 @@ export class AnimeDetailsComponent implements OnInit {
     private annict: AnnictService,
   ) {
     this.route.paramMap.subscribe(async params => {
-      const newId = Number(params.get('id'));
-      if (newId !== this.id) {
+      const [service, newId] = params.get('id')?.split(':') || [];
+      if (Number(newId) !== this.id) {
         this.ratings = [];
-        this.id = newId;
+        this.id = Number(newId);
+        this.service = service as MainService;
         delete this.anime;
         this.busy = false;
         this.edit = false;
@@ -66,7 +69,7 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const anime = await this.animeService.getAnime(this.id);
+    const anime = await this.animeService.getAnime(this.id, this.service);
     if (!anime) return;
     if (anime.mean) {
       this.setRating('mal', {

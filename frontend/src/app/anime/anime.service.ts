@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MainService } from '@models/components';
 import { AnimeCharacter, AnimeStaff, WatchStatus } from '@models/mal-anime';
 import { RelatedManga } from '@models/mal-manga';
 import {
@@ -83,9 +84,10 @@ export class AnimeService {
     });
   }
 
-  async getAnime(id: number) {
+  async getAnime(id: number, service?: MainService) {
     let anime: Media | undefined;
-    switch (this.mainService) {
+    if (!service) service = this.mainService;
+    switch (service) {
       case 'anilist':
         anime = await this.anilist.get(id, 'ANIME');
         break;
