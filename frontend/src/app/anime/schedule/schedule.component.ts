@@ -27,6 +27,8 @@ export class ScheduleComponent {
       this.season = season.season;
       this.glob.busy();
       if (await this.update(season.year, season.season)) {
+        const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
+        this.glob.setTitle(`${season.year} ${seasons[season.season]} – Schedule`);
         this.glob.notbusy();
       }
     });

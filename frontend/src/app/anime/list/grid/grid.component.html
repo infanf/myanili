@@ -21,12 +21,54 @@
               anime.node.title
           }}
         </div>
-        <app-icon-status
-          class="badge rounded-pill bg-primary"
-          style="position: absolute; top: 0.5rem; right: 0.5rem"
-          *ngIf="anime.list_status"
-          [status]="anime.list_status.status"
-        ></app-icon-status>
+        <ng-container *ngIf="anime.list_status">
+          <ng-container *ngIf="anime.list_status.status === 'watching'; else statusicon">
+            <div
+              style="
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                border-radius: 50%;
+                overflow: hidden;
+                line-height: 1;
+              "
+            >
+              <circle-progress
+                [percent]="
+                  anime.node.num_episodes
+                    ? ((anime.list_status?.num_episodes_watched || 0) / anime.node.num_episodes!) *
+                      100
+                    : 0
+                "
+                [radius]="14"
+                [title]="
+                  '' +
+                  anime.list_status?.num_episodes_watched +
+                  '/' +
+                  (anime.node.num_episodes || '?')
+                "
+                [showTitle]="true"
+                [titleColor]="'currentColor'"
+                [titleFontSize]="'8px'"
+                style="border-radius: 50%;"
+              class="text-white bg-primary"
+              ></circle-progress>
+            </div>
+          </ng-container>
+          <ng-template #statusicon>
+            <app-icon-status
+              class="badge rounded-pill bg-primary"
+              style="
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                height: 2rem;
+                padding-top: 0.5rem;
+              "
+              [status]="anime.list_status.status"
+            ></app-icon-status>
+          </ng-template>
+        </ng-container>
       </div>
     </div>
   </div>

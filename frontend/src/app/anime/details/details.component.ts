@@ -74,6 +74,9 @@ export class AnimeDetailsComponent implements OnInit {
       });
     }
     this.anime = { ...anime };
+    if (this.anime?.title) {
+      this.glob.setTitle(this.anime.title);
+    }
     if (!this.anime.my_extension) {
       this.anime.my_extension = {
         malId: anime.id,
@@ -141,9 +144,9 @@ export class AnimeDetailsComponent implements OnInit {
       tags: this.anime.my_list_status.tags?.join(','),
     };
     try {
-      const extension = (JSON.parse(
+      const extension = JSON.parse(
         Base64.decode(this.anime.my_list_status.comments),
-      ) as unknown) as Partial<AnimeExtension>;
+      ) as unknown as Partial<AnimeExtension>;
       this.editExtension = {
         series: '',
         seasonNumber: 1,

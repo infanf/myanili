@@ -13,7 +13,9 @@ import { MangaService } from '../manga.service';
 export class ReadlistWrapperComponent implements OnInit {
   mangas: ListManga[] = [];
 
-  constructor(private mangaservice: MangaService, private glob: GlobalService) {}
+  constructor(private mangaservice: MangaService, private glob: GlobalService) {
+    this.glob.setTitle('Readlist – Today');
+  }
 
   async ngOnInit() {
     this.glob.busy();

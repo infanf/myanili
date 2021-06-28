@@ -1,0 +1,22 @@
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    width: 100%;
+    text-shadow: 0 0 3px black;
+    font-weight: 600;
+    max-height: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  picture {
+      height: 100%;
+  }
+  
+  img {
+      height: 100%;
+  }
+  

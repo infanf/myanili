@@ -1,13 +1,19 @@
-<span class="d-inline-block me-2" style="position: relative" *ngIf="provider">
-  <svg-icon
-    class="d-md-inline d-none"
-    [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
-    src="/assets/stream/{{ provider || 'plex' }}.svg"
-  ></svg-icon>
-  <svg-icon
-    class="d-md-none"
-    [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
-    src="/assets/stream/icon-{{ provider || 'plex' }}.svg"
-  ></svg-icon>
-  <span class="flag">{{ country | flag: true }}</span>
+<span class="d-inline-block me-2" style="position: relative">
+  <ng-container *ngIf="provider">
+    <svg-icon
+      class="d-md-inline d-none"
+      [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
+      src="/assets/stream/{{ provider || 'plex' }}.svg"
+    ></svg-icon>
+    <svg-icon
+      class="d-md-none"
+      [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
+      src="/assets/stream/icon-{{ provider || 'plex' }}.svg"
+    ></svg-icon>
+    <span class="flag">{{ country | flag: true }}</span>
+  </ng-container>
+  <ng-container *ngIf="!provider">
+    <svg class="d-md-inline d-none" style="width: 5rem; height: 1rem"></svg>
+    <svg class="d-md-none" style="width: 1rem; height: 1rem"></svg>
+  </ng-container>
 </span>

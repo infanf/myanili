@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { WatchStatus } from '@models/anime';
 import { ReadStatus } from '@models/manga';
 
-import { IconComponent } from '../icon/icon.component';
+import { IconComponent } from '../icon.component';
 
 @Component({
   selector: 'app-icon-status',
