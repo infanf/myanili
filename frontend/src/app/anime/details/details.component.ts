@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
+import { MalService } from 'src/app/mal.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
@@ -45,6 +46,7 @@ export class AnimeDetailsComponent implements OnInit {
     private trakt: TraktService,
     private modalService: NgbModal,
     private gallery: Gallery,
+    private mal: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private simkl: SimklService,
@@ -72,7 +74,7 @@ export class AnimeDetailsComponent implements OnInit {
     const anime = await this.animeService.getAnime(this.id, this.service);
     if (!anime) return;
     if (anime.mean) {
-      this.setRating('mal', {
+      this.setRating(this.service, {
         nom: anime.mean,
         norm: anime.mean * 10,
         ratings: anime.num_scoring_users,
@@ -82,32 +84,43 @@ export class AnimeDetailsComponent implements OnInit {
     if (this.anime?.title) {
       this.glob.setTitle(this.anime.title);
     }
+    const malId = anime.id_mal;
     if (!this.anime.my_extension) {
-      this.anime.my_extension = {
-        malId: anime.id,
-      };
+      this.anime.my_extension = { malId };
     } else {
-      this.anime.my_extension.malId = anime.id;
+      this.anime.my_extension.malId = malId;
     }
+    if (this.service === 'anilist') {
+      this.anime.my_extension.anilistId = anime.id;
+    }
+    if (this.service === 'kitsu') {
+      this.anime.my_extension.kitsuId = { kitsuId: anime.id };
+    }
+    this.glob.notbusy();
     if (
-      !this.anime.my_extension.kitsuId ||
-      !this.anime.my_extension.anilistId ||
-      !this.anime.my_extension.simklId ||
-      !this.anime.my_extension.annictId
+      malId &&
+      (!this.anime.my_extension.kitsuId ||
+        !this.anime.my_extension.anilistId ||
+        !this.anime.my_extension.simklId ||
+        !this.anime.my_extension.annictId)
     ) {
       const [anilistId, kitsuId, simklId, annictId] = await Promise.all([
-        this.anilist.getId(this.id, 'ANIME'),
-        this.kitsu.getId(this.id, 'anime'),
-        this.simkl.getId(this.id),
-        this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title),
+        this.anilist.getId(malId, 'ANIME'),
+        this.kitsu.getId(malId, 'anime'),
+        this.simkl.getId(malId),
+        this.annict.getId(malId, anime.alternative_titles?.ja || anime.title),
       ]);
-      this.anime.my_extension.anilistId = anilistId;
-      this.anime.my_extension.kitsuId = kitsuId;
+      if (this.service !== 'anilist') {
+        this.anime.my_extension.anilistId = anilistId;
+      }
+      if (this.service !== 'kitsu') {
+        this.anime.my_extension.kitsuId = kitsuId;
+      }
       this.anime.my_extension.simklId = simklId;
       this.anime.my_extension.annictId = annictId;
       if (anime.my_extension) {
         await this.animeService.updateAnime(
-          { malId: anime.id, kitsuId, simklId, anilistId, annictId },
+          { malId, kitsuId, simklId, anilistId, annictId },
           {
             comments: Base64.encode(
               JSON.stringify({
@@ -122,7 +135,6 @@ export class AnimeDetailsComponent implements OnInit {
         );
       }
     }
-    this.glob.notbusy();
     await this.getRatings();
   }
 
@@ -210,7 +222,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     await this.animeService.updateAnime(
       {
-        malId: this.anime.id,
+        malId: this.anime.my_extension?.malId,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
@@ -246,7 +258,7 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     await this.animeService.updateAnime(
       {
-        malId: this.anime.id,
+        malId: this.anime.my_extension?.malId,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
@@ -264,7 +276,7 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     await this.animeService.updateAnime(
       {
-        malId: this.anime.id,
+        malId: this.anime.my_extension?.malId,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
@@ -282,7 +294,7 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     await this.animeService.updateAnime(
       {
-        malId: this.anime.id,
+        malId: this.anime.my_extension?.malId,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
@@ -321,7 +333,7 @@ export class AnimeDetailsComponent implements OnInit {
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
         {
-          malId: this.anime.id,
+          malId: this.anime.my_extension?.malId,
           anilistId: this.anime.my_extension?.anilistId,
           kitsuId: this.anime.my_extension?.kitsuId,
           simklId: this.anime.my_extension?.simklId,
@@ -433,6 +445,11 @@ export class AnimeDetailsComponent implements OnInit {
         .then(rating => {
           this.setRating('trakt', rating);
         });
+    }
+    if (!this.getRating('mal')) {
+      this.mal.getRating(this.anime?.my_extension?.malId).then(rating => {
+        this.setRating('mal', rating);
+      });
     }
     if (!this.getRating('anilist')) {
       this.anilist.getRating(this.anime?.my_extension?.anilistId).then(rating => {

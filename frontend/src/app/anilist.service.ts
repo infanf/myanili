@@ -172,7 +172,7 @@ export class AnilistService {
         .mutate<{ SaveMediaListEntry: AnilistSaveMediaListEntry }>({
           errorPolicy: 'ignore',
           mutation: gql`
-            mutation(
+            mutation (
               $id: Int
               $mediaId: Int
               $status: MediaListStatus
@@ -279,6 +279,7 @@ export class AnilistService {
             query media($id: Int, $type: MediaType, $isAdult: Boolean) {
               Media(id: $id, type: $type, isAdult: $isAdult) {
                 id
+                idMal
                 title {
                   userPreferred
                   romaji

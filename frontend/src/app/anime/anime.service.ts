@@ -112,7 +112,7 @@ export class AnimeService {
 
   async updateAnime(
     ids: {
-      malId: number;
+      malId?: number;
       anilistId?: number;
       kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
       simklId?: number;
@@ -181,7 +181,7 @@ export class AnimeService {
         repeating: malResponse.is_rewatching,
         repeats: malResponse.num_times_rewatched,
         score: malResponse.score,
-        tags: malResponse.tags.join(','),
+        tags: malResponse.tags?.join(','),
         status: this.mal.fromMalStatus(malResponse.status) || data.status || 'planning',
       };
     } else if (ids.anilistId && alResponse) {

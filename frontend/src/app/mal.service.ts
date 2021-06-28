@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ExtRating } from '@models/components';
 import {
   Anime,
   AnimeStatus,
@@ -36,7 +37,7 @@ export class MalService {
       this.httpClient
         .get(`${this.backendUrl}${path}`, { withCredentials: true })
         .subscribe(value => {
-          res((value as unknown) as T);
+          res(value as unknown as T);
         });
     });
   }
@@ -47,7 +48,7 @@ export class MalService {
       this.httpClient
         .put(`${this.backendUrl}${path}`, data, { withCredentials: true })
         .subscribe(value => {
-          res((value as unknown) as T);
+          res(value as unknown as T);
         });
     });
   }
@@ -58,7 +59,7 @@ export class MalService {
       this.httpClient
         .post(`${this.backendUrl}${path}`, data, { withCredentials: true })
         .subscribe(value => {
-          res((value as unknown) as T);
+          res(value as unknown as T);
         });
     });
   }
@@ -157,6 +158,17 @@ export class MalService {
             status: this.fromMalStatus(malMedia.my_list_status.status),
           }
         : undefined,
+    };
+  }
+
+  async getRating(id?: number, type: 'anime' | 'manga' = 'anime'): Promise<ExtRating | undefined> {
+    if (!id) return;
+    const media = await this.getMedia(id, type);
+    if (!media) return;
+    return {
+      nom: media.mean,
+      norm: media.mean * 10,
+      ratings: media.num_scoring_users,
     };
   }
 

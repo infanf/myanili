@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MainService } from '@models/components';
 import { ListMedia, Media, MyMediaUpdate } from '@models/media';
 import * as moment from 'moment';
 import { GlobalService } from 'src/app/global.service';
@@ -16,6 +17,7 @@ import { TraktService } from '../trakt.service';
 export class WatchlistComponent implements OnInit {
   animes: ListMedia[] = [];
   lang: Language = 'default';
+  service: MainService = 'mal';
 
   constructor(
     private animeService: AnimeService,
@@ -28,6 +30,9 @@ export class WatchlistComponent implements OnInit {
     this.glob.busy();
     this.settings.language.subscribe(lang => {
       this.lang = lang;
+    });
+    this.settings.mainService.subscribe(service => {
+      this.service = service;
     });
   }
 
@@ -88,7 +93,7 @@ export class WatchlistComponent implements OnInit {
     anime.busy = true;
     const currentEpisode = anime.list_status.progress;
     const data = {
-      num_watched_episodes: currentEpisode + 1,
+      progress: currentEpisode + 1,
     } as Partial<MyMediaUpdate>;
     let completed = false;
     if (currentEpisode + 1 === anime.node.num_parts) {
@@ -103,12 +108,12 @@ export class WatchlistComponent implements OnInit {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const fullAnime = await this.animeService.getAnime(anime.node.id);
+    const fullAnime = await this.animeService.getAnime(anime.node.id, this.service);
     if (!fullAnime) return;
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
         {
-          malId: anime.node.id,
+          malId: anime.my_extension?.malId,
           anilistId: anime.my_extension?.anilistId,
           kitsuId: anime.my_extension?.kitsuId,
           simklId: anime.my_extension?.simklId,

@@ -448,7 +448,7 @@
         <div class="row" *ngIf="!edit">
           <div class="col-4 fw-bold text-end">Links</div>
           <div class="col-8">
-            <div class="row">
+            <div *ngIf="anime.my_extension?.malId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
                   <app-external-rating [rating]="getRating('mal')"></app-external-rating>
@@ -595,22 +595,22 @@
           </section>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2" *ngIf="anime?.opening_themes || anime?.ending_themes">
+      <li [ngbNavItem]="2" *ngIf="anime?.opening_themes?.length || anime?.ending_themes?.length">
         <a ngbNavLink>Songs</a>
         <ng-template ngbNavContent>
           <app-anime-songs [anime]="anime"></app-anime-songs>
         </ng-template>
       </li>
-      <li [ngbNavItem]="3">
+      <li [ngbNavItem]="3" *ngIf="anime.my_extension?.malId">
         <a ngbNavLink>Characters</a>
         <ng-template ngbNavContent>
-          <app-anime-characters [id]="id"></app-anime-characters>
+          <app-anime-characters [id]="anime.my_extension!.malId!"></app-anime-characters>
         </ng-template>
       </li>
-      <li [ngbNavItem]="6">
+      <li [ngbNavItem]="6" *ngIf="anime.my_extension?.malId">
         <a ngbNavLink>Staff</a>
         <ng-template ngbNavContent>
-          <app-anime-staff [id]="id"></app-anime-staff>
+          <app-anime-staff [id]="anime.my_extension!.malId!"></app-anime-staff>
         </ng-template>
       </li>
       <li

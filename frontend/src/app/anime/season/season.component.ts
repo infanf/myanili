@@ -60,7 +60,7 @@ export class SeasonComponent {
     anime.busy = true;
     const statusResponse = await this.animeService.updateAnime(
       {
-        malId: anime.id,
+        malId: anime.my_extension?.malId,
         anilistId: anime.my_extension?.anilistId,
         kitsuId: anime.my_extension?.kitsuId,
         simklId: anime.my_extension?.simklId,
