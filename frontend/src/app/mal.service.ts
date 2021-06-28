@@ -10,7 +10,7 @@ import {
   WatchStatus,
 } from '@models/mal-anime';
 import { ListManga, Manga, MangaStatus, ReadStatus } from '@models/mal-manga';
-import { ListMedia, Media, MediaStatus, PersonalStatus } from '@models/media';
+import { ListMedia, Media, MediaStatus, PersonalStatus, RelatedMedia } from '@models/media';
 import { MalUser, UserResponse } from '@models/user';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -121,7 +121,7 @@ export class MalService {
       authors: 'authors' in malMedia ? malMedia.authors : undefined,
       average_episode_duration:
         'average_episode_duration' in malMedia ? malMedia.average_episode_duration : undefined,
-      related: [],
+      related: await this.getRelated(id, type),
       pictures: [],
       recommendations: [],
       my_list_status: malMedia.my_list_status
@@ -290,6 +290,23 @@ export class MalService {
       default:
         return 'not_yet_released';
     }
+  }
+
+  async getRelated(id: number, type: 'anime' | 'manga' = 'anime'): Promise<RelatedMedia[]> {
+    const jikanMedia = await this.getJikan(type, id);
+    const relatedMedia = [] as RelatedMedia[];
+    for (const key in jikanMedia.related) {
+      if (!jikanMedia.related[key]) continue;
+      for (const related of jikanMedia.related[key]) {
+        relatedMedia.push({
+          node: { id: related.mal_id, title: related.name, num_parts: 0 },
+          type,
+          relation_type: key.replace(' ', '_').toLowerCase(),
+          relation_type_formatted: key,
+        });
+      }
+    }
+    return relatedMedia;
   }
 }
 

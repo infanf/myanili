@@ -356,6 +356,24 @@ export class AnilistService {
                   updatedAt
                   createdAt
                 }
+                relations {
+                  edges {
+                    relationType
+                    node {
+                      id
+                      type
+                      title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                      }
+                      episodes
+                      chapters
+                    }
+                    id
+                  }
+                }
                 stats {
                   statusDistribution {
                     status
@@ -395,7 +413,21 @@ export class AnilistService {
               },
               synopsis: alMedia.description,
               pictures: [],
-              related: [],
+              related:
+                alMedia.relations?.edges.map(related => ({
+                  relation_type: related.relationType.toLowerCase(),
+                  relation_type_formatted: related.relationType
+                    .replace('_', ' ')
+                    .toLowerCase()
+                    .replace(/\w\S*/g, w => w.replace(/^\w/, c => c.toUpperCase())),
+                  type: related.node.type === 'ANIME' ? 'anime' : 'manga',
+                  node: {
+                    id: related.node.id,
+                    num_parts: related.node.episodes || related.node.chapters || 0,
+                    num_volumes: related.node.volumes,
+                    title: related.node.title.romaji,
+                  },
+                })) || [],
               recommendations: [],
               companies: [],
               opening_themes: [],

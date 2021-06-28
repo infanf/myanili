@@ -93,9 +93,23 @@ interface Media {
   season: Season;
   seasonYear: number;
   mediaListEntry?: MediaList;
+  relations: { edges: RelatedMedia[] };
 }
 
 export type AnilistMedia = Media;
+
+interface RelatedMedia {
+  relationType: string;
+  node: {
+    id: number;
+    type: 'ANIME' | 'MANGA';
+    title: MediaTitle;
+    episodes?: number;
+    chapters?: number;
+    volumes?: number;
+  };
+  id: number;
+}
 
 interface StaffConnection {
   edges: StaffEdge[];

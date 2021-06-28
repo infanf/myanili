@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MainService } from '@models/components';
 import { AnimeCharacter, AnimeStaff, WatchStatus } from '@models/mal-anime';
-import { RelatedManga } from '@models/mal-manga';
 import {
   ListMedia,
   Media,
@@ -198,24 +197,6 @@ export class AnimeService {
       };
     }
     return false;
-  }
-
-  async getManga(id: number): Promise<RelatedManga[]> {
-    const jikanime = await this.mal.getJikan('anime', id);
-    const mangas = [] as RelatedManga[];
-    for (const key in jikanime.related) {
-      if (!jikanime.related[key]) continue;
-      for (const related of jikanime.related[key]) {
-        if (related.type === 'manga') {
-          mangas.push({
-            node: { id: related.mal_id, title: related.name },
-            relation_type: key.replace(' ', '_').toLowerCase(),
-            relation_type_formatted: key,
-          });
-        }
-      }
-    }
-    return mangas;
   }
 
   async getCharacters(id: number): Promise<AnimeCharacter[]> {

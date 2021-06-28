@@ -167,6 +167,7 @@ export interface MediaNode {
 
 interface RelatedMediaInterface {
   node: MediaNode;
+  type: 'anime' | 'manga';
   relation_type: string;
   relation_type_formatted: string;
 }

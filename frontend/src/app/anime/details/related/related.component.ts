@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { MainService } from '@models/components';
 import { RelatedMedia } from '@models/media';
+import { SettingsService } from 'src/app/settings/settings.service';
 
 @Component({
   selector: 'app-anime-related',
@@ -7,19 +9,25 @@ import { RelatedMedia } from '@models/media';
   styleUrls: ['./related.component.scss'],
 })
 export class AnimeRelatedComponent {
-  @Input() related_anime: RelatedMedia[] = [];
-  getRelatedAnimes() {
-    if (!this.related_anime?.length) return [];
-    const types = this.related_anime
+  @Input() related: RelatedMedia[] = [];
+  service: MainService = 'mal';
+
+  constructor(private settings: SettingsService) {
+    this.settings.mainService.subscribe(service => {
+      this.service = service;
+    });
+  }
+
+  getRelatedMedia() {
+    if (!this.related?.length) return [];
+    const types = this.related
       .map(an => an.relation_type_formatted)
       .filter((value, index, self) => self.indexOf(value) === index);
-    const relatedAnime = [];
+    const relatedMedia = [];
     for (const type of types) {
-      const related = this.related_anime
-        .filter(value => value.relation_type_formatted === type)
-        .map(an => an.node);
-      relatedAnime.push({ name: type, entries: related });
+      const related = this.related.filter(value => value.relation_type_formatted === type);
+      relatedMedia.push({ name: type, entries: related });
     }
-    return relatedAnime;
+    return relatedMedia;
   }
 }
