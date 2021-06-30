@@ -40,8 +40,13 @@ export class WatchlistComponent implements OnInit {
           return true;
         }
         if (anime.my_extension.simulDay === this.getLast8am().day()) return true;
-        if ((anime.my_extension.simulDay % 7) + 3 < this.getLast8am().day() + 7) {
-          return moment(anime.list_status.updated_at) < moment().subtract(7, 'd');
+        if ((this.getLast8am().day() - anime.my_extension.simulDay + 14) % 7 <= 4) {
+          const inFuture = moment(anime.node.start_date) > moment();
+          const newShow = anime.list_status.num_episodes_watched === 0;
+          return (
+            moment(anime.list_status.updated_at) < moment().subtract(5, 'd') ||
+            (!inFuture && newShow)
+          );
         }
         return false;
       })
