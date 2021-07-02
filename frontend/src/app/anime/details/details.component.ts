@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
-import { ExtRating, Picture } from '@models/components';
+import { ExtRating, MainService, Picture } from '@models/components';
+import { AnimeExtension } from '@models/mal-anime';
+import { Media, MediaExtension, MyMediaUpdate, PersonalStatus } from '@models/media';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
@@ -9,6 +10,7 @@ import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
+import { MalService } from 'src/app/mal.service';
 import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
@@ -24,11 +26,13 @@ import { TraktComponent } from '../trakt/trakt.component';
 })
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
-  anime?: Anime;
+  @Input() service: MainService = 'mal';
+  anime?: Media;
+
   edit = false;
   busy = false;
-  editBackup?: Partial<MyAnimeUpdate>;
-  editExtension?: AnimeExtension;
+  editBackup?: Partial<MyMediaUpdate>;
+  editExtension?: MediaExtension;
   traktUser?: string;
   activeTab = 1;
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
@@ -42,16 +46,18 @@ export class AnimeDetailsComponent implements OnInit {
     private trakt: TraktService,
     private modalService: NgbModal,
     private gallery: Gallery,
+    private mal: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private simkl: SimklService,
     private annict: AnnictService,
   ) {
     this.route.paramMap.subscribe(async params => {
-      const newId = Number(params.get('id'));
-      if (newId !== this.id) {
+      const [service, newId] = params.get('id')?.split(':') || [];
+      if (Number(newId) !== this.id) {
         this.ratings = [];
-        this.id = newId;
+        this.id = Number(newId);
+        this.service = service as MainService;
         delete this.anime;
         this.busy = false;
         this.edit = false;
@@ -65,9 +71,10 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const anime = await this.animeService.getAnime(this.id);
+    const anime = await this.animeService.getAnime(this.id, this.service);
+    if (!anime) return;
     if (anime.mean) {
-      this.setRating('mal', {
+      this.setRating(this.service, {
         nom: anime.mean,
         norm: anime.mean * 10,
         ratings: anime.num_scoring_users,
@@ -77,32 +84,43 @@ export class AnimeDetailsComponent implements OnInit {
     if (this.anime?.title) {
       this.glob.setTitle(this.anime.title);
     }
+    const malId = anime.id_mal;
     if (!this.anime.my_extension) {
-      this.anime.my_extension = {
-        malId: anime.id,
-      };
+      this.anime.my_extension = { malId };
     } else {
-      this.anime.my_extension.malId = anime.id;
+      this.anime.my_extension.malId = malId;
     }
+    if (this.service === 'anilist') {
+      this.anime.my_extension.anilistId = anime.id;
+    }
+    if (this.service === 'kitsu') {
+      this.anime.my_extension.kitsuId = { kitsuId: anime.id };
+    }
+    this.glob.notbusy();
     if (
-      !this.anime.my_extension.kitsuId ||
-      !this.anime.my_extension.anilistId ||
-      !this.anime.my_extension.simklId ||
-      !this.anime.my_extension.annictId
+      malId &&
+      (!this.anime.my_extension.kitsuId ||
+        !this.anime.my_extension.anilistId ||
+        !this.anime.my_extension.simklId ||
+        !this.anime.my_extension.annictId)
     ) {
       const [anilistId, kitsuId, simklId, annictId] = await Promise.all([
-        this.anilist.getId(this.id, 'ANIME'),
-        this.kitsu.getId(this.id, 'anime'),
-        this.simkl.getId(this.id),
-        this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title),
+        this.anilist.getId(malId, 'ANIME'),
+        this.kitsu.getId(malId, 'anime'),
+        this.simkl.getId(malId),
+        this.annict.getId(malId, anime.alternative_titles?.ja || anime.title),
       ]);
-      this.anime.my_extension.anilistId = anilistId;
-      this.anime.my_extension.kitsuId = kitsuId;
+      if (this.service !== 'anilist') {
+        this.anime.my_extension.anilistId = anilistId;
+      }
+      if (this.service !== 'kitsu') {
+        this.anime.my_extension.kitsuId = kitsuId;
+      }
       this.anime.my_extension.simklId = simklId;
       this.anime.my_extension.annictId = annictId;
       if (anime.my_extension) {
         await this.animeService.updateAnime(
-          { malId: anime.id, kitsuId, simklId, anilistId, annictId },
+          { malId, kitsuId, simklId, anilistId, annictId },
           {
             comments: Base64.encode(
               JSON.stringify({
@@ -117,7 +135,6 @@ export class AnimeDetailsComponent implements OnInit {
         );
       }
     }
-    this.glob.notbusy();
     await this.getRatings();
   }
 
@@ -135,12 +152,12 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime?.my_list_status) return;
     this.edit = true;
     this.editBackup = {
-      status: this.anime.my_list_status.status || 'plan_to_watch',
-      is_rewatching: this.anime.my_list_status.is_rewatching,
+      status: this.anime.my_list_status.status || 'planning',
+      repeating: this.anime.my_list_status.repeating,
       score: this.anime.my_list_status.score,
-      num_watched_episodes: this.anime.my_list_status.num_episodes_watched,
+      repeats: this.anime.my_list_status.repeats,
       priority: this.anime.my_list_status.priority,
-      rewatch_value: this.anime.my_list_status.rewatch_value,
+      repeat_value: this.anime.my_list_status.repeat_value,
       tags: this.anime.my_list_status.tags?.join(','),
     };
     try {
@@ -181,31 +198,31 @@ export class AnimeDetailsComponent implements OnInit {
     }
     const updateData = {
       comments: Base64.encode(JSON.stringify(this.editExtension)),
-    } as Partial<MyAnimeUpdate>;
+    } as Partial<MyMediaUpdate>;
     if (this.editBackup.status !== this.anime.my_list_status.status) {
       updateData.status = this.editBackup?.status;
     }
-    if (this.editBackup.is_rewatching !== this.anime.my_list_status.is_rewatching) {
-      updateData.is_rewatching = this.editBackup?.is_rewatching;
+    if (this.editBackup.repeating !== this.anime.my_list_status.repeating) {
+      updateData.repeating = this.editBackup?.repeating;
     }
     if (this.editBackup.score !== this.anime.my_list_status.score) {
       updateData.score = this.editBackup?.score;
     }
-    if (this.editBackup.num_watched_episodes !== this.anime.my_list_status.num_episodes_watched) {
-      updateData.num_watched_episodes = this.editBackup?.num_watched_episodes;
+    if (this.editBackup.progress !== this.anime.my_list_status.progress) {
+      updateData.progress = this.editBackup?.progress;
     }
     if (this.editBackup.priority !== this.anime.my_list_status.priority) {
       updateData.priority = this.editBackup?.priority;
     }
-    if (this.editBackup.rewatch_value !== this.anime.my_list_status.rewatch_value) {
-      updateData.rewatch_value = this.editBackup?.rewatch_value;
+    if (this.editBackup.repeat_value !== this.anime.my_list_status.repeat_value) {
+      updateData.repeat_value = this.editBackup?.repeat_value;
     }
     if (this.editBackup.tags !== this.anime.my_list_status.tags?.join(',')) {
       updateData.tags = this.editBackup?.tags;
     }
     await this.animeService.updateAnime(
       {
-        malId: this.anime.id,
+        malId: this.anime.my_extension?.malId,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
@@ -241,25 +258,25 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     await this.animeService.updateAnime(
       {
-        malId: this.anime.id,
+        malId: this.anime.my_extension?.malId,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
       },
-      { status: 'plan_to_watch' },
+      { status: 'planning' },
     );
     await this.ngOnInit();
     this.busy = false;
   }
 
-  async setStatus(status: WatchStatus) {
+  async setStatus(status: PersonalStatus) {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
     await this.animeService.updateAnime(
       {
-        malId: this.anime.id,
+        malId: this.anime.my_extension?.malId,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
@@ -277,7 +294,7 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     await this.animeService.updateAnime(
       {
-        malId: this.anime.id,
+        malId: this.anime.my_extension?.malId,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
@@ -285,8 +302,8 @@ export class AnimeDetailsComponent implements OnInit {
       },
       {
         status: 'completed',
-        is_rewatching: true,
-        num_watched_episodes: 0,
+        repeating: true,
+        progress: 0,
       },
     );
     await this.ngOnInit();
@@ -296,16 +313,16 @@ export class AnimeDetailsComponent implements OnInit {
   async plusOne() {
     if (!this.anime || !this.anime.my_list_status) return;
     this.glob.busy();
-    const currentEpisode = this.anime.my_list_status?.num_episodes_watched || 0;
+    const currentEpisode = this.anime.my_list_status?.progress || 0;
     const data = {
-      num_watched_episodes: currentEpisode + 1,
-    } as Partial<MyAnimeUpdate>;
+      progress: currentEpisode + 1,
+    } as Partial<MyMediaUpdate>;
     let completed = false;
-    if (currentEpisode + 1 === this.anime.num_episodes) {
+    if (currentEpisode + 1 === this.anime.num_parts) {
       data.status = 'completed';
-      data.is_rewatching = false;
-      if (this.anime.my_list_status.is_rewatching) {
-        data.num_times_rewatched = this.anime.my_list_status.num_times_rewatched + 1 || 1;
+      data.repeating = false;
+      if (this.anime.my_list_status.repeating) {
+        data.repeats = this.anime.my_list_status.repeats + 1 || 1;
       }
       completed = true;
       if (!this.anime.my_list_status?.score) {
@@ -316,7 +333,7 @@ export class AnimeDetailsComponent implements OnInit {
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
         {
-          malId: this.anime.id,
+          malId: this.anime.my_extension?.malId,
           anilistId: this.anime.my_extension?.anilistId,
           kitsuId: this.anime.my_extension?.kitsuId,
           simklId: this.anime.my_extension?.simklId,
@@ -330,35 +347,37 @@ export class AnimeDetailsComponent implements OnInit {
         currentEpisode + 1,
       ),
     ]);
-    if (completed) {
-      animeStatus.is_rewatching = false;
-      const sequels = this.anime.related_anime.filter(
-        related => related.relation_type === 'sequel',
-      );
-      if (sequels.length) {
-        const sequel = await this.animeService.getAnime(sequels[0].node.id);
-        if (sequel.my_list_status?.status === 'completed') {
-          const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
-          if (startSequel) {
-            await this.animeService.updateAnime(
-              { malId: sequel.id },
-              { status: 'completed', is_rewatching: true, num_watched_episodes: 0 },
-            );
+    if (animeStatus) {
+      if (completed) {
+        animeStatus.repeating = false;
+        const sequels = this.anime.related.filter(related => related.relation_type === 'sequel');
+        if (sequels.length) {
+          const sequel = await this.animeService.getAnime(sequels[0].node.id);
+          if (sequel) {
+            if (sequel.my_list_status?.status === 'completed') {
+              const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
+              if (startSequel) {
+                await this.animeService.updateAnime(
+                  { malId: sequel.id },
+                  { status: 'completed', repeating: true, progress: 0 },
+                );
+              }
+            } else {
+              const startSequel = confirm(`Start watching sequel "${sequel.title}"?`);
+              if (startSequel) {
+                await this.animeService.updateAnime({ malId: sequel.id }, { status: 'current' });
+              }
+            }
           }
-        } else {
-          const startSequel = confirm(`Start watching sequel "${sequel.title}"?`);
-          if (startSequel) {
-            await this.animeService.updateAnime({ malId: sequel.id }, { status: 'watching' });
-          }
+          this.ngOnInit();
         }
-        this.ngOnInit();
       }
+      this.anime.my_list_status.progress = animeStatus.progress;
+      this.anime.my_list_status.status = animeStatus.status;
+      this.anime.my_list_status.score = animeStatus.score;
+      this.anime.my_list_status.repeating = animeStatus.repeating;
+      this.anime.my_list_status.repeats = animeStatus.repeats;
     }
-    this.anime.my_list_status.num_episodes_watched = animeStatus.num_episodes_watched;
-    this.anime.my_list_status.status = animeStatus.status;
-    this.anime.my_list_status.score = animeStatus.score;
-    this.anime.my_list_status.is_rewatching = animeStatus.is_rewatching;
-    this.anime.my_list_status.num_times_rewatched = animeStatus.num_times_rewatched;
     this.glob.notbusy();
   }
 
@@ -373,7 +392,7 @@ export class AnimeDetailsComponent implements OnInit {
           : await this.trakt.scrobble(
               this.anime.my_extension.trakt,
               this.anime.my_extension.seasonNumber || 1,
-              (this.anime.my_list_status?.num_episodes_watched || 0) +
+              (this.anime.my_list_status?.progress || 0) +
                 1 +
                 (this.anime.my_extension.episodeCorOffset || 0),
             ),
@@ -426,6 +445,11 @@ export class AnimeDetailsComponent implements OnInit {
         .then(rating => {
           this.setRating('trakt', rating);
         });
+    }
+    if (!this.getRating('mal')) {
+      this.mal.getRating(this.anime?.my_extension?.malId).then(rating => {
+        this.setRating('mal', rating);
+      });
     }
     if (!this.getRating('anilist')) {
       this.anilist.getRating(this.anime?.my_extension?.anilistId).then(rating => {

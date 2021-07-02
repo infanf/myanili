@@ -22,7 +22,7 @@
           }}
         </div>
         <ng-container *ngIf="anime.my_list_status">
-          <ng-container *ngIf="anime.my_list_status.status === 'watching'; else statusicon">
+          <ng-container *ngIf="anime.my_list_status.status === 'current'; else statusicon">
             <div
               style="
                 position: absolute;
@@ -36,17 +36,17 @@
             >
               <circle-progress
                 [percent]="
-                  anime.num_episodes
-                    ? ((anime.my_list_status?.num_episodes_watched || 0) / anime.num_episodes!) *
+                  anime.num_parts
+                    ? ((anime.my_list_status?.progress || 0) / anime.num_parts!) *
                       100
                     : 0
                 "
                 [radius]="14"
                 [title]="
                   '' +
-                  anime.my_list_status?.num_episodes_watched +
+                  anime.my_list_status?.progress +
                   '/' +
-                  (anime.num_episodes || '?')
+                  (anime.num_parts || '?')
                 "
                 [showTitle]="true"
                 [titleColor]="'currentColor'"

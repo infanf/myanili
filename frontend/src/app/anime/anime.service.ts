@@ -1,23 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MainService } from '@models/components';
+import { AnimeCharacter, AnimeStaff, WatchStatus } from '@models/mal-anime';
 import {
-  Anime,
-  AnimeCharacter,
-  AnimeExtension,
-  AnimeNode,
-  AnimeStaff,
-  ListAnime,
-  MyAnimeStatus,
-  MyAnimeUpdate,
-  WatchStatus,
-} from '@models/anime';
-import { RelatedManga } from '@models/manga';
+  ListMedia,
+  Media,
+  MediaExtension,
+  MediaNode,
+  MyMediaUpdate,
+  PersonalStatus,
+} from '@models/media';
 import { Base64 } from 'js-base64';
 import { environment } from 'src/environments/environment';
 
 import { AnilistService } from '../anilist.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
+import { SettingsService } from '../settings/settings.service';
 
 import { AnnictService } from './annict.service';
 import { SimklService } from './simkl.service';
@@ -27,53 +26,84 @@ import { TraktService } from './trakt.service';
   providedIn: 'root',
 })
 export class AnimeService {
+  private mainService: 'mal' | 'anilist' | 'kitsu' = 'mal';
+
   constructor(
-    private malService: MalService,
     private httpClient: HttpClient,
+    private mal: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private simkl: SimklService,
     private annict: AnnictService,
     private trakt: TraktService,
-  ) {}
+    private settings: SettingsService,
+  ) {
+    this.settings.mainService.subscribe(service => {
+      this.mainService = service;
+    });
+  }
 
-  async list(status?: WatchStatus) {
-    const animes = await this.malService.myList(status);
+  async list(status?: PersonalStatus) {
+    let animes = [] as ListMedia[];
+    switch (this.mainService) {
+      case 'anilist':
+        animes = await this.anilist.myList(status);
+        break;
+      // case 'kitsu':
+      //   animes = await this.kitsu.myList(status);
+      //   break;
+      default:
+        animes = await this.mal.myList(status);
+        break;
+    }
     return animes.map(anime => {
       const comments = anime.list_status.comments;
       if (!comments) return anime;
       try {
         const json = Base64.decode(comments);
-        const my_extension = JSON.parse(json) as AnimeExtension;
-        return { ...anime, my_extension } as ListAnime;
+        const my_extension = JSON.parse(json) as MediaExtension;
+        return { ...anime, my_extension } as ListMedia;
       } catch (e) {}
       return anime;
     });
   }
-  async season(year: number, season: number): Promise<Array<Partial<Anime>>> {
+  async season(year: number, season: number): Promise<Array<Partial<Media>>> {
     const animes = (
-      await this.malService.get<Array<{ node: AnimeNode }>>(`/animes/season/${year}/${season}`)
+      await this.mal.get<Array<{ node: MediaNode }>>(`/animes/season/${year}/${season}`)
     ).map(anime => anime.node);
     return animes.map(anime => {
       const comments = anime.my_list_status?.comments;
       if (!comments) return anime;
       try {
         const json = Base64.decode(comments);
-        const my_extension = JSON.parse(json) as AnimeExtension;
-        return { ...anime, my_extension } as Anime;
+        const my_extension = JSON.parse(json) as MediaExtension;
+        return { ...anime, my_extension } as Media;
       } catch (e) {}
-      return anime as Anime;
+      return anime as Media;
     });
   }
 
-  async getAnime(id: number) {
-    const anime = await this.malService.get<Anime>('anime/' + id);
+  async getAnime(id: number, service?: MainService) {
+    let anime: Media | undefined;
+    if (!service) service = this.mainService;
+    switch (service) {
+      case 'anilist':
+        anime = await this.anilist.get(id, 'ANIME');
+        break;
+      // case 'kitsu':
+      //   animes = await this.kitsu.myList(status);
+      //   break;
+      default:
+        anime = await this.mal.getMedia(id);
+        // if (!anime.related.length) anime.related_manga = await this.getManga(id);
+        break;
+    }
+    if (!anime) return undefined;
     const comments = anime.my_list_status?.comments;
-    if (!anime.related_manga.length) anime.related_manga = await this.getManga(id);
     if (!comments) return anime;
     try {
       const json = Base64.decode(comments);
-      const my_extension = JSON.parse(json) as AnimeExtension;
+      const my_extension = JSON.parse(json) as MediaExtension;
       return { ...anime, my_extension };
     } catch (e) {}
     return anime;
@@ -81,70 +111,92 @@ export class AnimeService {
 
   async updateAnime(
     ids: {
-      malId: number;
+      malId?: number;
       anilistId?: number;
       kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
       simklId?: number;
       annictId?: number;
       trakt?: { id?: string; season?: number };
     },
-    data: Partial<MyAnimeUpdate>,
-  ): Promise<MyAnimeStatus> {
-    const [malResponse] = await Promise.all([
-      this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),
+    data: Partial<MyMediaUpdate>,
+  ): Promise<MyMediaUpdate | false> {
+    const [malResponse, alResponse] = await Promise.all([
       (async () => {
-        if (this.anilist.loggedIn) {
-          if (!ids.anilistId) {
-            ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME');
+        if (this.mal.loggedIn) {
+          if (!ids.malId) {
+            return;
           }
-          if (!ids.anilistId) return;
-          return this.anilist.updateEntry(ids.anilistId, {
-            progress: data.num_watched_episodes,
-            scoreRaw: data.score ? data.score * 10 : undefined,
-            status: this.anilist.statusFromMal(data.status, data.is_rewatching),
-            notes: data.comments,
-            repeat: data.num_times_rewatched,
+          return this.mal.updateAnimeEntry(ids.malId, {
+            num_watched_episodes: data.progress,
+            score: data.score,
+            status: this.mal.toMalStatus(data.status, 'anime') as WatchStatus,
+            comments: data.comments,
+            num_times_rewatched: data.repeats,
+            is_rewatching: data.repeating,
           });
         }
         return;
       })(),
       (async () => {
-        if (!ids.kitsuId) {
+        if (this.anilist.loggedIn) {
+          if (!ids.anilistId && ids.malId) {
+            ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME');
+          }
+          if (!ids.anilistId) return;
+          return this.anilist.updateEntry(ids.anilistId, {
+            progress: data.progress,
+            scoreRaw: data.score ? data.score * 10 : undefined,
+            status: this.anilist.toAlStatus(data.status, data.repeating),
+            notes: data.comments,
+            repeat: data.repeats,
+          });
+        }
+        return;
+      })(),
+      (async () => {
+        if (!ids.kitsuId && ids.malId) {
           ids.kitsuId = await this.kitsu.getId(ids.malId, 'anime');
         }
         if (!ids.kitsuId) return;
         return this.kitsu.updateEntry(ids.kitsuId, 'anime', {
-          progress: data.num_watched_episodes,
+          progress: data.progress,
           ratingTwenty: (data.score || 0) * 2 || undefined,
-          status: this.kitsu.statusFromMal(data.status),
+          status: this.kitsu.toKitsuStatus(data.status),
           notes: data.comments,
-          reconsuming: data.is_rewatching,
-          reconsumeCount: data.num_times_rewatched,
+          reconsuming: data.repeating,
+          reconsumeCount: data.repeats,
         });
       })(),
       this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
     ]);
-    return malResponse;
-  }
-
-  async getManga(id: number): Promise<RelatedManga[]> {
-    const jikanime = await this.malService.getJikan('anime', id);
-    const mangas = [] as RelatedManga[];
-    for (const key in jikanime.related) {
-      if (!jikanime.related[key]) continue;
-      for (const related of jikanime.related[key]) {
-        if (related.type === 'manga') {
-          mangas.push({
-            node: { id: related.mal_id, title: related.name },
-            relation_type: key.replace(' ', '_').toLowerCase(),
-            relation_type_formatted: key,
-          });
-        }
-      }
+    if (ids.malId && malResponse) {
+      return {
+        comments: malResponse.comments,
+        priority: malResponse.priority,
+        progress: malResponse.num_episodes_watched,
+        repeat_value: malResponse.rewatch_value,
+        repeating: malResponse.is_rewatching,
+        repeats: malResponse.num_times_rewatched,
+        score: malResponse.score,
+        tags: malResponse.tags?.join(','),
+        status: this.mal.fromMalStatus(malResponse.status) || data.status || 'planning',
+      };
+    } else if (ids.anilistId && alResponse) {
+      return {
+        comments: alResponse.notes,
+        priority: alResponse.priority,
+        progress: alResponse.progress,
+        repeat_value: 0,
+        repeating: alResponse.status === 'REPEATING',
+        repeats: alResponse.repeat,
+        score: alResponse.score / 10,
+        tags: '',
+        status: this.anilist.fromAlStatus(alResponse.status) || data.status || 'planning',
+      };
     }
-    return mangas;
+    return false;
   }
 
   async getCharacters(id: number): Promise<AnimeCharacter[]> {

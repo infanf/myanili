@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Anime } from '@models/anime';
+import { Media } from '@models/media';
 
 import { SeasonComponent } from '../season.component';
 
@@ -9,20 +9,20 @@ import { SeasonComponent } from '../season.component';
   styleUrls: ['./grid.component.scss'],
 })
 export class SeasonGridComponent extends SeasonComponent {
-  @Input() animes: Array<Partial<Anime>> = [];
+  @Input() animes: Array<Partial<Media>> = [];
 
   ngOnInit(): void {}
 
-  classColor(anime?: Partial<Anime>): string {
+  classColor(anime?: Partial<Media>): string {
     switch (anime?.my_list_status?.status) {
       case 'completed':
         return 'bg-dark';
       case 'dropped':
         return 'bg-danger';
       case 'on_hold':
-      case 'plan_to_watch':
+      case 'planning':
         return 'bg-warning';
-      case 'watching':
+      case 'current':
         return 'bg-success';
       default:
         return 'bg-primary';

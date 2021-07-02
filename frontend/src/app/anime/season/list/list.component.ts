@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Anime } from '@models/anime';
+import { Media } from '@models/media';
 
 import { SeasonComponent } from '../season.component';
 
@@ -9,7 +9,7 @@ import { SeasonComponent } from '../season.component';
   styleUrls: ['./list.component.scss'],
 })
 export class SeasonListComponent extends SeasonComponent {
-  @Input() animes: Array<Partial<Anime>> = [];
+  @Input() animes: Array<Partial<Media>> = [];
 
   ngOnInit(): void {}
 }

@@ -8,7 +8,7 @@ export interface User {
 
 export type AnilistUser = User;
 
-interface SaveMedialistEntry {
+interface SaveMediaListEntry {
   id: number;
   mediaId: number;
   status: AnilistMediaListStatus;
@@ -27,7 +27,7 @@ interface SaveMedialistEntry {
   completedAt: Date;
 }
 
-export type AnilistSaveMedialistEntry = SaveMedialistEntry;
+export type AnilistSaveMediaListEntry = SaveMediaListEntry;
 
 export type AnilistMediaListStatus =
   | 'CURRENT'
@@ -36,3 +36,120 @@ export type AnilistMediaListStatus =
   | 'DROPPED'
   | 'PAUSED'
   | 'REPEATING';
+
+export type AnilistMediaStatus =
+  | 'FINISHED'
+  | 'RELEASING'
+  | 'NOT_YET_RELEASED'
+  | 'CANCELLED'
+  | 'HIATUS';
+
+interface MediaListCollection {
+  lists: MediaListGroup[];
+}
+
+export type AnilistMediaListCollection = MediaListCollection;
+
+interface MediaListGroup {
+  entries: MediaList[];
+}
+
+export type AnilistMediaListGroup = MediaListGroup;
+
+interface MediaList {
+  status: AnilistMediaListStatus;
+  progress: number;
+  progressVolumes?: number;
+  score: number;
+  notes: string;
+  updatedAt: number;
+  comletedAt?: FuzzyDate;
+  media: Media;
+  repeat: number;
+}
+
+export type AnilistMediaList = MediaList;
+
+interface Media {
+  id: number;
+  idMal?: number;
+  type: 'ANIME' | 'MANGA';
+  title: MediaTitle;
+  synonyms?: string[];
+  description?: string;
+  duration?: number;
+  staff: StaffConnection;
+  genres: string[];
+  episodes?: number;
+  chapters?: number;
+  volumes?: number;
+  coverImage: MediaCoverImage;
+  startDate: FuzzyDate;
+  endDate: FuzzyDate;
+  meanScore: number;
+  source?: string;
+  popularity: number;
+  status: AnilistMediaStatus;
+  season: Season;
+  seasonYear: number;
+  mediaListEntry?: MediaList;
+  relations: { edges: RelatedMedia[] };
+}
+
+export type AnilistMedia = Media;
+
+interface RelatedMedia {
+  relationType: string;
+  node: {
+    id: number;
+    type: 'ANIME' | 'MANGA';
+    title: MediaTitle;
+    episodes?: number;
+    chapters?: number;
+    volumes?: number;
+  };
+  id: number;
+}
+
+interface StaffConnection {
+  edges: StaffEdge[];
+}
+
+interface StaffEdge {
+  node: Staff;
+  role: string;
+}
+
+interface Staff {
+  id: number;
+  name: StaffName;
+}
+
+interface StaffName {
+  first: string;
+  last: string;
+  full: string;
+  native: string;
+}
+
+interface MediaTitle {
+  romaji: string;
+  english: string;
+  native: string;
+  userPreferred: string;
+}
+
+interface MediaCoverImage {
+  extraLarge?: string;
+  large: string;
+  medium: string;
+  color: string;
+}
+
+interface FuzzyDate {
+  year: number;
+  month: number;
+  day: number;
+}
+
+type Season = 'WINTER' | 'SPRING' | 'SUMMER' | 'FALL';

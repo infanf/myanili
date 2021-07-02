@@ -1,8 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AnilistMediaListStatus, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
-import { WatchStatus } from '@models/anime';
+import {
+  AnilistMedia,
+  AnilistMediaListCollection,
+  AnilistMediaListStatus,
+  AnilistMediaStatus,
+  AnilistSaveMediaListEntry,
+  AnilistUser,
+} from '@models/anilist';
 import { ExtRating } from '@models/components';
-import { ReadStatus } from '@models/manga';
+import { WatchStatus } from '@models/mal-anime';
+import { ListManga, ReadStatus } from '@models/mal-manga';
+import { ListMedia, Media, MediaStatus, PersonalStatus } from '@models/media';
 import { Apollo, gql } from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -153,15 +161,18 @@ export class AnilistService {
     return requestResult;
   }
 
-  async updateEntry(id: number, data: Partial<AnilistSaveMedialistEntry>) {
+  async updateEntry(
+    id: number,
+    data: Partial<AnilistSaveMediaListEntry>,
+  ): Promise<AnilistSaveMediaListEntry | undefined> {
     return new Promise(r => {
       data.mediaId = id;
       const variables = JSON.parse(JSON.stringify(data));
       this.client
-        .mutate({
+        .mutate<{ SaveMediaListEntry: AnilistSaveMediaListEntry }>({
           errorPolicy: 'ignore',
           mutation: gql`
-            mutation(
+            mutation (
               $id: Int
               $mediaId: Int
               $status: MediaListStatus
@@ -247,10 +258,503 @@ export class AnilistService {
           `,
           variables,
         })
-        .subscribe(r, error => {
-          console.log({ error });
-          r(undefined);
-        });
+        .subscribe(
+          result => {
+            r(result?.data?.SaveMediaListEntry);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
+    });
+  }
+
+  async get(id: number, type: 'ANIME' | 'MANGA'): Promise<Media | undefined> {
+    const requestResult = await new Promise<Media | undefined>(r => {
+      this.client
+        .query<{ Media?: AnilistMedia }>({
+          errorPolicy: 'ignore',
+          query: gql`
+            query media($id: Int, $type: MediaType, $isAdult: Boolean) {
+              Media(id: $id, type: $type, isAdult: $isAdult) {
+                id
+                idMal
+                title {
+                  userPreferred
+                  romaji
+                  english
+                  native
+                }
+                coverImage {
+                  extraLarge
+                  large
+                }
+                startDate {
+                  year
+                  month
+                  day
+                }
+                endDate {
+                  year
+                  month
+                  day
+                }
+                description
+                season
+                seasonYear
+                type
+                format
+                status(version: 2)
+                episodes
+                duration
+                chapters
+                volumes
+                genres
+                synonyms
+                source(version: 2)
+                meanScore
+                popularity
+                favourites
+                countryOfOrigin
+                studios {
+                  edges {
+                    isMain
+                    node {
+                      id
+                      name
+                    }
+                  }
+                }
+                rankings {
+                  id
+                  rank
+                  type
+                  format
+                  year
+                  season
+                  allTime
+                  context
+                }
+                tags {
+                  id
+                  name
+                  description
+                  rank
+                  isMediaSpoiler
+                  isGeneralSpoiler
+                }
+                mediaListEntry {
+                  id
+                  status
+                  score
+                  repeat
+                  progress
+                  progressVolumes
+                  priority
+                  notes
+                  updatedAt
+                  createdAt
+                }
+                relations {
+                  edges {
+                    relationType
+                    node {
+                      id
+                      type
+                      title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                      }
+                      episodes
+                      chapters
+                    }
+                    id
+                  }
+                }
+                stats {
+                  statusDistribution {
+                    status
+                    amount
+                  }
+                  scoreDistribution {
+                    score
+                    amount
+                  }
+                }
+              }
+            }
+          `,
+          variables: { id, type },
+        })
+        .subscribe(
+          result => {
+            const alMedia = result.data.Media;
+            if (!alMedia) return r(undefined);
+            const malMedia: Media = {
+              id: alMedia.id,
+              id_mal: alMedia.idMal,
+              type: alMedia.type === 'ANIME' ? 'anime' : 'manga',
+              title: alMedia.title.romaji,
+              alternative_titles: {
+                en: alMedia.title.english,
+                ja: alMedia.title.native,
+                synonyms: alMedia.synonyms,
+              },
+              average_episode_duration: (alMedia.duration || 0) * 60,
+              genres: alMedia.genres,
+              mean: alMedia.meanScore / 10,
+              source: alMedia.source,
+              main_picture: {
+                medium: alMedia.coverImage.large,
+                large: alMedia.coverImage.extraLarge,
+              },
+              synopsis: alMedia.description,
+              pictures: [],
+              related:
+                alMedia.relations?.edges.map(related => ({
+                  relation_type: related.relationType.toLowerCase(),
+                  relation_type_formatted: related.relationType
+                    .replace('_', ' ')
+                    .toLowerCase()
+                    .replace(/\w\S*/g, w => w.replace(/^\w/, c => c.toUpperCase())),
+                  type: related.node.type === 'ANIME' ? 'anime' : 'manga',
+                  node: {
+                    id: related.node.id,
+                    num_parts: related.node.episodes || related.node.chapters || 0,
+                    num_volumes: related.node.volumes,
+                    title: related.node.title.romaji,
+                  },
+                })) || [],
+              recommendations: [],
+              companies: [],
+              opening_themes: [],
+              ending_themes: [],
+              num_parts: alMedia.episodes || alMedia.chapters || 0,
+              num_volumes: alMedia.volumes,
+              num_list_users: alMedia.popularity,
+              num_scoring_users: 0,
+              created_at: alMedia.mediaListEntry?.updatedAt
+                ? new Date(alMedia.mediaListEntry?.updatedAt * 1000)
+                : new Date(),
+              updated_at: alMedia.mediaListEntry?.updatedAt
+                ? new Date(alMedia.mediaListEntry?.updatedAt * 1000)
+                : new Date(),
+              media_type: 'tv',
+              status: this.mediaStatusfromAl(alMedia.status),
+              my_list_status: alMedia.mediaListEntry
+                ? {
+                    status: this.fromAlStatus(alMedia.mediaListEntry.status),
+                    comments: alMedia.mediaListEntry.notes,
+                    repeating: alMedia.mediaListEntry.status === 'REPEATING',
+                    score: alMedia.mediaListEntry.score,
+                    progress: alMedia.mediaListEntry.progress,
+                    progress_volumes: alMedia.mediaListEntry.progressVolumes,
+                    repeats: alMedia.mediaListEntry.repeat,
+                    priority: 0,
+                    repeat_value: 0,
+                    tags: [],
+                    updated_at: alMedia.mediaListEntry?.updatedAt
+                      ? new Date(alMedia.mediaListEntry?.updatedAt * 1000)
+                      : new Date(),
+                  }
+                : undefined,
+            };
+            r(malMedia);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
+    });
+    return requestResult;
+  }
+
+  async myList(
+    mediaStatus?: PersonalStatus,
+    type: 'ANIME' | 'MANGA' = 'ANIME',
+  ): Promise<ListMedia[]> {
+    const status = this.toAlStatus(mediaStatus);
+    return new Promise(async r => {
+      this.user.subscribe(user => {
+        if (!user) return;
+        this.client
+          .query<{
+            MediaListCollection: AnilistMediaListCollection;
+          }>({
+            errorPolicy: 'ignore',
+            query: gql`
+              query MediaListCollection(
+                $status: [MediaListStatus]
+                $userId: Int
+                $type: MediaType
+              ) {
+                MediaListCollection(status_in: $status, userId: $userId, type: $type) {
+                  lists {
+                    entries {
+                      status
+                      progress
+                      score(format: POINT_10)
+                      notes
+                      updatedAt
+                      completedAt {
+                        year
+                        month
+                        day
+                      }
+                      media {
+                        id
+                        idMal
+                        title {
+                          romaji
+                          english
+                          native
+                          userPreferred
+                        }
+                        episodes
+                        coverImage {
+                          extraLarge
+                          large
+                          medium
+                          color
+                        }
+                        startDate {
+                          year
+                          month
+                          day
+                        }
+                        endDate {
+                          year
+                          month
+                          day
+                        }
+                        season
+                        seasonYear
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+            variables: {
+              userId: user?.id,
+              status: status === 'CURRENT' ? [status, 'REPEATING'] : [status],
+              type,
+            },
+          })
+          .subscribe(result => {
+            if (result.data) {
+              const malList: ListMedia[] = [];
+              for (const list of result.data.MediaListCollection.lists) {
+                for (const entry of list.entries) {
+                  const media = entry.media;
+                  malList.push({
+                    node: {
+                      id: media.id,
+                      id_mal: media.idMal,
+                      title: media.title.romaji,
+                      alternative_titles: {
+                        en: media.title.english,
+                        ja: media.title.native,
+                      },
+                      num_parts: media.episodes || media.chapters || 0,
+                      num_volumes: media.volumes,
+                      main_picture: media.coverImage
+                        ? {
+                            medium: media.coverImage.large,
+                            large: media.coverImage.extraLarge,
+                          }
+                        : undefined,
+                      start_date: undefined,
+                      end_date: undefined,
+                      start_season: {
+                        season: (media.season || '').toLowerCase() as
+                          | 'winter'
+                          | 'spring'
+                          | 'summer'
+                          | 'fall',
+                        year: media.seasonYear,
+                      },
+                    },
+                    list_status: {
+                      comments: entry.notes,
+                      repeating: false,
+                      progress: entry.progress,
+                      progress_volumes: entry.progressVolumes,
+                      repeats: 0,
+                      priority: 0,
+                      repeat_value: 0,
+                      score: entry.score / 10,
+                      tags: [],
+                      updated_at: new Date(entry.updatedAt * 1000),
+                      finish_date: entry.comletedAt
+                        ? new Date(
+                            `${entry.comletedAt.year}-${entry.comletedAt.month}-${entry.comletedAt.day}`,
+                          )
+                        : undefined,
+                      start_date: undefined,
+                      status: this.fromAlStatus(entry.status),
+                    },
+                  });
+                }
+              }
+              r(malList);
+            }
+          });
+      });
+    });
+  }
+
+  async myMangaList(malStatus?: ReadStatus): Promise<ListManga[]> {
+    const status = this.statusFromMal(malStatus);
+    return new Promise(async r => {
+      this.user.subscribe(user => {
+        if (!user) return;
+        this.client
+          .query<{
+            MediaListCollection: AnilistMediaListCollection;
+          }>({
+            errorPolicy: 'ignore',
+            query: gql`
+              query MediaListCollection(
+                $status: [MediaListStatus]
+                $userId: Int
+                $type: MediaType
+              ) {
+                MediaListCollection(status_in: $status, userId: $userId, type: $type) {
+                  lists {
+                    name
+                    isCustomList
+                    isSplitCompletedList
+                    status
+                    entries {
+                      progress
+                      progressVolumes
+                      status
+                      score(format: POINT_10)
+                      notes
+                      updatedAt
+                      completedAt {
+                        year
+                        month
+                        day
+                      }
+                      media {
+                        id
+                        idMal
+                        title {
+                          romaji
+                          english
+                          native
+                          userPreferred
+                        }
+                        staff {
+                          edges {
+                            id
+                            node {
+                              id
+                              name {
+                                first
+                                last
+                                full
+                                native
+                              }
+                            }
+                            role
+                          }
+                        }
+                        volumes
+                        chapters
+                        coverImage {
+                          extraLarge
+                          large
+                          medium
+                          color
+                        }
+                        startDate {
+                          year
+                          month
+                          day
+                        }
+                        endDate {
+                          year
+                          month
+                          day
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+            variables: {
+              userId: user?.id,
+              status: status === 'CURRENT' ? [status, 'REPEATING'] : [status],
+              type: 'MANGA',
+            },
+          })
+          .subscribe(result => {
+            if (result.data) {
+              const malList: ListManga[] = [];
+              for (const list of result.data.MediaListCollection.lists) {
+                for (const entry of list.entries) {
+                  const media = entry.media;
+                  malList.push({
+                    node: {
+                      id: media.idMal || 0,
+                      title: media.title.romaji,
+                      alternative_titles: {
+                        en: media.title.english,
+                        ja: media.title.native,
+                      },
+                      authors: media.staff.edges.map(edge => ({
+                        role: edge.role,
+                        node: {
+                          id: edge.node.id,
+                          first_name: edge.node.name.first,
+                          last_name: edge.node.name.last,
+                        },
+                      })),
+                      num_chapters: media.episodes,
+                      num_volumes: media.volumes,
+                      main_picture: media.coverImage
+                        ? {
+                            medium: media.coverImage.large,
+                            large: media.coverImage.extraLarge,
+                          }
+                        : undefined,
+                      start_date: undefined,
+                      end_date: undefined,
+                    },
+                    list_status: {
+                      comments: entry.notes,
+                      is_rereading: entry.status === 'REPEATING',
+                      num_chapters_read: entry.progress,
+                      num_volumes_read: entry.progressVolumes || 0,
+                      num_times_reread: 0,
+                      priority: 0,
+                      reread_value: 0,
+                      score: 0,
+                      tags: '',
+                      updated_at: new Date(entry.updatedAt),
+                      finish_date: entry.comletedAt
+                        ? new Date(
+                            `${entry.comletedAt.year}-${entry.comletedAt.month}-${entry.comletedAt.day}`,
+                          )
+                        : undefined,
+                      start_date: undefined,
+                      status: this.statusToMal(entry.status, 'MANGA') as ReadStatus,
+                    },
+                  });
+                }
+              }
+              r(malList);
+            }
+          });
+      });
     });
   }
 
@@ -300,6 +804,37 @@ export class AnilistService {
     });
   }
 
+  toAlStatus(mediaStatus?: PersonalStatus, repeating = false): AnilistMediaListStatus | undefined {
+    switch (mediaStatus) {
+      case 'on_hold':
+        return 'PAUSED';
+      case 'completed':
+        return repeating ? 'REPEATING' : 'COMPLETED';
+      case 'current':
+      case 'dropped':
+      case 'planning':
+        return mediaStatus.toUpperCase() as AnilistMediaListStatus;
+      default:
+        return undefined;
+    }
+  }
+
+  fromAlStatus(mediaStatus?: AnilistMediaListStatus): PersonalStatus | undefined {
+    switch (mediaStatus) {
+      case 'PAUSED':
+        return 'on_hold';
+      case 'REPEATING':
+        return 'completed';
+      case 'COMPLETED':
+      case 'CURRENT':
+      case 'DROPPED':
+      case 'PLANNING':
+        return mediaStatus.toLowerCase() as PersonalStatus;
+      default:
+        return undefined;
+    }
+  }
+
   statusFromMal(
     malStatus?: WatchStatus | ReadStatus,
     repeating = false,
@@ -340,6 +875,21 @@ export class AnilistService {
         return 'dropped';
       default:
         return undefined;
+    }
+  }
+
+  mediaStatusfromAl(alStatus?: AnilistMediaStatus): MediaStatus {
+    switch (alStatus) {
+      case 'FINISHED':
+        return 'finished';
+      case 'CANCELLED':
+        return 'cancelled';
+      case 'HIATUS':
+        return 'hiatus';
+      case 'RELEASING':
+        return 'current';
+      default:
+        return 'not_yet_released';
     }
   }
 }

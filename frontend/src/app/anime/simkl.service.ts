@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
+import { MyMediaUpdate, PersonalStatus } from '@models/media';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -99,17 +99,17 @@ export class SimklService {
     });
   }
 
-  async updateEntry(ids: { simkl?: number; mal?: number }, data: Partial<MyAnimeUpdate>) {
+  async updateEntry(ids: { simkl?: number; mal?: number }, data: Partial<MyMediaUpdate>) {
     if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal)) return;
     const promises = [];
     if (data.status) {
-      promises.push(this.addToList(ids, this.statusFromMal(data.status)));
+      promises.push(this.addToList(ids, this.statusToSimkl(data.status)));
     }
     if (data.score) {
       promises.push(this.addRating(ids, data.score));
     }
-    if (data.num_watched_episodes) {
-      promises.push(this.scrobble(ids, data.num_watched_episodes));
+    if (data.progress) {
+      promises.push(this.scrobble(ids, data.progress));
     }
     await Promise.all(promises);
   }
@@ -165,33 +165,35 @@ export class SimklService {
     localStorage.removeItem('simklClientId');
   }
 
-  statusFromMal(malStatus?: WatchStatus): SimklList | undefined {
-    switch (malStatus) {
-      case 'plan_to_watch':
+  statusToSimkl(status?: PersonalStatus): SimklList | undefined {
+    switch (status) {
+      case 'planning':
         return 'plantowatch';
       case 'on_hold':
         return 'hold';
       case 'dropped':
         return 'notinteresting';
-      case 'watching':
+      case 'current':
+        return 'watching';
       case 'completed':
-        return malStatus;
+        return 'completed';
       default:
         return undefined;
     }
   }
 
-  statusToMal(simklStatus?: SimklList): WatchStatus | undefined {
-    switch (simklStatus) {
+  statusToMal(status?: SimklList): PersonalStatus | undefined {
+    switch (status) {
       case 'plantowatch':
-        return 'plan_to_watch';
+        return 'planning';
       case 'hold':
         return 'on_hold';
       case 'notinteresting':
         return 'dropped';
       case 'completed':
+        return 'completed';
       case 'watching':
-        return simklStatus;
+        return 'current';
       default:
         return undefined;
     }

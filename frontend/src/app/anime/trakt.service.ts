@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MyAnimeUpdate } from '@models/anime';
 import { ExtRating } from '@models/components';
+import { MyMediaUpdate } from '@models/media';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -203,7 +203,7 @@ export class TraktService {
     return;
   }
 
-  async updateEntry(trakt?: { id?: string; season?: number }, data?: Partial<MyAnimeUpdate>) {
+  async updateEntry(trakt?: { id?: string; season?: number }, data?: Partial<MyMediaUpdate>) {
     if (!trakt || !trakt.id || !this.accessToken) return;
     // if (data?.num_watched_episodes) {
     //   this.scrobble(trakt.id, trakt.season||1, data?.num_watched_episodes);

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MangaCharacter } from '@models/manga';
+import { MangaCharacter } from '@models/mal-manga';
 
 import { MangaService } from '../../manga.service';
 

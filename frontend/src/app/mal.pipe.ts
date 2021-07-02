@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { WatchStatus } from '@models/anime';
-import { ReadStatus } from '@models/manga';
+import { WatchStatus } from '@models/mal-anime';
+import { ReadStatus } from '@models/mal-manga';
 
 @Pipe({
   name: 'mal',

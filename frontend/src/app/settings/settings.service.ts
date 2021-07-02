@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Season } from '@models/components';
+import { MainService, Season } from '@models/components';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,11 +14,14 @@ export class SettingsService {
   private languageSubject = new BehaviorSubject<Language>('default');
   private inList = new BehaviorSubject<boolean>(false);
   private layoutSubject = new BehaviorSubject<string>('list');
+  private mainServiceSubject = new BehaviorSubject<MainService>('mal');
 
   constructor() {
     try {
       const list = Boolean(JSON.parse(localStorage.getItem('inList') || 'false'));
       this.setInList(list);
+      const service = String(localStorage.getItem('mainService') || 'mal') as MainService;
+      this.setMainService(service);
       const layout = String(localStorage.getItem('layout') || 'list');
       this.setLayout(layout);
       const lang = String(localStorage.getItem('lang'));
@@ -65,6 +68,16 @@ export class SettingsService {
   setLayout(layout: string) {
     this.layoutSubject.next(layout);
     localStorage.setItem('layout', layout);
+  }
+
+  get mainService() {
+    return this.mainServiceSubject.asObservable();
+  }
+
+  setMainService(service: MainService) {
+    if (!service) return;
+    this.mainServiceSubject.next(service);
+    localStorage.setItem('mainService', service);
   }
 }
 

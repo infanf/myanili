@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AnimeRecommendations } from '@models/anime';
+import { MediaRecommendations } from '@models/media';
 
 @Component({
   selector: 'app-anime-recommendations',
@@ -7,5 +7,5 @@ import { AnimeRecommendations } from '@models/anime';
   styleUrls: ['./recommendations.component.scss'],
 })
 export class AnimeRecommendationsComponent {
-  @Input() recommendations: AnimeRecommendations = [];
+  @Input() recommendations: MediaRecommendations = [];
 }

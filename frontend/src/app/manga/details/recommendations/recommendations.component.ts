@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MangaRecommendations } from '@models/manga';
+import { MangaRecommendations } from '@models/mal-manga';
 
 @Component({
   selector: 'app-manga-recommendations',

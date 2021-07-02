@@ -43,6 +43,7 @@ import { SimklIconComponent } from './icon/simkl/simkl.component';
 import { SpotifyIconComponent } from './icon/spotify/spotify.component';
 import { IconStatusComponent } from './icon/status/icon-status.component';
 import { TraktIconComponent } from './icon/trakt/trakt.component';
+import { LinkPipe } from './link.pipe';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
 import { MangaCharactersComponent } from './manga/details/characters/characters.component';
@@ -76,6 +77,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     MalPipe,
     TimePipe,
     DayPipe,
+    LinkPipe,
     StreamPipe,
     PlatformPipe,
     ScheduleComponent,

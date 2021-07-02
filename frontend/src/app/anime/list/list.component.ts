@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ListAnime, WatchStatus } from '@models/anime';
+import { ListMedia, PersonalStatus } from '@models/media';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
 
@@ -12,8 +12,8 @@ import { AnimeService } from '../anime.service';
   styleUrls: ['./list.component.scss'],
 })
 export class AnimeListComponent implements OnInit {
-  @Input() status?: WatchStatus;
-  animes: ListAnime[] = [];
+  @Input() status?: PersonalStatus;
+  animes: ListMedia[] = [];
   layout = 'list';
 
   constructor(
@@ -23,7 +23,7 @@ export class AnimeListComponent implements OnInit {
     private glob: GlobalService,
   ) {
     this.route.paramMap.subscribe(params => {
-      const newStatus = params.get('status') as WatchStatus;
+      const newStatus = params.get('status') as PersonalStatus;
       if (newStatus !== this.status) {
         this.status = newStatus;
         this.animes = [];

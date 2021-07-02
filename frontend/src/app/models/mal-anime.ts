@@ -1,5 +1,5 @@
 import { Genre, Nsfw, Picture, Studio } from './components';
-import { RelatedManga } from './manga';
+import { RelatedManga } from './mal-manga';
 
 interface ListAnimeInterface {
   node: AnimeNode;
@@ -12,6 +12,7 @@ export type ListAnime = ListAnimeInterface;
 
 interface AnimeInterface {
   id: number;
+  id_mal?: number;
   title: string;
   main_picture?: Picture;
   alternative_titles?: {
@@ -120,6 +121,7 @@ export type AnimeTheme = Theme;
 
 export interface AnimeNode {
   id: number;
+  id_mal?: number;
   title: string;
   main_picture?: Picture;
   num_episodes?: number;

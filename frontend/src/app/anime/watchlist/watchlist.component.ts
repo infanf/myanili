@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Anime, ListAnime, MyAnimeUpdate } from '@models/anime';
+import { MainService } from '@models/components';
+import { ListMedia, Media, MyMediaUpdate } from '@models/media';
 import * as moment from 'moment';
 import { GlobalService } from 'src/app/global.service';
 import { Language, SettingsService } from 'src/app/settings/settings.service';
@@ -14,8 +15,9 @@ import { TraktService } from '../trakt.service';
   styleUrls: ['./watchlist.component.scss'],
 })
 export class WatchlistComponent implements OnInit {
-  animes: ListAnime[] = [];
+  animes: ListMedia[] = [];
   lang: Language = 'default';
+  service: MainService = 'mal';
 
   constructor(
     private animeService: AnimeService,
@@ -29,10 +31,13 @@ export class WatchlistComponent implements OnInit {
     this.settings.language.subscribe(lang => {
       this.lang = lang;
     });
+    this.settings.mainService.subscribe(service => {
+      this.service = service;
+    });
   }
 
   async ngOnInit() {
-    const animes = await this.animeService.list('watching');
+    const animes = await this.animeService.list('current');
     this.animes = animes
       .filter(anime => {
         if (!anime.my_extension) return true;
@@ -42,7 +47,7 @@ export class WatchlistComponent implements OnInit {
         if (anime.my_extension.simulDay === this.getLast8am().day()) return true;
         if ((this.getLast8am().day() - anime.my_extension.simulDay + 14) % 7 <= 4) {
           const inFuture = moment(anime.node.start_date) > moment();
-          const newShow = anime.list_status.num_episodes_watched === 0;
+          const newShow = anime.list_status.progress === 0;
           return (
             moment(anime.list_status.updated_at) < moment().subtract(5, 'd') ||
             (!inFuture && newShow)
@@ -54,7 +59,7 @@ export class WatchlistComponent implements OnInit {
     this.glob.notbusy();
   }
 
-  toSortIndex(anime: ListAnime): number {
+  toSortIndex(anime: ListMedia): number {
     if (!anime.my_extension) return 0;
     if (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) {
       return 0;
@@ -70,8 +75,8 @@ export class WatchlistComponent implements OnInit {
     );
   }
 
-  isSeen(anime: ListAnime): boolean {
-    if (anime.list_status.num_episodes_watched === 0) return false;
+  isSeen(anime: ListMedia): boolean {
+    if (anime.list_status.progress === 0) return false;
     const updateDate = moment(anime.list_status.updated_at);
     return this.getLast8am() < updateDate;
   }
@@ -82,7 +87,7 @@ export class WatchlistComponent implements OnInit {
     return now > eightAm ? eightAm : eightAm.subtract(1, 'd');
   }
 
-  async markSeen(anime: ListAnime) {
+  async markSeen(anime: ListMedia) {
     if (
       (this.isSeen(anime) &&
         (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)) ||
@@ -91,16 +96,16 @@ export class WatchlistComponent implements OnInit {
       return;
     }
     anime.busy = true;
-    const currentEpisode = anime.list_status.num_episodes_watched;
+    const currentEpisode = anime.list_status.progress;
     const data = {
-      num_watched_episodes: currentEpisode + 1,
-    } as Partial<MyAnimeUpdate>;
+      progress: currentEpisode + 1,
+    } as Partial<MyMediaUpdate>;
     let completed = false;
-    if (currentEpisode + 1 === anime.node.num_episodes) {
+    if (currentEpisode + 1 === anime.node.num_parts) {
       data.status = 'completed';
-      data.is_rewatching = false;
-      if (anime.list_status.is_rewatching) {
-        data.num_times_rewatched = anime.list_status.num_times_rewatched + 1 || 1;
+      data.repeating = false;
+      if (anime.list_status.repeating) {
+        data.repeats = anime.list_status.repeats + 1 || 1;
       }
       completed = true;
       if (!anime.list_status?.score) {
@@ -108,11 +113,12 @@ export class WatchlistComponent implements OnInit {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const fullAnime = await this.animeService.getAnime(anime.node.id);
+    const fullAnime = await this.animeService.getAnime(anime.node.id, this.service);
+    if (!fullAnime) return;
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
         {
-          malId: anime.node.id,
+          malId: anime.my_extension?.malId,
           anilistId: anime.my_extension?.anilistId,
           kitsuId: anime.my_extension?.kitsuId,
           simklId: anime.my_extension?.simklId,
@@ -130,37 +136,40 @@ export class WatchlistComponent implements OnInit {
         currentEpisode + 1,
       ),
     ]);
-    if (completed) {
-      animeStatus.is_rewatching = false;
-      this.glob.busy();
-      const sequels = fullAnime.related_anime.filter(related => related.relation_type === 'sequel');
-      if (sequels.length) {
-        const sequel = await this.animeService.getAnime(sequels[0].node.id);
-        if (sequel.my_list_status?.status === 'completed') {
-          const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
-          if (startSequel) {
-            await this.animeService.updateAnime(
-              { malId: sequel.id },
-              { status: 'completed', is_rewatching: true, num_watched_episodes: 0 },
-            );
+    if (animeStatus) {
+      if (completed) {
+        animeStatus.repeating = false;
+        this.glob.busy();
+        const sequels = fullAnime.related.filter(related => related.relation_type === 'sequel');
+        if (sequels.length) {
+          const sequel = await this.animeService.getAnime(sequels[0].node.id);
+          if (!sequel) return;
+          if (sequel.my_list_status?.status === 'completed') {
+            const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
+            if (startSequel) {
+              await this.animeService.updateAnime(
+                { malId: sequel.id },
+                { status: 'completed', repeating: true, progress: 0 },
+              );
+            }
+          } else {
+            const startSequel = confirm(`Start watching sequel "${sequel.title}"?`);
+            if (startSequel) {
+              await this.animeService.updateAnime({ malId: sequel.id }, { status: 'current' });
+            }
           }
-        } else {
-          const startSequel = confirm(`Start watching sequel "${sequel.title}"?`);
-          if (startSequel) {
-            await this.animeService.updateAnime({ malId: sequel.id }, { status: 'watching' });
-          }
+          this.ngOnInit();
         }
-        this.ngOnInit();
       }
+      anime.list_status.repeating = animeStatus.repeating;
+      anime.list_status.progress = animeStatus.progress;
+      anime.list_status.updated_at = new Date();
     }
-    anime.list_status.is_rewatching = animeStatus.is_rewatching;
-    anime.list_status.num_episodes_watched = animeStatus.num_episodes_watched;
-    anime.list_status.updated_at = animeStatus.updated_at;
     anime.busy = false;
     this.glob.notbusy();
   }
 
-  async scrobbleTrakt(anime: Anime, episode: number): Promise<boolean> {
+  async scrobbleTrakt(anime: Media, episode: number): Promise<boolean> {
     return new Promise(r => {
       this.trakt.user.subscribe(async traktUser => {
         if (!traktUser || !anime.my_extension?.trakt) return r(false);
@@ -177,7 +186,7 @@ export class WatchlistComponent implements OnInit {
     });
   }
 
-  isInSeason(anime: ListAnime): boolean {
+  isInSeason(anime: ListMedia): boolean {
     if (anime.node.start_date) {
       if (moment(anime.node.start_date).subtract(6, 'd') < moment()) {
         if (anime.node.end_date && moment(anime.node.end_date).add(6, 'd') < moment()) {

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Anime } from '@models/anime';
-import { Manga } from '@models/manga';
+import { Anime } from '@models/mal-anime';
+import { Manga } from '@models/mal-manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AnimeDetailsComponent } from '../anime/details/details.component';

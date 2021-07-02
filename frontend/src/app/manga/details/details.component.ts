@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ExtRating, Picture } from '@models/components';
-import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
+import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/mal-manga';
 import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
