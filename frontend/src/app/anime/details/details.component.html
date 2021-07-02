@@ -362,6 +362,16 @@
           />
         </div>
       </div>
+      <div class="row my-2" *ngIf="edit && anime && editExtension">
+        <div class="col-4 fw-bold text-end">LiveChart.me</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.livechartId"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
       <div class="row" *ngIf="anime">
         <div class="col-4 fw-bold text-end">Duration</div>
         <div class="col-8">
@@ -552,14 +562,17 @@
             </div>
             <div class="row">
               <div class="col-4">
-                <td class="text-nowrap">
-                </td>
+                <td class="text-nowrap"></td>
               </div>
               <div class="col-8">
                 <app-icon-livechart></app-icon-livechart>
                 <a
                   class="ms-1"
-                  [href]="'https://www.livechart.me/search?q=' + anime.title"
+                  [href]="
+                    anime.my_extension?.livechartId
+                      ? 'https://www.livechart.me/anime/' + anime.my_extension?.livechartId
+                      : 'https://www.livechart.me/search?q=' + anime.title
+                  "
                   target="_blank"
                   >LiveChart</a
                 >
