@@ -140,6 +140,7 @@ interface MangaExtensionInterface {
   anilistId?: number;
   malId?: number;
   kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+  bakaId?: number;
 }
 
 export type MangaExtension = MangaExtensionInterface;

@@ -158,6 +158,7 @@ interface AnimeExtensionInterface {
   kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
   simklId?: number;
   annictId?: number;
+  livechartId?: number;
   displayName?: string;
 }
 

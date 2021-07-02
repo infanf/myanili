@@ -48,22 +48,22 @@
           class="progress"
           style="border-top-left-radius: 0; border-top-right-radius: 0; position: relative"
         >
-        <div
-          *ngIf="meanRating"
-          class="progress-bar"
-          role="progressbar"
-          [ngClass]="{
-            'bg-success': meanRating >= 80,
-            'bg-warning': meanRating < 70 && meanRating >= 50,
-            'bg-danger': meanRating < 50,
-            'progress-bar-striped': !manga?.my_list_status?.score
-          }"
-          [ngStyle]="{ 'width.%': meanRating }"
-          aria-valuemin="0"
-          aria-valuemax="10"
-        >
-          {{ meanRating / 10 | number: '1.0-2' }}
-        </div>
+          <div
+            *ngIf="meanRating"
+            class="progress-bar"
+            role="progressbar"
+            [ngClass]="{
+              'bg-success': meanRating >= 80,
+              'bg-warning': meanRating < 70 && meanRating >= 50,
+              'bg-danger': meanRating < 50,
+              'progress-bar-striped': !manga?.my_list_status?.score
+            }"
+            [ngStyle]="{ 'width.%': meanRating }"
+            aria-valuemin="0"
+            aria-valuemax="10"
+          >
+            {{ meanRating / 10 | number: '1.0-2' }}
+          </div>
         </div>
       </ng-container>
       <div class="row mt-2" *ngIf="edit && editBackup">
@@ -437,14 +437,17 @@
             </div>
             <div class="row">
               <div class="col-4">
-                <td class="text-nowrap">
-                </td>
+                <td class="text-nowrap"></td>
               </div>
               <div class="col-8">
                 <app-icon-bakamanga></app-icon-bakamanga>
                 <a
                   class="ms-1"
-                  [href]="'https://www.mangaupdates.com/series.html?search=' + manga.title"
+                  [href]="
+                    manga.my_extension?.bakaId
+                      ? 'https://www.mangaupdates.com/series.html?id=' + manga.my_extension?.bakaId
+                      : 'https://www.mangaupdates.com/series.html?search=' + manga.title
+                  "
                   target="_blank"
                   >Baka-Updates</a
                 >
@@ -468,6 +471,16 @@
             <input
               class="form-control form-control-sm"
               [(ngModel)]="editExtension!.kitsuId!.kitsuId"
+              [disabled]="busy"
+            />
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && manga && editExtension">
+          <div class="col-4 fw-bold text-end">Baka-Updates</div>
+          <div class="col-8">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.bakaId"
               [disabled]="busy"
             />
           </div>
