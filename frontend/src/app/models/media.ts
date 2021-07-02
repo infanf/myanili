@@ -189,6 +189,8 @@ interface MediaExtensionInterface {
   kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
   simklId?: number;
   annictId?: number;
+  livechartId?: number;
+  bakaId?: number;
   displayName?: string;
 }
 
