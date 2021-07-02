@@ -27,7 +27,7 @@ export class AnimeListComponent implements OnInit {
       if (newStatus !== this.status) {
         this.status = newStatus;
         this.animes = [];
-        this.glob.setTitle(`Watchlist – ${newStatus}`);
+        this.glob.setTitle(`Watchlist – ${newStatus.replace(/_/g, ' ')}`);
         this.glob.busy();
         this.ngOnInit();
       }
