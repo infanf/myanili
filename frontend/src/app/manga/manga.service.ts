@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RelatedAnime } from '@models/anime';
 import {
+  BakaManga,
   ListManga,
   Manga,
   MangaCharacter,
@@ -126,5 +127,15 @@ export class MangaService {
           r(result.characters || []);
         });
     });
+  }
+
+  async getBakaManga(id?: number): Promise<BakaManga | undefined> {
+    if (!id) return;
+    const request = await fetch(`${environment.backend}/baka/${id}`);
+    if (request.ok) {
+      const response = (await request.json()) as BakaManga;
+      return response;
+    }
+    return;
   }
 }

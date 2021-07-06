@@ -1,10 +1,10 @@
 {
     "name": "infanf/myanili-backend",
-    "version": "2.6.0",
+    "version": "2.7.0",
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "laravel/lumen-framework": "^8.0",
         "league/oauth2-client": "^2.6"
     },
