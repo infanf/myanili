@@ -30,4 +30,33 @@
       </table>
     </div>
   </div>
+
+  <div class="card mt-3">
+    <div class="card-header">Unassigned</div>
+    <div class="card-body" *ngIf="getOtherAnimes().length">
+      <table class="table table-sm mb-0">
+        <tr
+          *ngFor="let anime of getOtherAnimes()"
+          [ngStyle]="{ opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1 }"
+        >
+          <td>{{ anime.start_date | date:"dd.MM." }}</td>
+          <td>
+            <app-streaming
+              [provider]="anime.my_extension?.externalStreaming"
+              [country]="anime.my_extension?.simulCountry"
+            ></app-streaming>
+            <span [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer entry">
+              {{
+                (lang === 'en'
+                  ? anime.alternative_titles?.en
+                  : lang === 'jp'
+                  ? anime.alternative_titles?.ja
+                  : anime.title) || anime.title
+              }}
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>

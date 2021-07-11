@@ -58,6 +58,19 @@ export class ScheduleComponent {
     );
   }
 
+  getOtherAnimes(): Array<Partial<Anime>> {
+    return this.animes
+      .filter(
+        anime =>
+          anime.my_list_status &&
+          anime.my_list_status?.status !== 'dropped' &&
+          !anime.my_extension?.simulDay &&
+          anime.my_extension?.simulDay !== 0 &&
+          ['tv', 'ova', 'ona'].includes(anime.media_type || ''),
+      )
+      .sort((a, b) => moment(a.start_date).unix() - moment(b.start_date).unix());
+  }
+
   getDay(day: number): string {
     return moment()
       .day(this.today + day)
