@@ -66,7 +66,7 @@
               anime.my_extension?.simulTime
                 ? getLast8am().day() === anime.my_extension?.simulDay
                   ? (anime.my_extension!.simulTime!.substr(0, 5) | time)
-                  :( anime.my_extension?.simulDay|day)
+                  : (anime.my_extension?.simulDay | day)
                 : ''
             }}
           </td>
@@ -83,16 +83,25 @@
               *ngIf="!(anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)"
               class="cursor-pointer mx-2"
               [name]="
-                anime.list_status.status === 'completed'
+                anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
                   ? 'check2'
                   : anime.busy
                   ? 'hourglass-split'
                   : 'plus-square'
               "
               [style]="{
-                padding: anime.list_status.status === 'completed' || anime.busy ? 0 : '2px'
+                padding:
+                  (anime.list_status.status === 'completed' && !anime.list_status.is_rewatching) ||
+                  anime.busy
+                    ? 0
+                    : '2px'
               }"
-              [size]="anime.list_status.status === 'completed' || anime.busy ? 20 : 16"
+              [size]="
+                (anime.list_status.status === 'completed' && !anime.list_status.is_rewatching) ||
+                anime.busy
+                  ? 20
+                  : 16
+              "
               (click)="markSeen(anime)"
             ></app-icon>
           </td>
