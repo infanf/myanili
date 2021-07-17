@@ -28,7 +28,7 @@
     "@angular/router": "^12.1.0",
     "@angular/service-worker": "^12.1.0",
     "@apollo/client": "^3.3.11",
-    "@ng-bootstrap/ng-bootstrap": "^9.0.2",
+    "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "angular-gallery": "^1.0.2",
     "angular-svg-icon": "^11.1.1",
     "apollo-angular": "^2.3.0",
