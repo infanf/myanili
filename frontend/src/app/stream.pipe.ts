@@ -56,6 +56,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://amazon.de/dp/',
     },
     {
+      id: 'tubi',
+      name: 'Tubi',
+      urlprefix: 'https://tubitv.com/series/',
+    },
+    {
       id: 'wak',
       name: 'Wakanim',
       urlprefix: 'https://www.wakanim.tv/sc/v2/catalogue/show/',
