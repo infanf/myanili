@@ -161,6 +161,7 @@ interface AnimeExtensionInterface {
   simklId?: number;
   annictId?: number;
   livechartId?: number;
+  fandomSlug?: string;
   displayName?: string;
 }
 

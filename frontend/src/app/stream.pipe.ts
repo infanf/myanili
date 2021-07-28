@@ -6,28 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StreamPipe implements PipeTransform {
   readonly streamingProviders: StreamingProvider[] = [
     {
-      id: 'cr',
-      name: 'Crunchyroll',
-      urlprefix: 'https://crunchyroll.com/',
-    },
-    {
-      id: 'hid',
-      name: 'HIDIVE',
-      urlprefix: 'https://hidive.com/tv/',
-    },
-    {
-      id: 'azn',
-      name: 'Prime Video',
-      urlprefix: 'https://amazon.de/dp/',
-    },
-    {
-      id: 'wak',
-      name: 'Wakanim',
-      urlprefix: 'https://www.wakanim.tv/sc/v2/catalogue/show/',
-    },
-    {
-      id: '',
-      name: 'Other',
+      id: 'aod',
+      name: 'Anime-on-demand',
+      urlprefix: 'https://anime-on-demand.de/anime/',
     },
     {
       id: 'al',
@@ -35,14 +16,24 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www.animelab.com/shows/',
     },
     {
-      id: 'aod',
-      name: 'Anime-on-demand',
-      urlprefix: 'https://anime-on-demand.de/anime/',
+      id: 'aniverse',
+      name: 'aniverse',
+      urlprefix: 'https://amazon.de/dp/',
+    },
+    {
+      id: 'cr',
+      name: 'Crunchyroll',
+      urlprefix: 'https://crunchyroll.com/',
     },
     {
       id: 'fun',
       name: 'Funimation',
       urlprefix: 'https://www.funimation.com/shows/',
+    },
+    {
+      id: 'hid',
+      name: 'HIDIVE',
+      urlprefix: 'https://hidive.com/tv/',
     },
     {
       id: 'hulu',
@@ -60,13 +51,29 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www3.nhk.or.jp/nhkworld/',
     },
     {
-      id: 'yt',
-      name: 'YouTube',
+      id: 'azn',
+      name: 'Prime Video',
+      urlprefix: 'https://amazon.de/dp/',
     },
     {
-      id: 'aniverse',
-      name: 'aniverse',
-      urlprefix: 'https://amazon.de/dp/',
+      id: 'tubi',
+      name: 'Tubi',
+      urlprefix: 'https://tubitv.com/series/',
+    },
+    {
+      id: 'wak',
+      name: 'Wakanim',
+      urlprefix: 'https://www.wakanim.tv/sc/v2/catalogue/show/',
+    },
+    {
+      id: 'yt',
+      name: 'YouTube',
+      urlprefix: 'https://youtube.com/',
+    },
+    {
+      id: '',
+      name: 'Other',
+      urlprefix: 'https://',
     },
   ];
 

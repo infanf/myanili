@@ -141,6 +141,7 @@ interface MangaExtensionInterface {
   malId?: number;
   kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
   bakaId?: number;
+  fandomSlug?: string;
 }
 
 export type MangaExtension = MangaExtensionInterface;
@@ -156,3 +157,10 @@ interface Character {
 }
 
 export type MangaCharacter = Character;
+
+interface BakaMangaInterface {
+  votes?: number;
+  score?: number;
+}
+
+export type BakaManga = BakaMangaInterface;

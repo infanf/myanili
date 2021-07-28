@@ -191,6 +191,7 @@ interface MediaExtensionInterface {
   annictId?: number;
   livechartId?: number;
   bakaId?: number;
+  fandomSlug?: string;
   displayName?: string;
 }
 
@@ -226,3 +227,10 @@ export type MediaCharacter = Character;
 export type MediaStaff = Staff;
 
 export type MediaRecommendations = Array<{ node: MediaNode; num_recommendations: number }>;
+
+interface BakaMangaInterface {
+  votes?: number;
+  score?: number;
+}
+
+export type BakaManga = BakaMangaInterface;

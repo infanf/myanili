@@ -437,7 +437,9 @@
             </div>
             <div class="row">
               <div class="col-4">
-                <td class="text-nowrap"></td>
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('bu')"></app-external-rating>
+                </td>
               </div>
               <div class="col-8">
                 <app-icon-bakamanga></app-icon-bakamanga>
@@ -450,6 +452,24 @@
                   "
                   target="_blank"
                   >Baka-Updates</a
+                >
+              </div>
+            </div>
+            <div *ngIf="manga.my_extension?.fandomSlug" class="row">
+              <div class="col-4">
+                <td class="text-nowrap"></td>
+              </div>
+              <div class="col-8">
+                <app-icon-fandom></app-icon-fandom>
+                <a
+                  class="ms-1"
+                  [href]="
+                    manga.my_extension?.fandomSlug?.includes('.')?
+                      'https://' + manga.my_extension!.fandomSlug :
+                    'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
+                  "
+                  target="_blank"
+                  >Wiki</a
                 >
               </div>
             </div>
@@ -483,6 +503,19 @@
               [(ngModel)]="editExtension!.bakaId"
               [disabled]="busy"
             />
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && manga && editExtension">
+          <div class="col-4 fw-bold text-end">Wiki</div>
+          <div class="col-8">
+            <div class="input-group input-group-sm">
+              <input
+                class="form-control"
+                [(ngModel)]="editExtension!.fandomSlug"
+                [disabled]="busy"
+              />
+              <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')">.fandom.com</span>
+            </div>
           </div>
         </div>
       </div>

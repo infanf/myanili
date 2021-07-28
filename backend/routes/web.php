@@ -7,7 +7,12 @@ use App\Providers\AnnictServiceProvider as AnnictServiceProvider;
 use App\Providers\MalServiceProvider as MalServiceProvider;
 use App\Providers\SimklServiceProvider as SimklServiceProvider;
 use App\Providers\TraktServiceProvider as TraktServiceProvider;
+use App\Providers\BakaServiceProvider as BakaServiceProvider;
 use Illuminate\Http\Request;
+
+$router->get('/phpinfo', function () {
+    phpinfo();
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -396,4 +401,16 @@ JAVASCRIPT;
             return ($e->getMessage());
         }
     }
+});
+
+/**
+ *  ___       _        __  __
+ * | _ ) __ _| |____ _|  \/  |__ _ _ _  __ _ __ _
+ * | _ \/ _` | / / _` | |\/| / _` | ' \/ _` / _` |
+ * |___/\__,_|_\_\__,_|_|  |_\__,_|_||_\__, \__,_|
+ *                                     |___/
+ */
+
+$router->get('/baka/{id}', function ($id) {
+    return BakaServiceProvider::getManga($id);
 });

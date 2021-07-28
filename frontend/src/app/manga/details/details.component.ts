@@ -343,6 +343,17 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
           this.setRating('kitsu', rating);
         });
     }
+    if (!this.getRating('bu')) {
+      this.mangaService.getBakaManga(this.manga?.my_extension?.bakaId).then(bakaManga => {
+        if (bakaManga) {
+          this.setRating('bu', {
+            nom: bakaManga.score || 0,
+            norm: (bakaManga.score || 0) * 10,
+            ratings: bakaManga.votes,
+          });
+        }
+      });
+    }
   }
 
   get meanRating(): number {

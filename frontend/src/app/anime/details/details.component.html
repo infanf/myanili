@@ -372,6 +372,19 @@
           />
         </div>
       </div>
+      <div class="row my-2" *ngIf="edit && anime && editExtension">
+        <div class="col-4 fw-bold text-end">Wiki</div>
+        <div class="col-8">
+          <div class="input-group input-group-sm">
+            <input
+              class="form-control"
+              [(ngModel)]="editExtension!.fandomSlug"
+              [disabled]="busy"
+            />
+            <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')">.fandom.com</span>
+          </div>
+        </div>
+      </div>
       <div class="row" *ngIf="anime">
         <div class="col-4 fw-bold text-end">Duration</div>
         <div class="col-8">
@@ -575,6 +588,24 @@
                   "
                   target="_blank"
                   >LiveChart</a
+                >
+              </div>
+            </div>
+            <div *ngIf="anime.my_extension?.fandomSlug" class="row">
+              <div class="col-4">
+                <td class="text-nowrap"></td>
+              </div>
+              <div class="col-8">
+                <app-icon-fandom></app-icon-fandom>
+                <a
+                  class="ms-1"
+                  [href]="
+                    anime.my_extension?.fandomSlug?.includes('.')?
+                      'https://' + anime.my_extension!.fandomSlug :
+                    'https://' + anime.my_extension?.fandomSlug + '.fandom.com/'
+                  "
+                  target="_blank"
+                  >Wiki</a
                 >
               </div>
             </div>
