@@ -32,17 +32,7 @@ import { CharacterComponent } from './character/character.component';
 import { DayPipe } from './day.pipe';
 import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
-import { AnilistIconComponent } from './icon/anilist/anilist.component';
-import { AnnictIconComponent } from './icon/annict/annict.component';
-import { BakamangaIconComponent } from './icon/bakamanga/bakamanga.component';
-import { IconComponent } from './icon/icon.component';
-import { KitsuIconComponent } from './icon/kitsu/kitsu.component';
-import { LivechartIconComponent } from './icon/livechart/livechart.component';
-import { MalIconComponent } from './icon/mal/mal.component';
-import { SimklIconComponent } from './icon/simkl/simkl.component';
-import { SpotifyIconComponent } from './icon/spotify/spotify.component';
-import { IconStatusComponent } from './icon/status/icon-status.component';
-import { TraktIconComponent } from './icon/trakt/trakt.component';
+import { IconModule } from './icon/icon.module';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
 import { MangaCharactersComponent } from './manga/details/characters/characters.component';
@@ -70,7 +60,6 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     NavbarComponent,
     AnimeListComponent,
     AnimeDetailsComponent,
-    IconComponent,
     WatchlistComponent,
     FlagPipe,
     MalPipe,
@@ -81,15 +70,11 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ScheduleComponent,
     SeasonComponent,
     SettingsComponent,
-    IconStatusComponent,
     WidgetSeasonComponent,
     StreamingComponent,
     TraktComponent,
     MangaDetailsComponent,
     MangaListComponent,
-    SpotifyIconComponent,
-    MalIconComponent,
-    TraktIconComponent,
     MalComponent,
     Nl2brPipe,
     AnimeCharactersComponent,
@@ -109,16 +94,10 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     AnimeListGridComponent,
     AnimeListListComponent,
     PlatformComponent,
-    AnilistIconComponent,
-    KitsuIconComponent,
     QuickaddComponent,
-    SimklIconComponent,
-    AnnictIconComponent,
     ExternalRatingComponent,
     SeasonGridComponent,
     SeasonListComponent,
-    LivechartIconComponent,
-    BakamangaIconComponent,
   ],
   imports: [
     BrowserModule,
@@ -145,6 +124,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     IvyGalleryModule,
     AngularSvgIconModule.forRoot(),
     GraphQLModule,
+    IconModule,
   ],
   providers: [TimePipe, StreamPipe, PlatformPipe, Title, DayPipe],
 
