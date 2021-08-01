@@ -161,7 +161,7 @@ export class AnilistService {
         .mutate({
           errorPolicy: 'ignore',
           mutation: gql`
-            mutation(
+            mutation (
               $id: Int
               $mediaId: Int
               $status: MediaListStatus
@@ -251,6 +251,71 @@ export class AnilistService {
           console.log({ error });
           r(undefined);
         });
+    });
+  }
+
+  async getMediaListId(id: number): Promise<number | undefined> {
+    return new Promise(async r => {
+      const user = await new Promise<AnilistUser | undefined>(res => this.user.subscribe(res));
+      if (!user) {
+        return r(undefined);
+      }
+      this.client
+        .query<{ MediaList?: { id: number } }>({
+          errorPolicy: 'ignore',
+          query: gql`
+            query MediaList($id: Int, $userId: Int) {
+              MediaList(mediaId: $id, userId: $userId) {
+                id
+              }
+            }
+          `,
+          variables: { id, userId: user.id },
+        })
+        .subscribe(
+          result => {
+            r(result.data.MediaList?.id);
+          },
+          error => {
+            console.log({ error });
+            r(undefined);
+          },
+        );
+    });
+  }
+
+  async deleteEntry(mediaId?: number): Promise<{ deleted: boolean; msg?: string }> {
+    if (!mediaId) {
+      return { deleted: false, msg: 'No mediaId provided' };
+    }
+    return new Promise(async r => {
+      const id = await this.getMediaListId(mediaId);
+      if (!id) {
+        r({ deleted: false });
+        return;
+      }
+      const variables = { id };
+      this.client
+        .mutate<{ DeleteMediaListEntry: { deleted: boolean } }>({
+          errorPolicy: 'ignore',
+          mutation: gql`
+            mutation ($id: Int) {
+              DeleteMediaListEntry(id: $id) {
+                deleted
+              }
+            }
+          `,
+          variables,
+        })
+        .subscribe(
+          result => {
+            r({ deleted: result.data?.DeleteMediaListEntry.deleted || false });
+          },
+          error => {
+            console.log({ error });
+            r({ deleted: false, msg: error.message });
+          },
+        );
     });
   }
 

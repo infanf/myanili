@@ -573,4 +573,8 @@
 
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
   </ng-container>
+  <button *ngIf="edit && !busy" class="btn btn-danger d-block my-3 mx-auto" (click)="deleteEntry()">
+    <app-icon name="trash"></app-icon>
+    Remove from list
+  </button>
 </div>

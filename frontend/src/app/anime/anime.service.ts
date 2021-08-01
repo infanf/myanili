@@ -129,6 +129,23 @@ export class AnimeService {
     return malResponse;
   }
 
+  async deleteAnime(ids: {
+    malId: number;
+    anilistId?: number;
+    kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+    simklId?: number;
+    annictId?: number;
+  }) {
+    await Promise.all([
+      this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
+      this.anilist.deleteEntry(ids.anilistId),
+      this.kitsu.deleteEntry(ids.kitsuId, 'anime'),
+      this.simkl.deleteEntry(ids.simklId),
+      this.annict.updateStatus(ids.annictId, 'no_select'),
+    ]);
+    return true;
+  }
+
   async getManga(id: number): Promise<RelatedManga[]> {
     const jikanime = await this.malService.getJikan('anime', id);
     const mangas = [] as RelatedManga[];

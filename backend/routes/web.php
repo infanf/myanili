@@ -110,6 +110,10 @@ $router->put('/anime/{id}', function ($id, Request $request) {
     return MalServiceProvider::putAnimeDetails($id, $request);
 });
 
+$router->delete('/anime/{id}', function ($id, Request $request) {
+    return MalServiceProvider::deleteMediaFromList($id, 'anime');
+});
+
 $router->post('/song/{id}', function ($id, Request $request) {
     $params = $request->toArray();
     $filename = dirname(__DIR__) . '/resources/songs.json';
@@ -138,6 +142,10 @@ $router->get('/manga/{id}', function ($id) {
 
 $router->put('/manga/{id}', function ($id, Request $request) {
     return MalServiceProvider::putMangaDetails($id, $request);
+});
+
+$router->delete('/manga/{id}', function ($id, Request $request) {
+    return MalServiceProvider::deleteMediaFromList($id, 'manga');
 });
 
 $router->get('/animes/season/{year}/{season}', function (int $year, int $season) {
