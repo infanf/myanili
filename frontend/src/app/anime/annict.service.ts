@@ -153,8 +153,8 @@ export class AnnictService {
     }
   }
 
-  async updateStatus(annictId: number, status?: AnnictStatus) {
-    if (!this.accessToken || !status) return;
+  async updateStatus(annictId?: number, status?: AnnictStatus) {
+    if (!annictId || !this.accessToken || !status) return;
     await fetch(`${this.baseUrl}me/statuses?work_id=${annictId}&kind=${status}`, {
       method: 'POST',
       headers: this.getFetchHeader(),
@@ -235,7 +235,6 @@ export class AnnictService {
       case 'wanna_watch':
         return 'plan_to_watch';
       case 'stop_watching':
-      case 'no_select':
         return 'dropped';
       case 'watched':
         return 'completed';
