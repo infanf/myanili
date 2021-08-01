@@ -48,7 +48,7 @@ class MalServiceProvider extends ServiceProvider
         return curl_exec($ch);
     }
 
-    private static function put(string $url, $params = null)
+    private static function post(string $url, $params = null, $requestType = "POST")
     {
         if (!isset($_COOKIE['MAL_ACCESS_TOKEN'])) {
             return '{"auth": false}';
@@ -58,10 +58,20 @@ class MalServiceProvider extends ServiceProvider
         curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi");
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_COOKIE['MAL_ACCESS_TOKEN']}"]);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $requestType);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
         // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
         return curl_exec($ch);
+    }
+
+    private static function put(string $url, $params = null)
+    {
+        return self::post($url, $params, "PUT");
+    }
+
+    private static function delete(string $url, $params = null)
+    {
+        return self::post($url, $params, "DELETE");
     }
 
     public static function getMyList($status = null)
@@ -174,6 +184,16 @@ class MalServiceProvider extends ServiceProvider
             self::put(
                 self::baseUrl . '/anime/' . $id . '/my_list_status',
                 $requestParams
+            ), true
+        );
+        return $response;
+    }
+
+    public static function deleteMediaFromList(int $id, string $type)
+    {
+        $response = json_decode(
+            self::delete(
+                implode('/', [self::baseUrl, $type, $id, 'my_list_status']),
             ), true
         );
         return $response;
