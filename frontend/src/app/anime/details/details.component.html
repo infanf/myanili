@@ -6,13 +6,6 @@
     <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" style="white-space: nowrap">
       <ng-container *ngIf="anime?.my_list_status; else add">
         <app-icon
-          *ngIf="edit && !busy"
-          name="trash"
-          size="24"
-          class="me-3 text-danger"
-          (click)="deleteEntry()"
-        ></app-icon>
-        <app-icon
           [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"
           size="24"
           (click)="editSave()"
@@ -383,12 +376,10 @@
         <div class="col-4 fw-bold text-end">Wiki</div>
         <div class="col-8">
           <div class="input-group input-group-sm">
-            <input
-              class="form-control"
-              [(ngModel)]="editExtension!.fandomSlug"
-              [disabled]="busy"
-            />
-            <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')">.fandom.com</span>
+            <input class="form-control" [(ngModel)]="editExtension!.fandomSlug" [disabled]="busy" />
+            <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')"
+              >.fandom.com</span
+            >
           </div>
         </div>
       </div>
@@ -607,9 +598,9 @@
                 <a
                   class="ms-1"
                   [href]="
-                    anime.my_extension?.fandomSlug?.includes('.')?
-                      'https://' + anime.my_extension!.fandomSlug :
-                    'https://' + anime.my_extension?.fandomSlug + '.fandom.com/'
+                    anime.my_extension?.fandomSlug?.includes('.')
+                      ? 'https://' + anime.my_extension!.fandomSlug
+                      : 'https://' + anime.my_extension?.fandomSlug + '.fandom.com/'
                   "
                   target="_blank"
                   >Wiki</a
@@ -693,4 +684,8 @@
   </ng-container>
 
   <app-anime-songs [anime]="anime" *ngIf="edit" [edit]="edit"></app-anime-songs>
+  <button *ngIf="edit && !busy" class="btn btn-danger d-block my-3 mx-auto" (click)="deleteEntry()">
+    <app-icon name="trash"></app-icon>
+    Remove from list
+  </button>
 </div>
