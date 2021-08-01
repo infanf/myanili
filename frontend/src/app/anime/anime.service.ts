@@ -139,7 +139,7 @@ export class AnimeService {
     await Promise.all([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
-      // this.kitsu.deleteEntry(id, 'anime'),
+      this.kitsu.deleteEntry(ids.kitsuId, 'anime'),
       // this.simkl.deleteEntry({ simkl: id }, {}),
       // this.annict.deleteEntry(id),
     ]);
