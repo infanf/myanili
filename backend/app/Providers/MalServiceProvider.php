@@ -48,7 +48,7 @@ class MalServiceProvider extends ServiceProvider
         return curl_exec($ch);
     }
 
-    private static function post(string $url, $params = null, $requestType = "POST")
+    private static function post(string $url, $params = [], $requestType = "POST")
     {
         if (!isset($_COOKIE['MAL_ACCESS_TOKEN'])) {
             return '{"auth": false}';
@@ -64,12 +64,12 @@ class MalServiceProvider extends ServiceProvider
         return curl_exec($ch);
     }
 
-    private static function put(string $url, $params = null)
+    private static function put(string $url, $params = [])
     {
         return self::post($url, $params, "PUT");
     }
 
-    private static function delete(string $url, $params = null)
+    private static function delete(string $url, $params = [])
     {
         return self::post($url, $params, "DELETE");
     }

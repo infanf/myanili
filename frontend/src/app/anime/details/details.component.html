@@ -6,6 +6,13 @@
     <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" style="white-space: nowrap">
       <ng-container *ngIf="anime?.my_list_status; else add">
         <app-icon
+          *ngIf="edit && !busy"
+          name="trash"
+          size="24"
+          class="me-3 text-danger"
+          (click)="deleteEntry()"
+        ></app-icon>
+        <app-icon
           [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"
           size="24"
           (click)="editSave()"

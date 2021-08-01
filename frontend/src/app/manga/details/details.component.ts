@@ -284,6 +284,23 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     this.glob.notbusy();
   }
 
+  async deleteEntry(): Promise<boolean> {
+    if (!this.manga) return false;
+    if (!confirm(`Are you sure you want to delete "${this.manga.title}"?`)) return false;
+    this.glob.busy();
+    this.busy = true;
+    await this.mangaService.deleteManga({
+      malId: this.manga.id,
+      anilistId: this.manga.my_extension?.anilistId,
+      kitsuId: this.manga.my_extension?.kitsuId,
+    });
+    this.edit = false;
+    await this.ngOnInit();
+    this.glob.notbusy();
+    this.busy = false;
+    return true;
+  }
+
   getRelatedAnimes() {
     if (!this.manga?.related_anime?.length) return [];
     const types = this.manga.related_anime
