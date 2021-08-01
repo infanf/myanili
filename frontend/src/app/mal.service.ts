@@ -28,7 +28,7 @@ export class MalService {
       this.httpClient
         .get(`${this.backendUrl}${path}`, { withCredentials: true })
         .subscribe(value => {
-          res((value as unknown) as T);
+          res(value as unknown as T);
         });
     });
   }
@@ -39,7 +39,7 @@ export class MalService {
       this.httpClient
         .put(`${this.backendUrl}${path}`, data, { withCredentials: true })
         .subscribe(value => {
-          res((value as unknown) as T);
+          res(value as unknown as T);
         });
     });
   }
@@ -50,7 +50,18 @@ export class MalService {
       this.httpClient
         .post(`${this.backendUrl}${path}`, data, { withCredentials: true })
         .subscribe(value => {
-          res((value as unknown) as T);
+          res(value as unknown as T);
+        });
+    });
+  }
+
+  // tslint:disable-next-line:no-any
+  async delete<T>(path: string): Promise<T> {
+    return new Promise((res, rej) => {
+      this.httpClient
+        .delete(`${this.backendUrl}${path}`, { withCredentials: true })
+        .subscribe(value => {
+          res(value as unknown as T);
         });
     });
   }

@@ -57,7 +57,7 @@ export class KitsuService {
       `${this.baseUrl}mappings?filter[externalSite]=${externalSite}/${type}&filter[externalId]=${externalId}`,
     );
     if (result.ok) {
-      const response = ((await result.json()) as unknown) as KitsuResponse<KitsuMappingData[]>;
+      const response = (await result.json()) as unknown as KitsuResponse<KitsuMappingData[]>;
       if (response.data.length) {
         const newUrl = response.data[0].relationships.item.links.related;
         const newResult = await fetch(newUrl);
@@ -89,7 +89,7 @@ export class KitsuService {
       `${this.baseUrl}${type}/${id}/mappings?filter[externalSite]=${externalSite}/${type}`,
     );
     if (result.ok) {
-      const response = ((await result.json()) as unknown) as KitsuResponse<KitsuMappingData[]>;
+      const response = (await result.json()) as unknown as KitsuResponse<KitsuMappingData[]>;
       if (response.data.length) {
         return Number(response.data[0].attributes.externalId);
       }
@@ -254,6 +254,35 @@ export class KitsuService {
       return response;
     }
     return;
+  }
+
+  async deleteEntry(
+    ids?: { kitsuId: number | string; entryId?: string },
+    type: 'anime' | 'manga' = 'anime',
+  ): Promise<boolean> {
+    if (!ids) {
+      return true;
+    }
+    const user = await new Promise<{ id: string } | undefined>(r => this.user.subscribe(r));
+    if (!user?.id) return true;
+    if (!ids.entryId) {
+      const existing = await this.getEntry(Number(ids.kitsuId), type);
+      if (!existing) {
+        return true;
+      }
+      ids.entryId = existing?.id;
+    }
+    const result = await fetch(`${this.baseUrl}library-entries/${ids.entryId}`, {
+      method: 'DELETE',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/vnd.api+json',
+      }),
+    });
+    if (result.ok) {
+      return true;
+    }
+    return false;
   }
 
   async getRating(id?: number, type: 'anime' | 'manga' = 'anime'): Promise<ExtRating | undefined> {

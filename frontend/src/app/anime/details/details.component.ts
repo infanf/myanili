@@ -381,6 +381,25 @@ export class AnimeDetailsComponent implements OnInit {
     });
   }
 
+  async deleteEntry(): Promise<boolean> {
+    if (!this.anime) return false;
+    if (!confirm(`Are you sure you want to delete "${this.anime.title}"?`)) return false;
+    this.glob.busy();
+    this.busy = true;
+    await this.animeService.deleteAnime({
+      malId: this.anime.id,
+      anilistId: this.anime.my_extension?.anilistId,
+      kitsuId: this.anime.my_extension?.kitsuId,
+      simklId: this.anime.my_extension?.simklId,
+      annictId: this.anime.my_extension?.annictId,
+    });
+    this.edit = false;
+    await this.ngOnInit();
+    this.glob.notbusy();
+    this.busy = false;
+    return true;
+  }
+
   async findTrakt() {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(TraktComponent);
