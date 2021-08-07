@@ -1,8 +1,4 @@
-
-  <section
-  class="mb-3"
-  *ngIf="recommendations.length"
->
+<section class="mb-3" *ngIf="recommendations.length">
   <div class="overflow-auto mt-2">
     <div class="d-flex" [ngStyle]="{ 'width.rem': 11 * recommendations.length }">
       <div
@@ -12,6 +8,7 @@
         [routerLink]="'/manga/details/' + recom.node.id"
       >
         <img
+          loading="lazy"
           style="height: 16rem; object-fit: cover"
           [src]="
             recom.node.main_picture?.large ||
