@@ -94,6 +94,11 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
         );
       }
     }
+    if (!this.manga.related_manga.length) {
+      this.manga.related_anime_promise.then(relatedAnime => {
+        if (this.manga) this.manga.related_anime = relatedAnime;
+      });
+    }
     this.glob.notbusy();
     await this.getRatings();
   }

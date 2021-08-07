@@ -46,7 +46,7 @@ export class MangaService {
   async getManga(id: number, extend = true) {
     const manga = await this.malService.get<Manga>('manga/' + id);
     const comments = manga.my_list_status?.comments;
-    if (!manga.related_anime.length && extend) manga.related_anime = await this.getAnimes(id);
+    if (!manga.related_anime.length && extend) manga.related_anime_promise = this.getAnimes(id);
     if (!comments) return manga;
     try {
       const json = Base64.decode(comments);

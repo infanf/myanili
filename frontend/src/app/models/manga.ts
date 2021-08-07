@@ -42,6 +42,7 @@ interface MangaInterface {
   background?: string;
   related_manga: RelatedManga[];
   related_anime: RelatedAnime[];
+  related_anime_promise: Promise<RelatedAnime[]>;
   recommendations: MangaRecommendations;
   authors?: Array<{ role: string; node: Person }>;
   serialization: Array<{ node: Studio }>;
