@@ -117,6 +117,11 @@ export class AnimeDetailsComponent implements OnInit {
         );
       }
     }
+    if (!this.anime.related_manga.length) {
+      this.anime.related_manga_promise.then(relatedManga => {
+        if (this.anime) this.anime.related_manga = relatedManga;
+      });
+    }
     this.glob.notbusy();
     await this.getRatings();
   }

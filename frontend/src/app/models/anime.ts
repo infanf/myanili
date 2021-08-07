@@ -47,6 +47,7 @@ interface AnimeInterface {
   background?: string;
   related_anime: RelatedAnime[];
   related_manga: RelatedManga[];
+  related_manga_promise: Promise<RelatedManga[]>;
   recommendations: Array<{ node: AnimeNode; num_recommendations: number }>;
   studios: Studio[];
   statistics?: {
