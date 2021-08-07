@@ -1,18 +1,19 @@
 <div
   *ngFor="let character of characters"
-  [routerLink]="'/character/' + character.mal_id" class="cursor-pointer"
+  [routerLink]="'/character/' + character.mal_id"
+  class="cursor-pointer"
   class="mb-3 d-flex border rounded justify-content-between cursor-pointer"
 >
   <img
+    loading="lazy"
     [src]="character.image_url || '/assets/blank-poster.svg'"
     [routerLink]="'/character/' + character.mal_id"
     class="poster rounded-start"
   />
   <div class="d-flex flex-fill justify-content-between flex-column p-3">
-    <div >
+    <div>
       {{ character.name }}
       <div class="text-muted">{{ character.role }}</div>
     </div>
   </div>
 </div>
-

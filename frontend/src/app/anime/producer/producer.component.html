@@ -15,6 +15,7 @@
       [routerLink]="'/anime/details/' + anime.mal_id"
     >
       <img
+        loading="lazy"
         [src]="anime.image_url || '/assets/blank-poster.svg'"
         class="poster rounded-start cursor-pointer"
       />

@@ -57,6 +57,7 @@
             class="mb-3 d-flex border rounded justify-content-between"
           >
             <img
+              loading="lazy"
               [src]="role.character.image_url || '/assets/blank-poster.svg'"
               [routerLink]="'/character/' + role.character.mal_id"
               class="poster rounded-start cursor-pointer"
@@ -66,11 +67,15 @@
                 {{ role.character.name }}
                 <div class="text-muted">{{ role.role }}</div>
               </div>
-              <div class="text-end cursor-pointer" [routerLink]="'/anime/details/' + role.anime.mal_id">
+              <div
+                class="text-end cursor-pointer"
+                [routerLink]="'/anime/details/' + role.anime.mal_id"
+              >
                 {{ role.anime.name }}
               </div>
             </div>
             <img
+              loading="lazy"
               [src]="role.anime.image_url || '/assets/blank-poster.svg'"
               [routerLink]="'/anime/details/' + role.anime.mal_id"
               class="poster rounded-end cursor-pointer"
@@ -87,6 +92,7 @@
             [routerLink]="'/manga/details/' + manga.manga.mal_id"
           >
             <img
+              loading="lazy"
               [src]="manga.manga.image_url || '/assets/blank-poster.svg'"
               class="poster rounded-start"
             />
@@ -106,6 +112,7 @@
             [routerLink]="'/anime/details/' + anime.anime.mal_id"
           >
             <img
+              loading="lazy"
               [src]="anime.anime.image_url || '/assets/blank-poster.svg'"
               class="poster rounded-start"
             />
