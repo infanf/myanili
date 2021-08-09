@@ -107,7 +107,7 @@ $router->get('/anime/{id}', function ($id) {
 });
 
 $router->put('/anime/{id}', function ($id, Request $request) {
-    return MalServiceProvider::putAnimeDetails($id, $request);
+    return MalServiceProvider::putMediaDetails($id, 'anime', $request);
 });
 
 $router->delete('/anime/{id}', function ($id, Request $request) {
@@ -141,7 +141,7 @@ $router->get('/manga/{id}', function ($id) {
 });
 
 $router->put('/manga/{id}', function ($id, Request $request) {
-    return MalServiceProvider::putMangaDetails($id, $request);
+    return MalServiceProvider::putMediaDetails($id, 'manga', $request);
 });
 
 $router->delete('/manga/{id}', function ($id, Request $request) {
