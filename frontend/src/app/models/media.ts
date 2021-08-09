@@ -51,6 +51,8 @@ interface MediaInterface {
   pictures: Picture[];
   background?: string;
   related: RelatedMedia[];
+  related_anime_promise?: Promise<RelatedMedia[]>;
+  related_manga_promise?: Promise<RelatedMedia[]>;
   recommendations: MediaRecommendations;
   /**
    * Studios for Anime or Magazines for Manga

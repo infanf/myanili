@@ -125,7 +125,7 @@ export class MangaService {
     kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
   }) {
     await Promise.all([
-      this.malService.delete<boolean>('manga/' + ids.malId),
+      this.mal.delete<boolean>('manga/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
       this.kitsu.deleteEntry(ids.kitsuId, 'manga'),
     ]);
