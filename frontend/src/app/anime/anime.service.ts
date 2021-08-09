@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MainService } from '@models/components';
-import { AnimeCharacter, AnimeStaff, WatchStatus } from '@models/mal-anime';
+import { AnimeCharacter, AnimeStaff, MyAnimeStatus, WatchStatus } from '@models/mal-anime';
 import {
   ListMedia,
   Media,
@@ -9,6 +9,7 @@ import {
   MediaNode,
   MyMediaUpdate,
   PersonalStatus,
+  RelatedMedia,
 } from '@models/media';
 import { Base64 } from 'js-base64';
 import { environment } from 'src/environments/environment';
@@ -100,6 +101,8 @@ export class AnimeService {
     }
     if (!anime) return undefined;
     const comments = anime.my_list_status?.comments;
+    if (!anime.related.filter(rel => rel.type === 'manga').length)
+      anime.related_manga_promise = this.getManga(id);
     if (!comments) return anime;
     try {
       const json = Base64.decode(comments);
@@ -197,6 +200,42 @@ export class AnimeService {
       };
     }
     return false;
+  }
+
+  async deleteAnime(ids: {
+    malId: number;
+    anilistId?: number;
+    kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+    simklId?: number;
+    annictId?: number;
+  }) {
+    await Promise.all([
+      this.mal.delete<MyAnimeStatus>('anime/' + ids.malId),
+      this.anilist.deleteEntry(ids.anilistId),
+      this.kitsu.deleteEntry(ids.kitsuId, 'anime'),
+      this.simkl.deleteEntry(ids.simklId),
+      this.annict.updateStatus(ids.annictId, 'no_select'),
+    ]);
+    return true;
+  }
+
+  async getManga(id: number): Promise<RelatedMedia[]> {
+    const jikanime = await this.mal.getJikan('anime', id);
+    const mangas = [] as RelatedMedia[];
+    for (const key in jikanime.related) {
+      if (!jikanime.related[key]) continue;
+      for (const related of jikanime.related[key]) {
+        if (related.type === 'manga') {
+          mangas.push({
+            node: { id: related.mal_id, title: related.name, num_parts: 0 },
+            relation_type: key.replace(' ', '_').toLowerCase(),
+            relation_type_formatted: key,
+            type: 'manga',
+          });
+        }
+      }
+    }
+    return mangas;
   }
 
   async getCharacters(id: number): Promise<AnimeCharacter[]> {

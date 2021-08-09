@@ -127,6 +127,19 @@ export class SimklService {
     });
   }
 
+  async deleteEntry(id?: number) {
+    if (!this.clientId || !this.accessToken || !id) return;
+    const deleteData = { shows: [{ ids: { simkl: id } }] };
+    return fetch(`${this.baseUrl}sync/history/remove`, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'simkl-api-key': this.clientId,
+      }),
+      body: JSON.stringify(deleteData),
+    });
+  }
+
   async addRating(ids: { simkl?: number; mal?: number }, rating: number) {
     if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal)) return;
     const ratingData = { shows: [{ rating, ids }] };

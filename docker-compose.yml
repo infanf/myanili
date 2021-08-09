@@ -3,10 +3,27 @@ version: "3.9"
 services:
   app:
     build: .
+    depends_on: 
+      - jikan
     ports:
       - 4280:80
       - 4200:4200
     volumes: 
       - ./backend:/app
       - ./frontend:/frontend
+  jikan:
+    build:
+      context: jikan
+      dockerfile: Dockerfile
+    depends_on:
+      - jikan-redis
+    ports:
+      - "9001:8000"
+    networks:
+      - default
+    restart: always
+
+  jikan-redis:
+    image: redis
+    restart: always
     

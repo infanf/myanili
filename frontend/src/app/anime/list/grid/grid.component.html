@@ -8,7 +8,7 @@
             srcset="{{ anime.node.main_picture.medium || anime.node.main_picture.large }}"
           />
           <source srcset="/assets/blank-poster.svg" />
-          <img src="/assets/blank-poster.svg" alt="poster" class="card-img" />
+          <img loading="lazy" src="/assets/blank-poster.svg" alt="poster" class="card-img" />
         </picture>
         <div class="card-overlay rounded-bottom">
           {{
@@ -50,8 +50,8 @@
                 [showTitle]="true"
                 [titleColor]="'currentColor'"
                 [titleFontSize]="'8px'"
-                style="border-radius: 50%;"
-              class="text-white bg-primary"
+                style="border-radius: 50%"
+                class="text-white bg-primary"
               ></circle-progress>
             </div>
           </ng-container>

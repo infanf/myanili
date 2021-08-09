@@ -64,6 +64,17 @@ export class MalService {
     });
   }
 
+  // tslint:disable-next-line:no-any
+  async delete<T>(path: string): Promise<T> {
+    return new Promise((res, rej) => {
+      this.httpClient
+        .delete(`${this.backendUrl}${path}`, { withCredentials: true })
+        .subscribe(value => {
+          res(value as unknown as T);
+        });
+    });
+  }
+
   async getJikan(type: 'anime' | 'manga', id: number): Promise<JikanInstance> {
     return new Promise((r, rj) => {
       this.httpClient.get<JikanInstance>(`${environment.jikanUrl}${type}/${id}`).subscribe(r);
