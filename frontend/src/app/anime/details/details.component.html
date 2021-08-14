@@ -594,17 +594,22 @@
                 <td class="text-nowrap"></td>
               </div>
               <div class="col-8">
-                <app-icon-fandom></app-icon-fandom>
+                <app-icon-fandom [url]="anime.my_extension!.fandomSlug!"></app-icon-fandom>
                 <a
+                  *ngIf="anime.my_extension!.fandomSlug!.includes('.'); else fandom"
                   class="ms-1"
-                  [href]="
-                    anime.my_extension?.fandomSlug?.includes('.')
-                      ? 'https://' + anime.my_extension!.fandomSlug
-                      : 'https://' + anime.my_extension?.fandomSlug + '.fandom.com/'
-                  "
+                  [href]="'https://' + anime.my_extension!.fandomSlug"
                   target="_blank"
-                  >Wiki</a
+                  >{{ anime.my_extension!.fandomSlug!.replace('www.', '') }}</a
                 >
+                <ng-template #fandom>
+                  <a
+                    class="ms-1"
+                    [href]="'https://' + anime.my_extension!.fandomSlug + '.fandom.com/'"
+                    target="_blank"
+                    >Fandom</a
+                  >
+                </ng-template>
               </div>
             </div>
           </div>
