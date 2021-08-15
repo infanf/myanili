@@ -74,6 +74,40 @@ class MalServiceProvider extends ServiceProvider
         return self::post($url, $params, "DELETE");
     }
 
+    public static function getMediaDetails(int $id, string $type, array $fields = [])
+    {
+        $params = ['fields' => implode(',', $fields)];
+        $response = json_decode(
+            self::get(
+                implode('/', [self::baseUrl, $type, $id]),
+                $params
+            ), true
+        );
+        return $response;
+    }
+
+    public static function putMediaDetails(int $id, string $type, $request)
+    {
+        $requestParams = $request->all();
+        $response = json_decode(
+            self::put(
+                implode('/', [self::baseUrl, $type, $id, 'my_list_status']),
+                $requestParams
+            ), true
+        );
+        return $response;
+    }
+
+    public static function deleteMediaFromList(int $id, string $type)
+    {
+        $response = json_decode(
+            self::delete(
+                implode('/', [self::baseUrl, $type, $id, 'my_list_status']),
+            ), true
+        );
+        return $response;
+    }
+
     public static function getMyList($status = null)
     {
         $params = [
@@ -150,13 +184,43 @@ class MalServiceProvider extends ServiceProvider
 
     public static function getAnimeDetails(int $id)
     {
-        $params = ['fields' => 'id,title,main_picture,alternative_titles,start_date,end_date,synopsis,mean,rank,popularity,num_list_users,num_scoring_users,nsfw,created_at,updated_at,media_type,status,genres,my_list_status{comments},num_episodes,start_season,broadcast,source,average_episode_duration,rating,pictures,background,related_anime,related_manga,recommendations,studios,statistics,opening_themes,ending_themes'];
-        $response = json_decode(
-            self::get(
-                self::baseUrl . '/anime/' . $id,
-                $params
-            ), true
-        );
+        $fields = [
+            "id",
+            "title",
+            "main_picture",
+            "alternative_titles",
+            "start_date",
+            "end_date",
+            "synopsis",
+            "mean",
+            "rank",
+            "popularity",
+            "num_list_users",
+            "num_scoring_users",
+            "nsfw",
+            "created_at",
+            "updated_at",
+            "media_type",
+            "status",
+            "genres",
+            "my_list_status{comments}",
+            "num_episodes",
+            "start_season",
+            "broadcast",
+            "source",
+            "average_episode_duration",
+            "rating",
+            "pictures",
+            "background",
+            "related_anime",
+            "related_manga",
+            "recommendations",
+            "studios",
+            "statistics",
+            "opening_themes",
+            "ending_themes",
+        ];
+        $response = static::getMediaDetails($id, 'anime', $fields);
         // \var_dump($response); die;
         if (isset($response['opening_themes'])) {
             foreach ($response['opening_themes'] as $key => $op) {
@@ -177,50 +241,40 @@ class MalServiceProvider extends ServiceProvider
         return $response;
     }
 
-    public static function putAnimeDetails(int $id, $request)
-    {
-        $requestParams = $request->all();
-        $response = json_decode(
-            self::put(
-                self::baseUrl . '/anime/' . $id . '/my_list_status',
-                $requestParams
-            ), true
-        );
-        return $response;
-    }
-
-    public static function deleteMediaFromList(int $id, string $type)
-    {
-        $response = json_decode(
-            self::delete(
-                implode('/', [self::baseUrl, $type, $id, 'my_list_status']),
-            ), true
-        );
-        return $response;
-    }
-
     public static function getMangaDetails(int $id)
     {
-        $params = ['fields' => 'id,title,main_picture,alternative_titles,start_date,end_date,synopsis,mean,rank,popularity,num_list_users,num_scoring_users,nsfw,created_at,updated_at,media_type,status,genres,my_list_status{comments},serialization,num_chapters,num_volumes,pictures,background,related_anime,related_manga,recommendations,authors{first_name,last_name},statistics'];
-        $response = json_decode(
-            self::get(
-                self::baseUrl . '/manga/' . $id,
-                $params
-            ), true
-        );
-        return $response;
-    }
-
-    public static function putMangaDetails(int $id, $request)
-    {
-        $requestParams = $request->all();
-        $response = json_decode(
-            self::put(
-                self::baseUrl . '/manga/' . $id . '/my_list_status',
-                $requestParams
-            ), true
-        );
-        return $response;
+        $fields = [
+            "id",
+            "title",
+            "main_picture",
+            "alternative_titles",
+            "start_date",
+            "end_date",
+            "synopsis",
+            "mean",
+            "rank",
+            "popularity",
+            "num_list_users",
+            "num_scoring_users",
+            "nsfw",
+            "created_at",
+            "updated_at",
+            "media_type",
+            "status",
+            "genres",
+            "my_list_status{comments}",
+            "serialization",
+            "num_chapters",
+            "num_volumes",
+            "pictures",
+            "background",
+            "related_anime",
+            "related_manga",
+            "recommendations",
+            "authors{first_name,last_name}",
+            "statistics",
+        ];
+        return static::getMediaDetails($id, 'manga', $fields);
     }
 
     public static function getMe()

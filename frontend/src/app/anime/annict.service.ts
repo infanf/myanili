@@ -177,7 +177,7 @@ export class AnnictService {
     const annictRating =
       rating < 5 ? 'bad' : rating < 7 ? 'average' : rating < 9 ? 'good' : 'great';
     fetch(
-      `${this.baseUrl}me/reviews?work_id=${annictId}&rating_overall_state=${annictRating}&body=-`,
+      `${this.baseUrl}me/reviews?work_id=${annictId}&rating_overall_state=${annictRating}&body=_rated%20from%20myani.li_`,
       { method: 'POST', headers: this.getFetchHeader() },
     );
   }
