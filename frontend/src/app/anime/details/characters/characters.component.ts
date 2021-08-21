@@ -17,9 +17,7 @@ export class AnimeCharactersComponent implements OnInit {
     this.characters = await this.animeService.getCharacters(this.id);
   }
 
-  getVoiceActor(
-    character: AnimeCharacter,
-  ):
+  getVoiceActor(character: AnimeCharacter):
     | {
         mal_id: number;
         name: string;

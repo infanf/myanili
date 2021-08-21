@@ -31,7 +31,7 @@
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <ng-container *ngIf="!edit">
-        <picture (click)="showGallery()" class="cursor-pointer">
+        <picture>
           <source
             *ngIf="manga && manga.main_picture"
             srcset="{{ manga.main_picture.large || manga.main_picture.medium }}"
@@ -464,9 +464,9 @@
                 <a
                   class="ms-1"
                   [href]="
-                    manga.my_extension?.fandomSlug?.includes('.')?
-                      'https://' + manga.my_extension!.fandomSlug :
-                    'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
+                    manga.my_extension?.fandomSlug?.includes('.')
+                      ? 'https://' + manga.my_extension!.fandomSlug
+                      : 'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
                   "
                   target="_blank"
                   >Wiki</a
@@ -514,7 +514,9 @@
                 [(ngModel)]="editExtension!.fandomSlug"
                 [disabled]="busy"
               />
-              <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')">.fandom.com</span>
+              <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')"
+                >.fandom.com</span
+              >
             </div>
           </div>
         </div>

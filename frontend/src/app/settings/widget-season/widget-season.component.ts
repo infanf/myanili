@@ -16,7 +16,7 @@ export class WidgetSeasonComponent implements OnInit {
   constructor(private settings: SettingsService) {
     this.currentSeason = {
       year: new Date().getFullYear(),
-      season: (Math.floor(new Date().getMonth() / 3) as unknown) as 0 | 1 | 2 | 3,
+      season: Math.floor(new Date().getMonth() / 3) as unknown as 0 | 1 | 2 | 3,
     };
     this.season = this.currentSeason;
   }

@@ -30,7 +30,7 @@
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3" [class]="{ 'd-none': edit, 'd-sm-block': edit }">
       <ng-container>
-        <picture (click)="!edit && showGallery()" class="cursor-pointer">
+        <picture>
           <source
             *ngIf="anime && anime.main_picture"
             srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
