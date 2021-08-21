@@ -37,17 +37,11 @@
               <circle-progress
                 [percent]="
                   anime.num_parts
-                    ? ((anime.my_list_status?.progress || 0) / anime.num_parts!) *
-                      100
+                    ? ((anime.my_list_status?.progress || 0) / anime.num_parts!) * 100
                     : 0
                 "
                 [radius]="14"
-                [title]="
-                  '' +
-                  anime.my_list_status?.progress +
-                  '/' +
-                  (anime.num_parts || '?')
-                "
+                [title]="'' + anime.my_list_status?.progress + '/' + (anime.num_parts || '?')"
                 [showTitle]="true"
                 [titleColor]="'currentColor'"
                 [titleFontSize]="'8px'"

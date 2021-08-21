@@ -1,6 +1,8 @@
 <div class="row">
   <div class="col-sm-6 mb-3" *ngIf="anime!.opening_themes?.length">
-    <strong class="text-dark">Opening{{ (anime!.opening_themes?.length||0) > 1 ? 's' : '' }}</strong>
+    <strong class="text-dark"
+      >Opening{{ (anime!.opening_themes?.length || 0) > 1 ? 's' : '' }}</strong
+    >
     <div *ngFor="let song of anime!.opening_themes" class="mt-2">
       {{ song.text }}
       <a
@@ -20,7 +22,9 @@
     </div>
   </div>
   <div class="col-sm-6 mb-3" *ngIf="anime!.ending_themes?.length">
-    <strong class="text-dark">Ending{{ (anime!.ending_themes?.length||0) > 1 ? 's' : '' }}</strong>
+    <strong class="text-dark"
+      >Ending{{ (anime!.ending_themes?.length || 0) > 1 ? 's' : '' }}</strong
+    >
     <div *ngFor="let song of anime!.ending_themes" class="mt-2">
       {{ song.text }}
       <a

@@ -184,8 +184,7 @@
             ></app-icon>
             <app-icon
               *ngIf="
-                anime!.my_list_status?.status === 'completed' &&
-                !anime!.my_list_status?.repeating
+                anime!.my_list_status?.status === 'completed' && !anime!.my_list_status?.repeating
               "
               name="arrow-counterclockwise"
               class="cursor-pointer me-1"
@@ -388,8 +387,7 @@
         <div class="col-8">
           <app-icon
             *ngIf="
-              (anime.my_list_status?.status === 'current' ||
-                anime.my_list_status?.repeating) &&
+              (anime.my_list_status?.status === 'current' || anime.my_list_status?.repeating) &&
               !edit
             "
             name="plus-square"
@@ -413,15 +411,13 @@
                 class="progress-bar px-1"
                 [ngClass]="{
                   'bg-success':
-                    anime!.my_list_status?.progress == anime!.num_parts &&
-                    anime!.num_parts,
+                    anime!.my_list_status?.progress == anime!.num_parts && anime!.num_parts,
                   'bg-gradient': !anime!.num_parts
                 }"
                 [ngStyle]="{
                   'min-width.%':
                     anime!.num_parts || anime!.my_list_status?.progress == 0
-                      ? ((anime!.my_list_status?.progress || 0) / anime!.num_parts) *
-                        100
+                      ? ((anime!.my_list_status?.progress || 0) / anime!.num_parts) * 100
                       : 30
                 }"
               >
@@ -477,7 +473,10 @@
               </div>
               <div class="col-8">
                 <app-icon-mal class="text-primary"></app-icon-mal>
-                <a [href]="'https://myanimelist.net/anime/' + anime.my_extension!.malId" target="_blank" class="ms-1"
+                <a
+                  [href]="'https://myanimelist.net/anime/' + anime.my_extension!.malId"
+                  target="_blank"
+                  class="ms-1"
                   >MyAnimeList</a
                 >
               </div>
@@ -660,10 +659,7 @@
           <app-anime-staff [id]="anime.my_extension!.malId!"></app-anime-staff>
         </ng-template>
       </li>
-      <li
-        [ngbNavItem]="4"
-        *ngIf="!inModal && (anime?.related?.length)"
-      >
+      <li [ngbNavItem]="4" *ngIf="!inModal && anime?.related?.length">
         <a ngbNavLink>Related</a>
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">

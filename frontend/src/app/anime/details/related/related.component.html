@@ -2,7 +2,7 @@
   <div *ngFor="let type of getRelatedMedia()" class="mb-3">
     <strong class="text-dark">{{ type.name }}</strong>
     <div *ngFor="let related of type.entries" class="mt-2">
-      <a routerLink="/{{related.type}}/details/{{service}}:{{ related.node.id }}">
+      <a routerLink="/{{ related.type }}/details/{{ service }}:{{ related.node.id }}">
         {{ related.node.title }}
       </a>
     </div>

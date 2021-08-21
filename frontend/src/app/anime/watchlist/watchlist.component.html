@@ -18,7 +18,7 @@
             'text-green': anime.list_status.progress === 0
           }"
         >
-          <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id |link}}">
+          <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id | link }}">
             {{
               anime.my_extension?.displayName ||
                 (lang === 'en'

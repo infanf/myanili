@@ -10,4 +10,6 @@
       : '#82204a'
   "
 ></circle-progress>
-<span class="ms-1" *ngIf="rating?.rating?.norm">{{ rating?.rating?.nom || 0 | number: '1.0-2' }} {{rating?.rating?.unit}}</span>
+<span class="ms-1" *ngIf="rating?.rating?.norm"
+  >{{ rating?.rating?.nom || 0 | number: '1.0-2' }} {{ rating?.rating?.unit }}</span
+>

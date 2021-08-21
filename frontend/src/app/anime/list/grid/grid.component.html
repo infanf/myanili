@@ -1,7 +1,7 @@
 <div class="container-fluid my-3">
   <div class="row row-cols-2 row-cols-sm-4 row-cols-md-6 g-3">
     <div class="col" *ngFor="let anime of animes">
-      <div class="card h-100 cursor-pointer" routerLink="/anime/details/{{ anime.node.id|link }}">
+      <div class="card h-100 cursor-pointer" routerLink="/anime/details/{{ anime.node.id | link }}">
         <picture>
           <source
             *ngIf="anime.node && anime.node.main_picture"
@@ -36,17 +36,11 @@
               <circle-progress
                 [percent]="
                   anime.node.num_parts
-                    ? ((anime.list_status?.progress || 0) / anime.node.num_parts!) *
-                      100
+                    ? ((anime.list_status?.progress || 0) / anime.node.num_parts!) * 100
                     : 0
                 "
                 [radius]="14"
-                [title]="
-                  '' +
-                  anime.list_status?.progress +
-                  '/' +
-                  (anime.node.num_parts || '?')
-                "
+                [title]="'' + anime.list_status?.progress + '/' + (anime.node.num_parts || '?')"
                 [showTitle]="true"
                 [titleColor]="'currentColor'"
                 [titleFontSize]="'8px'"

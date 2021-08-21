@@ -101,8 +101,9 @@ export class AnimeService {
     }
     if (!anime) return undefined;
     const comments = anime.my_list_status?.comments;
-    if (!anime.related.filter(rel => rel.type === 'manga').length)
+    if (!anime.related.filter(rel => rel.type === 'manga').length) {
       anime.related_manga_promise = this.getManga(id);
+    }
     if (!comments) return anime;
     try {
       const json = Base64.decode(comments);

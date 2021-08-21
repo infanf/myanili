@@ -50,7 +50,7 @@
           <select class="form-control" (change)="changeMainService()" [(ngModel)]="mainService">
             <option value="mal">MyAnimeList</option>
             <option value="anilist" [disabled]="!anilistLoggedIn">AniList</option>
-            <option value="kitsu" [disabled]="!kitsuLoggedIn||true">Kitsu</option>
+            <option value="kitsu" [disabled]="!kitsuLoggedIn || true">Kitsu</option>
           </select>
         </div>
       </div>
@@ -149,9 +149,7 @@
         <div class="col-7">
           <ng-container *ngIf="simklLoggedIn; else simklConnectTemplate">
             <app-icon-simkl class="me-1"></app-icon-simkl>
-            <a href="https://simkl.com/{{ simklLoggedIn }}" target="_blank">{{
-              simklLoggedIn
-            }}</a>
+            <a href="https://simkl.com/{{ simklLoggedIn }}" target="_blank">{{ simklLoggedIn }}</a>
             <app-icon class="cursor-pointer" name="x" size="20" (click)="simklLogoff()"></app-icon>
           </ng-container>
           <ng-template #simklConnectTemplate>
