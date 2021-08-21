@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { IvyGalleryModule } from 'angular-gallery';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
@@ -121,7 +120,6 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
       backgroundPadding: 0,
       outerStrokeLinecap: 'butt',
     }),
-    IvyGalleryModule,
     AngularSvgIconModule.forRoot(),
     GraphQLModule,
     IconModule,
