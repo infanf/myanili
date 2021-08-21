@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ExtRating, MainService, Picture } from '@models/components';
+import { ExtRating, MainService } from '@models/components';
 import { AnimeExtension } from '@models/mal-anime';
 import { Media, MediaExtension, MyMediaUpdate, PersonalStatus } from '@models/media';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
@@ -45,7 +44,6 @@ export class AnimeDetailsComponent implements OnInit {
     private glob: GlobalService,
     private trakt: TraktService,
     private modalService: NgbModal,
-    private gallery: Gallery,
     private mal: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
@@ -438,26 +436,6 @@ export class AnimeDetailsComponent implements OnInit {
   getDay(day?: number): string {
     if (!day && day !== 0) return '';
     return moment().day(day).format('dddd');
-  }
-
-  showGallery() {
-    if (!this.anime || !this.anime.main_picture) return;
-    function picMap(pic: Picture) {
-      return { path: pic.large || pic.medium };
-    }
-    const prop = {
-      images: [
-        picMap(this.anime.main_picture),
-        ...this.anime.pictures
-          .filter(pic => pic.medium !== this.anime?.main_picture?.medium)
-          .map(picMap),
-      ],
-    };
-    this.gallery.load(prop);
-  }
-
-  ngOnDestroy() {
-    this.gallery.close();
   }
 
   async getRatings() {

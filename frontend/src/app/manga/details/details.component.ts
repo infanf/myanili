@@ -1,8 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ExtRating, Picture } from '@models/components';
+import { ExtRating } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/mal-manga';
-import { Gallery } from 'angular-gallery';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
 import { GlobalService } from 'src/app/global.service';
@@ -16,7 +15,7 @@ import { MangaService } from '../manga.service';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
 })
-export class MangaDetailsComponent implements OnInit, OnDestroy {
+export class MangaDetailsComponent implements OnInit {
   @Input() id = 0;
   @Input() inModal = false;
   manga?: Manga;
@@ -31,7 +30,6 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     private mangaService: MangaService,
     private route: ActivatedRoute,
     private glob: GlobalService,
-    private gallery: Gallery,
     public platformPipe: PlatformPipe,
     private anilist: AnilistService,
     private kitsu: KitsuService,
@@ -336,22 +334,6 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     return relatedAnime;
   }
 
-  showGallery() {
-    if (!this.manga || !this.manga.main_picture) return;
-    function picMap(pic: Picture) {
-      return { path: pic.large || pic.medium };
-    }
-    const prop = {
-      images: [
-        picMap(this.manga.main_picture),
-        ...this.manga.pictures
-          .filter(pic => pic.medium !== this.manga?.main_picture?.medium)
-          .map(picMap),
-      ],
-    };
-    this.gallery.load(prop);
-  }
-
   async getRatings() {
     if (!this.getRating('anilist')) {
       this.anilist.getRating(this.manga?.my_extension?.anilistId, 'MANGA').then(rating => {
@@ -410,9 +392,5 @@ export class MangaDetailsComponent implements OnInit, OnDestroy {
     const ongoing = !this.editExtension?.ongoing;
     if (!this.editExtension) this.editExtension = { ongoing };
     this.editExtension.ongoing = ongoing;
-  }
-
-  ngOnDestroy() {
-    this.gallery.close();
   }
 }

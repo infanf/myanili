@@ -1,6 +1,6 @@
 {
   "name": "myanili-frontend",
-  "version": "2.7.2",
+  "version": "2.8.0",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --host=0.0.0.0",
@@ -10,8 +10,8 @@
     "build:staging": "ng build -c staging",
     "test": "ISTANBUL_ADD_REPORTERS=text-summary ng test",
     "test:ci": "ISTANBUL_ADD_REPORTERS=text,json-summary KARMA_ADD_REPORTERS=junit ng test --watch=false --progress=false && npm run check",
-    "check": "ng lint --type-check --tslint-config ../tslint.fix.json --format codeFrame && prettier --config ../.prettierrc --check 'src/**/*.{ts,js,html,css,scss,sass,less}'",
-    "fix": "ng lint --type-check --fix --tslint-config ../tslint.fix.json --format codeFrame && prettier --config ../.prettierrc --write 'src/**/*.{ts,js,html,css,scss,sass,less}'",
+    "check": "ng lint --type-check --tslint-config tslint.fix.json --format codeFrame && prettier --config ../.prettierrc --check 'src/**/*.{ts,js,html,css,scss,sass,less}'",
+    "fix": "ng lint --type-check --fix --tslint-config tslint.fix.json --format codeFrame && prettier --config ../.prettierrc --write 'src/**/*.{ts,js,html,css,scss,sass,less}'",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -29,7 +29,6 @@
     "@angular/service-worker": "^12.2.0",
     "@apollo/client": "^3.3.11",
     "@ng-bootstrap/ng-bootstrap": "^11.0.0-beta",
-    "angular-gallery": "^1.0.2",
     "angular-svg-icon": "^11.1.1",
     "apollo-angular": "^2.3.0",
     "bootstrap": "^5.0.0",
@@ -40,7 +39,6 @@
     "moment": "^2.29.1",
     "ng-circle-progress": "^1.6.0",
     "ngx-device-detector": "^2.0.5",
-    "ngx-indexed-db": "^6.1.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
