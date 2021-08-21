@@ -39,7 +39,7 @@
           *ngFor="let anime of getOtherAnimes()"
           [ngStyle]="{ opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1 }"
         >
-          <td>{{ anime.start_date | date:"dd.MM." }}</td>
+          <td>{{ anime.start_date | date: 'dd.MM.' }}</td>
           <td>
             <app-streaming
               [provider]="anime.my_extension?.externalStreaming"

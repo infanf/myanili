@@ -139,9 +139,7 @@
         <div class="col-7">
           <ng-container *ngIf="simklLoggedIn; else simklConnectTemplate">
             <app-icon-simkl class="me-1"></app-icon-simkl>
-            <a href="https://simkl.com/{{ simklLoggedIn }}" target="_blank">{{
-              simklLoggedIn
-            }}</a>
+            <a href="https://simkl.com/{{ simklLoggedIn }}" target="_blank">{{ simklLoggedIn }}</a>
             <app-icon class="cursor-pointer" name="x" size="20" (click)="simklLogoff()"></app-icon>
           </ng-container>
           <ng-template #simklConnectTemplate>

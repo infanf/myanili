@@ -10,8 +10,8 @@
     "build:staging": "ng build -c staging",
     "test": "ISTANBUL_ADD_REPORTERS=text-summary ng test",
     "test:ci": "ISTANBUL_ADD_REPORTERS=text,json-summary KARMA_ADD_REPORTERS=junit ng test --watch=false --progress=false && npm run check",
-    "check": "ng lint --type-check --tslint-config tslint.fix.json --format codeFrame && prettier --config .prettierrc --check 'src/**/*.{ts,js,html,css,scss,sass,less}'",
-    "fix": "ng lint --type-check --fix --tslint-config tslint.fix.json --format codeFrame && prettier --config .prettierrc --write 'src/**/*.{ts,js,html,css,scss,sass,less}'",
+    "check": "ng lint --type-check --tslint-config tslint.fix.json --format codeFrame && prettier --config ../.prettierrc --check 'src/**/*.{ts,js,html,css,scss,sass,less}'",
+    "fix": "ng lint --type-check --fix --tslint-config tslint.fix.json --format codeFrame && prettier --config ../.prettierrc --write 'src/**/*.{ts,js,html,css,scss,sass,less}'",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -57,6 +57,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "prettier": "^2.3.2",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",

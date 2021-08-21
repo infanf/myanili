@@ -4,15 +4,16 @@
   height: calc(100% - 58px);
   top: 58px;
   overflow: hidden;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
 
-  app-icon, circle-progress {
+  app-icon,
+  circle-progress {
     position: absolute;
     left: 50%;
     top: 50%;
     margin: -32px;
   }
-@media (prefers-color-scheme: dark) {
-  background-color: rgba(0,0,0,0.8);
-}
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
 }
