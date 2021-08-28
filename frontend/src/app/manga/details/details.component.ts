@@ -92,7 +92,7 @@ export class MangaDetailsComponent implements OnInit {
         );
       }
     }
-    if (!this.manga.related_manga.length) {
+    if (!this.manga.related_anime.length) {
       this.manga.related_anime_promise.then(relatedAnime => {
         if (this.manga) this.manga.related_anime = relatedAnime;
       });
