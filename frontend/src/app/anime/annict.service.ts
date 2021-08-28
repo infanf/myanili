@@ -176,8 +176,12 @@ export class AnnictService {
     if (!this.accessToken || !rating) return;
     const annictRating =
       rating < 5 ? 'bad' : rating < 7 ? 'average' : rating < 9 ? 'good' : 'great';
+    const body = encodeURIComponent(
+      `${'★'.repeat(Math.max(0, rating))}${'☆'.repeat(Math.max(0, 10 - rating))}
+      _rated on myani.li_`,
+    );
     fetch(
-      `${this.baseUrl}me/reviews?work_id=${annictId}&rating_overall_state=${annictRating}&body=_rated%20from%20myani.li_`,
+      `${this.baseUrl}me/reviews?work_id=${annictId}&rating_overall_state=${annictRating}&body=${body}`,
       { method: 'POST', headers: this.getFetchHeader() },
     );
   }
