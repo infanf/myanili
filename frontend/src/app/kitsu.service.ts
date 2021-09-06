@@ -20,6 +20,7 @@ export class KitsuService {
   private baseUrl = 'https://kitsu.io/api/edge/';
   private accessToken = '';
   private refreshToken = '';
+  // not app specific, see https://kitsu.docs.apiary.io/#introduction/authentication/app-registration
   private readonly clientId = 'dd031b32d2f56c990b1425efe6c42ad847e7fe3ab46bf1299f05ecd856bdb7dd';
   private readonly clientSecret =
     '54d7307928f63414defd96399fc31ba847961ceaecef3a5fd93144e960c0e151';
@@ -29,14 +30,18 @@ export class KitsuService {
   constructor() {
     this.accessToken = String(localStorage.getItem('kitsuAccessToken'));
     this.refreshToken = String(localStorage.getItem('kitsuRefreshToken'));
-    if (this.accessToken) {
-      this.checkLogin()
+    if (this.accessToken && this.accessToken !== 'null') {
+      this.login()
         .then(user => {
-          this.userSubject.next(user);
+          if (user) {
+            this.userSubject.next(user);
+          } else {
+            throw new Error('User not found');
+          }
         })
         .catch(e => {
           alert('Could not connect to Kitsu, please check your account settings.');
-          localStorage.removeItem('kitsuAccessToken');
+          this.logoff();
         });
     }
   }
@@ -97,7 +102,7 @@ export class KitsuService {
     return undefined;
   }
 
-  async login(username: string, password: string) {
+  async login(username?: string, password?: string): Promise<KitsuUser | undefined> {
     const details = {
       grant_type: 'password',
       username,
@@ -105,6 +110,17 @@ export class KitsuService {
       client_id: this.clientId,
       client_secret: this.clientSecret,
     } as { [key: string]: string };
+
+    if (!username || !password) {
+      if (!this.refreshToken) {
+        this.logoff();
+        return;
+      }
+      details.grant_type = 'refresh_token';
+      details.refresh_token = this.refreshToken;
+      delete details.username;
+      delete details.password;
+    }
 
     const formBody = [];
     for (const property in details) {
@@ -127,8 +143,9 @@ export class KitsuService {
       localStorage.setItem('kitsuAccessToken', this.accessToken);
       this.refreshToken = response.refresh_token;
       localStorage.setItem('kitsuRefreshToken', this.refreshToken);
-      await this.checkLogin();
+      return this.checkLogin();
     }
+    return;
   }
 
   logoff() {
@@ -140,7 +157,7 @@ export class KitsuService {
     localStorage.removeItem('kitsuRefreshToken');
   }
 
-  async checkLogin(): Promise<KitsuUser | undefined> {
+  async checkLogin(refresh = true): Promise<KitsuUser | undefined> {
     const result = await fetch(`${this.baseUrl}users?filter[self]=true`, {
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
@@ -153,6 +170,10 @@ export class KitsuService {
         this.userSubject.next(userdata);
         return userdata;
       }
+    }
+    if (refresh) {
+      await this.login();
+      return this.checkLogin(false);
     }
     return;
   }

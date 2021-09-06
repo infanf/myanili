@@ -4,10 +4,10 @@
 
 use App\Providers\AnilistServiceProvider as AnilistServiceProvider;
 use App\Providers\AnnictServiceProvider as AnnictServiceProvider;
+use App\Providers\BakaServiceProvider as BakaServiceProvider;
 use App\Providers\MalServiceProvider as MalServiceProvider;
 use App\Providers\SimklServiceProvider as SimklServiceProvider;
 use App\Providers\TraktServiceProvider as TraktServiceProvider;
-use App\Providers\BakaServiceProvider as BakaServiceProvider;
 use Illuminate\Http\Request;
 
 $router->get('/phpinfo', function () {
@@ -236,6 +236,27 @@ JAVASCRIPT;
             return ($e->getMessage());
         }
     }
+});
+
+$router->post('traktauth', function () {
+    $provider = TraktServiceProvider::getOauthProvider();
+    if (!isset($_COOKIE['TRAKT_ACCESS_TOKEN']) && (isset($_COOKIE['TRAKT_REFRESH_TOKEN']) || isset($_POST['refresh_token']))) {
+        try {
+            $accessToken = $provider->getAccessToken('refresh_token', [
+                'refresh_token' => isset($_COOKIE['TRAKT_REFRESH_TOKEN']) ? $_COOKIE['TRAKT_REFRESH_TOKEN'] : $_POST['refresh_token'],
+            ]);
+            setcookie('TRAKT_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
+            setcookie('TRAKT_REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires() + (30 * 24 * 60 * 60));
+            return [
+                "access_token" => $accessToken->getToken(),
+                "refresh_token" => $accessToken->getRefreshToken(),
+                "expires" => $accessToken->getExpires(),
+            ];
+        } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+            return ($e->getMessage());
+        }
+    }
+    return [];
 });
 
 /*

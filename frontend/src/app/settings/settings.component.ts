@@ -24,7 +24,7 @@ export class SettingsComponent implements OnInit {
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
   annictLoggedIn?: string;
-  simklLoggedIn?: number;
+  simklLoggedIn?: number | string;
   anilistLoggedIn?: AnilistUser;
   kitsuLoggedIn?: KitsuUser;
   kitsuData?: { username: string; password: string };

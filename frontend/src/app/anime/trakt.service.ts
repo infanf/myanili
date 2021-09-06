@@ -18,7 +18,7 @@ export class TraktService {
     this.accessToken = String(localStorage.getItem('traktAccessToken'));
     this.refreshToken = String(localStorage.getItem('traktRefreshToken'));
     if (this.accessToken) {
-      this.checkLogin()
+      this.login()
         .then(user => {
           this.userSubject.next(user);
         })
@@ -29,9 +29,29 @@ export class TraktService {
     }
   }
 
-  async login() {
+  async login(): Promise<string | undefined> {
+    if (this.refreshToken) {
+      const body = `refresh_token=${this.refreshToken}`;
+      const response = await fetch(`${environment.backend}traktauth`, {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }),
+        body,
+      });
+      if (response.ok) {
+        const result = (await response.json()) as { refresh_token?: string; access_token?: string };
+        if (result.access_token && result.refresh_token) {
+          this.accessToken = result.access_token;
+          localStorage.setItem('traktAccessToken', this.accessToken);
+          this.refreshToken = result.refresh_token;
+          localStorage.setItem('traktRefreshToken', this.refreshToken);
+          return this.checkLogin();
+        }
+      }
+    }
     return new Promise(r => {
-      const loginWindow = window.open(environment.backend + 'traktauth');
+      const loginWindow = window.open(`${environment.backend}traktauth`);
       window.addEventListener('message', async event => {
         if (event.data && event.data.trakt) {
           const data = event.data as { at: string; rt: string; ex: number; ci: string };
