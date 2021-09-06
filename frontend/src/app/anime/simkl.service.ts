@@ -11,7 +11,7 @@ export class SimklService {
   private readonly baseUrl = 'https://api.simkl.com/';
   private clientId = '';
   private accessToken = '';
-  private userSubject = new BehaviorSubject<number | undefined>(undefined);
+  private userSubject = new BehaviorSubject<number | string | undefined>(undefined);
 
   constructor() {
     this.clientId = String(localStorage.getItem('simklClientId'));
@@ -50,7 +50,7 @@ export class SimklService {
     return this.userSubject.asObservable();
   }
 
-  async checkLogin(): Promise<number | undefined> {
+  async checkLogin(): Promise<number | string | undefined> {
     if (
       !this.accessToken ||
       !this.clientId ||
@@ -66,8 +66,11 @@ export class SimklService {
       }),
     });
     if (result.ok) {
-      const response = (await result.json()) as { account?: { id?: number } };
-      return response?.account?.id;
+      const response = (await result.json()) as {
+        account?: { id?: number };
+        user?: { name?: string };
+      };
+      return response?.user?.name || response?.account?.id;
     }
     return;
   }
