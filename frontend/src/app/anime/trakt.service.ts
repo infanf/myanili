@@ -40,13 +40,20 @@ export class TraktService {
         body,
       });
       if (response.ok) {
-        const result = (await response.json()) as { refresh_token?: string; access_token?: string };
-        if (result.access_token && result.refresh_token) {
-          this.accessToken = result.access_token;
-          localStorage.setItem('traktAccessToken', this.accessToken);
-          this.refreshToken = result.refresh_token;
-          localStorage.setItem('traktRefreshToken', this.refreshToken);
-          return this.checkLogin();
+        try {
+          const result = (await response.json()) as {
+            refresh_token?: string;
+            access_token?: string;
+          };
+          if (result.access_token && result.refresh_token) {
+            this.accessToken = result.access_token;
+            localStorage.setItem('traktAccessToken', this.accessToken);
+            this.refreshToken = result.refresh_token;
+            localStorage.setItem('traktRefreshToken', this.refreshToken);
+            return this.checkLogin();
+          }
+        } catch (e) {
+          console.log(e);
         }
       }
     }

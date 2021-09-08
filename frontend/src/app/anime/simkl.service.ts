@@ -11,7 +11,7 @@ export class SimklService {
   private readonly baseUrl = 'https://api.simkl.com/';
   private clientId = '';
   private accessToken = '';
-  private userSubject = new BehaviorSubject<number | string | undefined>(undefined);
+  private userSubject = new BehaviorSubject<SimklUser | undefined>(undefined);
 
   constructor() {
     this.clientId = String(localStorage.getItem('simklClientId'));
@@ -50,7 +50,7 @@ export class SimklService {
     return this.userSubject.asObservable();
   }
 
-  async checkLogin(): Promise<number | string | undefined> {
+  async checkLogin(): Promise<SimklUser | undefined> {
     if (
       !this.accessToken ||
       !this.clientId ||
@@ -67,10 +67,12 @@ export class SimklService {
     });
     if (result.ok) {
       const response = (await result.json()) as {
-        account?: { id?: number };
+        account?: { id: number };
         user?: { name?: string };
       };
-      return response?.user?.name || response?.account?.id;
+      if (response.account) {
+        return { name: response?.user?.name, id: response?.account?.id };
+      }
     }
     return;
   }
@@ -218,6 +220,11 @@ interface IdSearch {
   ids: {
     simkl: number;
   };
+}
+
+export interface SimklUser {
+  id: number;
+  name?: string;
 }
 
 export type SimklList = 'plantowatch' | 'completed' | 'watching' | 'hold' | 'notinteresting';
