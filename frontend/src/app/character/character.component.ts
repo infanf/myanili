@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JikanCharacter } from '@models/jikan';
-import { environment } from 'src/environments/environment';
 
 import { GlobalService } from '../global.service';
+import { MalService } from '../mal.service';
 
 @Component({
   selector: 'app-character',
@@ -16,25 +15,17 @@ export class CharacterComponent {
   character?: JikanCharacter;
   activeTab = 1;
 
-  constructor(
-    private httpClient: HttpClient,
-    private route: ActivatedRoute,
-    private glob: GlobalService,
-  ) {
+  constructor(private route: ActivatedRoute, private glob: GlobalService, private mal: MalService) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
         this.id = newId;
         delete this.character;
         this.glob.busy();
-        this.httpClient
-          .get<JikanCharacter>(environment.jikanUrl + 'character/' + this.id)
-          .subscribe(character => {
-            this.character = character;
-            this.character.about = this.character.about.replace(/\\n/g, '').trim();
-            this.glob.notbusy();
-            this.glob.setTitle(character.name);
-          });
+        this.character = await this.mal.getJikanData<JikanCharacter>('character/' + this.id);
+        this.character.about = this.character.about.replace(/\\n/g, '').trim();
+        this.glob.notbusy();
+        this.glob.setTitle(this.character.name);
       }
     });
   }

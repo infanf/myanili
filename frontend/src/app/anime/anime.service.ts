@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   Anime,
@@ -13,7 +12,6 @@ import {
 } from '@models/anime';
 import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
-import { environment } from 'src/environments/environment';
 
 import { AnilistService } from '../anilist.service';
 import { KitsuService } from '../kitsu.service';
@@ -29,7 +27,6 @@ import { TraktService } from './trakt.service';
 export class AnimeService {
   constructor(
     private malService: MalService,
-    private httpClient: HttpClient,
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private simkl: SimklService,
@@ -165,23 +162,16 @@ export class AnimeService {
   }
 
   async getCharacters(id: number): Promise<AnimeCharacter[]> {
-    return new Promise((r, rj) => {
-      this.httpClient
-        .get<{ characters: AnimeCharacter[] }>(
-          `${environment.jikanUrl}anime/${id}/characters_staff`,
-        )
-        .subscribe(result => {
-          r(result.characters || []);
-        });
-    });
+    const characterStaff = await this.malService.getJikanData<{ characters?: AnimeCharacter[] }>(
+      `anime/${id}/characters_staff`,
+    );
+    return characterStaff.characters || [];
   }
+
   async getStaff(id: number): Promise<AnimeStaff[]> {
-    return new Promise((r, rj) => {
-      this.httpClient
-        .get<{ staff: AnimeStaff[] }>(`${environment.jikanUrl}anime/${id}/characters_staff`)
-        .subscribe(result => {
-          r(result.staff || []);
-        });
-    });
+    const characterStaff = await this.malService.getJikanData<{ staff?: AnimeStaff[] }>(
+      `anime/${id}/characters_staff`,
+    );
+    return characterStaff.staff || [];
   }
 }
