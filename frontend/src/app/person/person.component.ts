@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JikanPerson } from '@models/jikan';
-import { environment } from 'src/environments/environment';
 
 import { GlobalService } from '../global.service';
+import { MalService } from '../mal.service';
 
 @Component({
   selector: 'app-person',
@@ -16,25 +15,17 @@ export class PersonComponent {
   person?: JikanPerson;
   activeTab = 1;
 
-  constructor(
-    private httpClient: HttpClient,
-    private route: ActivatedRoute,
-    private glob: GlobalService,
-  ) {
+  constructor(private route: ActivatedRoute, private glob: GlobalService, private mal: MalService) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
         this.id = newId;
         delete this.person;
         this.glob.busy();
-        this.httpClient
-          .get<JikanPerson>(environment.jikanUrl + 'person/' + this.id)
-          .subscribe(person => {
-            this.person = person;
-            this.person.about = (this.person.about || '').replace(/\\n/g, '').trim();
-            this.glob.notbusy();
-            this.glob.setTitle(person.name);
-          });
+        this.person = await this.mal.getJikanData<JikanPerson>('person/' + this.id);
+        this.person.about = (this.person.about || '').replace(/\\n/g, '').trim();
+        this.glob.notbusy();
+        this.glob.setTitle(this.person.name);
       }
     });
   }
