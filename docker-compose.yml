@@ -3,6 +3,7 @@ version: "3.9"
 services:
   app:
     build: .
+    container_name: myanili_app
     depends_on: 
       - jikan
     ports:

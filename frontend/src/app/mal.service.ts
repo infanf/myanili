@@ -75,10 +75,20 @@ export class MalService {
     });
   }
 
+  async getJikanData<T>(url: string): Promise<T> {
+    try {
+      return new Promise((r, rj) => {
+        this.httpClient.get<T>(`${environment.jikanUrl}${url}`).subscribe(r, rj);
+      });
+    } catch (e) {
+      return new Promise((r, rj) => {
+        this.httpClient.get<T>(`${environment.jikanFallbackUrl}${url}`).subscribe(r, rj);
+      });
+    }
+  }
+
   async getJikan(type: 'anime' | 'manga', id: number): Promise<JikanInstance> {
-    return new Promise((r, rj) => {
-      this.httpClient.get<JikanInstance>(`${environment.jikanUrl}${type}/${id}`).subscribe(r);
-    });
+    return this.getJikanData<JikanInstance>(`${type}/${id}`);
   }
 
   async checkLogin() {

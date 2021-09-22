@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RelatedAnime } from '@models/mal-anime';
 import {
@@ -26,7 +25,6 @@ export class MangaService {
   private mainService: 'mal' | 'anilist' | 'kitsu' = 'mal';
   constructor(
     private mal: MalService,
-    private httpClient: HttpClient,
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private settings: SettingsService,
@@ -151,13 +149,10 @@ export class MangaService {
   }
 
   async getCharacters(id: number): Promise<MangaCharacter[]> {
-    return new Promise((r, rj) => {
-      this.httpClient
-        .get<{ characters: MangaCharacter[] }>(`${environment.jikanUrl}manga/${id}/characters`)
-        .subscribe(result => {
-          r(result.characters || []);
-        });
-    });
+    const result = await this.mal.getJikanData<{ characters?: MangaCharacter[] }>(
+      `manga/${id}/characters`,
+    );
+    return result.characters || [];
   }
 
   async getBakaManga(id?: number): Promise<BakaManga | undefined> {

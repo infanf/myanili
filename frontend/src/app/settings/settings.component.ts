@@ -7,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AnilistService } from '../anilist.service';
 import { AnnictService } from '../anime/annict.service';
-import { SimklService } from '../anime/simkl.service';
+import { SimklService, SimklUser } from '../anime/simkl.service';
 import { TraktService } from '../anime/trakt.service';
 import { GlobalService } from '../global.service';
 import { KitsuService } from '../kitsu.service';
@@ -25,7 +25,7 @@ export class SettingsComponent implements OnInit {
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
   annictLoggedIn?: string;
-  simklLoggedIn?: number;
+  simklLoggedIn?: SimklUser;
   anilistLoggedIn?: AnilistUser;
   kitsuLoggedIn?: KitsuUser;
   kitsuData?: { username: string; password: string };

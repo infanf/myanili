@@ -110,8 +110,20 @@ class MalServiceProvider extends ServiceProvider
 
     public static function getMyList($status = null)
     {
+        $fields = [
+            "num_episodes",
+            "start_season",
+            "start_date",
+            "end_date",
+            "status",
+            "alternative_titles",
+            "media_type",
+            "genres",
+            "list_status{comments}",
+        ];
+
         $params = [
-            "fields" => "num_episodes,start_season,start_date,end_date,alternative_titles,media_type,list_status{comments}",
+            "fields" => implode(',', $fields),
             "sort" => "anime_start_date",
             "limit" => 1000,
             "nsfw" => 1,
@@ -135,8 +147,20 @@ class MalServiceProvider extends ServiceProvider
 
     public static function getMyMangaList($status = null)
     {
+        $fields = [
+            "num_volumes",
+            "num_chapters",
+            "authors{first_name,last_name}",
+            "start_date",
+            "end_date",
+            "status",
+            "alternative_titles",
+            "media_type",
+            "genres",
+            "list_status{comments}",
+        ];
         $params = [
-            "fields" => "num_volumes,num_chapters,authors{first_name,last_name},start_date,end_date,alternative_titles,list_status{comments}",
+            "fields" => implode(',', $fields),
             "limit" => 1000,
             "nsfw" => 1,
         ];
@@ -301,9 +325,20 @@ class MalServiceProvider extends ServiceProvider
     public static function getList(string $type, string $query)
     {
         $type = $type === 'manga' ? 'manga' : 'anime';
+        $fields = [
+            "num_episodes",
+            "start_season",
+            "media_type",
+            "start_date",
+            "end_date",
+            "alternative_titles",
+            "my_list_status{comments}",
+            "mean",
+            "genres",
+        ];
 
         $params = [
-            "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments},mean",
+            "fields" => implode(',', $fields),
             "limit" => 500,
             "q" => $query,
             "nsfw" => 1,
