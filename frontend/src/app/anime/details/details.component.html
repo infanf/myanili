@@ -288,7 +288,7 @@
             [(ngModel)]="editExtension!.externalStreaming"
             [disabled]="busy"
           >
-            <option *ngFor="let provider of streamPipe.streamingProviders" [value]="provider.id">
+            <option *ngFor="let provider of streamPipe.providers" [value]="provider.id">
               {{ provider.name }}
             </option>
           </select>

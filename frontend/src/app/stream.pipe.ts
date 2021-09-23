@@ -6,14 +6,21 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StreamPipe implements PipeTransform {
   readonly streamingProviders: StreamingProvider[] = [
     {
+      id: 'aone',
+      name: 'Ani-One Asia',
+      urlprefix: 'https://youtube.com/',
+    },
+    {
       id: 'aod',
       name: 'Anime-on-demand',
       urlprefix: 'https://anime-on-demand.de/anime/',
+      deprecated: true,
     },
     {
       id: 'al',
       name: 'animelab',
       urlprefix: 'https://www.animelab.com/shows/',
+      deprecated: true,
     },
     {
       id: 'aniverse',
@@ -24,6 +31,11 @@ export class StreamPipe implements PipeTransform {
       id: 'cr',
       name: 'Crunchyroll',
       urlprefix: 'https://crunchyroll.com/',
+    },
+    {
+      id: 'disney',
+      name: 'Disney+',
+      urlprefix: 'https://disneyplus.com/',
     },
     {
       id: 'fun',
@@ -39,6 +51,11 @@ export class StreamPipe implements PipeTransform {
       id: 'hulu',
       name: 'hulu',
       urlprefix: 'https://www.hulu.com/series/',
+    },
+    {
+      id: 'muse',
+      name: 'Muse Asia',
+      urlprefix: 'https://youtube.com/',
     },
     {
       id: 'nf',
@@ -77,6 +94,10 @@ export class StreamPipe implements PipeTransform {
     },
   ];
 
+  get providers(): StreamingProvider[] {
+    return this.streamingProviders.filter(prov => !prov.deprecated);
+  }
+
   transform(id: string, type: keyof StreamingProvider = 'name'): string {
     const providers = this.streamingProviders.filter(prov => prov.id === id);
     if (providers.length) {
@@ -93,4 +114,5 @@ interface StreamingProvider {
   id: string;
   name: string;
   urlprefix?: string;
+  deprecated?: boolean;
 }
