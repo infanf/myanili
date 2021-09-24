@@ -31,9 +31,9 @@
     </div>
   </div>
 
-  <div class="card mt-3">
+  <div class="card mt-3" *ngIf="getOtherAnimes().length">
     <div class="card-header">Unassigned</div>
-    <div class="card-body" *ngIf="getOtherAnimes().length">
+    <div class="card-body">
       <table class="table table-sm mb-0">
         <tr
           *ngFor="let anime of getOtherAnimes()"
