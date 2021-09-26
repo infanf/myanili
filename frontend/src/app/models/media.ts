@@ -200,7 +200,7 @@ interface MediaExtensionInterface {
 export type MediaExtension = MediaExtensionInterface;
 
 interface Character {
-  mal_id: number;
+  id: number;
   url: string;
   image_url: string;
   name: string;

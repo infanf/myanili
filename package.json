@@ -9,7 +9,8 @@
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
     "dev": "npm run start && docker exec -ti -w /frontend -u application myanili_app npm run dev",
-    "shell": "npm run start && docker exec -ti -w /frontend -u application myanili_app bash"
+    "shell": "npm run start && docker exec -ti -w /frontend -u application myanili_app bash",
+    "postinstall": "cd frontend && npm i"
   },
   "author": "Christopher Schreiner",
   "license": "ISC",

@@ -5,11 +5,11 @@
   <img
     loading="lazy"
     [src]="character.image_url || '/assets/blank-poster.svg'"
-    [routerLink]="'/character/' + character.mal_id"
+    routerLink="/character/{{character.id|link}}"
     class="poster rounded-start cursor-pointer"
   />
   <div class="d-flex flex-fill justify-content-between flex-column p-3">
-    <div [routerLink]="'/character/' + character.mal_id" class="cursor-pointer">
+    <div routerLink="/character/{{character.id|link}}" class="cursor-pointer">
       {{ character.name }}
       <div class="text-muted">{{ character.role }}</div>
     </div>

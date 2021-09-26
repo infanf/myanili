@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  AnilistCharacters,
   AnilistMedia,
   AnilistMediaListCollection,
   AnilistMediaListStatus,
@@ -10,7 +11,7 @@ import {
 import { ExtRating } from '@models/components';
 import { WatchStatus } from '@models/mal-anime';
 import { ListManga, ReadStatus } from '@models/mal-manga';
-import { ListMedia, Media, MediaStatus, PersonalStatus } from '@models/media';
+import { ListMedia, Media, MediaCharacter, MediaStatus, PersonalStatus } from '@models/media';
 import { Apollo, gql } from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -429,7 +430,10 @@ export class AnilistService {
                   },
                 })) || [],
               recommendations: [],
-              companies: [],
+              companies:
+                alMedia.studios?.edges
+                  .filter(company => company.isMain)
+                  .map(company => company.node) || [],
               opening_themes: [],
               ending_themes: [],
               num_parts: alMedia.episodes || alMedia.chapters || 0,
@@ -864,6 +868,78 @@ export class AnilistService {
           e => {
             console.log({ e });
             r(undefined);
+          },
+        );
+    });
+  }
+
+  async getCharacters(id?: number): Promise<MediaCharacter[]> {
+    if (!id) return [];
+    return new Promise(r => {
+      this.client
+        .query<{
+          Media?: { characters: AnilistCharacters };
+        }>({
+          errorPolicy: 'ignore',
+          query: gql`
+            query media($id: Int) {
+              Media(id: $id) {
+                characters {
+                  edges {
+                    role
+                    node {
+                      id
+                      name {
+                        full
+                        native
+                      }
+                      image {
+                        large
+                        medium
+                      }
+                    }
+                    voiceActors(language: JAPANESE) {
+                      id
+                      name {
+                        full
+                        native
+                      }
+                      image {
+                        large
+                        medium
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: { id },
+        })
+        .subscribe(
+          result => {
+            const characters = result.data.Media?.characters?.edges?.map(
+              edge =>
+                ({
+                  id: edge.node.id,
+                  name: edge.node.name.full,
+                  image_url: edge.node.image.large || edge.node.image.medium,
+                  url: `https://anilist.co/character/${edge.node.id}`,
+                  role: edge.role,
+                  voice_actors: edge.voiceActors.map(va => ({
+                    language: 'Japanese',
+                    image_url: va.image.large || va.image.medium,
+                    mal_id: va.id,
+                    name: va.name.full,
+                    url: `https://anilist.co/staff/${va.id}`,
+                  })),
+                } as MediaCharacter),
+            );
+            r(characters || []);
+          },
+          e => {
+            console.log({ e });
+            r([]);
           },
         );
     });

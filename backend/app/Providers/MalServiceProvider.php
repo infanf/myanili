@@ -313,8 +313,8 @@ class MalServiceProvider extends ServiceProvider
 
     public static function getSong(int $id)
     {
-        $songs = \file_get_contents(dirname(dirname(__DIR__)) . '/resources/songs.json');
         try {
+            $songs = \file_get_contents(dirname(dirname(__DIR__)) . '/resources/songs.json');
             $songsArray = json_decode($songs, true);
             return (isset($songsArray[intval($id)])) ? $songsArray[intval($id)] : false;
         } catch (Exception $e) {

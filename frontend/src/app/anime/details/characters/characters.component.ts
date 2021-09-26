@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AnimeCharacter } from '@models/mal-anime';
+import { MainService } from '@models/components';
+import { MediaCharacter } from '@models/media';
 
 import { AnimeService } from '../../anime.service';
 
@@ -10,14 +11,15 @@ import { AnimeService } from '../../anime.service';
 })
 export class AnimeCharactersComponent implements OnInit {
   @Input() id!: number;
-  characters: AnimeCharacter[] = [];
+  @Input() service: MainService = 'mal';
+  characters: MediaCharacter[] = [];
   constructor(private animeService: AnimeService) {}
 
   async ngOnInit() {
-    this.characters = await this.animeService.getCharacters(this.id);
+    this.characters = await this.animeService.getCharacters(this.id, this.service);
   }
 
-  getVoiceActor(character: AnimeCharacter):
+  getVoiceActor(character: MediaCharacter):
     | {
         mal_id: number;
         name: string;

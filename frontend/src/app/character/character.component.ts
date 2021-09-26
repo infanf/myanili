@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MainService } from '@models/components';
 import { JikanCharacter } from '@models/jikan';
 
 import { GlobalService } from '../global.service';
@@ -11,7 +12,8 @@ import { MalService } from '../mal.service';
   styleUrls: ['./character.component.scss'],
 })
 export class CharacterComponent {
-  id = 0;
+  @Input() id = 0;
+  @Input() service: MainService = 'mal';
   character?: JikanCharacter;
   activeTab = 1;
 

@@ -4,6 +4,7 @@ import { AnimeCharacter, AnimeStaff, MyAnimeStatus, WatchStatus } from '@models/
 import {
   ListMedia,
   Media,
+  MediaCharacter,
   MediaExtension,
   MediaNode,
   MyMediaUpdate,
@@ -236,11 +237,21 @@ export class AnimeService {
     return mangas;
   }
 
-  async getCharacters(id: number): Promise<AnimeCharacter[]> {
-    const characterStaff = await this.mal.getJikanData<{ characters?: AnimeCharacter[] }>(
-      `anime/${id}/characters_staff`,
-    );
-    return characterStaff.characters || [];
+  async getCharacters(id: number, service: MainService = 'mal'): Promise<MediaCharacter[]> {
+    if (service === 'mal') {
+      const characterStaff = await this.mal.getJikanData<{ characters?: AnimeCharacter[] }>(
+        `anime/${id}/characters_staff`,
+      );
+      return (
+        characterStaff.characters?.map(character => {
+          return { ...character, id: character.mal_id } as MediaCharacter;
+        }) || []
+      );
+    }
+    if (service === 'anilist') {
+      return this.anilist.getCharacters(id);
+    }
+    return [];
   }
 
   async getStaff(id: number): Promise<AnimeStaff[]> {

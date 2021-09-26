@@ -78,7 +78,9 @@ interface Media {
   synonyms?: string[];
   description?: string;
   duration?: number;
-  staff: StaffConnection;
+  staff: Edges<StaffEdge>;
+  studios?: Edges<StudioEdge>;
+
   genres: string[];
   episodes?: number;
   chapters?: number;
@@ -111,8 +113,8 @@ interface RelatedMedia {
   id: number;
 }
 
-interface StaffConnection {
-  edges: StaffEdge[];
+interface Edges<T> {
+  edges: T[];
 }
 
 interface StaffEdge {
@@ -132,6 +134,30 @@ interface StaffName {
   native: string;
 }
 
+interface StudioEdge {
+  node: Studio;
+  isMain: boolean;
+}
+
+interface Studio {
+  id: number;
+  name: string;
+}
+
+interface CharacterEdge {
+  role: string;
+  node: BasicPerson;
+  voiceActors: BasicPerson[];
+}
+
+export type AnilistCharacters = Edges<CharacterEdge>;
+
+interface BasicPerson {
+  id: number;
+  name: StaffName;
+  image: Image;
+}
+
 interface MediaTitle {
   romaji: string;
   english: string;
@@ -139,10 +165,13 @@ interface MediaTitle {
   userPreferred: string;
 }
 
-interface MediaCoverImage {
-  extraLarge?: string;
-  large: string;
+interface Image {
   medium: string;
+  large: string;
+}
+
+interface MediaCoverImage extends Image {
+  extraLarge?: string;
   color: string;
 }
 

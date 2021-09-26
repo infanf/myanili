@@ -647,10 +647,10 @@
           <app-anime-songs [anime]="anime"></app-anime-songs>
         </ng-template>
       </li>
-      <li [ngbNavItem]="3" *ngIf="anime.my_extension?.malId">
+      <li [ngbNavItem]="3" *ngIf="id">
         <a ngbNavLink>Characters</a>
         <ng-template ngbNavContent>
-          <app-anime-characters [id]="anime.my_extension!.malId!"></app-anime-characters>
+          <app-anime-characters [id]="id" [service]="service"></app-anime-characters>
         </ng-template>
       </li>
       <li [ngbNavItem]="6" *ngIf="anime.my_extension?.malId">
