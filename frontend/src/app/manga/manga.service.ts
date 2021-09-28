@@ -139,7 +139,7 @@ export class MangaService {
 
   async getBakaManga(id?: number): Promise<BakaManga | undefined> {
     if (!id) return;
-    const request = await fetch(`${environment.backend}/baka/${id}`);
+    const request = await fetch(`${environment.backend}baka/manga/${id}`);
     if (request.ok) {
       const response = (await request.json()) as BakaManga;
       return response;

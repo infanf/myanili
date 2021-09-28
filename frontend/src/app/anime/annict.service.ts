@@ -36,7 +36,7 @@ export class AnnictService {
 
   async login() {
     return new Promise(r => {
-      const loginWindow = window.open(environment.backend + 'annictauth');
+      const loginWindow = window.open(environment.backend + 'annict/auth');
       window.addEventListener('message', async event => {
         if (event.data && event.data.annict) {
           const data = event.data as { at: string; ci: string };
