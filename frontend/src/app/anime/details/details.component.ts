@@ -96,10 +96,10 @@ export class AnimeDetailsComponent implements OnInit {
         this.simkl.getId(this.id),
         this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title),
       ]);
-      this.anime.my_extension.anilistId = anilistId;
-      this.anime.my_extension.kitsuId = kitsuId;
-      this.anime.my_extension.simklId = simklId;
-      this.anime.my_extension.annictId = annictId;
+      this.anime.my_extension.anilistId = anilistId || this.anime.my_extension.anilistId;
+      this.anime.my_extension.kitsuId = kitsuId || this.anime.my_extension.kitsuId;
+      this.anime.my_extension.simklId = simklId || this.anime.my_extension.simklId;
+      this.anime.my_extension.annictId = annictId || this.anime.my_extension.annictId;
       if (anime.my_extension) {
         await this.animeService.updateAnime(
           { malId: anime.id, kitsuId, simklId, anilistId, annictId },
