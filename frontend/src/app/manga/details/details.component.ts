@@ -75,8 +75,8 @@ export class MangaDetailsComponent implements OnInit {
         this.anilist.getId(this.id, 'MANGA'),
         this.kitsu.getId(this.id, 'manga', 'myanimelist', this.manga.my_extension.kitsuId?.kitsuId),
       ]);
-      this.manga.my_extension.anilistId = anilistId;
-      this.manga.my_extension.kitsuId = kitsuId;
+      this.manga.my_extension.anilistId = anilistId || this.manga.my_extension.anilistId;
+      this.manga.my_extension.kitsuId = kitsuId || this.manga.my_extension.kitsuId;
       if (manga.my_extension) {
         await this.mangaService.updateManga(
           { malId: manga.id, kitsuId, anilistId },
