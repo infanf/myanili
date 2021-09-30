@@ -32,7 +32,7 @@ export class TraktService {
   async login(): Promise<string | undefined> {
     if (this.refreshToken) {
       const body = `refresh_token=${this.refreshToken}`;
-      const response = await fetch(`${environment.backend}traktauth`, {
+      const response = await fetch(`${environment.backend}trakt/auth`, {
         method: 'POST',
         headers: new Headers({
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -58,7 +58,7 @@ export class TraktService {
       }
     }
     return new Promise(r => {
-      const loginWindow = window.open(`${environment.backend}traktauth`);
+      const loginWindow = window.open(`${environment.backend}trakt/auth`);
       window.addEventListener('message', async event => {
         if (event.data && event.data.trakt) {
           const data = event.data as { at: string; rt: string; ex: number; ci: string };
@@ -219,6 +219,10 @@ export class TraktService {
     if (result.ok) {
       const response = (await result.json()) as Ratings;
       if (response.rating) {
+        // Some trolls rate all animes 1/10 before they even watch it
+        if (response.votes === response.distribution[1]) {
+          return;
+        }
         return {
           nom: Math.round(response.rating * 10),
           norm: response.rating * 10,
