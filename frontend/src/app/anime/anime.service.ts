@@ -49,7 +49,7 @@ export class AnimeService {
   }
   async season(year: number, season: number): Promise<Array<Partial<Anime>>> {
     const animes = (
-      await this.malService.get<Array<{ node: AnimeNode }>>(`/animes/season/${year}/${season}`)
+      await this.malService.get<Array<{ node: AnimeNode }>>(`animes/season/${year}/${season}`)
     ).map(anime => anime.node);
     return animes.map(anime => {
       const comments = anime.my_list_status?.comments;

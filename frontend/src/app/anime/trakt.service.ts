@@ -219,6 +219,10 @@ export class TraktService {
     if (result.ok) {
       const response = (await result.json()) as Ratings;
       if (response.rating) {
+        // Some trolls rate all animes 1/10 before they even watch it
+        if (response.votes === response.distribution[1]) {
+          return;
+        }
         return {
           nom: Math.round(response.rating * 10),
           norm: response.rating * 10,
