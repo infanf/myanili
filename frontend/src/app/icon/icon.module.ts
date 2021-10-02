@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { AnilistIconComponent } from './anilist/anilist.component';
+import { AnisearchIconComponent } from './anisearch/anisearch.component';
 import { AnnictIconComponent } from './annict/annict.component';
 import { BakamangaIconComponent } from './bakamanga/bakamanga.component';
 import { FandomIconComponent } from './fandom/fandom.component';
@@ -28,6 +29,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     SpotifyIconComponent,
     IconStatusComponent,
     TraktIconComponent,
+    AnisearchIconComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -43,6 +45,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     SpotifyIconComponent,
     IconStatusComponent,
     TraktIconComponent,
+    AnisearchIconComponent,
   ],
 })
 export class IconModule {}

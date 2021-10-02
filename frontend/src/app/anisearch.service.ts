@@ -9,10 +9,12 @@ export class AnisearchService {
   private backendUrl = `${environment.backend}anisearch/`;
 
   async getAnimes(query: string): Promise<AnisearchAnimeList> {
-    const url = `${this.backendUrl}anime/search/${query}`;
-    const result = await fetch(url);
-    if (result.ok) {
-      return result.json();
+    if (query) {
+      const url = `${this.backendUrl}anime/search/${query}`;
+      const result = await fetch(url);
+      if (result.ok) {
+        return result.json();
+      }
     }
     return {
       link: '',
