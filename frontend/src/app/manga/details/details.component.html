@@ -455,6 +455,22 @@
                 >
               </div>
             </div>
+            <div *ngIf="manga.my_extension?.anisearchId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('anisearch')"></app-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-anisearch></app-icon-anisearch>
+                <a
+                  class="ms-1"
+                  [href]="'https://anisearch.com/manga/' + manga.my_extension!.anisearchId"
+                  target="_blank"
+                  >AniSearch</a
+                >
+              </div>
+            </div>
             <div *ngIf="manga.my_extension?.fandomSlug" class="row">
               <div class="col-4">
                 <td class="text-nowrap"></td>
@@ -503,6 +519,17 @@
               [(ngModel)]="editExtension!.bakaId"
               [disabled]="busy"
             />
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && editExtension">
+          <div class="col-4 fw-bold text-end">AniSearch</div>
+          <div class="col-8">
+            <div class="input-group input-group-sm">
+              <input class="form-control" [(ngModel)]="editExtension!.anisearchId" [disabled]="busy" />
+              <button class="btn btn-primary" (click)="findAnisearch()">
+                <app-icon-anisearch></app-icon-anisearch>
+              </button>
+            </div>
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && manga && editExtension">

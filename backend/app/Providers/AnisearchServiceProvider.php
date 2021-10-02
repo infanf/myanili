@@ -111,6 +111,24 @@ class AnisearchServiceProvider extends ServiceProvider
         return $mangas;
     }
 
+    static function getRating(int $id, string $type = "anime")
+    {
+        $url = static::$baseUrl . "{$type}/{$id}/";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
+        $response = curl_exec($ch);
+        $doc = new \DOMDocument();
+        @$doc->loadHTML($response);
+        $finder = new \DOMXPath($doc);
+        $rating = $finder->query('//*[@id="ratingstats"]/tbody/tr[2]/td[1]/span')->item(0)->nodeValue ?? 0;
+        return [
+            "nom" => floatval($rating),
+            "norm" => floatval($rating) * 20,
+            "ratings" => 0,
+        ];
+    }
+
     // public static function getManga(int $id)
     // {
     //     $url = "https://www.mangaupdates.com/series.html?id={$id}";

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AnisearchAnimeList } from '@models/anisearch';
+import { AnisearchList } from '@models/anisearch';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AnisearchService } from '../anisearch.service';
@@ -11,11 +11,15 @@ import { AnisearchService } from '../anisearch.service';
 })
 export class AnisearchComponent implements OnInit {
   @Input() query = '';
-  results?: AnisearchAnimeList;
+  @Input() type: 'anime' | 'manga' = 'anime';
+  results?: AnisearchList;
 
   constructor(public modal: NgbActiveModal, private anisearch: AnisearchService) {}
 
   async ngOnInit() {
-    this.results = await this.anisearch.getAnimes(this.query);
+    this.results =
+      this.type === 'anime'
+        ? await this.anisearch.getAnimes(this.query)
+        : await this.anisearch.getMangas(this.query);
   }
 }
