@@ -28,6 +28,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://amazon.de/dp/',
     },
     {
+      id: 'bili',
+      name: 'Bilibili',
+      urlprefix: 'https://www.bilibili.tv/play/',
+    },
+    {
       id: 'cr',
       name: 'Crunchyroll',
       urlprefix: 'https://crunchyroll.com/',
