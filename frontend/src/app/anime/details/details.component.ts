@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
-import { AnisearchService } from 'src/app/anisearch.service';
+import { AnisearchComponent } from 'src/app/anisearch/anisearch.component';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
@@ -45,7 +45,6 @@ export class AnimeDetailsComponent implements OnInit {
     private kitsu: KitsuService,
     private simkl: SimklService,
     private annict: AnnictService,
-    private anisearch: AnisearchService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -417,8 +416,12 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async findAnisearch() {
-    if (!this.anime) return;
-    await this.anisearch.getAnimes(this.anime.title);
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(AnisearchComponent);
+    modal.componentInstance.query = this.anime.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.anisearchId = Number(value);
+    });
   }
 
   getDay(day?: number): string {

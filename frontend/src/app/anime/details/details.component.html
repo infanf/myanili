@@ -362,6 +362,17 @@
           />
         </div>
       </div>
+      <div class="row my-2" *ngIf="edit && editExtension">
+        <div class="col-4 fw-bold text-end">AniSearch</div>
+        <div class="col-8">
+          <div class="input-group input-group-sm">
+            <input class="form-control" [(ngModel)]="editExtension!.anisearchId" [disabled]="busy" />
+            <button class="btn btn-primary" (click)="findAnisearch()">
+              <app-icon-anisearch></app-icon-anisearch>
+            </button>
+          </div>
+        </div>
+      </div>
       <div class="row my-2" *ngIf="edit && anime && editExtension">
         <div class="col-4 fw-bold text-end">LiveChart.me</div>
         <div class="col-8">
@@ -568,6 +579,21 @@
                   [href]="'https://annict.com/works/' + anime.my_extension!.annictId"
                   target="_blank"
                   >Annict</a
+                >
+              </div>
+            </div>
+            <div *ngIf="anime.my_extension?.annictId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                </td>
+              </div>
+              <div class="col-8">
+                <app-icon-anisearch></app-icon-anisearch>
+                <a
+                  class="ms-1"
+                  [href]="'https://anisearch.com/anime/' + anime.my_extension!.anisearchId"
+                  target="_blank"
+                  >AniSearch</a
                 >
               </div>
             </div>

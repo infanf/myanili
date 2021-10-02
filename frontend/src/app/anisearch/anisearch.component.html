@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <div class="input-group">
+      <input class="form-control" [(ngModel)]="query" />
+      <button class="btn btn-primary" (click)="search()">
+        <app-icon name="search"></app-icon>
+      </button>
+    </div>
+    <button
+      type="button"
+      class="btn-close"
+      aria-describedby="modal-title"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Year</th>
+        <th>
+          <app-icon name="link" size="20"></app-icon>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let show of results?.nodes || []">
+        <td>{{ show.title }}</td>
+        <td>{{ show.year }}</td>
+        <td>
+          <app-icon
+            class="cursor-pointer"
+            size="20"
+            name="link"
+            (click)="modal.close(show.id)"
+          ></app-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

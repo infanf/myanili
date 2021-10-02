@@ -25,6 +25,7 @@ import { SeasonComponent } from './anime/season/season.component';
 import { TraktComponent } from './anime/trakt/trakt.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { StreamingComponent } from './anime/widget/streaming/streaming.component';
+import { AnisearchComponent } from './anisearch/anisearch.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
@@ -97,6 +98,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ExternalRatingComponent,
     SeasonGridComponent,
     SeasonListComponent,
+    AnisearchComponent,
   ],
   imports: [
     BrowserModule,
