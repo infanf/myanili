@@ -16,10 +16,6 @@ export class AnisearchComponent implements OnInit {
   constructor(public modal: NgbActiveModal, private anisearch: AnisearchService) {}
 
   async ngOnInit() {
-    this.results = await this.search();
-  }
-
-  async search(): Promise<AnisearchAnimeList> {
-    return this.anisearch.getAnimes(this.query);
+    this.results = await this.anisearch.getAnimes(this.query);
   }
 }
