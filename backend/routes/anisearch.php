@@ -21,4 +21,8 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
     $router->get('manga/search/{text}/{page}', function (string $text, int $page = 1) {
         return AnisearchServiceProvider::searchManga($text, $page);
     });
+
+    $router->get('{type}/rating/{id}', function (string $type, int $id) {
+        return AnisearchServiceProvider::getRating($id, $type);
+    });
 });

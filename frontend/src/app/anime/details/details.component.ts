@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
+import { AnisearchService } from 'src/app/anisearch.service';
 import { AnisearchComponent } from 'src/app/anisearch/anisearch.component';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
@@ -45,6 +46,7 @@ export class AnimeDetailsComponent implements OnInit {
     private kitsu: KitsuService,
     private simkl: SimklService,
     private annict: AnnictService,
+    private anisearch: AnisearchService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -458,6 +460,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('annict')) {
       this.annict.getRating(this.anime?.my_extension?.annictId).then(rating => {
         this.setRating('annict', rating);
+      });
+    }
+    if (!this.getRating('anisearch')) {
+      this.anisearch.getRating(this.anime?.my_extension?.anisearchId).then(rating => {
+        this.setRating('anisearch', rating);
       });
     }
   }

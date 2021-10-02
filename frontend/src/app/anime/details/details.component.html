@@ -582,9 +582,10 @@
                 >
               </div>
             </div>
-            <div *ngIf="anime.my_extension?.annictId" class="row">
+            <div *ngIf="anime.my_extension?.anisearchId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
+                  <app-external-rating [rating]="getRating('anisearch')"></app-external-rating>
                 </td>
               </div>
               <div class="col-8">
