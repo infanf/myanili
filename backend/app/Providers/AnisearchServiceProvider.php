@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use DOMDocument;
 use Illuminate\Support\ServiceProvider;
 
 class AnisearchServiceProvider extends ServiceProvider
@@ -21,7 +20,7 @@ class AnisearchServiceProvider extends ServiceProvider
 
     public static function searchAnime(string $title, int $page = 1)
     {
-        $url = static::$baseUrl . "anime/index/page-{$page}?char=all&text={$title}&smode=2&sort=rank&order=asc&view=1&title=en,fr,de,it,pl,ru,es,tr&titlex=1,2";
+        $url = static::$baseUrl . "anime/index/page-{$page}?char=all&text={$title}&smode=2&sort=title&order=asc&view=1&title=en,fr,de,it,pl,ru,es,tr&titlex=1,2";
         $animes = [
             'page' => $page,
             'pages' => 1,
@@ -52,7 +51,7 @@ class AnisearchServiceProvider extends ServiceProvider
             $anime['id'] = intval($link ? explode(',', explode('/', $link->getAttribute('href'))[1])[0] : '');
             $anime['image'] = $link ? "https://cdn.anisearch.com/images/" . $link->getAttribute('data-bg') : '';
             $anime['source'] = $finder->query("{$node->getNodePath()}//div[@class='type'][@title='Type']")->item(0)->nodeValue ?? '';
-            $anime['duration'] = intval(str_replace('~','',$finder->query("{$node->getNodePath()}//div[@class='episodes'][@title='Minutes']")->item(0)->nodeValue ?? ''));
+            $anime['duration'] = intval(str_replace('~', '', $finder->query("{$node->getNodePath()}//div[@class='episodes'][@title='Minutes']")->item(0)->nodeValue ?? ''));
             $meta = $finder->query("{$node->getNodePath()}//span[@class='details']/span[@class='date']")->item(0)->nodeValue ?? '';
             preg_match('/(?P<type>[^,]+),\s*(?P<episodes>[\d\?\+]*)\s*(\((?P<year>\d+)\))?/', $meta, $matches);
             $anime['type'] = $matches['type'] ?? '';
@@ -65,9 +64,9 @@ class AnisearchServiceProvider extends ServiceProvider
         return $animes;
     }
 
-    public static function searchManga(string $title, int $page=1)
+    public static function searchManga(string $title, int $page = 1)
     {
-        $url = static::$baseUrl . "manga/index/page-{$page}?char=all&text={$title}&smode=2&sort=rank&order=asc&view=1&title=en,fr,de,it,pl,ru,es,tr&titlex=1,2";
+        $url = static::$baseUrl . "manga/index/page-{$page}?char=all&text={$title}&smode=2&sort=title&order=asc&view=1&title=en,fr,de,it,pl,ru,es,tr&titlex=1,2";
         $mangas = [
             'page' => $page,
             'pages' => 1,
@@ -111,7 +110,7 @@ class AnisearchServiceProvider extends ServiceProvider
         return $mangas;
     }
 
-    static function getRating(int $id, string $type = "anime")
+    public static function getRating(int $id, string $type = "anime")
     {
         $url = static::$baseUrl . "{$type}/{$id}/";
         $ch = curl_init($url);
@@ -122,10 +121,13 @@ class AnisearchServiceProvider extends ServiceProvider
         @$doc->loadHTML($response);
         $finder = new \DOMXPath($doc);
         $rating = $finder->query('//*[@id="ratingstats"]/tbody/tr[2]/td[1]/span')->item(0)->nodeValue ?? 0;
+        $distribution = $finder->query('//*[@id="rating-stats"]/li/div[@class="value"]') ?? [];
         return [
             "nom" => floatval($rating),
             "norm" => floatval($rating) * 20,
-            "ratings" => 0,
+            "ratings" => array_sum(array_map(function ($node) {
+                return intval($node->nodeValue);
+            }, iterator_to_array($distribution))),
         ];
     }
 
