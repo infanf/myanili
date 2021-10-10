@@ -109,7 +109,15 @@ $app->configure('app');
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    $routesDir = __DIR__.'/../routes';
+    require "{$routesDir}/anilist.php";
+    require "{$routesDir}/anisearch.php";
+    require "{$routesDir}/annict.php";
+    require "{$routesDir}/baka.php";
+    require "{$routesDir}/mal.php";
+    require "{$routesDir}/simkl.php";
+    require "{$routesDir}/trakt.php";
+    require "{$routesDir}/web.php";
 });
 
 $app->middleware([

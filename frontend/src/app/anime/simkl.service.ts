@@ -30,7 +30,7 @@ export class SimklService {
 
   async login() {
     return new Promise(r => {
-      const loginWindow = window.open(environment.backend + 'simklauth');
+      const loginWindow = window.open(environment.backend + 'simkl/auth');
       window.addEventListener('message', async event => {
         if (event.data && event.data.simkl) {
           const data = event.data as { at: string; ex: number; ci: string };

@@ -2,8 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ExtRating } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/mal-manga';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
+import { AnisearchService } from 'src/app/anisearch.service';
+import { AnisearchComponent } from 'src/app/anisearch/anisearch.component';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { PlatformPipe } from 'src/app/platform.pipe';
@@ -33,6 +36,8 @@ export class MangaDetailsComponent implements OnInit {
     public platformPipe: PlatformPipe,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private anisearch: AnisearchService,
+    private modalService: NgbModal,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -75,8 +80,8 @@ export class MangaDetailsComponent implements OnInit {
         this.anilist.getId(this.id, 'MANGA'),
         this.kitsu.getId(this.id, 'manga', 'myanimelist', this.manga.my_extension.kitsuId?.kitsuId),
       ]);
-      this.manga.my_extension.anilistId = anilistId;
-      this.manga.my_extension.kitsuId = kitsuId;
+      this.manga.my_extension.anilistId = anilistId || this.manga.my_extension.anilistId;
+      this.manga.my_extension.kitsuId = kitsuId || this.manga.my_extension.kitsuId;
       if (manga.my_extension) {
         await this.mangaService.updateManga(
           { malId: manga.id, kitsuId, anilistId },
@@ -358,6 +363,11 @@ export class MangaDetailsComponent implements OnInit {
         }
       });
     }
+    if (!this.getRating('anisearch')) {
+      this.anisearch.getRating(this.manga?.my_extension?.anisearchId, 'manga').then(rating => {
+        this.setRating('anisearch', rating);
+      });
+    }
   }
 
   get meanRating(): number {
@@ -392,5 +402,15 @@ export class MangaDetailsComponent implements OnInit {
     const ongoing = !this.editExtension?.ongoing;
     if (!this.editExtension) this.editExtension = { ongoing };
     this.editExtension.ongoing = ongoing;
+  }
+
+  async findAnisearch() {
+    if (!this.manga || !this.editExtension) return;
+    const modal = this.modalService.open(AnisearchComponent);
+    modal.componentInstance.query = this.manga.title;
+    modal.componentInstance.type = 'manga';
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.anisearchId = Number(value);
+    });
   }
 }

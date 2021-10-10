@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class MalService {
-  private backendUrl = environment.backend;
+  private backendUrl = `${environment.backend}mal/`;
   private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 

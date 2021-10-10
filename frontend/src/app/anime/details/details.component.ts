@@ -7,6 +7,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
+import { AnisearchService } from 'src/app/anisearch.service';
+import { AnisearchComponent } from 'src/app/anisearch/anisearch.component';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { MalService } from 'src/app/mal.service';
@@ -49,6 +51,7 @@ export class AnimeDetailsComponent implements OnInit {
     private kitsu: KitsuService,
     private simkl: SimklService,
     private annict: AnnictService,
+    private anisearch: AnisearchService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const [service, newId] = params.get('id')?.split(':') || [];
@@ -109,13 +112,13 @@ export class AnimeDetailsComponent implements OnInit {
         this.annict.getId(malId, anime.alternative_titles?.ja || anime.title),
       ]);
       if (this.service !== 'anilist') {
-        this.anime.my_extension.anilistId = anilistId;
+        this.anime.my_extension.anilistId = anilistId || this.anime.my_extension.anilistId;
       }
       if (this.service !== 'kitsu') {
-        this.anime.my_extension.kitsuId = kitsuId;
+        this.anime.my_extension.kitsuId = kitsuId || this.anime.my_extension.kitsuId;
       }
-      this.anime.my_extension.simklId = simklId;
-      this.anime.my_extension.annictId = annictId;
+      this.anime.my_extension.simklId = simklId || this.anime.my_extension.simklId;
+      this.anime.my_extension.annictId = annictId || this.anime.my_extension.annictId;
       if (anime.my_extension) {
         await this.animeService.updateAnime(
           { malId, kitsuId, simklId, anilistId, annictId },
@@ -140,6 +143,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     this.glob.notbusy();
     await this.getRatings();
+    // await this.findAnisearch();
   }
 
   async editSave() {
@@ -433,6 +437,15 @@ export class AnimeDetailsComponent implements OnInit {
     });
   }
 
+  async findAnisearch() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(AnisearchComponent);
+    modal.componentInstance.query = this.anime.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.anisearchId = Number(value);
+    });
+  }
+
   getDay(day?: number): string {
     if (!day && day !== 0) return '';
     return moment().day(day).format('dddd');
@@ -472,6 +485,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('annict')) {
       this.annict.getRating(this.anime?.my_extension?.annictId).then(rating => {
         this.setRating('annict', rating);
+      });
+    }
+    if (!this.getRating('anisearch')) {
+      this.anisearch.getRating(this.anime?.my_extension?.anisearchId).then(rating => {
+        this.setRating('anisearch', rating);
       });
     }
   }

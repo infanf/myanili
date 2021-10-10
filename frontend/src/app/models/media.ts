@@ -192,6 +192,7 @@ interface MediaExtensionInterface {
   simklId?: number;
   annictId?: number;
   livechartId?: number;
+  anisearchId?: number;
   bakaId?: number;
   fandomSlug?: string;
   displayName?: string;
