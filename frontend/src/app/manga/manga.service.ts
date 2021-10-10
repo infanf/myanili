@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RelatedAnime } from '@models/anime';
 import {
   BakaManga,
+  BakaMangaList,
   ListManga,
   Manga,
   MangaCharacter,
@@ -144,6 +145,26 @@ export class MangaService {
       const response = (await request.json()) as BakaManga;
       return response;
     }
+    return;
+  }
+
+  async getBakaMangas(title: string): Promise<BakaMangaList | undefined> {
+    if (!title) return;
+    const request = await fetch(`${environment.backend}baka/search/${title}`);
+    if (request.ok) {
+      const response = (await request.json()) as BakaMangaList;
+      return response;
+    }
+    return;
+  }
+
+  async getBakaMangaId(manga: Manga): Promise<number | undefined> {
+    const mangas = await this.getBakaMangas(manga.title);
+    if (!mangas) return;
+    const bakaMangas = mangas.mangas.filter(
+      m => m.year === (manga.start_date ? new Date(manga.start_date).getFullYear() : 0),
+    );
+    if (bakaMangas.length === 1) return bakaMangas[0].id;
     return;
   }
 }

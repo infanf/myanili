@@ -98,7 +98,7 @@ class AnisearchServiceProvider extends ServiceProvider
             $manga['image'] = $link ? "https://cdn.anisearch.com/images/" . $link->getAttribute('data-bg') : '';
             $manga['source'] = $finder->query("{$node->getNodePath()}//div[@class='type'][@title='Type']")->item(0)->nodeValue ?? '';
             $meta = $finder->query("{$node->getNodePath()}//span[@class='details']/span[@class='date']")->item(0)->nodeValue ?? '';
-            preg_match('/(?P<type>[^,]+),\s*(?P<chapters>[\d\?\+]*)(\/(?P<volumes>[\d\?\+]*))?\s*(\((?P<year>\d+)\))?/', $meta, $matches);
+            preg_match('/(?P<type>[^,]+),\s*(?P<volumes>[\d\?\+]*)(\/(?P<chapters>[\d\?\+]*))?\s*(\((?P<year>\d+)\))?/', $meta, $matches);
             $manga['type'] = $matches['type'] ?? '';
             $manga['chapters'] = intval($matches['chapters']) ?? null;
             $manga['volumes'] = intval($matches['volumes']) ?? null;

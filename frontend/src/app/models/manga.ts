@@ -166,3 +166,21 @@ interface BakaMangaInterface {
 }
 
 export type BakaManga = BakaMangaInterface;
+
+interface BakaMangaListInterface {
+  link: string;
+  page: number;
+  more: boolean;
+  mangas: Array<{
+    title: string;
+    link: string;
+    image?: string;
+    id: number;
+    genres: string[];
+    description?: string;
+    year: number;
+    rating: number;
+  }>;
+}
+
+export type BakaMangaList = BakaMangaListInterface;
