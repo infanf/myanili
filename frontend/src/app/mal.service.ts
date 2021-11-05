@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ListAnime, WatchStatus } from '@models/anime';
 import { ListManga, ReadStatus } from '@models/manga';
@@ -69,19 +69,11 @@ export class MalService {
   async getJikanData<T>(url: string): Promise<T> {
     try {
       return new Promise((r, rj) => {
-        this.httpClient
-          .get<T>(`${environment.jikanUrl}${url}`, {
-            headers: new HttpHeaders({ timeout: '5000' }),
-          })
-          .subscribe(r, rj);
+        this.httpClient.get<T>(`${environment.jikanUrl}${url}`).subscribe(r, rj);
       });
     } catch (e) {
       return new Promise((r, rj) => {
-        this.httpClient
-          .get<T>(`${environment.jikanFallbackUrl}${url}`, {
-            headers: new HttpHeaders({ timeout: '5000' }),
-          })
-          .subscribe(r, rj);
+        this.httpClient.get<T>(`${environment.jikanFallbackUrl}${url}`).subscribe(r, rj);
       });
     }
   }
