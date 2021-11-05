@@ -103,13 +103,18 @@ export class AnimeDetailsComponent implements OnInit {
       (!this.anime.my_extension.kitsuId ||
         !this.anime.my_extension.anilistId ||
         !this.anime.my_extension.simklId ||
-        !this.anime.my_extension.annictId)
+        !this.anime.my_extension.annictId ||
+        !this.anime.my_extension.anisearchId)
     ) {
-      const [anilistId, kitsuId, simklId, annictId] = await Promise.all([
-        this.anilist.getId(malId, 'ANIME'),
-        this.kitsu.getId(malId, 'anime'),
-        this.simkl.getId(malId),
-        this.annict.getId(malId, anime.alternative_titles?.ja || anime.title),
+      const [anilistId, kitsuId, simklId, annictId, anisearchId] = await Promise.all([
+        this.anilist.getId(this.id, 'ANIME'),
+        this.kitsu.getId(this.id, 'anime'),
+        this.simkl.getId(this.id),
+        this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title),
+        this.anisearch.getId(this.anime.title, 'anime', {
+          parts: this.anime.num_parts,
+          year: this.anime.start_season?.year,
+        }),
       ]);
       if (this.service !== 'anilist') {
         this.anime.my_extension.anilistId = anilistId || this.anime.my_extension.anilistId;
@@ -119,6 +124,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
       this.anime.my_extension.simklId = simklId || this.anime.my_extension.simklId;
       this.anime.my_extension.annictId = annictId || this.anime.my_extension.annictId;
+      this.anime.my_extension.anisearchId = anisearchId || this.anime.my_extension.anisearchId;
       if (anime.my_extension) {
         await this.animeService.updateAnime(
           { malId, kitsuId, simklId, anilistId, annictId },
@@ -130,6 +136,7 @@ export class AnimeDetailsComponent implements OnInit {
                 anilistId,
                 simklId,
                 annictId,
+                anisearchId,
               }),
             ),
           },

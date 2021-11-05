@@ -74,14 +74,23 @@ export class MangaDetailsComponent implements OnInit {
     if (
       !this.manga.my_extension.kitsuId ||
       !this.manga.my_extension.kitsuId.entryId ||
-      !this.manga.my_extension.anilistId
+      !this.manga.my_extension.anilistId ||
+      !this.manga.my_extension.anisearchId ||
+      !this.manga.my_extension.bakaId
     ) {
-      const [anilistId, kitsuId] = await Promise.all([
+      const [anilistId, kitsuId, anisearchId, bakaId] = await Promise.all([
         this.anilist.getId(this.id, 'MANGA'),
         this.kitsu.getId(this.id, 'manga', 'myanimelist', this.manga.my_extension.kitsuId?.kitsuId),
+        this.anisearch.getId(this.manga.title, 'manga', {
+          parts: this.manga.num_chapters,
+          year: this.manga.start_date ? new Date(this.manga.start_date).getFullYear() : undefined,
+        }),
+        this.mangaService.getBakaMangaId(this.manga),
       ]);
       this.manga.my_extension.anilistId = anilistId || this.manga.my_extension.anilistId;
       this.manga.my_extension.kitsuId = kitsuId || this.manga.my_extension.kitsuId;
+      this.manga.my_extension.anisearchId = anisearchId || this.manga.my_extension.anisearchId;
+      this.manga.my_extension.bakaId = bakaId || this.manga.my_extension.bakaId;
       if (manga.my_extension) {
         await this.mangaService.updateManga(
           { malId: manga.id, kitsuId, anilistId },
@@ -91,6 +100,8 @@ export class MangaDetailsComponent implements OnInit {
                 ...manga.my_extension,
                 kitsuId,
                 anilistId,
+                anisearchId,
+                bakaId,
               }),
             ),
           },
