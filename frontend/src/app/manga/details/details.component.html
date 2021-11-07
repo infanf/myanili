@@ -76,6 +76,7 @@
             max="10"
             type="number"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -92,6 +93,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.displayName"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -246,6 +248,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.platformId"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -272,6 +275,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.publisher"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -282,6 +286,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.publisherWebsite"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -351,6 +356,7 @@
                 [max]="manga!.num_chapters || 9999"
                 [(ngModel)]="editBackup!.num_chapters_read"
                 [disabled]="busy"
+                enterkeyhint="done"
               />
               <span class="input-group-text">/ {{ manga!.num_chapters || '?' }}</span>
             </div>
@@ -367,6 +373,7 @@
                 [max]="manga!.num_chapters || 9999"
                 [(ngModel)]="editBackup!.num_volumes_read"
                 [disabled]="busy"
+                enterkeyhint="done"
               />
               <span class="input-group-text">/ {{ manga!.num_volumes || '?' }}</span>
             </div>
@@ -498,6 +505,7 @@
               class="form-control form-control-sm"
               [(ngModel)]="editExtension!.anilistId"
               [disabled]="busy"
+              enterkeyhint="done"
             />
           </div>
         </div>
@@ -508,6 +516,7 @@
               class="form-control form-control-sm"
               [(ngModel)]="editExtension!.kitsuId!.kitsuId"
               [disabled]="busy"
+              enterkeyhint="done"
             />
           </div>
         </div>
@@ -518,6 +527,7 @@
               class="form-control form-control-sm"
               [(ngModel)]="editExtension!.bakaId"
               [disabled]="busy"
+              enterkeyhint="done"
             />
           </div>
         </div>
@@ -525,7 +535,12 @@
           <div class="col-4 fw-bold text-end">AniSearch</div>
           <div class="col-8">
             <div class="input-group input-group-sm">
-              <input class="form-control" [(ngModel)]="editExtension!.anisearchId" [disabled]="busy" />
+              <input
+                class="form-control"
+                [(ngModel)]="editExtension!.anisearchId"
+                [disabled]="busy"
+                enterkeyhint="done"
+              />
               <button class="btn btn-primary" (click)="findAnisearch()">
                 <app-icon-anisearch></app-icon-anisearch>
               </button>
@@ -540,6 +555,7 @@
                 class="form-control"
                 [(ngModel)]="editExtension!.fandomSlug"
                 [disabled]="busy"
+                enterkeyhint="done"
               />
               <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')"
                 >.fandom.com</span
