@@ -80,6 +80,7 @@
             max="10"
             type="number"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -94,6 +95,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.displayName"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -118,6 +120,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.series"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -250,6 +253,7 @@
             [(ngModel)]="editExtension!.simulTime"
             type="time"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -298,6 +302,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.simulCountry"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -308,6 +313,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.externalStreamingId"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -329,6 +335,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.anilistId"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -339,6 +346,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.kitsuId!.kitsuId"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -349,6 +357,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.simklId"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -359,6 +368,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.annictId"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -366,7 +376,12 @@
         <div class="col-4 fw-bold text-end">AniSearch</div>
         <div class="col-8">
           <div class="input-group input-group-sm">
-            <input class="form-control" [(ngModel)]="editExtension!.anisearchId" [disabled]="busy" />
+            <input
+              class="form-control"
+              [(ngModel)]="editExtension!.anisearchId"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
             <button class="btn btn-primary" (click)="findAnisearch()">
               <app-icon-anisearch></app-icon-anisearch>
             </button>
@@ -380,6 +395,7 @@
             class="form-control form-control-sm"
             [(ngModel)]="editExtension!.livechartId"
             [disabled]="busy"
+            enterkeyhint="done"
           />
         </div>
       </div>
@@ -387,7 +403,12 @@
         <div class="col-4 fw-bold text-end">Wiki</div>
         <div class="col-8">
           <div class="input-group input-group-sm">
-            <input class="form-control" [(ngModel)]="editExtension!.fandomSlug" [disabled]="busy" />
+            <input
+              class="form-control"
+              [(ngModel)]="editExtension!.fandomSlug"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
             <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')"
               >.fandom.com</span
             >
@@ -452,6 +473,7 @@
                 [max]="anime!.num_episodes || 9999"
                 [(ngModel)]="editBackup!.num_watched_episodes"
                 [disabled]="busy"
+                enterkeyhint="done"
               />
               <span class="input-group-text">/ {{ anime!.num_episodes || '?' }}</span>
             </div>
@@ -465,6 +487,7 @@
               [(ngModel)]="editExtension.seasonNumber"
               type="number"
               [disabled]="busy"
+              enterkeyhint="done"
             />
           </div>
           <div class="col-3 fw-bold text-end">Offset</div>
@@ -474,6 +497,7 @@
               [(ngModel)]="editExtension.episodeCorOffset"
               type="number"
               [disabled]="busy"
+              enterkeyhint="done"
             />
           </div>
         </div>
