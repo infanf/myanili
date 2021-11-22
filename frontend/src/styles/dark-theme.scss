@@ -1,10 +1,21 @@
 @media (prefers-color-scheme: dark) {
   $background-color: #000;
   $text-color: #fff;
+  $body-color: #fff;
 
   body {
     background-color: $background-color;
     color: $text-color;
+  }
+
+  .table {
+    --bs-table-active-color: $text-color;
+    --bs-table-striped-color: $text-color;
+    --bs-table-hover-color: $text-color;
+  }
+
+  .btn-close {
+    filter: invert(100%);
   }
 
   .bg-white {

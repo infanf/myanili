@@ -35,13 +35,16 @@ import { GraphQLModule } from './graphql/graphql.module';
 import { IconModule } from './icon/icon.module';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
+import {
+  BookshelfComponent,
+  BookshelfWrapperComponent,
+} from './manga/bookshelf/bookshelf.component';
 import { MangaCharactersComponent } from './manga/details/characters/characters.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaRecommendationsComponent } from './manga/details/recommendations/recommendations.component';
 import { MangaRelatedComponent } from './manga/details/related/related.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
-import { ReadlistComponent, ReadlistWrapperComponent } from './manga/readlist/readlist.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
@@ -89,8 +92,8 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ProducerComponent,
     MagazineComponent,
     StaffComponent,
-    ReadlistComponent,
-    ReadlistWrapperComponent,
+    BookshelfComponent,
+    BookshelfWrapperComponent,
     AnimeListGridComponent,
     AnimeListListComponent,
     PlatformComponent,
