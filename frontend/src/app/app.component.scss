@@ -4,7 +4,7 @@
   height: calc(100% - 58px);
   top: 58px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
 
   app-icon,
   circle-progress {
@@ -12,8 +12,5 @@
     left: 50%;
     top: 50%;
     margin: -32px;
-  }
-  @media (prefers-color-scheme: dark) {
-    background-color: rgba(0, 0, 0, 0.8);
   }
 }
