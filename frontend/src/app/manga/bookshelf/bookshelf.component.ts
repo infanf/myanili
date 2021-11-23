@@ -6,15 +6,15 @@ import { SettingsService } from 'src/app/settings/settings.service';
 import { MangaService } from '../manga.service';
 
 @Component({
-  selector: 'app-readlist-wrapper',
-  templateUrl: './readlist-wrapper.component.html',
-  styles: ['app-readlist {display: table-row-group;}'],
+  selector: 'app-bookshelf-wrapper',
+  templateUrl: './bookshelf-wrapper.component.html',
+  styles: ['app-bookshelf {display: table-row-group;}'],
 })
-export class ReadlistWrapperComponent implements OnInit {
+export class BookshelfWrapperComponent implements OnInit {
   mangas: ListManga[] = [];
 
   constructor(private mangaservice: MangaService, private glob: GlobalService) {
-    this.glob.setTitle('Readlist – Today');
+    this.glob.setTitle('Bookshelf – Today');
   }
 
   async ngOnInit() {
@@ -45,11 +45,11 @@ export class ReadlistWrapperComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-readlist',
-  templateUrl: './readlist.component.html',
-  styleUrls: ['./readlist.component.scss'],
+  selector: 'app-bookshelf',
+  templateUrl: './bookshelf.component.html',
+  styleUrls: ['./bookshelf.component.scss'],
 })
-export class ReadlistComponent {
+export class BookshelfComponent {
   @Input() mangas: ListManga[] = [];
 
   lang = 'en';

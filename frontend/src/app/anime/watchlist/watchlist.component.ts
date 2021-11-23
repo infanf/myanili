@@ -68,10 +68,11 @@ export class WatchlistComponent implements OnInit {
       return Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0);
     }
     return (
-      anime.my_extension.simulDay +
-      7 -
-      this.getLast8am().day() +
-      Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0) / 10000
+      (anime.my_extension.simulDay +
+        14 -
+        this.getLast8am().day() +
+        Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0) / 10000) %
+      7
     );
   }
 
