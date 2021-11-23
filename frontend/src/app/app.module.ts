@@ -29,6 +29,7 @@ import { AnisearchComponent } from './anisearch/anisearch.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
+import { DarkTableDirective } from './dark-table.directive';
 import { DayPipe } from './day.pipe';
 import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
@@ -102,6 +103,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     SeasonGridComponent,
     SeasonListComponent,
     AnisearchComponent,
+    DarkTableDirective,
   ],
   imports: [
     BrowserModule,
@@ -120,7 +122,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
       showUnits: false,
       showSubtitle: false,
       outerStrokeColor: 'currentColor',
-      innerStrokeColor: 'rgba(0,0,0,0.15)',
+      innerStrokeColor: 'rgba(128,128,128,0.3)',
       animation: false,
       backgroundPadding: 0,
       outerStrokeLinecap: 'butt',

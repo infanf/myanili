@@ -8,13 +8,13 @@ import { MangaService } from '../manga.service';
 @Component({
   selector: 'app-bookshelf-wrapper',
   templateUrl: './bookshelf-wrapper.component.html',
-  styles: ['app-bookshelf {display: table-row-group;}'],
+  styles: [],
 })
 export class BookshelfWrapperComponent implements OnInit {
   mangas: ListManga[] = [];
 
   constructor(private mangaservice: MangaService, private glob: GlobalService) {
-    this.glob.setTitle('Bookshelf – Today');
+    this.glob.setTitle('Bookshelf');
   }
 
   async ngOnInit() {
