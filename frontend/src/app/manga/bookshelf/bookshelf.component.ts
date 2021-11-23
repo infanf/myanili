@@ -45,7 +45,7 @@ export class BookshelfWrapperComponent implements OnInit {
 }
 
 @Component({
-  selector: 'app-bookshelf',
+  selector: '[app-bookshelf]',
   templateUrl: './bookshelf.component.html',
   styleUrls: ['./bookshelf.component.scss'],
 })
