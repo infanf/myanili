@@ -62,7 +62,7 @@ class BakaServiceProvider extends ServiceProvider
         $doc = new \DOMDocument();
         @$doc->loadHTML($response);
         $finder = new \DOMXPath($doc);
-        $mangas['more'] = !!($finder->query("//a[text() = 'Next Page']")->item(0)->textContent);
+        $mangas['more'] = !!($finder->query("//a[text() = 'Next Page']")->item(0)?->textContent);
         $nodes = $finder->query("//*[@id='main_content']//div[contains(@class, 'col-12 col-lg-6 p-3 text')]");
         foreach ($nodes as $node) {
             $manga = [];

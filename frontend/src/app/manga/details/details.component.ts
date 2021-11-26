@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
+import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
 import { ExtRating } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -422,6 +423,15 @@ export class MangaDetailsComponent implements OnInit {
     modal.componentInstance.type = 'manga';
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.anisearchId = Number(value);
+    });
+  }
+
+  async findBaka() {
+    if (!this.manga || !this.editExtension) return;
+    const modal = this.modalService.open(BakamangaComponent);
+    modal.componentInstance.title = this.manga.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.bakaId = Number(value);
     });
   }
 }
