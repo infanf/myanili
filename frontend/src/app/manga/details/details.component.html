@@ -523,12 +523,17 @@
         <div class="row my-2" *ngIf="edit && manga && editExtension">
           <div class="col-4 fw-bold text-end">Baka-Updates</div>
           <div class="col-8">
-            <input
+            <div class="input-group input-group-sm">
+              <input
               class="form-control form-control-sm"
               [(ngModel)]="editExtension!.bakaId"
               [disabled]="busy"
               enterkeyhint="done"
             />
+            <button class="btn btn-primary" (click)="findBaka()">
+              <app-icon-bakamanga></app-icon-bakamanga>
+            </button>
+          </div>
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && editExtension">

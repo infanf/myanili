@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
@@ -12,13 +12,16 @@ export class GlobalService {
   private readonly titlePostfix = ' – MyAniLi';
   private lastTitle = '';
 
-  constructor(private titleService: Title) {
-    try {
+  constructor(private titleService: Title, private ref: ApplicationRef) {
+    if (window.matchMedia) {
+      const darkModeOn = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (darkModeOn) {
+        this.darkModeSubject.next(true);
+      }
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
         this.darkModeSubject.next(e.matches);
+        this.ref.tick();
       });
-    } catch (e) {
-      console.error("Apparently you are using an Apple Product. Please don't");
     }
   }
 

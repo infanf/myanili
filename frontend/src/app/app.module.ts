@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ExternalModule } from '@external/external.module';
+import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgCircleProgressModule } from 'ng-circle-progress';
@@ -22,17 +24,15 @@ import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonGridComponent } from './anime/season/grid/grid.component';
 import { SeasonListComponent } from './anime/season/list/list.component';
 import { SeasonComponent } from './anime/season/season.component';
-import { TraktComponent } from './anime/trakt/trakt.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { StreamingComponent } from './anime/widget/streaming/streaming.component';
-import { AnisearchComponent } from './anisearch/anisearch.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
 import { DayPipe } from './day.pipe';
+import { DirectivesModule } from './directives/directives.module';
 import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
-import { IconModule } from './icon/icon.module';
 import { LinkPipe } from './link.pipe';
 import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
@@ -77,7 +77,6 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     SettingsComponent,
     WidgetSeasonComponent,
     StreamingComponent,
-    TraktComponent,
     MangaDetailsComponent,
     MangaListComponent,
     MalComponent,
@@ -103,7 +102,6 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ExternalRatingComponent,
     SeasonGridComponent,
     SeasonListComponent,
-    AnisearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -122,7 +120,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
       showUnits: false,
       showSubtitle: false,
       outerStrokeColor: 'currentColor',
-      innerStrokeColor: 'rgba(0,0,0,0.15)',
+      innerStrokeColor: 'rgba(128,128,128,0.3)',
       animation: false,
       backgroundPadding: 0,
       outerStrokeLinecap: 'butt',
@@ -130,6 +128,8 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     AngularSvgIconModule.forRoot(),
     GraphQLModule,
     IconModule,
+    ExternalModule,
+    DirectivesModule,
   ],
   providers: [TimePipe, StreamPipe, PlatformPipe, Title, DayPipe],
 

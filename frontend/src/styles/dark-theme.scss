@@ -1,5 +1,5 @@
 @media (prefers-color-scheme: dark) {
-  $background-color: #000;
+  $background-color: $dark;
   $text-color: #fff;
   $body-color: #fff;
 
@@ -92,7 +92,6 @@
     background-color: #2a333c;
   }
 
-  thead.sticky th,
   .modal-content {
     background-color: $background-color;
   }
@@ -102,5 +101,13 @@
   .table-hover > tbody > tr:hover,
   .table-striped > tbody > tr:nth-of-type(odd):not(.text-green) {
     color: $text-color !important;
+  }
+
+  .nav-link {
+    color: inherit;
+  }
+
+  .nav-link:hover, .nav-link:focus {
+    color: inherit;
   }
 }

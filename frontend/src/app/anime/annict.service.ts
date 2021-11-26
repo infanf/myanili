@@ -140,6 +140,55 @@ export class AnnictService {
       : undefined;
   }
 
+  async search(title?: string): Promise<
+    | Array<{
+        annictId: number;
+        title: string;
+        titleRo: string;
+        titleEn: string;
+        seasonYear: number;
+      }>
+    | undefined
+  > {
+    if (!title || !this.accessToken) return;
+    const titleReplaced = title.replace('!', '').replace('?', '');
+    const query = `query {
+        searchWorks(titles: ["${titleReplaced}","${title}","${title.replace(/\s/g, '')}"]) {
+          nodes {
+            title
+            titleRo
+            titleEn
+            annictId
+            seasonYear
+          }
+        }
+      }
+    `;
+    const result = await fetch(this.graphqlUrl, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({ query, variables: {} }),
+    });
+    if (!result.ok) return;
+    const response = (await result.json()) as {
+      data: {
+        searchWorks: {
+          nodes: Array<{
+            annictId: number;
+            title: string;
+            titleRo: string;
+            titleEn: string;
+            seasonYear: number;
+          }>;
+        };
+      };
+    };
+    return response.data?.searchWorks?.nodes || [];
+  }
+
   async updateEntry(annictId?: number, data?: Partial<MyMediaUpdate>) {
     if (!annictId || !this.accessToken) return;
     if (data?.progress) {
