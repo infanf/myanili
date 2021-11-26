@@ -29,8 +29,8 @@ import { StreamingComponent } from './anime/widget/streaming/streaming.component
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
-import { DarkTableDirective } from './dark-table.directive';
 import { DayPipe } from './day.pipe';
+import { DirectivesModule } from './directives/directives.module';
 import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
 import { MalPipe } from './mal.pipe';
@@ -100,7 +100,6 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ExternalRatingComponent,
     SeasonGridComponent,
     SeasonListComponent,
-    DarkTableDirective,
   ],
   imports: [
     BrowserModule,
@@ -128,6 +127,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     GraphQLModule,
     IconModule,
     ExternalModule,
+    DirectivesModule,
   ],
   providers: [TimePipe, StreamPipe, PlatformPipe, Title, DayPipe],
 
