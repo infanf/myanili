@@ -364,12 +364,17 @@
       <div class="row my-2" *ngIf="edit && anime && editExtension">
         <div class="col-4 fw-bold text-end">Annict</div>
         <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.annictId"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
+          <div class="input-group input-group-sm">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.annictId"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+            <button *ngIf="annictUser" class="btn btn-primary" (click)="findAnnict()">
+              <app-icon-annict></app-icon-annict>
+            </button>
+          </div>
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">

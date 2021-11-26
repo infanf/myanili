@@ -14,6 +14,13 @@ export class AnnictComponent extends ExternalComponent {
   }
 
   async ngOnInit() {
-    this.annict.getId(1, '');
+    const results = await this.annict.search(this.title);
+    this.nodes =
+      results?.map(result => ({
+        id: result.annictId,
+        title: result.titleRo || result.title || result.titleEn,
+        year: result.seasonYear,
+        url: `https://annict.com/works/${result.annictId}`,
+      })) || [];
   }
 }
