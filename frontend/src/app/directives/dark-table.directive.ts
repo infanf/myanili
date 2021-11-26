@@ -1,6 +1,6 @@
 import { Directive, ElementRef } from '@angular/core';
 
-import { GlobalService } from './global.service';
+import { GlobalService } from '../global.service';
 
 @Directive({
   selector: '[darkTable]',
