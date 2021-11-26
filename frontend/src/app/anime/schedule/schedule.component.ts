@@ -50,12 +50,17 @@ export class ScheduleComponent {
   }
 
   getAnimes(day: number): Array<Partial<Anime>> {
-    return this.animes.filter(
-      anime =>
-        Number(anime.my_extension?.simulDay) % 7 === day % 7 &&
+    return this.animes.filter(anime => {
+      let simulDay = anime.my_extension?.simulDay;
+      if (!simulDay && simulDay !== 0) return false;
+      if (!Array.isArray(simulDay)) simulDay = [simulDay];
+      simulDay = simulDay.map(d => Number(d) % 7) as number[];
+      return (
+        simulDay.includes(day % 7) &&
         anime.my_extension?.simulDay !== null &&
-        anime.my_list_status?.status !== 'dropped',
-    );
+        anime.my_list_status?.status !== 'dropped'
+      );
+    });
   }
 
   getOtherAnimes(): Array<Partial<Anime>> {

@@ -39,8 +39,15 @@ export class WatchlistComponent implements OnInit {
         if (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) {
           return true;
         }
-        if (anime.my_extension.simulDay === this.getLast8am().day()) return true;
-        if ((this.getLast8am().day() - anime.my_extension.simulDay + 14) % 7 <= 4) {
+        if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().day())
+          return true;
+        if (
+          (this.getLast8am().day() -
+            this.animeService.getLastDay(anime.my_extension.simulDay) +
+            14) %
+            7 <=
+          4
+        ) {
           const inFuture = moment(anime.node.start_date) > moment();
           const newShow = anime.list_status.num_episodes_watched === 0;
           return (
@@ -59,11 +66,11 @@ export class WatchlistComponent implements OnInit {
     if (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) {
       return 0;
     }
-    if (anime.my_extension.simulDay === this.getLast8am().day()) {
+    if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().day()) {
       return Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0);
     }
     return (
-      (anime.my_extension.simulDay +
+      (this.animeService.getLastDay(anime.my_extension.simulDay) +
         14 -
         this.getLast8am().day() +
         Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0) / 10000) %
@@ -188,5 +195,15 @@ export class WatchlistComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  toArray<T>(value?: T | T[]): T[] {
+    if (!value) return [];
+    return Array.isArray(value) ? value : [value];
+  }
+
+  getLastDay(day?: number | number[]): number | undefined {
+    if (!day && day !== 0) return undefined;
+    return this.animeService.getLastDay(day);
   }
 }

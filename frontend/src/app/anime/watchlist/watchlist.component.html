@@ -64,9 +64,9 @@
           <td>
             {{
               anime.my_extension?.simulTime
-                ? getLast8am().day() === anime.my_extension?.simulDay
+                ? getLast8am().day() === anime.my_extension?.simulDay || toArray(anime.my_extension?.simulDay).includes(getLast8am().day())
                   ? (anime.my_extension!.simulTime!.substr(0, 5) | time)
-                  : (anime.my_extension?.simulDay | day)
+                  : (getLastDay(anime.my_extension?.simulDay) | day)
                 : ''
             }}
           </td>

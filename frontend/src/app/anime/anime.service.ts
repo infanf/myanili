@@ -12,6 +12,7 @@ import {
 } from '@models/anime';
 import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
+import * as moment from 'moment';
 
 import { AnilistService } from '../anilist.service';
 import { KitsuService } from '../kitsu.service';
@@ -173,5 +174,25 @@ export class AnimeService {
       `anime/${id}/characters_staff`,
     );
     return characterStaff.staff || [];
+  }
+
+  getLastDay(days: number | number[], today?: number): number {
+    if (typeof days === 'number') {
+      return days;
+    }
+    const mapper = (d: number) => {
+      const todayFinal = today || moment().weekday();
+      const delta = (6 + d - todayFinal) % 7;
+      return delta;
+    };
+    return days.sort((a, b) => mapper(b) - mapper(a))[0];
+  }
+
+  getDay(day?: number | number[]): string {
+    if (!day && day !== 0) return '';
+    if (typeof day === 'object') {
+      day = this.getLastDay(day);
+    }
+    return moment().day(day).format('dddd');
   }
 }

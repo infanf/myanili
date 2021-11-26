@@ -150,7 +150,7 @@ interface AnimeExtensionInterface {
   episodeCorOffset?: number;
   externalStreaming?: string;
   externalStreamingId?: string;
-  simulDay?: number;
+  simulDay?: number | number[];
   simulTime?: string;
   simulCountry?: string;
   trakt?: string;
