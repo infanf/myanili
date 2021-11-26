@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AnisearchComponent } from '@external/anisearch/anisearch.component';
+import { AnnictComponent } from '@external/annict/annict.component';
+import { TraktComponent } from '@external/trakt/trakt.component';
 import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,7 +10,6 @@ import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
-import { AnisearchComponent } from 'src/app/anisearch/anisearch.component';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
@@ -16,7 +18,6 @@ import { AnimeService } from '../anime.service';
 import { AnnictService } from '../annict.service';
 import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
-import { TraktComponent } from '../trakt/trakt.component';
 
 @Component({
   selector: 'app-anime-details',
@@ -31,6 +32,7 @@ export class AnimeDetailsComponent implements OnInit {
   editBackup?: Partial<MyAnimeUpdate>;
   editExtension?: AnimeExtension;
   traktUser?: string;
+  annictUser?: string;
   activeTab = 1;
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   @Input() inModal = false;
@@ -62,6 +64,9 @@ export class AnimeDetailsComponent implements OnInit {
     });
     this.trakt.user.subscribe(user => {
       this.traktUser = user;
+    });
+    this.annict.user.subscribe(user => {
+      this.annictUser = user;
     });
   }
 
@@ -427,9 +432,18 @@ export class AnimeDetailsComponent implements OnInit {
   async findAnisearch() {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(AnisearchComponent);
-    modal.componentInstance.query = this.anime.title;
+    modal.componentInstance.title = this.anime.title;
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.anisearchId = Number(value);
+    });
+  }
+
+  async findAnnict() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(AnnictComponent);
+    modal.componentInstance.title = this.anime.alternative_titles?.ja || this.anime.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.annictId = Number(value);
     });
   }
 

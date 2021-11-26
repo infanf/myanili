@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AnisearchComponent } from './anisearch.component';
+import { ExternalComponent } from './external.component';
 
-describe('AnisearchComponent', () => {
-  let component: AnisearchComponent;
-  let fixture: ComponentFixture<AnisearchComponent>;
+describe('ExternalComponent', () => {
+  let component: ExternalComponent;
+  let fixture: ComponentFixture<ExternalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AnisearchComponent],
+      declarations: [ExternalComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnisearchComponent);
+    fixture = TestBed.createComponent(ExternalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

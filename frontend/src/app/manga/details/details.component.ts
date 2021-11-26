@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AnisearchComponent } from '@external/anisearch/anisearch.component';
+import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
 import { ExtRating } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
-import { AnisearchComponent } from 'src/app/anisearch/anisearch.component';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { PlatformPipe } from 'src/app/platform.pipe';
@@ -422,6 +423,15 @@ export class MangaDetailsComponent implements OnInit {
     modal.componentInstance.type = 'manga';
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.anisearchId = Number(value);
+    });
+  }
+
+  async findBaka() {
+    if (!this.manga || !this.editExtension) return;
+    const modal = this.modalService.open(BakamangaComponent);
+    modal.componentInstance.title = this.manga.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.bakaId = Number(value);
     });
   }
 }
