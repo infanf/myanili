@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { ExtRating } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
-import { AnisearchComponent } from 'src/app/anisearch/anisearch.component';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { PlatformPipe } from 'src/app/platform.pipe';

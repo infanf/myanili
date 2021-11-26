@@ -1,6 +1,6 @@
 <div class="modal-header">
     <div class="input-group">
-      <input class="form-control" [(ngModel)]="query" />
+      <input class="form-control" [(ngModel)]="title" />
       <button class="btn btn-primary" (click)="ngOnInit()">
         <app-icon name="search"></app-icon>
       </button>
@@ -23,15 +23,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let show of results?.nodes || []">
-        <td>{{ show.title }}</td>
-        <td>{{ show.year }}</td>
+      <tr *ngFor="let node of nodes">
+        <td>{{ node.title }}</td>
+        <td>{{ node.year }}</td>
         <td>
           <app-icon
             class="cursor-pointer"
             size="20"
             name="link"
-            (click)="modal.close(show.id)"
+            (click)="modal.close(node.id)"
           ></app-icon>
         </td>
       </tr>

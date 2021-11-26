@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AnisearchComponent } from '@external/anisearch/anisearch.component';
+import { TraktComponent } from '@external/trakt/trakt.component';
 import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,7 +9,6 @@ import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
-import { AnisearchComponent } from 'src/app/anisearch/anisearch.component';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
@@ -16,7 +17,6 @@ import { AnimeService } from '../anime.service';
 import { AnnictService } from '../annict.service';
 import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
-import { TraktComponent } from '../trakt/trakt.component';
 
 @Component({
   selector: 'app-anime-details',

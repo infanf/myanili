@@ -19,7 +19,9 @@
     "module": "es2020",
     "lib": ["es2018", "dom", "esnext.asynciterable"],
     "paths": {
-      "@models/*": ["src/app/models/*"]
+      "@models/*": ["src/app/models/*"],
+      "@icon/*": ["src/app/icon/*"],
+      "@external/*": ["src/app/external/*"]
     }
   },
   "angularCompilerOptions": {
