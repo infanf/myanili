@@ -7,7 +7,6 @@ import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
-import * as moment from 'moment';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
 import { GlobalService } from 'src/app/global.service';
@@ -181,10 +180,16 @@ export class AnimeDetailsComponent implements OnInit {
         externalStreaming: '',
         externalStreamingId: '',
         simulCountry: '',
-        simulDay: undefined,
+        simulDay: [],
         simulTime: undefined,
         ...this.anime.my_extension,
       };
+    }
+    if (typeof this.editExtension.simulDay === 'number') {
+      this.editExtension.simulDay = [this.editExtension.simulDay];
+    }
+    if (!this.editExtension.simulDay) {
+      this.editExtension.simulDay = [];
     }
   }
 
@@ -196,7 +201,10 @@ export class AnimeDetailsComponent implements OnInit {
     }
     this.busy = true;
     if (this.editExtension && this.editExtension.simulDay) {
-      this.editExtension.simulDay = Number(this.editExtension.simulDay);
+      if (typeof this.editExtension.simulDay !== 'object') {
+        this.editExtension.simulDay = [this.editExtension.simulDay];
+      }
+      this.editExtension.simulDay = this.editExtension.simulDay.map(d => Number(d));
     }
     const updateData = {
       comments: Base64.encode(JSON.stringify(this.editExtension)),
@@ -447,9 +455,11 @@ export class AnimeDetailsComponent implements OnInit {
     });
   }
 
-  getDay(day?: number): string {
+  getDay(day?: number | number[]): string {
     if (!day && day !== 0) return '';
-    return moment().day(day).format('dddd');
+    if (typeof day === 'number') day = [day];
+    const names = day.map(d => this.animeService.getDay(d));
+    return names.join(', ');
   }
 
   async getRatings() {
