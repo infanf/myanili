@@ -6,5 +6,6 @@ import { DarkTableDirective } from './dark-table.directive';
 @NgModule({
   declarations: [DarkTableDirective],
   imports: [CommonModule],
+  exports: [DarkTableDirective],
 })
 export class DirectivesModule {}
