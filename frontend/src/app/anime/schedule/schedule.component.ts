@@ -67,10 +67,11 @@ export class ScheduleComponent {
     return this.animes
       .filter(
         anime =>
-          anime.my_list_status &&
+          anime.my_list_status && // is in my list
           anime.my_list_status?.status !== 'dropped' &&
-          !anime.my_extension?.simulDay &&
-          anime.my_extension?.simulDay !== 0 &&
+          (!anime.my_extension?.simulDay || // include empty days
+            (Array.isArray(anime.my_extension.simulDay) && !anime.my_extension.simulDay.length)) && // include empty arrays of days
+          anime.my_extension?.simulDay !== 0 && // exclude sundays
           ['tv', 'ova', 'ona'].includes(anime.media_type || ''),
       )
       .sort((a, b) => moment(a.start_date).unix() - moment(b.start_date).unix());
