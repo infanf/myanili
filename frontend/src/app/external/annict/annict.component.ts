@@ -18,8 +18,11 @@ export class AnnictComponent extends ExternalComponent {
     this.nodes =
       results?.map(result => ({
         id: result.annictId,
-        title: result.titleRo || result.title || result.titleEn,
+        title: result.title,
         year: result.seasonYear,
+        description: `${result.titleEn}`,
+        genres: [],
+        poster: '',
         url: `https://annict.com/works/${result.annictId}`,
       })) || [];
   }

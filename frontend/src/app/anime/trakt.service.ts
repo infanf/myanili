@@ -107,7 +107,7 @@ export class TraktService {
       'trakt-api-version': '2',
       'trakt-api-key': this.clientId,
     });
-    const result = await fetch(`${this.baseUrl}search/show?query=${q}`, { headers });
+    const result = await fetch(`${this.baseUrl}search/show?query=${q}&extended=full`, { headers });
     if (result.ok) {
       return result.json() as Promise<Show[]>;
     }
@@ -156,7 +156,7 @@ export class TraktService {
       'trakt-api-version': '2',
       'trakt-api-key': this.clientId,
     });
-    const result = await fetch(`${this.baseUrl}search/movie?query=${q}`, { headers });
+    const result = await fetch(`${this.baseUrl}search/movie?query=${q}&extended=full`, { headers });
     if (result.ok) {
       const response = result.json() as Promise<Movie[]>;
       return (await response).map(movie => ({
@@ -333,6 +333,8 @@ export interface Show {
       imdb: string;
       tmdb: number;
     };
+    genres: string[];
+    overview: string;
   };
 }
 
@@ -349,5 +351,7 @@ export interface Movie {
       imdb: string;
       tmdb: number;
     };
+    genres: string[];
+    overview: string;
   };
 }

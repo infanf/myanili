@@ -16,8 +16,11 @@ export class ExternalComponent implements OnInit {
 }
 
 interface Node {
+  id: string | number;
   title: string;
   year?: number;
-  id: string | number;
+  poster?: string;
+  description?: string;
+  genres?: string[];
   url: string;
 }

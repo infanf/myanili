@@ -1,40 +1,42 @@
 <div class="modal-header">
-    <div class="input-group">
-      <input class="form-control" [(ngModel)]="title" />
-      <button class="btn btn-primary" (click)="ngOnInit()">
-        <app-icon name="search"></app-icon>
-      </button>
-    </div>
-    <button
-      type="button"
-      class="btn-close"
-      aria-describedby="modal-title"
-      (click)="modal.dismiss()"
-    ></button>
+  <div class="input-group">
+    <input class="form-control" [(ngModel)]="title" />
+    <button class="btn btn-primary" (click)="ngOnInit()">
+      <app-icon name="search"></app-icon>
+    </button>
   </div>
-  <table class="table table-striped table-hover" darkTable>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Year</th>
-        <th>
-          <app-icon name="link" size="20"></app-icon>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let node of nodes">
-        <td>{{ node.title }}</td>
-        <td>{{ node.year }}</td>
-        <td>
-          <app-icon
-            class="cursor-pointer"
-            size="20"
-            name="link"
-            (click)="modal.close(node.id)"
-          ></app-icon>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="modal.dismiss()"
+  ></button>
+</div>
+<table class="table table-striped table-hover" darkTable>
+  <tbody>
+    <tr *ngFor="let node of nodes">
+      <td [attr.colpan]="node.poster ? 1 : 2">
+        <img *ngIf="node.poster" [src]="node.poster" class="float-start rounded me-2" width="120px" />
+        <b>{{ node.title }}</b>
+        <span *ngIf="node.year" class="ms-1">({{ node.year }})</span>
+        <a *ngIf="node.url" [href]="node.url" target="_blank">
+          <app-icon class="ms-1" name="box-arrow-up-right" size="16"></app-icon>
+        </a>
+        <div>
+          <span class="badge rounded-pill bg-primary me-1" *ngFor="let genre of node.genres">{{
+            genre
+          }}</span>
+        </div>
+        <div class="mt-1">{{ node.description }}</div>
+      </td>
+      <td>
+        <app-icon
+          class="cursor-pointer"
+          size="20"
+          name="link"
+          (click)="modal.close(node.id)"
+        ></app-icon>
+      </td>
+    </tr>
+  </tbody>
+</table>
