@@ -41,12 +41,12 @@
             src="/assets/blank-poster.svg"
             alt="poster"
             width="100%"
-            style="border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem"
+            class="rounded-top"
           />
         </picture>
         <div
           class="progress"
-          style="border-top-left-radius: 0; border-top-right-radius: 0; position: relative"
+          style="border-radius: 0 0 0.5rem 0.5rem; position: relative"
         >
           <div
             *ngIf="meanRating"
@@ -321,7 +321,7 @@
         <div class="row" *ngIf="!edit">
           <div class="col-4 fw-bold text-end">Chapters</div>
           <div class="col-8">
-            <div class="progress my-1">
+            <div class="progress rounded-pill my-1">
               <div
                 *ngIf="manga?.my_list_status?.num_chapters_read"
                 class="progress-bar px-1"
@@ -574,7 +574,7 @@
 
   <ng-container *ngIf="!edit && manga">
     <div class="mb-3">
-      <span *ngFor="let genre of manga!.genres" class="badge bg-primary me-1">
+      <span *ngFor="let genre of manga!.genres" class="badge rounded-pill bg-primary me-1">
         {{ genre.name }}
       </span>
     </div>

@@ -22,6 +22,9 @@ export class BakamangaComponent extends ExternalComponent {
         id: manga.id,
         url: manga.link,
         year: manga.year,
+        description: manga.description,
+        poster: manga.image,
+        genres: manga.genres,
       })) || [];
   }
 }

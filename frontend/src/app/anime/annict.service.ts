@@ -157,9 +157,13 @@ export class AnnictService {
           nodes {
             title
             titleRo
+            titleKana
             titleEn
             annictId
             seasonYear
+            image {
+              recommendedImageUrl
+            }
           }
         }
       }
@@ -181,7 +185,9 @@ export class AnnictService {
             title: string;
             titleRo: string;
             titleEn: string;
+            titleKana: string;
             seasonYear: number;
+            image: string;
           }>;
         };
       };

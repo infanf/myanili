@@ -23,12 +23,18 @@ export class AnisearchComponent extends ExternalComponent {
             id: anime.id,
             year: Number(anime.year) || undefined,
             url: anime.link,
+            genres: anime.genre?.split(',') || [],
+            description: anime.description,
+            poster: anime.image,
           }))
         : (await this.anisearch.getMangas(this.title || '')).nodes.map(manga => ({
             title: manga.title,
             id: manga.id,
             year: Number(manga.year) || undefined,
             url: manga.link,
+            genres: manga.genre?.split(',') || [],
+            description: manga.description,
+            poster: manga.image,
           }));
   }
 }

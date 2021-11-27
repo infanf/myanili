@@ -22,9 +22,11 @@ export class TraktComponent extends ExternalComponent {
           ? await this.trakt.searchMovie(this.title)
           : await this.trakt.search(this.title)
       ).map(show => ({
-        title: show.show.title,
-        year: show.show.year,
         id: show.show.ids.slug || show.show.ids.trakt,
+        title: show.show.title,
+        description: show.show.overview,
+        genres: show.show.genres,
+        year: show.show.year,
         url: `https://trakt.tv/${this.isMovie ? 'movies' : 'shows'}/${
           show.show.ids.slug || show.show.ids.trakt
         }`,

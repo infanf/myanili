@@ -419,7 +419,7 @@ export class MangaDetailsComponent implements OnInit {
   async findAnisearch() {
     if (!this.manga || !this.editExtension) return;
     const modal = this.modalService.open(AnisearchComponent);
-    modal.componentInstance.query = this.manga.title;
+    modal.componentInstance.title = this.manga.title;
     modal.componentInstance.type = 'manga';
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.anisearchId = Number(value);
