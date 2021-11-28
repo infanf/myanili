@@ -146,7 +146,9 @@ export class AnnictService {
         title: string;
         titleRo: string;
         titleEn: string;
+        titleKana: string;
         seasonYear: number;
+        image: { recommendedImageUrl: string };
       }>
     | undefined
   > {
@@ -187,7 +189,7 @@ export class AnnictService {
             titleEn: string;
             titleKana: string;
             seasonYear: number;
-            image: string;
+            image: { recommendedImageUrl: string };
           }>;
         };
       };
