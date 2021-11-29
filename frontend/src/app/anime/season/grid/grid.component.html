@@ -21,6 +21,9 @@
               anime.title
           }}
         </div>
+        <span class="mediatype text-black" *ngIf="anime.media_type">
+          {{anime.media_type  | mal: 'mediatype'}}
+        </span>
         <ng-container *ngIf="anime.my_list_status">
           <ng-container *ngIf="anime.my_list_status.status === 'watching'; else statusicon">
             <div
@@ -74,7 +77,7 @@
           </ng-template>
         </ng-container>
         <app-icon
-          class="badge rounded-pill bg-white text-dark"
+          class="badge rounded-pill bg-black"
           style="position: absolute; top: 0.5rem; right: 0.5rem; height: 2rem; padding-top: 0.5rem"
           *ngIf="!anime.my_list_status"
           [name]="anime.busy ? 'hourglass-split' : 'plus'"

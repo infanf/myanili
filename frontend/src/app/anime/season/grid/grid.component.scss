@@ -19,3 +19,17 @@ picture {
 img {
   height: 100%;
 }
+
+.mediatype {
+  display: block;
+  position: absolute;
+  padding: 0.25rem 0.25rem 0 0.5rem;
+  background: rgb(255 255 255 / 0.7);
+  box-shadow: 0 0 0.5rem 0.5rem rgb(255 255 255 / 70%);
+  border-bottom-right-radius: 0.5rem;
+  font-weight: bold;
+}
+
+.card {
+  overflow: hidden;
+}
