@@ -74,7 +74,7 @@ class BakaServiceProvider extends ServiceProvider
             $manga['id'] = \intval(preg_replace('/^.+id=(\d+)$/', '$1', $manga['link']));
             $genres = $finder->query(".//div[contains(@class, 'textsmall')]/a", $node)->item(0);
             $manga['genres'] = explode(', ', $genres?$genres->getAttribute('title') : '');
-            $manga['description'] = $finder->query(".//div[contains(@class, 'text flex-grow-1')]", $node)->item(0)->nodeValue ?? '';
+            $manga['description'] = mb_convert_encoding($finder->query(".//div[contains(@class, 'text flex-grow-1')]", $node)->item(0)->nodeValue ?? '', 'UTF-8', 'UTF-8');
             $yearRating = $finder->query(".//div[contains(@class, 'd-flex flex-column h-100')]/div[@class='text']", $node)->item(1)->nodeValue ?? '';
             preg_match('/^(?P<year>\d{4})( - (?P<rating>[\d\.]+))?/', $yearRating, $matches);
             $manga['year'] = \intval($matches['year'] ?? 0);

@@ -16,7 +16,7 @@ export class SeasonGridComponent extends SeasonComponent {
   classColor(anime?: Partial<Anime>): string {
     switch (anime?.my_list_status?.status) {
       case 'completed':
-        return 'bg-dark';
+        return 'bg-black';
       case 'dropped':
         return 'bg-danger';
       case 'on_hold':
