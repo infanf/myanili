@@ -118,7 +118,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
       showUnits: false,
       showSubtitle: false,
       outerStrokeColor: 'currentColor',
-      innerStrokeColor: 'rgba(128,128,128,0.3)',
+      innerStrokeColor: '#88888818',
       animation: false,
       backgroundPadding: 0,
       outerStrokeLinecap: 'butt',
