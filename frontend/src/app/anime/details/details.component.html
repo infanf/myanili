@@ -538,7 +538,7 @@
                 >
               </div>
             </div>
-            <div *ngIf="anime.my_extension?.kitsuId" class="row">
+            <div *ngIf="anime.my_extension?.kitsuId?.kitsuId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
                   <app-external-rating [rating]="getRating('kitsu')"></app-external-rating>
@@ -635,6 +635,7 @@
                 <app-icon-livechart></app-icon-livechart>
                 <a
                   class="ms-1"
+                  [ngClass]="{'link-secondary': !anime.my_extension?.livechartId}"
                   [href]="
                     anime.my_extension?.livechartId
                       ? 'https://www.livechart.me/anime/' + anime.my_extension?.livechartId
