@@ -14,6 +14,8 @@ export class AnnictComponent extends ExternalComponent {
   }
 
   async ngOnInit() {
+    this.nodes = [];
+    this.searching = true;
     const results = await this.annict.search(this.title);
     this.nodes =
       results?.map(result => ({
@@ -25,5 +27,6 @@ export class AnnictComponent extends ExternalComponent {
         poster: result.image.recommendedImageUrl,
         url: `https://annict.com/works/${result.annictId}`,
       })) || [];
+    this.searching = false;
   }
 }

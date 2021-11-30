@@ -17,6 +17,8 @@ export class TraktComponent extends ExternalComponent {
   }
 
   async ngOnInit() {
+    this.nodes = [];
+    this.searching = true;
     if (this.title) {
       this.nodes = (
         this.isMovie
@@ -50,5 +52,6 @@ export class TraktComponent extends ExternalComponent {
         return node;
       });
     }
+    this.searching = false;
   }
 }

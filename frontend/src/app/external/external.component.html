@@ -38,5 +38,14 @@
         ></app-icon>
       </td>
     </tr>
+      <tr *ngIf="!nodes.length">
+        <td colspan="2" class="text-center" *ngIf="!searching">
+          <app-icon name="search"></app-icon>
+          <span class="ms-1">No results</span>
+        </td>
+        <td colspan="2" class="text-center" *ngIf="searching">
+          <app-icon name="hourglass-split"></app-icon>
+        </td>
+      </tr>
   </tbody>
 </table>

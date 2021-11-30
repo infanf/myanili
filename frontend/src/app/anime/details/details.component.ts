@@ -118,11 +118,11 @@ export class AnimeDetailsComponent implements OnInit {
             comments: Base64.encode(
               JSON.stringify({
                 ...anime.my_extension,
-                kitsuId,
-                anilistId,
-                simklId,
-                annictId,
-                anisearchId,
+                kitsuId: this.anime.my_extension.kitsuId,
+                anilistId: this.anime.my_extension.anilistId,
+                simklId: this.anime.my_extension.simklId,
+                annictId: this.anime.my_extension.annictId,
+                anisearchId: this.anime.my_extension.anisearchId,
               }),
             ),
           },

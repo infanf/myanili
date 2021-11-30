@@ -55,7 +55,8 @@ class AnisearchServiceProvider extends ServiceProvider
             $meta = $finder->query("{$node->getNodePath()}//span[@class='details']/span[@class='date']")->item(0)->nodeValue ?? '';
             preg_match('/(?P<type>[^,]+),\s*(?P<episodes>[\d\?\+]*)\s*(\((?P<year>\d+)\))?/', $meta, $matches);
             $anime['type'] = $matches['type'] ?? '';
-            $anime['episodes'] = intval($matches['episodes']) ?? null;
+$anime['episodes'] = strpos($matches['episodes'], '+') ? 0 : intval($matches['episodes'] ?? 0);
+
             $anime['year'] = $matches['year'] ?? '';
             $rating = $finder->query("{$node->getNodePath()}//*[@class='rating']/*[@class='star0']")->item(0);
             $anime['rating'] = floatval($rating ? $rating->getAttribute('title') : '');
@@ -100,8 +101,9 @@ class AnisearchServiceProvider extends ServiceProvider
             $meta = $finder->query("{$node->getNodePath()}//span[@class='details']/span[@class='date']")->item(0)->nodeValue ?? '';
             preg_match('/(?P<type>[^,]+),\s*(?P<volumes>[\d\?\+]*)(\/(?P<chapters>[\d\?\+]*))?\s*(\((?P<year>\d+)\))?/', $meta, $matches);
             $manga['type'] = $matches['type'] ?? '';
-            $manga['chapters'] = intval($matches['chapters']) ?? null;
-            $manga['volumes'] = intval($matches['volumes']) ?? null;
+$manga['chapters'] = strpos($matches['chapters'], '+') ? 0 : intval($matches['chapters']) ?? 0;
+$manga['volumes'] = strpos($matches['volumes'], '+') ? 0 : intval($matches['volumes']) ?? 0;
+
             $manga['year'] = $matches['year'] ?? '';
             $rating = $finder->query("{$node->getNodePath()}//*[@class='rating']/*[@class='star0']")->item(0);
             $manga['rating'] = floatval($rating ? $rating->getAttribute('title') : '');

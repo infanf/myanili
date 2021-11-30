@@ -16,6 +16,8 @@ export class AnisearchComponent extends ExternalComponent {
   }
 
   async ngOnInit() {
+    this.nodes = [];
+    this.searching = true;
     this.nodes =
       this.type === 'anime'
         ? (await this.anisearch.getAnimes(this.title || '')).nodes.map(anime => ({
@@ -36,5 +38,6 @@ export class AnisearchComponent extends ExternalComponent {
             description: manga.description,
             poster: manga.image,
           }));
+    this.searching = false;
   }
 }

@@ -15,6 +15,8 @@ export class BakamangaComponent extends ExternalComponent {
 
   async ngOnInit() {
     if (!this.title) return;
+    this.nodes = [];
+    this.searching = true;
     const mangas = await this.mangaService.getBakaMangas(this.title);
     this.nodes =
       mangas?.mangas.map(manga => ({
@@ -26,5 +28,6 @@ export class BakamangaComponent extends ExternalComponent {
         poster: manga.image,
         genres: manga.genres,
       })) || [];
+    this.searching = false;
   }
 }
