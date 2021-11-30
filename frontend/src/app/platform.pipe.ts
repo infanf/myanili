@@ -47,11 +47,6 @@ export class PlatformPipe implements PipeTransform {
       urlpostfix: '/volumes',
     },
     {
-      id: 'webtoon',
-      name: 'WEBTOON',
-      urlprefix: 'https://www.webtoons.com/en/genre/title/list?title_no=',
-    },
-    {
       id: 'tapas',
       name: 'tapas',
       urlprefix: 'https://tapas.io/series/',
@@ -60,6 +55,16 @@ export class PlatformPipe implements PipeTransform {
       id: 'lezhin',
       name: 'Lezhin',
       urlprefix: 'https://www.lezhin.com/en/comic/',
+    },
+    {
+      id: 'comico',
+      name: 'Pocket Comics',
+      urlprefix: 'https://www.pocketcomics.com/comic/',
+    },
+    {
+      id: 'webcomics',
+      name: 'WebComics',
+      urlprefix: 'https://www.webcomicsapp.com/comic/',
     },
     {
       id: 'renta',
