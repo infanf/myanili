@@ -426,7 +426,7 @@
                 >
               </div>
             </div>
-            <div *ngIf="manga.my_extension?.kitsuId" class="row">
+            <div *ngIf="manga.my_extension?.kitsuId?.kitsuId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
                   <app-external-rating [rating]="getRating('kitsu')"></app-external-rating>
@@ -445,13 +445,14 @@
             <div class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating [rating]="getRating('bu')"></app-external-rating>
+                  <app-external-rating *ngIf="manga.my_extension?.bakaId" [rating]="getRating('bu')"></app-external-rating>
                 </td>
               </div>
               <div class="col-8">
                 <app-icon-bakamanga></app-icon-bakamanga>
                 <a
                   class="ms-1"
+                  [ngClass]="{'link-secondary': !manga.my_extension?.bakaId}"
                   [href]="
                     manga.my_extension?.bakaId
                       ? 'https://www.mangaupdates.com/series.html?id=' + manga.my_extension?.bakaId

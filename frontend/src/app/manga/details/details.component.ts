@@ -84,6 +84,7 @@ export class MangaDetailsComponent implements OnInit {
         this.kitsu.getId(this.id, 'manga', 'myanimelist', this.manga.my_extension.kitsuId?.kitsuId),
         this.anisearch.getId(this.manga.title, 'manga', {
           parts: this.manga.num_chapters,
+          volumes: this.manga.num_volumes,
           year: this.manga.start_date ? new Date(this.manga.start_date).getFullYear() : undefined,
         }),
         this.mangaService.getBakaMangaId(this.manga),
@@ -99,10 +100,10 @@ export class MangaDetailsComponent implements OnInit {
             comments: Base64.encode(
               JSON.stringify({
                 ...manga.my_extension,
-                kitsuId,
-                anilistId,
-                anisearchId,
-                bakaId,
+                kitsuId: this.manga.my_extension.kitsuId,
+                anilistId: this.manga.my_extension.anilistId,
+                anisearchId: this.manga.my_extension.anisearchId,
+                bakaId: this.manga.my_extension.bakaId,
               }),
             ),
           },

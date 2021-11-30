@@ -54,7 +54,7 @@ export class AnisearchService {
   async getId(
     title: string,
     type: 'anime' | 'manga',
-    meta: { parts?: number; year?: number },
+    meta: { parts?: number; volumes?: number; year?: number },
   ): Promise<number | undefined> {
     if (!title) return;
     if (type === 'anime') {
@@ -69,7 +69,9 @@ export class AnisearchService {
     } else {
       const list = await this.getMangas(title);
       const nodes = list.nodes.filter(
-        node => Number(node.year) === meta.year && Number(node.chapters) === meta.parts,
+        node =>
+          Number(node.year) === meta.year &&
+          (Number(node.chapters) === meta.parts || Number(node.volumes) === meta.volumes),
       );
       if (nodes.length === 1) {
         return nodes[0].id;

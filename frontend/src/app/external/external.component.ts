@@ -9,6 +9,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ExternalComponent implements OnInit {
   @Input() title?: string;
   nodes: Node[] = [];
+  searching = false;
 
   constructor(public modal: NgbActiveModal) {}
 

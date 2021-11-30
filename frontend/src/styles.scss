@@ -1,28 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Importing Bootstrap SCSS file. */
-$theme-colors: (
-  'blue': #204a82,
-  'primary': #204a82,
-  'red': #82204a,
-  'danger': #82204a,
-  'green': #4a8220,
-  'success': #4a8220,
-  'yellow': #825820,
-  'warning': #825820,
-  'spotify': #1db954,
-  'trakt': #ed1c24,
-  // "white": #eff7ff,
-);
-
-$primary: #204a82;
-$info: #17a2b8;
-$success: #4a8220;
-$warning: #825820;
-$error: #82204a;
+$primary: hsl(214, 60%, 32%);
+$secondary: hsl(208, 7%, 46%);
+$info: hsl(188, 78%, 41%);
+$success: hsl(94, 60%, 32%);
+$warning: hsl(34, 77%, 49%);
+$error: hsl(334, 60%, 32%);
+$light: hsl(210, 17%, 98%);
+$dark: hsl(210, 11%, 15%);
 $border-radius: 0.5rem;
 $border-radius-sm: 0.4rem;
 
+$theme-colors: (
+  'blue': $primary,
+  'primary': $primary,
+  "secondary":  $secondary,
+  'red': $error,
+  'danger': $error,
+  'green': $success,
+  'success': $success,
+  'yellow': $warning,
+  'warning': $warning,
+  'spotify': hsl(141, 73%, 42%),
+  'trakt': hsl(358, 85%, 52%),
+  "light":      $light,
+  "dark":       $dark
+  // "white": #eff7ff,
+);
 
 @import '~bootstrap/scss/bootstrap';
 
