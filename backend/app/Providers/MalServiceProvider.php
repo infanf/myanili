@@ -335,6 +335,7 @@ class MalServiceProvider extends ServiceProvider
             "my_list_status{comments}",
             "mean",
             "genres",
+            "status",
         ];
 
         $params = [

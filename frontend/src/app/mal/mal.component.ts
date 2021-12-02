@@ -19,9 +19,21 @@ export class MalComponent implements AfterViewInit {
   @Input() type: 'anime' | 'manga' = 'anime';
   lang: Language = 'default';
   results: Array<Anime | Manga> = [];
+  resultsFiltered: Array<Anime | Manga> = [];
   query = '';
   // tslint:disable-next-line:no-any
   @ViewChildren('searchbar') sb: any;
+  filter = {
+    type: [],
+    status: [],
+    genre: [],
+  } as { [key: string]: string[] };
+  allFilters = {
+    type: [],
+    status: [],
+    genre: [],
+  } as { [key: string]: string[] };
+  showFilters = false;
 
   constructor(
     private malService: MalService,
@@ -54,7 +66,32 @@ export class MalComponent implements AfterViewInit {
     this.results = (
       await this.malService.get<Array<{ node: Anime | Manga }>>(this.type + 's?query=' + this.query)
     ).map(result => result.node);
+    this.allFilters.type = [...new Set(this.results.map(result => result.media_type))].sort();
+    this.allFilters.status = [...new Set(this.results.map(result => result.status))].sort();
+    const genres = this.results.map(result => result.genres?.map(g => g.name) || []);
+    this.allFilters.genre = [...new Set(genres.reduce((acc, cur) => acc.concat(cur), []))].sort();
+    this.filterResults();
+    console.log(this.allFilters);
     this.glob.notbusy();
+  }
+
+  filterResults() {
+    this.resultsFiltered = this.results.filter(result => {
+      if (this.filter.type.length > 0 && !this.filter.type.includes(result.media_type)) {
+        return false;
+      }
+      if (this.filter.status.length > 0 && !this.filter.status.includes(result.status)) {
+        return false;
+      }
+      if (this.filter.genre.length > 0) {
+        for (const genre of this.filter.genre) {
+          if (!result.genres.map(g => g.name).includes(genre)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    });
   }
 
   open(id: number) {
