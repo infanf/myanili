@@ -317,7 +317,7 @@ class MalServiceProvider extends ServiceProvider
         try {
             $songsArray = json_decode($songs, true);
             return (isset($songsArray[intval($id)])) ? $songsArray[intval($id)] : false;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
