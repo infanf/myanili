@@ -12,12 +12,52 @@
   </form>
 </section>
 
+<section class="pb-3" *ngIf="showFilters">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <select class="form-control" [(ngModel)]="filter.type" multiple>
+          <option *ngFor="let type of allFilters.type" [value]="type">
+            {{ type | mal: 'mediatype' }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4 mb-3">
+        <select class="form-control" [(ngModel)]="filter.genre" multiple>
+          <option *ngFor="let genre of allFilters.genre" [value]="genre">
+            {{ genre }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4 mb-3">
+        <select class="form-control" [(ngModel)]="filter.status" multiple>
+          <option *ngFor="let status of allFilters.status" [value]="status">
+            {{ status | mal: 'mystatus' }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="btn btn-primary d-block" (click)="filterResults()">
+      <app-icon name="funnel"></app-icon>
+      Filter
+    </div>
+  </div>
+</section>
+
 <section>
   <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
     <thead class="sticky">
       <tr>
         <th>
-          <app-icon name="list-check" class="mx-2"></app-icon>
+          <app-icon
+            [name]="
+              filter.type.length || filter.status.length || filter.genre.length
+                ? 'funnel-fill'
+                : 'funnel'
+            "
+            class="mx-2 cursor-pointer"
+            (click)="showFilters = !showFilters"
+          ></app-icon>
         </th>
         <th
           class="d-lg-table-cell"
@@ -27,13 +67,14 @@
         </th>
         <th class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">English Name</th>
         <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Japanese Name</th>
+        <th class="d-none d-md-table-cell">Genres</th>
         <th>Type</th>
         <th>Score</th>
         <th>Year</th>
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let result of results">
+      <ng-container *ngFor="let result of resultsFiltered">
         <tr
           class="cursor-pointer"
           [class]="{
@@ -63,6 +104,12 @@
           <td class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">
             {{ result.alternative_titles?.ja }}
           </td>
+          <td class="d-none d-md-table-cell">
+            <span *ngFor="let genre of result.genres" class="badge bg-primary rounded-pill me-1">
+              {{ genre.name }}
+            </span>
+          </td>
+
           <td>{{ result.media_type | mal: 'mediatype' }}</td>
           <td class="text-nowrap">
             <circle-progress
