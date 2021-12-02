@@ -165,6 +165,8 @@ export class MangaService {
       m => m.year === (manga.start_date ? new Date(manga.start_date).getFullYear() : 0),
     );
     if (bakaMangas.length === 1) return bakaMangas[0].id;
+    const bakaMangasByTitle = bakaMangas.filter(m => m.title === manga.title);
+    if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].id;
     return;
   }
 }
