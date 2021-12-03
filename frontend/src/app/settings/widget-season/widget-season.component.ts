@@ -11,7 +11,7 @@ import { SettingsService } from '../settings.service';
 export class WidgetSeasonComponent implements OnInit {
   season: Season;
   currentSeason: Season;
-  icons = ['tree', 'flower1', 'sun', 'cloud'];
+  icons = ['snow', 'flower1', 'sun', 'clouds'];
 
   constructor(private settings: SettingsService) {
     this.currentSeason = {

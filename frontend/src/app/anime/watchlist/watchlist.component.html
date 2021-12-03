@@ -1,12 +1,16 @@
 <section>
   <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
-    <thead>
-      <tr class="sticky">
+    <thead class="sticky">
+      <tr>
         <th>Name</th>
         <th colspan="2">Episode</th>
         <th colspan="2">Stream<span class="d-none d-md-inline">ing</span></th>
         <th>
-          <app-icon name="eye" class="mx-2" size="20"></app-icon>
+          <span class="mx-2">
+            <app-icon-progress
+              [percent]="(seenCount / animes.length) * 100"
+            ></app-icon-progress>
+          </span>
         </th>
       </tr>
     </thead>
@@ -30,17 +34,13 @@
             }}
           </td>
           <td>
-            <circle-progress
-              *ngIf="
-                anime.node.num_episodes !== 1 &&
-                (anime.list_status.status === 'watching' || anime.list_status.is_rewatching)
-              "
+            <app-icon-progress
               [percent]="
                 anime.node.num_episodes
                   ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
                   : 0
               "
-            ></circle-progress>
+            ></app-icon-progress>
           </td>
           <td style="white-space: nowrap">
             <ng-container *ngIf="anime.node.media_type !== 'movie'">
@@ -64,7 +64,8 @@
           <td>
             {{
               anime.my_extension?.simulTime
-                ? getLast8am().day() === anime.my_extension?.simulDay || toArray(anime.my_extension?.simulDay).includes(getLast8am().day())
+                ? getLast8am().day() === anime.my_extension?.simulDay ||
+                  toArray(anime.my_extension?.simulDay).includes(getLast8am().day())
                   ? (anime.my_extension!.simulTime!.substr(0, 5) | time)
                   : (getLastDay(anime.my_extension?.simulDay) | day)
                 : ''
@@ -75,8 +76,7 @@
               *ngIf="anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0"
               [class]="{ 'cursor-pointer': !isSeen(anime) }"
               class="mx-2"
-              [name]="anime.busy ? 'hourglass-split' : isSeen(anime) ? 'check2' : 'eye'"
-              size="20"
+              [name]="anime.busy ? 'hourglass-split' : isSeen(anime) ? 'check-circle' : 'circle'"
               (click)="markSeen(anime)"
             ></app-icon>
             <app-icon
@@ -84,10 +84,10 @@
               class="cursor-pointer mx-2"
               [name]="
                 anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
-                  ? 'check2'
+                  ? 'check-circle'
                   : anime.busy
                   ? 'hourglass-split'
-                  : 'plus-square'
+                  : 'plus-circle'
               "
               [style]="{
                 padding:
@@ -96,12 +96,6 @@
                     ? 0
                     : '2px'
               }"
-              [size]="
-                (anime.list_status.status === 'completed' && !anime.list_status.is_rewatching) ||
-                anime.busy
-                  ? 20
-                  : 16
-              "
               (click)="markSeen(anime)"
             ></app-icon>
           </td>

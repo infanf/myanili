@@ -60,14 +60,14 @@
           ></app-streaming>
         </td>
         <td style="white-space: nowrap">
-          <circle-progress
+          <app-icon-progress
             *ngIf="anime.list_status.status === 'watching'"
             [percent]="
               anime.node.num_episodes
                 ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
                 : 0
             "
-          ></circle-progress>
+          ></app-icon-progress>
           {{ anime.list_status.num_episodes_watched }}/{{ anime.node.num_episodes || '?' }}
         </td>
       </tr>

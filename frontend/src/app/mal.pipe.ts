@@ -51,10 +51,10 @@ export class MalPipe implements PipeTransform {
         return 'sun';
       case 'fall':
       case 3:
-        return 'cloud';
+        return 'clouds';
       case 'winter':
       case 0:
-        return 'tree';
+        return 'snow';
       default:
         return 'question';
     }

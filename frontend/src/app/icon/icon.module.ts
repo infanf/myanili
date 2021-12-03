@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { AnilistIconComponent } from './anilist/anilist.component';
 import { AnisearchIconComponent } from './anisearch/anisearch.component';
@@ -10,6 +11,7 @@ import { IconComponent } from './icon.component';
 import { KitsuIconComponent } from './kitsu/kitsu.component';
 import { LivechartIconComponent } from './livechart/livechart.component';
 import { MalIconComponent } from './mal/mal.component';
+import { ProgressIconComponent } from './progress/progress.component';
 import { SimklIconComponent } from './simkl/simkl.component';
 import { SpotifyIconComponent } from './spotify/spotify.component';
 import { IconStatusComponent } from './status/icon-status.component';
@@ -30,8 +32,26 @@ import { TraktIconComponent } from './trakt/trakt.component';
     IconStatusComponent,
     TraktIconComponent,
     AnisearchIconComponent,
+    ProgressIconComponent,
   ],
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    NgCircleProgressModule.forRoot({
+      radius: 7,
+      outerStrokeWidth: 1,
+      innerStrokeWidth: 1,
+      space: -1,
+      showBackground: false,
+      showTitle: false,
+      showUnits: false,
+      showSubtitle: false,
+      outerStrokeColor: 'currentColor',
+      innerStrokeColor: '#88888818',
+      animation: false,
+      backgroundPadding: 0,
+      outerStrokeLinecap: 'butt',
+    }),
+  ],
   exports: [
     IconComponent,
     AnilistIconComponent,
@@ -46,6 +66,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     IconStatusComponent,
     TraktIconComponent,
     AnisearchIconComponent,
+    ProgressIconComponent,
   ],
 })
 export class IconModule {}
