@@ -39,8 +39,9 @@ export class WatchlistComponent implements OnInit {
         if (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) {
           return true;
         }
-        if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().day())
+        if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().day()) {
           return true;
+        }
         if (
           (this.getLast8am().day() -
             this.animeService.getLastDay(anime.my_extension.simulDay) +
@@ -205,5 +206,11 @@ export class WatchlistComponent implements OnInit {
   getLastDay(day?: number | number[]): number | undefined {
     if (!day && day !== 0) return undefined;
     return this.animeService.getLastDay(day);
+  }
+
+  get seenCount(): number {
+    return this.animes.filter(a => {
+      return this.isSeen(a);
+    }).length;
   }
 }

@@ -1,0 +1,11 @@
+<span style="position: relative;" *ngIf="percent !== 100">
+  <circle-progress
+    [radius]="(7 / 16) * size"
+    [outerStrokeWidth]="(1 / 16) * size"
+    [innerStrokeWidth]="(1 / 16) * size"
+    [space]="(-1 / 16) * size"
+    [percent]="percent"
+  ></circle-progress>
+  <app-icon style="position: absolute; top: -15%; left: 0" *ngIf="name" [size]="size" [name]="name"></app-icon>
+</span>
+<app-icon *ngIf="percent === 100" [size]="size" name="check-circle"></app-icon>

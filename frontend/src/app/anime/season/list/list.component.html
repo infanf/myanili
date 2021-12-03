@@ -75,14 +75,14 @@
         </td>
         <td style="white-space: nowrap">
           <ng-container *ngIf="anime.my_list_status; else addanime">
-            <circle-progress
+            <app-icon-progress
               *ngIf="anime.my_list_status?.status === 'watching'"
               [percent]="
                 anime.num_episodes
                   ? ((anime.my_list_status?.num_episodes_watched || 0) / anime.num_episodes!) * 100
                   : 0
               "
-            ></circle-progress>
+            ></app-icon-progress>
             {{ anime.my_list_status?.num_episodes_watched }}/{{ anime.num_episodes || '?' }}
           </ng-container>
           <ng-template #addanime>

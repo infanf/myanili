@@ -44,14 +44,14 @@
             <app-platform [provider]="manga.my_extension?.platform"> </app-platform>
           </td>
           <td style="white-space: nowrap">
-            <circle-progress
+            <app-icon-progress
               *ngIf="manga.list_status.status === 'reading'"
               [percent]="
                 manga.node.num_chapters
                   ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
                   : 0
               "
-            ></circle-progress>
+            ></app-icon-progress>
             {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
           </td>
           <td>{{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}</td>

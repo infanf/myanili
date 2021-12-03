@@ -71,7 +71,6 @@ export class MalComponent implements AfterViewInit {
     const genres = this.results.map(result => result.genres?.map(g => g.name) || []);
     this.allFilters.genre = [...new Set(genres.reduce((acc, cur) => acc.concat(cur), []))].sort();
     this.filterResults();
-    console.log(this.allFilters);
     this.glob.notbusy();
   }
 
