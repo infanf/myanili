@@ -1,0 +1,29 @@
+[id^='dot'] {
+  animation: spin 1.5s infinite cubic-bezier(0.75, 0.39, 0.08, 0.67);
+  transform-origin: 50% 50%;
+}
+#dot1 {
+  animation-delay: 0.2s;
+}
+#dot2 {
+  animation-delay: 0.4s;
+}
+#dot3 {
+  animation-delay: 0.6s;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+svg,
+img {
+  vertical-align: text-top;
+  position: relative;
+  top: 0.0625rem;
+}

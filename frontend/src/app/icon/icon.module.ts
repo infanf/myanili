@@ -10,6 +10,7 @@ import { FandomIconComponent } from './fandom/fandom.component';
 import { IconComponent } from './icon.component';
 import { KitsuIconComponent } from './kitsu/kitsu.component';
 import { LivechartIconComponent } from './livechart/livechart.component';
+import { LoadingIconComponent } from './loading/loading.component';
 import { MalIconComponent } from './mal/mal.component';
 import { ProgressIconComponent } from './progress/progress.component';
 import { SimklIconComponent } from './simkl/simkl.component';
@@ -33,6 +34,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     TraktIconComponent,
     AnisearchIconComponent,
     ProgressIconComponent,
+    LoadingIconComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +69,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     TraktIconComponent,
     AnisearchIconComponent,
     ProgressIconComponent,
+    LoadingIconComponent,
   ],
 })
 export class IconModule {}

@@ -1,3 +1,18 @@
-<svg class="bi" [attr.width]="size" [attr.height]="size" fill="currentColor">
+<svg
+  *ngIf="name !== 'loading' && name !== 'loading-circle'"
+  class="bi"
+  [attr.width]="size"
+  [attr.height]="size"
+  fill="currentColor"
+>
   <use [attr.xlink:href]="'bootstrap-icons.svg#' + name" />
 </svg>
+<svg
+  *ngIf="name === 'loading' || name === 'loading-circle'"
+  [name]="name"
+  class="bi"
+  [attr.width]="size"
+  [attr.height]="size"
+  fill="currentColor"
+  app-icon-loading
+></svg>
