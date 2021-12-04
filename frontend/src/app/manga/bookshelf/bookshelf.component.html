@@ -16,7 +16,7 @@
   <td class="text-nowrap">
     <app-icon-progress
       (click)="plusOneChapter(manga)"
-      [name]="manga.busy ? 'dot' : 'plus'"
+      [name]="manga.busy ? 'loading' : 'plus'"
       class="cursor-pointer mx-1"
       [percent]="
         manga.node.num_chapters
@@ -29,7 +29,7 @@
   <td class="text-nowrap">
     <app-icon
       (click)="plusOneVolume(manga)"
-      [name]="manga.busy ? 'hourglass-split' : 'plus-circle'"
+      [name]="manga.busy ? 'loading-circle' : 'plus-circle'"
       class="cursor-pointer me-1"
     ></app-icon>
     {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}

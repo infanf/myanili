@@ -76,7 +76,7 @@
               *ngIf="anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0"
               [class]="{ 'cursor-pointer': !isSeen(anime) }"
               class="mx-2"
-              [name]="anime.busy ? 'hourglass-split' : isSeen(anime) ? 'check-circle' : 'circle'"
+              [name]="anime.busy ? 'loading-circle' : isSeen(anime) ? 'check-circle' : 'circle'"
               (click)="markSeen(anime)"
             ></app-icon>
             <app-icon
@@ -86,7 +86,7 @@
                 anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
                   ? 'check-circle'
                   : anime.busy
-                  ? 'hourglass-split'
+                  ? 'loading-circle'
                   : 'plus-circle'
               "
               [style]="{
