@@ -36,7 +36,10 @@ export class WatchlistComponent implements OnInit {
     this.animes = animes
       .filter(anime => {
         if (!anime.my_extension) return true;
-        if (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) {
+        if (
+          (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) ||
+          (Array.isArray(anime.my_extension?.simulDay) && anime.my_extension?.simulDay.length === 0)
+        ) {
           return true;
         }
         if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().day()) {
@@ -64,7 +67,10 @@ export class WatchlistComponent implements OnInit {
 
   toSortIndex(anime: ListAnime): number {
     if (!anime.my_extension) return 0;
-    if (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) {
+    if (
+      (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) ||
+      (Array.isArray(anime.my_extension?.simulDay) && anime.my_extension?.simulDay.length === 0)
+    ) {
       return 0;
     }
     if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().day()) {

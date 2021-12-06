@@ -7,9 +7,7 @@
         <th colspan="2">Stream<span class="d-none d-md-inline">ing</span></th>
         <th>
           <span class="mx-2">
-            <app-icon-progress
-              [percent]="(seenCount / animes.length) * 100"
-            ></app-icon-progress>
+            <app-icon-progress [percent]="(seenCount / animes.length) * 100"></app-icon-progress>
           </span>
         </th>
       </tr>
@@ -73,14 +71,18 @@
           </td>
           <td>
             <app-icon
-              *ngIf="anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0"
+              *ngIf="
+                (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0) &&
+                  isInSeason(anime);
+                else plusIcon
+              "
               [class]="{ 'cursor-pointer': !isSeen(anime) }"
               class="mx-2"
               [name]="anime.busy ? 'loading-circle' : isSeen(anime) ? 'check-circle' : 'circle'"
               (click)="markSeen(anime)"
             ></app-icon>
+            <ng-template #plusIcon>
             <app-icon
-              *ngIf="!(anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)"
               class="cursor-pointer mx-2"
               [name]="
                 anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
@@ -89,15 +91,10 @@
                   ? 'loading-circle'
                   : 'plus-circle'
               "
-              [style]="{
-                padding:
-                  (anime.list_status.status === 'completed' && !anime.list_status.is_rewatching) ||
-                  anime.busy
-                    ? 0
-                    : '2px'
-              }"
               (click)="markSeen(anime)"
+              
             ></app-icon>
+          </ng-template>
           </td>
         </tr>
       </ng-container>
