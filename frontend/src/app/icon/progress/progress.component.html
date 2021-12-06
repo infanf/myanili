@@ -1,14 +1,10 @@
-<span style="position: relative;" *ngIf="percent !== 100">
+<span style="position: relative" *ngIf="percent !== 100">
   <circle-progress
-    [radius]="(7 / 16) * size"
+    [radius]="(7.5 / 16) * size"
     [outerStrokeWidth]="(1 / 16) * size"
     [innerStrokeWidth]="(1 / 16) * size"
     [space]="(-1 / 16) * size"
     [percent]="percent"
-    style="
-    vertical-align: text-top;
-    position: relative;
-    top: 0.0625rem;"
   ></circle-progress>
   <app-icon class="overlay-icon" *ngIf="name" [size]="size" [name]="name"></app-icon>
 </span>
