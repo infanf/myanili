@@ -100,6 +100,7 @@ export class WatchlistComponent implements OnInit {
   async markSeen(anime: ListAnime) {
     if (
       (this.isSeen(anime) &&
+        this.isInSeason(anime) &&
         (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)) ||
       anime.busy
     ) {
