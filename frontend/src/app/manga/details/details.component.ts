@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
+import { CacheService } from 'src/app/cache.service';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { PlatformPipe } from 'src/app/platform.pipe';
@@ -23,6 +24,7 @@ export class MangaDetailsComponent implements OnInit {
   @Input() id = 0;
   @Input() inModal = false;
   manga?: Manga;
+  title?: string;
   shortsyn = true;
   edit = false;
   busy = false;
@@ -39,12 +41,14 @@ export class MangaDetailsComponent implements OnInit {
     private kitsu: KitsuService,
     private anisearch: AnisearchService,
     private modalService: NgbModal,
+    private cache: CacheService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
         this.ratings = [];
         this.id = newId;
+        delete this.title;
         delete this.manga;
         this.glob.busy();
         await this.ngOnInit();
@@ -53,6 +57,9 @@ export class MangaDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.cache.getTitle(this.id, 'manga').then(title => {
+      this.title = title;
+    });
     const manga = await this.mangaService.getManga(this.id);
     if (manga.mean) {
       this.setRating('mal', {
@@ -64,6 +71,7 @@ export class MangaDetailsComponent implements OnInit {
     this.manga = { ...manga };
     if (this.manga?.title) {
       this.glob.setTitle(this.manga.title);
+      this.cache.saveTitle(this.manga.id, 'manga', this.manga.title);
     }
     if (!this.manga.my_extension) {
       this.manga.my_extension = {

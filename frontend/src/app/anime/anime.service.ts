@@ -15,6 +15,7 @@ import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 
 import { AnilistService } from '../anilist.service';
+import { CacheService } from '../cache.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 
@@ -33,11 +34,15 @@ export class AnimeService {
     private simkl: SimklService,
     private annict: AnnictService,
     private trakt: TraktService,
+    private cache: CacheService,
   ) {}
 
   async list(status?: WatchStatus) {
     const animes = await this.malService.myList(status);
     return animes.map(anime => {
+      if (anime.node.title) {
+        this.cache.saveTitle(anime.node.id, 'anime', anime.node.title);
+      }
       const comments = anime.list_status.comments;
       if (!comments) return anime;
       try {
@@ -66,6 +71,9 @@ export class AnimeService {
 
   async getAnime(id: number) {
     const anime = await this.malService.get<Anime>('anime/' + id);
+    if (anime.title) {
+      this.cache.saveTitle(anime.id, 'anime', anime.title);
+    }
     const comments = anime.my_list_status?.comments;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
     if (!comments) return anime;

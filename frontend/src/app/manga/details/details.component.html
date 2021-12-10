@@ -1,7 +1,7 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{ 'modal-body': inModal }">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ manga?.title || 'Loading…' }}
+      {{ manga?.title || title || 'Loading…' }}
     </h2>
     <div class="ms-auto ps-3 cursor-pointer" *ngIf="manga?.title" style="white-space: nowrap">
       <ng-container *ngIf="manga?.my_list_status; else add">
@@ -37,17 +37,9 @@
             srcset="{{ manga.main_picture.large || manga.main_picture.medium }}"
           />
           <source srcset="/assets/blank-poster.svg" />
-          <img
-            src="/assets/blank-poster.svg"
-            alt="poster"
-            width="100%"
-            class="rounded-top"
-          />
+          <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
         </picture>
-        <div
-          class="progress"
-          style="border-radius: 0 0 0.5rem 0.5rem; position: relative"
-        >
+        <div class="progress" style="border-radius: 0 0 0.5rem 0.5rem; position: relative">
           <div
             *ngIf="meanRating"
             class="progress-bar"
@@ -445,14 +437,17 @@
             <div class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating *ngIf="manga.my_extension?.bakaId" [rating]="getRating('bu')"></app-external-rating>
+                  <app-external-rating
+                    *ngIf="manga.my_extension?.bakaId"
+                    [rating]="getRating('bu')"
+                  ></app-external-rating>
                 </td>
               </div>
               <div class="col-8">
                 <app-icon-bakamanga></app-icon-bakamanga>
                 <a
                   class="ms-1"
-                  [ngClass]="{'link-secondary': !manga.my_extension?.bakaId}"
+                  [ngClass]="{ 'link-secondary': !manga.my_extension?.bakaId }"
                   [href]="
                     manga.my_extension?.bakaId
                       ? 'https://www.mangaupdates.com/series.html?id=' + manga.my_extension?.bakaId
@@ -526,15 +521,15 @@
           <div class="col-8">
             <div class="input-group input-group-sm">
               <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.bakaId"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-            <button class="btn btn-primary" (click)="findBaka()">
-              <app-icon-bakamanga></app-icon-bakamanga>
-            </button>
-          </div>
+                class="form-control form-control-sm"
+                [(ngModel)]="editExtension!.bakaId"
+                [disabled]="busy"
+                enterkeyhint="done"
+              />
+              <button class="btn btn-primary" (click)="findBaka()">
+                <app-icon-bakamanga></app-icon-bakamanga>
+              </button>
+            </div>
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && editExtension">

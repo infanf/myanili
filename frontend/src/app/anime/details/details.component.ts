@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
+import { CacheService } from 'src/app/cache.service';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 import { StreamPipe } from 'src/app/stream.pipe';
@@ -26,6 +27,7 @@ import { TraktService } from '../trakt.service';
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
   anime?: Anime;
+  title?: string;
   edit = false;
   busy = false;
   editBackup?: Partial<MyAnimeUpdate>;
@@ -48,12 +50,14 @@ export class AnimeDetailsComponent implements OnInit {
     private simkl: SimklService,
     private annict: AnnictService,
     private anisearch: AnisearchService,
+    private cache: CacheService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
         this.ratings = [];
         this.id = newId;
+        delete this.title;
         delete this.anime;
         this.busy = false;
         this.edit = false;
@@ -70,7 +74,11 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.cache.getTitle(this.id, 'anime').then(title => {
+      this.title = title;
+    });
     const anime = await this.animeService.getAnime(this.id);
+
     if (anime.mean) {
       this.setRating('mal', {
         nom: anime.mean,
