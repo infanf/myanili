@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
   simklLoggedIn?: SimklUser;
   anilistLoggedIn?: AnilistUser;
   kitsuLoggedIn?: KitsuUser;
-  kitsuData?: { username: string; password: string };
+  kitsuData?: { username: string; password: string; saveLogin: boolean };
   inlist = 'false';
   layout = 'list';
   constructor(
@@ -141,12 +141,17 @@ export class SettingsComponent implements OnInit {
       this.kitsuData = {
         username: '',
         password: '',
+        saveLogin: false,
       };
       return;
     }
     if (!this.kitsuData.username || !this.kitsuData.password) return;
     this.glob.busy();
-    await this.kitsu.login(this.kitsuData?.username, this.kitsuData?.password);
+    await this.kitsu.login(
+      this.kitsuData?.username,
+      this.kitsuData?.password,
+      this.kitsuData?.saveLogin,
+    );
     this.glob.notbusy();
   }
 

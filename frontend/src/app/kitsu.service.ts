@@ -11,6 +11,7 @@ import {
   KitsuUser,
 } from '@models/kitsu';
 import { ReadStatus } from '@models/manga';
+import * as CryptoJS from 'crypto-js';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -102,7 +103,29 @@ export class KitsuService {
     return undefined;
   }
 
-  async login(username?: string, password?: string): Promise<KitsuUser | undefined> {
+  async login(
+    username?: string,
+    password?: string,
+    saveLogin = false,
+  ): Promise<KitsuUser | undefined> {
+    if (saveLogin && username && password) {
+      const usernameEncrypted = CryptoJS.AES.encrypt(username, this.clientId).toString();
+      const passwordEncrypted = CryptoJS.AES.encrypt(password, this.clientId).toString();
+      localStorage.setItem('kitsuUsername', usernameEncrypted);
+      localStorage.setItem('kitsuPassword', passwordEncrypted);
+    }
+    if (!username && !password) {
+      const usernameEncrypted = localStorage.getItem('kitsuUsername') || undefined;
+      const passwordEncrypted = localStorage.getItem('kitsuPassword') || undefined;
+      if (usernameEncrypted && passwordEncrypted) {
+        username = CryptoJS.AES.decrypt(usernameEncrypted, this.clientId).toString(
+          CryptoJS.enc.Utf8,
+        );
+        password = CryptoJS.AES.decrypt(passwordEncrypted, this.clientId).toString(
+          CryptoJS.enc.Utf8,
+        );
+      }
+    }
     const details = {
       grant_type: 'password',
       username,
