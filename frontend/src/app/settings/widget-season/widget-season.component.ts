@@ -34,6 +34,6 @@ export class WidgetSeasonComponent implements OnInit {
   }
 
   setCurrentSeason() {
-    this.settings.setSeason(this.currentSeason.year, this.currentSeason.season);
+    this.settings.resetSeason();
   }
 }

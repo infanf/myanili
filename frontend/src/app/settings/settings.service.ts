@@ -40,6 +40,14 @@ export class SettingsService {
     localStorage.setItem('season', JSON.stringify(newSeason));
   }
 
+  resetSeason() {
+    this.seasonSubject.next({
+      year: moment().year(),
+      season: Math.floor(moment().month() / 3),
+    });
+    localStorage.removeItem('season');
+  }
+
   get language() {
     return this.languageSubject.asObservable();
   }

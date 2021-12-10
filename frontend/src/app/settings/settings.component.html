@@ -104,6 +104,12 @@
                 type="password"
                 [(ngModel)]="kitsuData.password"
               />
+              <div class="form-check">
+                <input [(ngModel)]="kitsuData.saveLogin" class="form-check-input" type="checkbox" value="" id="kitsuSaveLogin">
+                <label class="form-check-label" for="kitsuSaveLogin">
+                  Save credentials locally<br><small class="text-secondary">Only use if you keep getting logged out. Your username and password will be stored in localStorage on your device.</small>
+                </label>
+              </div>
             </ng-container>
             <button
               class="btn btn-sm btn-primary"

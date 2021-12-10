@@ -15,6 +15,7 @@ import { Base64 } from 'js-base64';
 import { environment } from 'src/environments/environment';
 
 import { AnilistService } from '../anilist.service';
+import { CacheService } from '../cache.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 
@@ -26,11 +27,15 @@ export class MangaService {
     private malService: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private cache: CacheService,
   ) {}
 
   async list(status?: ReadStatus) {
     const mangas = await this.malService.myMangaList(status);
     return mangas.map(manga => {
+      if (manga.node.title) {
+        this.cache.saveTitle(manga.node.id, 'manga', manga.node.title);
+      }
       const comments = manga.list_status.comments;
       if (!comments) return manga;
       try {
@@ -44,6 +49,9 @@ export class MangaService {
 
   async getManga(id: number, extend = true) {
     const manga = await this.malService.get<Manga>('manga/' + id);
+    if (manga.title) {
+      this.cache.saveTitle(manga.id, 'manga', manga.title);
+    }
     const comments = manga.my_list_status?.comments;
     if (!manga.related_anime.length && extend) manga.related_anime_promise = this.getAnimes(id);
     if (!comments) return manga;

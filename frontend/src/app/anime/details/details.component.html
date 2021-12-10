@@ -1,7 +1,7 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{ 'modal-body': inModal }">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ anime?.title || 'Loading…' }}
+      {{ anime?.title || title || "Loading…" }}
     </h2>
     <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" style="white-space: nowrap">
       <ng-container *ngIf="anime?.my_list_status; else add">
@@ -36,17 +36,9 @@
             srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
           />
           <source srcset="/assets/blank-poster.svg" />
-          <img
-            src="/assets/blank-poster.svg"
-            alt="poster"
-            width="100%"
-            class="rounded-top"
-          />
+          <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
         </picture>
-        <div
-          class="progress"
-          style="border-radius: 0 0 0.5rem 0.5rem; position: relative"
-        >
+        <div class="progress" style="border-radius: 0 0 0.5rem 0.5rem; position: relative">
           <div
             *ngIf="meanRating"
             class="progress-bar"
@@ -635,7 +627,7 @@
                 <app-icon-livechart></app-icon-livechart>
                 <a
                   class="ms-1"
-                  [ngClass]="{'link-secondary': !anime.my_extension?.livechartId}"
+                  [ngClass]="{ 'link-secondary': !anime.my_extension?.livechartId }"
                   [href]="
                     anime.my_extension?.livechartId
                       ? 'https://www.livechart.me/anime/' + anime.my_extension?.livechartId
