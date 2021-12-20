@@ -20,9 +20,25 @@ export class MagazineComponent {
         this.id = newId;
         delete this.magazine;
         this.glob.busy();
-        this.magazine = await this.mal.getJikanData<JikanMagazine>('magazine/' + this.id);
-        this.glob.notbusy();
-        this.glob.setTitle(this.magazine.meta.name);
+        try {
+          this.magazine = await this.mal.getJikanData<JikanMagazine>('magazine/' + this.id);
+          this.glob.notbusy();
+          this.glob.setTitle(this.magazine.meta.name);
+        } catch (e) {
+          this.glob.notbusy();
+          this.magazine = {
+            manga: [],
+            request_hash: '',
+            request_cached: false,
+            request_cache_expiry: 0,
+            meta: {
+              mal_id: 0,
+              name: 'Failed to load magazine',
+              type: '',
+              url: '',
+            },
+          };
+        }
       }
     });
   }
