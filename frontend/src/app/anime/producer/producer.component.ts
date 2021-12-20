@@ -21,9 +21,25 @@ export class ProducerComponent {
         this.id = newId;
         delete this.producer;
         this.glob.busy();
-        this.producer = await this.mal.getJikanData<JikanProducer>('producer/' + this.id);
-        this.glob.notbusy();
-        this.glob.setTitle(this.producer.meta.name);
+        try {
+          this.producer = await this.mal.getJikanData<JikanProducer>('producer/' + this.id);
+          this.glob.notbusy();
+          this.glob.setTitle(this.producer.meta.name);
+        } catch (e) {
+          this.glob.notbusy();
+          this.producer = {
+            anime: [],
+            request_hash: '',
+            request_cached: false,
+            request_cache_expiry: 0,
+            meta: {
+              mal_id: 0,
+              name: 'Failed to load magazine',
+              type: '',
+              url: '',
+            },
+          };
+        }
       }
     });
   }

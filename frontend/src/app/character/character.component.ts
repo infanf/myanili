@@ -22,10 +22,29 @@ export class CharacterComponent {
         this.id = newId;
         delete this.character;
         this.glob.busy();
-        this.character = await this.mal.getJikanData<JikanCharacter>('character/' + this.id);
-        this.character.about = this.character.about.replace(/\\n/g, '').trim();
-        this.glob.notbusy();
-        this.glob.setTitle(this.character.name);
+        try {
+          this.character = await this.mal.getJikanData<JikanCharacter>('character/' + this.id);
+          this.character.about = this.character.about.replace(/\\n/g, '').trim();
+          this.glob.notbusy();
+          this.glob.setTitle(this.character.name);
+        } catch (e) {
+          this.glob.notbusy();
+          this.character = {
+            name: 'Failed to load character',
+            about: 'Please try again later.',
+            nicknames: [],
+            voice_actors: [],
+            animeography: [],
+            mangaography: [],
+            image_url: '',
+            url: '',
+            mal_id: newId,
+            member_favorites: 0,
+            request_cache_expiry: 0,
+            request_cached: false,
+            request_hash: '',
+          };
+        }
       }
     });
   }

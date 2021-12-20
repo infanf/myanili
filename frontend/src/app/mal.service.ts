@@ -68,9 +68,10 @@ export class MalService {
 
   async getJikanData<T>(url: string): Promise<T> {
     try {
-      return new Promise((r, rj) => {
+      const response = await new Promise((r, rj) => {
         this.httpClient.get<T>(`${environment.jikanUrl}${url}`).subscribe(r, rj);
       });
+      return response as T;
     } catch (e) {
       return new Promise((r, rj) => {
         this.httpClient.get<T>(`${environment.jikanFallbackUrl}${url}`).subscribe(r, rj);

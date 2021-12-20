@@ -22,10 +22,29 @@ export class PersonComponent {
         this.id = newId;
         delete this.person;
         this.glob.busy();
-        this.person = await this.mal.getJikanData<JikanPerson>('person/' + this.id);
-        this.person.about = (this.person.about || '').replace(/\\n/g, '').trim();
-        this.glob.notbusy();
-        this.glob.setTitle(this.person.name);
+        try {
+          this.person = await this.mal.getJikanData<JikanPerson>('person/' + this.id);
+          this.person.about = (this.person.about || '').replace(/\\n/g, '').trim();
+          this.glob.notbusy();
+          this.glob.setTitle(this.person.name);
+        } catch (e) {
+          this.glob.notbusy();
+          this.person = {
+            name: 'Failed to load person',
+            about: 'Please try again later',
+            image_url: '',
+            url: '',
+            mal_id: newId,
+            alternate_names: [],
+            member_favorites: 0,
+            voice_acting_roles: [],
+            anime_staff_positions: [],
+            published_manga: [],
+            request_cache_expiry: 0,
+            request_cached: false,
+            request_hash: '',
+          };
+        }
       }
     });
   }
