@@ -65,7 +65,8 @@
           >
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
-          {{ anime.media_type | mal: 'mediatype' }}
+          <app-icon name="{{ anime.media_type | mal: 'mediaicon' }}"></app-icon>
+          <span class="d-none d-md-inline ms-1">{{ anime.media_type | mal: 'mediatype' }}</span>
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
           <app-streaming

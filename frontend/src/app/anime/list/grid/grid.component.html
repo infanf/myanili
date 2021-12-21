@@ -11,6 +11,7 @@
           <img loading="lazy" src="/assets/blank-poster.svg" alt="poster" class="card-img" />
         </picture>
         <div class="card-overlay rounded-bottom">
+          <app-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}" class="me-1"></app-icon>
           {{
             anime.my_extension?.displayName ||
               (lang === 'en'

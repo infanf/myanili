@@ -110,7 +110,10 @@
             </span>
           </td>
 
-          <td>{{ result.media_type | mal: 'mediatype' }}</td>
+          <td>
+            <app-icon name="{{ result.media_type | mal: 'mediaicon' }}"></app-icon>
+            <span class="d-none d-md-inline ms-1">{{ result.media_type | mal: 'mediatype' }}</span>
+          </td>
           <td class="text-nowrap">
             <circle-progress
               [percent]="(result.mean || 0) * 10"

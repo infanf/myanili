@@ -117,7 +117,10 @@
       </div>
       <div class="row" *ngIf="manga">
         <div class="col-4 fw-bold text-end">Type</div>
-        <div class="col-8">{{ manga!.media_type | mal: 'mediatype' }}</div>
+        <div class="col-8">
+          <app-icon name="{{ manga.media_type | mal: 'mediaicon' }}" class="me-1"></app-icon>
+          {{ manga!.media_type | mal: 'mediatype' }}
+        </div>
       </div>
       <div class="row" *ngIf="manga?.serialization?.length">
         <div class="col-4 fw-bold text-end">Serialization</div>

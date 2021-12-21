@@ -1,6 +1,7 @@
 <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
   <thead class="sticky">
     <tr>
+      <th></th>
       <th
         class="d-lg-table-cell"
         [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
@@ -25,6 +26,9 @@
         }"
         routerLink="/anime/details/{{ anime.node.id }}"
       >
+        <td>
+          <app-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}"></app-icon>
+        </td>
         <td
           class="d-lg-table-cell"
           [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"

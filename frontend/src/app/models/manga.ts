@@ -97,6 +97,7 @@ export interface MangaNode {
   start_date?: Date;
   end_date?: Date;
   my_list_status?: MyMangaStatus;
+  media_type?: MangaType;
   authors?: Array<{ role: string; node: Person }>;
   alternative_titles?: {
     synonyms?: string[];
