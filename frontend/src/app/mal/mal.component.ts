@@ -34,6 +34,7 @@ export class MalComponent implements AfterViewInit {
     genre: [],
   } as { [key: string]: string[] };
   showFilters = false;
+  nsfw = true;
 
   constructor(
     private malService: MalService,
@@ -48,6 +49,7 @@ export class MalComponent implements AfterViewInit {
       this.results = [];
     });
     this.settings.language.subscribe(lang => (this.lang = lang));
+    this.settings.nsfw.subscribe(nsfw => (this.nsfw = nsfw));
     this.glob.notbusy();
   }
 
@@ -65,7 +67,11 @@ export class MalComponent implements AfterViewInit {
     this.glob.setTitle(`Search: ${this.query}`);
     this.results = (
       await this.malService.get<Array<{ node: Anime | Manga }>>(this.type + 's?query=' + this.query)
-    ).map(result => result.node);
+    )
+      .filter(result =>
+        this.nsfw ? true : !result.node.genres?.map(g => g.name).includes('Hentai'),
+      )
+      .map(result => result.node);
     this.allFilters.type = [...new Set(this.results.map(result => result.media_type))].sort();
     this.allFilters.status = [...new Set(this.results.map(result => result.status))].sort();
     const genres = this.results.map(result => result.genres?.map(g => g.name) || []);

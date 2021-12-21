@@ -185,7 +185,7 @@ class MalServiceProvider extends ServiceProvider
     {
         $seasons = ['winter', 'spring', 'summer', 'fall'];
         $params = [
-            "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments}",
+            "fields" => "num_episodes,start_season,media_type,start_date,end_date,alternative_titles,my_list_status{comments},nsfw,rating",
             "limit" => 500,
             "nsfw" => 1,
         ];
@@ -336,6 +336,7 @@ class MalServiceProvider extends ServiceProvider
             "mean",
             "genres",
             "status",
+            "nsfw",
         ];
 
         $params = [

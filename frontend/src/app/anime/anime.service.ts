@@ -18,6 +18,7 @@ import { AnilistService } from '../anilist.service';
 import { CacheService } from '../cache.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
+import { SettingsService } from '../settings/settings.service';
 
 import { AnnictService } from './annict.service';
 import { SimklService } from './simkl.service';
@@ -27,6 +28,7 @@ import { TraktService } from './trakt.service';
   providedIn: 'root',
 })
 export class AnimeService {
+  nsfw = true;
   constructor(
     private malService: MalService,
     private anilist: AnilistService,
@@ -35,7 +37,12 @@ export class AnimeService {
     private annict: AnnictService,
     private trakt: TraktService,
     private cache: CacheService,
-  ) {}
+    private settings: SettingsService,
+  ) {
+    this.settings.nsfw.subscribe(nsfw => {
+      this.nsfw = nsfw;
+    });
+  }
 
   async list(status?: WatchStatus) {
     const animes = await this.malService.myList(status);
@@ -56,7 +63,9 @@ export class AnimeService {
   async season(year: number, season: number): Promise<Array<Partial<Anime>>> {
     const animes = (
       await this.malService.get<Array<{ node: AnimeNode }>>(`animes/season/${year}/${season}`)
-    ).map(anime => anime.node);
+    )
+      .filter(anime => (this.nsfw ? true : anime.node.rating !== 'rx'))
+      .map(anime => anime.node);
     return animes.map(anime => {
       const comments = anime.my_list_status?.comments;
       if (!comments) return anime;

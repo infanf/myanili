@@ -14,6 +14,7 @@ export class SettingsService {
   private languageSubject = new BehaviorSubject<Language>('default');
   private inList = new BehaviorSubject<boolean>(false);
   private layoutSubject = new BehaviorSubject<string>('list');
+  private nsfwSubject = new BehaviorSubject<boolean>(false);
 
   constructor() {
     try {
@@ -27,6 +28,8 @@ export class SettingsService {
       if (savedSeason) {
         this.setSeason(savedSeason.year as number, savedSeason.season as number);
       }
+      const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
+      this.setNsfw(nsfw);
     } catch (e) {}
   }
 
@@ -73,6 +76,15 @@ export class SettingsService {
   setLayout(layout: string) {
     this.layoutSubject.next(layout);
     localStorage.setItem('layout', layout);
+  }
+
+  get nsfw() {
+    return this.nsfwSubject.asObservable();
+  }
+
+  setNsfw(nsfw: boolean) {
+    this.nsfwSubject.next(nsfw);
+    localStorage.setItem('nsfw', JSON.stringify(nsfw));
   }
 }
 

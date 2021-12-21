@@ -31,6 +31,15 @@
         </div>
       </div>
       <div class="row mt-3">
+        <div class="col-5">Lists</div>
+        <div class="col-7">
+          <select class="form-control" (change)="changeNsfw()" [(ngModel)]="nsfw">
+            <option value="false">Hide Hentai in Search/Season</option>
+            <option value="true">Show Hentai in Search/Season</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-3">
         <div class="col-5">Layout</div>
         <div class="col-7">
           <select class="form-control" (change)="changeLayout()" [(ngModel)]="layout">
