@@ -24,7 +24,7 @@ $theme-colors: (
   'spotify': hsl(141, 73%, 42%),
   'trakt': hsl(358, 85%, 52%),
   'light': $light,
-  'dark': $dark // "white": #eff7ff,,
+  'dark': $dark // "white": #eff7ff,,,
 );
 
 @import '~bootstrap/scss/bootstrap';
@@ -139,6 +139,10 @@ overlay.overlay-shown {
   &.show {
     opacity: 1;
   }
+}
+
+[class='modal-content'] {
+  border-radius: $border-radius;
 }
 
 @import 'styles/dark-theme.scss';
