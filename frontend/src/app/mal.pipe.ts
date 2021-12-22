@@ -57,19 +57,19 @@ export class MalPipe implements PipeTransform {
       case 'music':
         return 'music-note-beamed';
       case 'manga':
-        return 'file-image';
+        return 'manga';
       case 'manhwa':
-        return 'file-manhwa';
+        return 'manhwa';
       case 'manhua':
-        return 'file-manhua';
+        return 'manhua';
       case 'light_novel':
         return 'file-richtext';
       case 'novel':
         return 'file-text';
       case 'doujinshi':
-        return 'file-person';
+        return 'brush';
       case 'one_shot':
-        return 'file-earmark-image';
+        return 'bullseye';
       default:
         return 'question';
     }
