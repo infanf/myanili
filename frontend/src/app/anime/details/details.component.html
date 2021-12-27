@@ -720,7 +720,7 @@
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">
             <app-anime-related [related_anime]="anime.related_anime"></app-anime-related>
-            <app-manga-related [related_manga]="anime.related_manga"></app-manga-related>
+            <app-manga-related [related_manga]="anime.related_manga" [has_covers]="false"></app-manga-related>
           </section>
         </ng-template>
       </li>

@@ -1,13 +1,27 @@
-import { Component, Input } from '@angular/core';
-import { RelatedManga } from '@models/manga';
+import { Component, Input, OnInit } from '@angular/core';
+import { Manga, RelatedManga } from '@models/manga';
+import { MalService } from 'src/app/mal.service';
 
 @Component({
   selector: 'app-manga-related',
   templateUrl: './related.component.html',
   styleUrls: ['./related.component.scss'],
 })
-export class MangaRelatedComponent {
+export class MangaRelatedComponent implements OnInit {
   @Input() related_manga: RelatedManga[] = [];
+  @Input() has_covers = true;
+
+  constructor(private mal: MalService) {}
+
+  ngOnInit() {
+    if (!this.has_covers) {
+      this.related_manga.forEach(async manga => {
+        const response = await this.mal.get<Manga>(`manga/${manga.node.id}`);
+        manga.node.main_picture = response.main_picture;
+      });
+    }
+  }
+
   getRelatedMangas() {
     if (!this.related_manga?.length) return [];
     const types = this.related_manga
