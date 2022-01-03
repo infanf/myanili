@@ -14,7 +14,7 @@ $border-radius-sm: 0.4rem;
 $theme-colors: (
   'blue': $primary,
   'primary': $primary,
-  "secondary":  $secondary,
+  'secondary': $secondary,
   'red': $error,
   'danger': $error,
   'green': $success,
@@ -23,9 +23,8 @@ $theme-colors: (
   'warning': $warning,
   'spotify': hsl(141, 73%, 42%),
   'trakt': hsl(358, 85%, 52%),
-  "light":      $light,
-  "dark":       $dark
-  // "white": #eff7ff,
+  'light': $light,
+  'dark': $dark // "white": #eff7ff,,,
 );
 
 @import '~bootstrap/scss/bootstrap';
@@ -136,10 +135,14 @@ overlay.overlay-shown {
 .modal-backdrop {
   backdrop-filter: blur(2px);
   background: none;
-  
+
   &.show {
     opacity: 1;
   }
+}
+
+[class='modal-content'] {
+  border-radius: $border-radius;
 }
 
 @import 'styles/dark-theme.scss';

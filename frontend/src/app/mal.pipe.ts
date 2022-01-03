@@ -8,12 +8,13 @@ import { ReadStatus } from '@models/manga';
 export class MalPipe implements PipeTransform {
   transform(
     value: number | string = '',
-    type?: 'mediatype' | 'mystatus' | 'seasonicon' | 'rating',
+    type?: 'mediatype' | 'mystatus' | 'seasonicon' | 'rating' | 'mediaicon',
   ): string {
     if (type === 'mystatus') return this.myStatus(value as WatchStatus | ReadStatus);
     if (type === 'mediatype') return this.mediaType(String(value));
     if (type === 'seasonicon') return this.seasonIcon(value);
     if (type === 'rating') return this.rating(String(value));
+    if (type === 'mediaicon') return this.mediaIcon(String(value));
     return String(value);
   }
 
@@ -38,6 +39,39 @@ export class MalPipe implements PipeTransform {
           .split('_')
           .map(word => word[0].toUpperCase() + word.slice(1))
           .join(' ');
+    }
+  }
+
+  mediaIcon(value = ''): string {
+    switch (value) {
+      case 'tv':
+        return 'tv';
+      case 'ova':
+        return 'disc';
+      case 'ona':
+        return 'play-btn';
+      case 'special':
+        return 'camera-video';
+      case 'movie':
+        return 'camera-reels';
+      case 'music':
+        return 'music-note-beamed';
+      case 'manga':
+        return 'manga';
+      case 'manhwa':
+        return 'manhwa';
+      case 'manhua':
+        return 'manhua';
+      case 'light_novel':
+        return 'file-richtext';
+      case 'novel':
+        return 'file-text';
+      case 'doujinshi':
+        return 'brush';
+      case 'one_shot':
+        return 'bullseye';
+      default:
+        return 'question';
     }
   }
 

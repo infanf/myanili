@@ -1,5 +1,8 @@
 <div class="modal-header">
-  <h5 class="modal-title">Settings</h5>
+  <h5 class="modal-title">
+    MyAniLi
+    <small class="text-muted">v{{version}}</small>
+  </h5>
   <button
     type="button"
     class="btn-close"
@@ -27,6 +30,15 @@
           <select class="form-control" (change)="changeInList()" [(ngModel)]="inlist">
             <option value="false">Show all Airing</option>
             <option value="true">Show only in my list</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-5">Lists</div>
+        <div class="col-7">
+          <select class="form-control" (change)="changeNsfw()" [(ngModel)]="nsfw">
+            <option value="false">Hide Hentai in Search/Season</option>
+            <option value="true">Show Hentai in Search/Season</option>
           </select>
         </div>
       </div>
@@ -176,4 +188,5 @@
       </div>
     </div>
   </div>
+  <app-changelog></app-changelog>
 </div>

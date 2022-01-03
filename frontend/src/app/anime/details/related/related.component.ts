@@ -1,13 +1,28 @@
-import { Component, Input } from '@angular/core';
-import { RelatedAnime } from '@models/anime';
+import { Component, Input, OnInit } from '@angular/core';
+import { Anime, RelatedAnime } from '@models/anime';
+import { MalService } from 'src/app/mal.service';
 
 @Component({
   selector: 'app-anime-related',
   templateUrl: './related.component.html',
   styleUrls: ['./related.component.scss'],
 })
-export class AnimeRelatedComponent {
+export class AnimeRelatedComponent implements OnInit {
   @Input() related_anime: RelatedAnime[] = [];
+
+  @Input() has_covers = true;
+
+  constructor(private mal: MalService) {}
+
+  ngOnInit() {
+    if (!this.has_covers) {
+      this.related_anime.forEach(async anime => {
+        const response = await this.mal.get<Anime>(`anime/${anime.node.id}`);
+        anime.node.main_picture = response.main_picture;
+      });
+    }
+  }
+
   getRelatedAnimes() {
     if (!this.related_anime?.length) return [];
     const types = this.related_anime

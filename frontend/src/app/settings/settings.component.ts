@@ -30,6 +30,8 @@ export class SettingsComponent implements OnInit {
   kitsuData?: { username: string; password: string; saveLogin: boolean };
   inlist = 'false';
   layout = 'list';
+  nsfw = 'true';
+  version = '0.0.0';
   constructor(
     private settings: SettingsService,
     private glob: GlobalService,
@@ -68,6 +70,10 @@ export class SettingsComponent implements OnInit {
     this.settings.layout.subscribe(layout => {
       this.layout = layout || 'list';
     });
+    this.settings.nsfw.subscribe(nsfw => {
+      this.nsfw = JSON.stringify(nsfw);
+    });
+    this.version = this.glob.version;
   }
 
   async ngOnInit() {
@@ -80,6 +86,10 @@ export class SettingsComponent implements OnInit {
 
   changeInList() {
     this.settings.setInList(Boolean(JSON.parse(this.inlist)));
+  }
+
+  changeNsfw() {
+    this.settings.setNsfw(Boolean(JSON.parse(this.nsfw)));
   }
 
   changeLayout() {

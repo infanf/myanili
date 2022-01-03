@@ -51,6 +51,7 @@ import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
 import { Nl2brPipe } from './nl2br.pipe';
 import { PersonComponent } from './person/person.component';
 import { PlatformPipe } from './platform.pipe';
+import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 import { StreamPipe } from './stream.pipe';
@@ -100,6 +101,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ExternalRatingComponent,
     SeasonGridComponent,
     SeasonListComponent,
+    ChangelogComponent,
   ],
   imports: [
     BrowserModule,

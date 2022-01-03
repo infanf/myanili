@@ -11,6 +11,7 @@
           <img src="/assets/blank-poster.svg" alt="poster" class="card-img" />
         </picture>
         <div class="card-overlay rounded-bottom" routerLink="/anime/details/{{ anime.id }}">
+          <app-icon name="{{ anime.media_type | mal: 'mediaicon' }}" class="me-1"></app-icon>
           {{
             anime.my_extension?.displayName ||
               (lang === 'en'
@@ -21,9 +22,9 @@
               anime.title
           }}
         </div>
-        <span class="mediatype text-black" *ngIf="anime.media_type">
+        <!-- <span class="mediatype text-black" *ngIf="anime.media_type">
           {{anime.media_type  | mal: 'mediatype'}}
-        </span>
+        </span> -->
         <ng-container *ngIf="anime.my_list_status">
           <ng-container *ngIf="anime.my_list_status.status === 'watching'; else statusicon">
             <div

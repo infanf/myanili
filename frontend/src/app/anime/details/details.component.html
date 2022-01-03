@@ -1,7 +1,7 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded" [class]="{ 'modal-body': inModal }">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ anime?.title || title || "Loading…" }}
+      {{ anime?.title || title || 'Loading…' }}
     </h2>
     <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" style="white-space: nowrap">
       <ng-container *ngIf="anime?.my_list_status; else add">
@@ -130,7 +130,10 @@
       </div>
       <div class="row" *ngIf="anime">
         <div class="col-4 fw-bold text-end">Type</div>
-        <div class="col-8">{{ anime!.media_type | mal: 'mediatype' }}</div>
+        <div class="col-8">
+          <app-icon name="{{ anime.media_type | mal: 'mediaicon' }}" class="me-1"></app-icon>
+          {{ anime!.media_type | mal: 'mediatype' }}
+        </div>
       </div>
       <div class="row" *ngIf="anime && anime.start_date">
         <div class="col-4 fw-bold text-end">Aired</div>
@@ -717,7 +720,7 @@
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">
             <app-anime-related [related_anime]="anime.related_anime"></app-anime-related>
-            <app-manga-related [related_manga]="anime.related_manga"></app-manga-related>
+            <app-manga-related [related_manga]="anime.related_manga" [has_covers]="false"></app-manga-related>
           </section>
         </ng-template>
       </li>

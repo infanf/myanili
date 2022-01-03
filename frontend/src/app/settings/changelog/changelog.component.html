@@ -1,0 +1,31 @@
+<div class="card mt-3">
+  <div class="card-header">Changelog</div>
+  <div class="card-body border-bottom" *ngFor="let change of changelog.changes">
+    <h6>v{{ change.version }}</h6>
+    <div *ngIf="change.features?.length">
+      Features:
+      <ul>
+        <li *ngFor="let feature of change.features">{{ feature }}</li>
+      </ul>
+    </div>
+    <div *ngIf="change.fixes?.length">
+      Fixes:
+      <ul>
+        <li *ngFor="let fix of change.fixes">{{ fix }}</li>
+      </ul>
+    </div>
+    <div *ngIf="change.other?.length">
+      Other:
+      <ul>
+        <li *ngFor="let other of change.other">{{ other }}</li>
+      </ul>
+    </div>
+  </div>
+  <div
+    class="card-footer cursor-pointer"
+    *ngIf="!showall && changelog.changes.length > limit"
+    (click)="showall = true"
+  >
+    Show all
+  </div>
+</div>

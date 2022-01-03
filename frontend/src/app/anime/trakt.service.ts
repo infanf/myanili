@@ -31,16 +31,16 @@ export class TraktService {
 
   async login(): Promise<string | undefined> {
     if (this.refreshToken) {
-      const body = `refresh_token=${this.refreshToken}`;
-      const response = await fetch(`${environment.backend}trakt/auth`, {
-        method: 'POST',
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }),
-        body,
-      });
-      if (response.ok) {
-        try {
+      try {
+        const body = `refresh_token=${this.refreshToken}`;
+        const response = await fetch(`${environment.backend}trakt/auth`, {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }),
+          body,
+        });
+        if (response.ok) {
           const result = (await response.json()) as {
             refresh_token?: string;
             access_token?: string;
@@ -52,9 +52,9 @@ export class TraktService {
             localStorage.setItem('traktRefreshToken', this.refreshToken);
             return this.checkLogin();
           }
-        } catch (e) {
-          console.log(e);
         }
+      } catch (e) {
+        console.log(e);
       }
     }
     return new Promise(r => {

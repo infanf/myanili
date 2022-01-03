@@ -2,6 +2,9 @@ import { ApplicationRef, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
+import packageJson from '../../package.json';
+import * as changelog from '../changelog.json';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,6 +14,7 @@ export class GlobalService {
   private darkModeSubject = new BehaviorSubject<boolean>(false);
   private readonly titlePostfix = ' – MyAniLi';
   private lastTitle = '';
+  version = packageJson.version;
 
   constructor(private titleService: Title, private ref: ApplicationRef) {
     if (window.matchMedia) {
@@ -61,4 +65,20 @@ export class GlobalService {
     this.isBusySubject.next(false);
     this.loadingPercentSubject.next(0);
   }
+
+  get changelog() {
+    return changelog as unknown as Changelog;
+  }
+}
+
+export interface Changelog {
+  version: string;
+  changes: [
+    {
+      version: string;
+      features: string[];
+      fixes: string[];
+      other: string[];
+    },
+  ];
 }
