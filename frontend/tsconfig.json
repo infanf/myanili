@@ -22,7 +22,8 @@
       "@models/*": ["src/app/models/*"],
       "@icon/*": ["src/app/icon/*"],
       "@external/*": ["src/app/external/*"]
-    }
+    },
+    "resolveJsonModule": true,
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

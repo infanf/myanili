@@ -31,6 +31,7 @@ export class SettingsComponent implements OnInit {
   inlist = 'false';
   layout = 'list';
   nsfw = 'true';
+  version = '0.0.0';
   constructor(
     private settings: SettingsService,
     private glob: GlobalService,
@@ -72,6 +73,7 @@ export class SettingsComponent implements OnInit {
     this.settings.nsfw.subscribe(nsfw => {
       this.nsfw = JSON.stringify(nsfw);
     });
+    this.version = this.glob.version;
   }
 
   async ngOnInit() {
