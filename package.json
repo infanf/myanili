@@ -4,7 +4,7 @@
   "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "docker pull webdevops/php-apache-dev:8.0 && docker-compose build --no-cache",
+    "build": "docker pull webdevops/php-apache-dev:8.1 && docker-compose build --no-cache",
     "dev:build": "npm run build && npm run dev",
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
