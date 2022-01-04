@@ -657,6 +657,20 @@
                 </ng-template>
               </div>
             </div>
+            <div *ngIf="anime.website" class="row">
+              <div class="col-4">
+                <td class="text-nowrap"></td>
+              </div>
+              <div class="col-8">
+                <myanili-icon-fandom [url]="anime.website"></myanili-icon-fandom>
+                <a
+                  class="ms-1"
+                  [href]="anime.website"
+                  target="_blank"
+                  >Official Website</a
+                >
+            </div>
+            </div>
           </div>
         </div>
       </div>

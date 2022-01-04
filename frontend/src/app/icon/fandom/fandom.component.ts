@@ -16,7 +16,17 @@ export class FandomIconComponent extends IconComponent implements OnInit {
     if (!this.url || !this.url.includes('.')) {
       return;
     }
-    const url = `//${this.url}/favicon.ico`;
-    this.favicon = url;
+    const url = new URL(this.url);
+    fetch(`//${url.hostname}/favicon.ico`)
+      .then(response => {
+        if (response.ok) {
+          this.favicon = `//${url.hostname}/favicon.ico`;
+        } else {
+          this.favicon = '/favicon.ico';
+        }
+      })
+      .catch(() => {
+        this.favicon = '/favicon.ico';
+      });
   }
 }

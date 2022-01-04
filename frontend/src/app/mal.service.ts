@@ -138,4 +138,5 @@ interface JikanInstance {
       url: string;
     }>;
   };
+  external_links: Array<{ name: string; url: string }>;
 }

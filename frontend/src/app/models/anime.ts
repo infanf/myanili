@@ -64,6 +64,8 @@ interface AnimeInterface {
   ending_themes: AnimeTheme[];
   my_extension?: AnimeExtension;
   busy?: boolean;
+  website?: string;
+  website_promise?: Promise<string | undefined>;
 }
 
 export type Anime = AnimeInterface;

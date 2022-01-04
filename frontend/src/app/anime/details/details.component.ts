@@ -142,6 +142,11 @@ export class AnimeDetailsComponent implements OnInit {
         if (this.anime) this.anime.related_manga = relatedManga;
       });
     }
+    if (!this.anime.website) {
+      this.anime.website_promise?.then(website => {
+        if (this.anime) this.anime.website = website;
+      });
+    }
     this.glob.notbusy();
     await this.getRatings();
     // await this.findAnisearch();
