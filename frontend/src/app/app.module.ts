@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ComponentsModule } from '@components/components.module';
 import { ExternalModule } from '@external/external.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -131,6 +132,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     IconModule,
     ExternalModule,
     DirectivesModule,
+    ComponentsModule,
   ],
   providers: [TimePipe, StreamPipe, PlatformPipe, Title, DayPipe],
 
