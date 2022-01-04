@@ -5,7 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnictService } from '../../anime/annict.service';
 
 @Component({
-  selector: 'app-annict',
+  selector: 'myanili-annict',
   templateUrl: '../external.component.html',
 })
 export class AnnictComponent extends ExternalComponent {

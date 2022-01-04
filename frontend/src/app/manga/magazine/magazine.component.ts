@@ -5,7 +5,7 @@ import { GlobalService } from 'src/app/global.service';
 import { MalService } from 'src/app/mal.service';
 
 @Component({
-  selector: 'app-magazine',
+  selector: 'myanili-magazine',
   templateUrl: './magazine.component.html',
   styleUrls: ['./magazine.component.scss'],
 })

@@ -11,7 +11,7 @@
           <img src="/assets/blank-poster.svg" alt="poster" class="card-img" />
         </picture>
         <div class="card-overlay rounded-bottom" routerLink="/anime/details/{{ anime.id }}">
-          <app-icon name="{{ anime.media_type | mal: 'mediaicon' }}" class="me-1"></app-icon>
+          <myanili-icon name="{{ anime.media_type | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
           {{
             anime.my_extension?.displayName ||
               (lang === 'en'
@@ -61,7 +61,7 @@
             </div>
           </ng-container>
           <ng-template #statusicon>
-            <app-icon-status
+            <myanili-icon-status
               routerLink="/anime/details/{{ anime.id }}"
               class="badge rounded-pill"
               [class]="classColor(anime)"
@@ -74,16 +74,16 @@
               "
               *ngIf="anime.my_list_status"
               [status]="anime.my_list_status.status"
-            ></app-icon-status>
+            ></myanili-icon-status>
           </ng-template>
         </ng-container>
-        <app-icon
+        <myanili-icon
           class="badge rounded-pill bg-black"
           style="position: absolute; top: 0.5rem; right: 0.5rem; height: 2rem; padding-top: 0.5rem"
           *ngIf="!anime.my_list_status"
           [name]="anime.busy ? 'hourglass-split' : 'plus'"
           (click)="addToList(anime)"
-        ></app-icon>
+        ></myanili-icon>
       </div>
     </div>
   </div>

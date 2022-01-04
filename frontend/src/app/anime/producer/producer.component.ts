@@ -6,7 +6,7 @@ import { MalService } from 'src/app/mal.service';
 import { GlobalService } from '../../global.service';
 
 @Component({
-  selector: 'app-producer',
+  selector: 'myanili-producer',
   templateUrl: './producer.component.html',
   styleUrls: ['./producer.component.scss'],
 })

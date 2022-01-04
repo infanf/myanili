@@ -11,10 +11,10 @@
     }}
   </td>
   <td>
-    <app-platform [provider]="manga.my_extension?.platform"> </app-platform>
+    <myanili-platform [provider]="manga.my_extension?.platform"> </myanili-platform>
   </td>
   <td class="text-nowrap">
-    <app-icon-progress
+    <myanili-icon-progress
       (click)="plusOneChapter(manga)"
       [name]="manga.busy ? 'loading' : 'plus'"
       class="cursor-pointer mx-1"
@@ -23,15 +23,15 @@
           ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
           : 0
       "
-    ></app-icon-progress>
+    ></myanili-icon-progress>
     {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
   </td>
   <td class="text-nowrap">
-    <app-icon
+    <myanili-icon
       (click)="plusOneVolume(manga)"
       [name]="manga.busy ? 'loading-circle' : 'plus-circle'"
       class="cursor-pointer me-1"
-    ></app-icon>
+    ></myanili-icon>
     {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}
   </td>
 </tr>

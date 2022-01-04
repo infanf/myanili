@@ -20,7 +20,7 @@ import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 
 @Component({
-  selector: 'app-anime-details',
+  selector: 'myanili-anime-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
 })

@@ -3,7 +3,7 @@ import { ListAnime } from '@models/anime';
 import { SettingsService } from 'src/app/settings/settings.service';
 
 @Component({
-  selector: 'app-anime-grid',
+  selector: 'myanili-anime-grid',
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.scss'],
 })

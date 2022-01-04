@@ -5,28 +5,31 @@
     </h2>
     <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" style="white-space: nowrap">
       <ng-container *ngIf="anime?.my_list_status; else add">
-        <app-icon
+        <myanili-icon
           [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"
           size="24"
           (click)="editSave()"
-        ></app-icon>
-        <app-icon
+        ></myanili-icon>
+        <myanili-icon
           *ngIf="edit && !busy"
           name="x"
           size="24"
           class="ms-3"
           (click)="stopEdit()"
-        ></app-icon>
+        ></myanili-icon>
       </ng-container>
       <ng-template #add>
-        <app-icon
+        <myanili-icon
           [name]="busy ? 'hourglass-split' : 'plus'"
           size="24"
           (click)="editSave()"
-        ></app-icon>
+        ></myanili-icon>
       </ng-template>
     </div>
   </header>
+
+<!-- poster -->
+
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3" [class]="{ 'd-none': edit, 'd-sm-block': edit }">
       <ng-container>
@@ -131,7 +134,7 @@
       <div class="row" *ngIf="anime">
         <div class="col-4 fw-bold text-end">Type</div>
         <div class="col-8">
-          <app-icon name="{{ anime.media_type | mal: 'mediaicon' }}" class="me-1"></app-icon>
+          <myanili-icon name="{{ anime.media_type | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
           {{ anime!.media_type | mal: 'mediatype' }}
         </div>
       </div>
@@ -165,7 +168,7 @@
                 ? 'Rewatching'
                 : (anime!.my_list_status!.status | mal: 'mystatus')
             }}
-            <app-icon
+            <myanili-icon
               *ngIf="
                 anime!.my_list_status?.status === 'plan_to_watch' ||
                 anime!.my_list_status?.status === 'on_hold'
@@ -173,14 +176,14 @@
               name="play-circle"
               class="cursor-pointer me-1"
               (click)="setStatus('watching')"
-            ></app-icon>
-            <app-icon
+            ></myanili-icon>
+            <myanili-icon
               *ngIf="anime!.my_list_status?.status === 'watching'"
               name="pause-circle"
               class="cursor-pointer me-1"
               (click)="setStatus('on_hold')"
-            ></app-icon>
-            <app-icon
+            ></myanili-icon>
+            <myanili-icon
               *ngIf="
                 anime!.my_list_status?.status === 'completed' &&
                 !anime!.my_list_status?.is_rewatching
@@ -188,7 +191,7 @@
               name="arrow-counterclockwise"
               class="cursor-pointer me-1"
               (click)="rewatch()"
-            ></app-icon>
+            ></myanili-icon>
           </ng-template>
           <ng-template #mylistedit>
             <select
@@ -318,7 +321,7 @@
           <div class="input-group input-group-sm">
             <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" />
             <button class="btn btn-primary" (click)="findTrakt()">
-              <app-icon-trakt></app-icon-trakt>
+              <myanili-icon-trakt></myanili-icon-trakt>
             </button>
           </div>
         </div>
@@ -367,7 +370,7 @@
               enterkeyhint="done"
             />
             <button *ngIf="annictUser" class="btn btn-primary" (click)="findAnnict()">
-              <app-icon-annict></app-icon-annict>
+              <myanili-icon-annict></myanili-icon-annict>
             </button>
           </div>
         </div>
@@ -383,7 +386,7 @@
               enterkeyhint="done"
             />
             <button class="btn btn-primary" (click)="findAnisearch()">
-              <app-icon-anisearch></app-icon-anisearch>
+              <myanili-icon-anisearch></myanili-icon-anisearch>
             </button>
           </div>
         </div>
@@ -418,7 +421,7 @@
       <div class="row" *ngIf="anime">
         <div class="col-4 fw-bold text-end">Duration</div>
         <div class="col-8">
-          <app-icon
+          <myanili-icon
             *ngIf="
               (anime.my_list_status?.status === 'watching' ||
                 anime.my_list_status?.is_rewatching) &&
@@ -427,7 +430,7 @@
             name="plus-circle"
             class="cursor-pointer me-1"
             (click)="plusOne()"
-          ></app-icon>
+          ></myanili-icon>
           {{ anime?.num_episodes || '?' }}
           <span *ngIf="anime?.average_episode_duration">
             &times; {{ (anime!.average_episode_duration || 0) / 60 | number: '1.0-0' }} min
@@ -507,11 +510,11 @@
             <div class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating [rating]="getRating('mal')"></app-external-rating>
+                  <myanili-external-rating [rating]="getRating('mal')"></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
-                <app-icon-mal class="text-primary"></app-icon-mal>
+                <myanili-icon-mal class="text-primary"></myanili-icon-mal>
                 <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="ms-1"
                   >MyAnimeList</a
                 >
@@ -520,11 +523,11 @@
             <div *ngIf="anime.my_extension?.anilistId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating [rating]="getRating('anilist')"></app-external-rating>
+                  <myanili-external-rating [rating]="getRating('anilist')"></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
-                <app-icon-anilist></app-icon-anilist>
+                <myanili-icon-anilist></myanili-icon-anilist>
                 <a
                   class="ms-1"
                   [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId"
@@ -536,11 +539,11 @@
             <div *ngIf="anime.my_extension?.kitsuId?.kitsuId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating [rating]="getRating('kitsu')"></app-external-rating>
+                  <myanili-external-rating [rating]="getRating('kitsu')"></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
-                <app-icon-kitsu style="color: #e75e45"></app-icon-kitsu>
+                <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
                 <a
                   class="ms-1"
                   [href]="'https://kitsu.io/anime/' + anime.my_extension!.kitsuId!.kitsuId"
@@ -552,11 +555,11 @@
             <div *ngIf="anime && anime.my_extension && anime.my_extension.trakt" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating [rating]="getRating('trakt')"></app-external-rating>
+                  <myanili-external-rating [rating]="getRating('trakt')"></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
-                <app-icon-trakt style="color: #ed1c24"></app-icon-trakt>
+                <myanili-icon-trakt style="color: #ed1c24"></myanili-icon-trakt>
                 <a
                   class="ms-1"
                   [href]="
@@ -577,11 +580,11 @@
             <div *ngIf="anime.my_extension?.simklId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating [rating]="getRating('simkl')"></app-external-rating>
+                  <myanili-external-rating [rating]="getRating('simkl')"></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
-                <app-icon-simkl></app-icon-simkl>
+                <myanili-icon-simkl></myanili-icon-simkl>
                 <a
                   class="ms-1"
                   [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId"
@@ -593,11 +596,11 @@
             <div *ngIf="anime.my_extension?.annictId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating [rating]="getRating('annict')"></app-external-rating>
+                  <myanili-external-rating [rating]="getRating('annict')"></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
-                <app-icon-annict></app-icon-annict>
+                <myanili-icon-annict></myanili-icon-annict>
                 <a
                   class="ms-1"
                   [href]="'https://annict.com/works/' + anime.my_extension!.annictId"
@@ -609,11 +612,11 @@
             <div *ngIf="anime.my_extension?.anisearchId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <app-external-rating [rating]="getRating('anisearch')"></app-external-rating>
+                  <myanili-external-rating [rating]="getRating('anisearch')"></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
-                <app-icon-anisearch></app-icon-anisearch>
+                <myanili-icon-anisearch></myanili-icon-anisearch>
                 <a
                   class="ms-1"
                   [href]="'https://anisearch.com/anime/' + anime.my_extension!.anisearchId"
@@ -627,7 +630,7 @@
                 <td class="text-nowrap"></td>
               </div>
               <div class="col-8">
-                <app-icon-livechart></app-icon-livechart>
+                <myanili-icon-livechart></myanili-icon-livechart>
                 <a
                   class="ms-1"
                   [ngClass]="{ 'link-secondary': !anime.my_extension?.livechartId }"
@@ -646,7 +649,7 @@
                 <td class="text-nowrap"></td>
               </div>
               <div class="col-8">
-                <app-icon-fandom [url]="anime.my_extension!.fandomSlug!"></app-icon-fandom>
+                <myanili-icon-fandom [url]="anime.my_extension!.fandomSlug!"></myanili-icon-fandom>
                 <a
                   *ngIf="anime.my_extension!.fandomSlug!.includes('.'); else fandom"
                   class="ms-1"
@@ -697,19 +700,19 @@
       <li [ngbNavItem]="2" *ngIf="anime?.opening_themes || anime?.ending_themes">
         <a ngbNavLink>Songs</a>
         <ng-template ngbNavContent>
-          <app-anime-songs [anime]="anime"></app-anime-songs>
+          <myanili-anime-songs [anime]="anime"></myanili-anime-songs>
         </ng-template>
       </li>
       <li [ngbNavItem]="3">
         <a ngbNavLink>Characters</a>
         <ng-template ngbNavContent>
-          <app-anime-characters [id]="id"></app-anime-characters>
+          <myanili-anime-characters [id]="id"></myanili-anime-characters>
         </ng-template>
       </li>
       <li [ngbNavItem]="6">
         <a ngbNavLink>Staff</a>
         <ng-template ngbNavContent>
-          <app-anime-staff [id]="id"></app-anime-staff>
+          <myanili-anime-staff [id]="id"></myanili-anime-staff>
         </ng-template>
       </li>
       <li
@@ -719,8 +722,8 @@
         <a ngbNavLink>Related</a>
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">
-            <app-anime-related [related_anime]="anime.related_anime"></app-anime-related>
-            <app-manga-related [related_manga]="anime.related_manga" [has_covers]="false"></app-manga-related>
+            <myanili-anime-related [related_anime]="anime.related_anime"></myanili-anime-related>
+            <myanili-manga-related [related_manga]="anime.related_manga" [has_covers]="false"></myanili-manga-related>
           </section>
         </ng-template>
       </li>
@@ -730,9 +733,9 @@
       >
         <a ngbNavLink>Recommendations</a>
         <ng-template ngbNavContent>
-          <app-anime-recommendations
+          <myanili-anime-recommendations
             [recommendations]="anime.recommendations"
-          ></app-anime-recommendations>
+          ></myanili-anime-recommendations>
         </ng-template>
       </li>
     </ul>
@@ -740,9 +743,9 @@
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
   </ng-container>
 
-  <app-anime-songs [anime]="anime" *ngIf="edit" [edit]="edit"></app-anime-songs>
+  <myanili-anime-songs [anime]="anime" *ngIf="edit" [edit]="edit"></myanili-anime-songs>
   <button *ngIf="edit && !busy" class="btn btn-danger d-block my-3 mx-auto" (click)="deleteEntry()">
-    <app-icon name="trash"></app-icon>
+    <myanili-icon name="trash"></myanili-icon>
     Remove from list
   </button>
 </div>

@@ -6,7 +6,7 @@ import { TraktService } from '../../anime/trakt.service';
 import { ExternalComponent } from '../external.component';
 
 @Component({
-  selector: 'app-trakt',
+  selector: 'myanili-trakt',
   templateUrl: '../external.component.html',
 })
 export class TraktComponent extends ExternalComponent {

@@ -4,7 +4,7 @@ import { Season } from '@models/components';
 import { SettingsService } from '../settings.service';
 
 @Component({
-  selector: 'app-widget-season',
+  selector: 'myanili-widget-season',
   templateUrl: './widget-season.component.html',
   styleUrls: ['./widget-season.component.scss'],
 })

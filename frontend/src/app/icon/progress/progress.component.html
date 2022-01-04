@@ -6,6 +6,6 @@
     [space]="(-1 / 16) * size"
     [percent]="percent"
   ></circle-progress>
-  <app-icon class="overlay-icon" *ngIf="name" [size]="size" [name]="name"></app-icon>
+  <myanili-icon class="overlay-icon" *ngIf="name" [size]="size" [name]="name"></myanili-icon>
 </span>
-<app-icon *ngIf="percent === 100" [size]="size" name="check-circle"></app-icon>
+<myanili-icon *ngIf="percent === 100" [size]="size" name="check-circle"></myanili-icon>

@@ -11,7 +11,7 @@ import { MangaDetailsComponent } from '../manga/details/details.component';
 import { Language, SettingsService } from '../settings/settings.service';
 
 @Component({
-  selector: 'app-mal',
+  selector: 'myanili-mal',
   templateUrl: './mal.component.html',
   styleUrls: ['./mal.component.scss'],
 })

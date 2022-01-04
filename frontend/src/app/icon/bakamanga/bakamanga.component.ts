@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IconComponent } from '../icon.component';
 
 @Component({
-  selector: 'app-icon-bakamanga',
+  selector: 'myanili-icon-bakamanga',
   templateUrl: './bakamanga.component.html',
   styleUrls: ['../icon.component.scss'],
 })

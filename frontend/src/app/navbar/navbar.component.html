@@ -27,7 +27,7 @@
                 role="button"
                 ngbDropdownToggle
               >
-                <app-icon class="me-2" name="film"></app-icon>
+                <myanili-icon class="me-2" name="film"></myanili-icon>
                 <span class="d-none d-md-inline">Watch</span>
               </a>
               <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="animeDropdown">
@@ -108,7 +108,7 @@
                 role="button"
                 ngbDropdownToggle
               >
-                <app-icon class="me-2" name="book-half"></app-icon>
+                <myanili-icon class="me-2" name="book-half"></myanili-icon>
                 <span class="d-none d-md-inline">Read</span>
               </a>
               <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="mangaDropdown">
@@ -172,10 +172,10 @@
               </ul>
             </li>
             <li class="nav-item">
-              <app-navbar-quickadd class="nav-link"></app-navbar-quickadd>
+              <myanili-navbar-quickadd class="nav-link"></myanili-navbar-quickadd>
             </li>
           </ul>
-          <app-widget-season class="me-3 text-white" *ngIf="module === 'anime'"></app-widget-season>
+          <myanili-widget-season class="me-3 text-white" *ngIf="module === 'anime'"></myanili-widget-season>
           <div class="d-flex cursor-pointer" *ngIf="user" (click)="showSettings()">
             <span class="d-none d-sm-inline my-auto me-3 text-white">{{ user!.name }}</span>
             <img
@@ -189,7 +189,7 @@
       <ng-template #login>
         <form class="d-flex ms-auto">
           <button class="btn btn-primary" type="submit" (click)="malService.login()">
-            <app-icon name="person"></app-icon>
+            <myanili-icon name="person"></myanili-icon>
             Login
           </button>
         </form>

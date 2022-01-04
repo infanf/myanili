@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IconComponent } from '../icon.component';
 
 @Component({
-  selector: 'app-icon-fandom',
+  selector: 'myanili-icon-fandom',
   templateUrl: './fandom.component.html',
   styleUrls: ['../icon.component.scss'],
 })

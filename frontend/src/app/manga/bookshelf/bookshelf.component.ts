@@ -6,7 +6,7 @@ import { SettingsService } from 'src/app/settings/settings.service';
 import { MangaService } from '../manga.service';
 
 @Component({
-  selector: 'app-bookshelf-wrapper',
+  selector: 'myanili-bookshelf-wrapper',
   templateUrl: './bookshelf-wrapper.component.html',
   styles: [],
 })
@@ -45,7 +45,7 @@ export class BookshelfWrapperComponent implements OnInit {
 }
 
 @Component({
-  selector: '[app-bookshelf]',
+  selector: '[myanili-bookshelf]',
   templateUrl: './bookshelf.component.html',
   styleUrls: ['./bookshelf.component.scss'],
 })

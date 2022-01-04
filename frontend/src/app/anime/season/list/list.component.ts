@@ -4,7 +4,7 @@ import { Anime } from '@models/anime';
 import { SeasonComponent } from '../season.component';
 
 @Component({
-  selector: 'app-anime-season-list',
+  selector: 'myanili-anime-season-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })

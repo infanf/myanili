@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IconComponent } from '../icon.component';
 
 @Component({
-  selector: 'app-icon-simkl',
+  selector: 'myanili-icon-simkl',
   templateUrl: './simkl.component.html',
   styleUrls: ['../icon.component.scss'],
 })

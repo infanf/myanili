@@ -15,7 +15,7 @@ import { MalService } from '../mal.service';
 import { Language, SettingsService } from './settings.service';
 
 @Component({
-  selector: 'app-settings',
+  selector: 'myanili-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })

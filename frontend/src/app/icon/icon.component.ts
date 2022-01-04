@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-icon',
+  selector: 'myanili-icon',
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss'],
 })

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IconComponent } from '../icon.component';
 
 @Component({
-  selector: 'app-icon-livechart',
+  selector: 'myanili-icon-livechart',
   templateUrl: './livechart.component.html',
   styleUrls: ['../icon.component.scss'],
 })

@@ -27,7 +27,7 @@
           routerLink="/manga/details/{{ manga.node.id }}"
         >
           <td>
-            <app-icon name="{{ manga.node.media_type | mal: 'mediaicon' }}"></app-icon>
+            <myanili-icon name="{{ manga.node.media_type | mal: 'mediaicon' }}"></myanili-icon>
           </td>
           <td
             class="d-lg-table-cell"
@@ -45,17 +45,17 @@
             <div *ngFor="let author of getAuthor(manga.node)">{{ author }}</div>
           </td>
           <td>
-            <app-platform [provider]="manga.my_extension?.platform"> </app-platform>
+            <myanili-platform [provider]="manga.my_extension?.platform"> </myanili-platform>
           </td>
           <td style="white-space: nowrap">
-            <app-icon-progress
+            <myanili-icon-progress
               *ngIf="manga.list_status.status === 'reading'"
               [percent]="
                 manga.node.num_chapters
                   ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
                   : 0
               "
-            ></app-icon-progress>
+            ></myanili-icon-progress>
             {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
           </td>
           <td>{{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}</td>

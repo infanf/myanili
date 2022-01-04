@@ -7,7 +7,7 @@
         <th colspan="2">Stream<span class="d-none d-md-inline">ing</span></th>
         <th>
           <span class="mx-2">
-            <app-icon-progress [percent]="(seenCount / animes.length) * 100"></app-icon-progress>
+            <myanili-icon-progress [percent]="(seenCount / animes.length) * 100"></myanili-icon-progress>
           </span>
         </th>
       </tr>
@@ -32,13 +32,13 @@
             }}
           </td>
           <td>
-            <app-icon-progress
+            <myanili-icon-progress
               [percent]="
                 anime.node.num_episodes
                   ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
                   : 0
               "
-            ></app-icon-progress>
+            ></myanili-icon-progress>
           </td>
           <td style="white-space: nowrap">
             <ng-container *ngIf="anime.node.media_type !== 'movie'">
@@ -54,10 +54,10 @@
             </ng-container>
           </td>
           <td>
-            <app-streaming
+            <myanili-streaming
               [provider]="anime.my_extension?.externalStreaming"
               [country]="anime.my_extension?.simulCountry"
-            ></app-streaming>
+            ></myanili-streaming>
           </td>
           <td>
             {{
@@ -70,7 +70,7 @@
             }}
           </td>
           <td>
-            <app-icon
+            <myanili-icon
               *ngIf="
                 (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0) &&
                   isInSeason(anime);
@@ -80,9 +80,9 @@
               class="mx-2"
               [name]="anime.busy ? 'loading-circle' : isSeen(anime) ? 'check-circle' : 'circle'"
               (click)="markSeen(anime)"
-            ></app-icon>
+            ></myanili-icon>
             <ng-template #plusIcon>
-            <app-icon
+            <myanili-icon
               class="cursor-pointer mx-2"
               [name]="
                 anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
@@ -93,7 +93,7 @@
               "
               (click)="markSeen(anime)"
               
-            ></app-icon>
+            ></myanili-icon>
           </ng-template>
           </td>
         </tr>

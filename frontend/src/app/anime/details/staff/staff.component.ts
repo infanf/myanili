@@ -4,7 +4,7 @@ import { AnimeStaff } from '@models/anime';
 import { AnimeService } from '../../anime.service';
 
 @Component({
-  selector: 'app-anime-staff',
+  selector: 'myanili-anime-staff',
   templateUrl: './staff.component.html',
   styleUrls: ['./staff.component.scss'],
 })

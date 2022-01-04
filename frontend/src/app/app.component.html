@@ -1,13 +1,13 @@
-<app-navbar></app-navbar>
+<myanili-navbar></myanili-navbar>
 <ng-container *ngIf="loggedIn && loggedIn != '***loading***'">
   <router-outlet></router-outlet>
   <div class="busy-overlay" *ngIf="busy">
-    <app-icon *ngIf="!loadingPercent" name="loading" [size]="64"></app-icon>
-    <app-icon-progress
+    <myanili-icon *ngIf="!loadingPercent" name="loading" [size]="64"></myanili-icon>
+    <myanili-icon-progress
       *ngIf="loadingPercent"
       [percent]="loadingPercent"
       [size]="64"
       name="loading"
-    ></app-icon-progress>
+    ></myanili-icon-progress>
   </div>
 </ng-container>

@@ -7,7 +7,7 @@ import { SettingsService } from 'src/app/settings/settings.service';
 import { AnimeService } from '../anime.service';
 
 @Component({
-  selector: 'app-list',
+  selector: 'myanili-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })

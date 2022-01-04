@@ -4,7 +4,7 @@ import { Anime } from '@models/anime';
 import { SeasonComponent } from '../season.component';
 
 @Component({
-  selector: 'app-anime-season-grid',
+  selector: 'myanili-anime-season-grid',
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.scss'],
 })

@@ -5,7 +5,7 @@ import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 
 @Component({
-  selector: 'app-navbar-quickadd',
+  selector: 'myanili-navbar-quickadd',
   templateUrl: './quickadd.component.html',
   styleUrls: ['./quickadd.component.scss'],
 })

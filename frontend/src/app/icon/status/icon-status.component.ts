@@ -5,7 +5,7 @@ import { ReadStatus } from '@models/manga';
 import { IconComponent } from '../icon.component';
 
 @Component({
-  selector: 'app-icon-status',
+  selector: 'myanili-icon-status',
   templateUrl: './icon-status.component.html',
   styleUrls: ['./icon-status.component.scss'],
 })

@@ -5,7 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MangaService } from '../../manga/manga.service';
 
 @Component({
-  selector: 'app-bakamanga',
+  selector: 'myanili-bakamanga',
   templateUrl: '../external.component.html',
 })
 export class BakamangaComponent extends ExternalComponent {
