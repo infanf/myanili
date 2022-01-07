@@ -1,18 +1,22 @@
 {
-    "version": "2.9.0",
-    "changes": [
-        {
-            "version": "2.9.0",
-            "features": [
-                "add this changelog",
-                "media type icons",
-                "filter out hentai from season view and search results",
-                "show related media as cards similar to recommendations"
-            ],
-            "fixes": [
-                "adjust modal border radius to updated design"
-            ],
-            "others": []
-        }
-    ]
+  "version": "2.9.1",
+  "changes": [
+    {
+      "version": "2.9.1",
+      "features": [],
+      "fixes": ["re-add reading platform WEBTOON"],
+      "others": []
+    },
+    {
+      "version": "2.9.0",
+      "features": [
+        "add this changelog",
+        "media type icons",
+        "filter out hentai from season view and search results",
+        "show related media as cards similar to recommendations"
+      ],
+      "fixes": ["adjust modal border radius to updated design"],
+      "others": []
+    }
+  ]
 }
