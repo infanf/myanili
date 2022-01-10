@@ -3,7 +3,7 @@ import { Manga, RelatedManga } from '@models/manga';
 import { MalService } from 'src/app/mal.service';
 
 @Component({
-  selector: 'app-manga-related',
+  selector: 'myanili-manga-related',
   templateUrl: './related.component.html',
   styleUrls: ['./related.component.scss'],
 })

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IconComponent } from '../icon.component';
 
 @Component({
-  selector: 'app-icon-trakt',
+  selector: 'myanili-icon-trakt',
   templateUrl: './trakt.component.html',
   styleUrls: ['../icon.component.scss'],
 })

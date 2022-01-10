@@ -4,7 +4,7 @@ import { AnimeCharacter } from '@models/anime';
 import { AnimeService } from '../../anime.service';
 
 @Component({
-  selector: 'app-anime-characters',
+  selector: 'myanili-anime-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss'],
 })

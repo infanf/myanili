@@ -16,7 +16,7 @@ import { PlatformPipe } from 'src/app/platform.pipe';
 import { MangaService } from '../manga.service';
 
 @Component({
-  selector: 'app-manga-details',
+  selector: 'myanili-manga-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
 })

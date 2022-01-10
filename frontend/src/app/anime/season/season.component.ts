@@ -6,7 +6,7 @@ import { SettingsService } from 'src/app/settings/settings.service';
 import { AnimeService } from '../anime.service';
 
 @Component({
-  selector: 'app-season',
+  selector: 'myanili-season',
   templateUrl: './season.component.html',
   styleUrls: ['./season.component.scss'],
 })

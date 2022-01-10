@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ExtRating } from '@models/components';
 
 @Component({
-  selector: 'app-external-rating',
+  selector: 'myanili-external-rating',
   templateUrl: './external-rating.component.html',
   styleUrls: ['./external-rating.component.scss'],
 })

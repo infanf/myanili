@@ -20,7 +20,7 @@ import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 
 @Component({
-  selector: 'app-anime-details',
+  selector: 'myanili-anime-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
 })
@@ -140,6 +140,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime.related_manga.length) {
       this.anime.related_manga_promise.then(relatedManga => {
         if (this.anime) this.anime.related_manga = relatedManga;
+      });
+    }
+    if (!this.anime.website) {
+      this.anime.website_promise?.then(website => {
+        if (this.anime) this.anime.website = website;
       });
     }
     this.glob.notbusy();

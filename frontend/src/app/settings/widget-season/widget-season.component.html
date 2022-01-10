@@ -1,20 +1,20 @@
-<app-icon
+<myanili-icon
   name="calendar-range"
   (click)="setCurrentSeason()"
   class="me-1 cursor-pointer"
   *ngIf="season.season !== currentSeason.season || season.year !== currentSeason.year"
-></app-icon>
-<app-icon
+></myanili-icon>
+<myanili-icon
   name="arrow-down-left-circle"
   (click)="changeSeason(-1)"
   class="me-1 cursor-pointer"
-></app-icon>
+></myanili-icon>
 <span>
   {{ season.year }}
-  <app-icon [name]="icons[season.season]"></app-icon>
+  <myanili-icon [name]="icons[season.season]"></myanili-icon>
 </span>
-<app-icon
+<myanili-icon
   name="arrow-up-right-circle"
   (click)="changeSeason(1)"
   class="ms-1 cursor-pointer"
-></app-icon>
+></myanili-icon>

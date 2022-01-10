@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MangaRecommendations } from '@models/manga';
 
 @Component({
-  selector: 'app-manga-recommendations',
+  selector: 'myanili-manga-recommendations',
   templateUrl: './recommendations.component.html',
   styleUrls: ['./recommendations.component.scss'],
 })

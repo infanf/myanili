@@ -11,7 +11,7 @@
           <img loading="lazy" src="/assets/blank-poster.svg" alt="poster" class="card-img" />
         </picture>
         <div class="card-overlay rounded-bottom">
-          <app-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}" class="me-1"></app-icon>
+          <myanili-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
           {{
             anime.my_extension?.displayName ||
               (lang === 'en'
@@ -57,7 +57,7 @@
             </div>
           </ng-container>
           <ng-template #statusicon>
-            <app-icon-status
+            <myanili-icon-status
               class="badge rounded-pill bg-primary"
               style="
                 position: absolute;
@@ -67,7 +67,7 @@
                 padding-top: 0.5rem;
               "
               [status]="anime.list_status.status"
-            ></app-icon-status>
+            ></myanili-icon-status>
           </ng-template>
         </ng-container>
       </div>

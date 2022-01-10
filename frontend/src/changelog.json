@@ -1,6 +1,12 @@
 {
-  "version": "2.9.1",
+  "version": "2.9.2",
   "changes": [
+    {
+      "version": "2.9.2",
+      "features": ["add official website to anime detrails"],
+      "fixes": [],
+      "others": []
+    },
     {
       "version": "2.9.1",
       "features": [],

@@ -6,7 +6,7 @@ import { GlobalService } from '../global.service';
 import { MalService } from '../mal.service';
 
 @Component({
-  selector: 'app-person',
+  selector: 'myanili-person',
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.scss'],
 })

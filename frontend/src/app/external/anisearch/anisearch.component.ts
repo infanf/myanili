@@ -5,7 +5,7 @@ import { AnisearchService } from '../../anisearch.service';
 import { ExternalComponent } from '../external.component';
 
 @Component({
-  selector: 'app-anisearch',
+  selector: 'myanili-anisearch',
   templateUrl: '../external.component.html',
 })
 export class AnisearchComponent extends ExternalComponent {

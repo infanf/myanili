@@ -85,6 +85,7 @@ export class AnimeService {
     }
     const comments = anime.my_list_status?.comments;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
+    if (!anime.website) anime.website_promise = this.getWebsite(id);
     if (!comments) return anime;
     try {
       const json = Base64.decode(comments);
@@ -159,6 +160,12 @@ export class AnimeService {
       this.annict.updateStatus(ids.annictId, 'no_select'),
     ]);
     return true;
+  }
+
+  async getWebsite(id: number): Promise<string | undefined> {
+    const jikanime = await this.malService.getJikan('anime', id);
+    const website = jikanime.external_links.find(link => link.name.includes('Official'));
+    return website?.url;
   }
 
   async getManga(id: number): Promise<RelatedManga[]> {

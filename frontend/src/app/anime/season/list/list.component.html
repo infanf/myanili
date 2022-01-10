@@ -2,7 +2,7 @@
   <thead class="sticky">
     <tr>
       <th>
-        <app-icon name="list-check" class="mx-2"></app-icon>
+        <myanili-icon name="list-check" class="mx-2"></myanili-icon>
       </th>
       <th
         class="d-lg-table-cell"
@@ -29,11 +29,11 @@
         }"
       >
         <td>
-          <app-icon-status
+          <myanili-icon-status
             class="mx-2"
             *ngIf="anime.my_list_status"
             [status]="anime.my_list_status!.status"
-          ></app-icon-status>
+          ></myanili-icon-status>
         </td>
         <td
           routerLink="/anime/details/{{ anime.id }}"
@@ -65,33 +65,33 @@
           >
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
-          <app-icon name="{{ anime.media_type | mal: 'mediaicon' }}"></app-icon>
+          <myanili-icon name="{{ anime.media_type | mal: 'mediaicon' }}"></myanili-icon>
           <span class="d-none d-md-inline ms-1">{{ anime.media_type | mal: 'mediatype' }}</span>
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
-          <app-streaming
+          <myanili-streaming
             [provider]="anime.my_extension?.externalStreaming"
             [country]="anime.my_extension?.simulCountry"
-          ></app-streaming>
+          ></myanili-streaming>
         </td>
         <td style="white-space: nowrap">
           <ng-container *ngIf="anime.my_list_status; else addanime">
-            <app-icon-progress
+            <myanili-icon-progress
               *ngIf="anime.my_list_status?.status === 'watching'"
               [percent]="
                 anime.num_episodes
                   ? ((anime.my_list_status?.num_episodes_watched || 0) / anime.num_episodes!) * 100
                   : 0
               "
-            ></app-icon-progress>
+            ></myanili-icon-progress>
             {{ anime.my_list_status?.num_episodes_watched }}/{{ anime.num_episodes || '?' }}
           </ng-container>
           <ng-template #addanime>
-            <app-icon
+            <myanili-icon
               [name]="anime.busy ? 'hourglass-split' : 'plus'"
               size="20"
               (click)="addToList(anime)"
-            ></app-icon>
+            ></myanili-icon>
           </ng-template>
         </td>
       </tr>

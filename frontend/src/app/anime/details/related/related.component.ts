@@ -3,7 +3,7 @@ import { Anime, RelatedAnime } from '@models/anime';
 import { MalService } from 'src/app/mal.service';
 
 @Component({
-  selector: 'app-anime-related',
+  selector: 'myanili-anime-related',
   templateUrl: './related.component.html',
   styleUrls: ['./related.component.scss'],
 })

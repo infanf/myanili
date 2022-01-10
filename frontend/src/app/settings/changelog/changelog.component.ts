@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Changelog, GlobalService } from 'src/app/global.service';
 
 @Component({
-  selector: 'app-changelog',
+  selector: 'myanili-changelog',
   templateUrl: './changelog.component.html',
   styleUrls: ['./changelog.component.scss'],
 })

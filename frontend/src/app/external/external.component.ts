@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-external',
+  selector: 'myanili-external',
   templateUrl: './external.component.html',
   styleUrls: ['./external.component.scss'],
 })

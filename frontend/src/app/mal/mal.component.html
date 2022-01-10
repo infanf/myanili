@@ -7,7 +7,7 @@
       #searchbar
     />
     <button class="btn btn-primary" (click)="search()">
-      <app-icon name="search"></app-icon>
+      <myanili-icon name="search"></myanili-icon>
     </button>
   </form>
 </section>
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="btn btn-primary d-block" (click)="filterResults()">
-      <app-icon name="funnel"></app-icon>
+      <myanili-icon name="funnel"></myanili-icon>
       Filter
     </div>
   </div>
@@ -49,7 +49,7 @@
     <thead class="sticky">
       <tr>
         <th>
-          <app-icon
+          <myanili-icon
             [name]="
               filter.type.length || filter.status.length || filter.genre.length
                 ? 'funnel-fill'
@@ -57,7 +57,7 @@
             "
             class="mx-2 cursor-pointer"
             (click)="showFilters = !showFilters"
-          ></app-icon>
+          ></myanili-icon>
         </th>
         <th
           class="d-lg-table-cell"
@@ -86,11 +86,11 @@
           (click)="open(result.id)"
         >
           <td>
-            <app-icon-status
+            <myanili-icon-status
               class="mx-2"
               *ngIf="result.my_list_status"
               [status]="result.my_list_status!.status"
-            ></app-icon-status>
+            ></myanili-icon-status>
           </td>
           <td
             class="d-lg-table-cell"
@@ -111,7 +111,7 @@
           </td>
 
           <td>
-            <app-icon name="{{ result.media_type | mal: 'mediaicon' }}"></app-icon>
+            <myanili-icon name="{{ result.media_type | mal: 'mediaicon' }}"></myanili-icon>
             <span class="d-none d-md-inline ms-1">{{ result.media_type | mal: 'mediatype' }}</span>
           </td>
           <td class="text-nowrap">

@@ -27,7 +27,7 @@
         routerLink="/anime/details/{{ anime.node.id }}"
       >
         <td>
-          <app-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}"></app-icon>
+          <myanili-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}"></myanili-icon>
         </td>
         <td
           class="d-lg-table-cell"
@@ -51,27 +51,27 @@
         </td>
         <td style="white-space: nowrap">
           {{ anime.node.start_season?.year || anime.node.start_date }}
-          <app-icon
+          <myanili-icon
             class="d-sm-none"
             name="{{ anime.node.start_season?.season | mal: 'seasonicon' }}"
-          ></app-icon>
+          ></myanili-icon>
           <span class="d-none d-sm-inline">{{ anime.node.start_season?.season | titlecase }}</span>
         </td>
         <td>
-          <app-streaming
+          <myanili-streaming
             [provider]="anime.my_extension?.externalStreaming"
             [country]="anime.my_extension?.simulCountry"
-          ></app-streaming>
+          ></myanili-streaming>
         </td>
         <td style="white-space: nowrap">
-          <app-icon-progress
+          <myanili-icon-progress
             *ngIf="anime.list_status.status === 'watching'"
             [percent]="
               anime.node.num_episodes
                 ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
                 : 0
             "
-          ></app-icon-progress>
+          ></myanili-icon-progress>
           {{ anime.list_status.num_episodes_watched }}/{{ anime.node.num_episodes || '?' }}
         </td>
       </tr>

@@ -21,7 +21,8 @@
     "paths": {
       "@models/*": ["src/app/models/*"],
       "@icon/*": ["src/app/icon/*"],
-      "@external/*": ["src/app/external/*"]
+      "@external/*": ["src/app/external/*"],
+      "@components/*": ["src/app/components/*"]
     },
     "resolveJsonModule": true,
   },

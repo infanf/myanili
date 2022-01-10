@@ -9,14 +9,14 @@
         [href]="getSongUrl(song.spotify)"
         target="_blank"
       >
-        <app-icon-spotify></app-icon-spotify>
+        <myanili-icon-spotify></myanili-icon-spotify>
       </a>
-      <app-icon-spotify
+      <myanili-icon-spotify
         *ngIf="edit"
         class="cursor-pointer"
         [class]="{ 'link-spotify': song.spotify }"
         (click)="setSongUrl(song)"
-      ></app-icon-spotify>
+      ></myanili-icon-spotify>
     </div>
   </div>
   <div class="col-sm-6 mb-3" *ngIf="anime!.ending_themes?.length">
@@ -29,14 +29,14 @@
         [href]="getSongUrl(song.spotify)"
         target="_blank"
       >
-        <app-icon-spotify></app-icon-spotify>
+        <myanili-icon-spotify></myanili-icon-spotify>
       </a>
-      <app-icon-spotify
+      <myanili-icon-spotify
         *ngIf="edit"
         class="cursor-pointer"
         [class]="{ 'link-spotify': song.spotify }"
         (click)="setSongUrl(song)"
-      ></app-icon-spotify>
+      ></myanili-icon-spotify>
     </div>
   </div>
 </div>

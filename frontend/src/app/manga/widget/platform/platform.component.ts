@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-platform',
+  selector: 'myanili-platform',
   templateUrl: './platform.component.html',
   styleUrls: ['./platform.component.scss'],
 })

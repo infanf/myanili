@@ -6,7 +6,7 @@ import { GlobalService } from 'src/app/global.service';
 import { MalService } from 'src/app/mal.service';
 
 @Component({
-  selector: 'app-anime-songs',
+  selector: 'myanili-anime-songs',
   templateUrl: './songs.component.html',
   styleUrls: ['./songs.component.scss'],
 })

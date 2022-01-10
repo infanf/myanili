@@ -4,7 +4,7 @@ import { MangaCharacter } from '@models/manga';
 import { MangaService } from '../../manga.service';
 
 @Component({
-  selector: 'app-manga-characters',
+  selector: 'myanili-manga-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss'],
 })

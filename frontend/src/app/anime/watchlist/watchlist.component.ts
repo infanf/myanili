@@ -9,7 +9,7 @@ import { SimklService } from '../simkl.service';
 import { TraktService } from '../trakt.service';
 
 @Component({
-  selector: 'app-watchlist',
+  selector: 'myanili-watchlist',
   templateUrl: './watchlist.component.html',
   styleUrls: ['./watchlist.component.scss'],
 })

@@ -7,7 +7,7 @@ import { Language, SettingsService } from '../../settings/settings.service';
 import { AnimeService } from '../anime.service';
 
 @Component({
-  selector: 'app-schedule',
+  selector: 'myanili-schedule',
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.scss'],
 })

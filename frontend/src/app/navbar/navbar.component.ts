@@ -7,7 +7,7 @@ import { MalService } from '../mal.service';
 import { SettingsComponent } from '../settings/settings.component';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'myanili-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })

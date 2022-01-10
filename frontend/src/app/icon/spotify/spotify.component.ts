@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { IconComponent } from '../icon.component';
 
 @Component({
-  selector: 'app-icon-spotify',
+  selector: 'myanili-icon-spotify',
   templateUrl: './spotify.component.html',
   styleUrls: ['../icon.component.scss'],
 })
