@@ -155,36 +155,44 @@ JAVASCRIPT;
         setcookie('MAL_REFRESH_TOKEN', '', 0);
     });
 
-    // $router->get('animes/season/{year}/{season}/songs', function (int $year, int $season) {
-    //     function theme($themeNode)
-    //     {
-    //         return $themeNode['text'];
-    //     }
-    //     $season = MalServiceProvider::getListSeason($year, $season);
-    //     $animes = [];
-    //     foreach ($season as $node) {
-    //         $anime = $node['node'];
-    //         if (!isset($anime['my_list_status'])) {
-    //             continue;
-    //         }
+    $router->get('animes/season/{year}/{season}/songs', function (int $year, int $season) {
+        function theme($themeNode)
+        {
+            return $themeNode['text'];
+        }
+        $season = MalServiceProvider::getListSeason($year, $season);
+        $animes = [];
+        foreach ($season as $node) {
+            $anime = $node['node'];
+            if (!isset($anime['my_list_status'])) {
+                continue;
+            }
 
-    //         $details = MalServiceProvider::getAnimeDetails($anime['id']);
-    //         $extras = [];
-    //         try {
-    //             $extras = json_decode(base64_decode($details['my_list_status']['comments']), true);
-    //         } catch (Exception $e) {
-    //         }
-    //         $animes[] = [
-    //             'id' => $anime['id'],
-    //             'title' => $anime['title'],
-    //             'title_english' => $anime['alternative_titles']['en'] ?? '',
-    //             'type' => $anime['media_type'],
-    //             'day' => isset($extras['simulDay'])?($extras['simulDay'] + 6) % 7 + 1 : '',
-    //             'opening' => implode("\n", array_map('theme', $details['opening_themes'] ?? [])) ?? '',
-    //             'ending' => implode("\n", array_map('theme', $details['ending_themes'] ?? [])) ?? '',
-    //         ];
+            $details = MalServiceProvider::getAnimeDetails($anime['id']);
+            $extras = [];
+            try {
+                $extras = json_decode(base64_decode($details['my_list_status']['comments']), true);
+            } catch (Exception $e) {
+            }
+            $day = '';
+            if (isset($extras['simulDay'])) {
+                if (gettype($extras['simulDay']) == 'integer') {
+                    $day = (($extras['simulDay']) + 6) % 7 + 1;
+                } elseif(gettype($extras['simulDay']) == 'array' && count($extras['simulDay'])) {
+                    $day = $extras['simulDay'][0];
+                }
+            }
+            $animes[] = [
+                'id' => $anime['id'],
+                'title' => $anime['title'],
+                'title_english' => $anime['alternative_titles']['en'] ?? '',
+                'type' => $anime['media_type'],
+                'day' => $day,
+                'opening' => implode("\n", array_map('theme', $details['opening_themes'] ?? [])) ?? '',
+                'ending' => implode("\n", array_map('theme', $details['ending_themes'] ?? [])) ?? '',
+            ];
 
-    //     }
-    //     return $animes;
-    // });
+        }
+        return $animes;
+    });
 });
