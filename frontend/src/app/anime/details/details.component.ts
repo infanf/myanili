@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { TraktComponent } from '@external/trakt/trakt.component';
@@ -12,7 +13,6 @@ import { AnisearchService } from 'src/app/anisearch.service';
 import { CacheService } from 'src/app/cache.service';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
-import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
 import { AnnictService } from '../annict.service';

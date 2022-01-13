@@ -1,0 +1,16 @@
+<div class="card h-100 cursor-pointer">
+  <picture>
+    <source *ngIf="poster" [srcset]="poster" />
+    <source srcset="/assets/blank-poster.svg" />
+    <img loading="lazy" src="/assets/blank-poster.svg" alt="poster" class="card-img" />
+  </picture>
+  <div class="card-overlay rounded-bottom">
+    <myanili-icon
+      *ngIf="mediaType"
+      name="{{ mediaType | mal: 'mediaicon' }}"
+      class="me-1"
+    ></myanili-icon>
+    {{ title }}
+  </div>
+  <myanili-status-badge [status]="status" [progress]="progress" [parts]="parts"></myanili-status-badge>
+</div>

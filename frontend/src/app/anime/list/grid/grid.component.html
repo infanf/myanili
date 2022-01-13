@@ -1,76 +1,20 @@
-<div class="container-fluid my-3">
-  <div class="row row-cols-2 row-cols-sm-4 row-cols-md-6 g-3">
-    <div class="col" *ngFor="let anime of animes">
-      <div class="card h-100 cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
-        <picture>
-          <source
-            *ngIf="anime.node && anime.node.main_picture"
-            srcset="{{ anime.node.main_picture.medium || anime.node.main_picture.large }}"
-          />
-          <source srcset="/assets/blank-poster.svg" />
-          <img loading="lazy" src="/assets/blank-poster.svg" alt="poster" class="card-img" />
-        </picture>
-        <div class="card-overlay rounded-bottom">
-          <myanili-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
-          {{
-            anime.my_extension?.displayName ||
-              (lang === 'en'
-                ? anime.node.alternative_titles?.en
-                : lang === 'jp'
-                ? anime.node.alternative_titles?.ja
-                : anime.node.title) ||
-              anime.node.title
-          }}
-        </div>
-        <ng-container *ngIf="anime.list_status">
-          <ng-container *ngIf="anime.list_status.status === 'watching'; else statusicon">
-            <div
-              style="
-                position: absolute;
-                top: 0.5rem;
-                right: 0.5rem;
-                border-radius: 50%;
-                overflow: hidden;
-                line-height: 1;
-              "
-            >
-              <circle-progress
-                [percent]="
-                  anime.node.num_episodes
-                    ? ((anime.list_status?.num_episodes_watched || 0) / anime.node.num_episodes!) *
-                      100
-                    : 0
-                "
-                [radius]="14"
-                [title]="
-                  '' +
-                  anime.list_status?.num_episodes_watched +
-                  '/' +
-                  (anime.node.num_episodes || '?')
-                "
-                [showTitle]="true"
-                [titleColor]="'currentColor'"
-                [titleFontSize]="'8px'"
-                style="border-radius: 50%"
-                class="text-white bg-primary"
-              ></circle-progress>
-            </div>
-          </ng-container>
-          <ng-template #statusicon>
-            <myanili-icon-status
-              class="badge rounded-pill bg-primary"
-              style="
-                position: absolute;
-                top: 0.5rem;
-                right: 0.5rem;
-                height: 2rem;
-                padding-top: 0.5rem;
-              "
-              [status]="anime.list_status.status"
-            ></myanili-icon-status>
-          </ng-template>
-        </ng-container>
-      </div>
-    </div>
-  </div>
+<div class="grid">
+  <myanili-media-card
+    *ngFor="let anime of animes"
+    [status]="anime.list_status?.status"
+    [poster]="anime.node.main_picture?.medium || anime.node.main_picture?.large"
+    [title]="
+      anime.my_extension?.displayName ||
+      (lang === 'en'
+        ? anime.node.alternative_titles?.en
+        : lang === 'jp'
+        ? anime.node.alternative_titles?.ja
+        : anime.node.title) ||
+      anime.node.title
+    "
+    [progress]="anime.list_status?.num_episodes_watched"
+    [parts]="anime.node.num_episodes"
+    [mediaType]="anime.node.media_type"
+    routerLink="/anime/details/{{ anime.node.id }}"
+  ></myanili-media-card>
 </div>
