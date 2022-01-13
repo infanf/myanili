@@ -17,7 +17,6 @@ import { Language, SettingsService } from './settings.service';
 @Component({
   selector: 'myanili-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
   lang: Language = 'default';

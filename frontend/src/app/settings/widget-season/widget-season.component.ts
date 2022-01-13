@@ -6,7 +6,6 @@ import { SettingsService } from '../settings.service';
 @Component({
   selector: 'myanili-widget-season',
   templateUrl: './widget-season.component.html',
-  styleUrls: ['./widget-season.component.scss'],
 })
 export class WidgetSeasonComponent implements OnInit {
   season: Season;

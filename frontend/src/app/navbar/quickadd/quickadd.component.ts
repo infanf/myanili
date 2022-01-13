@@ -7,7 +7,6 @@ import { KitsuService } from 'src/app/kitsu.service';
 @Component({
   selector: 'myanili-navbar-quickadd',
   templateUrl: './quickadd.component.html',
-  styleUrls: ['./quickadd.component.scss'],
 })
 export class QuickaddComponent {
   constructor(

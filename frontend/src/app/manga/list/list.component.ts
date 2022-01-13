@@ -9,7 +9,6 @@ import { MangaService } from '../manga.service';
 @Component({
   selector: 'myanili-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
 })
 export class MangaListComponent implements OnInit {
   @Input() status?: ReadStatus;

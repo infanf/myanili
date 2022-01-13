@@ -8,7 +8,6 @@ import { AnimeService } from '../anime.service';
 @Component({
   selector: 'myanili-season',
   templateUrl: './season.component.html',
-  styleUrls: ['./season.component.scss'],
 })
 export class SeasonComponent {
   animes: Array<Partial<Anime>> = [];

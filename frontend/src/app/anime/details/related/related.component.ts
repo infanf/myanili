@@ -5,7 +5,6 @@ import { MalService } from 'src/app/mal.service';
 @Component({
   selector: 'myanili-anime-related',
   templateUrl: './related.component.html',
-  styleUrls: ['./related.component.scss'],
 })
 export class AnimeRelatedComponent implements OnInit {
   @Input() related_anime: RelatedAnime[] = [];
