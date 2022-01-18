@@ -145,4 +145,14 @@ overlay.overlay-shown {
   border-radius: $border-radius;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+
+  @media (max-width: 540px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @import 'styles/dark-theme.scss';

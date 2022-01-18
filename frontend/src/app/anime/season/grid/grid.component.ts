@@ -6,7 +6,6 @@ import { SeasonComponent } from '../season.component';
 @Component({
   selector: 'myanili-anime-season-grid',
   templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.scss'],
 })
 export class SeasonGridComponent extends SeasonComponent {
   @Input() animes: Array<Partial<Anime>> = [];

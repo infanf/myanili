@@ -1,4 +1,4 @@
-<ng-container *ngIf="status">
+<ng-container *ngIf="status; else recommendationbadge">
   <ng-container *ngIf="status === 'watching' || status === 'reading'; else statusicon">
     <div
       style="
@@ -30,3 +30,12 @@
     ></myanili-icon-status>
   </ng-template>
 </ng-container>
+<ng-template #recommendationbadge>
+  <div
+    *ngIf="recommendations"
+    class="badge rounded-pill bg-primary"
+    style="position: absolute; top: 0.5rem; right: 0.5rem"
+  >
+    {{ recommendations }}
+  </div>
+</ng-template>

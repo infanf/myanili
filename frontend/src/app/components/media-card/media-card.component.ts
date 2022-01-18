@@ -14,4 +14,5 @@ export class MediaCardComponent {
   @Input() status?: ReadStatus | WatchStatus;
   @Input() progress?: number;
   @Input() parts?: number;
+  @Input() recommendations?: number;
 }
