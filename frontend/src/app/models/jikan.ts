@@ -216,7 +216,7 @@ type Jikan4PersonData = Jikan4Data & {
 
 export type Jikan4Person = Jikan4Response<Jikan4PersonData>;
 
-interface Jikan4PersonAnimeData {
+interface Jikan4PersonRoleData {
   role: 'Main' | 'Supporting';
   anime: Jikan4Data & {
     title: string;
@@ -228,4 +228,24 @@ interface Jikan4PersonAnimeData {
   };
 }
 
+export type Jikan4PersonRoles = Jikan4Response<Jikan4PersonRoleData[]>;
+
+interface Jikan4PersonAnimeData {
+  position: string;
+  anime: Jikan4Data & {
+    title: string;
+    images: Jikan4Image;
+  };
+}
+
 export type Jikan4PersonAnimes = Jikan4Response<Jikan4PersonAnimeData[]>;
+
+interface Jikan4PersonMangaData {
+  position: string;
+  manga: Jikan4Data & {
+    title: string;
+    images: Jikan4Image;
+  };
+}
+
+export type Jikan4PersonMangas = Jikan4Response<Jikan4PersonMangaData[]>;
