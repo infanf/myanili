@@ -142,3 +142,62 @@ interface ListManga {
 }
 
 export type JikanListManga = ListManga;
+
+interface Jikan4Data {
+  mal_id: number;
+  url: string;
+}
+
+interface Jikan4Response<T> {
+  data: T;
+  pagination?: {};
+}
+
+interface Jikan4ImageUrls {
+  image_url: string;
+  small_image_url?: string;
+  large_image_url?: string;
+}
+
+interface Jikan4Image {
+  jpg: Jikan4ImageUrls;
+  webp?: Jikan4ImageUrls;
+}
+
+type Jikan4CharacterData = Jikan4Data & {
+  name: string;
+  nicknames: string[];
+  images?: Jikan4Image;
+  favorites: number;
+  about: string;
+};
+
+export type Jikan4Character = Jikan4Response<Jikan4CharacterData>;
+
+interface Jikan4CharacterAnimeRoleData {
+  role: 'Main' | 'Supporting';
+  anime: Jikan4Data & {
+    images: Jikan4Image;
+    title: string;
+  };
+}
+
+interface Jikan4CharacterMangaRoleData {
+  role: 'Main' | 'Supporting';
+  manga: Jikan4Data & {
+    images: Jikan4Image;
+    title: string;
+  };
+}
+
+interface Jikan4CharacterVoiceActorData {
+  language: string;
+  person: Jikan4Data & {
+    images: Jikan4Image;
+    name: string;
+  };
+}
+
+export type Jikan4CharacterAnimeRoles = Jikan4Response<Jikan4CharacterAnimeRoleData[]>;
+export type Jikan4CharacterMangaRoles = Jikan4Response<Jikan4CharacterMangaRoleData[]>;
+export type Jikan4CharacterVoiceActors = Jikan4Response<Jikan4CharacterVoiceActorData[]>;

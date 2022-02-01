@@ -15,4 +15,5 @@ export class MediaCardComponent {
   @Input() progress?: number;
   @Input() parts?: number;
   @Input() recommendations?: number;
+  @Input() icon?: string;
 }

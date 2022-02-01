@@ -189,6 +189,7 @@ export class AnimeService {
   async getCharacters(id: number): Promise<AnimeCharacter[]> {
     const characterStaff = await this.malService.getJikanData<{ characters?: AnimeCharacter[] }>(
       `anime/${id}/characters_staff`,
+      true,
     );
     return characterStaff.characters || [];
   }
@@ -196,6 +197,7 @@ export class AnimeService {
   async getStaff(id: number): Promise<AnimeStaff[]> {
     const characterStaff = await this.malService.getJikanData<{ staff?: AnimeStaff[] }>(
       `anime/${id}/characters_staff`,
+      true,
     );
     return characterStaff.staff || [];
   }

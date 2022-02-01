@@ -66,15 +66,19 @@ export class MalService {
     });
   }
 
-  async getJikanData<T>(url: string): Promise<T> {
+  async getJikanData<T>(url: string, v3 = false): Promise<T> {
     try {
       const response = await new Promise((r, rj) => {
-        this.httpClient.get<T>(`${environment.jikanUrl}${url}`).subscribe(r, rj);
+        this.httpClient
+          .get<T>(`${v3 ? environment.jikan3Url : environment.jikanUrl}${url}`)
+          .subscribe(r, rj);
       });
       return response as T;
     } catch (e) {
       return new Promise((r, rj) => {
-        this.httpClient.get<T>(`${environment.jikanFallbackUrl}${url}`).subscribe(r, rj);
+        this.httpClient
+          .get<T>(`${v3 ? environment.jikan3FallbackUrl : environment.jikanFallbackUrl}${url}`)
+          .subscribe(r, rj);
       });
     }
   }

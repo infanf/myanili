@@ -11,4 +11,5 @@ export class StatusBadgeComponent {
   @Input() progress?: number;
   @Input() parts?: number;
   @Input() recommendations?: number;
+  @Input() icon?: string;
 }
