@@ -30,11 +30,8 @@ import { StreamingComponent } from './anime/widget/streaming/streaming.component
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterComponent } from './character/character.component';
-import { DayPipe } from './day.pipe';
 import { DirectivesModule } from './directives/directives.module';
-import { FlagPipe } from './flag.pipe';
 import { GraphQLModule } from './graphql/graphql.module';
-import { MalPipe } from './mal.pipe';
 import { MalComponent } from './mal/mal.component';
 import {
   BookshelfComponent,
@@ -49,14 +46,10 @@ import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
-import { Nl2brPipe } from './nl2br.pipe';
 import { PersonComponent } from './person/person.component';
-import { PlatformPipe } from './platform.pipe';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
-import { StreamPipe } from './stream.pipe';
-import { TimePipe } from './time.pipe';
 import { ExternalRatingComponent } from './widget/external-rating/external-rating.component';
 
 @NgModule({
@@ -66,12 +59,6 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     AnimeListComponent,
     AnimeDetailsComponent,
     WatchlistComponent,
-    FlagPipe,
-    MalPipe,
-    TimePipe,
-    DayPipe,
-    StreamPipe,
-    PlatformPipe,
     ScheduleComponent,
     SeasonComponent,
     SettingsComponent,
@@ -80,7 +67,6 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     MangaDetailsComponent,
     MangaListComponent,
     MalComponent,
-    Nl2brPipe,
     AnimeCharactersComponent,
     AnimeRecommendationsComponent,
     AnimeRelatedComponent,
@@ -134,7 +120,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     DirectivesModule,
     ComponentsModule,
   ],
-  providers: [TimePipe, StreamPipe, PlatformPipe, Title, DayPipe],
+  providers: [Title],
 
   bootstrap: [AppComponent],
 })

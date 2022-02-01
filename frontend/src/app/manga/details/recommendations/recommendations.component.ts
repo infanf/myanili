@@ -4,7 +4,6 @@ import { MangaRecommendations } from '@models/manga';
 @Component({
   selector: 'myanili-manga-recommendations',
   templateUrl: './recommendations.component.html',
-  styleUrls: ['./recommendations.component.scss'],
 })
 export class MangaRecommendationsComponent {
   @Input() recommendations: MangaRecommendations = [];

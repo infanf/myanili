@@ -5,7 +5,6 @@ import { SettingsService } from 'src/app/settings/settings.service';
 @Component({
   selector: 'myanili-anime-grid',
   templateUrl: './grid.component.html',
-  styleUrls: ['./grid.component.scss'],
 })
 export class AnimeListGridComponent {
   @Input() animes: ListAnime[] = [];

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { TraktComponent } from '@external/trakt/trakt.component';
@@ -12,7 +13,6 @@ import { AnisearchService } from 'src/app/anisearch.service';
 import { CacheService } from 'src/app/cache.service';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
-import { StreamPipe } from 'src/app/stream.pipe';
 
 import { AnimeService } from '../anime.service';
 import { AnnictService } from '../annict.service';
@@ -98,7 +98,7 @@ export class AnimeDetailsComponent implements OnInit {
       this.anime.my_extension.malId = anime.id;
     }
     if (
-      !this.anime.my_extension.kitsuId ||
+      !this.anime.my_extension.kitsuId?.kitsuId ||
       !this.anime.my_extension.anilistId ||
       !this.anime.my_extension.simklId ||
       !this.anime.my_extension.annictId ||

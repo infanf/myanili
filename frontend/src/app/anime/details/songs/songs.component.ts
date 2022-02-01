@@ -8,7 +8,6 @@ import { MalService } from 'src/app/mal.service';
 @Component({
   selector: 'myanili-anime-songs',
   templateUrl: './songs.component.html',
-  styleUrls: ['./songs.component.scss'],
 })
 export class AnimeSongsComponent {
   @Input() anime?: Anime;

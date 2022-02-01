@@ -47,7 +47,6 @@ export class BookshelfWrapperComponent implements OnInit {
 @Component({
   selector: '[myanili-bookshelf]',
   templateUrl: './bookshelf.component.html',
-  styleUrls: ['./bookshelf.component.scss'],
 })
 export class BookshelfComponent {
   @Input() mangas: ListManga[] = [];

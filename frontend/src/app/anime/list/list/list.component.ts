@@ -5,7 +5,6 @@ import { SettingsService } from 'src/app/settings/settings.service';
 @Component({
   selector: 'myanili-anime-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
 })
 export class AnimeListListComponent {
   @Input() animes: ListAnime[] = [];

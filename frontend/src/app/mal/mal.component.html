@@ -4,6 +4,7 @@
       class="form-control"
       [(ngModel)]="query"
       [ngModelOptions]="{ standalone: true }"
+      type="search"
       #searchbar
     />
     <button class="btn btn-primary" (click)="search()">

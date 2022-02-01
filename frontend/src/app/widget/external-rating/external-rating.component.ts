@@ -4,7 +4,6 @@ import { ExtRating } from '@models/components';
 @Component({
   selector: 'myanili-external-rating',
   templateUrl: './external-rating.component.html',
-  styleUrls: ['./external-rating.component.scss'],
 })
 export class ExternalRatingComponent {
   @Input() rating?: { provider: string; rating: ExtRating };
