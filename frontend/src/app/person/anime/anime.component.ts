@@ -1,16 +1,20 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Jikan4PersonAnimes } from '@models/jikan';
 import { MalService } from 'src/app/mal.service';
 
 @Component({
   selector: 'myanili-person-anime',
+  styleUrls: ['./anime.component.scss'],
   templateUrl: './anime.component.html',
 })
 export class PersonAnimeComponent implements OnInit {
   @Input() malId!: number;
+  animes: Jikan4PersonAnimes = { data: [] };
 
   constructor(private mal: MalService) {}
 
   async ngOnInit() {
-    await this.mal.getJikanData(`people/${this.malId}/voices`);
+    const { data } = await this.mal.getJikanData<Jikan4PersonAnimes>(`people/${this.malId}/voices`);
+    this.animes.data = data.sort((a, b) => (a.anime.title < b.anime.title ? -1 : 1));
   }
 }

@@ -1,0 +1,12 @@
+.poster {
+  width: 6rem;
+  min-height: 9rem;
+  object-fit: cover;
+}
+
+.grid {
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  @media (max-width: 540px) {
+    grid-template-columns: 1fr;
+  }
+}
