@@ -44,27 +44,13 @@
             <myanili-character-anime [malId]="id"></myanili-character-anime>
           </ng-template>
         </li>
-        <!-- <li [ngbNavItem]="3" *ngIf="character.mangaography?.length">
-        <a ngbNavLink>Manga</a>
-        <ng-template ngbNavContent>
-          <div
-            *ngFor="let role of character.mangaography"
-            class="mb-3 d-flex border rounded cursor-pointer"
-            [routerLink]="'/manga/details/' + role.mal_id"
-          >
-            <img
-              loading="lazy"
-              [src]="role.image_url || '/assets/blank-poster.svg'"
-              class="poster rounded-start"
-            />
-            <div class="p-3">
-              {{ role.name }}
-              <div class="text-muted">{{ role.role }}</div>
-            </div>
-          </div>
-        </ng-template>
-      </li>
-      <li [ngbNavItem]="4" *ngIf="character.voice_actors?.length">
+        <li [ngbNavItem]="2">
+          <a ngbNavLink>Manga</a>
+          <ng-template ngbNavContent>
+            <myanili-character-manga [malId]="id"></myanili-character-manga>
+          </ng-template>
+        </li>
+      <!-- <li [ngbNavItem]="4" *ngIf="character.voice_actors?.length">
         <a ngbNavLink>Voice Actors</a>
         <ng-template ngbNavContent>
           <div
