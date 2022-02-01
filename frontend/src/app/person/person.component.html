@@ -1,42 +1,42 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ person?.name || 'Loading…' }}
+      {{ person?.data?.name || 'Loading…' }}
       <a [href]="'https://myanimelist.net/people/' + id" target="_blank">
-        <myanili-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></myanili-icon-mal>
+        <myanili-icon-mal
+          size="38"
+          style="vertical-align: bottom; line-height: 0.5"
+        ></myanili-icon-mal>
       </a>
     </h2>
   </header>
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <picture>
-        <source *ngIf="person && person.image_url" srcset="{{ person.image_url }}" />
+        <source
+          *ngIf="person?.data?.images?.jpg?.image_url"
+          srcset="{{ person?.data?.images?.jpg?.image_url }}"
+        />
         <source srcset="/assets/blank-poster.svg" />
         <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
       </picture>
     </div>
     <div class="col-sm-7 col-md-8 mb-3" *ngIf="person">
-      <div class="row" *ngIf="person.given_name || person.family_name">
-        <div class="col-4 fw-bold text-end">Name</div>
-        <div class="col-8">{{ person.family_name }} {{ person.given_name }}</div>
-      </div>
-      <div class="row" *ngIf="person.birthday">
-        <div class="col-4 fw-bold text-end">Birthday</div>
-        <div class="col-8">
-          {{ person.birthday | date }}
-        </div>
-      </div>
-      <div class="row" *ngIf="person.alternate_names.length">
-        <div class="col-4 fw-bold text-end">Alias</div>
-        <div class="col-8">
-          <div *ngFor="let name of person.alternate_names">{{ name }}</div>
-        </div>
-      </div>
-      <div class="row" *ngIf="person.website_url">
-        <div class="col-4 fw-bold text-end">Website</div>
-        <div class="col-8 text-break">
-          <a [href]="person.website_url" target="_blank">{{ person.website_url }}</a>
-        </div>
+      <myanili-value-pair *ngIf="person.data.given_name || person.data.family_name" name="Name">
+        {{ person.data.family_name }} {{ person.data.given_name }}
+      </myanili-value-pair>
+      <myanili-value-pair *ngIf="person.data.birthday" name="Birthday">
+        {{ person.data.birthday | date }}
+      </myanili-value-pair>
+      <myanili-value-pair *ngIf="person.data.alternate_names.length" name="Alias">
+        <div *ngFor="let name of person.data.alternate_names">{{ name }}</div>
+      </myanili-value-pair>
+      <myanili-value-pair *ngIf="person.data.website_url" name="Website">
+        <a [href]="person.data.website_url" target="_blank">{{ person.data.website_url }}</a>
+      </myanili-value-pair>
+      <div class="row">
+        <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
+        <div class="col-12 col-md-8" [innerHTML]="person.data.about || '' | nl2br"></div>
       </div>
     </div>
   </div>
@@ -44,83 +44,21 @@
   <ng-container *ngIf="person">
     <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
       <li [ngbNavItem]="1">
-        <a ngbNavLink>About</a>
+        <a ngbNavLink>Anime</a>
         <ng-template ngbNavContent>
-          <div [innerHTML]="person.about || '' | nl2br"></div>
+          <myanili-person-anime [malId]="id"></myanili-person-anime>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2" *ngIf="person.voice_acting_roles?.length">
-        <a ngbNavLink>Roles</a>
-        <ng-template ngbNavContent>
-          <div
-            *ngFor="let role of person.voice_acting_roles"
-            class="mb-3 d-flex border rounded justify-content-between"
-          >
-            <img
-              loading="lazy"
-              [src]="role.character.image_url || '/assets/blank-poster.svg'"
-              [routerLink]="'/character/' + role.character.mal_id"
-              class="poster rounded-start cursor-pointer"
-            />
-            <div class="d-flex flex-fill justify-content-between flex-column p-3">
-              <div [routerLink]="'/character/' + role.character.mal_id" class="cursor-pointer">
-                {{ role.character.name }}
-                <div class="text-muted">{{ role.role }}</div>
-              </div>
-              <div
-                class="text-end cursor-pointer"
-                [routerLink]="'/anime/details/' + role.anime.mal_id"
-              >
-                {{ role.anime.name }}
-              </div>
-            </div>
-            <img
-              loading="lazy"
-              [src]="role.anime.image_url || '/assets/blank-poster.svg'"
-              [routerLink]="'/anime/details/' + role.anime.mal_id"
-              class="poster rounded-end cursor-pointer"
-            />
-          </div>
-        </ng-template>
-      </li>
-      <li [ngbNavItem]="3" *ngIf="person.published_manga?.length">
+      <li [ngbNavItem]="2">
         <a ngbNavLink>Manga</a>
         <ng-template ngbNavContent>
-          <div
-            *ngFor="let manga of person.published_manga"
-            class="mb-3 d-flex border rounded flex-fill cursor-pointer"
-            [routerLink]="'/manga/details/' + manga.manga.mal_id"
-          >
-            <img
-              loading="lazy"
-              [src]="manga.manga.image_url || '/assets/blank-poster.svg'"
-              class="poster rounded-start"
-            />
-            <div class="p-3">
-              {{ manga.manga.name }}
-              <div class="text-muted">{{ manga.position }}</div>
-            </div>
-          </div>
+          <myanili-person-manga [malId]="id"></myanili-person-manga>
         </ng-template>
       </li>
-      <li [ngbNavItem]="4" *ngIf="person.anime_staff_positions?.length">
+      <li [ngbNavItem]="3">
         <a ngbNavLink>Staff</a>
         <ng-template ngbNavContent>
-          <div
-            *ngFor="let anime of person.anime_staff_positions"
-            class="mb-3 d-flex border rounded flex-fill cursor-pointer"
-            [routerLink]="'/anime/details/' + anime.anime.mal_id"
-          >
-            <img
-              loading="lazy"
-              [src]="anime.anime.image_url || '/assets/blank-poster.svg'"
-              class="poster rounded-start"
-            />
-            <div class="p-3">
-              {{ anime.anime.name }}
-              <div class="text-muted">{{ anime.position }}</div>
-            </div>
-          </div>
+          <myanili-person-staff [malId]="id"></myanili-person-staff>
         </ng-template>
       </li>
     </ul>
