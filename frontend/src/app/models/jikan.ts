@@ -190,5 +190,14 @@ interface Jikan4CharacterMangaRoleData {
   };
 }
 
+interface Jikan4CharacterVoiceActorData {
+  language: string;
+  person: Jikan4Data & {
+    images: Jikan4Image;
+    name: string;
+  };
+}
+
 export type Jikan4CharacterAnimeRoles = Jikan4Response<Jikan4CharacterAnimeRoleData[]>;
 export type Jikan4CharacterMangaRoles = Jikan4Response<Jikan4CharacterMangaRoleData[]>;
+export type Jikan4CharacterVoiceActors = Jikan4Response<Jikan4CharacterVoiceActorData[]>;

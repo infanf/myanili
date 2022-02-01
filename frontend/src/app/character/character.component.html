@@ -50,28 +50,13 @@
             <myanili-character-manga [malId]="id"></myanili-character-manga>
           </ng-template>
         </li>
-      <!-- <li [ngbNavItem]="4" *ngIf="character.voice_actors?.length">
-        <a ngbNavLink>Voice Actors</a>
-        <ng-template ngbNavContent>
-          <div
-            *ngFor="let person of character.voice_actors"
-            class="mb-3 d-flex border rounded cursor-pointer"
-            [routerLink]="'/person/' + person.mal_id"
-          >
-            <img
-              loading="lazy"
-              [src]="person.image_url || '/assets/blank-poster.svg'"
-              class="poster rounded-start"
-            />
-            <div class="p-3">
-              {{ person.name }}
-              <div class="text-muted">{{ person.language }}</div>
-            </div>
-          </div>
-        </ng-template>
-      </li> -->
+        <li [ngbNavItem]="3">
+          <a ngbNavLink>Voice Actors</a>
+          <ng-template ngbNavContent>
+            <myanili-character-voices [malId]="id"></myanili-character-voices>
+          </ng-template>
+        </li>
       </ul>
-
       <div [ngbNavOutlet]="nav" class="mt-2 mb-3"></div>
     </ng-container>
   </div>

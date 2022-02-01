@@ -32,6 +32,7 @@ import { AppComponent } from './app.component';
 import { CharacterAnimeComponent } from './character/anime/anime.component';
 import { CharacterComponent } from './character/character.component';
 import { CharacterMangaComponent } from './character/manga/manga.component';
+import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
 import { GraphQLModule } from './graphql/graphql.module';
 import { MalComponent } from './mal/mal.component';
@@ -93,6 +94,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ChangelogComponent,
     CharacterAnimeComponent,
     CharacterMangaComponent,
+    CharacterVoicesComponent,
   ],
   imports: [
     BrowserModule,
