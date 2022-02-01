@@ -1,0 +1,12 @@
+<ng-container *ngIf="credits.data?.length">
+    <div class="grid my-2">
+      <myanili-media-card
+        *ngFor="let anime of credits.data"
+        [poster]="anime.anime.images.webp?.image_url || anime.anime.images.jpg.image_url"
+        [title]="anime.anime.title"
+        routerLink="/anime/details/{{ anime.anime.mal_id }}"
+        [attr.title]="anime.anime"
+      ></myanili-media-card>
+    </div>
+  </ng-container>
+  

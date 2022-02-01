@@ -49,7 +49,10 @@ import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
+import { PersonAnimeComponent } from './person/anime/anime.component';
+import { PersonMangaComponent } from './person/manga/manga.component';
 import { PersonComponent } from './person/person.component';
+import { PersonStaffComponent } from './person/staff/staff.component';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
@@ -95,6 +98,9 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     CharacterAnimeComponent,
     CharacterMangaComponent,
     CharacterVoicesComponent,
+    PersonAnimeComponent,
+    PersonMangaComponent,
+    PersonStaffComponent,
   ],
   imports: [
     BrowserModule,
