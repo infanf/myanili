@@ -1,6 +1,18 @@
 {
-  "version": "2.9.2",
+  "version": "2.9.3",
   "changes": [
+    {
+      "version": "2.9.3",
+      "features": [],
+      "fixes": [
+        "use input type \"search\" for searches",
+        "hide kitsu links when no kitsu ID is found"
+      ],
+      "others": [
+        "cleanup code base",
+        "restructure grid layouts using css grid"
+      ]
+    },
     {
       "version": "2.9.2",
       "features": ["add official website to anime details"],
