@@ -1,62 +1,50 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ character?.name || 'Loading…' }}
+      {{ character?.data?.name || 'Loading…' }}
       <a [href]="'https://myanimelist.net/character/' + id" target="_blank">
-        <myanili-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></myanili-icon-mal>
+        <myanili-icon-mal
+          size="38"
+          style="vertical-align: bottom; line-height: 0.5"
+        ></myanili-icon-mal>
       </a>
     </h2>
   </header>
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <picture>
-        <source *ngIf="character && character.image_url" srcset="{{ character.image_url }}" />
+        <source
+          *ngIf="character?.data?.images?.jpg?.image_url"
+          srcset="{{ character?.data?.images?.jpg?.image_url }}"
+        />
         <source srcset="/assets/blank-poster.svg" />
         <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
       </picture>
     </div>
-    <div class="col-sm-7 col-md-8 mb-3" *ngIf="character">
-      <div class="row" *ngIf="character.name_kanji">
-        <div class="col-4 fw-bold text-end">Name</div>
-        <div class="col-8">{{ character.name_kanji }}</div>
-      </div>
-      <div class="row" *ngIf="character.nicknames.length">
-        <div class="col-4 fw-bold text-end">Nicknames</div>
-        <div class="col-8">
-          <div *ngFor="let name of character.nicknames">{{ name }}</div>
-        </div>
+    <div class="col-sm-7 col-md-8 mb-3" *ngIf="character?.data">
+      <!-- <myanili-value-pair
+        *ngIf="character.name_kanji"
+        label="Name"
+        [value]="character.name_kanji"
+      ></myanili-value-pair> -->
+      <myanili-value-pair name="Nickname" *ngIf="character?.data?.nicknames?.length">
+        <div *ngFor="let name of character?.data?.nicknames">{{ name }}</div>
+      </myanili-value-pair>
+      <div class="row">
+        <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
+        <div class="col-12 col-md-8" [innerHTML]="character?.data?.about || '' | nl2br"></div>
       </div>
     </div>
-  </div>
 
-  <ng-container *ngIf="character">
-    <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
-      <li [ngbNavItem]="1">
-        <a ngbNavLink>About</a>
-        <ng-template ngbNavContent>
-          <div [innerHTML]="character.about || '' | nl2br"></div>
-        </ng-template>
-      </li>
-      <li [ngbNavItem]="2" *ngIf="character.animeography?.length">
-        <a ngbNavLink>Anime</a>
-        <ng-template ngbNavContent>
-          <div
-            *ngFor="let role of character.animeography"
-            class="mb-3 d-flex border rounded cursor-pointer"
-            [routerLink]="'/anime/details/' + role.mal_id"
-          >
-            <img
-              [src]="role.image_url || '/assets/blank-poster.svg'"
-              class="poster rounded-start"
-            />
-            <div class="p-3">
-              {{ role.name }}
-              <div class="text-muted">{{ role.role }}</div>
-            </div>
-          </div>
-        </ng-template>
-      </li>
-      <li [ngbNavItem]="3" *ngIf="character.mangaography?.length">
+    <ng-container *ngIf="character">
+      <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs px-3">
+        <li [ngbNavItem]="1">
+          <a ngbNavLink>Anime</a>
+          <ng-template ngbNavContent>
+            <myanili-character-anime [malId]="id"></myanili-character-anime>
+          </ng-template>
+        </li>
+        <!-- <li [ngbNavItem]="3" *ngIf="character.mangaography?.length">
         <a ngbNavLink>Manga</a>
         <ng-template ngbNavContent>
           <div
@@ -95,9 +83,10 @@
             </div>
           </div>
         </ng-template>
-      </li>
-    </ul>
+      </li> -->
+      </ul>
 
-    <div [ngbNavOutlet]="nav" class="mt-2 mb-3"></div>
-  </ng-container>
+      <div [ngbNavOutlet]="nav" class="mt-2 mb-3"></div>
+    </ng-container>
+  </div>
 </div>

@@ -311,15 +311,19 @@ class MalServiceProvider extends ServiceProvider
         return $response;
     }
 
+    /**
+     * @deprecated
+     */
     public static function getSong(int $id)
     {
-        $songs = \file_get_contents(dirname(dirname(__DIR__)) . '/resources/songs.json');
-        try {
-            $songsArray = json_decode($songs, true);
-            return (isset($songsArray[intval($id)])) ? $songsArray[intval($id)] : false;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return false;
+        // $songs = \file_get_contents(dirname(dirname(__DIR__)) . '/resources/songs.json');
+        // try {
+        //     $songsArray = json_decode($songs, true);
+        //     return (isset($songsArray[intval($id)])) ? $songsArray[intval($id)] : false;
+        // } catch (\Exception $e) {
+        //     return false;
+        // }
     }
 
     public static function getList(string $type, string $query)

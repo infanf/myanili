@@ -29,6 +29,7 @@ import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { StreamingComponent } from './anime/widget/streaming/streaming.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AnimeComponent } from './character/anime/anime.component';
 import { CharacterComponent } from './character/character.component';
 import { DirectivesModule } from './directives/directives.module';
 import { GraphQLModule } from './graphql/graphql.module';
@@ -89,6 +90,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     SeasonGridComponent,
     SeasonListComponent,
     ChangelogComponent,
+    AnimeComponent,
   ],
   imports: [
     BrowserModule,
