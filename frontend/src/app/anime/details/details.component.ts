@@ -98,7 +98,7 @@ export class AnimeDetailsComponent implements OnInit {
       this.anime.my_extension.malId = anime.id;
     }
     if (
-      !this.anime.my_extension.kitsuId ||
+      !this.anime.my_extension.kitsuId?.kitsuId ||
       !this.anime.my_extension.anilistId ||
       !this.anime.my_extension.simklId ||
       !this.anime.my_extension.annictId ||
