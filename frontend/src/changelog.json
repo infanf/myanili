@@ -17,7 +17,7 @@
         "use input type \"search\" for searches",
         "hide kitsu links when no kitsu ID is found"
       ],
-      "others": ["cleanup code base", "restructure grid layouts using css grid"]
+      "other": ["cleanup code base", "restructure grid layouts using css grid"]
     },
     {
       "version": "2.9.2",
