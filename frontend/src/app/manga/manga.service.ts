@@ -34,7 +34,10 @@ export class MangaService {
     const mangas = await this.malService.myMangaList(status);
     return mangas.map(manga => {
       if (manga.node.title) {
-        this.cache.saveTitle(manga.node.id, 'manga', manga.node.title);
+        this.cache.saveValues(manga.node.id, 'anime', {
+          title: manga.node.title,
+          image: manga.node.main_picture?.large || manga.node.main_picture?.medium,
+        });
       }
       const comments = manga.list_status.comments;
       if (!comments) return manga;
@@ -50,7 +53,10 @@ export class MangaService {
   async getManga(id: number, extend = true) {
     const manga = await this.malService.get<Manga>('manga/' + id);
     if (manga.title) {
-      this.cache.saveTitle(manga.id, 'manga', manga.title);
+      this.cache.saveValues(manga.id, 'anime', {
+        title: manga.title,
+        image: manga.main_picture?.large || manga.main_picture?.medium,
+      });
     }
     const comments = manga.my_list_status?.comments;
     if (!manga.related_anime.length && extend) manga.related_anime_promise = this.getAnimes(id);
@@ -176,5 +182,16 @@ export class MangaService {
     const bakaMangasByTitle = bakaMangas.filter(m => m.title === manga.title);
     if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].id;
     return;
+  }
+
+  async getPoster(id: number): Promise<string | undefined> {
+    const cachedPoster = await this.cache.getValue(id, 'manga', 'image');
+    if (cachedPoster && typeof cachedPoster === 'string') return cachedPoster;
+    const response = await this.malService.get<Manga>(`manga/${id}`);
+    const image = response.main_picture?.large || response.main_picture?.medium;
+    if (image) {
+      await this.cache.saveValues(id, 'manga', { image });
+    }
+    return image;
   }
 }

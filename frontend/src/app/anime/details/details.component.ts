@@ -28,6 +28,7 @@ export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
   anime?: Anime;
   title?: string;
+  imageCache?: string;
   edit = false;
   busy = false;
   editBackup?: Partial<MyAnimeUpdate>;
@@ -74,8 +75,13 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.cache.getTitle(this.id, 'anime').then(title => {
-      this.title = title;
+    this.cache.getValues(this.id, 'anime').then(values => {
+      if (typeof values?.title === 'string') {
+        this.title = values.title;
+      }
+      if (typeof values?.image === 'string') {
+        this.imageCache = values.image;
+      }
     });
     const anime = await this.animeService.getAnime(this.id);
 

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Manga, RelatedManga } from '@models/manga';
-import { MalService } from 'src/app/mal.service';
+import { RelatedManga } from '@models/manga';
+
+import { MangaService } from '../../manga.service';
 
 @Component({
   selector: 'myanili-manga-related',
@@ -10,13 +11,14 @@ export class MangaRelatedComponent implements OnInit {
   @Input() related_manga: RelatedManga[] = [];
   @Input() has_covers = true;
 
-  constructor(private mal: MalService) {}
+  constructor(private manga: MangaService) {}
 
   ngOnInit() {
     if (!this.has_covers) {
       this.related_manga.forEach(async manga => {
-        const response = await this.mal.get<Manga>(`manga/${manga.node.id}`);
-        manga.node.main_picture = response.main_picture;
+        manga.node.main_picture = {
+          medium: (await this.manga.getPoster(manga.node.id)) || '',
+        };
       });
     }
   }

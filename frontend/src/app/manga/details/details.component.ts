@@ -25,6 +25,7 @@ export class MangaDetailsComponent implements OnInit {
   @Input() inModal = false;
   manga?: Manga;
   title?: string;
+  imageCache?: string;
   shortsyn = true;
   edit = false;
   busy = false;
@@ -57,8 +58,13 @@ export class MangaDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.cache.getTitle(this.id, 'manga').then(title => {
-      this.title = title;
+    this.cache.getValues(this.id, 'manga').then(values => {
+      if (typeof values?.title === 'string') {
+        this.title = values.title;
+      }
+      if (typeof values?.image === 'string') {
+        this.imageCache = values.image;
+      }
     });
     const manga = await this.mangaService.getManga(this.id);
     if (manga.mean) {

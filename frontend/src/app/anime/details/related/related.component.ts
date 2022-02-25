@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Anime, RelatedAnime } from '@models/anime';
-import { MalService } from 'src/app/mal.service';
+import { RelatedAnime } from '@models/anime';
+
+import { AnimeService } from '../../anime.service';
 
 @Component({
   selector: 'myanili-anime-related',
@@ -11,13 +12,14 @@ export class AnimeRelatedComponent implements OnInit {
 
   @Input() has_covers = true;
 
-  constructor(private mal: MalService) {}
+  constructor(private anime: AnimeService) {}
 
   ngOnInit() {
     if (!this.has_covers) {
       this.related_anime.forEach(async anime => {
-        const response = await this.mal.get<Anime>(`anime/${anime.node.id}`);
-        anime.node.main_picture = response.main_picture;
+        anime.node.main_picture = {
+          medium: (await this.anime.getPoster(anime.node.id)) || '',
+        };
       });
     }
   }

@@ -38,6 +38,10 @@
             *ngIf="anime && anime.main_picture"
             srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
           />
+          <source
+            *ngIf="imageCache"
+            srcset="{{ imageCache }}"
+          />
           <source srcset="/assets/blank-poster.svg" />
           <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
         </picture>

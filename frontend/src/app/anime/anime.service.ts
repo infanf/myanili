@@ -48,7 +48,10 @@ export class AnimeService {
     const animes = await this.malService.myList(status);
     return animes.map(anime => {
       if (anime.node.title) {
-        this.cache.saveTitle(anime.node.id, 'anime', anime.node.title);
+        this.cache.saveValues(anime.node.id, 'anime', {
+          title: anime.node.title,
+          image: anime.node.main_picture?.large || anime.node.main_picture?.medium,
+        });
       }
       const comments = anime.list_status.comments;
       if (!comments) return anime;
@@ -81,7 +84,10 @@ export class AnimeService {
   async getAnime(id: number) {
     const anime = await this.malService.get<Anime>('anime/' + id);
     if (anime.title) {
-      this.cache.saveTitle(anime.id, 'anime', anime.title);
+      this.cache.saveValues(anime.id, 'anime', {
+        title: anime.title,
+        image: anime.main_picture?.large || anime.main_picture?.medium,
+      });
     }
     const comments = anime.my_list_status?.comments;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
@@ -220,5 +226,16 @@ export class AnimeService {
       day = this.getLastDay(day);
     }
     return moment().day(day).format('dddd');
+  }
+
+  async getPoster(id: number): Promise<string | undefined> {
+    const cachedPoster = await this.cache.getValue(id, 'anime', 'image');
+    if (cachedPoster && typeof cachedPoster === 'string') return cachedPoster;
+    const response = await this.malService.get<Anime>(`anime/${id}`);
+    const image = response.main_picture?.large || response.main_picture?.medium;
+    if (image) {
+      await this.cache.saveValues(id, 'anime', { image });
+    }
+    return image;
   }
 }

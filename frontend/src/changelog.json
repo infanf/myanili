@@ -11,7 +11,9 @@
         "show other in changelog (if available)",
         "website favicons never worked"
       ],
-      "other": []
+      "other": [
+        "optimize caching"
+      ]
     },
     {
       "version": "2.9.3",

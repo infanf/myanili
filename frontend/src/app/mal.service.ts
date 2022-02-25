@@ -6,7 +6,7 @@ import { MalUser, UserResponse } from '@models/user';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-import { GlobalService } from './global.service';
+import { CacheService } from './cache.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class MalService {
   private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 
-  constructor(private httpClient: HttpClient, private glob: GlobalService) {
+  constructor(private httpClient: HttpClient, private cache: CacheService) {
     const malUser = JSON.parse(localStorage.getItem('malUser') || 'false') as MalUser | false;
     if (malUser) {
       this.isLoggedIn.next(malUser.name);
@@ -68,14 +68,9 @@ export class MalService {
     });
   }
 
-  async getJikanData<T>(url: string, v3 = false, retry = false): Promise<T> {
+  async getJikanData<T>(url: string, v3 = false): Promise<T> {
     try {
-      const response = await fetch(`${v3 ? environment.jikan3Url : environment.jikanUrl}${url}`);
-      if (response.status === 429 && !retry) {
-        await this.glob.sleep(1000);
-        return this.getJikanData<T>(url, v3, true);
-      }
-      return response.json() as unknown as T;
+      return this.cache.fetch<T>(`${v3 ? environment.jikan3Url : environment.jikanUrl}${url}`);
     } catch (e) {
       const response = await fetch(
         `${v3 ? environment.jikan3FallbackUrl : environment.jikanFallbackUrl}${url}`,
