@@ -7,7 +7,10 @@
         "migrate from jikan v3 to v4",
         "redo links in characters and persons to grid layout"
       ],
-      "fixes": ["show other in changelog (if available)"],
+      "fixes": [
+        "show other in changelog (if available)",
+        "website favicons never worked"
+      ],
       "other": []
     },
     {
