@@ -34,10 +34,22 @@ export class MangaService {
     const mangas = await this.malService.myMangaList(status);
     return mangas.map(manga => {
       if (manga.node.title) {
-        this.cache.saveValues(manga.node.id, 'anime', {
+        const mangaToSave = {
+          id: manga.node.id,
           title: manga.node.title,
-          image: manga.node.main_picture?.large || manga.node.main_picture?.medium,
-        });
+          created_at: new Date(),
+          updated_at: manga.list_status.updated_at,
+          mean: 0,
+          media_type: manga.node.media_type || 'unknown',
+          num_list_users: 0,
+          num_scoring_users: 0,
+          recommendations: [],
+          related_manga: [],
+          related_anime: [],
+          genres: [],
+          pictures: [],
+        };
+        this.cache.saveValues(manga.node.id, 'manga', mangaToSave);
       }
       const comments = manga.list_status.comments;
       if (!comments) return manga;
@@ -52,20 +64,18 @@ export class MangaService {
 
   async getManga(id: number, extend = true) {
     const manga = await this.malService.get<Manga>('manga/' + id);
-    if (manga.title) {
-      this.cache.saveValues(manga.id, 'anime', {
-        title: manga.title,
-        image: manga.main_picture?.large || manga.main_picture?.medium,
-      });
-    }
     const comments = manga.my_list_status?.comments;
     if (!manga.related_anime.length && extend) manga.related_anime_promise = this.getAnimes(id);
     if (!comments) return manga;
+    const mangaToSave = { ...manga } as Manga;
+    delete mangaToSave.my_list_status;
     try {
       const json = Base64.decode(comments);
       const my_extension = JSON.parse(json) as MangaExtension;
-      return { ...manga, my_extension };
+      manga.my_extension = my_extension;
+      mangaToSave.my_extension = my_extension;
     } catch (e) {}
+    this.cache.saveValues(manga.id, 'manga', mangaToSave, true);
     return manga;
   }
 
@@ -185,13 +195,8 @@ export class MangaService {
   }
 
   async getPoster(id: number): Promise<string | undefined> {
-    const cachedPoster = await this.cache.getValue(id, 'manga', 'image');
-    if (cachedPoster && typeof cachedPoster === 'string') return cachedPoster;
-    const response = await this.malService.get<Manga>(`manga/${id}`);
-    const image = response.main_picture?.large || response.main_picture?.medium;
-    if (image) {
-      await this.cache.saveValues(id, 'manga', { image });
-    }
-    return image;
+    let manga = await this.cache.getValues<Manga>(id, 'manga');
+    if (!manga) manga = await this.getManga(id);
+    return manga?.main_picture?.large || manga?.main_picture?.medium;
   }
 }

@@ -48,10 +48,26 @@ export class AnimeService {
     const animes = await this.malService.myList(status);
     return animes.map(anime => {
       if (anime.node.title) {
-        this.cache.saveValues(anime.node.id, 'anime', {
+        const animeToSave = {
+          id: anime.node.id,
           title: anime.node.title,
-          image: anime.node.main_picture?.large || anime.node.main_picture?.medium,
-        });
+          created_at: new Date(),
+          updated_at: anime.list_status.updated_at,
+          mean: 0,
+          num_episodes: anime.node.num_episodes || 0,
+          media_type: anime.node.media_type || 'unknown',
+          num_list_users: 0,
+          num_scoring_users: 0,
+          recommendations: [],
+          related_manga: [],
+          related_anime: [],
+          studios: [],
+          genres: [],
+          opening_themes: [],
+          ending_themes: [],
+          pictures: [],
+        };
+        this.cache.saveValues(anime.node.id, 'anime', animeToSave);
       }
       const comments = anime.list_status.comments;
       if (!comments) return anime;
@@ -83,21 +99,19 @@ export class AnimeService {
 
   async getAnime(id: number) {
     const anime = await this.malService.get<Anime>('anime/' + id);
-    if (anime.title) {
-      this.cache.saveValues(anime.id, 'anime', {
-        title: anime.title,
-        image: anime.main_picture?.large || anime.main_picture?.medium,
-      });
-    }
     const comments = anime.my_list_status?.comments;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
     if (!anime.website) anime.website_promise = this.getWebsite(id);
     if (!comments) return anime;
+    const animeToSave = { ...anime } as Anime;
+    delete animeToSave.my_list_status;
     try {
       const json = Base64.decode(comments);
       const my_extension = JSON.parse(json) as AnimeExtension;
-      return { ...anime, my_extension };
+      anime.my_extension = my_extension;
+      animeToSave.my_extension = my_extension;
     } catch (e) {}
+    this.cache.saveValues(anime.id, 'anime', animeToSave, true);
     return anime;
   }
 
@@ -229,13 +243,8 @@ export class AnimeService {
   }
 
   async getPoster(id: number): Promise<string | undefined> {
-    const cachedPoster = await this.cache.getValue(id, 'anime', 'image');
-    if (cachedPoster && typeof cachedPoster === 'string') return cachedPoster;
-    const response = await this.malService.get<Anime>(`anime/${id}`);
-    const image = response.main_picture?.large || response.main_picture?.medium;
-    if (image) {
-      await this.cache.saveValues(id, 'anime', { image });
-    }
-    return image;
+    let anime = await this.cache.getValues<Anime>(id, 'anime');
+    if (!anime) anime = await this.getAnime(id);
+    return anime?.main_picture?.large || anime?.main_picture?.medium;
   }
 }

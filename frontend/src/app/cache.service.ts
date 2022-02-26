@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Anime } from '@models/anime';
+import { Manga } from '@models/manga';
 
 @Injectable({
   providedIn: 'root',
@@ -28,27 +30,34 @@ export class CacheService {
   }
 
   getTitle(id: number, type: 'anime' | 'manga'): Promise<string> {
-    return this.getValues(id, type).then(values => (values?.title ? `${values.title}` : ''));
+    return this.getValue<string>(id, type, 'title').then(title => `${title}` || '');
   }
 
-  saveValues(
+  async saveValues(
     id: number,
     type: 'anime' | 'manga',
-    values: { [key: string]: string | number | undefined },
+    values: Partial<Anime | Manga>,
+    overwrite = false,
   ) {
-    const request = indexedDB.open('mal-cache', this.dbVersion);
-    request.onsuccess = () => {
-      const db = request.result;
-      const transaction = db.transaction(type, 'readwrite');
-      const objectStore = transaction.objectStore(type);
-      objectStore.put({ id, ...values });
-    };
+    if (!overwrite) {
+      try {
+        await this.getValues<Anime | Manga>(id, type);
+      } catch (e) {
+        overwrite = true;
+      }
+    }
+    if (overwrite) {
+      const request = indexedDB.open('mal-cache', this.dbVersion);
+      request.onsuccess = () => {
+        const db = request.result;
+        const transaction = db.transaction(type, 'readwrite');
+        const objectStore = transaction.objectStore(type);
+        objectStore.put({ id, ...values });
+      };
+    }
   }
 
-  getValues(
-    id: number,
-    type: 'anime' | 'manga',
-  ): Promise<{ [key: string]: string | number | undefined }> {
+  getValues<T>(id: number, type: 'anime' | 'manga'): Promise<T> {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open('mal-cache', this.dbVersion);
       request.onsuccess = () => {
@@ -69,8 +78,11 @@ export class CacheService {
     });
   }
 
-  getValue(id: number, type: 'anime' | 'manga', key: string): Promise<string | number | undefined> {
-    return this.getValues(id, type)
+  getValue<T>(id: number, type: 'anime' | 'manga', key: string): Promise<T | undefined> {
+    interface S {
+      [key: string]: T;
+    }
+    return this.getValues<S>(id, type)
       .then(values => values?.[key])
       .catch(() => undefined);
   }

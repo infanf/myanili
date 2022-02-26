@@ -58,12 +58,12 @@ export class MangaDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.cache.getValues(this.id, 'manga').then(values => {
-      if (typeof values?.title === 'string') {
-        this.title = values.title;
-      }
-      if (typeof values?.image === 'string') {
-        this.imageCache = values.image;
+    this.cache.getValues<Manga>(this.id, 'manga').then(mangaCached => {
+      if (mangaCached && !this.manga) {
+        this.manga = mangaCached;
+        this.title = mangaCached.title;
+        this.glob.setTitle(mangaCached.title);
+        this.glob.notbusy();
       }
     });
     const manga = await this.mangaService.getManga(this.id);

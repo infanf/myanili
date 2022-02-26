@@ -75,12 +75,13 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.cache.getValues(this.id, 'anime').then(values => {
-      if (typeof values?.title === 'string') {
-        this.title = values.title;
-      }
-      if (typeof values?.image === 'string') {
-        this.imageCache = values.image;
+    this.title = '';
+    this.cache.getValues<Anime>(this.id, 'anime').then(animeCached => {
+      if (animeCached && !this.anime) {
+        this.title = animeCached.title;
+        this.anime = animeCached;
+        this.glob.setTitle(animeCached.title);
+        this.glob.notbusy();
       }
     });
     const anime = await this.animeService.getAnime(this.id);
