@@ -66,15 +66,17 @@ export class MangaService {
     const manga = await this.malService.get<Manga>('manga/' + id);
     const comments = manga.my_list_status?.comments;
     if (!manga.related_anime.length && extend) manga.related_anime_promise = this.getAnimes(id);
-    if (!comments) return manga;
-    const mangaToSave = { ...manga } as Manga;
+    const mangaToSave = { ...manga } as Partial<Manga>;
     delete mangaToSave.my_list_status;
-    try {
-      const json = Base64.decode(comments);
-      const my_extension = JSON.parse(json) as MangaExtension;
-      manga.my_extension = my_extension;
-      mangaToSave.my_extension = my_extension;
-    } catch (e) {}
+    delete mangaToSave.related_anime_promise;
+    if (comments) {
+      try {
+        const json = Base64.decode(comments);
+        const my_extension = JSON.parse(json) as MangaExtension;
+        manga.my_extension = my_extension;
+        mangaToSave.my_extension = my_extension;
+      } catch (e) {}
+    }
     this.cache.saveValues(manga.id, 'manga', mangaToSave, true);
     return manga;
   }
@@ -195,8 +197,11 @@ export class MangaService {
   }
 
   async getPoster(id: number): Promise<string | undefined> {
-    let manga = await this.cache.getValues<Manga>(id, 'manga');
-    if (!manga) manga = await this.getManga(id);
+    let manga;
+    try {
+      manga = await this.cache.getValues<Manga>(id, 'manga');
+    } catch (e) {}
+    if (!manga?.main_picture) manga = await this.getManga(id);
     return manga?.main_picture?.large || manga?.main_picture?.medium;
   }
 }
