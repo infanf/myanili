@@ -8,6 +8,7 @@ import { ExternalModule } from '@external/external.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ApolloModule } from 'apollo-angular';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
@@ -131,6 +132,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ExternalModule,
     DirectivesModule,
     ComponentsModule,
+    ApolloModule,
   ],
   providers: [Title],
 
