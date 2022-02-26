@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RelatedManga } from '@models/manga';
 
 import { MangaService } from '../../manga.service';
@@ -7,20 +7,15 @@ import { MangaService } from '../../manga.service';
   selector: 'myanili-manga-related',
   templateUrl: './related.component.html',
 })
-export class MangaRelatedComponent implements OnInit {
+export class MangaRelatedComponent {
   @Input() related_manga: RelatedManga[] = [];
   @Input() has_covers = true;
 
   constructor(private manga: MangaService) {}
 
-  ngOnInit() {
-    if (!this.has_covers) {
-      this.related_manga.forEach(async manga => {
-        manga.node.main_picture = {
-          medium: (await this.manga.getPoster(manga.node.id)) || '',
-        };
-      });
-    }
+  async getPoster(manga: RelatedManga) {
+    const medium = (await this.manga.getPoster(manga.node.id)) || '';
+    manga.node.main_picture = { medium };
   }
 
   getRelatedMangas() {
@@ -32,9 +27,14 @@ export class MangaRelatedComponent implements OnInit {
     for (const type of types) {
       const related = this.related_manga
         .filter(value => value.relation_type_formatted === type)
+        .map(m => {
+          if (!this.has_covers) this.getPoster(m);
+          return m;
+        })
         .map(an => an.node);
       relatedManga.push({ name: type, entries: related });
     }
+    this.has_covers = true;
     return relatedManga;
   }
 }
