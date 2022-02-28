@@ -69,6 +69,10 @@ export class GlobalService {
   get changelog() {
     return changelog as unknown as Changelog;
   }
+
+  async sleep(t: number) {
+    return new Promise(resolve => setTimeout(resolve, t));
+  }
 }
 
 export interface Changelog {

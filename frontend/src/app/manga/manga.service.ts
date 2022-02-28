@@ -34,7 +34,22 @@ export class MangaService {
     const mangas = await this.malService.myMangaList(status);
     return mangas.map(manga => {
       if (manga.node.title) {
-        this.cache.saveTitle(manga.node.id, 'manga', manga.node.title);
+        const mangaToSave = {
+          id: manga.node.id,
+          title: manga.node.title,
+          created_at: new Date(),
+          updated_at: manga.list_status.updated_at,
+          mean: 0,
+          media_type: manga.node.media_type || 'unknown',
+          num_list_users: 0,
+          num_scoring_users: 0,
+          recommendations: [],
+          related_manga: [],
+          related_anime: [],
+          genres: [],
+          pictures: [],
+        };
+        this.cache.saveValues(manga.node.id, 'manga', mangaToSave);
       }
       const comments = manga.list_status.comments;
       if (!comments) return manga;
@@ -49,17 +64,20 @@ export class MangaService {
 
   async getManga(id: number, extend = true) {
     const manga = await this.malService.get<Manga>('manga/' + id);
-    if (manga.title) {
-      this.cache.saveTitle(manga.id, 'manga', manga.title);
-    }
     const comments = manga.my_list_status?.comments;
     if (!manga.related_anime.length && extend) manga.related_anime_promise = this.getAnimes(id);
-    if (!comments) return manga;
-    try {
-      const json = Base64.decode(comments);
-      const my_extension = JSON.parse(json) as MangaExtension;
-      return { ...manga, my_extension };
-    } catch (e) {}
+    const mangaToSave = { ...manga } as Partial<Manga>;
+    delete mangaToSave.my_list_status;
+    delete mangaToSave.related_anime_promise;
+    if (comments) {
+      try {
+        const json = Base64.decode(comments);
+        const my_extension = JSON.parse(json) as MangaExtension;
+        manga.my_extension = my_extension;
+        mangaToSave.my_extension = my_extension;
+      } catch (e) {}
+    }
+    this.cache.saveValues(manga.id, 'manga', mangaToSave, true);
     return manga;
   }
 
@@ -176,5 +194,14 @@ export class MangaService {
     const bakaMangasByTitle = bakaMangas.filter(m => m.title === manga.title);
     if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].id;
     return;
+  }
+
+  async getPoster(id: number): Promise<string | undefined> {
+    let manga;
+    try {
+      manga = await this.cache.getValues<Manga>(id, 'manga');
+    } catch (e) {}
+    if (!manga?.main_picture) manga = await this.getManga(id);
+    return manga?.main_picture?.large || manga?.main_picture?.medium;
   }
 }

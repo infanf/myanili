@@ -8,6 +8,7 @@ import { ExternalModule } from '@external/external.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { ApolloModule } from 'apollo-angular';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
@@ -29,7 +30,10 @@ import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { StreamingComponent } from './anime/widget/streaming/streaming.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CharacterAnimeComponent } from './character/anime/anime.component';
 import { CharacterComponent } from './character/character.component';
+import { CharacterMangaComponent } from './character/manga/manga.component';
+import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
 import { GraphQLModule } from './graphql/graphql.module';
 import { MalComponent } from './mal/mal.component';
@@ -46,7 +50,10 @@ import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
+import { PersonAnimeComponent } from './person/anime/anime.component';
+import { PersonMangaComponent } from './person/manga/manga.component';
 import { PersonComponent } from './person/person.component';
+import { PersonStaffComponent } from './person/staff/staff.component';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
@@ -89,6 +96,12 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     SeasonGridComponent,
     SeasonListComponent,
     ChangelogComponent,
+    CharacterAnimeComponent,
+    CharacterMangaComponent,
+    CharacterVoicesComponent,
+    PersonAnimeComponent,
+    PersonMangaComponent,
+    PersonStaffComponent,
   ],
   imports: [
     BrowserModule,
@@ -119,6 +132,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     ExternalModule,
     DirectivesModule,
     ComponentsModule,
+    ApolloModule,
   ],
   providers: [Title],
 

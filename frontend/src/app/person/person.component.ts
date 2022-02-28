@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JikanPerson } from '@models/jikan';
+import { Jikan4Person } from '@models/jikan';
 
 import { GlobalService } from '../global.service';
 import { MalService } from '../mal.service';
@@ -12,7 +12,7 @@ import { MalService } from '../mal.service';
 })
 export class PersonComponent {
   id = 0;
-  person?: JikanPerson;
+  person?: Jikan4Person;
   activeTab = 1;
 
   constructor(private route: ActivatedRoute, private glob: GlobalService, private mal: MalService) {
@@ -23,26 +23,21 @@ export class PersonComponent {
         delete this.person;
         this.glob.busy();
         try {
-          this.person = await this.mal.getJikanData<JikanPerson>('person/' + this.id);
-          this.person.about = (this.person.about || '').replace(/\\n/g, '').trim();
+          this.person = await this.mal.getJikanData<Jikan4Person>('people/' + this.id);
+          this.person.data.about = (this.person.data.about || '').replace(/\\n/g, '').trim();
           this.glob.notbusy();
-          this.glob.setTitle(this.person.name);
+          this.glob.setTitle(this.person.data.name);
         } catch (e) {
           this.glob.notbusy();
           this.person = {
-            name: 'Failed to load person',
-            about: 'Please try again later',
-            image_url: '',
-            url: '',
-            mal_id: newId,
-            alternate_names: [],
-            member_favorites: 0,
-            voice_acting_roles: [],
-            anime_staff_positions: [],
-            published_manga: [],
-            request_cache_expiry: 0,
-            request_cached: false,
-            request_hash: '',
+            data: {
+              name: 'Failed to load person',
+              about: 'Please try again later',
+              url: '',
+              mal_id: newId,
+              alternate_names: [],
+              favorites: 0,
+            },
           };
         }
       }

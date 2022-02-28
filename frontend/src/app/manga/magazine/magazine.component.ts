@@ -21,7 +21,7 @@ export class MagazineComponent {
         delete this.magazine;
         this.glob.busy();
         try {
-          this.magazine = await this.mal.getJikanData<JikanMagazine>('magazine/' + this.id);
+          this.magazine = await this.mal.getJikanData<JikanMagazine>('magazine/' + this.id, true);
           this.glob.notbusy();
           this.glob.setTitle(this.magazine.meta.name);
         } catch (e) {

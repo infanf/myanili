@@ -48,7 +48,26 @@ export class AnimeService {
     const animes = await this.malService.myList(status);
     return animes.map(anime => {
       if (anime.node.title) {
-        this.cache.saveTitle(anime.node.id, 'anime', anime.node.title);
+        const animeToSave = {
+          id: anime.node.id,
+          title: anime.node.title,
+          created_at: new Date(),
+          updated_at: anime.list_status.updated_at,
+          mean: 0,
+          num_episodes: anime.node.num_episodes || 0,
+          media_type: anime.node.media_type || 'unknown',
+          num_list_users: 0,
+          num_scoring_users: 0,
+          recommendations: [],
+          related_manga: [],
+          related_anime: [],
+          studios: [],
+          genres: [],
+          opening_themes: [],
+          ending_themes: [],
+          pictures: [],
+        };
+        this.cache.saveValues(anime.node.id, 'anime', animeToSave);
       }
       const comments = anime.list_status.comments;
       if (!comments) return anime;
@@ -80,18 +99,22 @@ export class AnimeService {
 
   async getAnime(id: number) {
     const anime = await this.malService.get<Anime>('anime/' + id);
-    if (anime.title) {
-      this.cache.saveTitle(anime.id, 'anime', anime.title);
-    }
     const comments = anime.my_list_status?.comments;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
     if (!anime.website) anime.website_promise = this.getWebsite(id);
-    if (!comments) return anime;
-    try {
-      const json = Base64.decode(comments);
-      const my_extension = JSON.parse(json) as AnimeExtension;
-      return { ...anime, my_extension };
-    } catch (e) {}
+    const animeToSave = { ...anime } as Partial<Anime>;
+    delete animeToSave.my_list_status;
+    delete animeToSave.website_promise;
+    delete animeToSave.related_manga_promise;
+    if (comments) {
+      try {
+        const json = Base64.decode(comments);
+        const my_extension = JSON.parse(json) as AnimeExtension;
+        anime.my_extension = my_extension;
+        animeToSave.my_extension = my_extension;
+      } catch (e) {}
+    }
+    this.cache.saveValues(anime.id, 'anime', animeToSave, true);
     return anime;
   }
 
@@ -189,6 +212,7 @@ export class AnimeService {
   async getCharacters(id: number): Promise<AnimeCharacter[]> {
     const characterStaff = await this.malService.getJikanData<{ characters?: AnimeCharacter[] }>(
       `anime/${id}/characters_staff`,
+      true,
     );
     return characterStaff.characters || [];
   }
@@ -196,6 +220,7 @@ export class AnimeService {
   async getStaff(id: number): Promise<AnimeStaff[]> {
     const characterStaff = await this.malService.getJikanData<{ staff?: AnimeStaff[] }>(
       `anime/${id}/characters_staff`,
+      true,
     );
     return characterStaff.staff || [];
   }
@@ -218,5 +243,14 @@ export class AnimeService {
       day = this.getLastDay(day);
     }
     return moment().day(day).format('dddd');
+  }
+
+  async getPoster(id: number): Promise<string | undefined> {
+    let anime;
+    try {
+      anime = await this.cache.getValues<Anime>(id, 'anime');
+    } catch (e) {}
+    if (!anime?.main_picture) anime = await this.getAnime(id);
+    return anime?.main_picture?.large || anime?.main_picture?.medium;
   }
 }

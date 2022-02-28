@@ -36,6 +36,10 @@
             *ngIf="manga && manga.main_picture"
             srcset="{{ manga.main_picture.large || manga.main_picture.medium }}"
           />
+          <source
+            *ngIf="imageCache"
+            srcset="{{ imageCache }}"
+          />
           <source srcset="/assets/blank-poster.svg" />
           <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
         </picture>
@@ -491,7 +495,7 @@
                       : 'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
                   "
                   target="_blank"
-                  >Wiki</a
+                  >Fandom</a
                 >
               </div>
             </div>

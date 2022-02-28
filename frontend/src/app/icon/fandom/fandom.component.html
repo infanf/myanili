@@ -1,7 +1,7 @@
 <picture *ngIf="favicon; else fandom">
   <source [srcset]="favicon">
   <source srcset="/favicon.ico">
-  <img src="/favicon.ico" [attr.width]="size" />
+  <img src="/favicon.ico" [attr.width]="size" (error)="setDefault()" />
 </picture>
 <ng-template #fandom>
   <svg [attr.width]="size" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148 148">

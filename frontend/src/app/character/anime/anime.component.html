@@ -1,0 +1,12 @@
+<ng-container *ngIf="roles.data?.length">
+  <div class="grid my-2">
+    <myanili-media-card
+      *ngFor="let role of roles.data"
+      [poster]="role.anime.images.webp?.image_url || role.anime.images.jpg.image_url"
+      [title]="role.anime.title"
+      routerLink="/anime/details/{{ role.anime.mal_id }}"
+      [icon]="role.role === 'Main' ? 'star-fill' : undefined"
+      [attr.title]="role.role"
+    ></myanili-media-card>
+  </div>
+</ng-container>

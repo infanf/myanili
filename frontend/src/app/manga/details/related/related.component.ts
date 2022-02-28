@@ -1,24 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Manga, RelatedManga } from '@models/manga';
-import { MalService } from 'src/app/mal.service';
+import { Component, Input } from '@angular/core';
+import { RelatedManga } from '@models/manga';
+
+import { MangaService } from '../../manga.service';
 
 @Component({
   selector: 'myanili-manga-related',
   templateUrl: './related.component.html',
 })
-export class MangaRelatedComponent implements OnInit {
+export class MangaRelatedComponent {
   @Input() related_manga: RelatedManga[] = [];
   @Input() has_covers = true;
 
-  constructor(private mal: MalService) {}
+  constructor(private manga: MangaService) {}
 
-  ngOnInit() {
-    if (!this.has_covers) {
-      this.related_manga.forEach(async manga => {
-        const response = await this.mal.get<Manga>(`manga/${manga.node.id}`);
-        manga.node.main_picture = response.main_picture;
-      });
-    }
+  async getPoster(manga: RelatedManga) {
+    const medium = (await this.manga.getPoster(manga.node.id)) || '';
+    manga.node.main_picture = { medium };
   }
 
   getRelatedMangas() {
@@ -30,9 +27,14 @@ export class MangaRelatedComponent implements OnInit {
     for (const type of types) {
       const related = this.related_manga
         .filter(value => value.relation_type_formatted === type)
+        .map(m => {
+          if (!this.has_covers) this.getPoster(m);
+          return m;
+        })
         .map(an => an.node);
       relatedManga.push({ name: type, entries: related });
     }
+    this.has_covers = true;
     return relatedManga;
   }
 }

@@ -5,8 +5,10 @@
 export const environment = {
   production: false,
   backend: 'http://localhost:4280/',
-  jikanUrl: 'https://api.jikan.moe/v3/',
-  jikanFallbackUrl: 'http://localhost:9001/v3/',
+  jikan3Url: 'https://api.jikan.moe/v3/',
+  jikan3FallbackUrl: 'https://api.jikan.moe/v3/',
+  jikanUrl: 'https://api.jikan.moe/v4/',
+  jikanFallbackUrl: 'http://localhost:9001/v4/',
 };
 
 /*

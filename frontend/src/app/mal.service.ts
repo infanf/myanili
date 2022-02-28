@@ -6,6 +6,8 @@ import { MalUser, UserResponse } from '@models/user';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+import { CacheService } from './cache.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -14,7 +16,7 @@ export class MalService {
   private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private cache: CacheService) {
     const malUser = JSON.parse(localStorage.getItem('malUser') || 'false') as MalUser | false;
     if (malUser) {
       this.isLoggedIn.next(malUser.name);
@@ -66,21 +68,19 @@ export class MalService {
     });
   }
 
-  async getJikanData<T>(url: string): Promise<T> {
+  async getJikanData<T>(url: string, v3 = false): Promise<T> {
     try {
-      const response = await new Promise((r, rj) => {
-        this.httpClient.get<T>(`${environment.jikanUrl}${url}`).subscribe(r, rj);
-      });
-      return response as T;
+      return this.cache.fetch<T>(`${v3 ? environment.jikan3Url : environment.jikanUrl}${url}`);
     } catch (e) {
-      return new Promise((r, rj) => {
-        this.httpClient.get<T>(`${environment.jikanFallbackUrl}${url}`).subscribe(r, rj);
-      });
+      const response = await fetch(
+        `${v3 ? environment.jikan3FallbackUrl : environment.jikanFallbackUrl}${url}`,
+      );
+      return response.json() as unknown as T;
     }
   }
 
   async getJikan(type: 'anime' | 'manga', id: number): Promise<JikanInstance> {
-    return this.getJikanData<JikanInstance>(`${type}/${id}`);
+    return this.getJikanData<JikanInstance>(`${type}/${id}`, true);
   }
 
   async checkLogin() {
