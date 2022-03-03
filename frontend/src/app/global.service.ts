@@ -80,9 +80,9 @@ export interface Changelog {
   changes: [
     {
       version: string;
-      features: string[];
-      fixes: string[];
-      other: string[];
+      features?: string[];
+      fixes?: string[];
+      other?: string[];
     },
   ];
 }

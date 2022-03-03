@@ -1,23 +1,21 @@
 {
-  "version": "2.10.0",
+  "version": "2.10.1",
   "changes": [
+    {
+      "version": "2.10.1",
+      "other": ["Add legal and privacy information"]
+    },
     {
       "version": "2.10.0",
       "features": [
         "migrate from jikan v3 to v4",
         "redo links in characters and persons to grid layout"
       ],
-      "fixes": [
-        "show other in changelog (if available)",
-        "website favicons never worked"
-      ],
-      "other": [
-        "optimize caching"
-      ]
+      "fixes": ["show other in changelog (if available)", "website favicons never worked"],
+      "other": ["optimize caching"]
     },
     {
       "version": "2.9.3",
-      "features": [],
       "fixes": [
         "use input type \"search\" for searches",
         "hide kitsu links when no kitsu ID is found"
@@ -26,15 +24,11 @@
     },
     {
       "version": "2.9.2",
-      "features": ["add official website to anime details"],
-      "fixes": [],
-      "other": []
+      "features": ["add official website to anime details"]
     },
     {
       "version": "2.9.1",
-      "features": [],
-      "fixes": ["re-add reading platform WEBTOON"],
-      "other": []
+      "fixes": ["re-add reading platform WEBTOON"]
     },
     {
       "version": "2.9.0",
@@ -44,8 +38,7 @@
         "filter out hentai from season view and search results",
         "show related media as cards similar to recommendations"
       ],
-      "fixes": ["adjust modal border radius to updated design"],
-      "other": []
+      "fixes": ["adjust modal border radius to updated design"]
     }
   ]
 }

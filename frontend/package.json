@@ -1,6 +1,6 @@
 {
   "name": "myanili-frontend",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --host=0.0.0.0",
@@ -14,6 +14,7 @@
     "fix": "ng lint --type-check --fix --tslint-config tslint.fix.json --format codeFrame && prettier --config ../.prettierrc --write 'src/**/*.{ts,js,html,css,scss,sass,less}'",
     "e2e": "ng e2e"
   },
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@angular/animations": "^13.2.1",

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { AboutComponent } from './about/about.component';
 import { GlobalService } from './global.service';
 import { MalService } from './mal.service';
 
@@ -10,10 +12,12 @@ import { MalService } from './mal.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  today = new Date();
   constructor(
     public malService: MalService,
     private swUpdate: SwUpdate,
     private glob: GlobalService,
+    private modal: NgbModal,
   ) {
     this.malService.loggedIn.subscribe(loggedIn => {
       this.loggedIn = loggedIn;
@@ -36,5 +40,9 @@ export class AppComponent {
       });
     });
     this.swUpdate.checkForUpdate();
+  }
+
+  showAbout() {
+    this.modal.open(AboutComponent);
   }
 }

@@ -8,12 +8,12 @@
     "dev:build": "npm run build && npm run dev",
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
-    "dev": "npm run start && docker exec -ti -w /frontend -u application myanili_app npm run dev",
+    "dev": "npm run start && docker exec -ti -w /frontend -u application myanili_app npm i && docker exec -ti -w /frontend -u application myanili_app npm run dev",
     "shell": "npm run start && docker exec -ti -w /frontend -u application myanili_app bash",
     "shell:root": "npm run start && docker exec -ti -w /frontend -u root myanili_app bash"
   },
   "author": "Christopher Schreiner",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^9.1.2",
     "@commitlint/config-conventional": "^10.0.0",
