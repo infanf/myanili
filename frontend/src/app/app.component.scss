@@ -14,3 +14,12 @@
     margin: -32px;
   }
 }
+
+footer {
+  font-size: calc(var(--bs-body-font-size) * 0.7);
+  position: fixed;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+  padding: 0.25rem;
+}

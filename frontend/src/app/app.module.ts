@@ -12,6 +12,7 @@ import { ApolloModule } from 'apollo-angular';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { environment } from 'src/environments/environment';
 
+import { AboutComponent } from './about/about.component';
 import { AnimeCharactersComponent } from './anime/details/characters/characters.component';
 import { AnimeDetailsComponent } from './anime/details/details.component';
 import { AnimeRecommendationsComponent } from './anime/details/recommendations/recommendations.component';
@@ -102,6 +103,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     PersonAnimeComponent,
     PersonMangaComponent,
     PersonStaffComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
