@@ -1,6 +1,10 @@
 {
-  "version": "2.10.1",
+  "version": "2.10.2",
   "changes": [
+    {
+      "version": "2.10.2",
+      "fixes": ["footer margin"]
+    },
     {
       "version": "2.10.1",
       "other": ["Add legal and privacy information"]
