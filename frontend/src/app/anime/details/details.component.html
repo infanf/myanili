@@ -38,10 +38,7 @@
             *ngIf="anime && anime.main_picture"
             srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
           />
-          <source
-            *ngIf="imageCache"
-            srcset="{{ imageCache }}"
-          />
+          <source *ngIf="imageCache" srcset="{{ imageCache }}" />
           <source srcset="/assets/blank-poster.svg" />
           <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
         </picture>
@@ -209,13 +206,14 @@
           !edit &&
           anime &&
           anime.my_extension &&
-          (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)
+          (anime.my_extension?.simulDay?.toString() || anime.my_extension?.simulDay === 0)
         "
         name="Watch on"
       >
         {{ getDay(anime.my_extension.simulDay) }}
-        <span *ngIf="anime.my_extension.simulTime">@ {{ anime.my_extension.simulTime?.substr(0, 5) | time }}</span>
-        
+        <span *ngIf="anime.my_extension.simulTime"
+          >@ {{ anime.my_extension.simulTime?.substr(0, 5) | time }}</span
+        >
       </myanili-value-pair>
       <div class="row my-2" *ngIf="edit && editExtension">
         <div class="col-4 fw-bold text-end">Watch on</div>
@@ -667,13 +665,8 @@
               </div>
               <div class="col-8">
                 <myanili-icon-fandom [url]="anime.website"></myanili-icon-fandom>
-                <a
-                  class="ms-1"
-                  [href]="anime.website"
-                  target="_blank"
-                  >Official Website</a
-                >
-            </div>
+                <a class="ms-1" [href]="anime.website" target="_blank">Official Website</a>
+              </div>
             </div>
           </div>
         </div>

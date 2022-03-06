@@ -1,11 +1,12 @@
 {
   "frontend/{src,test}/**/*.{ts,js}": [
     "tslint -c tslint.fix.json -p ./frontend --fix",
-    "prettier --write",
-    "git add"
+    "prettier --write"
+  ],
+  "frontend/{src,test}/**/*.{html,css}": [
+    "prettier --write"
   ],
   "frontend/config/*.js": [
-    "prettier --write",
-    "git add"
+    "prettier --write"
   ]
 }
