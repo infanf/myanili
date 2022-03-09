@@ -39,7 +39,12 @@
           *ngFor="let anime of getOtherAnimes()"
           [ngStyle]="{ opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1 }"
         >
-          <td>{{ anime.start_date | date: 'dd.MM.' }}</td>
+          <td>
+            <ng-container *ngIf="length(anime.start_date) === 10; else monthOnly">{{
+              anime.start_date | date: 'dd.MM.'
+            }}</ng-container>
+            <ng-template #monthOnly>{{ anime.start_date | date: 'MMM' }}.</ng-template>
+          </td>
           <td>
             <myanili-streaming
               [provider]="anime.my_extension?.externalStreaming"

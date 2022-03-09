@@ -82,4 +82,8 @@ export class ScheduleComponent {
       .day(this.today + day)
       .format('dddd');
   }
+
+  length(input?: Date | string): number {
+    return `${input}`.length;
+  }
 }
