@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
@@ -13,7 +14,7 @@ export class SimklService {
   private accessToken = '';
   private userSubject = new BehaviorSubject<SimklUser | undefined>(undefined);
 
-  constructor() {
+  constructor(private dialogue: DialogueService) {
     this.clientId = String(localStorage.getItem('simklClientId'));
     this.accessToken = String(localStorage.getItem('simklAccessToken'));
     if (this.accessToken) {
@@ -22,7 +23,10 @@ export class SimklService {
           this.userSubject.next(user);
         })
         .catch(e => {
-          alert('Could not connect to SIMKL, please check your account settings.');
+          this.dialogue.alert(
+            'Could not connect to SIMKL, please check your account settings.',
+            'SIMKL Connection Error',
+          );
           localStorage.removeItem('simklAccessToken');
         });
     }

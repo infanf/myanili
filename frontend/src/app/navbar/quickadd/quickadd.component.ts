@@ -25,7 +25,6 @@ export class QuickaddComponent {
       '',
       'url',
     );
-    // const externalUrl = prompt('Please enter media url from MAL, AniList or Kitsu:');
     if (!externalUrl) return;
     this.glob.busy();
     if (externalUrl.match(/myanimelist.net/)) {
