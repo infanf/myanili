@@ -15,6 +15,7 @@ export class SettingsService {
   private inList = new BehaviorSubject<boolean>(false);
   private layoutSubject = new BehaviorSubject<string>('list');
   private nsfwSubject = new BehaviorSubject<boolean>(false);
+  private streamingCountrySubject = new BehaviorSubject<StreamingCountry | undefined>('id');
 
   constructor() {
     try {
@@ -30,6 +31,10 @@ export class SettingsService {
       }
       const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
       this.setNsfw(nsfw);
+      const streamingCountry = JSON.parse(String(localStorage.getItem('streamingCountry')));
+      if (streamingCountry) {
+        this.setStreamingCountry(streamingCountry);
+      }
     } catch (e) {}
   }
 
@@ -86,6 +91,76 @@ export class SettingsService {
     this.nsfwSubject.next(nsfw);
     localStorage.setItem('nsfw', JSON.stringify(nsfw));
   }
+
+  get streamingCountry() {
+    return this.streamingCountrySubject.asObservable();
+  }
+
+  setStreamingCountry(country: StreamingCountry) {
+    this.streamingCountrySubject.next(country);
+    localStorage.setItem('streamingCountry', JSON.stringify(country));
+  }
 }
 
 export type Language = 'default' | 'en' | 'jp';
+
+export type StreamingRegion = StreamingCountry[];
+
+export const StreamingRegions: { [key: string]: StreamingCountry[] } = {
+  na: ['us', 'ca'],
+  la: [
+    'mx',
+    'ar',
+    'br',
+    'cl',
+    'co',
+    'cr',
+    'ec',
+    'gt',
+    'hn',
+    'ni',
+    'pa',
+    'pe',
+    'pr',
+    'py',
+    'sv',
+    'uy',
+    've',
+  ],
+  eu: [
+    'de',
+    'fr',
+    'es',
+    'it',
+    'at',
+    'be',
+    'bg',
+    'hr',
+    'cy',
+    'cz',
+    'dk',
+    'ee',
+    'fi',
+    'gr',
+    'hu',
+    'ie',
+    'lv',
+    'lt',
+    'lu',
+    'mt',
+    'nl',
+    'pl',
+    'pt',
+    'ro',
+    'sk',
+    'si',
+    'se',
+    'uk',
+  ],
+  de: ['de', 'at'],
+  gb: ['uk', 'ie'],
+  sea: ['id', 'th', 'my', 'ph', 'sg', 'vn', 'hk'],
+  oc: ['au', 'nz'],
+};
+
+export type StreamingCountry = string;
