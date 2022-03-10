@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { AnilistService } from 'src/app/anilist.service';
 import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
@@ -14,10 +15,17 @@ export class QuickaddComponent {
     private glob: GlobalService,
     private kitsu: KitsuService,
     private anilist: AnilistService,
+    private dialogue: DialogueService,
   ) {}
 
   async quickadd() {
-    const externalUrl = prompt('Please enter media url from MAL, AniList or Kitsu:');
+    const externalUrl = await this.dialogue.prompt(
+      'Please enter media url from MAL, AniList or Kitsu:',
+      'Quick Open',
+      '',
+      'url',
+    );
+    // const externalUrl = prompt('Please enter media url from MAL, AniList or Kitsu:');
     if (!externalUrl) return;
     this.glob.busy();
     if (externalUrl.match(/myanimelist.net/)) {
