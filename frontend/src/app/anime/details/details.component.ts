@@ -295,18 +295,9 @@ export class AnimeDetailsComponent implements OnInit {
       `Do you want to set yourself an episode rule for "${this.anime.title}"? You will be asked if you want to continue watching after set episodes.`,
       'Add anime',
       [
-        {
-          label: '1 Episode',
-          value: 1,
-        },
-        {
-          label: '3 Episodes',
-          value: 3,
-        },
-        {
-          label: 'Just add',
-          value: 0,
-        },
+        { label: '1 Episode', value: 1 },
+        { label: '3 Episodes', value: 3 },
+        { label: 'Just add', value: 0 },
       ],
       0,
     );
