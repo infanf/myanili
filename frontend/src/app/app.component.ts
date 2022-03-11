@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AboutComponent } from './about/about.component';
@@ -18,6 +19,7 @@ export class AppComponent {
     private swUpdate: SwUpdate,
     private glob: GlobalService,
     private modal: NgbModal,
+    private dialogue: DialogueService,
   ) {
     this.malService.loggedIn.subscribe(loggedIn => {
       this.loggedIn = loggedIn;
@@ -32,9 +34,18 @@ export class AppComponent {
 
   setupUpdates() {
     this.swUpdate.available.subscribe(u => {
-      this.swUpdate.activateUpdate().then(e => {
+      this.swUpdate.activateUpdate().then(async e => {
         const message = 'Application has been updated.\nConfirm to reload now.';
-        if (confirm(message)) {
+        const reload = await this.dialogue.open(
+          message,
+          'Update available',
+          [
+            { label: 'Update later', value: false },
+            { label: 'Reload now', value: true },
+          ],
+          false,
+        );
+        if (reload) {
           location.reload();
         }
       });
