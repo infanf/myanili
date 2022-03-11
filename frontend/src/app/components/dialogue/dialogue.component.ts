@@ -13,16 +13,16 @@ export class DialogueComponent implements OnInit, AfterViewInit {
     type?: InputType;
     value?: string;
   };
-  @Input() buttons: Button[] = [];
+  @Input() buttons: Array<Button<unknown>> = [];
   @ViewChildren('value') valueInput?: ElementRef;
 
-  constructor(private modal: NgbActiveModal) {}
+  constructor(public modal: NgbActiveModal) {}
 
   ngOnInit(): void {
     if (this.buttons.length === 0) {
       this.buttons.push({
         label: 'Ok',
-        action: () => this.submit(),
+        value: true,
       });
     }
   }
@@ -31,8 +31,8 @@ export class DialogueComponent implements OnInit, AfterViewInit {
     this.valueInput?.nativeElement?.focus();
   }
 
-  submit() {
-    this.modal.close(this.prompt?.value);
+  submit<T>(value: T) {
+    this.modal.close(this.prompt?.value || value);
   }
 
   dismiss() {
@@ -40,10 +40,9 @@ export class DialogueComponent implements OnInit, AfterViewInit {
   }
 }
 
-interface Button {
+export interface Button<T> {
   label: string;
-  action: Function;
-  // tslint:disable-next-line: no-any
+  value: T;
   class?: string;
 }
 

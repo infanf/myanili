@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { DialogueComponent, InputType } from './dialogue.component';
+import { Button, DialogueComponent, InputType } from './dialogue.component';
 
 @Injectable({
   providedIn: 'root',
@@ -36,5 +36,18 @@ export class DialogueService {
       value,
     };
     return modal.result.catch(() => value);
+  }
+
+  async open<T>(
+    message: string,
+    title?: string,
+    buttons?: Array<Button<T>>,
+    fallback?: T,
+  ): Promise<T> {
+    const modal = this.modalService.open(DialogueComponent);
+    modal.componentInstance.title = title;
+    modal.componentInstance.message = message;
+    modal.componentInstance.buttons = buttons;
+    return modal.result.catch(() => fallback);
   }
 }

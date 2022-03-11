@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { Anime, ListAnime, MyAnimeUpdate } from '@models/anime';
 import * as moment from 'moment';
 import { GlobalService } from 'src/app/global.service';
@@ -23,6 +24,7 @@ export class WatchlistComponent implements OnInit {
     private glob: GlobalService,
     private trakt: TraktService,
     private simkl: SimklService,
+    private dialogue: DialogueService,
   ) {
     this.glob.setTitle('Watchlist – Today');
     this.glob.busy();
@@ -122,6 +124,19 @@ export class WatchlistComponent implements OnInit {
       if (!anime.list_status?.score) {
         const myScore = Math.round(Number(prompt('Your score (1-10)?')));
         if (myScore > 0 && myScore <= 10) data.score = myScore;
+      }
+    } else if (!data.is_rewatching && currentEpisode + 1 === anime.my_extension?.episodeRule) {
+      const continueWatching = await this.dialogue.open(
+        `You set yourself a ${anime.my_extension?.episodeRule} episode rule for "${anime.node.title}". Do you want to continue watching?`,
+        'Continue Watching?',
+        [
+          { label: 'Drop', value: false },
+          { label: 'Continue', value: true },
+        ],
+        true,
+      );
+      if (!continueWatching) {
+        data.status = 'dropped';
       }
     }
     const fullAnime = await this.animeService.getAnime(anime.node.id);

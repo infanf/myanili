@@ -1,6 +1,11 @@
 {
-  "version": "2.10.2",
+  "version": "2.11.0",
   "changes": [
+    {
+      "version": "2.11.0",
+      "features": ["3 Episode rule"],
+      "other": ["styled implementation of system dialogues"]
+    },
     {
       "version": "2.10.2",
       "fixes": ["footer margin"]

@@ -202,6 +202,33 @@
         </div>
       </div>
       <myanili-value-pair
+        name="Ep. Rule"
+        *ngIf="
+          anime &&
+          ((edit && editExtension) ||
+            (anime.my_extension?.episodeRule &&
+              anime.my_extension!.episodeRule! > (anime.my_list_status?.num_episodes_watched || 0)))
+        "
+      >
+        <ng-container *ngIf="!edit; else epRuleInput">
+          {{ anime.my_extension!.episodeRule || 0 }} Ep. ({{
+            (anime.my_extension!.episodeRule || 0) -
+              (anime.my_list_status?.num_episodes_watched || 0)
+          }}
+          left)
+        </ng-container>
+        <ng-template #epRuleInput>
+          <input
+            class="form-control form-control-sm"
+            type="number"
+            step="1"
+            min="0"
+            [max]="anime.num_episodes - 1"
+            [(ngModel)]="editExtension!.episodeRule"
+          />
+        </ng-template>
+      </myanili-value-pair>
+      <myanili-value-pair
         *ngIf="
           !edit &&
           anime &&

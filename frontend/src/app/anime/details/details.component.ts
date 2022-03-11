@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnictComponent } from '@external/annict/annict.component';
@@ -52,6 +53,7 @@ export class AnimeDetailsComponent implements OnInit {
     private annict: AnnictService,
     private anisearch: AnisearchService,
     private cache: CacheService,
+    private dialogue: DialogueService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -286,6 +288,31 @@ export class AnimeDetailsComponent implements OnInit {
   async addAnime() {
     if (!this.anime) return;
     this.busy = true;
+    const data = {
+      status: 'plan_to_watch',
+    } as Partial<MyAnimeUpdate>;
+    const episodeRule = await this.dialogue.open(
+      `Do you want to set yourself an episode rule for "${this.anime.title}"? You will be asked if you want to continue watching after set episodes.`,
+      'Add anime',
+      [
+        {
+          label: '1 Episode',
+          value: 1,
+        },
+        {
+          label: '3 Episodes',
+          value: 3,
+        },
+        {
+          label: 'Just add',
+          value: 0,
+        },
+      ],
+      0,
+    );
+    if (episodeRule) {
+      data.comments = Base64.encode(JSON.stringify({ episodeRule }));
+    }
     await this.animeService.updateAnime(
       {
         malId: this.anime.id,
@@ -294,7 +321,7 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
       },
-      { status: 'plan_to_watch' },
+      data,
     );
     await this.ngOnInit();
     this.busy = false;
@@ -359,6 +386,19 @@ export class AnimeDetailsComponent implements OnInit {
         const myScore = Math.round(Number(prompt('Your score (1-10)?')));
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
+    } else if (!data.is_rewatching && currentEpisode + 1 === this.anime.my_extension?.episodeRule) {
+      const continueWatching = await this.dialogue.open(
+        `You set yourself a ${this.anime.my_extension?.episodeRule} episode rule for "${this.anime.title}". Do you want to continue watching?`,
+        'Continue Watching?',
+        [
+          { label: 'Drop', value: false },
+          { label: 'Continue', value: true },
+        ],
+        true,
+      );
+      if (!continueWatching) {
+        data.status = 'dropped';
+      }
     }
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
@@ -385,7 +425,7 @@ export class AnimeDetailsComponent implements OnInit {
       if (sequels.length) {
         const sequel = await this.animeService.getAnime(sequels[0].node.id);
         if (sequel.my_list_status?.status === 'completed') {
-          const startSequel = confirm(`Rewatch sequel "${sequel.title}"?`);
+          const startSequel = await this.dialogue.confirm(`Rewatch sequel "${sequel.title}"?`);
           if (startSequel) {
             await this.animeService.updateAnime(
               { malId: sequel.id },

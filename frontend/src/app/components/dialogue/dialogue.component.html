@@ -11,7 +11,7 @@
 </div>
 <div class="modal-body">
   {{ message }}
-  <form *ngIf="prompt" (submit)="submit()">
+  <form *ngIf="prompt" (submit)="submit(prompt.value)">
     <input
       [type]="prompt.type"
       [(ngModel)]="prompt.value"
@@ -27,7 +27,7 @@
     *ngFor="let button of buttons"
     type="button"
     [attr.class]="button.class + ' btn btn-primary'"
-    (click)="button.action()"
+    (click)="submit(button.value)"
   >
     {{ button.label }}
   </button>
