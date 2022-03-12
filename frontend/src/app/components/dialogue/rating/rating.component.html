@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h5 class="modal-title">Add rating</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="dismiss()"
+  ></button>
+</div>
+<div class="modal-body">
+  Your rating for "{{ title }}"?
+  <div class="text-center">
+    <myanili-icon
+      *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+      (click)="rating = i"
+      [name]="i <= rating ? 'star-fill' : 'star'"
+      [size]="24"
+      class="cursor-pointer"
+    ></myanili-icon>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="submit()">Add rating</button>
+</div>

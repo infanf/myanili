@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Button } from '@components/dialogue/dialogue.component';
 import { DialogueService } from '@components/dialogue/dialogue.service';
 import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
@@ -374,7 +375,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
       completed = true;
       if (!this.anime.my_list_status?.score) {
-        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
+        const myScore = await this.dialogue.rating(this.anime.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     } else if (!data.is_rewatching && currentEpisode + 1 === this.anime.my_extension?.episodeRule) {
@@ -416,7 +417,10 @@ export class AnimeDetailsComponent implements OnInit {
       if (sequels.length) {
         const sequel = await this.animeService.getAnime(sequels[0].node.id);
         if (sequel.my_list_status?.status === 'completed') {
-          const startSequel = await this.dialogue.confirm(`Rewatch sequel "${sequel.title}"?`);
+          const startSequel = await this.dialogue.confirm(
+            `Rewatch sequel "${sequel.title}"?`,
+            'Rewatch sequel',
+          );
           if (startSequel) {
             await this.animeService.updateAnime(
               { malId: sequel.id },
@@ -424,9 +428,22 @@ export class AnimeDetailsComponent implements OnInit {
             );
           }
         } else {
-          const startSequel = confirm(`Start watching sequel "${sequel.title}"?`);
-          if (startSequel) {
-            await this.animeService.updateAnime({ malId: sequel.id }, { status: 'watching' });
+          const futureShow =
+            sequel.status !== 'finished_airing' && sequel.status !== 'currently_airing';
+          const buttons = [
+            { label: "Don't watch", value: false },
+            { label: 'Add to my List', value: 'plan_to_watch' },
+            { label: 'Start Watching now', value: 'watching' },
+          ] as Array<Button<WatchStatus | false>>;
+          if (futureShow) buttons.pop();
+          const status = await this.dialogue.open<WatchStatus | false>(
+            `Watch sequel "${sequel.title}"?`,
+            'Watch sequel',
+            buttons,
+            false,
+          );
+          if (status) {
+            await this.animeService.updateAnime({ malId: sequel.id }, { status });
           }
         }
         this.ngOnInit();

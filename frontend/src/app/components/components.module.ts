@@ -7,6 +7,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { DayPipe } from './day.pipe';
 import { DialogueComponent } from './dialogue/dialogue.component';
+import { RatingComponent } from './dialogue/rating/rating.component';
 import { FlagPipe } from './flag.pipe';
 import { MalPipe } from './mal.pipe';
 import { MediaCardComponent } from './media-card/media-card.component';
@@ -32,6 +33,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     PlatformPipe,
     Nl2brPipe,
     DialogueComponent,
+    RatingComponent,
   ],
   imports: [
     CommonModule,

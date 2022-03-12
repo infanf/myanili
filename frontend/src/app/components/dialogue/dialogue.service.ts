@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Button, DialogueComponent, InputType } from './dialogue.component';
+import { RatingComponent } from './rating/rating.component';
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +50,11 @@ export class DialogueService {
     modal.componentInstance.message = message;
     modal.componentInstance.buttons = buttons;
     return modal.result.catch(() => fallback);
+  }
+
+  async rating(title: string): Promise<number> {
+    const modal = this.modalService.open(RatingComponent);
+    modal.componentInstance.title = title;
+    return modal.result;
   }
 }
