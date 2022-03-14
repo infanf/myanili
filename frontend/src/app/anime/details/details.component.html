@@ -3,7 +3,11 @@
     <h2>
       {{ anime?.title || title || 'Loading…' }}
     </h2>
-    <div class="ms-auto ps-3 cursor-pointer" *ngIf="anime?.title" style="white-space: nowrap">
+    <div
+      class="ms-auto ps-3 cursor-pointer"
+      *ngIf="anime?.title && !fromCache"
+      style="white-space: nowrap"
+    >
       <ng-container *ngIf="anime?.my_list_status; else add">
         <myanili-icon
           [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"

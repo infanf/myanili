@@ -3,7 +3,11 @@
     <h2>
       {{ manga?.title || title || 'Loading…' }}
     </h2>
-    <div class="ms-auto ps-3 cursor-pointer" *ngIf="manga?.title" style="white-space: nowrap">
+    <div
+      class="ms-auto ps-3 cursor-pointer"
+      *ngIf="manga?.title && !fromCache"
+      style="white-space: nowrap"
+    >
       <ng-container *ngIf="manga?.my_list_status; else add">
         <myanili-icon
           [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"
@@ -36,10 +40,7 @@
             *ngIf="manga && manga.main_picture"
             srcset="{{ manga.main_picture.large || manga.main_picture.medium }}"
           />
-          <source
-            *ngIf="imageCache"
-            srcset="{{ imageCache }}"
-          />
+          <source *ngIf="imageCache" srcset="{{ imageCache }}" />
           <source srcset="/assets/blank-poster.svg" />
           <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
         </picture>
@@ -122,7 +123,10 @@
       <div class="row" *ngIf="manga">
         <div class="col-4 fw-bold text-end">Type</div>
         <div class="col-8">
-          <myanili-icon name="{{ manga.media_type | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
+          <myanili-icon
+            name="{{ manga.media_type | mal: 'mediaicon' }}"
+            class="me-1"
+          ></myanili-icon>
           {{ manga!.media_type | mal: 'mediatype' }}
         </div>
       </div>
@@ -412,7 +416,9 @@
             <div *ngIf="manga.my_extension?.anilistId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <myanili-external-rating [rating]="getRating('anilist')"></myanili-external-rating>
+                  <myanili-external-rating
+                    [rating]="getRating('anilist')"
+                  ></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
@@ -468,7 +474,9 @@
             <div *ngIf="manga.my_extension?.anisearchId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
-                  <myanili-external-rating [rating]="getRating('anisearch')"></myanili-external-rating>
+                  <myanili-external-rating
+                    [rating]="getRating('anisearch')"
+                  ></myanili-external-rating>
                 </td>
               </div>
               <div class="col-8">
@@ -601,7 +609,10 @@
         <ng-template ngbNavContent>
           <section *ngIf="!inModal">
             <myanili-manga-related [related_manga]="manga.related_manga"></myanili-manga-related>
-            <myanili-anime-related [related_anime]="manga.related_anime" [has_covers]="false"></myanili-anime-related>
+            <myanili-anime-related
+              [related_anime]="manga.related_anime"
+              [has_covers]="false"
+            ></myanili-anime-related>
           </section>
         </ng-template>
       </li>

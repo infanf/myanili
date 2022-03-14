@@ -32,6 +32,7 @@ export class AnimeDetailsComponent implements OnInit {
   title?: string;
   imageCache?: string;
   edit = false;
+  fromCache = false;
   busy = false;
   editBackup?: Partial<MyAnimeUpdate>;
   editExtension?: AnimeExtension;
@@ -84,6 +85,7 @@ export class AnimeDetailsComponent implements OnInit {
         this.title = animeCached.title;
         this.anime = animeCached;
         this.glob.setTitle(animeCached.title);
+        this.fromCache = true;
         this.glob.notbusy();
       }
     });
@@ -97,6 +99,7 @@ export class AnimeDetailsComponent implements OnInit {
       });
     }
     this.anime = { ...anime };
+    this.fromCache = false;
     if (this.anime?.title) {
       this.glob.setTitle(this.anime.title);
     }
