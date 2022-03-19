@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { Anime, AnimeTheme } from '@models/anime';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/global.service';
@@ -17,6 +18,7 @@ export class AnimeSongsComponent {
     private sanitizer: DomSanitizer,
     private glob: GlobalService,
     private malService: MalService,
+    private dialogue: DialogueService,
   ) {}
 
   getSongUrl(spotifyUri?: string): string | SafeUrl {
@@ -31,10 +33,14 @@ export class AnimeSongsComponent {
 
   async setSongUrl(song: AnimeTheme) {
     this.glob.busy();
-    const spotify = prompt('Spotify URI', song.spotify)?.replace(
-      /https:\/\/open.spotify.com\/track\/(\w+)(\?.+)?/,
-      'spotify:track:$1',
-    );
+    const spotify = (
+      await this.dialogue.prompt(
+        'Please enter the Spotify Track URI',
+        'Spotify URI',
+        song.spotify,
+        'url',
+      )
+    )?.replace(/https:\/\/open.spotify.com\/track\/(\w+)(\?.+)?/, 'spotify:track:$1');
     if (!spotify?.match(/^spotify:track:\w+$/) || song.spotify === spotify) {
       this.glob.notbusy();
       return;
