@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { ListManga, MyMangaUpdate } from '@models/manga';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
@@ -57,6 +58,7 @@ export class BookshelfComponent {
     private mangaservice: MangaService,
     private settings: SettingsService,
     private glob: GlobalService,
+    private dialogue: DialogueService,
   ) {
     this.settings.language.subscribe(lang => (this.lang = lang));
   }
@@ -81,7 +83,7 @@ export class BookshelfComponent {
       if (manga.node.num_chapters) data.num_chapters_read = manga.node.num_chapters;
       completed = true;
       if (!manga.list_status?.score) {
-        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
+        const myScore = await this.dialogue.rating(manga.node.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
@@ -116,7 +118,7 @@ export class BookshelfComponent {
       if (manga.node.num_volumes) data.num_volumes_read = manga.node.num_volumes;
       completed = true;
       if (!manga.list_status?.score) {
-        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
+        const myScore = await this.dialogue.rating(manga.node.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }

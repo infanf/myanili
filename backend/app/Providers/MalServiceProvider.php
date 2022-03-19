@@ -236,7 +236,7 @@ class MalServiceProvider extends ServiceProvider
             "rating",
             "pictures",
             "background",
-            "related_anime",
+            "related_anime{status}",
             "related_manga",
             "recommendations",
             "studios",

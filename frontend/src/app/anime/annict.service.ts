@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
@@ -13,7 +14,7 @@ export class AnnictService {
   private readonly graphqlUrl = 'https://api.annict.com/graphql';
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
 
-  constructor() {
+  constructor(private dialogue: DialogueService) {
     this.accessToken = String(localStorage.getItem('annictAccessToken'));
     if (this.accessToken) {
       this.checkLogin()
@@ -21,7 +22,10 @@ export class AnnictService {
           this.userSubject.next(user);
         })
         .catch(e => {
-          alert('Could not connect to Annict, please check your account settings.');
+          this.dialogue.alert(
+            'Could not connect to Annict, please check your account settings.',
+            'Annict Connection Error',
+          );
           localStorage.removeItem('annictAccessToken');
         });
     }

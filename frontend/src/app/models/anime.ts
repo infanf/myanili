@@ -166,6 +166,7 @@ interface AnimeExtensionInterface {
   anisearchId?: number;
   fandomSlug?: string;
   displayName?: string;
+  episodeRule?: number;
 }
 
 export type AnimeExtension = AnimeExtensionInterface;

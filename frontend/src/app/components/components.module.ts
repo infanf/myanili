@@ -1,9 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { IconModule } from '@icon/icon.module';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { DayPipe } from './day.pipe';
+import { DialogueComponent } from './dialogue/dialogue.component';
+import { RatingComponent } from './dialogue/rating/rating.component';
 import { FlagPipe } from './flag.pipe';
 import { MalPipe } from './mal.pipe';
 import { MediaCardComponent } from './media-card/media-card.component';
@@ -28,10 +32,14 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     StreamPipe,
     PlatformPipe,
     Nl2brPipe,
+    DialogueComponent,
+    RatingComponent,
   ],
   imports: [
     CommonModule,
+    FormsModule,
     IconModule,
+    NgbModalModule,
     NgCircleProgressModule.forRoot({
       radius: 7,
       outerStrokeWidth: 1,

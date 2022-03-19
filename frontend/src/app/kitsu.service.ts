@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import {
@@ -28,7 +29,7 @@ export class KitsuService {
   private userSubject = new BehaviorSubject<KitsuUser | undefined>(undefined);
   loggedIn = false;
 
-  constructor() {
+  constructor(private dialogue: DialogueService) {
     this.accessToken = String(localStorage.getItem('kitsuAccessToken'));
     this.refreshToken = String(localStorage.getItem('kitsuRefreshToken'));
     if (this.accessToken && this.accessToken !== 'null') {
@@ -41,7 +42,10 @@ export class KitsuService {
           }
         })
         .catch(e => {
-          alert('Could not connect to Kitsu, please check your account settings.');
+          this.dialogue.alert(
+            'Could not connect to Kitsu, please check your account settings.',
+            'Kitsu Connection Error',
+          );
           this.logoff();
         });
     }

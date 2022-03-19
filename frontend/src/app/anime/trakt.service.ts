@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { MyAnimeUpdate } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
@@ -13,7 +14,7 @@ export class TraktService {
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
-  constructor() {
+  constructor(private dialogue: DialogueService) {
     this.clientId = String(localStorage.getItem('traktClientId'));
     this.accessToken = String(localStorage.getItem('traktAccessToken'));
     this.refreshToken = String(localStorage.getItem('traktRefreshToken'));
@@ -23,7 +24,10 @@ export class TraktService {
           this.userSubject.next(user);
         })
         .catch(e => {
-          alert('Could not connect to trakt, please check your account settings.');
+          this.dialogue.alert(
+            'Could not connect to trakt, please check your account settings.',
+            'Trakt Connection Error',
+          );
           localStorage.removeItem('traktAccessToken');
         });
     }

@@ -56,6 +56,7 @@ import { PersonMangaComponent } from './person/manga/manga.component';
 import { PersonComponent } from './person/person.component';
 import { PersonStaffComponent } from './person/staff/staff.component';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
+import { NewVersionComponent } from './settings/new-version/new-version.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 import { ExternalRatingComponent } from './widget/external-rating/external-rating.component';
@@ -104,6 +105,7 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     PersonMangaComponent,
     PersonStaffComponent,
     AboutComponent,
+    NewVersionComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { AnilistMediaListStatus, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
 import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
@@ -16,7 +17,7 @@ export class AnilistService {
   private refreshToken = '';
   private userSubject = new BehaviorSubject<AnilistUser | undefined>(undefined);
   loggedIn = false;
-  constructor(public client: Apollo) {
+  constructor(public client: Apollo, private dialogue: DialogueService) {
     this.clientId = String(localStorage.getItem('anilistClientId'));
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
@@ -26,7 +27,10 @@ export class AnilistService {
           this.userSubject.next(user);
         })
         .catch(e => {
-          alert('Could not connect to AniList, please check your account settings.');
+          this.dialogue.alert(
+            'Could not connect to AniList, please check your account settings.',
+            'AniList Connection Error',
+          );
           localStorage.removeItem('anilistAccessToken');
         });
     }

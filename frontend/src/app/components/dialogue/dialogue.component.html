@@ -1,0 +1,34 @@
+<div class="modal-header">
+  <h5 class="modal-title" *ngIf="title">
+    {{ title }}
+  </h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="dismiss()"
+  ></button>
+</div>
+<div class="modal-body">
+  {{ message }}
+  <form *ngIf="prompt" (submit)="submit(prompt.value)">
+    <input
+      [type]="prompt.type"
+      [(ngModel)]="prompt.value"
+      [placeholder]="prompt.placeholder || ''"
+      class="form-control mt-3"
+      name="value"
+      #value
+    />
+  </form>
+</div>
+<div class="modal-footer">
+  <button
+    *ngFor="let button of buttons"
+    type="button"
+    [attr.class]="button.class + ' btn btn-primary'"
+    (click)="submit(button.value)"
+  >
+    {{ button.label }}
+  </button>
+</div>

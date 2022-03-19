@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { PlatformPipe } from '@components/platform.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
@@ -28,6 +29,7 @@ export class MangaDetailsComponent implements OnInit {
   imageCache?: string;
   shortsyn = true;
   edit = false;
+  fromCache = false;
   busy = false;
   editBackup?: Partial<MyMangaUpdate>;
   editExtension?: MangaExtension;
@@ -43,6 +45,7 @@ export class MangaDetailsComponent implements OnInit {
     private anisearch: AnisearchService,
     private modalService: NgbModal,
     private cache: CacheService,
+    private dialogue: DialogueService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -62,6 +65,7 @@ export class MangaDetailsComponent implements OnInit {
       if (mangaCached && !this.manga) {
         this.manga = mangaCached;
         this.title = mangaCached.title;
+        this.fromCache = true;
         this.glob.setTitle(mangaCached.title);
         this.glob.notbusy();
       }
@@ -75,6 +79,7 @@ export class MangaDetailsComponent implements OnInit {
       });
     }
     this.manga = { ...manga };
+    this.fromCache = false;
     if (this.manga?.title) {
       this.glob.setTitle(this.manga.title);
       this.cache.saveTitle(this.manga.id, 'manga', this.manga.title);
@@ -298,7 +303,7 @@ export class MangaDetailsComponent implements OnInit {
       if (this.manga.num_volumes) data.num_volumes_read = this.manga.num_volumes;
       completed = true;
       if (!this.manga.my_list_status?.score) {
-        const myScore = Math.round(Number(prompt('Your score (1-10)?')));
+        const myScore = await this.dialogue.rating(this.manga.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
