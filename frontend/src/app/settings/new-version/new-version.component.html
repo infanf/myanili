@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h5 class="modal-title">MyAniLi has been updated!</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="modal.dismiss()"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="card mt-3">
+    <div class="card-header">Changelog</div>
+    <div class="card-body border-bottom" *ngFor="let change of changelog.changes">
+      <h6>v{{ change.version }}</h6>
+      <div *ngIf="change.features?.length">
+        Features:
+        <ul>
+          <li *ngFor="let feature of change.features">{{ feature }}</li>
+        </ul>
+      </div>
+      <div *ngIf="change.fixes?.length">
+        Fixes:
+        <ul>
+          <li *ngFor="let fix of change.fixes">{{ fix }}</li>
+        </ul>
+      </div>
+      <div *ngIf="change.other?.length">
+        Other:
+        <ul>
+          <li *ngFor="let other of change.other">{{ other }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

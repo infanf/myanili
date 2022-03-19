@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Season } from '@models/components';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
+
+import { GlobalService } from '../global.service';
+
+import { NewVersionComponent } from './new-version/new-version.component';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +21,7 @@ export class SettingsService {
   private layoutSubject = new BehaviorSubject<string>('list');
   private nsfwSubject = new BehaviorSubject<boolean>(false);
 
-  constructor() {
+  constructor(private glob: GlobalService, private modalService: NgbModal) {
     try {
       const list = Boolean(JSON.parse(localStorage.getItem('inList') || 'false'));
       this.setInList(list);
@@ -30,6 +35,20 @@ export class SettingsService {
       }
       const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
       this.setNsfw(nsfw);
+      const knownVersion = String(localStorage.getItem('myaniliVersion')) || '0.0.0';
+      if (this.glob.changelog.version !== knownVersion) {
+        const changeNotes = this.glob.changelog.changes.filter(c =>
+          c.version.startsWith(this.glob.changelog.version.replace(/\.\d+$/, '')),
+        );
+        if (changeNotes) {
+          localStorage.setItem('myaniliVersion', this.glob.changelog.version);
+          const changelogModal = this.modalService.open(NewVersionComponent);
+          changelogModal.componentInstance.changelog = {
+            version: this.glob.version,
+            changes: [...changeNotes],
+          };
+        }
+      }
     } catch (e) {}
   }
 
