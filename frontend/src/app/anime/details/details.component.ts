@@ -6,7 +6,7 @@ import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { TraktComponent } from '@external/trakt/trakt.component';
-import { Anime, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
+import { Anime, AnimeEpisodeRule, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
@@ -386,13 +386,18 @@ export class AnimeDetailsComponent implements OnInit {
         `You set yourself a ${this.anime.my_extension?.episodeRule} episode rule for "${this.anime.title}". Do you want to continue watching?`,
         'Continue Watching?',
         [
-          { label: 'Drop', value: false },
-          { label: 'Continue', value: true },
+          { label: 'Ask again next ep.', value: AnimeEpisodeRule.ASK_AGAIN },
+          { label: 'Drop', value: AnimeEpisodeRule.DROP },
+          { label: 'Continue', value: AnimeEpisodeRule.CONTINUE },
         ],
-        true,
+        AnimeEpisodeRule.CONTINUE,
       );
-      if (!continueWatching) {
+      if (continueWatching === AnimeEpisodeRule.DROP) {
         data.status = 'dropped';
+      }
+      if (continueWatching === AnimeEpisodeRule.ASK_AGAIN) {
+        this.anime.my_extension.episodeRule++;
+        data.comments = Base64.encode(JSON.stringify(this.anime.my_extension));
       }
     }
     const [animeStatus] = await Promise.all([
