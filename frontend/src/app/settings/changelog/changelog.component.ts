@@ -4,6 +4,7 @@ import { Changelog, GlobalService } from 'src/app/global.service';
 @Component({
   selector: 'myanili-changelog',
   templateUrl: './changelog.component.html',
+  styleUrls: ['./changelog.component.scss'],
 })
 export class ChangelogComponent {
   changelog!: Changelog;

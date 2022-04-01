@@ -1,6 +1,6 @@
 <div class="card mt-3">
   <div class="card-header">Changelog</div>
-  <div class="card-body border-bottom" *ngFor="let change of changelog.changes">
+  <div class="card-body border-bottom pb-0" *ngFor="let change of changes">
     <h6>v{{ change.version }}</h6>
     <div *ngIf="change.features?.length">
       Features:
