@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Button } from '@components/dialogue/dialogue.component';
 import { DialogueService } from '@components/dialogue/dialogue.service';
-import { Anime, ListAnime, MyAnimeUpdate, WatchStatus } from '@models/anime';
+import { Anime, AnimeEpisodeRule, ListAnime, MyAnimeUpdate, WatchStatus } from '@models/anime';
+import { Base64 } from 'js-base64';
 import * as moment from 'moment';
 import { GlobalService } from 'src/app/global.service';
 import { Language, SettingsService } from 'src/app/settings/settings.service';
@@ -131,13 +132,18 @@ export class WatchlistComponent implements OnInit {
         `You set yourself a ${anime.my_extension?.episodeRule} episode rule for "${anime.node.title}". Do you want to continue watching?`,
         'Continue Watching?',
         [
-          { label: 'Drop', value: false },
-          { label: 'Continue', value: true },
+          { label: 'Ask again next ep.', value: AnimeEpisodeRule.ASK_AGAIN },
+          { label: 'Drop', value: AnimeEpisodeRule.DROP },
+          { label: 'Continue', value: AnimeEpisodeRule.CONTINUE },
         ],
-        true,
+        AnimeEpisodeRule.CONTINUE,
       );
-      if (!continueWatching) {
+      if (continueWatching === AnimeEpisodeRule.DROP) {
         data.status = 'dropped';
+      }
+      if (continueWatching === AnimeEpisodeRule.ASK_AGAIN) {
+        anime.my_extension.episodeRule++;
+        data.comments = Base64.encode(JSON.stringify(anime.my_extension));
       }
     }
     const fullAnime = await this.animeService.getAnime(anime.node.id);

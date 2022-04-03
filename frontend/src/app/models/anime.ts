@@ -201,3 +201,9 @@ export type AnimeCharacter = Character;
 export type AnimeStaff = Staff;
 
 export type AnimeRecommendations = Array<{ node: AnimeNode; num_recommendations: number }>;
+
+export enum AnimeEpisodeRule {
+  DROP = 0,
+  CONTINUE = 1,
+  ASK_AGAIN = 2,
+}

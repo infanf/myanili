@@ -18,7 +18,7 @@ export class TraktService {
     this.clientId = String(localStorage.getItem('traktClientId'));
     this.accessToken = String(localStorage.getItem('traktAccessToken'));
     this.refreshToken = String(localStorage.getItem('traktRefreshToken'));
-    if (this.accessToken) {
+    if (this.accessToken && this.accessToken !== 'null') {
       this.login()
         .then(user => {
           this.userSubject.next(user);
