@@ -295,18 +295,25 @@ export class AnimeDetailsComponent implements OnInit {
     const data = {
       status: 'plan_to_watch',
     } as Partial<MyAnimeUpdate>;
-    const episodeRule = await this.dialogue.open(
-      `Do you want to set yourself an episode rule for "${this.anime.title}"? You will be asked if you want to continue watching after set episodes.`,
-      'Add anime',
-      [
-        { label: '1 Episode', value: 1 },
-        { label: '3 Episodes', value: 3 },
-        { label: 'Just add', value: 0 },
-      ],
-      0,
-    );
-    if (episodeRule) {
-      data.comments = Base64.encode(JSON.stringify({ episodeRule }));
+    if (
+      this.anime.media_type !== 'movie' &&
+      this.anime.media_type !== 'special' &&
+      (!this.anime.num_episodes || this.anime.num_episodes > 3)
+    ) {
+      const episodeRule = await this.dialogue.open(
+        `Do you want to set yourself an episode rule for "${this.anime.title}"?
+          You will be asked if you want to continue watching after set episodes.`,
+        'Add anime',
+        [
+          { label: '1 Episode', value: 1 },
+          { label: '3 Episodes', value: 3 },
+          { label: 'Just add', value: 0 },
+        ],
+        0,
+      );
+      if (episodeRule) {
+        data.comments = Base64.encode(JSON.stringify({ episodeRule }));
+      }
     }
     await this.animeService.updateAnime(
       {
@@ -486,7 +493,14 @@ export class AnimeDetailsComponent implements OnInit {
 
   async deleteEntry(): Promise<boolean> {
     if (!this.anime) return false;
-    if (!confirm(`Are you sure you want to delete "${this.anime.title}"?`)) return false;
+    if (
+      !(await this.dialogue.confirm(
+        `Are you sure you want to delete "${this.anime.title}"?`,
+        'Remove Entry',
+      ))
+    ) {
+      return false;
+    }
     this.glob.busy();
     this.busy = true;
     await this.animeService.deleteAnime({

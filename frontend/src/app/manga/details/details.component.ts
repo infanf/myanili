@@ -326,7 +326,13 @@ export class MangaDetailsComponent implements OnInit {
 
   async deleteEntry(): Promise<boolean> {
     if (!this.manga) return false;
-    if (!confirm(`Are you sure you want to delete "${this.manga.title}"?`)) return false;
+    if (
+      !(await this.dialogue.confirm(
+        `Are you sure you want to delete "${this.manga.title}"?`,
+        'Remove Entry',
+      ))
+    )
+      return false;
     this.glob.busy();
     this.busy = true;
     await this.mangaService.deleteManga({
