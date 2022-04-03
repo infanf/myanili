@@ -1,9 +1,13 @@
 {
-  "version": "2.11.0",
+  "version": "2.11.1",
   "changes": [
     {
+      "version": "2.11.1",
+      "fixes": ["no episode rule for movies and specials"]
+    },
+    {
       "version": "2.11.0",
-      "features": ["3 Episode rule"],
+      "features": ["3 episode rule"],
       "other": ["styled implementation of system dialogues"]
     },
     {
