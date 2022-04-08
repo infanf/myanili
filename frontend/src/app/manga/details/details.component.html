@@ -523,12 +523,17 @@
         <div class="row my-2" *ngIf="edit && manga && editExtension && enableKitsu()">
           <div class="col-4 fw-bold text-end">Kitsu</div>
           <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.kitsuId!.kitsuId"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
+            <div class="input-group input-group-sm">
+              <input
+                class="form-control form-control-sm"
+                [(ngModel)]="editExtension!.kitsuId!.kitsuId"
+                [disabled]="busy"
+                enterkeyhint="done"
+              />
+              <button class="btn btn-primary" (click)="findKitsu()">
+                <myanili-icon-kitsu></myanili-icon-kitsu>
+              </button>
+            </div>
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && manga && editExtension">

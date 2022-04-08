@@ -9,6 +9,7 @@ import { AnisearchComponent } from './anisearch/anisearch.component';
 import { AnnictComponent } from './annict/annict.component';
 import { BakamangaComponent } from './bakamanga/bakamanga.component';
 import { ExternalComponent } from './external.component';
+import { KitsuComponent } from './kitsu/kitsu.component';
 import { TraktComponent } from './trakt/trakt.component';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { TraktComponent } from './trakt/trakt.component';
     AnisearchComponent,
     BakamangaComponent,
     AnnictComponent,
+    KitsuComponent,
   ],
   imports: [FormsModule, CommonModule, IconModule, DirectivesModule],
   exports: [],

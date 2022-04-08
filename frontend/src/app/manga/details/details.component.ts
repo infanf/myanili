@@ -4,6 +4,7 @@ import { DialogueService } from '@components/dialogue/dialogue.service';
 import { PlatformPipe } from '@components/platform.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
+import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { ExtRating } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -100,7 +101,16 @@ export class MangaDetailsComponent implements OnInit {
     ) {
       const [anilistId, kitsuId, anisearchId, bakaId] = await Promise.all([
         this.anilist.getId(this.id, 'MANGA'),
-        this.kitsu.getId(this.id, 'manga', 'myanimelist', this.manga.my_extension.kitsuId?.kitsuId),
+        this.kitsu.getId(
+          {
+            id: this.id,
+            title: manga.title,
+            year: manga.start_date ? new Date(manga.start_date).getFullYear() : undefined,
+          },
+          'manga',
+          'myanimelist',
+          this.manga.my_extension.kitsuId?.kitsuId,
+        ),
         this.anisearch.getId(this.manga.title, 'manga', {
           parts: this.manga.num_chapters,
           volumes: this.manga.num_volumes,
@@ -331,8 +341,9 @@ export class MangaDetailsComponent implements OnInit {
         `Are you sure you want to delete "${this.manga.title}"?`,
         'Remove Entry',
       ))
-    )
+    ) {
       return false;
+    }
     this.glob.busy();
     this.busy = true;
     await this.mangaService.deleteManga({
@@ -440,6 +451,16 @@ export class MangaDetailsComponent implements OnInit {
     const ongoing = !this.editExtension?.ongoing;
     if (!this.editExtension) this.editExtension = { ongoing };
     this.editExtension.ongoing = ongoing;
+  }
+
+  async findKitsu() {
+    if (!this.manga || !this.editExtension) return;
+    const modal = this.modalService.open(KitsuComponent);
+    modal.componentInstance.type = 'manga';
+    modal.componentInstance.title = this.manga.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.kitsuId = { kitsuId: Number(value) };
+    });
   }
 
   async findAnisearch() {

@@ -149,7 +149,7 @@ export class AnimeService {
       })(),
       (async () => {
         if (!ids.kitsuId) {
-          ids.kitsuId = await this.kitsu.getId(ids.malId, 'anime');
+          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'anime');
         }
         if (!ids.kitsuId) return;
         return this.kitsu.updateEntry(ids.kitsuId, 'anime', {

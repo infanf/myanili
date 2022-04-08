@@ -110,7 +110,7 @@ export class MangaService {
       })(),
       (async () => {
         if (!ids.kitsuId) {
-          ids.kitsuId = await this.kitsu.getId(ids.malId, 'manga');
+          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'manga');
         }
         if (!ids.kitsuId) return;
         return this.kitsu.updateEntry(ids.kitsuId, 'manga', {
