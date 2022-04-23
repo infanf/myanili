@@ -70,7 +70,7 @@ export class AnisearchService {
       const list = await this.getMangas(title);
       const nodes = list.nodes.filter(
         node =>
-          Number(node.year) === meta.year &&
+          Math.abs(Number(node.year) - (meta.year || 0)) <= 1 &&
           (Number(node.chapters) === meta.parts || Number(node.volumes) === meta.volumes),
       );
       if (nodes.length === 1) {

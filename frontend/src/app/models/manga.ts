@@ -152,10 +152,15 @@ export type MangaExtension = MangaExtensionInterface;
 export type MangaRecommendations = Array<{ node: MangaNode; num_recommendations: number }>;
 
 interface Character {
-  mal_id: number;
-  url: string;
-  image_url: string;
-  name: string;
+  character: {
+    mal_id: number;
+    url: string;
+    images: {
+      jpg: { image_url: string };
+      webp?: { image_url: string };
+    };
+    name: string;
+  };
   role: string;
 }
 

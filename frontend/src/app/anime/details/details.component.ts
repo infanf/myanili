@@ -5,6 +5,7 @@ import { DialogueService } from '@components/dialogue/dialogue.service';
 import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnictComponent } from '@external/annict/annict.component';
+import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { TraktComponent } from '@external/trakt/trakt.component';
 import { Anime, AnimeEpisodeRule, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
@@ -119,7 +120,10 @@ export class AnimeDetailsComponent implements OnInit {
     ) {
       const [anilistId, kitsuId, simklId, annictId, anisearchId] = await Promise.all([
         this.anilist.getId(this.id, 'ANIME'),
-        this.kitsu.getId(this.id, 'anime'),
+        this.kitsu.getId(
+          { id: this.id, title: anime.title, year: anime.start_season?.year },
+          'anime',
+        ),
         this.simkl.getId(this.id),
         this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title),
         this.anisearch.getId(this.anime.title, 'anime', {
@@ -524,6 +528,15 @@ export class AnimeDetailsComponent implements OnInit {
     modal.componentInstance.title = this.anime.my_extension?.series || this.anime.title;
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.trakt = String(value);
+    });
+  }
+
+  async findKitsu() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(KitsuComponent);
+    modal.componentInstance.title = this.anime.my_extension?.series || this.anime.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.kitsuId = { kitsuId: Number(value) };
     });
   }
 

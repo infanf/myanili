@@ -14,6 +14,7 @@ import {
 import { ReadStatus } from '@models/manga';
 import * as CryptoJS from 'crypto-js';
 import { BehaviorSubject } from 'rxjs';
+import { compareTwoStrings } from 'string-similarity';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +53,7 @@ export class KitsuService {
   }
 
   async getId(
-    externalId: number,
+    search: { id?: number; title?: string; year?: number },
     type: 'anime' | 'manga',
     externalSite = 'myanimelist',
     kitsu?: number | string,
@@ -63,21 +64,44 @@ export class KitsuService {
         entryId: (await this.getEntry(Number(kitsu), type))?.id,
       };
     }
-    const result = await fetch(
-      `${this.baseUrl}mappings?filter[externalSite]=${externalSite}/${type}&filter[externalId]=${externalId}`,
-    );
-    if (result.ok) {
-      const response = (await result.json()) as unknown as KitsuResponse<KitsuMappingData[]>;
-      if (response.data.length) {
-        const newUrl = response.data[0].relationships.item.links.related;
-        const newResult = await fetch(newUrl);
-        const animeResponse = (await newResult.json()) as KitsuResponse<KitsuEntry>;
-        if (newResult.ok && animeResponse.data) {
-          return {
-            kitsuId: animeResponse.data.id,
-            entryId: (await this.getEntry(Number(animeResponse.data.id), type))?.id,
-          };
+    if (search.id) {
+      const result = await fetch(
+        `${this.baseUrl}mappings?filter[externalSite]=${externalSite}/${type}&filter[externalId]=${search.id}`,
+      );
+      if (result.ok) {
+        const response = (await result.json()) as unknown as KitsuResponse<KitsuMappingData[]>;
+        if (response.data.length) {
+          const newUrl = response.data[0].relationships.item.links.related;
+          const newResult = await fetch(newUrl);
+          const animeResponse = (await newResult.json()) as KitsuResponse<KitsuEntry>;
+          if (newResult.ok && animeResponse.data) {
+            return {
+              kitsuId: animeResponse.data.id,
+              entryId: (await this.getEntry(Number(animeResponse.data.id), type))?.id,
+            };
+          }
         }
+      }
+    }
+    if (search.title) {
+      const title = search.title;
+      const results = await this.getDataFromName(search.title, type);
+      if (results.length) {
+        const foundResult = results.find(result => {
+          const titleSimilarity = compareTwoStrings(title, result.attributes.canonicalTitle);
+          if (search.year) {
+            return (
+              titleSimilarity > 0.9 &&
+              new Date(result.attributes.startDate).getFullYear() === search.year
+            );
+          }
+          return titleSimilarity > 0.9;
+        });
+        return foundResult
+          ? {
+              kitsuId: String(foundResult?.id),
+            }
+          : undefined;
       }
     }
     return undefined;
@@ -92,6 +116,17 @@ export class KitsuService {
       }
     }
     return undefined;
+  }
+
+  async getDataFromName(name: string, type: 'anime' | 'manga'): Promise<KitsuMedia[]> {
+    const result = await fetch(`${this.baseUrl}${type}?filter[text]=${name}`);
+    if (result.ok) {
+      const response = (await result.json()) as KitsuResponse<KitsuMedia[]>;
+      if (response.data.length) {
+        return response.data;
+      }
+    }
+    return [];
   }
 
   async getExternalId(id: number, type: 'anime' | 'manga', externalSite = 'myanimelist') {
@@ -268,6 +303,7 @@ export class KitsuService {
   ): Promise<KitsuEntry | undefined> {
     const user = await new Promise<{ id: string } | undefined>(r => this.user.subscribe(r));
     if (!user?.id) return;
+    if (!attributes.status) attributes.status = 'planned';
     const data = {
       attributes,
       type: 'libraryEntries',

@@ -13,7 +13,9 @@ export class MangaCharactersComponent implements OnInit {
   characters: MangaCharacter[] = [];
   constructor(private mangaService: MangaService) {}
 
-  async ngOnInit() {
-    this.characters = await this.mangaService.getCharacters(this.id);
+  ngOnInit() {
+    this.mangaService.getCharacters(this.id).then(characters => {
+      this.characters = characters;
+    });
   }
 }

@@ -1,6 +1,11 @@
 {
-  "version": "2.11.1",
+  "version": "2.11.2",
   "changes": [
+    {
+      "version": "2.11.2",
+      "fixes": ["manga characters"],
+      "other": ["Improve baka manga, kitsu and anisearch background search"]
+    },
     {
       "version": "2.11.1",
       "fixes": ["no episode rule for movies and specials"]

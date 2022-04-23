@@ -242,8 +242,9 @@
         name="Watch on"
       >
         {{ getDay(anime.my_extension.simulDay) }}
-        <span *ngIf="anime.my_extension.simulTime"
-          >@ {{ anime.my_extension.simulTime?.substr(0, 5) | time }}</span
+        <span *ngIf="anime.my_extension.simulTime">
+          <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
+          {{ anime.my_extension.simulTime?.substr(0, 5) | time }}</span
         >
       </myanili-value-pair>
       <div class="row my-2" *ngIf="edit && editExtension">
@@ -359,12 +360,17 @@
       <div class="row my-2" *ngIf="edit && anime && editExtension && enableKitsu()">
         <div class="col-4 fw-bold text-end">Kitsu</div>
         <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.kitsuId!.kitsuId"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
+          <div class="input-group input-group-sm">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.kitsuId!.kitsuId"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+            <button class="btn btn-primary" (click)="findKitsu()">
+              <myanili-icon-kitsu></myanili-icon-kitsu>
+            </button>
+          </div>
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && anime && editExtension">
