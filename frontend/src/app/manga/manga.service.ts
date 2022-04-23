@@ -159,10 +159,10 @@ export class MangaService {
   }
 
   async getCharacters(id: number): Promise<MangaCharacter[]> {
-    const result = await this.malService.getJikanData<{ characters?: MangaCharacter[] }>(
+    const result = await this.malService.getJikanData<{ data?: MangaCharacter[] }>(
       `manga/${id}/characters`,
     );
-    return result.characters || [];
+    return result.data || [];
   }
 
   async getBakaManga(id?: number): Promise<BakaManga | undefined> {
