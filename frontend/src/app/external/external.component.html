@@ -1,6 +1,6 @@
 <div class="modal-header">
   <div class="input-group">
-    <input class="form-control" [(ngModel)]="title" />
+    <input class="form-control" [(ngModel)]="title" type="search" />
     <button class="btn btn-primary" (click)="ngOnInit()">
       <myanili-icon name="search"></myanili-icon>
     </button>
@@ -16,7 +16,12 @@
   <tbody>
     <tr *ngFor="let node of nodes">
       <td [attr.colpan]="node.poster ? 1 : 2">
-        <img *ngIf="node.poster" [src]="node.poster" class="float-start rounded me-2" width="120px" />
+        <img
+          *ngIf="node.poster"
+          [src]="node.poster"
+          class="float-start rounded me-2"
+          width="120px"
+        />
         <b>{{ node.title }}</b>
         <span *ngIf="node.year" class="ms-1">({{ node.year }})</span>
         <a *ngIf="node.url" [href]="node.url" target="_blank">
@@ -38,14 +43,14 @@
         ></myanili-icon>
       </td>
     </tr>
-      <tr *ngIf="!nodes.length">
-        <td colspan="2" class="text-center" *ngIf="!searching">
-          <myanili-icon name="search"></myanili-icon>
-          <span class="ms-1">No results</span>
-        </td>
-        <td colspan="2" class="text-center" *ngIf="searching">
-          <myanili-icon name="hourglass-split"></myanili-icon>
-        </td>
-      </tr>
+    <tr *ngIf="!nodes.length">
+      <td colspan="2" class="text-center" *ngIf="!searching">
+        <myanili-icon name="search"></myanili-icon>
+        <span class="ms-1">No results</span>
+      </td>
+      <td colspan="2" class="text-center" *ngIf="searching">
+        <myanili-icon name="hourglass-split"></myanili-icon>
+      </td>
+    </tr>
   </tbody>
 </table>

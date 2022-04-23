@@ -13,6 +13,7 @@ import {
 } from '@models/manga';
 import { Base64 } from 'js-base64';
 import { environment } from 'src/environments/environment';
+import { compareTwoStrings } from 'string-similarity';
 
 import { AnilistService } from '../anilist.service';
 import { CacheService } from '../cache.service';
@@ -187,13 +188,14 @@ export class MangaService {
   async getBakaMangaId(manga: Manga): Promise<number | undefined> {
     const mangas = await this.getBakaMangas(manga.title);
     if (!mangas) return;
-    const bakaMangas = mangas.mangas.filter(
-      m => m.year === (manga.start_date ? new Date(manga.start_date).getFullYear() : 0),
-    );
+    const bakaMangas = mangas.mangas.filter(m => {
+      const mangaStart = manga.start_date ? new Date(manga.start_date).getFullYear() : 0;
+      return Math.abs(m.year - mangaStart) <= 1;
+    });
     if (bakaMangas.length === 1) return bakaMangas[0].id;
-    const bakaMangasByTitle = bakaMangas.filter(m => m.title === manga.title);
+    const bakaMangasByTitle = bakaMangas.filter(m => compareTwoStrings(m.title, manga.title) > 0.9);
     if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].id;
-    return;
+    return bakaMangas.find(m => m.title.toLowerCase() === manga.title.toLowerCase())?.id;
   }
 
   async getPoster(id: number): Promise<string | undefined> {

@@ -242,8 +242,9 @@
         name="Watch on"
       >
         {{ getDay(anime.my_extension.simulDay) }}
-        <span *ngIf="anime.my_extension.simulTime"
-          >@ {{ anime.my_extension.simulTime?.substr(0, 5) | time }}</span
+        <span *ngIf="anime.my_extension.simulTime">
+          <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
+          {{ anime.my_extension.simulTime?.substr(0, 5) | time }}</span
         >
       </myanili-value-pair>
       <div class="row my-2" *ngIf="edit && editExtension">
