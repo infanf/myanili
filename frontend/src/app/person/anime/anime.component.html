@@ -1,25 +1,16 @@
-<div class="grid">
-  <div *ngFor="let role of animes.data" class="d-flex border rounded justify-content-between">
-    <img
-      loading="lazy"
-      [src]="role.character.images.jpg.image_url || '/assets/blank-poster.svg'"
-      [routerLink]="'/character/' + role.character.mal_id"
-      class="poster rounded-start cursor-pointer"
-    />
-    <div class="d-flex flex-fill justify-content-between flex-column p-3">
-      <div [routerLink]="'/character/' + role.character.mal_id" class="cursor-pointer">
-        {{ role.character.name }}
-        <div class="text-muted">{{ role.role }}</div>
-      </div>
-      <div class="text-end cursor-pointer" [routerLink]="'/anime/details/' + role.anime.mal_id">
-        {{ role.anime.title }}
-      </div>
-    </div>
-    <img
-      loading="lazy"
-      [src]="role.anime.images.jpg.image_url || '/assets/blank-poster.svg'"
-      [routerLink]="'/anime/details/' + role.anime.mal_id"
-      class="poster rounded-end cursor-pointer"
-    />
-  </div>
+<div class="grid grid-2x">
+  <myanili-double-card
+    *ngFor="let role of animes.data"
+    [left]="{
+      poster: role.character.images.jpg.image_url,
+      title: role.character.name,
+      subtitle: role.role,
+      link: '/character/' + role.character.mal_id
+    }"
+    [right]="{
+      poster: role.anime.images.jpg.image_url,
+      title: role.anime.title,
+      link: '/anime/details/' + role.anime.mal_id
+    }"
+  ></myanili-double-card>
 </div>

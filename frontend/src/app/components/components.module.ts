@@ -5,9 +5,12 @@ import { IconModule } from '@icon/icon.module';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
+import { AppRoutingModule } from '../app-routing.module';
+
 import { DayPipe } from './day.pipe';
 import { DialogueComponent } from './dialogue/dialogue.component';
 import { RatingComponent } from './dialogue/rating/rating.component';
+import { DoubleCardComponent } from './double-card/double-card.component';
 import { FlagPipe } from './flag.pipe';
 import { MalPipe } from './mal.pipe';
 import { MediaCardComponent } from './media-card/media-card.component';
@@ -34,12 +37,14 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     Nl2brPipe,
     DialogueComponent,
     RatingComponent,
+    DoubleCardComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     IconModule,
     NgbModalModule,
+    AppRoutingModule,
     NgCircleProgressModule.forRoot({
       radius: 7,
       outerStrokeWidth: 1,
@@ -61,6 +66,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     ValuePairComponent,
     ValuePairArrayComponent,
     MediaCardComponent,
+    DoubleCardComponent,
     StatusBadgeComponent,
     MalPipe,
     FlagPipe,

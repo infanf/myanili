@@ -1,0 +1,25 @@
+<div class="d-flex border rounded justify-content-between">
+  <img
+    loading="lazy"
+    [src]="left.poster || '/assets/blank-poster.svg'"
+    [routerLink]="left.link"
+    class="poster rounded-start cursor-pointer"
+  />
+  <div class="d-flex flex-fill justify-content-between flex-column p-3">
+    <div [routerLink]="left.link" class="cursor-pointer">
+      {{ left.title }}
+      <div class="text-muted" *ngIf="left.subtitle">{{ left.subtitle }}</div>
+    </div>
+    <div *ngIf="right" class="text-end cursor-pointer" [routerLink]="right.link">
+      {{ right.title }}
+      <div class="text-muted" *ngIf="right.subtitle">{{ right.subtitle }}</div>
+    </div>
+  </div>
+  <img
+    *ngIf="right && right.title"
+    loading="lazy"
+    [src]="right.poster || '/assets/blank-poster.svg'"
+    [routerLink]="right.link"
+    class="poster rounded-end cursor-pointer"
+  />
+</div>

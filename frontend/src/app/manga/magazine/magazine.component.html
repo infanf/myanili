@@ -3,15 +3,18 @@
     <h2>
       {{ magazine?.meta?.name || 'Loading…' }}
       <a [href]="'https://myanimelist.net/manga/magazine/' + id" target="_blank">
-        <myanili-icon-mal size="38" style="vertical-align: bottom; line-height: 0.5"></myanili-icon-mal>
+        <myanili-icon-mal
+          size="38"
+          style="vertical-align: bottom; line-height: 0.5"
+        ></myanili-icon-mal>
       </a>
     </h2>
   </header>
 
-  <ng-container *ngIf="magazine">
+  <div class="grid grid-2x" *ngIf="magazine">
     <div
       *ngFor="let manga of magazine.manga"
-      class="mb-3 d-flex border rounded justify-content-between cursor-pointer"
+      class="d-flex border rounded justify-content-between cursor-pointer"
       [routerLink]="'/manga/details/' + manga.mal_id"
     >
       <img
@@ -35,5 +38,5 @@
         </div>
       </div>
     </div>
-  </ng-container>
+  </div>
 </div>

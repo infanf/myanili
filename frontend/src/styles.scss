@@ -155,6 +155,10 @@ overlay.overlay-shown {
   }
 }
 
+.grid-2x {
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+}
+
 body {
   margin-bottom: 2.25rem;
 }

@@ -166,6 +166,7 @@ interface Jikan4Image {
 
 type Jikan4CharacterData = Jikan4Data & {
   name: string;
+  name_kanji?: string;
   nicknames: string[];
   images?: Jikan4Image;
   favorites: number;

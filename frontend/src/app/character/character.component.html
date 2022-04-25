@@ -22,15 +22,15 @@
       </picture>
     </div>
     <div class="col-sm-7 col-md-8 mb-3" *ngIf="character && character.data">
-      <!-- <myanili-value-pair
-        *ngIf="character.name_kanji"
-        label="Name"
-        [value]="character.name_kanji"
-      ></myanili-value-pair> -->
+      <myanili-value-pair
+        *ngIf="character.data.name_kanji"
+        name="Name"
+        [value]="character.data.name_kanji"
+      ></myanili-value-pair>
       <myanili-value-pair name="Nickname" *ngIf="character.data.nicknames?.length">
         <div *ngFor="let name of character.data.nicknames">{{ name }}</div>
       </myanili-value-pair>
-      <div class="row">
+      <div class="row" *ngIf="character.data.about">
         <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
         <div class="col-12 col-md-8" [innerHTML]="character.data.about || '' | nl2br"></div>
       </div>
