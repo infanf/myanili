@@ -282,6 +282,36 @@ export class MangaDetailsComponent implements OnInit {
     this.busy = false;
   }
 
+  async startOver() {
+    if (!this.manga) return;
+    this.glob.busy();
+    this.busy = true;
+    if (
+      !(await this.dialogue.confirm(
+        `Are you sure you want to read "${this.manga.title}" from the start again?`,
+        'Start over',
+      ))
+    ) {
+      this.busy = false;
+      this.glob.notbusy();
+      return;
+    }
+    await this.mangaService.updateManga(
+      {
+        malId: this.manga.id,
+        anilistId: this.manga.my_extension?.anilistId,
+        kitsuId: this.manga.my_extension?.kitsuId,
+      },
+      {
+        status: 'reading',
+        num_chapters_read: 0,
+        num_volumes_read: 0,
+      },
+    );
+    await this.ngOnInit();
+    this.busy = false;
+  }
+
   async plusOne(type: 'chapter' | 'volume') {
     if (!this.manga || !this.manga.my_list_status) return;
     this.glob.busy();

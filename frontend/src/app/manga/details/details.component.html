@@ -187,6 +187,12 @@
               class="cursor-pointer me-1"
               (click)="reread()"
             ></myanili-icon>
+            <myanili-icon
+              *ngIf="manga!.my_list_status?.status === 'on_hold'"
+              name="arrow-counterclockwise"
+              class="cursor-pointer me-1"
+              (click)="startOver()"
+            ></myanili-icon>
           </ng-template>
           <ng-template #mylistedit>
             <select
