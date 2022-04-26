@@ -59,7 +59,6 @@ import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { NewVersionComponent } from './settings/new-version/new-version.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
-import { ExternalRatingComponent } from './widget/external-rating/external-rating.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +93,6 @@ import { ExternalRatingComponent } from './widget/external-rating/external-ratin
     AnimeListListComponent,
     PlatformComponent,
     QuickaddComponent,
-    ExternalRatingComponent,
     SeasonGridComponent,
     SeasonListComponent,
     ChangelogComponent,

@@ -11,6 +11,7 @@ import { DayPipe } from './day.pipe';
 import { DialogueComponent } from './dialogue/dialogue.component';
 import { RatingComponent } from './dialogue/rating/rating.component';
 import { DoubleCardComponent } from './double-card/double-card.component';
+import { ExternalRatingComponent } from './external-rating/external-rating.component';
 import { FlagPipe } from './flag.pipe';
 import { MalPipe } from './mal.pipe';
 import { MediaCardComponent } from './media-card/media-card.component';
@@ -38,6 +39,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     DialogueComponent,
     RatingComponent,
     DoubleCardComponent,
+    ExternalRatingComponent,
   ],
   imports: [
     CommonModule,
@@ -68,6 +70,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     MediaCardComponent,
     DoubleCardComponent,
     StatusBadgeComponent,
+    ExternalRatingComponent,
     MalPipe,
     FlagPipe,
     TimePipe,
