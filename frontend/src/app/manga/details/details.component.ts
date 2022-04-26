@@ -27,7 +27,6 @@ export class MangaDetailsComponent implements OnInit {
   @Input() inModal = false;
   manga?: Manga;
   title?: string;
-  imageCache?: string;
   shortsyn = true;
   edit = false;
   fromCache = false;

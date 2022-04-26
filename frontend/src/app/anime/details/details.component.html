@@ -36,35 +36,11 @@
 
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3" [class]="{ 'd-none': edit, 'd-sm-block': edit }">
-      <ng-container>
-        <picture>
-          <source
-            *ngIf="anime && anime.main_picture"
-            srcset="{{ anime.main_picture.large || anime.main_picture.medium }}"
-          />
-          <source *ngIf="imageCache" srcset="{{ imageCache }}" />
-          <source srcset="/assets/blank-poster.svg" />
-          <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
-        </picture>
-        <div class="progress" style="border-radius: 0 0 0.5rem 0.5rem; position: relative">
-          <div
-            *ngIf="meanRating"
-            class="progress-bar"
-            role="progressbar"
-            [ngClass]="{
-              'bg-success': meanRating >= 80,
-              'bg-warning': meanRating < 70 && meanRating >= 50,
-              'bg-danger': meanRating < 50,
-              'progress-bar-striped': !anime?.my_list_status?.score
-            }"
-            [ngStyle]="{ 'width.%': meanRating }"
-            aria-valuemin="0"
-            aria-valuemax="10"
-          >
-            {{ meanRating / 10 | number: '1.0-2' }}
-          </div>
-        </div>
-      </ng-container>
+      <myanili-poster-rating
+        [poster]="anime?.main_picture?.large || anime?.main_picture?.medium"
+        [meanRating]="meanRating"
+        [rating]="anime?.my_list_status?.score"
+      ></myanili-poster-rating>
     </div>
 
     <!-- right column -->

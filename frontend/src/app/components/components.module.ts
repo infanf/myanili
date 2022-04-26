@@ -18,6 +18,7 @@ import { MediaCardComponent } from './media-card/media-card.component';
 import { StatusBadgeComponent } from './media-card/status-badge/status-badge.component';
 import { Nl2brPipe } from './nl2br.pipe';
 import { PlatformPipe } from './platform.pipe';
+import { PosterRatingComponent } from './poster-rating/poster-rating.component';
 import { StreamPipe } from './stream.pipe';
 import { TimePipe } from './time.pipe';
 import { ValuePairArrayComponent } from './value-pair-array/value-pair-array.component';
@@ -40,6 +41,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     RatingComponent,
     DoubleCardComponent,
     ExternalRatingComponent,
+    PosterRatingComponent,
   ],
   imports: [
     CommonModule,
@@ -71,6 +73,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     DoubleCardComponent,
     StatusBadgeComponent,
     ExternalRatingComponent,
+    PosterRatingComponent,
     MalPipe,
     FlagPipe,
     TimePipe,

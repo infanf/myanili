@@ -34,36 +34,14 @@
   <!-- <hr class="mt-0" /> -->
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
-      <ng-container *ngIf="!edit">
-        <picture>
-          <source
-            *ngIf="manga && manga.main_picture"
-            srcset="{{ manga.main_picture.large || manga.main_picture.medium }}"
-          />
-          <source *ngIf="imageCache" srcset="{{ imageCache }}" />
-          <source srcset="/assets/blank-poster.svg" />
-          <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
-        </picture>
-        <div class="progress" style="border-radius: 0 0 0.5rem 0.5rem; position: relative">
-          <div
-            *ngIf="meanRating"
-            class="progress-bar"
-            role="progressbar"
-            [ngClass]="{
-              'bg-success': meanRating >= 80,
-              'bg-warning': meanRating < 70 && meanRating >= 50,
-              'bg-danger': meanRating < 50,
-              'progress-bar-striped': !manga?.my_list_status?.score
-            }"
-            [ngStyle]="{ 'width.%': meanRating }"
-            aria-valuemin="0"
-            aria-valuemax="10"
-          >
-            {{ meanRating / 10 | number: '1.0-2' }}
-          </div>
-        </div>
-      </ng-container>
-      <div class="row mt-2" *ngIf="edit && editBackup">
+      <myanili-poster-rating
+        [poster]="manga?.main_picture?.large || manga?.main_picture?.medium"
+        [meanRating]="meanRating"
+        [rating]="manga?.my_list_status?.score"
+      ></myanili-poster-rating>
+    </div>
+    <div class="col-sm-7 col-md-8 mb-3">
+      <div class="row mb-2" *ngIf="edit && editBackup">
         <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
         <div class="col-8">
           <input
@@ -77,8 +55,6 @@
           />
         </div>
       </div>
-    </div>
-    <div class="col-sm-7 col-md-8 mb-3">
       <div class="row" *ngIf="manga?.my_extension?.displayName && !edit">
         <div class="col-4 fw-bold text-end">Display</div>
         <div class="col-8">{{ manga?.my_extension?.displayName }}</div>
