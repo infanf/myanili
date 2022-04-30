@@ -44,15 +44,15 @@
       <div class="row mb-2" *ngIf="edit && editBackup">
         <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
         <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editBackup.score"
-            min="0"
-            max="10"
-            type="number"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
+          <span *ngFor="let j of [0, 5]" style="white-space: nowrap">
+            <myanili-icon
+              *ngFor="let i of [1, 2, 3, 4, 5]"
+              (click)="editBackup.score = editBackup.score === i + j ? 0 : i + j"
+              [name]="i + j <= (editBackup.score || 0) ? 'star-fill' : 'star'"
+              [size]="20"
+              class="cursor-pointer"
+            ></myanili-icon>
+          </span>
         </div>
       </div>
       <div class="row" *ngIf="manga?.my_extension?.displayName && !edit">

@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 export class ValuePairComponent {
   @Input() value?: string;
   @Input() name!: string;
+  @Input() rowClass?: string;
 }

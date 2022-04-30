@@ -1,0 +1,157 @@
+<div class="row mb-2">
+  <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
+  <div class="col-8">
+    <span *ngFor="let j of [0, 5]" style="white-space: nowrap">
+      <myanili-icon
+        *ngFor="let i of [1, 2, 3, 4, 5]"
+        (click)="data.score = data.score === i + j ? 0 : i + j"
+        [name]="i + j <= (data.score || 0) ? 'star-fill' : 'star'"
+        [size]="20"
+        class="cursor-pointer"
+      ></myanili-icon>
+    </span>
+  </div>
+</div>
+<myanili-value-pair rowClass="my-2" name="Display">
+  <input
+    class="form-control form-control-sm"
+    [(ngModel)]="extension.displayName"
+    [disabled]="busy"
+    enterkeyhint="done"
+  />
+</myanili-value-pair>
+<myanili-value-pair
+  name="English"
+  [value]="anime?.alternative_titles?.en"
+  *ngIf="anime?.alternative_titles?.en"
+></myanili-value-pair>
+<myanili-value-pair
+  name="Japanese"
+  [value]="anime?.alternative_titles?.ja"
+  *ngIf="anime?.alternative_titles?.ja"
+></myanili-value-pair>
+<myanili-value-pair rowClass="my-2" name="Series">
+  <input
+    class="form-control form-control-sm"
+    [(ngModel)]="extension.series"
+    [disabled]="busy"
+    enterkeyhint="done"
+  />
+</myanili-value-pair>
+<myanili-value-pair rowClass="my-2" name="My List">
+  <select class="form-control form-control-sm" [(ngModel)]="data!.status" [disabled]="busy">
+    <option
+      *ngFor="let status of ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch']"
+      [value]="status"
+    >
+      {{ status | mal: 'mystatus' }}
+    </option>
+  </select>
+</myanili-value-pair>
+<myanili-value-pair rowClass="my-2" name="Ep. Rule">
+  <input
+    class="form-control form-control-sm"
+    type="number"
+    step="1"
+    min="0"
+    [max]="(anime.num_episodes || 12) - 1"
+    [(ngModel)]="extension.episodeRule"
+  />
+</myanili-value-pair>
+<div class="row my-2">
+  <div class="col-4 fw-bold text-end">Watch on</div>
+  <div class="col-4">
+    <select
+      class="form-control form-control-sm"
+      [(ngModel)]="extension!.simulDay"
+      [disabled]="busy"
+      multiple
+    >
+      <option [value]="1">Monday</option>
+      <option [value]="2">Tuesday</option>
+      <option [value]="3">Wednesday</option>
+      <option [value]="4">Thursday</option>
+      <option [value]="5">Friday</option>
+      <option [value]="6">Saturday</option>
+      <option [value]="0">Sunday</option>
+    </select>
+  </div>
+  <div class="col-4">
+    <input
+      class="form-control form-control-sm"
+      [(ngModel)]="extension!.simulTime"
+      type="time"
+      [disabled]="busy"
+      enterkeyhint="done"
+    />
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-4 fw-bold text-end">Streaming</div>
+  <div class="col-5">
+    <select
+      class="form-control form-control-sm"
+      [(ngModel)]="extension.externalStreaming"
+      [disabled]="busy"
+    >
+      <option *ngFor="let provider of streamPipe.providers" [value]="provider.id">
+        {{ provider.name }}
+      </option>
+    </select>
+  </div>
+  <div class="col-3">
+    <input
+      class="form-control form-control-sm"
+      [(ngModel)]="extension.simulCountry"
+      [disabled]="busy"
+      enterkeyhint="done"
+    />
+  </div>
+</div>
+<myanili-value-pair rowClass="my-2" name="Stream ID">
+  <input
+    class="form-control form-control-sm"
+    [(ngModel)]="extension.externalStreamingId"
+    [disabled]="busy"
+    enterkeyhint="done"
+  />
+</myanili-value-pair>
+<div class="row my-2">
+  <div class="col-4 fw-bold text-end">Progress</div>
+  <div class="col-8">
+    <div class="input-group input-group-sm">
+      <input
+        class="form-control"
+        type="number"
+        min="0"
+        [max]="anime.num_episodes || 9999"
+        [(ngModel)]="data.num_watched_episodes"
+        [disabled]="busy"
+        enterkeyhint="done"
+      />
+      <span class="input-group-text">/ {{ anime!.num_episodes || '?' }}</span>
+    </div>
+  </div>
+</div>
+<div class="row my-2">
+  <div class="col-3 fw-bold text-end">Seasonno</div>
+  <div class="col-3">
+    <input
+      class="form-control form-control-sm"
+      [(ngModel)]="extension.seasonNumber"
+      type="number"
+      [disabled]="busy"
+      enterkeyhint="done"
+    />
+  </div>
+  <div class="col-3 fw-bold text-end">Offset</div>
+  <div class="col-3">
+    <input
+      class="form-control form-control-sm"
+      [(ngModel)]="extension.episodeCorOffset"
+      type="number"
+      [disabled]="busy"
+      enterkeyhint="done"
+    />
+  </div>
+</div>

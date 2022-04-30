@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 import { AboutComponent } from './about/about.component';
 import { AnimeCharactersComponent } from './anime/details/characters/characters.component';
 import { AnimeDetailsComponent } from './anime/details/details.component';
+import { EditComponent } from './anime/details/edit/edit.component';
 import { AnimeRecommendationsComponent } from './anime/details/recommendations/recommendations.component';
 import { AnimeRelatedComponent } from './anime/details/related/related.component';
 import { AnimeSongsComponent } from './anime/details/songs/songs.component';
@@ -104,6 +105,7 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     PersonStaffComponent,
     AboutComponent,
     NewVersionComponent,
+    EditComponent,
   ],
   imports: [
     BrowserModule,
