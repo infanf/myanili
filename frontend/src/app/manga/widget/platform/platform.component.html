@@ -2,11 +2,20 @@
   <svg-icon
     class="d-md-inline d-none"
     [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
-    src="/assets/platform/{{ provider || 'plex' }}.svg"
-  ></svg-icon>
+    [src]="
+      publisherFinal
+        ? '/assets/publisher/' + publisherFinal + '.svg'
+        : '/assets/platform/' + (provider || 'plex') + '.svg'
+    "
+  >
+  </svg-icon>
   <svg-icon
     class="d-md-none"
     [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
-    src="/assets/platform/icon-{{ provider || 'plex' }}.svg"
+    [src]="
+      publisherFinal
+        ? '/assets/publisher/icon-' + publisherFinal + '.svg'
+        : '/assets/platform/icon-' + (provider || 'plex') + '.svg'
+    "
   ></svg-icon>
 </span>

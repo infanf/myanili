@@ -11,7 +11,10 @@
     }}
   </td>
   <td>
-    <myanili-platform [provider]="manga.my_extension?.platform"> </myanili-platform>
+    <myanili-platform
+      [provider]="manga.my_extension?.platform"
+      [publisher]="manga.my_extension?.publisher"
+    ></myanili-platform>
   </td>
   <td class="text-nowrap">
     <myanili-icon-progress
