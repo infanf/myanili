@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IconModule } from '@icon/icon.module';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { AppRoutingModule } from '../app-routing.module';
@@ -20,6 +21,7 @@ import { Nl2brPipe } from './nl2br.pipe';
 import { PlatformPipe } from './platform.pipe';
 import { PosterRatingComponent } from './poster-rating/poster-rating.component';
 import { StreamPipe } from './stream.pipe';
+import { MySvgIconComponent } from './svg-icon/svg-icon.component';
 import { TimePipe } from './time.pipe';
 import { ValuePairArrayComponent } from './value-pair-array/value-pair-array.component';
 import { ValuePairComponent } from './value-pair/value-pair.component';
@@ -42,6 +44,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     DoubleCardComponent,
     ExternalRatingComponent,
     PosterRatingComponent,
+    MySvgIconComponent,
   ],
   imports: [
     CommonModule,
@@ -65,6 +68,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
       outerStrokeLinecap: 'butt',
       class: 'align-text-top',
     }),
+    AngularSvgIconModule.forRoot(),
   ],
   exports: [
     ValuePairComponent,
@@ -74,6 +78,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     StatusBadgeComponent,
     ExternalRatingComponent,
     PosterRatingComponent,
+    MySvgIconComponent,
     MalPipe,
     FlagPipe,
     TimePipe,

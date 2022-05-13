@@ -246,10 +246,18 @@
             target="_blank"
             class="link-primary"
           >
-            {{ manga.my_extension?.publisher }}
+            <myanili-svg-icon
+              [alt]="manga.my_extension?.publisher"
+              [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+              src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
+            ></myanili-svg-icon>
           </a>
           <ng-template #pubnolink>
-            {{ manga.my_extension?.publisher }}
+            <myanili-svg-icon
+              [alt]="manga.my_extension?.publisher"
+              [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+              src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
+            ></myanili-svg-icon>
           </ng-template>
         </div>
       </div>
