@@ -165,7 +165,7 @@ export class MangaService {
     return result.data || [];
   }
 
-  async getBakaManga(id?: number): Promise<BakaManga | undefined> {
+  async getBakaManga(id?: number | string): Promise<BakaManga | undefined> {
     if (!id) return;
     const request = await fetch(`${environment.backend}baka/manga/${id}`);
     if (request.ok) {
@@ -185,7 +185,7 @@ export class MangaService {
     return;
   }
 
-  async getBakaMangaId(manga: Manga): Promise<number | undefined> {
+  async getBakaMangaId(manga: Manga): Promise<number | string | undefined> {
     const mangas = await this.getBakaMangas(manga.title);
     if (!mangas) return;
     const bakaMangas = mangas.mangas.filter(m => {
