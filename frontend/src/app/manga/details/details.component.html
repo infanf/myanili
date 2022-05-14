@@ -451,11 +451,7 @@
                 <a
                   class="ms-1"
                   [ngClass]="{ 'link-secondary': !manga.my_extension?.bakaId }"
-                  [href]="
-                    manga.my_extension?.bakaId
-                      ? 'https://www.mangaupdates.com/series.html?id=' + manga.my_extension?.bakaId
-                      : 'https://www.mangaupdates.com/series.html?search=' + manga.title
-                  "
+                  [href]="getBakaUrl()"
                   target="_blank"
                   >Baka-Updates</a
                 >

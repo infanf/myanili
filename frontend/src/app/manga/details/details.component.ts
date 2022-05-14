@@ -507,7 +507,15 @@ export class MangaDetailsComponent implements OnInit {
     const modal = this.modalService.open(BakamangaComponent);
     modal.componentInstance.title = this.manga.title;
     modal.closed.subscribe(value => {
-      if (this.editExtension) this.editExtension.bakaId = Number(value);
+      if (this.editExtension) this.editExtension.bakaId = value;
     });
+  }
+
+  getBakaUrl() {
+    if (!this.manga?.my_extension?.bakaId) return;
+    if (String(Number(this.manga.my_extension.bakaId)) === String(this.manga.my_extension.bakaId)) {
+      return `https://www.mangaupdates.com/series.html?id=${this.manga.my_extension.bakaId}`;
+    }
+    return `https://www.mangaupdates.com/series/${this.manga.my_extension.bakaId}/details`;
   }
 }

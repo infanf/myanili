@@ -16,9 +16,18 @@ class BakaServiceProvider extends ServiceProvider
         //
     }
 
-    public static function getManga(int $id)
+    public static function getManga($id)
     {
-        $url = "https://www.mangaupdates.com/series.html?id={$id}";
+        if (preg_match('/^[0-9]+$/', $id)) {
+            $url = "https://www.mangaupdates.com/series.html?id={$id}";
+        } else {
+            $url = "https://www.mangaupdates.com/series/{$id}/details";
+        }
+        return static::getMangaFromUrl($url);
+    }
+
+    private static function getMangaFromUrl(string $url)
+    {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
@@ -72,8 +81,11 @@ class BakaServiceProvider extends ServiceProvider
             $img = $finder->query(".//img", $node)->item(0);
             $manga['image'] = str_replace('/thumb', '', $img ? $img->getAttribute('src') : '');
             $manga['id'] = \intval(preg_replace('/^.+id=(\d+)$/', '$1', $manga['link']));
+            if (!$manga['id']) {
+                $manga['id'] = (preg_replace('/^.+\/series\/(\w+)\/\w.+$/', '$1', $manga['link']));
+            }
             $genres = $finder->query(".//div[contains(@class, 'textsmall')]/a", $node)->item(0);
-            $manga['genres'] = explode(', ', $genres?$genres->getAttribute('title') : '');
+            $manga['genres'] = explode(', ', $genres ? $genres->getAttribute('title') : '');
             $manga['description'] = mb_convert_encoding($finder->query(".//div[contains(@class, 'text flex-grow-1')]", $node)->item(0)->nodeValue ?? '', 'UTF-8', 'UTF-8');
             $yearRating = $finder->query(".//div[contains(@class, 'd-flex flex-column h-100')]/div[@class='text']", $node)->item(1)->nodeValue ?? '';
             preg_match('/^(?P<year>\d{4})( - (?P<rating>[\d\.]+))?/', $yearRating, $matches);

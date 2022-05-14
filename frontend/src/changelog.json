@@ -1,6 +1,10 @@
 {
-  "version": "2.11.2",
+  "version": "2.11.3",
   "changes": [
+    {
+      "version": "2.11.3",
+      "fixes": ["new mangaupdates.com series id and url structure"]
+    },
     {
       "version": "2.11.2",
       "fixes": ["manga characters"],

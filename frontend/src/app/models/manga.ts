@@ -142,7 +142,7 @@ interface MangaExtensionInterface {
   anilistId?: number;
   malId?: number;
   kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-  bakaId?: number;
+  bakaId?: number | string;
   anisearchId?: number;
   fandomSlug?: string;
 }
@@ -181,7 +181,7 @@ interface BakaMangaListInterface {
     title: string;
     link: string;
     image?: string;
-    id: number;
+    id: number | string;
     genres: string[];
     description?: string;
     year: number;
