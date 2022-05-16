@@ -11,11 +11,11 @@ import { MangaDetailsComponent } from '../manga/details/details.component';
 import { Language, SettingsService } from '../settings/settings.service';
 
 @Component({
-  selector: 'myanili-mal',
-  templateUrl: './mal.component.html',
-  styleUrls: ['./mal.component.scss'],
+  selector: 'myanili-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.scss'],
 })
-export class MalComponent implements AfterViewInit {
+export class SearchComponent implements AfterViewInit {
   @Input() type: 'anime' | 'manga' = 'anime';
   lang: Language = 'default';
   results: Array<Anime | Manga> = [];

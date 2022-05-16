@@ -8,12 +8,12 @@ import { ScheduleComponent } from './anime/schedule/schedule.component';
 import { SeasonComponent } from './anime/season/season.component';
 import { WatchlistComponent } from './anime/watchlist/watchlist.component';
 import { CharacterComponent } from './character/character.component';
-import { MalComponent } from './mal/mal.component';
 import { BookshelfWrapperComponent } from './manga/bookshelf/bookshelf.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PersonComponent } from './person/person.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   { path: 'anime/list', component: AnimeListComponent },
@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'manga/bookshelf', component: BookshelfWrapperComponent },
   { path: 'manga/details/:id', component: MangaDetailsComponent },
   { path: 'manga/magazine/:id', component: MagazineComponent },
-  { path: 'mal/:type', component: MalComponent },
+  { path: 'mal/:type', component: SearchComponent },
   { path: 'character/:id', component: CharacterComponent },
   { path: 'person/:id', component: PersonComponent },
   { path: 'manga', redirectTo: '/manga/bookshelf', pathMatch: 'full' },
