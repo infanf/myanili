@@ -94,7 +94,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" routerLink="/mal/anime" routerLinkActive="active">
+                  <a class="dropdown-item" routerLink="/search/anime" routerLinkActive="active">
                     Search
                   </a>
                 </li>
@@ -165,7 +165,7 @@
                 </li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                  <a class="dropdown-item" routerLink="/mal/manga" routerLinkActive="active">
+                  <a class="dropdown-item" routerLink="/search/manga" routerLinkActive="active">
                     Search
                   </a>
                 </li>
@@ -175,7 +175,10 @@
               <myanili-navbar-quickadd class="nav-link"></myanili-navbar-quickadd>
             </li>
           </ul>
-          <myanili-widget-season class="me-3 text-white" *ngIf="module === 'anime'"></myanili-widget-season>
+          <myanili-widget-season
+            class="me-3 text-white"
+            *ngIf="module === 'anime'"
+          ></myanili-widget-season>
           <div class="d-flex cursor-pointer" *ngIf="user" (click)="showSettings()">
             <span class="d-none d-sm-inline my-auto me-3 text-white">{{ user!.name }}</span>
             <img
