@@ -37,7 +37,6 @@ import { CharacterMangaComponent } from './character/manga/manga.component';
 import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
 import { GraphQLModule } from './graphql/graphql.module';
-import { MalComponent } from './mal/mal.component';
 import {
   BookshelfComponent,
   BookshelfWrapperComponent,
@@ -55,6 +54,7 @@ import { PersonAnimeComponent } from './person/anime/anime.component';
 import { PersonMangaComponent } from './person/manga/manga.component';
 import { PersonComponent } from './person/person.component';
 import { PersonStaffComponent } from './person/staff/staff.component';
+import { SearchComponent } from './search/search.component';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { NewVersionComponent } from './settings/new-version/new-version.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -74,7 +74,7 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     StreamingComponent,
     MangaDetailsComponent,
     MangaListComponent,
-    MalComponent,
+    SearchComponent,
     AnimeCharactersComponent,
     AnimeRecommendationsComponent,
     AnimeRelatedComponent,
