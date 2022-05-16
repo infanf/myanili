@@ -1,5 +1,19 @@
 <section class="container-fluid sticky-header py-3 bg-white">
   <form class="input-group" (submit)="search()">
+    <button
+      class="btn btn-primary"
+      [class]="{ active: type === 'anime' }"
+      routerLink="/search/anime"
+    >
+      <myanili-icon name="film"></myanili-icon>
+    </button>
+    <button
+      class="btn btn-primary"
+      [class]="{ active: type === 'manga' }"
+      routerLink="/search/manga"
+    >
+      <myanili-icon name="book-half"></myanili-icon>
+    </button>
     <input
       class="form-control"
       [(ngModel)]="query"

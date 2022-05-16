@@ -1,11 +1,13 @@
 import { AfterViewInit, Component, Input, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Anime } from '@models/anime';
 import { Manga } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { AnilistService } from '../anilist.service';
 import { AnimeDetailsComponent } from '../anime/details/details.component';
 import { GlobalService } from '../global.service';
+import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 import { MangaDetailsComponent } from '../manga/details/details.component';
 import { Language, SettingsService } from '../settings/settings.service';
@@ -37,7 +39,10 @@ export class SearchComponent implements AfterViewInit {
   nsfw = true;
 
   constructor(
+    private _router: Router,
     private malService: MalService,
+    private kitsu: KitsuService,
+    private anilist: AnilistService,
     private route: ActivatedRoute,
     private settings: SettingsService,
     private glob: GlobalService,
@@ -64,6 +69,18 @@ export class SearchComponent implements AfterViewInit {
     }
     this.sb.first.nativeElement.blur();
     this.glob.busy();
+    if (this.query.match(/myanimelist.net/)) {
+      this.glob.notbusy();
+      return this.addFromMal(this.query);
+    }
+    if (this.query.match(/anilist.co/)) {
+      this.glob.notbusy();
+      return this.addFromAnilist(this.query);
+    }
+    if (this.query.match(/kitsu.io/)) {
+      this.glob.notbusy();
+      return this.addFromKitsu(this.query);
+    }
     this.glob.setTitle(`Search: ${this.query}`);
     this.results = (
       await this.malService.get<Array<{ node: Anime | Manga }>>(this.type + 's?query=' + this.query)
@@ -106,5 +123,59 @@ export class SearchComponent implements AfterViewInit {
     );
     modalRef.componentInstance.id = id;
     modalRef.componentInstance.inModal = true;
+  }
+
+  async addFromMal(url: string) {
+    const regex = /myanimelist.net\/([a-z]+)\/(\d+)/;
+    const result = regex.exec(url);
+    if (result?.length !== 3) return;
+    const [all, type, idStr] = result;
+    const id = Number(idStr);
+    if (!all || !id) return;
+    if (type === 'anime') {
+      this._router.navigate(['anime', 'details', id]);
+    } else if (type === 'manga') {
+      this._router.navigate(['manga', 'details', id]);
+    }
+  }
+
+  async addFromAnilist(url: string) {
+    const regex = /anilist.co\/([a-z]+)\/(\d+)/;
+    const result = regex.exec(url);
+    if (result?.length !== 3) return;
+    const [all, type, idStr] = result;
+    const id = Number(idStr);
+    if (!all || !id) return;
+    if (type === 'anime') {
+      const malId = await this.anilist.getMalId(id, 'ANIME');
+      if (!malId) return;
+      this._router.navigate(['anime', 'details', malId]);
+    } else if (type === 'manga') {
+      const malId = await this.anilist.getMalId(id, 'MANGA');
+      if (!malId) return;
+      this._router.navigate(['manga', 'details', malId]);
+    }
+  }
+
+  async addFromKitsu(url: string) {
+    const regex = /kitsu.io\/([a-z]+)\/(\d+|[\w\-]+)/;
+    const result = regex.exec(url);
+    if (result?.length !== 3) return;
+    const [all, type, idStr] = result;
+    if (!all || !idStr || (type !== 'anime' && type !== 'manga')) return;
+    let id;
+    if (!idStr.match(/^\d+$/)) {
+      id = await this.kitsu.getIdFromSlug(idStr, type);
+    } else {
+      id = Number(idStr);
+    }
+    if (!id) return;
+    const malId = await this.kitsu.getExternalId(id, type, 'myanimelist');
+    if (!malId) return;
+    if (type === 'anime') {
+      this._router.navigate(['anime', 'details', malId]);
+    } else if (type === 'manga') {
+      this._router.navigate(['manga', 'details', malId]);
+    }
   }
 }
