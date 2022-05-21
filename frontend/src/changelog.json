@@ -7,7 +7,8 @@
         "remodelled search bar and integrated quickadd into search bar",
         "add book publisher logos",
         "add restart button for on-hold book series"
-      ]
+      ],
+      "fixes": ["app prompt autofocus"]
     },
     {
       "version": "2.11.3",

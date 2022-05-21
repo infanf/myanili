@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, Input, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Anime } from '@models/anime';
 import { Manga } from '@models/manga';
@@ -24,7 +31,7 @@ export class SearchComponent implements AfterViewInit {
   resultsFiltered: Array<Anime | Manga> = [];
   query = '';
   // tslint:disable-next-line:no-any
-  @ViewChildren('searchbar') sb: any;
+  @ViewChildren('searchbar') sb?: QueryList<ElementRef>;
   filter = {
     type: [],
     status: [],
@@ -59,15 +66,15 @@ export class SearchComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.sb.first.nativeElement.focus();
+    this.sb?.first.nativeElement.focus();
   }
 
   async search() {
     if (!this.query) {
-      this.sb.first.nativeElement.focus();
+      this.sb?.first.nativeElement.focus();
       return;
     }
-    this.sb.first.nativeElement.blur();
+    this.sb?.first.nativeElement.blur();
     this.glob.busy();
     if (this.query.match(/myanimelist.net/)) {
       this.glob.notbusy();
