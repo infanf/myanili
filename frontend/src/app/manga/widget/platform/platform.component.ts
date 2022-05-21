@@ -6,8 +6,24 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PlatformComponent implements OnInit {
   @Input() provider?: string;
+  @Input() publisher?: string;
+  publisherFinal?: string;
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit() {
+    if (this.provider !== 'book') {
+      return;
+    }
+    if (!this.publisher) {
+      return;
+    }
+    this.publisher = this.publisher.toLowerCase().replace(/\s/g, '');
+    const src = `/assets/publisher/${this.publisher}.svg`;
+    fetch(src)
+      .then(res => {
+        if (res.ok) {
+          this.publisherFinal = this.publisher;
+        }
+      })
+      .catch(() => {});
+  }
 }

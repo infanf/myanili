@@ -24,10 +24,11 @@ export class CharacterComponent {
         this.glob.busy();
         try {
           this.character = await this.mal.getJikanData<Jikan4Character>('characters/' + this.id);
-          this.character.data.about = this.character.data.about.replace(/\\n/g, '').trim();
+          this.character.data.about = this.character.data.about?.replace(/\\n/g, '').trim();
           this.glob.notbusy();
           this.glob.setTitle(this.character.data.name);
         } catch (e) {
+          console.error(e);
           this.glob.notbusy();
           this.character = {
             data: {

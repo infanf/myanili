@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -14,7 +22,7 @@ export class DialogueComponent implements OnInit, AfterViewInit {
     value?: string;
   };
   @Input() buttons: Array<Button<unknown>> = [];
-  @ViewChildren('value') valueInput?: ElementRef;
+  @ViewChildren('value') valueInput?: QueryList<ElementRef>;
 
   constructor(public modal: NgbActiveModal) {}
 
@@ -28,7 +36,7 @@ export class DialogueComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.valueInput?.nativeElement?.focus();
+    this.valueInput?.first.nativeElement?.focus();
   }
 
   submit<T>(value: T) {

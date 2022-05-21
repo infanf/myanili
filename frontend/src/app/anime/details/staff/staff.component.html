@@ -1,19 +1,11 @@
-<div
-  *ngFor="let person of persons"
-  [routerLink]="'/person/' + person.mal_id"
-  class="cursor-pointer"
-  class="mb-3 d-flex border rounded justify-content-between cursor-pointer"
->
-  <img
-    loading="lazy"
-    [src]="person.image_url || '/assets/blank-poster.svg'"
-    [routerLink]="'/person/' + person.mal_id"
-    class="poster rounded-start"
-  />
-  <div class="d-flex flex-fill justify-content-between flex-column p-3">
-    <div>
-      {{ person.name }}
-      <div class="text-muted">{{ person.positions.join(', ') }}</div>
-    </div>
-  </div>
+<div class="grid grid-2x">
+  <myanili-double-card
+    *ngFor="let person of persons"
+    [left]="{
+      poster: person.image_url,
+      title: person.name,
+      subtitle: person.positions.join(', '),
+      link: '/person/' + person.mal_id
+    }"
+  ></myanili-double-card>
 </div>

@@ -1,10 +1,13 @@
 <ng-container *ngIf="actors.data?.length">
-  <div class="grid my-2">
-    <myanili-media-card
+  <div class="grid grid-2x">
+    <myanili-double-card
       *ngFor="let actor of actors.data"
-      [poster]="actor.person.images.webp?.image_url || actor.person.images.jpg.image_url"
-      [title]="actor.person.name + ' (' + actor.language + ')'"
-      routerLink="/person/{{ actor.person.mal_id }}"
-    ></myanili-media-card>
+      [left]="{
+        poster: actor.person.images.webp?.image_url || actor.person.images.jpg.image_url,
+        title: actor.person.name,
+        subtitle: actor.language,
+        link: '/person/' + actor.person.mal_id
+      }"
+    ></myanili-double-card>
   </div>
 </ng-container>
