@@ -24,6 +24,6 @@ export class PlatformComponent implements OnInit {
           this.publisherFinal = this.publisher;
         }
       })
-      .catch(() => {});
+      .catch();
   }
 }
