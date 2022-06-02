@@ -1,6 +1,10 @@
 {
-  "version": "2.12.0",
+  "version": "2.12.1",
   "changes": [
+    {
+      "version": "2.12.1",
+      "fixes": ["manga search on submit switched to anime"]
+    },
     {
       "version": "2.12.0",
       "features": [
