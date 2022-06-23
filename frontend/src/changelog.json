@@ -1,6 +1,10 @@
 {
-  "version": "2.12.1",
+  "version": "2.12.2",
   "changes": [
+    {
+      "version": "2.12.2",
+      "fixes": ["aniverse icon missing"]
+    },
     {
       "version": "2.12.1",
       "fixes": ["manga search on submit switched to anime"]
