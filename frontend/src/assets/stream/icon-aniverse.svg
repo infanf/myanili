@@ -1,1 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24.28 24.28"><defs><linearGradient id="a"><stop offset="0" stop-color="#009cd9"/><stop offset="1" stop-color="#00518c"/></linearGradient><linearGradient xlink:href="#a" id="b" gradientUnits="userSpaceOnUse" gradientTransform="translate(0 .1)" x1="48.24" y1="95.63" x2="71.77" y2="95.63"/></defs><g transform="translate(-47.81 -83.59)"><circle r="12.14" cy="95.73" cx="59.96" fill="url(#b)"/><path d="M64.68 88.4l.38 1.92 1.91.38-1.91.37-.38 1.92-.37-1.92-1.92-.37 1.92-.38z" fill="#fff"/><path d="M47.94 93.99c-.16 1.08-.16 2.3-.01 3.37 0 0 4.83 2.94 10.5.5a12.18 12.18 0 01-10.49-3.87zm18.91.49c-4.72 11.22-15.2 10.1-15.2 10.1a12.02 12.02 0 004.01 2.5s9.22-1.78 11.2-12.6zm-3.1 2.27c-7.16 6.1-15.19 3.17-15.19 3.17.34.93.85 1.94 1.5 2.83 0 0 8.55 1.87 13.68-6z" opacity=".8" fill="#fff"/><path d="M67.96 90.73l.16.84.84.16-.84.17-.16.84-.17-.84-.84-.17.84-.16zM66.27 88.27l.11.58.58.11-.58.11-.11.58-.11-.58-.58-.11.58-.11z" fill="#fff"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24.28 24.28">
+    <defs>
+        <linearGradient id="aniverse-icon-a">
+            <stop offset="0" stop-color="#009cd9" />
+            <stop offset="1" stop-color="#00518c" />
+        </linearGradient>
+        <linearGradient xlink:href="#aniverse-icon-a" id="aniverse-icon-b" gradientUnits="userSpaceOnUse" gradientTransform="translate(0 .1)"
+            x1="48.24" y1="95.63" x2="71.77" y2="95.63" />
+    </defs>
+    <g transform="translate(-47.81 -83.59)">
+        <circle r="12.14" cy="95.73" cx="59.96" fill="url(#aniverse-icon-b)" />
+        <path d="M64.68 88.4l.38 1.92 1.91.38-1.91.37-.38 1.92-.37-1.92-1.92-.37 1.92-.38z" fill="#fff" />
+        <path
+            d="M47.94 93.99c-.16 1.08-.16 2.3-.01 3.37 0 0 4.83 2.94 10.5.5a12.18 12.18 0 01-10.49-3.87zm18.91.49c-4.72 11.22-15.2 10.1-15.2 10.1a12.02 12.02 0 004.01 2.5s9.22-1.78 11.2-12.6zm-3.1 2.27c-7.16 6.1-15.19 3.17-15.19 3.17.34.93.85 1.94 1.5 2.83 0 0 8.55 1.87 13.68-6z"
+            opacity=".8" fill="#fff" />
+        <path
+            d="M67.96 90.73l.16.84.84.16-.84.17-.16.84-.17-.84-.84-.17.84-.16zM66.27 88.27l.11.58.58.11-.58.11-.11.58-.11-.58-.58-.11.58-.11z"
+            fill="#fff" />
+    </g>
+</svg>
