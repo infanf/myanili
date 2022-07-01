@@ -111,49 +111,7 @@ export class AnimeDetailsComponent implements OnInit {
     } else {
       this.anime.my_extension.malId = anime.id;
     }
-    if (
-      !this.anime.my_extension.kitsuId?.kitsuId ||
-      !this.anime.my_extension.anilistId ||
-      !this.anime.my_extension.simklId ||
-      !this.anime.my_extension.annictId ||
-      !this.anime.my_extension.anisearchId
-    ) {
-      const [anilistId, kitsuId, simklId, annictId, anisearchId] = await Promise.all([
-        this.anilist.getId(this.id, 'ANIME'),
-        this.kitsu.getId(
-          { id: this.id, title: anime.title, year: anime.start_season?.year },
-          'anime',
-        ),
-        this.simkl.getId(this.id),
-        this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title),
-        this.anisearch.getId(this.anime.title, 'anime', {
-          parts: this.anime.num_episodes,
-          year: this.anime.start_season?.year,
-        }),
-      ]);
-      this.anime.my_extension.anilistId = anilistId || this.anime.my_extension.anilistId;
-      this.anime.my_extension.kitsuId = kitsuId || this.anime.my_extension.kitsuId;
-      this.anime.my_extension.simklId = simklId || this.anime.my_extension.simklId;
-      this.anime.my_extension.annictId = annictId || this.anime.my_extension.annictId;
-      this.anime.my_extension.anisearchId = anisearchId || this.anime.my_extension.anisearchId;
-      if (anime.my_extension) {
-        await this.animeService.updateAnime(
-          { malId: anime.id, kitsuId, simklId, anilistId, annictId },
-          {
-            comments: Base64.encode(
-              JSON.stringify({
-                ...anime.my_extension,
-                kitsuId: this.anime.my_extension.kitsuId,
-                anilistId: this.anime.my_extension.anilistId,
-                simklId: this.anime.my_extension.simklId,
-                annictId: this.anime.my_extension.annictId,
-                anisearchId: this.anime.my_extension.anisearchId,
-              }),
-            ),
-          },
-        );
-      }
-    }
+    await this.checkExternalIds(anime);
     if (!this.anime.related_manga.length) {
       this.anime.related_manga_promise.then(relatedManga => {
         if (this.anime) this.anime.related_manga = relatedManga;
@@ -166,7 +124,87 @@ export class AnimeDetailsComponent implements OnInit {
     }
     this.glob.notbusy();
     await this.getRatings();
-    // await this.findAnisearch();
+  }
+
+  async checkExternalIds(anime: Anime) {
+    if (!this.anime || !this.anime.my_extension) return;
+    const promises = [];
+    if (!this.anime.my_extension.kitsuId?.kitsuId) {
+      promises.push(
+        this.kitsu
+          .getId({ id: this.id, title: anime.title, year: anime.start_season?.year }, 'anime')
+          .then(kitsuId => {
+            if (kitsuId && this?.anime?.my_extension) {
+              this.anime.my_extension.kitsuId = kitsuId;
+            }
+          }),
+      );
+    }
+    if (!this.anime.my_extension.anilistId) {
+      promises.push(
+        this.anilist.getId(this.id, 'ANIME').then(anilistId => {
+          if (anilistId && this?.anime?.my_extension) {
+            this.anime.my_extension.anilistId = anilistId;
+          }
+        }),
+      );
+    }
+    if (!this.anime.my_extension.simklId) {
+      promises.push(
+        this.simkl.getId(this.id).then(simklId => {
+          if (simklId && this?.anime?.my_extension) {
+            this.anime.my_extension.simklId = simklId;
+          }
+        }),
+      );
+    }
+    if (!this.anime.my_extension.annictId) {
+      promises.push(
+        this.annict.getId(this.id, anime.alternative_titles?.ja || anime.title).then(annictId => {
+          if (annictId && this?.anime?.my_extension) {
+            this.anime.my_extension.annictId = annictId;
+          }
+        }),
+      );
+    }
+    if (!this.anime.my_extension.anisearchId) {
+      promises.push(
+        this.anisearch
+          .getId(this.anime.title, 'anime', {
+            parts: this.anime.num_episodes,
+            year: this.anime.start_season?.year,
+          })
+          .then(anisearchId => {
+            if (anisearchId && this?.anime?.my_extension) {
+              this.anime.my_extension.anisearchId = anisearchId;
+            }
+          }),
+      );
+    }
+    await Promise.all(promises);
+    if (anime.my_extension) {
+      await this.animeService.updateAnime(
+        {
+          malId: anime.id,
+          kitsuId: this.anime.my_extension.kitsuId,
+          anilistId: this.anime.my_extension.anilistId,
+          simklId: this.anime.my_extension.simklId,
+          annictId: this.anime.my_extension.annictId,
+        },
+        {
+          comments: Base64.encode(
+            JSON.stringify({
+              ...anime.my_extension,
+              kitsuId: this.anime.my_extension.kitsuId,
+              anilistId: this.anime.my_extension.anilistId,
+              simklId: this.anime.my_extension.simklId,
+              annictId: this.anime.my_extension.annictId,
+              anisearchId: this.anime.my_extension.anisearchId,
+            }),
+          ),
+        },
+      );
+    }
   }
 
   async editSave() {

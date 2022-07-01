@@ -7,3 +7,7 @@
     opacity: 0.7;
   }
 }
+
+.text-green > td {
+  color: rgba(var(--bs-green-rgb), var(--bs-text-opacity)) !important;
+}
