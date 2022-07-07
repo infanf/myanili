@@ -1,6 +1,10 @@
 {
-  "version": "2.12.2",
+  "version": "2.12.3",
   "changes": [
+    {
+      "version": "2.12.3",
+      "fixes": ["handle annict results without poster"]
+    },
     {
       "version": "2.12.2",
       "fixes": ["aniverse icon missing"]
