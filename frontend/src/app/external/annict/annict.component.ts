@@ -24,7 +24,7 @@ export class AnnictComponent extends ExternalComponent {
         year: result.seasonYear,
         description: `${result.titleEn}`,
         genres: [],
-        poster: result.image.recommendedImageUrl,
+        poster: result.image?.recommendedImageUrl,
         url: `https://annict.com/works/${result.annictId}`,
       })) || [];
     this.searching = false;
