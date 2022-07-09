@@ -45,7 +45,9 @@
             "styles": ["src/styles.scss"],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "crypto-js"
+              "crypto-js",
+              "moment",
+              "string-similarity"
             ]
           },
           "configurations": {

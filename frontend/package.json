@@ -1,11 +1,11 @@
 {
   "name": "myanili-frontend",
-  "version": "2.12.3",
+  "version": "2.12.4",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --host=0.0.0.0",
     "start": "ng serve",
-    "build": "npm i && npm run build:production",
+    "build": "npm ci && npm run build:production",
     "build:production": "ng build -c production",
     "build:staging": "ng build -c staging",
     "test": "ISTANBUL_ADD_REPORTERS=text-summary ng test",
