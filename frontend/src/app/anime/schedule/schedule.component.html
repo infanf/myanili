@@ -8,15 +8,37 @@
       <table class="table table-sm mb-0" darkTable>
         <tr
           *ngFor="let anime of getAnimes((day + today) % 7)"
-          [ngStyle]="{ opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1 }"
+          [ngStyle]="{
+            opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1
+          }"
         >
-          <td>{{ anime.my_extension!.simulTime?.substr(0, 5) | time }}</td>
+          <td>
+            <div
+              [class]="{
+                twolines:
+                  anime.my_list_status?.status === 'plan_to_watch' && anime.my_extension!.simulTime
+              }"
+            >
+              <div class="fst-italic" *ngIf="anime.my_list_status?.status === 'plan_to_watch'">
+                {{ anime.start_date | date: 'dd.MM.' }}
+              </div>
+              <div *ngIf="anime.my_extension!.simulTime">
+                {{ anime.my_extension!.simulTime?.substr(0, 5) | time }}
+              </div>
+            </div>
+          </td>
           <td>
             <myanili-streaming
               [provider]="anime.my_extension?.externalStreaming"
               [country]="anime.my_extension?.simulCountry"
             ></myanili-streaming>
-            <span [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer entry">
+            <span
+              [routerLink]="'/anime/details/' + anime.id!"
+              class="cursor-pointer entry"
+              [ngClass]="{
+                'fst-italic': anime.my_list_status?.status === 'plan_to_watch'
+              }"
+            >
               {{
                 (lang === 'en'
                   ? anime.alternative_titles?.en
@@ -37,9 +59,11 @@
       <table class="table table-sm mb-0" darkTable>
         <tr
           *ngFor="let anime of getOtherAnimes()"
-          [ngStyle]="{ opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1 }"
+          [ngStyle]="{
+            opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1
+          }"
         >
-          <td>
+          <td class="fst-italic">
             <ng-container *ngIf="length(anime.start_date) === 10; else monthOnly">{{
               anime.start_date | date: 'dd.MM.'
             }}</ng-container>
@@ -50,7 +74,13 @@
               [provider]="anime.my_extension?.externalStreaming"
               [country]="anime.my_extension?.simulCountry"
             ></myanili-streaming>
-            <span [routerLink]="'/anime/details/' + anime.id!" class="cursor-pointer entry">
+            <span
+              [routerLink]="'/anime/details/' + anime.id!"
+              class="cursor-pointer entry"
+              [ngClass]="{
+                'fst-italic': anime.my_list_status?.status === 'plan_to_watch'
+              }"
+            >
               {{
                 (lang === 'en'
                   ? anime.alternative_titles?.en

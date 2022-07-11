@@ -8,6 +8,16 @@
 
     &:first-child {
       width: 3.5rem;
+      
+      > div {
+        padding: 0;
+      }
+    }
+
+    .twolines {
+      transform-origin: top;
+      transform: scaleY(0.5);
+      height: 1.5em;
     }
   }
 }
