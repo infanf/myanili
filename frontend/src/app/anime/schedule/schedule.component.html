@@ -23,7 +23,7 @@
                 {{ anime.start_date | date: 'dd.MM.' }}
               </div>
               <div *ngIf="anime.my_extension!.simulTime">
-                {{ anime.my_extension!.simulTime?.substr(0, 5) | time }}
+                {{ anime.my_extension!.simulTime.substr(0, 5) | time }}
               </div>
             </div>
           </td>

@@ -220,7 +220,7 @@
         {{ getDay(anime.my_extension.simulDay) }}
         <span *ngIf="anime.my_extension.simulTime">
           <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
-          {{ anime.my_extension.simulTime?.substr(0, 5) | time }}</span
+          {{ anime.my_extension.simulTime.substr(0, 5) | time }}</span
         >
       </myanili-value-pair>
       <div class="row my-2" *ngIf="edit && editExtension">
@@ -274,7 +274,7 @@
             *ngIf="!anime.my_extension.externalStreamingId"
             [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
             class="ml-1"
-            src="/assets/stream/{{ anime.my_extension?.externalStreaming }}.svg"
+            src="/assets/stream/{{ anime.my_extension.externalStreaming }}.svg"
           ></svg-icon>
         </div>
       </div>
@@ -432,7 +432,7 @@
             class="cursor-pointer me-1"
             (click)="plusOne()"
           ></myanili-icon>
-          {{ anime?.num_episodes || '?' }}
+          {{ anime.num_episodes || '?' }}
           <span *ngIf="anime?.average_episode_duration">
             &times; {{ (anime!.average_episode_duration || 0) / 60 | number: '1.0-0' }} min
           </span>
@@ -706,7 +706,7 @@
             ></div>
             <div class="mb-3" *ngIf="anime?.background">
               <strong>Background</strong>
-              <div [innerHTML]="anime?.background || '' | nl2br"></div>
+              <div [innerHTML]="anime.background || '' | nl2br"></div>
             </div>
           </section>
         </ng-template>
