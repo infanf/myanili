@@ -225,6 +225,9 @@ export class AnimeService {
     return characterStaff.staff || [];
   }
 
+  /**
+   * takes an array of weekday numbers and returns the last day of them before the given/current weekday
+   */
   getLastDay(days: number | number[], today?: number): number {
     if (typeof days === 'number') {
       return days;
