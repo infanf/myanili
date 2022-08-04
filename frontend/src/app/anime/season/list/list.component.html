@@ -77,7 +77,6 @@
         <td style="white-space: nowrap">
           <ng-container *ngIf="anime.my_list_status; else addanime">
             <myanili-icon-progress
-              *ngIf="anime.my_list_status?.status === 'watching'"
               [percent]="
                 anime.num_episodes
                   ? ((anime.my_list_status.num_episodes_watched || 0) / anime.num_episodes!) * 100
@@ -88,10 +87,11 @@
           </ng-container>
           <ng-template #addanime>
             <myanili-icon
-              [name]="anime.busy ? 'hourglass-split' : 'plus'"
+              [name]="anime.busy ? 'loading' : 'plus'"
               size="20"
               (click)="addToList(anime)"
             ></myanili-icon>
+            {{ anime.num_episodes || '?' }}
           </ng-template>
         </td>
       </tr>

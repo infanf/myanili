@@ -487,7 +487,7 @@ export class MangaDetailsComponent implements OnInit {
     const modal = this.modalService.open(KitsuComponent);
     modal.componentInstance.type = 'manga';
     modal.componentInstance.title = this.manga.title;
-    modal.closed.subscribe(value => {
+    modal.closed.subscribe((value: number) => {
       if (this.editExtension) this.editExtension.kitsuId = { kitsuId: Number(value) };
     });
   }
@@ -497,7 +497,7 @@ export class MangaDetailsComponent implements OnInit {
     const modal = this.modalService.open(AnisearchComponent);
     modal.componentInstance.title = this.manga.title;
     modal.componentInstance.type = 'manga';
-    modal.closed.subscribe(value => {
+    modal.closed.subscribe((value: number) => {
       if (this.editExtension) this.editExtension.anisearchId = Number(value);
     });
   }
@@ -506,7 +506,7 @@ export class MangaDetailsComponent implements OnInit {
     if (!this.manga || !this.editExtension) return;
     const modal = this.modalService.open(BakamangaComponent);
     modal.componentInstance.title = this.manga.title;
-    modal.closed.subscribe(value => {
+    modal.closed.subscribe((value: string) => {
       if (this.editExtension) this.editExtension.bakaId = value;
     });
   }

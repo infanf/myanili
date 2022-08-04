@@ -10,7 +10,7 @@
     >
       <ng-container *ngIf="anime?.my_list_status; else add">
         <myanili-icon
-          [name]="busy ? 'hourglass-split' : edit ? 'check2' : 'pencil'"
+          [name]="busy ? 'loading' : edit ? 'check2' : 'pencil'"
           size="24"
           (click)="editSave()"
         ></myanili-icon>
@@ -24,7 +24,7 @@
       </ng-container>
       <ng-template #add>
         <myanili-icon
-          [name]="busy ? 'hourglass-split' : 'plus'"
+          [name]="busy ? 'loading' : 'plus'"
           size="24"
           (click)="editSave()"
         ></myanili-icon>
