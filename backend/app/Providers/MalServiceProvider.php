@@ -362,4 +362,17 @@ class MalServiceProvider extends ServiceProvider
         // }
         return $list;
     }
+
+    public static function getMaintenance()
+    {
+        $ch = curl_init('https://myanimelist.net/');
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+        curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return $code >= 500;
+    }
 }

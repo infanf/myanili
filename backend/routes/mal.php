@@ -195,4 +195,10 @@ JAVASCRIPT;
         }
         return $animes;
     });
+
+    $router->get('maintenance', function() {
+        return [
+            'maintenance' => MalServiceProvider::getMaintenance()
+        ];
+    });
 });

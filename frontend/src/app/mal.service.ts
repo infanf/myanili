@@ -89,7 +89,7 @@ export class MalService {
       this.isLoggedIn.next(response.name);
       localStorage.setItem('malUser', JSON.stringify(response));
       this.malUser.next(response);
-    } else {
+    } else if (!(await this.maintenace())) {
       this.isLoggedIn.next(false);
       localStorage.removeItem('malUser');
       this.malUser.next(undefined);
@@ -126,6 +126,11 @@ export class MalService {
 
   get user() {
     return this.malUser.asObservable();
+  }
+
+  async maintenace(): Promise<boolean> {
+    const maint = await this.get<{ maintenance?: boolean }>('maintenance');
+    return Boolean(maint.maintenance);
   }
 }
 
