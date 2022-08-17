@@ -1,6 +1,14 @@
 {
-  "version": "2.12.3",
+  "version": "2.13.0",
   "changes": [
+    {
+      "version": "2.13.0",
+      "features": [
+        "Catch and inform about MAL maintenance",
+        "show start date for upcoming anime in schedule"
+      ],
+      "fixes": ["recently watched ongoing shows not listetd in watchlist"]
+    },
     {
       "version": "2.12.3",
       "fixes": ["handle annict results without poster"]

@@ -21,10 +21,18 @@ export class AppComponent {
     private modal: NgbModal,
     private dialogue: DialogueService,
   ) {
+    this.setupUpdates();
+    this.malService.maintenace().then(isMaintenance => {
+      if (isMaintenance) {
+        this.dialogue.open(
+          'MyAnimeList is currently under maintenance. Please check back later.',
+          'MAL Maintenance',
+        );
+      }
+    });
     this.malService.loggedIn.subscribe(loggedIn => {
       this.loggedIn = loggedIn;
     });
-    this.setupUpdates();
     this.glob.isBusy.subscribe(busy => (this.busy = busy));
     this.glob.loadingPercent.subscribe(perc => (this.loadingPercent = perc));
   }

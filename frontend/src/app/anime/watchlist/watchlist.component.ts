@@ -46,20 +46,17 @@ export class WatchlistComponent implements OnInit {
         ) {
           return true;
         }
-        if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().day()) {
+        const lastAiredWeekday = this.animeService.getLastDay(anime.my_extension.simulDay);
+        const last8amWeekday = this.getLast8am().day();
+        if (lastAiredWeekday === last8amWeekday) {
           return true;
         }
-        if (
-          (this.getLast8am().day() -
-            this.animeService.getLastDay(anime.my_extension.simulDay) +
-            14) %
-            7 <=
-          4
-        ) {
+        const lastAiredDaysAgo = (last8amWeekday - lastAiredWeekday + 14) % 7;
+        if (lastAiredDaysAgo <= 4) {
           const inFuture = moment(anime.node.start_date) > moment();
           const newShow = anime.list_status.num_episodes_watched === 0;
           return (
-            moment(anime.list_status.updated_at) < moment().subtract(5, 'd') ||
+            moment(anime.list_status.updated_at) < moment().subtract(lastAiredDaysAgo + 1, 'd') ||
             (!inFuture && newShow)
           );
         }

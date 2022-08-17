@@ -8,6 +8,19 @@
 
     &:first-child {
       width: 3.5rem;
+
+      > div {
+        padding: 0;
+      }
+    }
+
+    .twolines > div {
+      display: inline-block;
+      width: 4rem;
+    }
+
+    .twolines {
+      animation: twolines 10s infinite;
     }
   }
 }
@@ -18,3 +31,18 @@
   bottom: 0;
   font-size: 0.6rem;
 }
+
+    @keyframes twolines {
+      0% {
+        transform: translateX(0);
+      }
+      49.99999999% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(-4rem);
+      }
+      99.99999999% {
+        transform: translateX(-4rem);
+      }
+    }
