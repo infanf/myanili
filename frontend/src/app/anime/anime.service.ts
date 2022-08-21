@@ -10,9 +10,10 @@ import {
   MyAnimeUpdate,
   WatchStatus,
 } from '@models/anime';
+import { Weekday } from '@models/components';
 import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 
 import { AnilistService } from '../anilist.service';
 import { CacheService } from '../cache.service';
@@ -227,17 +228,20 @@ export class AnimeService {
 
   /**
    * takes an array of weekday numbers and returns the last day of them before the given/current weekday
+   * @param days array of weekday numbers
+   * @param today current weekday number
+   * @returns the last day of the given weekdays before the current weekday (0-6)
    */
-  getLastDay(days: number | number[], today?: number): number {
+  getLastDay(days: number | number[], today?: number): Weekday {
     if (typeof days === 'number') {
-      return days;
+      return (Math.floor(days) % 7) as Weekday;
     }
     const mapper = (d: number) => {
-      const todayFinal = today || moment().weekday();
+      const todayFinal = today || DateTime.now().weekday;
       const delta = (6 + d - todayFinal) % 7;
       return delta;
     };
-    return days.sort((a, b) => mapper(b) - mapper(a))[0];
+    return days.sort((a, b) => mapper(b) - mapper(a))[0] as Weekday;
   }
 
   getDay(day?: number | number[]): string {
@@ -245,7 +249,7 @@ export class AnimeService {
     if (typeof day === 'object') {
       day = this.getLastDay(day);
     }
-    return moment().day(day).format('dddd');
+    return DateTime.now().set({ weekday: day }).toFormat('cccc');
   }
 
   async getPoster(id: number): Promise<string | undefined> {

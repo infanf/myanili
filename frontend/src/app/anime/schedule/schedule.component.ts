@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { DateTimeFrom } from '@components/luxon-helper';
 import { Anime } from '@models/anime';
-import * as moment from 'moment';
+import { Weekday } from '@models/components';
+import { DateTime } from 'luxon';
 
 import { GlobalService } from '../../global.service';
 import { Language, SettingsService } from '../../settings/settings.service';
@@ -13,7 +15,7 @@ import { AnimeService } from '../anime.service';
 })
 export class ScheduleComponent {
   animes: Array<Partial<Anime>> = [];
-  today = moment().day();
+  today = DateTime.now().weekday as Weekday;
   lang: Language = 'jp';
   year?: number;
   season?: number;
@@ -74,13 +76,15 @@ export class ScheduleComponent {
           anime.my_extension?.simulDay !== 0 && // exclude sundays
           ['tv', 'ova', 'ona'].includes(anime.media_type || ''),
       )
-      .sort((a, b) => moment(a.start_date).unix() - moment(b.start_date).unix());
+      .sort(
+        (a, b) => DateTimeFrom(a.start_date).millisecond - DateTimeFrom(b.start_date).millisecond,
+      );
   }
 
   getDay(day: number): string {
-    return moment()
-      .day(this.today + day)
-      .format('dddd');
+    return DateTime.now()
+      .set({ weekday: this.today + day })
+      .toFormat('cccc');
   }
 
   length(input?: Date | string): number {
