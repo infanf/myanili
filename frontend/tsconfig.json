@@ -24,7 +24,7 @@
       "@external/*": ["src/app/external/*"],
       "@components/*": ["src/app/components/*"]
     },
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

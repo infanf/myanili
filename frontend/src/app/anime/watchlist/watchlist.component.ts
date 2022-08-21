@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Button } from '@components/dialogue/dialogue.component';
 import { DialogueService } from '@components/dialogue/dialogue.service';
+import { DateTimeFrom } from '@components/luxon-helper';
 import { Anime, AnimeEpisodeRule, ListAnime, MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { Base64 } from 'js-base64';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { GlobalService } from 'src/app/global.service';
 import { Language, SettingsService } from 'src/app/settings/settings.service';
 
@@ -47,16 +48,17 @@ export class WatchlistComponent implements OnInit {
           return true;
         }
         const lastAiredWeekday = this.animeService.getLastDay(anime.my_extension.simulDay);
-        const last8amWeekday = this.getLast8am().day();
+        const last8amWeekday = this.getLast8am().weekday;
         if (lastAiredWeekday === last8amWeekday) {
           return true;
         }
         const lastAiredDaysAgo = (last8amWeekday - lastAiredWeekday + 14) % 7;
         if (lastAiredDaysAgo <= 4) {
-          const inFuture = moment(anime.node.start_date) > moment();
+          const inFuture = DateTimeFrom(anime.node.start_date) > DateTimeFrom();
           const newShow = anime.list_status.num_episodes_watched === 0;
           return (
-            moment(anime.list_status.updated_at) < moment().subtract(lastAiredDaysAgo + 1, 'd') ||
+            DateTimeFrom(anime.list_status.updated_at) <
+              DateTimeFrom().minus({ day: lastAiredDaysAgo + 1 }) ||
             (!inFuture && newShow)
           );
         }
@@ -74,13 +76,13 @@ export class WatchlistComponent implements OnInit {
     ) {
       return 0;
     }
-    if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().day()) {
+    if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().weekday) {
       return Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0);
     }
     return (
       (this.animeService.getLastDay(anime.my_extension.simulDay) +
         14 -
-        this.getLast8am().day() +
+        this.getLast8am().weekday +
         Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0) / 10000) %
       7
     );
@@ -88,14 +90,19 @@ export class WatchlistComponent implements OnInit {
 
   isSeen(anime: ListAnime): boolean {
     if (anime.list_status.num_episodes_watched === 0) return false;
-    const updateDate = moment(anime.list_status.updated_at);
+    const updateDate = DateTimeFrom(anime.list_status.updated_at);
     return this.getLast8am() < updateDate;
   }
 
-  getLast8am() {
-    const now = moment();
-    const eightAm = moment().hour(8).minute(0).second(0).millisecond(0);
-    return now > eightAm ? eightAm : eightAm.subtract(1, 'd');
+  getLast8am(): DateTime {
+    const now = DateTimeFrom();
+    const eightAm = DateTime.now().set({
+      hour: 8,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    });
+    return now.diff(eightAm).milliseconds > 0 ? eightAm : eightAm.minus({ days: 1 });
   }
 
   async markSeen(anime: ListAnime) {
@@ -230,8 +237,11 @@ export class WatchlistComponent implements OnInit {
 
   isInSeason(anime: ListAnime): boolean {
     if (anime.node.start_date) {
-      if (moment(anime.node.start_date).subtract(6, 'd') < moment()) {
-        if (anime.node.end_date && moment(anime.node.end_date).add(6, 'd') < moment()) {
+      if (DateTimeFrom(anime.node.start_date).minus({ days: 6 }) < DateTimeFrom()) {
+        if (
+          anime.node.end_date &&
+          DateTimeFrom(anime.node.end_date).plus({ days: 6 }) < DateTimeFrom()
+        ) {
           return false;
         }
         return true;

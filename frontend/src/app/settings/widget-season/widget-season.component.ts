@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Season } from '@models/components';
+import { Season, SeasonNumber } from '@models/components';
 
 import { SettingsService } from '../settings.service';
 
@@ -27,7 +27,7 @@ export class WidgetSeasonComponent implements OnInit {
   }
 
   changeSeason(offset: number) {
-    const season = (this.season.season + offset + 4) % 4;
+    const season = ((this.season.season + offset + 4) % 4) as SeasonNumber;
     const year = this.season.year + Math.floor((this.season.season + offset) / 4);
     this.settings.setSeason(year, season);
   }
