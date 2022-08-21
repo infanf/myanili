@@ -48,7 +48,7 @@ export class WatchlistComponent implements OnInit {
           return true;
         }
         const lastAiredWeekday = this.animeService.getLastDay(anime.my_extension.simulDay);
-        const last8amWeekday = this.getLast8am().weekday;
+        const last8amWeekday = this.getLast8am().weekday % 7;
         if (lastAiredWeekday === last8amWeekday) {
           return true;
         }

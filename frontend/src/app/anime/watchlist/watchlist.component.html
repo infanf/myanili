@@ -64,7 +64,7 @@
           <td>
             {{
               anime.my_extension?.simulTime
-                ? getLast8am().weekday === anime.my_extension?.simulDay ||
+                ? getLast8am().weekday % 7 === anime.my_extension?.simulDay ||
                   toArray(anime.my_extension?.simulDay).includes(getLast8am().weekday % 7)
                   ? (anime.my_extension!.simulTime!.substr(0, 5) | time)
                   : (getLastDay(anime.my_extension?.simulDay) | day)
