@@ -1,15 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 
 @Pipe({
   name: 'day',
 })
 export class DayPipe implements PipeTransform {
-  transform(value?: number | number[], format: 'dd' | 'ddd' | 'dddd' = 'ddd'): string {
+  transform(value?: number | number[], format: 'ccc' | 'cccc' | 'ccccc' = 'ccc'): string {
     if (!value && value !== 0) return '';
     if (typeof value === 'object') {
-      return value.map(d => moment().day(d).format(format)).join(', ');
+      return value.map(d => DateTime.now().set({ weekday: d }).toFormat(format)).join(', ');
     }
-    return moment().weekday(value).format(format);
+    return DateTime.now().set({ weekday: value }).toFormat(format);
   }
 }

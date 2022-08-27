@@ -22,10 +22,12 @@ export type Person = PersonInterface;
 
 interface SeasonInterface {
   year: number;
-  season: number;
+  season: SeasonNumber;
 }
 
+export type SeasonNumber = 0 | 1 | 2 | 3;
 export type Season = SeasonInterface;
+export type Weekday = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 interface Rating {
   norm: number; // mapped to 100 point rating system

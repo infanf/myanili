@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Season } from '@models/components';
+import { Season, SeasonNumber } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 
 import { GlobalService } from '../global.service';
@@ -13,8 +13,8 @@ import { NewVersionComponent } from './new-version/new-version.component';
 })
 export class SettingsService {
   private seasonSubject = new BehaviorSubject<Season>({
-    year: moment().year(),
-    season: Math.floor(moment().month() / 3),
+    year: DateTime.now().year,
+    season: Math.floor((DateTime.now().month - 1) / 3) as SeasonNumber,
   });
   private languageSubject = new BehaviorSubject<Language>('default');
   private inList = new BehaviorSubject<boolean>(false);
@@ -31,7 +31,7 @@ export class SettingsService {
       this.setLanguage(['default', 'en', 'jp'].includes(lang) ? (lang as Language) : 'default');
       const savedSeason = JSON.parse(String(localStorage.getItem('season')));
       if (savedSeason) {
-        this.setSeason(savedSeason.year as number, savedSeason.season as number);
+        this.setSeason(savedSeason.year as number, savedSeason.season as SeasonNumber);
       }
       const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
       this.setNsfw(nsfw);
@@ -56,7 +56,7 @@ export class SettingsService {
     return this.seasonSubject.asObservable();
   }
 
-  setSeason(year: number, season: number) {
+  setSeason(year: number, season: SeasonNumber) {
     const newSeason = { year, season };
     this.seasonSubject.next(newSeason);
     localStorage.setItem('season', JSON.stringify(newSeason));
@@ -64,8 +64,8 @@ export class SettingsService {
 
   resetSeason() {
     this.seasonSubject.next({
-      year: moment().year(),
-      season: Math.floor(moment().month() / 3),
+      year: DateTime.now().year,
+      season: Math.floor((DateTime.now().month - 1) / 3) as SeasonNumber,
     });
     localStorage.removeItem('season');
   }

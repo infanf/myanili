@@ -1,6 +1,10 @@
 {
-  "version": "2.13.0",
+  "version": "2.13.1",
   "changes": [
+    {
+      "version": "2.13.1",
+      "other": ["optimize app to reduce size"]
+    },
     {
       "version": "2.13.0",
       "features": [

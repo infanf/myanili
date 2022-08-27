@@ -7,7 +7,9 @@
         <th colspan="2">Stream<span class="d-none d-md-inline">ing</span></th>
         <th>
           <span class="mx-2">
-            <myanili-icon-progress [percent]="(seenCount / animes.length) * 100"></myanili-icon-progress>
+            <myanili-icon-progress
+              [percent]="(seenCount / animes.length) * 100"
+            ></myanili-icon-progress>
           </span>
         </th>
       </tr>
@@ -62,8 +64,8 @@
           <td>
             {{
               anime.my_extension?.simulTime
-                ? getLast8am().day() === anime.my_extension?.simulDay ||
-                  toArray(anime.my_extension?.simulDay).includes(getLast8am().day())
+                ? getLast8am().weekday % 7 === anime.my_extension?.simulDay ||
+                  toArray(anime.my_extension?.simulDay).includes(getLast8am().weekday % 7)
                   ? (anime.my_extension!.simulTime!.substr(0, 5) | time)
                   : (getLastDay(anime.my_extension?.simulDay) | day)
                 : ''
@@ -82,19 +84,18 @@
               (click)="markSeen(anime)"
             ></myanili-icon>
             <ng-template #plusIcon>
-            <myanili-icon
-              class="cursor-pointer mx-2"
-              [name]="
-                anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
-                  ? 'check-circle'
-                  : anime.busy
-                  ? 'loading-circle'
-                  : 'plus-circle'
-              "
-              (click)="markSeen(anime)"
-              
-            ></myanili-icon>
-          </ng-template>
+              <myanili-icon
+                class="cursor-pointer mx-2"
+                [name]="
+                  anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
+                    ? 'check-circle'
+                    : anime.busy
+                    ? 'loading-circle'
+                    : 'plus-circle'
+                "
+                (click)="markSeen(anime)"
+              ></myanili-icon>
+            </ng-template>
           </td>
         </tr>
       </ng-container>
