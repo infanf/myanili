@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BakaUser } from '@models/baka';
+import { BakaSeries, BakaUser } from '@models/baka';
+import { BakaManga, Manga } from '@models/manga';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { compareTwoStrings } from 'string-similarity';
 
 @Injectable({
   providedIn: 'root',
@@ -62,5 +64,59 @@ export class MangaupdatesService {
 
   get user() {
     return this.userSubject.asObservable();
+  }
+
+  async getId(idOrSlug: number | string): Promise<number | undefined> {
+    if (!idOrSlug) return;
+    if (typeof idOrSlug === 'number') {
+      const manga = await this.getManga(idOrSlug);
+      if (manga) {
+        return manga.series_id;
+      }
+    }
+    const request = await fetch(`${environment.backend}baka/manga/${idOrSlug}`);
+    if (request.ok) {
+      const response = (await request.json()) as BakaManga;
+      return response.id;
+    }
+    return;
+  }
+
+  async getManga(id: number): Promise<BakaSeries | undefined> {
+    if (!id) return;
+    const response = await fetch(`${this.baseUrl}series/${id}`);
+    if (!response.ok) return;
+    return response.json() as Promise<BakaSeries>;
+  }
+
+  async getIdFromManga(manga: Manga): Promise<number | undefined> {
+    if (!manga) return;
+    const mangas = await this.findSeries(manga.title);
+    if (!mangas) return;
+    const bakaMangas = mangas.filter(m => {
+      const mangaStart = manga.start_date ? new Date(manga.start_date).getFullYear() : 0;
+      return Math.abs((m.year || 0) - mangaStart) <= 1;
+    });
+    if (bakaMangas.length === 1) return bakaMangas[0].series_id;
+    const bakaMangasByTitle = bakaMangas.filter(m => compareTwoStrings(m.title, manga.title) > 0.9);
+    if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].series_id;
+    return bakaMangas.find(m => m.title.toLowerCase() === manga.title.toLowerCase())?.series_id;
+  }
+
+  async findSeries(title: string): Promise<BakaSeries[] | undefined> {
+    if (!title) return;
+    const response = await fetch(`${this.baseUrl}series/search`, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        search: title,
+      }),
+    });
+    if (!response.ok) return;
+    const results = (await response.json()) as { results: Array<{ record: BakaSeries }> };
+    return results.results.map(result => result.record);
   }
 }

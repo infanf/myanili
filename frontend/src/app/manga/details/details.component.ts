@@ -16,6 +16,7 @@ import { GlobalService } from 'src/app/global.service';
 import { KitsuService } from 'src/app/kitsu.service';
 
 import { MangaService } from '../manga.service';
+import { MangaupdatesService } from '../mangaupdates.service';
 
 @Component({
   selector: 'myanili-manga-details',
@@ -42,6 +43,7 @@ export class MangaDetailsComponent implements OnInit {
     public platformPipe: PlatformPipe,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private baka: MangaupdatesService,
     private anisearch: AnisearchService,
     private modalService: NgbModal,
     private cache: CacheService,
@@ -96,7 +98,8 @@ export class MangaDetailsComponent implements OnInit {
       !this.manga.my_extension.kitsuId.entryId ||
       !this.manga.my_extension.anilistId ||
       !this.manga.my_extension.anisearchId ||
-      !this.manga.my_extension.bakaId
+      !this.manga.my_extension.bakaId ||
+      /[a-z]/.test(String(this.manga.my_extension.bakaId))
     ) {
       const [anilistId, kitsuId, anisearchId, bakaId] = await Promise.all([
         this.anilist.getId(this.id, 'MANGA'),
@@ -115,13 +118,13 @@ export class MangaDetailsComponent implements OnInit {
           volumes: this.manga.num_volumes,
           year: this.manga.start_date ? new Date(this.manga.start_date).getFullYear() : undefined,
         }),
-        this.mangaService.getBakaMangaId(this.manga),
+        this.baka.getIdFromManga(this.manga),
       ]);
       this.manga.my_extension.anilistId = anilistId || this.manga.my_extension.anilistId;
       this.manga.my_extension.kitsuId = kitsuId || this.manga.my_extension.kitsuId;
       this.manga.my_extension.anisearchId = anisearchId || this.manga.my_extension.anisearchId;
       this.manga.my_extension.bakaId = bakaId || this.manga.my_extension.bakaId;
-      if (manga.my_extension) {
+      if (manga.my_list_status) {
         await this.mangaService.updateManga(
           { malId: manga.id, kitsuId, anilistId },
           {

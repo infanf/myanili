@@ -40,13 +40,16 @@ class BakaServiceProvider extends ServiceProvider
         }
         $text = preg_replace('/\s*<[^>]*>\s*|\s+/', ' ', $response);
         preg_match('/\((?P<votes>\d+) votes\) Bayesian Average: (?P<score>[\d\.]+)/', $text, $matches);
+        preg_match('/https:\/\/api\.mangaupdates\.com\/v1\/series\/(?P<id>\d+)\/rss/', $response, $idMatch);
         if (isset($matches['votes']) && isset($matches['score'])) {
             return [
+                'id' => +$idMatch['id'],
                 'votes' => \intval($matches['votes']),
                 'score' => floatval($matches['score']),
             ];
         }
         return [
+            'id' => +$idMatch['id'],
             'votes' => 0,
             'score' => 0,
         ];

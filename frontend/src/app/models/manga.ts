@@ -167,6 +167,7 @@ interface Character {
 export type MangaCharacter = Character;
 
 interface BakaMangaInterface {
+  id: number;
   votes?: number;
   score?: number;
 }
