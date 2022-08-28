@@ -76,7 +76,10 @@ export class WatchlistComponent implements OnInit {
     ) {
       return 0;
     }
-    if (this.animeService.getLastDay(anime.my_extension.simulDay) === this.getLast8am().weekday) {
+    if (
+      this.animeService.getLastDay(anime.my_extension.simulDay) ===
+      this.getLast8am().weekday % 7
+    ) {
       return Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0);
     }
     return (
