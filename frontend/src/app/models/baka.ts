@@ -108,6 +108,18 @@ interface Recommendation {
 }
 
 export interface BakaUser {
+  id: number;
   url: string;
   username: string;
 }
+
+export interface BakaList {
+  list_id: number;
+  title: string;
+  description: string;
+  type: ListType;
+  icon: string;
+  custom: boolean;
+}
+
+export type ListType = 'read' | 'wish' | 'complete' | 'unfinished' | 'hold';

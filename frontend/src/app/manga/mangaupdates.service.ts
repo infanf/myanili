@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BakaSeries, BakaUser } from '@models/baka';
-import { BakaManga, Manga } from '@models/manga';
+import { BakaList, BakaSeries, BakaUser, ListType } from '@models/baka';
+import { BakaManga, Manga, ReadStatus } from '@models/manga';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { compareTwoStrings } from 'string-similarity';
@@ -118,5 +118,69 @@ export class MangaupdatesService {
     if (!response.ok) return;
     const results = (await response.json()) as { results: Array<{ record: BakaSeries }> };
     return results.results.map(result => result.record);
+  }
+
+  async updateSeries(id: number, data: { chapters?: number; volumes?: number; list?: ListType }) {
+    if (!id) return;
+    const updateData = {
+      series: { id },
+    } as {
+      series: { id: number };
+      list_id?: number;
+      status?: { chapter?: number; volume?: number };
+    };
+    if (data.chapters || data.volumes) {
+      updateData.status = {
+        chapter: data.chapters,
+        volume: data.volumes,
+      };
+    }
+    if (!data.list) data.list = 'read';
+    const listsResponse = await fetch(`${this.baseUrl}lists`, {
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+    });
+    if (!listsResponse.ok) return;
+    const results = (await listsResponse.json()) as BakaList[];
+    const newList = results.find(list => list.type === data.list);
+    if (newList) updateData.list_id = newList.list_id;
+
+    const updateResponse = await fetch(`${this.baseUrl}lists/series/update`, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify([updateData]),
+    });
+    if (updateResponse.ok) return;
+
+    await fetch(`${this.baseUrl}lists/series`, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify([updateData]),
+    });
+  }
+
+  statusFromMal(malStatus?: ReadStatus): ListType | undefined {
+    switch (malStatus) {
+      case 'plan_to_read':
+        return 'wish';
+      case 'reading':
+        return 'read';
+      case 'completed':
+        return 'complete';
+      case 'dropped':
+        return 'unfinished';
+      case 'on_hold':
+        return 'hold';
+      default:
+        return undefined;
+    }
   }
 }

@@ -20,6 +20,8 @@ import { CacheService } from '../cache.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 
+import { MangaupdatesService } from './mangaupdates.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +30,7 @@ export class MangaService {
     private malService: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private baka: MangaupdatesService,
     private cache: CacheService,
   ) {}
 
@@ -87,6 +90,7 @@ export class MangaService {
       malId: number;
       anilistId?: number;
       kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+      bakaId?: number | string;
     },
     data: Partial<MyMangaUpdate>,
   ): Promise<MyMangaStatus> {
@@ -121,6 +125,16 @@ export class MangaService {
           notes: data.comments,
           reconsuming: data.is_rereading,
           reconsumeCount: data.num_times_reread,
+        });
+      })(),
+      (async () => {
+        if (!ids.bakaId) return;
+        const cleanId = await this.baka.getId(ids.bakaId);
+        if (!cleanId) return;
+        return this.baka.updateSeries(cleanId, {
+          chapters: data.num_chapters_read,
+          volumes: data.num_volumes_read,
+          list: this.baka.statusFromMal(data.status),
         });
       })(),
     ]);
