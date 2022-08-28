@@ -135,6 +135,7 @@ export class MangaService {
           chapters: data.num_chapters_read,
           volumes: data.num_volumes_read,
           list: this.baka.statusFromMal(data.status),
+          rating: data.score,
         });
       })(),
     ]);

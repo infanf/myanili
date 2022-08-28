@@ -120,8 +120,12 @@ export class MangaupdatesService {
     return results.results.map(result => result.record);
   }
 
-  async updateSeries(id: number, data: { chapters?: number; volumes?: number; list?: ListType }) {
+  async updateSeries(
+    id: number,
+    data: { chapters?: number; volumes?: number; list?: ListType; rating?: number },
+  ) {
     if (!id) return;
+    if (data.rating) this.addRating(id, data.rating);
     const updateData = {
       series: { id },
     } as {
@@ -164,6 +168,17 @@ export class MangaupdatesService {
         'Content-Type': 'application/json',
       }),
       body: JSON.stringify([updateData]),
+    });
+  }
+
+  async addRating(id: number, rating: number) {
+    await fetch(`${this.baseUrl}series/${id}/rating`, {
+      method: 'PUT',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({ rating }),
     });
   }
 
