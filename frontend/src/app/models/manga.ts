@@ -76,7 +76,7 @@ export type MangaStatus = 'finished' | 'currently_publishing' | 'not_yet_publish
 interface MyUpdate {
   status: ReadStatus;
   is_rereading: boolean;
-  score: number;
+  score: number; // range: 0-10
   num_volumes_read: number;
   num_chapters_read: number;
   priority: number;
@@ -167,6 +167,7 @@ interface Character {
 export type MangaCharacter = Character;
 
 interface BakaMangaInterface {
+  id: number;
   votes?: number;
   score?: number;
 }
