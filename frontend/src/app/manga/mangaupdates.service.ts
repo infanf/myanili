@@ -91,16 +91,20 @@ export class MangaupdatesService {
 
   async getIdFromManga(manga: Manga): Promise<number | undefined> {
     if (!manga) return;
-    const mangas = await this.findSeries(manga.title);
+    return this.getIdFromTitle(manga.title, manga.start_date);
+  }
+
+  async getIdFromTitle(title: string, startDate?: Date): Promise<number | undefined> {
+    const mangas = await this.findSeries(title);
     if (!mangas) return;
     const bakaMangas = mangas.filter(m => {
-      const mangaStart = manga.start_date ? new Date(manga.start_date).getFullYear() : 0;
+      const mangaStart = startDate ? new Date(startDate).getFullYear() : 0;
       return Math.abs((m.year || 0) - mangaStart) <= 1;
     });
     if (bakaMangas.length === 1) return bakaMangas[0].series_id;
-    const bakaMangasByTitle = bakaMangas.filter(m => compareTwoStrings(m.title, manga.title) > 0.9);
+    const bakaMangasByTitle = bakaMangas.filter(m => compareTwoStrings(m.title, title) > 0.9);
     if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].series_id;
-    return bakaMangas.find(m => m.title.toLowerCase() === manga.title.toLowerCase())?.series_id;
+    return bakaMangas.find(m => m.title.toLowerCase() === title.toLowerCase())?.series_id;
   }
 
   async findSeries(title: string): Promise<BakaSeries[] | undefined> {

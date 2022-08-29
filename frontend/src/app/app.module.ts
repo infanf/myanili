@@ -56,6 +56,7 @@ import { PersonComponent } from './person/person.component';
 import { PersonStaffComponent } from './person/staff/staff.component';
 import { SearchComponent } from './search/search.component';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
+import { MigrateBakaComponent } from './settings/migrate-baka/migrate-baka.component';
 import { NewVersionComponent } from './settings/new-version/new-version.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
@@ -104,6 +105,7 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     PersonStaffComponent,
     AboutComponent,
     NewVersionComponent,
+    MigrateBakaComponent,
   ],
   imports: [
     BrowserModule,
