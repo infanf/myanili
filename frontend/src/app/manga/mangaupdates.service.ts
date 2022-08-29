@@ -12,6 +12,7 @@ export class MangaupdatesService {
   private baseUrl = environment.backend + 'baka/v1/';
   private accessToken = '';
   private userSubject = new BehaviorSubject<BakaUser | undefined>(undefined);
+  private myLists?: BakaList[];
 
   constructor() {
     this.accessToken = String(localStorage.getItem('bakaAccessToken'));
@@ -144,15 +145,17 @@ export class MangaupdatesService {
       };
     }
     if (!data.list) data.list = 'read';
-    const listsResponse = await fetch(`${this.baseUrl}lists`, {
-      headers: new Headers({
-        Authorization: `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-    });
-    if (!listsResponse.ok) return;
-    const results = (await listsResponse.json()) as BakaList[];
-    const newList = results.find(list => list.type === data.list);
+    if (!this.myLists) {
+      const listsResponse = await fetch(`${this.baseUrl}lists`, {
+        headers: new Headers({
+          Authorization: `Bearer ${this.accessToken}`,
+          'Content-Type': 'application/json',
+        }),
+      });
+      if (!listsResponse.ok) return;
+      this.myLists = (await listsResponse.json()) as BakaList[];
+    }
+    const newList = this.myLists.find(list => list.type === data.list);
     if (newList) updateData.list_id = newList.list_id;
 
     const updateResponse = await fetch(`${this.baseUrl}lists/series/update`, {

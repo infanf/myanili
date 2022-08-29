@@ -43,6 +43,9 @@ export class MigrateBakaComponent {
       const volumes = manga.list_status.num_volumes_read;
       const rating = manga.list_status.score;
       const list = this.baka.statusFromMal(manga.list_status.status);
+      if (!list) {
+        continue;
+      }
       let extension = {} as Partial<MangaExtension>;
       try {
         extension = JSON.parse(
@@ -54,17 +57,19 @@ export class MigrateBakaComponent {
         ? await this.baka.getId(extension.bakaId)
         : await this.baka.getIdFromTitle(manga.node.title, manga.node.start_date);
       if (!bakaId) continue;
-      await this.baka.updateSeries(bakaId, {
+      const data = {
         chapters,
         volumes,
         rating,
         list,
-      });
+      };
+      await this.baka.updateSeries(bakaId, data);
+
       if (bakaId !== extension.bakaId || !extension.bakaMigrated) {
         extension.bakaId = bakaId;
         extension.bakaMigrated = true;
         const comments = Base64.encode(JSON.stringify(extension));
-        await this.manga.updateManga({ ...extension, malId: manga.node.id }, { comments });
+        await this.manga.updateManga({ malId: manga.node.id }, { comments });
       }
     }
     this.migrating = false;
