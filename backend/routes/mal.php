@@ -201,4 +201,27 @@ JAVASCRIPT;
             'maintenance' => MalServiceProvider::getMaintenance()
         ];
     });
+
+    for ($n = 1; $n < 10; $n++) {
+        $route = "v2";
+        for ($i = 1; $i <= $n; $i++) {
+            $route.="/{p$i}";
+        }
+        $router->get($route, [
+            'middleware' => 'cors',
+            'uses'       => 'MalController@redirect',
+        ]);
+        $router->post($route, [
+            'middleware' => 'cors',
+            'uses'       => 'MalController@redirect',
+        ]);
+        $router->put($route, [
+            'middleware' => 'cors',
+            'uses'       => 'MalController@redirect',
+        ]);
+        $router->delete($route, [
+            'middleware' => 'cors',
+            'uses'       => 'MalController@redirect',
+        ]);
+    }
 });

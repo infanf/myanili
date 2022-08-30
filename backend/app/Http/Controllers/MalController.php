@@ -6,12 +6,13 @@ use App\Http\Middleware\CorsMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class BakaController extends Controller
+class MalController extends Controller
 {
-    private static $baseUrl = "https://api.mangaupdates.com/v1/";
+    private static $baseUrl = "https://api.myanimelist.net/v2/";
 
     public function redirect(Request $request) {
-        $url = preg_replace('/^baka\/v1\//', self::$baseUrl, $request->path());
+        $url = preg_replace('/^mal\/v2\//', self::$baseUrl, $request->path());
+        $url .= "?{$request->getQueryString()}";
         $auth = $request->header('Authorization');
         $body = $request->getContent();
         $method = $request->getMethod();
@@ -19,6 +20,7 @@ class BakaController extends Controller
         if ($auth) {
             $headers[] = "Authorization: $auth";
         }
+        $headers[] = "X-MAL-CLIENT-ID: " . env('MAL_CLIENT_ID');
         $headers[] = "Content-Type: " . $request->header('Content-Type');
         $ch = curl_init($url);
         curl_setopt_array($ch, [
