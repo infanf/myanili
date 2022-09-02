@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 import { ExternalComponent } from '@external/external.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { MangaService } from '../../manga/manga.service';
+import { MangaupdatesService } from 'src/app/manga/mangaupdates.service';
 
 @Component({
   selector: 'myanili-bakamanga',
   templateUrl: '../external.component.html',
 })
 export class BakamangaComponent extends ExternalComponent {
-  constructor(public modal: NgbActiveModal, private mangaService: MangaService) {
+  constructor(public modal: NgbActiveModal, private baka: MangaupdatesService) {
     super(modal);
   }
 
@@ -17,16 +16,16 @@ export class BakamangaComponent extends ExternalComponent {
     if (!this.title) return;
     this.nodes = [];
     this.searching = true;
-    const mangas = await this.mangaService.getBakaMangas(this.title);
+    const mangas = (await this.baka.findSeries(this.title)) || [];
     this.nodes =
-      mangas?.mangas.map(manga => ({
+      mangas.map(manga => ({
         title: manga.title,
-        id: manga.id,
-        url: manga.link,
+        id: manga.series_id,
+        url: manga.url,
         year: manga.year,
         description: manga.description,
-        poster: manga.image,
-        genres: manga.genres,
+        poster: manga.image.url.original,
+        genres: manga.genres?.map(genre => genre.genre),
       })) || [];
     this.searching = false;
   }

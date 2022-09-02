@@ -92,6 +92,7 @@ export class BookshelfComponent {
         malId: manga.node.id,
         anilistId: manga.my_extension?.anilistId,
         kitsuId: manga.my_extension?.kitsuId,
+        bakaId: manga.my_extension?.bakaId,
       },
       data,
     );
@@ -122,7 +123,15 @@ export class BookshelfComponent {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const statusResponse = await this.mangaservice.updateManga({ malId: manga.node.id }, data);
+    const statusResponse = await this.mangaservice.updateManga(
+      {
+        malId: manga.node.id,
+        anilistId: manga.my_extension?.anilistId,
+        kitsuId: manga.my_extension?.kitsuId,
+        bakaId: manga.my_extension?.bakaId,
+      },
+      data,
+    );
     manga.list_status.num_chapters_read = statusResponse.num_chapters_read;
     manga.list_status.num_volumes_read = statusResponse.num_volumes_read;
     manga.busy = false;

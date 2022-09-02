@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AnilistUser } from '@models/anilist';
+import { BakaUser } from '@models/baka';
 import { KitsuUser } from '@models/kitsu';
 import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +12,7 @@ import { TraktService } from '../anime/trakt.service';
 import { GlobalService } from '../global.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
+import { MangaupdatesService } from '../manga/mangaupdates.service';
 
 import { Language, SettingsService } from './settings.service';
 
@@ -27,6 +29,8 @@ export class SettingsComponent implements OnInit {
   anilistLoggedIn?: AnilistUser;
   kitsuLoggedIn?: KitsuUser;
   kitsuData?: { username: string; password: string; saveLogin: boolean };
+  bakaLoggedIn?: BakaUser;
+  bakaData?: { username: string; password: string; saveLogin: boolean };
   inlist = 'false';
   layout = 'list';
   nsfw = 'true';
@@ -40,6 +44,7 @@ export class SettingsComponent implements OnInit {
     private kitsu: KitsuService,
     private simkl: SimklService,
     private annict: AnnictService,
+    private baka: MangaupdatesService,
     public modal: NgbActiveModal,
   ) {
     this.settings.language.subscribe(lang => {
@@ -62,6 +67,9 @@ export class SettingsComponent implements OnInit {
     });
     this.annict.user.subscribe(user => {
       this.annictLoggedIn = user;
+    });
+    this.baka.user.subscribe(user => {
+      this.bakaLoggedIn = user;
     });
     this.settings.onlyInList.subscribe(inList => {
       this.inlist = JSON.stringify(inList);
@@ -166,5 +174,23 @@ export class SettingsComponent implements OnInit {
 
   async kitsuLogoff() {
     this.kitsu.logoff();
+  }
+
+  async bakaConnect() {
+    if (!this.bakaData) {
+      this.bakaData = {
+        username: '',
+        password: '',
+        saveLogin: false,
+      };
+      return;
+    }
+    this.glob.busy();
+    await this.baka.login(this.bakaData?.username, this.bakaData?.password);
+    this.glob.notbusy();
+  }
+
+  async bakaLogoff() {
+    this.baka.logoff();
   }
 }

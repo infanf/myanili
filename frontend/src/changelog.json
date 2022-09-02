@@ -1,6 +1,15 @@
 {
-  "version": "2.13.1",
+  "version": "2.14.0",
   "changes": [
+    {
+      "version": "2.14.0",
+      "features": [
+        "Update Baka-Manga implementation. You can now connect your account to sync progress and ratings."
+      ],
+      "fixes": [
+        "Watchlist sorting on sundays was wrong due to recent dependency changes."
+      ]
+    },
     {
       "version": "2.13.1",
       "other": ["optimize app to reduce size"]
