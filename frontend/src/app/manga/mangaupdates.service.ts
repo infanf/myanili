@@ -54,6 +54,7 @@ export class MangaupdatesService {
     });
     if (!result.ok) return undefined;
     const response = (await result.json()) as BakaUser;
+    this.userSubject.next(response);
     return response;
   }
 
