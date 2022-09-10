@@ -2,6 +2,12 @@
   "version": "2.14.0",
   "changes": [
     {
+      "version": "2.14.1",
+      "features": [
+        "Hide dropped and deleted shows in trakt calendar and progress"
+      ]
+    },
+    {
       "version": "2.14.0",
       "features": [
         "Update Baka-Manga implementation. You can now connect your account to sync progress and ratings."

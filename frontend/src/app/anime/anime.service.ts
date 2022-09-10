@@ -175,6 +175,7 @@ export class AnimeService {
     kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
     simklId?: number;
     annictId?: number;
+    traktId?: string;
   }) {
     await Promise.all([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
@@ -182,6 +183,7 @@ export class AnimeService {
       this.kitsu.deleteEntry(ids.kitsuId, 'anime'),
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
+      this.trakt.ignore(ids.traktId),
     ]);
     return true;
   }
