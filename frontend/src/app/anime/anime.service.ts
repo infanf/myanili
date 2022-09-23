@@ -49,6 +49,7 @@ export class AnimeService {
     const animes = await this.malService.myList(status);
     return animes.map(anime => {
       if (anime.node.title) {
+        this.fixBroadcast(anime.node);
         const animeToSave = {
           id: anime.node.id,
           title: anime.node.title,
@@ -87,6 +88,7 @@ export class AnimeService {
       .filter(anime => (this.nsfw ? true : anime.node.rating !== 'rx'))
       .map(anime => anime.node);
     return animes.map(anime => {
+      this.fixBroadcast(anime);
       const comments = anime.my_list_status?.comments;
       if (!comments) return anime;
       try {
@@ -103,6 +105,7 @@ export class AnimeService {
     const comments = anime.my_list_status?.comments;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
     if (!anime.website) anime.website_promise = this.getWebsite(id);
+    this.fixBroadcast(anime);
     const animeToSave = { ...anime } as Partial<Anime>;
     delete animeToSave.my_list_status;
     delete animeToSave.website_promise;
@@ -261,5 +264,51 @@ export class AnimeService {
     } catch (e) {}
     if (!anime?.main_picture) anime = await this.getAnime(id);
     return anime?.main_picture?.large || anime?.main_picture?.medium;
+  }
+
+  /**
+   * Converts brodcast day and time from JST to local timezone
+   */
+  fixBroadcast(anime: Anime | AnimeNode) {
+    if (anime.broadcast?.day_of_the_week && anime.broadcast?.start_time) {
+      let date = DateTime.now().setZone('Asia/Tokyo');
+      let weekday;
+      switch (anime.broadcast.day_of_the_week) {
+        case 'monday':
+          weekday = 1;
+          break;
+        case 'tuesday':
+          weekday = 2;
+          break;
+        case 'wednesday':
+          weekday = 3;
+          break;
+        case 'thursday':
+          weekday = 4;
+          break;
+        case 'friday':
+          weekday = 5;
+          break;
+        case 'saturday':
+          weekday = 6;
+          break;
+        case 'sunday':
+          weekday = 7;
+          break;
+        default:
+          weekday = undefined;
+          break;
+      }
+      date = date.set({
+        weekday,
+        hour: Number(anime.broadcast.start_time.split(':')[0]),
+        minute: Number(anime.broadcast.start_time.split(':')[1]),
+        second: 0,
+        millisecond: 0,
+      });
+      anime.broadcast.weekday = date.setZone('system').weekday % 7;
+      anime.broadcast.day_of_the_week = date.setZone('system').toFormat('cccc');
+      anime.broadcast.start_time = date.setZone('system').toFormat('HH:mm');
+    }
   }
 }

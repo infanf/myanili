@@ -37,6 +37,7 @@ interface AnimeInterface {
   num_episodes: number;
   start_season?: MalSeason;
   broadcast?: {
+    weekday?: number;
     day_of_the_week: string;
     start_time?: string;
   };
@@ -137,6 +138,7 @@ export interface AnimeNode {
     ja?: string;
   };
   broadcast?: {
+    weekday?: number;
     day_of_the_week: string;
     start_time?: string;
   };

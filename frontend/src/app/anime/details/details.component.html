@@ -225,7 +225,11 @@
         >
       </myanili-value-pair>
       <ng-template #broadcast>
-        <myanili-value-pair *ngIf="anime?.broadcast?.day_of_the_week" name="Broadcast">
+        <myanili-value-pair
+          [ngClass]="{ 'd-block my-2': edit }"
+          *ngIf="anime?.broadcast?.day_of_the_week"
+          name="Broadcast"
+        >
           {{ anime!.broadcast!.day_of_the_week }}
           <span *ngIf="anime?.broadcast?.start_time">
             <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
