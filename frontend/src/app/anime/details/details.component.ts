@@ -11,6 +11,7 @@ import { Anime, AnimeEpisodeRule, AnimeExtension, MyAnimeUpdate, WatchStatus } f
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
+import { DateTime } from 'luxon';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
 import { CacheService } from 'src/app/cache.service';
@@ -98,6 +99,44 @@ export class AnimeDetailsComponent implements OnInit {
         norm: anime.mean * 10,
         ratings: anime.num_scoring_users,
       });
+    }
+    if (anime.broadcast?.day_of_the_week && anime.broadcast?.start_time) {
+      // convert jst to utc
+      let date = DateTime.now().setZone('Asia/Tokyo');
+      let weekday = 0;
+      switch (anime.broadcast.day_of_the_week) {
+        case 'monday':
+          weekday = 1;
+          break;
+        case 'tuesday':
+          weekday = 2;
+          break;
+        case 'wednesday':
+          weekday = 3;
+          break;
+        case 'thursday':
+          weekday = 4;
+          break;
+        case 'friday':
+          weekday = 5;
+          break;
+        case 'saturday':
+          weekday = 6;
+          break;
+        case 'sunday':
+        default:
+          weekday = 7;
+          break;
+      }
+      date = date.set({
+        weekday,
+        hour: Number(anime.broadcast.start_time.split(':')[0]),
+        minute: Number(anime.broadcast.start_time.split(':')[1]),
+        second: 0,
+        millisecond: 0,
+      });
+      anime.broadcast.day_of_the_week = date.setZone('UTC').toFormat('cccc');
+      anime.broadcast.start_time = date.setZone('UTC').toFormat('HH:mm');
     }
     this.anime = { ...anime };
     this.fromCache = false;

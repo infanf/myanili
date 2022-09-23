@@ -136,6 +136,10 @@ export interface AnimeNode {
     en?: string;
     ja?: string;
   };
+  broadcast?: {
+    day_of_the_week: string;
+    start_time?: string;
+  };
   start_season?: MalSeason;
 }
 
