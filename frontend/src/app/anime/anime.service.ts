@@ -14,6 +14,7 @@ import { Weekday } from '@models/components';
 import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
+import { environment } from 'src/environments/environment';
 
 import { AnilistService } from '../anilist.service';
 import { CacheService } from '../cache.service';
@@ -29,6 +30,7 @@ import { TraktService } from './trakt.service';
   providedIn: 'root',
 })
 export class AnimeService {
+  private backendUrl = `${environment.backend}`;
   nsfw = true;
   constructor(
     private malService: MalService,
@@ -310,5 +312,12 @@ export class AnimeService {
       anime.broadcast.day_of_the_week = date.setZone('system').toFormat('cccc');
       anime.broadcast.start_time = date.setZone('system').toFormat('HH:mm');
     }
+  }
+
+  async getLivechartId(malId?: number): Promise<number | undefined> {
+    if (!malId) return undefined;
+    const response = await fetch(`${this.backendUrl}/livechart/${malId}`);
+    if (!response.ok) return undefined;
+    return ((await response.json()) as { livechart: number }).livechart || undefined;
   }
 }
