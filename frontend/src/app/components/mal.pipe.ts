@@ -21,7 +21,7 @@ export class MalPipe implements PipeTransform {
   myStatus(value: WatchStatus | ReadStatus): string {
     let status = value
       .split('_')
-      .map(word => word[0].toUpperCase() + word.slice(1))
+      .map(word => word[0]?.toUpperCase() + word.slice(1))
       .join(' ');
     if (value === 'plan_to_watch') status = 'Plan to Watch';
     if (value === 'plan_to_read') status = 'Plan to Read';
@@ -37,7 +37,7 @@ export class MalPipe implements PipeTransform {
       default:
         return value
           .split('_')
-          .map(word => word[0].toUpperCase() + word.slice(1))
+          .map(word => word[0]?.toUpperCase() + word.slice(1))
           .join(' ');
     }
   }
