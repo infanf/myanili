@@ -28,7 +28,7 @@
     "@angular/pwa": "^14.2.3",
     "@angular/router": "^14.2.3",
     "@angular/service-worker": "^14.2.3",
-    "@apollo/client": "^3.3.11",
+    "@apollo/client": "~3.6.0",
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.10.2",
     "angular-svg-icon": "^14.0.0",
