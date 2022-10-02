@@ -181,6 +181,15 @@ export class AnimeDetailsComponent implements OnInit {
           }),
       );
     }
+    if (!this.anime.my_extension.livechartId) {
+      promises.push(
+        this.animeService.getLivechartId(this.id).then(livechartId => {
+          if (livechartId && this?.anime?.my_extension) {
+            this.anime.my_extension.livechartId = livechartId;
+          }
+        }),
+      );
+    }
     await Promise.all(promises);
     if (promises.length && anime.my_extension) {
       await this.animeService.updateAnime(
@@ -200,6 +209,7 @@ export class AnimeDetailsComponent implements OnInit {
               simklId: this.anime.my_extension.simklId,
               annictId: this.anime.my_extension.annictId,
               anisearchId: this.anime.my_extension.anisearchId,
+              livechartId: this.anime.my_extension.livechartId,
             }),
           ),
         },

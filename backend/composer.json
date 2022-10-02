@@ -1,6 +1,6 @@
 {
   "name": "infanf/myanili-backend",
-  "version": "2.14.2",
+  "version": "2.14.3",
   "license": "MIT",
   "type": "project",
   "require": {
@@ -41,6 +41,9 @@
   "scripts": {
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+    ],
+    "post-install-cmd": [
+      "cd resources/livechart && php create-cache.php"
     ]
   }
 }
