@@ -164,6 +164,13 @@ interface Jikan4Image {
   webp?: Jikan4ImageUrls;
 }
 
+export type Jikan4Anime = Jikan4Data & {
+  images?: Jikan4Image;
+  title: string;
+  type: string;
+  source: string;
+};
+
 type Jikan4CharacterData = Jikan4Data & {
   name: string;
   name_kanji?: string;
@@ -283,3 +290,19 @@ export interface Jikan4WorkRelation {
     }
   >;
 }
+
+export type Jikan4Producer = Jikan4Data & {
+  titles: Array<{
+    type: string;
+    title: string;
+  }>;
+  images: Jikan4Image;
+  favorites: number;
+  count: number;
+  established: string;
+  about: string;
+  external: Array<{
+    name: string;
+    url: string;
+  }>;
+};
