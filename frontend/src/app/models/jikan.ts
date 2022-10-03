@@ -258,12 +258,15 @@ interface Jikan4PersonMangaData {
 
 export type Jikan4PersonMangas = Jikan4PersonMangaData[];
 
-export interface Jikan4AnimeCharacter {
+interface Jikan4WorkCharacter {
   character: Jikan4Data & {
     images: Jikan4Image;
     name: string;
   };
   role: 'Main' | 'Supporting';
+}
+
+export type Jikan4AnimeCharacter = Jikan4WorkCharacter & {
   voice_actors: Array<{
     person: Jikan4Data & {
       images?: Jikan4Image;
@@ -271,7 +274,9 @@ export interface Jikan4AnimeCharacter {
     };
     language: string;
   }>;
-}
+};
+
+export type Jikan4MangaCharacter = Jikan4WorkCharacter;
 
 export interface Jikan4Staff {
   person: Jikan4Data & {

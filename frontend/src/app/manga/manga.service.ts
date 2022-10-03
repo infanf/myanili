@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { RelatedAnime } from '@models/anime';
-import { Jikan4WorkRelation } from '@models/jikan';
+import { Jikan4MangaCharacter, Jikan4WorkRelation } from '@models/jikan';
 import {
   BakaManga,
   BakaMangaList,
   ListManga,
   Manga,
-  MangaCharacter,
   MangaExtension,
   MyMangaStatus,
   MyMangaUpdate,
@@ -175,11 +174,11 @@ export class MangaService {
     return animes;
   }
 
-  async getCharacters(id: number): Promise<MangaCharacter[]> {
-    const result = await this.malService.getJikanData<{ data?: MangaCharacter[] }>(
+  async getCharacters(id: number): Promise<Jikan4MangaCharacter[]> {
+    const characters = await this.malService.getJikanData<Jikan4MangaCharacter[]>(
       `manga/${id}/characters`,
     );
-    return result.data || [];
+    return characters || [];
   }
 
   async getBakaManga(id?: number | string): Promise<BakaManga | undefined> {
