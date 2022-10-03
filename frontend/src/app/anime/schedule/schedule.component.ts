@@ -58,8 +58,8 @@ export class ScheduleComponent {
       if (!Array.isArray(simulDay)) simulDay = [simulDay];
       simulDay = simulDay.map(d => Number(d) % 7) as number[];
       return (
-        simulDay.includes(day % 7) &&
-        anime.my_extension?.simulDay !== null &&
+        ((simulDay.includes(day % 7) && anime.my_extension?.simulDay !== null) ||
+          (anime.broadcast?.weekday === day && !simulDay.length)) &&
         anime.my_list_status?.status !== 'dropped'
       );
     });
@@ -71,6 +71,7 @@ export class ScheduleComponent {
         anime =>
           anime.my_list_status && // is in my list
           anime.my_list_status?.status !== 'dropped' &&
+          !anime.broadcast?.day_of_the_week &&
           (!anime.my_extension?.simulDay || // include empty days
             (Array.isArray(anime.my_extension.simulDay) && !anime.my_extension.simulDay.length)) && // include empty arrays of days
           anime.my_extension?.simulDay !== 0 && // exclude sundays

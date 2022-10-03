@@ -155,6 +155,29 @@ export class TraktService {
     return false;
   }
 
+  async ignore(slug?: string): Promise<boolean> {
+    if (!slug) return false;
+    const headers = {
+      Authorization: `Bearer ${this.accessToken}`,
+      'trakt-api-version': '2',
+      'trakt-api-key': this.clientId,
+      'Content-Type': 'application/json',
+    };
+    const method = 'POST';
+    const body = JSON.stringify({
+      shows: [
+        {
+          ids: { slug },
+        },
+      ],
+    });
+    const [resultCalendar, resultWatchlist] = await Promise.all([
+      fetch(`${this.baseUrl}users/hidden/calendar`, { headers, method, body }),
+      fetch(`${this.baseUrl}users/hidden/progress_watched`, { headers, method, body }),
+    ]);
+    return resultCalendar.ok && resultWatchlist.ok;
+  }
+
   async searchMovie(q: string): Promise<Show[]> {
     const headers = new Headers({
       'trakt-api-version': '2',
@@ -240,9 +263,9 @@ export class TraktService {
 
   async updateEntry(trakt?: { id?: string; season?: number }, data?: Partial<MyAnimeUpdate>) {
     if (!trakt || !trakt.id || !this.accessToken) return;
-    // if (data?.num_watched_episodes) {
-    //   this.scrobble(trakt.id, trakt.season||1, data?.num_watched_episodes);
-    // }
+    if (data?.status === 'dropped') {
+      this.ignore(trakt.id);
+    }
     if (data?.score) {
       this.addRating(data.score, trakt.id, trakt.season);
     }

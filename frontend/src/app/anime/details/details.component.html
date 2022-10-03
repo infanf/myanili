@@ -211,9 +211,10 @@
       <myanili-value-pair
         *ngIf="
           !edit &&
-          anime &&
-          anime.my_extension &&
-          (anime.my_extension?.simulDay?.toString() || anime.my_extension?.simulDay === 0)
+            anime &&
+            anime.my_extension &&
+            (anime.my_extension?.simulDay?.toString() || anime.my_extension?.simulDay === 0);
+          else broadcast
         "
         name="Watch on"
       >
@@ -223,6 +224,19 @@
           {{ anime.my_extension.simulTime.substr(0, 5) | time }}</span
         >
       </myanili-value-pair>
+      <ng-template #broadcast>
+        <myanili-value-pair
+          [ngClass]="{ 'd-block my-2': edit }"
+          *ngIf="anime?.broadcast?.day_of_the_week"
+          name="Broadcast"
+        >
+          {{ anime!.broadcast!.day_of_the_week }}
+          <span *ngIf="anime?.broadcast?.start_time">
+            <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
+            {{ anime!.broadcast!.start_time }}</span
+          >
+        </myanili-value-pair>
+      </ng-template>
       <div class="row my-2" *ngIf="edit && editExtension">
         <div class="col-4 fw-bold text-end">Watch on</div>
         <div class="col-4">

@@ -77,7 +77,7 @@
         <th class="d-none d-md-table-cell">Genres</th>
         <th>Type</th>
         <th>Score</th>
-        <th>Year</th>
+        <th colspan="2">Year</th>
       </tr>
     </thead>
     <tbody>
@@ -90,9 +90,8 @@
               result.my_list_status?.status === 'reading',
             'text-muted': result.my_list_status?.status === 'dropped'
           }"
-          (click)="open(result.id)"
         >
-          <td>
+          <td routerLink="/{{ type }}/details/{{ result.id }}">
             <myanili-icon-status
               class="mx-2"
               *ngIf="result.my_list_status"
@@ -100,28 +99,37 @@
             ></myanili-icon-status>
           </td>
           <td
+            routerLink="/{{ type }}/details/{{ result.id }}"
             class="d-lg-table-cell"
             [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
           >
             {{ result.title }}
           </td>
-          <td class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">
+          <td
+            routerLink="/{{ type }}/details/{{ result.id }}"
+            class="d-md-table-cell"
+            [class]="{ 'd-none': lang !== 'en' }"
+          >
             {{ result.alternative_titles?.en || result.title }}
           </td>
-          <td class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">
+          <td
+            routerLink="/{{ type }}/details/{{ result.id }}"
+            class="d-lg-table-cell"
+            [class]="{ 'd-none': lang !== 'jp' }"
+          >
             {{ result.alternative_titles?.ja }}
           </td>
-          <td class="d-none d-md-table-cell">
+          <td routerLink="/{{ type }}/details/{{ result.id }}" class="d-none d-md-table-cell">
             <span *ngFor="let genre of result.genres" class="badge bg-primary rounded-pill me-1">
               {{ genre.name }}
             </span>
           </td>
 
-          <td>
+          <td routerLink="/{{ type }}/details/{{ result.id }}">
             <myanili-icon name="{{ result.media_type | mal: 'mediaicon' }}"></myanili-icon>
             <span class="d-none d-md-inline ms-1">{{ result.media_type | mal: 'mediatype' }}</span>
           </td>
-          <td class="text-nowrap">
+          <td routerLink="/{{ type }}/details/{{ result.id }}" class="text-nowrap">
             <circle-progress
               [percent]="(result.mean || 0) * 10"
               [outerStrokeColor]="
@@ -136,7 +144,12 @@
             ></circle-progress>
             <span class="ms-1">{{ result.mean | number: '1.2-5' }}</span>
           </td>
-          <td>{{ result.start_date | date: 'y' }}</td>
+          <td routerLink="/{{ type }}/details/{{ result.id }}">
+            {{ result.start_date | date: 'y' }}
+          </td>
+          <td (click)="open(result.id)">
+            <myanili-icon [name]="'window-stack'"></myanili-icon>
+          </td>
         </tr>
       </ng-container>
     </tbody>

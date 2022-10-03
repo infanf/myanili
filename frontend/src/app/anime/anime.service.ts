@@ -14,6 +14,7 @@ import { Weekday } from '@models/components';
 import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
+import { environment } from 'src/environments/environment';
 
 import { AnilistService } from '../anilist.service';
 import { CacheService } from '../cache.service';
@@ -29,6 +30,7 @@ import { TraktService } from './trakt.service';
   providedIn: 'root',
 })
 export class AnimeService {
+  private backendUrl = `${environment.backend}`;
   nsfw = true;
   constructor(
     private malService: MalService,
@@ -49,6 +51,7 @@ export class AnimeService {
     const animes = await this.malService.myList(status);
     return animes.map(anime => {
       if (anime.node.title) {
+        this.fixBroadcast(anime.node);
         const animeToSave = {
           id: anime.node.id,
           title: anime.node.title,
@@ -87,6 +90,7 @@ export class AnimeService {
       .filter(anime => (this.nsfw ? true : anime.node.rating !== 'rx'))
       .map(anime => anime.node);
     return animes.map(anime => {
+      this.fixBroadcast(anime);
       const comments = anime.my_list_status?.comments;
       if (!comments) return anime;
       try {
@@ -103,6 +107,7 @@ export class AnimeService {
     const comments = anime.my_list_status?.comments;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
     if (!anime.website) anime.website_promise = this.getWebsite(id);
+    this.fixBroadcast(anime);
     const animeToSave = { ...anime } as Partial<Anime>;
     delete animeToSave.my_list_status;
     delete animeToSave.website_promise;
@@ -175,6 +180,7 @@ export class AnimeService {
     kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
     simklId?: number;
     annictId?: number;
+    traktId?: string;
   }) {
     await Promise.all([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
@@ -182,6 +188,7 @@ export class AnimeService {
       this.kitsu.deleteEntry(ids.kitsuId, 'anime'),
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
+      this.trakt.ignore(ids.traktId),
     ]);
     return true;
   }
@@ -259,5 +266,58 @@ export class AnimeService {
     } catch (e) {}
     if (!anime?.main_picture) anime = await this.getAnime(id);
     return anime?.main_picture?.large || anime?.main_picture?.medium;
+  }
+
+  /**
+   * Converts brodcast day and time from JST to local timezone
+   */
+  fixBroadcast(anime: Anime | AnimeNode) {
+    if (anime.broadcast?.day_of_the_week && anime.broadcast?.start_time) {
+      let date = DateTime.now().setZone('Asia/Tokyo');
+      let weekday;
+      switch (anime.broadcast.day_of_the_week) {
+        case 'monday':
+          weekday = 1;
+          break;
+        case 'tuesday':
+          weekday = 2;
+          break;
+        case 'wednesday':
+          weekday = 3;
+          break;
+        case 'thursday':
+          weekday = 4;
+          break;
+        case 'friday':
+          weekday = 5;
+          break;
+        case 'saturday':
+          weekday = 6;
+          break;
+        case 'sunday':
+          weekday = 7;
+          break;
+        default:
+          weekday = undefined;
+          break;
+      }
+      date = date.set({
+        weekday,
+        hour: Number(anime.broadcast.start_time.split(':')[0]),
+        minute: Number(anime.broadcast.start_time.split(':')[1]),
+        second: 0,
+        millisecond: 0,
+      });
+      anime.broadcast.weekday = date.setZone('system').weekday % 7;
+      anime.broadcast.day_of_the_week = date.setZone('system').toFormat('cccc');
+      anime.broadcast.start_time = date.setZone('system').toFormat('HH:mm');
+    }
+  }
+
+  async getLivechartId(malId?: number): Promise<number | undefined> {
+    if (!malId) return undefined;
+    const response = await fetch(`${this.backendUrl}/livechart/${malId}`);
+    if (!response.ok) return undefined;
+    return ((await response.json()) as { livechart: number }).livechart || undefined;
   }
 }

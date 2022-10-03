@@ -519,7 +519,8 @@ export class MangaDetailsComponent implements OnInit {
   }
 
   getBakaUrl() {
-    if (!this.manga?.my_extension?.bakaId) return;
+    if (!this.manga?.my_extension?.bakaId)
+      return `https://www.mangaupdates.com/series.html?search=${this.manga?.title}`;
     if (String(Number(this.manga.my_extension.bakaId)) === String(this.manga.my_extension.bakaId)) {
       return `https://www.mangaupdates.com/series.html?id=${this.manga.my_extension.bakaId}`;
     }

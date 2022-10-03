@@ -1,6 +1,6 @@
 {
   "name": "myanili",
-  "version": "2.13.0",
+  "version": "2.14.3",
   "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,13 +17,13 @@
   "author": "Christopher Schreiner",
   "license": "MIT",
   "devDependencies": {
-    "@commitlint/cli": "^16.0.0",
-    "@commitlint/config-conventional": "^16.0.0",
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-conventional": "^17.0.0",
     "@elunic/ecs": "^0.3.3",
-    "commitlint": "^16.0.0",
-    "husky": "^7.0.0",
-    "lint-staged": "^12.0.0",
-    "prettier": "^2.5.1",
+    "commitlint": "^11.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0",
+    "prettier": "^2.7.1",
     "tslint": "^6.1.3",
     "typescript": "^4.6.2"
   }

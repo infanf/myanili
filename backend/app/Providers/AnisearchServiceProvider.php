@@ -114,10 +114,11 @@ $manga['volumes'] = strpos($matches['volumes'], '+') ? 0 : intval($matches['volu
 
     public static function getRating(int $id, string $type = "anime")
     {
-        $url = static::$baseUrl . "{$type}/{$id}/";
+        $url = static::$baseUrl . "{$type}/{$id}";
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $response = curl_exec($ch);
         $doc = new \DOMDocument();
         @$doc->loadHTML($response);
