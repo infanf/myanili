@@ -1,7 +1,7 @@
-<ng-container *ngIf="actors.data?.length">
+<ng-container *ngIf="actors.length">
   <div class="grid grid-2x">
     <myanili-double-card
-      *ngFor="let actor of actors.data"
+      *ngFor="let actor of actors"
       [left]="{
         poster: actor.person.images.webp?.image_url || actor.person.images.jpg.image_url,
         title: actor.person.name,

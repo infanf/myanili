@@ -24,20 +24,18 @@ export class PersonComponent {
         this.glob.busy();
         try {
           this.person = await this.mal.getJikanData<Jikan4Person>('people/' + this.id);
-          this.person.data.about = (this.person.data.about || '').replace(/\\n/g, '').trim();
+          this.person.about = (this.person.about || '').replace(/\\n/g, '').trim();
           this.glob.notbusy();
-          this.glob.setTitle(this.person.data.name);
+          this.glob.setTitle(this.person.name);
         } catch (e) {
           this.glob.notbusy();
           this.person = {
-            data: {
-              name: 'Failed to load person',
-              about: 'Please try again later',
-              url: '',
-              mal_id: newId,
-              alternate_names: [],
-              favorites: 0,
-            },
+            name: 'Failed to load person',
+            about: 'Please try again later',
+            url: '',
+            mal_id: newId,
+            alternate_names: [],
+            favorites: 0,
           };
         }
       }

@@ -148,7 +148,7 @@ interface Jikan4Data {
   url: string;
 }
 
-interface Jikan4Response<T> {
+export interface Jikan4Response<T> {
   data: T;
   pagination?: {};
 }
@@ -173,7 +173,7 @@ type Jikan4CharacterData = Jikan4Data & {
   about: string;
 };
 
-export type Jikan4Character = Jikan4Response<Jikan4CharacterData>;
+export type Jikan4Character = Jikan4CharacterData;
 
 interface Jikan4CharacterAnimeRoleData {
   role: 'Main' | 'Supporting';
@@ -199,9 +199,9 @@ interface Jikan4CharacterVoiceActorData {
   };
 }
 
-export type Jikan4CharacterAnimeRoles = Jikan4Response<Jikan4CharacterAnimeRoleData[]>;
-export type Jikan4CharacterMangaRoles = Jikan4Response<Jikan4CharacterMangaRoleData[]>;
-export type Jikan4CharacterVoiceActors = Jikan4Response<Jikan4CharacterVoiceActorData[]>;
+export type Jikan4CharacterAnimeRoles = Jikan4CharacterAnimeRoleData[];
+export type Jikan4CharacterMangaRoles = Jikan4CharacterMangaRoleData[];
+export type Jikan4CharacterVoiceActors = Jikan4CharacterVoiceActorData[];
 
 type Jikan4PersonData = Jikan4Data & {
   website_url?: string;
@@ -215,7 +215,7 @@ type Jikan4PersonData = Jikan4Data & {
   about: string;
 };
 
-export type Jikan4Person = Jikan4Response<Jikan4PersonData>;
+export type Jikan4Person = Jikan4PersonData;
 
 interface Jikan4PersonRoleData {
   role: 'Main' | 'Supporting';
@@ -229,7 +229,7 @@ interface Jikan4PersonRoleData {
   };
 }
 
-export type Jikan4PersonRoles = Jikan4Response<Jikan4PersonRoleData[]>;
+export type Jikan4PersonRoles = Jikan4PersonRoleData[];
 
 interface Jikan4PersonAnimeData {
   position: string;
@@ -239,7 +239,7 @@ interface Jikan4PersonAnimeData {
   };
 }
 
-export type Jikan4PersonAnimes = Jikan4Response<Jikan4PersonAnimeData[]>;
+export type Jikan4PersonAnimes = Jikan4PersonAnimeData[];
 
 interface Jikan4PersonMangaData {
   position: string;
@@ -249,4 +249,37 @@ interface Jikan4PersonMangaData {
   };
 }
 
-export type Jikan4PersonMangas = Jikan4Response<Jikan4PersonMangaData[]>;
+export type Jikan4PersonMangas = Jikan4PersonMangaData[];
+
+export interface Jikan4AnimeCharacter {
+  character: Jikan4Data & {
+    images: Jikan4Image;
+    name: string;
+  };
+  role: 'Main' | 'Supporting';
+  voice_actors: Array<{
+    person: Jikan4Data & {
+      images?: Jikan4Image;
+      name: string;
+    };
+    language: string;
+  }>;
+}
+
+export interface Jikan4Staff {
+  person: Jikan4Data & {
+    images?: Jikan4Image;
+    name: string;
+  };
+  positions: string[];
+}
+
+export interface Jikan4WorkRelation {
+  relation: string;
+  entry: Array<
+    Jikan4Data & {
+      name: string;
+      type: 'anime' | 'manga';
+    }
+  >;
+}

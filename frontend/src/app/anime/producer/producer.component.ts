@@ -22,7 +22,7 @@ export class ProducerComponent {
         delete this.producer;
         this.glob.busy();
         try {
-          this.producer = await this.mal.getJikanData<JikanProducer>('producer/' + this.id, true);
+          this.producer = await this.mal.getJikanData<JikanProducer>('producer/' + this.id);
           this.glob.notbusy();
           this.glob.setTitle(this.producer.meta.name);
         } catch (e) {

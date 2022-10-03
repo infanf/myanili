@@ -1,6 +1,6 @@
 <div class="grid grid-2x">
   <myanili-double-card
-    *ngFor="let anime of credits.data"
+    *ngFor="let anime of credits"
     [left]="{
       poster: anime.anime.images.webp?.image_url || anime.anime.images.jpg.image_url,
       title: anime.anime.title,

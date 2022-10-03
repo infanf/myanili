@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ListAnime, WatchStatus } from '@models/anime';
+import { Jikan4Response } from '@models/jikan';
 import { ListManga, ReadStatus } from '@models/manga';
 import { MalUser, UserResponse } from '@models/user';
 import { BehaviorSubject } from 'rxjs';
@@ -68,19 +69,15 @@ export class MalService {
     });
   }
 
-  async getJikanData<T>(url: string, v3 = false): Promise<T> {
+  async getJikanData<T>(url: string): Promise<T> {
     try {
-      return this.cache.fetch<T>(`${v3 ? environment.jikan3Url : environment.jikanUrl}${url}`);
+      const response = await this.cache.fetch<Jikan4Response<T>>(`${environment.jikanUrl}${url}`);
+      return response.data;
     } catch (e) {
-      const response = await fetch(
-        `${v3 ? environment.jikan3FallbackUrl : environment.jikanFallbackUrl}${url}`,
-      );
-      return response.json() as unknown as T;
+      const response = await fetch(`${environment.jikanFallbackUrl}${url}`);
+      const result = (await response.json()) as unknown as Jikan4Response<T>;
+      return result.data;
     }
-  }
-
-  async getJikan(type: 'anime' | 'manga', id: number): Promise<JikanInstance> {
-    return this.getJikanData<JikanInstance>(`${type}/${id}`, true);
   }
 
   async checkLogin() {
@@ -132,16 +129,4 @@ export class MalService {
     const maint = await this.get<{ maintenance?: boolean }>('maintenance');
     return Boolean(maint.maintenance);
   }
-}
-
-interface JikanInstance {
-  related: {
-    [key: string]: Array<{
-      mal_id: number;
-      type: 'manga' | 'anime';
-      name: string;
-      url: string;
-    }>;
-  };
-  external_links: Array<{ name: string; url: string }>;
 }

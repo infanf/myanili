@@ -2,26 +2,29 @@
   <div *ngFor="let character of characters" class="d-flex border rounded justify-content-between">
     <img
       loading="lazy"
-      [src]="character.image_url || '/assets/blank-poster.svg'"
-      [routerLink]="'/character/' + character.mal_id"
+      [src]="character.character.images.jpg.image_url || '/assets/blank-poster.svg'"
+      [routerLink]="'/character/' + character.character.mal_id"
       class="poster rounded-start cursor-pointer"
     />
     <div class="d-flex flex-fill justify-content-between flex-column p-3">
-      <div [routerLink]="'/character/' + character.mal_id" class="cursor-pointer">
-        {{ character.name }}
+      <div [routerLink]="'/character/' + character.character.mal_id" class="cursor-pointer">
+        {{ character.character.name }}
         <div class="text-muted">{{ character.role }}</div>
       </div>
-      <ng-container *ngIf="getVoiceActor(character); let voiceActor">
-        <div class="text-end cursor-pointer" [routerLink]="'/person/' + voiceActor.mal_id">
-          {{ voiceActor.name }}
+      <ng-container *ngIf="character.voice_actors[0]; let voiceActor">
+        <div class="text-end cursor-pointer" [routerLink]="'/person/' + voiceActor.person.mal_id">
+          {{ voiceActor.person.name }}
         </div>
       </ng-container>
     </div>
-    <ng-container *ngIf="getVoiceActor(character); let voiceActor">
+    <ng-container *ngIf="character.voice_actors[0]; let voiceActor">
       <img
         loading="lazy"
-        [src]="voiceActor.image_url?.replace('/r/42x62/', '/') || '/assets/blank-poster.svg'"
-        [routerLink]="'/person/' + voiceActor.mal_id"
+        [src]="
+          voiceActor.person.images?.jpg?.image_url?.replace('/r/42x62/', '/') ||
+          '/assets/blank-poster.svg'
+        "
+        [routerLink]="'/person/' + voiceActor.person.mal_id"
         class="poster rounded-end cursor-pointer"
     /></ng-container>
   </div>

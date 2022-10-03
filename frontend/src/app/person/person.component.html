@@ -1,7 +1,7 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ person?.data?.name || 'Loading…' }}
+      {{ person?.name || 'Loading…' }}
       <a [href]="'https://myanimelist.net/people/' + id" target="_blank">
         <myanili-icon-mal
           size="38"
@@ -14,29 +14,29 @@
     <div class="col-sm-5 col-md-4 mb-3">
       <picture>
         <source
-          *ngIf="person?.data?.images?.jpg?.image_url"
-          srcset="{{ person?.data?.images?.jpg?.image_url }}"
+          *ngIf="person?.images?.jpg?.image_url"
+          srcset="{{ person?.images?.jpg?.image_url }}"
         />
         <source srcset="/assets/blank-poster.svg" />
         <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
       </picture>
     </div>
     <div class="col-sm-7 col-md-8 mb-3" *ngIf="person">
-      <myanili-value-pair *ngIf="person.data.given_name || person.data.family_name" name="Name">
-        {{ person.data.family_name }} {{ person.data.given_name }}
+      <myanili-value-pair *ngIf="person.given_name || person.family_name" name="Name">
+        {{ person.family_name }} {{ person.given_name }}
       </myanili-value-pair>
-      <myanili-value-pair *ngIf="person.data.birthday" name="Birthday">
-        {{ person.data.birthday | date }}
+      <myanili-value-pair *ngIf="person.birthday" name="Birthday">
+        {{ person.birthday | date }}
       </myanili-value-pair>
-      <myanili-value-pair *ngIf="person.data.alternate_names.length" name="Alias">
-        <div *ngFor="let name of person.data.alternate_names">{{ name }}</div>
+      <myanili-value-pair *ngIf="person.alternate_names.length" name="Alias">
+        <div *ngFor="let name of person.alternate_names">{{ name }}</div>
       </myanili-value-pair>
-      <myanili-value-pair *ngIf="person.data.website_url" name="Website">
-        <a [href]="person.data.website_url" target="_blank">{{ person.data.website_url }}</a>
+      <myanili-value-pair *ngIf="person.website_url" name="Website">
+        <a [href]="person.website_url" target="_blank">{{ person.website_url }}</a>
       </myanili-value-pair>
       <div class="row">
         <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
-        <div class="col-12 col-md-8" [innerHTML]="person.data.about || '' | nl2br"></div>
+        <div class="col-12 col-md-8" [innerHTML]="person.about || '' | nl2br"></div>
       </div>
     </div>
   </div>

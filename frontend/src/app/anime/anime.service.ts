@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import {
   Anime,
-  AnimeCharacter,
   AnimeExtension,
   AnimeNode,
-  AnimeStaff,
   ListAnime,
   MyAnimeStatus,
   MyAnimeUpdate,
   WatchStatus,
 } from '@models/anime';
 import { Weekday } from '@models/components';
+import { Jikan4AnimeCharacter, Jikan4Staff, Jikan4WorkRelation } from '@models/jikan';
 import { RelatedManga } from '@models/manga';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
@@ -194,22 +193,25 @@ export class AnimeService {
   }
 
   async getWebsite(id: number): Promise<string | undefined> {
-    const jikanime = await this.malService.getJikan('anime', id);
-    const website = jikanime.external_links.find(link => link.name.includes('Official'));
+    const links = await this.malService.getJikanData<Array<{ name: string; url: string }>>(
+      `anime/${id}/external`,
+    );
+    const website = links.find(link => link.name.includes('Official'));
     return website?.url;
   }
 
   async getManga(id: number): Promise<RelatedManga[]> {
-    const jikanime = await this.malService.getJikan('anime', id);
+    const relationTypes = await this.malService.getJikanData<Jikan4WorkRelation[]>(
+      `anime/${id}/relations`,
+    );
     const mangas = [] as RelatedManga[];
-    for (const key in jikanime.related) {
-      if (!jikanime.related[key]) continue;
-      for (const related of jikanime.related[key]) {
+    for (const relationType of relationTypes) {
+      for (const related of relationType.entry) {
         if (related.type === 'manga') {
           mangas.push({
             node: { id: related.mal_id, title: related.name },
-            relation_type: key.replace(' ', '_').toLowerCase(),
-            relation_type_formatted: key,
+            relation_type: relationType.relation.replace(' ', '_').toLowerCase(),
+            relation_type_formatted: relationType.relation,
           });
         }
       }
@@ -217,20 +219,16 @@ export class AnimeService {
     return mangas;
   }
 
-  async getCharacters(id: number): Promise<AnimeCharacter[]> {
-    const characterStaff = await this.malService.getJikanData<{ characters?: AnimeCharacter[] }>(
-      `anime/${id}/characters_staff`,
-      true,
+  async getCharacters(id: number): Promise<Jikan4AnimeCharacter[]> {
+    const characters = await this.malService.getJikanData<Jikan4AnimeCharacter[]>(
+      `anime/${id}/characters`,
     );
-    return characterStaff.characters || [];
+    return characters || [];
   }
 
-  async getStaff(id: number): Promise<AnimeStaff[]> {
-    const characterStaff = await this.malService.getJikanData<{ staff?: AnimeStaff[] }>(
-      `anime/${id}/characters_staff`,
-      true,
-    );
-    return characterStaff.staff || [];
+  async getStaff(id: number): Promise<Jikan4Staff[]> {
+    const staff = await this.malService.getJikanData<Jikan4Staff[]>(`anime/${id}/staff`);
+    return staff || [];
   }
 
   /**
