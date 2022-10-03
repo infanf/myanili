@@ -24,21 +24,19 @@ export class CharacterComponent {
         this.glob.busy();
         try {
           this.character = await this.mal.getJikanData<Jikan4Character>('characters/' + this.id);
-          this.character.data.about = this.character.data.about?.replace(/\\n/g, '').trim();
+          this.character.about = this.character.about?.replace(/\\n/g, '').trim();
           this.glob.notbusy();
-          this.glob.setTitle(this.character.data.name);
+          this.glob.setTitle(this.character.name);
         } catch (e) {
           console.error(e);
           this.glob.notbusy();
           this.character = {
-            data: {
-              name: 'Failed to load character',
-              about: 'Please try again later.',
-              nicknames: [],
-              url: '',
-              mal_id: newId,
-              favorites: 0,
-            },
+            name: 'Failed to load character',
+            about: 'Please try again later.',
+            nicknames: [],
+            url: '',
+            mal_id: newId,
+            favorites: 0,
           };
         }
       }

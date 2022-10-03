@@ -1,7 +1,7 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ producer?.meta?.name || 'Loading…' }}
+      {{ title }}
       <a [href]="'https://myanimelist.net/anime/producer/' + id" target="_blank">
         <myanili-icon-mal
           size="38"
@@ -11,15 +11,39 @@
     </h2>
   </header>
 
+  <div class="row" *ngIf="producer && (producer.images?.jpg || producer.about)">
+    <div class="col-sm-5 col-md-4 mb-3">
+      <picture>
+        <source
+          *ngIf="producer.images?.jpg?.image_url"
+          [attr.srcset]="producer.images.jpg.image_url"
+        />
+        <source srcset="/assets/blank-poster.svg" />
+        <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
+      </picture>
+    </div>
+    <div class="col-sm-7 col-md-8 mb-3">
+      <myanili-value-pair
+        *ngFor="let title of producer.titles"
+        [name]="title.type"
+        [value]="title.title"
+      ></myanili-value-pair>
+      <div class="row" *ngIf="producer.about">
+        <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
+        <div class="col-12 col-md-8" [innerHTML]="producer.about || '' | nl2br"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="grid grid-2x" *ngIf="producer">
     <div
-      *ngFor="let anime of producer.anime"
+      *ngFor="let anime of animes"
       class="d-flex border rounded justify-content-between cursor-pointer"
       [routerLink]="'/anime/details/' + anime.mal_id"
     >
       <img
         loading="lazy"
-        [src]="anime.image_url || '/assets/blank-poster.svg'"
+        [src]="anime.images?.jpg?.image_url"
         class="poster rounded-start cursor-pointer"
       />
       <div class="d-flex flex-fill justify-content-between flex-column p-3">

@@ -8,7 +8,7 @@ import { MalService } from 'src/app/mal.service';
 })
 export class CharacterAnimeComponent implements OnInit {
   @Input() malId!: number;
-  roles: Jikan4CharacterAnimeRoles = { data: [] };
+  roles: Jikan4CharacterAnimeRoles = [];
 
   constructor(private mal: MalService) {}
 

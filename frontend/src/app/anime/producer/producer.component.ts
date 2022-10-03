@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { JikanProducer } from '@models/jikan';
+import { Jikan4Anime, Jikan4Producer } from '@models/jikan';
 import { MalService } from 'src/app/mal.service';
 
 import { GlobalService } from '../../global.service';
@@ -12,7 +12,9 @@ import { GlobalService } from '../../global.service';
 })
 export class ProducerComponent {
   id = 0;
-  producer?: JikanProducer;
+  producer?: Jikan4Producer;
+  animes: Jikan4Anime[] = [];
+  title = 'Loading...';
 
   constructor(private route: ActivatedRoute, private glob: GlobalService, private mal: MalService) {
     this.route.paramMap.subscribe(async params => {
@@ -22,23 +24,15 @@ export class ProducerComponent {
         delete this.producer;
         this.glob.busy();
         try {
-          this.producer = await this.mal.getJikanData<JikanProducer>('producer/' + this.id, true);
+          this.producer = await this.mal.getJikanData<Jikan4Producer>(`producers/${this.id}/full`);
+          this.title =
+            this.producer.titles.find(title => title.type === 'Default')?.title ||
+            'Studio not found';
+          this.animes = await this.mal.getJikanData<Jikan4Anime[]>(`anime?producer=${this.id}`);
           this.glob.notbusy();
-          this.glob.setTitle(this.producer.meta.name);
+          this.glob.setTitle(this.producer.titles[0].title);
         } catch (e) {
           this.glob.notbusy();
-          this.producer = {
-            anime: [],
-            request_hash: '',
-            request_cached: false,
-            request_cache_expiry: 0,
-            meta: {
-              mal_id: 0,
-              name: 'Failed to load magazine',
-              type: '',
-              url: '',
-            },
-          };
         }
       }
     });

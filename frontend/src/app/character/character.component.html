@@ -1,7 +1,7 @@
 <div class="container mt-sm-3 border-sm-x border-sm-y rounded">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ character?.data?.name || 'Loading…' }}
+      {{ character?.name || 'Loading…' }}
       <a [href]="'https://myanimelist.net/character/' + id" target="_blank">
         <myanili-icon-mal
           size="38"
@@ -14,25 +14,25 @@
     <div class="col-sm-5 col-md-4 mb-3">
       <picture>
         <source
-          *ngIf="character?.data?.images?.jpg?.image_url"
-          srcset="{{ character?.data?.images?.jpg?.image_url }}"
+          *ngIf="character?.images?.jpg?.image_url"
+          srcset="{{ character?.images?.jpg?.image_url }}"
         />
         <source srcset="/assets/blank-poster.svg" />
         <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
       </picture>
     </div>
-    <div class="col-sm-7 col-md-8 mb-3" *ngIf="character && character.data">
+    <div class="col-sm-7 col-md-8 mb-3" *ngIf="character">
       <myanili-value-pair
-        *ngIf="character.data.name_kanji"
+        *ngIf="character.name_kanji"
         name="Name"
-        [value]="character.data.name_kanji"
+        [value]="character.name_kanji"
       ></myanili-value-pair>
-      <myanili-value-pair name="Nickname" *ngIf="character.data.nicknames?.length">
-        <div *ngFor="let name of character.data.nicknames">{{ name }}</div>
+      <myanili-value-pair name="Nickname" *ngIf="character.nicknames?.length">
+        <div *ngFor="let name of character.nicknames">{{ name }}</div>
       </myanili-value-pair>
-      <div class="row" *ngIf="character.data.about">
+      <div class="row" *ngIf="character.about">
         <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
-        <div class="col-12 col-md-8" [innerHTML]="character.data.about || '' | nl2br"></div>
+        <div class="col-12 col-md-8" [innerHTML]="character.about || '' | nl2br"></div>
       </div>
     </div>
   </div>

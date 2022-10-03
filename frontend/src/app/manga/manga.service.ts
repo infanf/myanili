@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { RelatedAnime } from '@models/anime';
+import { Jikan4MangaCharacter, Jikan4WorkRelation } from '@models/jikan';
 import {
   BakaManga,
   BakaMangaList,
   ListManga,
   Manga,
-  MangaCharacter,
   MangaExtension,
   MyMangaStatus,
   MyMangaUpdate,
@@ -156,16 +156,17 @@ export class MangaService {
   }
 
   async getAnimes(id: number): Promise<RelatedAnime[]> {
-    const jikmanga = await this.malService.getJikan('manga', id);
+    const relationTypes = await this.malService.getJikanData<Jikan4WorkRelation[]>(
+      `manga/${id}/relations`,
+    );
     const animes = [] as RelatedAnime[];
-    for (const key in jikmanga.related) {
-      if (!jikmanga.related[key]) continue;
-      for (const related of jikmanga.related[key]) {
+    for (const relationType of relationTypes) {
+      for (const related of relationType.entry) {
         if (related.type === 'anime') {
           animes.push({
             node: { id: related.mal_id, title: related.name },
-            relation_type: key.replace(' ', '_').toLowerCase(),
-            relation_type_formatted: key,
+            relation_type: relationType.relation.replace(' ', '_').toLowerCase(),
+            relation_type_formatted: relationType.relation,
           });
         }
       }
@@ -173,11 +174,11 @@ export class MangaService {
     return animes;
   }
 
-  async getCharacters(id: number): Promise<MangaCharacter[]> {
-    const result = await this.malService.getJikanData<{ data?: MangaCharacter[] }>(
+  async getCharacters(id: number): Promise<Jikan4MangaCharacter[]> {
+    const characters = await this.malService.getJikanData<Jikan4MangaCharacter[]>(
       `manga/${id}/characters`,
     );
-    return result.data || [];
+    return characters || [];
   }
 
   async getBakaManga(id?: number | string): Promise<BakaManga | undefined> {

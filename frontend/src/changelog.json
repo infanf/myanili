@@ -1,6 +1,12 @@
 {
-  "version": "2.14.3",
+  "version": "2.14.4",
   "changes": [
+    {
+      "version": "2.14.4",
+      "fixes": [
+        "Remove discontinued Jikan v3 API calls"
+      ]
+    },
     {
       "version": "2.14.3",
       "features": [

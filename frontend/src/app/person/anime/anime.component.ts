@@ -9,12 +9,12 @@ import { MalService } from 'src/app/mal.service';
 })
 export class PersonAnimeComponent implements OnInit {
   @Input() malId!: number;
-  animes: Jikan4PersonRoles = { data: [] };
+  animes: Jikan4PersonRoles = [];
 
   constructor(private mal: MalService) {}
 
   async ngOnInit() {
-    const { data } = await this.mal.getJikanData<Jikan4PersonRoles>(`people/${this.malId}/voices`);
-    this.animes.data = data.sort((a, b) => (a.anime.title < b.anime.title ? -1 : 1));
+    const data = await this.mal.getJikanData<Jikan4PersonRoles>(`people/${this.malId}/voices`);
+    this.animes = data.sort((a, b) => (a.anime.title < b.anime.title ? -1 : 1));
   }
 }
