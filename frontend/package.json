@@ -42,6 +42,7 @@
     "js-base64": "^3.6.0",
     "luxon": "^3.0.1",
     "ng-circle-progress": "^1.6.0",
+    "ng-in-viewport": "^13.0.1",
     "ngx-device-detector": "^4.0.0",
     "rxjs": "~6.6.0",
     "string-similarity": "^4.0.4",

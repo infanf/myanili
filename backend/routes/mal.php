@@ -55,26 +55,34 @@ JAVASCRIPT;
         }
     });
 
-    $router->get('list', function () {
-        return MalServiceProvider::getMyList();
+    $router->get('list', function (Request $request) {
+        $limit = $request->input('limit', 50);
+        $offset = $request->input('offset', 0);
+        return MalServiceProvider::getMyList(null, $limit, $offset);
     });
 
-    $router->get('list/{status}', function ($status) {
-        return MalServiceProvider::getMyList($status);
+    $router->get('list/{status}', function ($status, Request $request) {
+        $limit = $request->input('limit', 50);
+        $offset = $request->input('offset', 0);
+        return MalServiceProvider::getMyList($status, $limit, $offset);
     });
 
-    $router->get('mangalist', function () {
-        return MalServiceProvider::getMyMangaList();
+    $router->get('mangalist', function (Request $request) {
+        $limit = $request->input('limit', 50);
+        $offset = $request->input('offset', 0);
+        return MalServiceProvider::getMyMangaList(null, $limit, $offset);
     });
 
-    $router->get('mangalist/{status}', function ($status) {
-        return MalServiceProvider::getMyMangaList($status);
+    $router->get('mangalist/{status}', function ($status, Request $request) {
+        $limit = $request->input('limit', 50);
+        $offset = $request->input('offset', 0);
+        return MalServiceProvider::getMyMangaList($status, $limit, $offset);
     });
 
     $router->get('animes', function (Request $request) {
         $params = $request->all();
         if (isset($params['query'])) {
-            return MalServiceProvider::getList('anime', $params['query']);
+            return MalServiceProvider::getList('anime', $params['query'], $params['limit'] ?? 50, $params['offset'] ?? 0);
         }
         return [];
     });
@@ -108,7 +116,7 @@ JAVASCRIPT;
     $router->get('mangas', function (Request $request) {
         $params = $request->all();
         if (isset($params['query'])) {
-            return MalServiceProvider::getList('manga', $params['query']);
+            return MalServiceProvider::getList('manga', $params['query'], $params['limit'] ?? 50, $params['offset'] ?? 0);
         }
         return [];
     });

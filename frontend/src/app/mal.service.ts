@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ListAnime, WatchStatus } from '@models/anime';
 import { Jikan4Response } from '@models/jikan';
@@ -17,7 +16,7 @@ export class MalService {
   private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
 
-  constructor(private httpClient: HttpClient, private cache: CacheService) {
+  constructor(private cache: CacheService) {
     const malUser = JSON.parse(localStorage.getItem('malUser') || 'false') as MalUser | false;
     if (malUser) {
       this.isLoggedIn.next(malUser.name);
@@ -26,47 +25,40 @@ export class MalService {
     this.checkLogin();
   }
 
-  async get<T>(path: string): Promise<T> {
-    return new Promise((res, rej) => {
-      this.httpClient
-        .get(`${this.backendUrl}${path}`, { withCredentials: true })
-        .subscribe(value => {
-          res(value as unknown as T);
-        });
+  async get<T>(path: string, params?: URLSearchParams): Promise<T> {
+    const url = new URL(`${this.backendUrl}${path}`);
+    if (params) url.search = params.toString();
+    const request = await fetch(url.toString(), { credentials: 'include' });
+    if (!request.ok) {
+      throw new Error(`Error ${request.status}: ${request.statusText}`);
+    }
+    return request.json() as Promise<T>;
+  }
+
+  // tslint:disable-next-line:no-any
+  async post<T>(path: string, data: any, method = 'POST'): Promise<T> {
+    const request = await fetch(`${this.backendUrl}${path}`, {
+      method,
+      body: JSON.stringify(data),
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
+    if (!request.ok) {
+      throw new Error(`Error ${request.status}: ${request.statusText}`);
+    }
+    return request.json() as Promise<T>;
   }
 
   // tslint:disable-next-line:no-any
   async put<T>(path: string, data: any): Promise<T> {
-    return new Promise((res, rej) => {
-      this.httpClient
-        .put(`${this.backendUrl}${path}`, data, { withCredentials: true })
-        .subscribe(value => {
-          res(value as unknown as T);
-        });
-    });
-  }
-
-  // tslint:disable-next-line:no-any
-  async post<T>(path: string, data: any): Promise<T> {
-    return new Promise((res, rej) => {
-      this.httpClient
-        .post(`${this.backendUrl}${path}`, data, { withCredentials: true })
-        .subscribe(value => {
-          res(value as unknown as T);
-        });
-    });
+    return this.post<T>(path, data, 'PUT');
   }
 
   // tslint:disable-next-line:no-any
   async delete<T>(path: string): Promise<T> {
-    return new Promise((res, rej) => {
-      this.httpClient
-        .delete(`${this.backendUrl}${path}`, { withCredentials: true })
-        .subscribe(value => {
-          res(value as unknown as T);
-        });
-    });
+    return this.post<T>(path, {}, 'DELETE');
   }
 
   async getJikanData<T>(url: string): Promise<T> {
@@ -93,13 +85,21 @@ export class MalService {
     }
   }
 
-  async myList(status?: WatchStatus) {
-    if (status) return this.get<ListAnime[]>(`list/${status}`);
+  async myList(status?: WatchStatus, options?: { limit?: number; offset: number }) {
+    const params = new URLSearchParams([
+      ['limit', String(options?.limit || 50)],
+      ['offset', String(options?.offset || 0)],
+    ]);
+    if (status) return this.get<ListAnime[]>(`list/${status}`, params);
     return this.get<ListAnime[]>('list');
   }
 
-  async myMangaList(status?: ReadStatus) {
-    if (status) return this.get<ListManga[]>(`mangalist/${status}`);
+  async myMangaList(status?: ReadStatus, options?: { limit?: number; offset: number }) {
+    const params = new URLSearchParams([
+      ['limit', String(options?.limit || 50)],
+      ['offset', String(options?.offset || 0)],
+    ]);
+    if (status) return this.get<ListManga[]>(`mangalist/${status}`, params);
     return this.get<ListManga[]>('mangalist');
   }
 

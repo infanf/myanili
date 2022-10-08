@@ -46,8 +46,9 @@ export class AnimeService {
     });
   }
 
-  async list(status?: WatchStatus) {
-    const animes = await this.malService.myList(status);
+  async list(status?: WatchStatus, options?: { limit?: number; offset: number }) {
+    options = { limit: 50, offset: 0, ...options };
+    const animes = await this.malService.myList(status, options);
     return animes.map(anime => {
       if (anime.node.title) {
         this.fixBroadcast(anime.node);
