@@ -46,7 +46,7 @@ export class AnimeService {
     });
   }
 
-  async list(status?: WatchStatus, options?: { limit?: number; offset: number }) {
+  async list(status?: WatchStatus, options?: { limit?: number; offset?: number }) {
     options = { limit: 50, offset: 0, ...options };
     const animes = await this.malService.myList(status, options);
     return animes.map(anime => {

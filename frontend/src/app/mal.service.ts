@@ -85,7 +85,7 @@ export class MalService {
     }
   }
 
-  async myList(status?: WatchStatus, options?: { limit?: number; offset: number }) {
+  async myList(status?: WatchStatus, options?: { limit?: number; offset?: number }) {
     const params = new URLSearchParams([
       ['limit', String(options?.limit || 50)],
       ['offset', String(options?.offset || 0)],
@@ -94,7 +94,7 @@ export class MalService {
     return this.get<ListAnime[]>('list');
   }
 
-  async myMangaList(status?: ReadStatus, options?: { limit?: number; offset: number }) {
+  async myMangaList(status?: ReadStatus, options?: { limit?: number; offset?: number }) {
     const params = new URLSearchParams([
       ['limit', String(options?.limit || 50)],
       ['offset', String(options?.offset || 0)],
