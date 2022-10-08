@@ -34,7 +34,7 @@ export class MangaService {
     private cache: CacheService,
   ) {}
 
-  async list(status?: ReadStatus, options?: { limit?: number; offset: number }) {
+  async list(status?: ReadStatus, options?: { limit?: number; offset?: number }) {
     options = { limit: 50, offset: 0, ...options };
     const mangas = await this.malService.myMangaList(status, options);
     return mangas.map(manga => {
