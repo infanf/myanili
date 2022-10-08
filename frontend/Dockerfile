@@ -1,4 +1,4 @@
-FROM node:16 as builder
+FROM node:18 as builder
 ADD --chown=node . /app
 RUN npm i -g @angular/cli
 USER node
