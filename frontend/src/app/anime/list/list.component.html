@@ -1,4 +1,13 @@
 <section>
   <myanili-anime-list *ngIf="layout === 'list'" [animes]="animes"></myanili-anime-list>
   <myanili-anime-grid *ngIf="layout !== 'list'" [animes]="animes"></myanili-anime-grid>
+  <div
+    *ngIf="animes.length && !loadedAll"
+    class="text-center"
+    inViewport
+    (inViewportAction)="handleScroll($event)"
+  >
+    <myanili-icon name="loading"></myanili-icon>
+    Loading more...
+  </div>
 </section>

@@ -1,4 +1,3 @@
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -10,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ApolloModule } from 'apollo-angular';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { InViewportModule } from 'ng-in-viewport';
 import { environment } from 'src/environments/environment';
 
 import { AboutComponent } from './about/about.component';
@@ -110,7 +110,6 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     NgbModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
@@ -137,6 +136,7 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     DirectivesModule,
     ComponentsModule,
     ApolloModule,
+    InViewportModule,
   ],
   providers: [Title],
 

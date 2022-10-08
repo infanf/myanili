@@ -15,6 +15,8 @@ export class AnimeListComponent implements OnInit {
   @Input() status?: WatchStatus;
   animes: ListAnime[] = [];
   layout = 'list';
+  loadedAll = false;
+  loading = false;
 
   constructor(
     private animeService: AnimeService,
@@ -35,10 +37,24 @@ export class AnimeListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.animes = await this.animeService.list(this.status);
-    this.settings.layout.subscribe(
-      layout => (this.layout = this.animes.length > 50 ? 'list' : layout),
-    );
+    this.animes = await this.animeService.list(this.status, { limit: 50, offset: 0 });
+    this.settings.layout.subscribe(layout => (this.layout = layout));
     this.glob.notbusy();
+  }
+
+  handleScroll(event: { target: Element; visible: boolean }) {
+    if (event.visible) this.loadMore();
+  }
+
+  async loadMore() {
+    if (this.loadedAll || this.loading) return;
+    this.loading = true;
+    const newAnimes = await this.animeService.list(this.status, {
+      limit: 50,
+      offset: this.animes.length,
+    });
+    this.animes.push(...newAnimes);
+    this.loading = false;
+    if (newAnimes.length < 50) this.loadedAll = true;
   }
 }

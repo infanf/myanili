@@ -13,6 +13,8 @@ import { MangaService } from '../manga.service';
 export class MangaListComponent implements OnInit {
   @Input() status?: ReadStatus;
   mangas: ListManga[] = [];
+  loadedAll = false;
+  loading = false;
 
   lang = 'en';
 
@@ -45,5 +47,21 @@ export class MangaListComponent implements OnInit {
         author => `${author.node.last_name} ${author.node.first_name} (${author.role})`,
       ) || []
     );
+  }
+
+  handleScroll(event: { target: Element; visible: boolean }) {
+    if (event.visible) this.loadMore();
+  }
+
+  async loadMore() {
+    if (this.loadedAll || this.loading) return;
+    this.loading = true;
+    const newmangas = await this.mangaService.list(this.status, {
+      limit: 50,
+      offset: this.mangas.length,
+    });
+    this.mangas.push(...newmangas);
+    this.loading = false;
+    if (newmangas.length < 50) this.loadedAll = true;
   }
 }

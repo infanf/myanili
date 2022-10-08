@@ -108,7 +108,7 @@ class MalServiceProvider extends ServiceProvider
         return $response;
     }
 
-    public static function getMyList($status = null)
+    public static function getMyList($status = null, $limit = 50, $offset = 0)
     {
         $fields = [
             "num_episodes",
@@ -126,7 +126,8 @@ class MalServiceProvider extends ServiceProvider
         $params = [
             "fields" => implode(',', $fields),
             "sort" => "anime_start_date",
-            "limit" => 1000,
+            "limit" => min(intval($limit), 1000) ?: 1000,
+            "offset" => $offset,
             "nsfw" => 1,
         ];
         if ($status) {
@@ -139,14 +140,14 @@ class MalServiceProvider extends ServiceProvider
             ), true
         );
         $list = $response['data'];
-        while ($response['paging'] && isset($response['paging']['next'])) {
-            $response = json_decode(self::get($response['paging']['next']), true);
-            $list = array_merge($list, $response['data']);
-        }
+        // while ($response['paging'] && isset($response['paging']['next'])) {
+        //     $response = json_decode(self::get($response['paging']['next']), true);
+        //     $list = array_merge($list, $response['data']);
+        // }
         return $list;
     }
 
-    public static function getMyMangaList($status = null)
+    public static function getMyMangaList($status = null, $limit = 50, $offset = 0)
     {
         $fields = [
             "num_volumes",
@@ -162,7 +163,8 @@ class MalServiceProvider extends ServiceProvider
         ];
         $params = [
             "fields" => implode(',', $fields),
-            "limit" => 1000,
+            "limit" => min(intval($limit), 1000) ?: 1000,
+            "offset" => $offset,
             "nsfw" => 1,
         ];
         if ($status) {
@@ -175,18 +177,30 @@ class MalServiceProvider extends ServiceProvider
             ), true
         );
         $list = $response['data'];
-        while ($response['paging'] && isset($response['paging']['next'])) {
-            $response = json_decode(self::get($response['paging']['next']), true);
-            $list = array_merge($list, $response['data']);
-        }
+        // while ($response['paging'] && isset($response['paging']['next'])) {
+        //     $response = json_decode(self::get($response['paging']['next']), true);
+        //     $list = array_merge($list, $response['data']);
+        // }
         return $list;
     }
 
     public static function getListSeason(int $year, int $season)
     {
         $seasons = ['winter', 'spring', 'summer', 'fall'];
+        $fields = [
+            "num_episodes",
+            "start_season",
+            "media_type",
+            "start_date",
+            "broadcast",
+            "end_date",
+            "alternative_titles",
+            "my_list_status{comments}",
+            "nsfw",
+            "rating"
+        ];
         $params = [
-            "fields" => "num_episodes,start_season,media_type,start_date,broadcast,end_date,alternative_titles,my_list_status{comments},nsfw,rating",
+            "fields" => implode(',', $fields),
             "limit" => 500,
             "nsfw" => 1,
         ];
@@ -246,23 +260,6 @@ class MalServiceProvider extends ServiceProvider
             "ending_themes",
         ];
         $response = static::getMediaDetails($id, 'anime', $fields);
-        // \var_dump($response); die;
-        if (isset($response['opening_themes'])) {
-            foreach ($response['opening_themes'] as $key => $op) {
-                if ($song = self::getSong($op['id'])) {
-                    $response['opening_themes'][$key]['spotify'] = $song;
-                }
-            }
-        }
-
-        if (isset($response['ending_themes'])) {
-            foreach ($response['ending_themes'] as $key => $op) {
-                if ($song = self::getSong($op['id'])) {
-                    $response['ending_themes'][$key]['spotify'] = $song;
-                }
-            }
-        }
-
         return $response;
     }
 
@@ -312,22 +309,7 @@ class MalServiceProvider extends ServiceProvider
         return $response;
     }
 
-    /**
-     * @deprecated
-     */
-    public static function getSong(int $id)
-    {
-        return false;
-        // $songs = \file_get_contents(dirname(dirname(__DIR__)) . '/resources/songs.json');
-        // try {
-        //     $songsArray = json_decode($songs, true);
-        //     return (isset($songsArray[intval($id)])) ? $songsArray[intval($id)] : false;
-        // } catch (\Exception $e) {
-        //     return false;
-        // }
-    }
-
-    public static function getList(string $type, string $query)
+    public static function getList(string $type, string $query, $limit = 50, $offset = 0)
     {
         $type = $type === 'manga' ? 'manga' : 'anime';
         $fields = [
@@ -346,7 +328,8 @@ class MalServiceProvider extends ServiceProvider
 
         $params = [
             "fields" => implode(',', $fields),
-            "limit" => 500,
+            "limit" => min(intval($limit), 500) ?: 500,
+            "offset" => $offset,
             "q" => $query,
             "nsfw" => 1,
         ];
