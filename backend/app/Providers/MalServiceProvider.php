@@ -126,7 +126,7 @@ class MalServiceProvider extends ServiceProvider
         $params = [
             "fields" => implode(',', $fields),
             "sort" => "anime_start_date",
-            "limit" => $limit,
+            "limit" => min(intval($limit), 1000) ?: 1000,
             "offset" => $offset,
             "nsfw" => 1,
         ];
@@ -163,7 +163,7 @@ class MalServiceProvider extends ServiceProvider
         ];
         $params = [
             "fields" => implode(',', $fields),
-            "limit" => $limit,
+            "limit" => min(intval($limit), 1000) ?: 1000,
             "offset" => $offset,
             "nsfw" => 1,
         ];
@@ -328,7 +328,7 @@ class MalServiceProvider extends ServiceProvider
 
         $params = [
             "fields" => implode(',', $fields),
-            "limit" => $limit,
+            "limit" => min(intval($limit), 500) ?: 500,
             "offset" => $offset,
             "q" => $query,
             "nsfw" => 1,

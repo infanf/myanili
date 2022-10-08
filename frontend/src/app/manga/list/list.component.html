@@ -66,4 +66,13 @@
       </ng-container>
     </tbody>
   </table>
+  <div
+    *ngIf="mangas.length && !loadedAll"
+    class="text-center"
+    inViewport
+    (inViewportAction)="handleScroll($event)"
+  >
+    <myanili-icon name="loading"></myanili-icon>
+    Loading more...
+  </div>
 </section>

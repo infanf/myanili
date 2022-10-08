@@ -90,7 +90,13 @@ export class SearchComponent implements AfterViewInit {
     }
     this.glob.setTitle(`Search: ${this.query}`);
     this.results = (
-      await this.malService.get<Array<{ node: Anime | Manga }>>(this.type + 's?query=' + this.query)
+      await this.malService.get<Array<{ node: Anime | Manga }>>(
+        this.type + 's',
+        new URLSearchParams({
+          query: this.query,
+          limit: '500',
+        }),
+      )
     )
       .filter(result =>
         this.nsfw ? true : !result.node.genres?.map(g => g.name).includes('Hentai'),
