@@ -47,7 +47,7 @@
               "includePaths": ["./node_modules"]
             },
             "scripts": [],
-            "allowedCommonJsDependencies": ["crypto-js", "moment", "string-similarity"]
+            "allowedCommonJsDependencies": ["crypto-js", "moment", "string-similarity", "@components/luxon-helper"]
           },
           "configurations": {
             "production": {

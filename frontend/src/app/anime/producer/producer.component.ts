@@ -29,6 +29,15 @@ export class ProducerComponent {
             this.producer.titles.find(title => title.type === 'Default')?.title ||
             'Studio not found';
           this.animes = await this.mal.getJikanData<Jikan4Anime[]>(`anime?producer=${this.id}`);
+          let page = 2;
+          while (this.animes.length < this.producer.count) {
+            const animes = await this.mal.getJikanData<Jikan4Anime[]>(
+              `anime?producer=${this.id}&page=${page}`,
+            );
+            if (!animes.length) break;
+            this.animes.push(...animes);
+            page++;
+          }
           this.glob.notbusy();
           this.glob.setTitle(this.producer.titles[0].title);
         } catch (e) {
