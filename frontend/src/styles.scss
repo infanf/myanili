@@ -27,7 +27,7 @@ $theme-colors: (
   'dark': $dark // "white": #eff7ff,,,
 );
 
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 
 .cursor-pointer {
   cursor: pointer;

@@ -2,6 +2,12 @@
   "version": "2.15.0",
   "changes": [
     {
+      "version": "2.15.1",
+      "fixes": [
+        "Load all animes for studios"
+      ]
+    },
+    {
       "version": "2.15.0",
       "features": [
         "Load animes and mangas in my list in 50 items steps to optimize inital load times"
