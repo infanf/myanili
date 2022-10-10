@@ -96,6 +96,12 @@
         "_key": "10638"
     },
     {
+        "title": "Bakuten!! Movie",
+        "livechart": "10658",
+        "mal": "49283",
+        "_key": "10658"
+    },
+    {
         "title": "Mou Ippon!",
         "livechart": "10683",
         "mal": "49376",
@@ -174,6 +180,12 @@
         "_key": "10973"
     },
     {
+        "title": "Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken",
+        "livechart": "11016",
+        "mal": "50739",
+        "_key": "11016"
+    },
+    {
         "title": "Benriya Saitou-san, Isekai ni Iku",
         "livechart": "11035",
         "mal": "50854",
@@ -208,6 +220,12 @@
         "livechart": "11133",
         "mal": "51265",
         "_key": "11133"
+    },
+    {
+        "title": "Sasaki to Miyano Movie: Sotsugyou-hen",
+        "livechart": "11163",
+        "mal": "51440",
+        "_key": "11163"
     },
     {
         "title": "Isekai Nonbiri Nouka",
@@ -293,6 +311,12 @@
         "_key": "11319"
     },
     {
+        "title": "Hirano to Kagiura",
+        "livechart": "11329",
+        "mal": "52364",
+        "_key": "11329"
+    },
+    {
         "title": "Kaiko Sareta Ankoku Heishi (30-dai) no Slow na Second Life",
         "livechart": "11337",
         "mal": "52446",
@@ -303,6 +327,12 @@
         "livechart": "11358",
         "mal": "52601",
         "_key": "11358"
+    },
+    {
+        "title": "Tensei Oujo to Tensai Reijou no Mahou Kakumei",
+        "livechart": "11368",
+        "mal": "52736",
+        "_key": "11368"
     },
     {
         "title": "Fate\/strange Fake -Whispers of Dawn-",
@@ -340,6 +370,7 @@
     {
         "title": "Majutsushi Orphen Hagure Tabi: Urbanrama-hen",
         "livechart": "11528",
+        "mal": "53162",
         "_key": "11528"
     },
     {
@@ -352,5 +383,21 @@
         "livechart": "11536",
         "mal": "53111",
         "_key": "11536"
+    },
+    {
+        "title": "Shinmai Renkinjutsushi no Tenpo Keiei Mini Anime Specials",
+        "livechart": "11540",
+        "_key": "11540"
+    },
+    {
+        "title": "KJ File (Sequel)",
+        "livechart": "11541",
+        "mal": "53231",
+        "_key": "11541"
+    },
+    {
+        "title": "Kagejitsu!",
+        "livechart": "11544",
+        "_key": "11544"
     }
 ]

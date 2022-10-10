@@ -501,12 +501,6 @@
         "_key": "9971"
     },
     {
-        "title": "The iDOLM@STER MILLION LIVE!",
-        "livechart": "10057",
-        "mal": "42385",
-        "_key": "10057"
-    },
-    {
         "title": "World End Economica",
         "livechart": "10059",
         "mal": "40657",
@@ -644,12 +638,6 @@
         "_key": "10484"
     },
     {
-        "title": "Black Clover Movie",
-        "livechart": "10495",
-        "mal": "48585",
-        "_key": "10495"
-    },
-    {
         "title": "Liar Liar",
         "livechart": "10505",
         "mal": "48633",
@@ -735,6 +723,12 @@
         "livechart": "10666",
         "mal": "49303",
         "_key": "10666"
+    },
+    {
+        "title": "SK\u221e 2nd Season",
+        "livechart": "10681",
+        "mal": "52750",
+        "_key": "10681"
     },
     {
         "title": "Shiguang Dailiren 2nd Season",
@@ -1025,12 +1019,6 @@
         "_key": "11015"
     },
     {
-        "title": "Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken",
-        "livechart": "11016",
-        "mal": "50739",
-        "_key": "11016"
-    },
-    {
         "title": "Kimi wa Houkago Insomnia",
         "livechart": "11024",
         "mal": "50796",
@@ -1184,12 +1172,6 @@
         "_key": "11161"
     },
     {
-        "title": "Sasaki to Miyano Movie: Sotsugyou-hen",
-        "livechart": "11163",
-        "mal": "51440",
-        "_key": "11163"
-    },
-    {
         "title": "Lv1 Maou to One Room Yuusha",
         "livechart": "11164",
         "mal": "51458",
@@ -1246,12 +1228,6 @@
         "livechart": "11186",
         "mal": "51648",
         "_key": "11186"
-    },
-    {
-        "title": "ULTRAMAN FINAL",
-        "livechart": "11187",
-        "mal": "51653",
-        "_key": "11187"
     },
     {
         "title": "SHAMAN KING (Sequel)",
@@ -1446,12 +1422,6 @@
         "_key": "11328"
     },
     {
-        "title": "Hirano to Kagiura",
-        "livechart": "11329",
-        "mal": "52364",
-        "_key": "11329"
-    },
-    {
         "title": "Isekai Shikkaku",
         "livechart": "11330",
         "mal": "52367",
@@ -1545,12 +1515,6 @@
         "livechart": "11364",
         "mal": "52709",
         "_key": "11364"
-    },
-    {
-        "title": "Tensei Oujo to Tensai Reijou no Mahou Kakumei",
-        "livechart": "11368",
-        "mal": "52736",
-        "_key": "11368"
     },
     {
         "title": "HAIKYU!! FINAL Part 1",
@@ -1689,6 +1653,12 @@
         "_key": "11474"
     },
     {
+        "title": "SHY",
+        "livechart": "11476",
+        "mal": "53237",
+        "_key": "11476"
+    },
+    {
         "title": "Kanojo mo Kanojo 2nd Season",
         "livechart": "11507",
         "_key": "11507"
@@ -1754,5 +1724,25 @@
         "livechart": "11534",
         "mal": "53213",
         "_key": "11534"
+    },
+    {
+        "title": "Seija Musou: Salaryman, Isekai de Ikinokoru Tame ni Ayumu Michi",
+        "livechart": "11545",
+        "_key": "11545"
+    },
+    {
+        "title": "Hoshikuzu Telepath",
+        "livechart": "11546",
+        "_key": "11546"
+    },
+    {
+        "title": "Love Live! Superstar!! 3rd Season",
+        "livechart": "11549",
+        "_key": "11549"
+    },
+    {
+        "title": "Ojou to Banken-kun",
+        "livechart": "11550",
+        "_key": "11550"
     }
 ]

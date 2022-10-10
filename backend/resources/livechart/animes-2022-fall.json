@@ -366,7 +366,7 @@
         "_key": "11062"
     },
     {
-        "title": "Delicious Party\u2661Precure Movie: Yume Miru \u2661 Okosama Lunch",
+        "title": "Delicious Party\u2661Precure Movie: Yume Miru \u2661 Oko-sama Lunch",
         "livechart": "11063",
         "mal": "50963",
         "_key": "11063"
@@ -492,7 +492,7 @@
         "_key": "11291"
     },
     {
-        "title": "Isekai Meikyuu de Harem wo OVA",
+        "title": "Isekai Meikyuu de Harem wo Specials",
         "livechart": "11302",
         "mal": "52281",
         "_key": "11302"
@@ -500,6 +500,7 @@
     {
         "title": "Kame no Koura wa Abarabone",
         "livechart": "11305",
+        "mal": "52980",
         "_key": "11305"
     },
     {
@@ -546,6 +547,7 @@
     {
         "title": "Obake Zukan!",
         "livechart": "11462",
+        "mal": "52319",
         "_key": "11462"
     },
     {
@@ -569,5 +571,15 @@
         "livechart": "11513",
         "mal": "53085",
         "_key": "11513"
+    },
+    {
+        "title": "Shinmai Renkinjutsushi no Tenpo Keiei Mini Anime",
+        "livechart": "11539",
+        "_key": "11539"
+    },
+    {
+        "title": "BLUELOCK Additional Time!",
+        "livechart": "11548",
+        "_key": "11548"
     }
 ]
