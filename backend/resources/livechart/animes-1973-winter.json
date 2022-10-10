@@ -1,1 +1,20 @@
-[{"title":"Mazinger Z","livechart":"6621","mal":"2253","_key":"6621"},{"title":"Panda Kopanda","livechart":"6292","mal":"2611","_key":"6292"},{"title":"Yama Nezumi Rocky Chuck","livechart":"7472","mal":"4615","_key":"7472"}]
+[
+    {
+        "title": "Panda Kopanda",
+        "livechart": "6292",
+        "mal": "2611",
+        "_key": "6292"
+    },
+    {
+        "title": "Mazinger Z",
+        "livechart": "6621",
+        "mal": "2253",
+        "_key": "6621"
+    },
+    {
+        "title": "Yama Nezumi Rocky Chuck",
+        "livechart": "7472",
+        "mal": "4615",
+        "_key": "7472"
+    }
+]

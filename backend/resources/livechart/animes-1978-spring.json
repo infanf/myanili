@@ -1,1 +1,44 @@
-[{"title":"Mirai Shounen Conan","livechart":"5267","mal":"302","_key":"5267"},{"title":"Uchuu Kaizoku Captain Herlock","livechart":"4510","mal":"1000","_key":"4510"},{"title":"Chirin no Suzu","livechart":"5575","mal":"2199","_key":"5575"},{"title":"Toushou Daimos","livechart":"7722","mal":"2816","_key":"7722"},{"title":"Candy Candy: Haru no Yobigoe","livechart":"7440","mal":"2801","_key":"7440"},{"title":"SF Saiyuuki Starzinger","livechart":"9147","mal":"1236","_key":"9147"},{"title":"Majokko Tickle","livechart":"7687","mal":"3881","_key":"7687"}]
+[
+    {
+        "title": "Uchuu Kaizoku Captain Herlock",
+        "livechart": "4510",
+        "mal": "1000",
+        "_key": "4510"
+    },
+    {
+        "title": "Mirai Shounen Conan",
+        "livechart": "5267",
+        "mal": "302",
+        "_key": "5267"
+    },
+    {
+        "title": "Chirin no Suzu",
+        "livechart": "5575",
+        "mal": "2199",
+        "_key": "5575"
+    },
+    {
+        "title": "Candy Candy: Haru no Yobigoe",
+        "livechart": "7440",
+        "mal": "2801",
+        "_key": "7440"
+    },
+    {
+        "title": "Majokko Tickle",
+        "livechart": "7687",
+        "mal": "3881",
+        "_key": "7687"
+    },
+    {
+        "title": "Toushou Daimos",
+        "livechart": "7722",
+        "mal": "2816",
+        "_key": "7722"
+    },
+    {
+        "title": "SF Saiyuuki Starzinger",
+        "livechart": "9147",
+        "mal": "1236",
+        "_key": "9147"
+    }
+]

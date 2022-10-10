@@ -1,1 +1,32 @@
-[{"title":"Lupin III: Part II","livechart":"5905","mal":"1425","_key":"5905"},{"title":"Ie Naki Ko","livechart":"5880","mal":"2828","_key":"5880"},{"title":"Muteki Choujin Zanbot 3","livechart":"5940","mal":"2200","_key":"5940"},{"title":"Wakakusa no Charlotte","livechart":"8508","mal":"3196","_key":"8508"},{"title":"Kyouryuu Daisensou Izenborg","livechart":"8264","mal":"4073","_key":"8264"}]
+[
+    {
+        "title": "Ie Naki Ko",
+        "livechart": "5880",
+        "mal": "2828",
+        "_key": "5880"
+    },
+    {
+        "title": "Lupin III: Part II",
+        "livechart": "5905",
+        "mal": "1425",
+        "_key": "5905"
+    },
+    {
+        "title": "Muteki Choujin Zanbot 3",
+        "livechart": "5940",
+        "mal": "2200",
+        "_key": "5940"
+    },
+    {
+        "title": "Kyouryuu Daisensou Izenborg",
+        "livechart": "8264",
+        "mal": "4073",
+        "_key": "8264"
+    },
+    {
+        "title": "Wakakusa no Charlotte",
+        "livechart": "8508",
+        "mal": "3196",
+        "_key": "8508"
+    }
+]

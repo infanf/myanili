@@ -1,1 +1,140 @@
-[{"title":"Dragon Ball Z","livechart":"3632","mal":"813","_key":"3632"},{"title":"Ranma ½","livechart":"4003","mal":"210","_key":"4003"},{"title":"Ginga Eiyuu Densetsu","livechart":"3708","mal":"820","_key":"3708"},{"title":"Mobile Suit Gundam 0080: War in the Pocket","livechart":"4607","mal":"82","_key":"4607"},{"title":"Saint Seiya: Saishuu Seisen no Senshi-tachi","livechart":"5586","mal":"1260","_key":"5586"},{"title":"Manie-Manie: Meikyuu Monogatari","livechart":"4585","mal":"1951","_key":"4585"},{"title":"Lupin III: Bye Bye Liberty - Kiki Ippatsu!","livechart":"7324","mal":"1415","_key":"7324"},{"title":"Cipher","livechart":"7904","mal":"11867","_key":"7904"},{"title":"Doraemon Movie 10: Nobita no Nippon Tanjou","livechart":"8898","mal":"2666","_key":"8898"},{"title":"Venus Senki","livechart":"6619","mal":"544","_key":"6619"},{"title":"Five Star Stories","livechart":"5763","mal":"2042","_key":"5763"},{"title":"Tenkuu Senki Shurato","livechart":"7677","mal":"2113","_key":"7677"},{"title":"Idol Densetsu Eriko","livechart":"7308","mal":"2938","_key":"7308"},{"title":"Youma","livechart":"9162","mal":"1484","_key":"9162"},{"title":"Chiisana Ahiru no Ooki na Ai no Monogatari: Ahiru no Kwak","livechart":"7866","mal":"2813","_key":"7866"},{"title":"Sengoku Kitan Youtouden Movie","livechart":"9158","mal":"1378","_key":"9158"},{"title":"Cleopatra D.C.","livechart":"7591","mal":"2754","_key":"7591"},{"title":"Yoroiden Samurai Troopers Gaiden","livechart":"9331","mal":"1265","_key":"9331"},{"title":"Explorer Woman Ray","livechart":"8563","mal":"4252","_key":"8563"},{"title":"Madou King Granzort","livechart":"8912","mal":"2818","_key":"8912"},{"title":"Hengen Taima Yakou Karura Mau! Nara Onryou Emaki","livechart":"7884","mal":"3178","_key":"7884"},{"title":"Juushin Liger","livechart":"10086","mal":"4119","_key":"10086"},{"title":"Akuma-kun","livechart":"9121","mal":"8194","_key":"9121"}]
+[
+    {
+        "title": "Dragon Ball Z",
+        "livechart": "3632",
+        "mal": "813",
+        "_key": "3632"
+    },
+    {
+        "title": "Ginga Eiyuu Densetsu",
+        "livechart": "3708",
+        "mal": "820",
+        "_key": "3708"
+    },
+    {
+        "title": "Ranma \u00bd",
+        "livechart": "4003",
+        "mal": "210",
+        "_key": "4003"
+    },
+    {
+        "title": "Manie-Manie: Meikyuu Monogatari",
+        "livechart": "4585",
+        "mal": "1951",
+        "_key": "4585"
+    },
+    {
+        "title": "Mobile Suit Gundam 0080: War in the Pocket",
+        "livechart": "4607",
+        "mal": "82",
+        "_key": "4607"
+    },
+    {
+        "title": "Saint Seiya: Saishuu Seisen no Senshi-tachi",
+        "livechart": "5586",
+        "mal": "1260",
+        "_key": "5586"
+    },
+    {
+        "title": "Five Star Stories",
+        "livechart": "5763",
+        "mal": "2042",
+        "_key": "5763"
+    },
+    {
+        "title": "Venus Senki",
+        "livechart": "6619",
+        "mal": "544",
+        "_key": "6619"
+    },
+    {
+        "title": "Idol Densetsu Eriko",
+        "livechart": "7308",
+        "mal": "2938",
+        "_key": "7308"
+    },
+    {
+        "title": "Lupin III: Bye Bye Liberty - Kiki Ippatsu!",
+        "livechart": "7324",
+        "mal": "1415",
+        "_key": "7324"
+    },
+    {
+        "title": "Cleopatra D.C.",
+        "livechart": "7591",
+        "mal": "2754",
+        "_key": "7591"
+    },
+    {
+        "title": "Tenkuu Senki Shurato",
+        "livechart": "7677",
+        "mal": "2113",
+        "_key": "7677"
+    },
+    {
+        "title": "Chiisana Ahiru no Ooki na Ai no Monogatari: Ahiru no Kwak",
+        "livechart": "7866",
+        "mal": "2813",
+        "_key": "7866"
+    },
+    {
+        "title": "Hengen Taima Yakou Karura Mau! Nara Onryou Emaki",
+        "livechart": "7884",
+        "mal": "3178",
+        "_key": "7884"
+    },
+    {
+        "title": "Cipher",
+        "livechart": "7904",
+        "mal": "11867",
+        "_key": "7904"
+    },
+    {
+        "title": "Explorer Woman Ray",
+        "livechart": "8563",
+        "mal": "4252",
+        "_key": "8563"
+    },
+    {
+        "title": "Doraemon Movie 10: Nobita no Nippon Tanjou",
+        "livechart": "8898",
+        "mal": "2666",
+        "_key": "8898"
+    },
+    {
+        "title": "Madou King Granzort",
+        "livechart": "8912",
+        "mal": "2818",
+        "_key": "8912"
+    },
+    {
+        "title": "Akuma-kun",
+        "livechart": "9121",
+        "mal": "8194",
+        "_key": "9121"
+    },
+    {
+        "title": "Sengoku Kitan Youtouden Movie",
+        "livechart": "9158",
+        "mal": "1378",
+        "_key": "9158"
+    },
+    {
+        "title": "Youma",
+        "livechart": "9162",
+        "mal": "1484",
+        "_key": "9162"
+    },
+    {
+        "title": "Yoroiden Samurai Troopers Gaiden",
+        "livechart": "9331",
+        "mal": "1265",
+        "_key": "9331"
+    },
+    {
+        "title": "Juushin Liger",
+        "livechart": "10086",
+        "mal": "4119",
+        "_key": "10086"
+    }
+]

@@ -1,1 +1,68 @@
-[{"title":"Saint Seiya","livechart":"4117","mal":"1254","_key":"4117"},{"title":"Ganbare! Kickers","livechart":"8890","mal":"3053","_key":"8890"},{"title":"11-nin Iru!","livechart":"5913","mal":"1901","_key":"5913"},{"title":"Katsugeki Shoujo Tanteidan","livechart":"7148","mal":"9491","_key":"7148"},{"title":"Mahou no Star Magical Emi: Semishigure","livechart":"6965","mal":"8443","_key":"6965"},{"title":"Oh! Family","livechart":"7674","mal":"7575","_key":"7674"},{"title":"Heart Cocktail","livechart":"7279","mal":"27693","_key":"7279"},{"title":"Roots Search: Shokushin Buttai X","livechart":"6864","mal":"2250","_key":"6864"},{"title":"Urban Square: Kouhaku no Tsuigeki","livechart":"8168","mal":"2690","_key":"8168"},{"title":"Juusenki L-Gaim I: Pentagona Window + Lady Gyabure","livechart":"7655","mal":"2599","_key":"7655"},{"title":"Shounan Bakusouzoku","livechart":"11351","mal":"2463","_key":"11351"}]
+[
+    {
+        "title": "Saint Seiya",
+        "livechart": "4117",
+        "mal": "1254",
+        "_key": "4117"
+    },
+    {
+        "title": "11-nin Iru!",
+        "livechart": "5913",
+        "mal": "1901",
+        "_key": "5913"
+    },
+    {
+        "title": "Roots Search: Shokushin Buttai X",
+        "livechart": "6864",
+        "mal": "2250",
+        "_key": "6864"
+    },
+    {
+        "title": "Mahou no Star Magical Emi: Semishigure",
+        "livechart": "6965",
+        "mal": "8443",
+        "_key": "6965"
+    },
+    {
+        "title": "Katsugeki Shoujo Tanteidan",
+        "livechart": "7148",
+        "mal": "9491",
+        "_key": "7148"
+    },
+    {
+        "title": "Heart Cocktail",
+        "livechart": "7279",
+        "mal": "27693",
+        "_key": "7279"
+    },
+    {
+        "title": "Juusenki L-Gaim I: Pentagona Window + Lady Gyabure",
+        "livechart": "7655",
+        "mal": "2599",
+        "_key": "7655"
+    },
+    {
+        "title": "Oh! Family",
+        "livechart": "7674",
+        "mal": "7575",
+        "_key": "7674"
+    },
+    {
+        "title": "Urban Square: Kouhaku no Tsuigeki",
+        "livechart": "8168",
+        "mal": "2690",
+        "_key": "8168"
+    },
+    {
+        "title": "Ganbare! Kickers",
+        "livechart": "8890",
+        "mal": "3053",
+        "_key": "8890"
+    },
+    {
+        "title": "Shounan Bakusouzoku",
+        "livechart": "11351",
+        "mal": "2463",
+        "_key": "11351"
+    }
+]

@@ -1,1 +1,152 @@
-[{"title":"InuYasha","livechart":"3684","mal":"249","_key":"3684"},{"title":"Hajime no Ippo","livechart":"3731","mal":"263","_key":"3731"},{"title":"Gakkou no Kaidan","livechart":"3942","mal":"1281","_key":"3942"},{"title":"Gravitation","livechart":"4813","mal":"243","_key":"4813"},{"title":"JoJo no Kimyou na Bouken: Adventure","livechart":"4885","mal":"665","_key":"4885"},{"title":"Vandread","livechart":"3994","mal":"180","_key":"3994"},{"title":"Blood: The Last Vampire","livechart":"4303","mal":"405","_key":"4303"},{"title":"Love Hina: Motoko no Sentaku, Koi ka Ken... \"Naku na\"","livechart":"3474","mal":"963","_key":"3474"},{"title":"Yami no Matsuei","livechart":"5094","mal":"553","_key":"5094"},{"title":"Hellsing: Psalm of Darkness","livechart":"6457","mal":"7728","_key":"6457"},{"title":"Meitantei Conan OVA 01: Conan VS KID VS YAIBA","livechart":"6391","mal":"1369","_key":"6391"},{"title":"Aa! Megami-sama! Movie","livechart":"5110","mal":"304","_key":"5110"},{"title":"Argento Soma","livechart":"5823","mal":"285","_key":"5823"},{"title":"Top wo Nerae! Gunbuster Specials","livechart":"7116","mal":"7248","_key":"7116"},{"title":"Gakkou no Kaidan Recaps","livechart":"8314","mal":"22055","_key":"8314"},{"title":"TV-ban Pokemon Special Masara Town-hen Recaps","livechart":"8945","mal":"31750","_key":"8945"},{"title":"Sci-fi Harry","livechart":"7370","mal":"1508","_key":"7370"},{"title":"Jinzou Ningen Kikaider The Animation","livechart":"7870","mal":"598","_key":"7870"},{"title":"Shoubushi Densetsu Tetsuya","livechart":"7058","mal":"3369","_key":"7058"},{"title":"Biohazard 4D-Executer","livechart":"6405","mal":"5624","_key":"6405"},{"title":"Shin Megami Tensei Devil Children","livechart":"10392","mal":"4067","_key":"10392"},{"title":"Gear Fighter Dendoh","livechart":"7045","mal":"2484","_key":"7045"},{"title":"Dotto Koni-chan","livechart":"7405","mal":"1684","_key":"7405"},{"title":"Alexander Senki Movie","livechart":"9074","mal":"5157","_key":"9074"},{"title":"Taiyou no Hou: El Cantare e no Michi","livechart":"10550","mal":"7985","_key":"10550"}]
+[
+    {
+        "title": "Love Hina: Motoko no Sentaku, Koi ka Ken... \"Naku na\"",
+        "livechart": "3474",
+        "mal": "963",
+        "_key": "3474"
+    },
+    {
+        "title": "InuYasha",
+        "livechart": "3684",
+        "mal": "249",
+        "_key": "3684"
+    },
+    {
+        "title": "Hajime no Ippo",
+        "livechart": "3731",
+        "mal": "263",
+        "_key": "3731"
+    },
+    {
+        "title": "Gakkou no Kaidan",
+        "livechart": "3942",
+        "mal": "1281",
+        "_key": "3942"
+    },
+    {
+        "title": "Vandread",
+        "livechart": "3994",
+        "mal": "180",
+        "_key": "3994"
+    },
+    {
+        "title": "Blood: The Last Vampire",
+        "livechart": "4303",
+        "mal": "405",
+        "_key": "4303"
+    },
+    {
+        "title": "Gravitation",
+        "livechart": "4813",
+        "mal": "243",
+        "_key": "4813"
+    },
+    {
+        "title": "JoJo no Kimyou na Bouken: Adventure",
+        "livechart": "4885",
+        "mal": "665",
+        "_key": "4885"
+    },
+    {
+        "title": "Yami no Matsuei",
+        "livechart": "5094",
+        "mal": "553",
+        "_key": "5094"
+    },
+    {
+        "title": "Aa! Megami-sama! Movie",
+        "livechart": "5110",
+        "mal": "304",
+        "_key": "5110"
+    },
+    {
+        "title": "Argento Soma",
+        "livechart": "5823",
+        "mal": "285",
+        "_key": "5823"
+    },
+    {
+        "title": "Meitantei Conan OVA 01: Conan VS KID VS YAIBA",
+        "livechart": "6391",
+        "mal": "1369",
+        "_key": "6391"
+    },
+    {
+        "title": "Biohazard 4D-Executer",
+        "livechart": "6405",
+        "mal": "5624",
+        "_key": "6405"
+    },
+    {
+        "title": "Hellsing: Psalm of Darkness",
+        "livechart": "6457",
+        "mal": "7728",
+        "_key": "6457"
+    },
+    {
+        "title": "Gear Fighter Dendoh",
+        "livechart": "7045",
+        "mal": "2484",
+        "_key": "7045"
+    },
+    {
+        "title": "Shoubushi Densetsu Tetsuya",
+        "livechart": "7058",
+        "mal": "3369",
+        "_key": "7058"
+    },
+    {
+        "title": "Top wo Nerae! Gunbuster Specials",
+        "livechart": "7116",
+        "mal": "7248",
+        "_key": "7116"
+    },
+    {
+        "title": "Sci-fi Harry",
+        "livechart": "7370",
+        "mal": "1508",
+        "_key": "7370"
+    },
+    {
+        "title": "Dotto Koni-chan",
+        "livechart": "7405",
+        "mal": "1684",
+        "_key": "7405"
+    },
+    {
+        "title": "Jinzou Ningen Kikaider The Animation",
+        "livechart": "7870",
+        "mal": "598",
+        "_key": "7870"
+    },
+    {
+        "title": "Gakkou no Kaidan Recaps",
+        "livechart": "8314",
+        "mal": "22055",
+        "_key": "8314"
+    },
+    {
+        "title": "TV-ban Pokemon Special Masara Town-hen Recaps",
+        "livechart": "8945",
+        "mal": "31750",
+        "_key": "8945"
+    },
+    {
+        "title": "Alexander Senki Movie",
+        "livechart": "9074",
+        "mal": "5157",
+        "_key": "9074"
+    },
+    {
+        "title": "Shin Megami Tensei Devil Children",
+        "livechart": "10392",
+        "mal": "4067",
+        "_key": "10392"
+    },
+    {
+        "title": "Taiyou no Hou: El Cantare e no Michi",
+        "livechart": "10550",
+        "mal": "7985",
+        "_key": "10550"
+    }
+]

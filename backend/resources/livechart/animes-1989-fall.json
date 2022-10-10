@@ -1,1 +1,134 @@
-[{"title":"City Hunter 3","livechart":"8409","mal":"1472","_key":"8409"},{"title":"Kidou Keisatsu Patlabor: On Television","livechart":"4349","mal":"324","_key":"4349"},{"title":"Jungle Book Shounen Mowgli","livechart":"8243","mal":"2569","_key":"8243"},{"title":"Baoh Raihousha","livechart":"7787","mal":"1468","_key":"7787"},{"title":"Yawara!","livechart":"7376","mal":"691","_key":"7376"},{"title":"Jungle Taitei (1989)","livechart":"6422","mal":"2556","_key":"6422"},{"title":"Angel Cop","livechart":"9157","mal":"1351","_key":"9157"},{"title":"Kyoushoku Soukou Guyver (1989)","livechart":"8713","mal":"6016","_key":"8713"},{"title":"Ys","livechart":"7471","mal":"1276","_key":"7471"},{"title":"Project A-Ko 4: Final","livechart":"9153","mal":"1298","_key":"9153"},{"title":"Ano Ko ni 1000%","livechart":"7603","mal":"7475","_key":"7603"},{"title":"Warau Salesman","livechart":"7495","mal":"3077","_key":"7495"},{"title":"Aoki Honoo","livechart":"6930","mal":"3306","_key":"6930"},{"title":"Cherry no Manma","livechart":"7023","mal":"6346","_key":"7023"},{"title":"Yoroiden Samurai Troopers Kikoutei Densetsu","livechart":"9440","mal":"1266","_key":"9440"},{"title":"Time Travel Tondekeman!","livechart":"8913","mal":"2820","_key":"8913"},{"title":"Hi-Speed Jecy","livechart":"7894","mal":"2697","_key":"7894"},{"title":"Isewan Taifuu Monogatari","livechart":"8706","mal":"25305","_key":"8706"},{"title":"Midoriyama Koukou Koushien-hen","livechart":"10096","mal":"5994","_key":"10096"},{"title":"The Borgman: Last Battle","livechart":"11341","mal":"3762","_key":"11341"},{"title":"Warau Salesman Episode 0","livechart":"11261","mal":"35115","_key":"11261"},{"title":"Sore Ike! Anpanman: Kirakira Boshi no Namida","livechart":"11443","mal":"16163","_key":"11443"}]
+[
+    {
+        "title": "Kidou Keisatsu Patlabor: On Television",
+        "livechart": "4349",
+        "mal": "324",
+        "_key": "4349"
+    },
+    {
+        "title": "Jungle Taitei (1989)",
+        "livechart": "6422",
+        "mal": "2556",
+        "_key": "6422"
+    },
+    {
+        "title": "Aoki Honoo",
+        "livechart": "6930",
+        "mal": "3306",
+        "_key": "6930"
+    },
+    {
+        "title": "Cherry no Manma",
+        "livechart": "7023",
+        "mal": "6346",
+        "_key": "7023"
+    },
+    {
+        "title": "Yawara!",
+        "livechart": "7376",
+        "mal": "691",
+        "_key": "7376"
+    },
+    {
+        "title": "Ys",
+        "livechart": "7471",
+        "mal": "1276",
+        "_key": "7471"
+    },
+    {
+        "title": "Warau Salesman",
+        "livechart": "7495",
+        "mal": "3077",
+        "_key": "7495"
+    },
+    {
+        "title": "Ano Ko ni 1000%",
+        "livechart": "7603",
+        "mal": "7475",
+        "_key": "7603"
+    },
+    {
+        "title": "Baoh Raihousha",
+        "livechart": "7787",
+        "mal": "1468",
+        "_key": "7787"
+    },
+    {
+        "title": "Hi-Speed Jecy",
+        "livechart": "7894",
+        "mal": "2697",
+        "_key": "7894"
+    },
+    {
+        "title": "Jungle Book Shounen Mowgli",
+        "livechart": "8243",
+        "mal": "2569",
+        "_key": "8243"
+    },
+    {
+        "title": "City Hunter 3",
+        "livechart": "8409",
+        "mal": "1472",
+        "_key": "8409"
+    },
+    {
+        "title": "Isewan Taifuu Monogatari",
+        "livechart": "8706",
+        "mal": "25305",
+        "_key": "8706"
+    },
+    {
+        "title": "Kyoushoku Soukou Guyver (1989)",
+        "livechart": "8713",
+        "mal": "6016",
+        "_key": "8713"
+    },
+    {
+        "title": "Time Travel Tondekeman!",
+        "livechart": "8913",
+        "mal": "2820",
+        "_key": "8913"
+    },
+    {
+        "title": "Project A-Ko 4: Final",
+        "livechart": "9153",
+        "mal": "1298",
+        "_key": "9153"
+    },
+    {
+        "title": "Angel Cop",
+        "livechart": "9157",
+        "mal": "1351",
+        "_key": "9157"
+    },
+    {
+        "title": "Yoroiden Samurai Troopers Kikoutei Densetsu",
+        "livechart": "9440",
+        "mal": "1266",
+        "_key": "9440"
+    },
+    {
+        "title": "Midoriyama Koukou Koushien-hen",
+        "livechart": "10096",
+        "mal": "5994",
+        "_key": "10096"
+    },
+    {
+        "title": "Warau Salesman Episode 0",
+        "livechart": "11261",
+        "mal": "35115",
+        "_key": "11261"
+    },
+    {
+        "title": "The Borgman: Last Battle",
+        "livechart": "11341",
+        "mal": "3762",
+        "_key": "11341"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Kirakira Boshi no Namida",
+        "livechart": "11443",
+        "mal": "16163",
+        "_key": "11443"
+    }
+]

@@ -1,1 +1,98 @@
-[{"title":"Ginga Eiyuu Densetsu","livechart":"3708","mal":"820","_key":"3708"},{"title":"Bishoujo Senshi Sailor Moon S: Kaguya Hime no Koibito","livechart":"7590","mal":"997","_key":"7590"},{"title":"Romeo no Aoi Sora","livechart":"4969","mal":"2559","_key":"4969"},{"title":"Ranma ½ Specials","livechart":"6728","mal":"1008","_key":"6728"},{"title":"Taiho Shichau zo","livechart":"5191","mal":"1577","_key":"5191"},{"title":"Kishin Douji Zenki","livechart":"8768","mal":"1573","_key":"8768"},{"title":"Key the Metal Idol","livechart":"7816","mal":"1457","_key":"7816"},{"title":"Macross 7 Plus","livechart":"7445","mal":"6209","_key":"7445"},{"title":"Chibi Maruko-chan (1995)","livechart":"1484","mal":"6149","_key":"1484"},{"title":"A Piece of Phantasmagoria","livechart":"8588","mal":"6094","_key":"8588"},{"title":"Iczer-Girl Iczelion","livechart":"8436","mal":"1831","_key":"8436"},{"title":"Tobira wo Akete (1995)","livechart":"7586","mal":"1979","_key":"7586"},{"title":"Ougon Yuusha Goldran","livechart":"6799","mal":"5440","_key":"6799"},{"title":"Sotsugyou: Graduation","livechart":"8487","mal":"2714","_key":"8487"},{"title":"Wild 7","livechart":"8804","mal":"1959","_key":"8804"},{"title":"Ninkuu","livechart":"11297","mal":"912","_key":"11297"}]
+[
+    {
+        "title": "Chibi Maruko-chan (1995)",
+        "livechart": "1484",
+        "mal": "6149",
+        "_key": "1484"
+    },
+    {
+        "title": "Ginga Eiyuu Densetsu",
+        "livechart": "3708",
+        "mal": "820",
+        "_key": "3708"
+    },
+    {
+        "title": "Romeo no Aoi Sora",
+        "livechart": "4969",
+        "mal": "2559",
+        "_key": "4969"
+    },
+    {
+        "title": "Taiho Shichau zo",
+        "livechart": "5191",
+        "mal": "1577",
+        "_key": "5191"
+    },
+    {
+        "title": "Ranma \u00bd Specials",
+        "livechart": "6728",
+        "mal": "1008",
+        "_key": "6728"
+    },
+    {
+        "title": "Ougon Yuusha Goldran",
+        "livechart": "6799",
+        "mal": "5440",
+        "_key": "6799"
+    },
+    {
+        "title": "Macross 7 Plus",
+        "livechart": "7445",
+        "mal": "6209",
+        "_key": "7445"
+    },
+    {
+        "title": "Tobira wo Akete (1995)",
+        "livechart": "7586",
+        "mal": "1979",
+        "_key": "7586"
+    },
+    {
+        "title": "Bishoujo Senshi Sailor Moon S: Kaguya Hime no Koibito",
+        "livechart": "7590",
+        "mal": "997",
+        "_key": "7590"
+    },
+    {
+        "title": "Key the Metal Idol",
+        "livechart": "7816",
+        "mal": "1457",
+        "_key": "7816"
+    },
+    {
+        "title": "Iczer-Girl Iczelion",
+        "livechart": "8436",
+        "mal": "1831",
+        "_key": "8436"
+    },
+    {
+        "title": "Sotsugyou: Graduation",
+        "livechart": "8487",
+        "mal": "2714",
+        "_key": "8487"
+    },
+    {
+        "title": "A Piece of Phantasmagoria",
+        "livechart": "8588",
+        "mal": "6094",
+        "_key": "8588"
+    },
+    {
+        "title": "Kishin Douji Zenki",
+        "livechart": "8768",
+        "mal": "1573",
+        "_key": "8768"
+    },
+    {
+        "title": "Wild 7",
+        "livechart": "8804",
+        "mal": "1959",
+        "_key": "8804"
+    },
+    {
+        "title": "Ninkuu",
+        "livechart": "11297",
+        "mal": "912",
+        "_key": "11297"
+    }
+]

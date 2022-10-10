@@ -1,1 +1,110 @@
-[{"title":"Doraemon Movie 04: Nobita no Kaitei Kiganjou","livechart":"8900","mal":"2667","_key":"8900"},{"title":"Golgo 13","livechart":"8434","mal":"1760","_key":"8434"},{"title":"Aishite Knight","livechart":"8827","mal":"2221","_key":"8827"},{"title":"Perman (1983)","livechart":"7607","mal":"11595","_key":"7607"},{"title":"Lady Georgie","livechart":"6634","mal":"2542","_key":"6634"},{"title":"Soukou Kihei Votoms","livechart":"4892","mal":"2582","_key":"4892"},{"title":"Uchuu Senkan Yamato: Kanketsu-hen","livechart":"7752","mal":"3072","_key":"7752"},{"title":"Stop!! Hibari-kun!","livechart":"7341","mal":"3332","_key":"7341"},{"title":"Kinnikuman","livechart":"9296","mal":"3272","_key":"9296"},{"title":"Doraemon: It's Spring!","livechart":"8877","mal":"2638","_key":"8877"},{"title":"Crusher Joe","livechart":"7998","mal":"2722","_key":"7998"},{"title":"Genma Taisen","livechart":"6291","mal":"1626","_key":"6291"},{"title":"Nanako SOS","livechart":"7793","mal":"3619","_key":"7793"},{"title":"Spoon Oba-san","livechart":"6860","mal":"2612","_key":"6860"},{"title":"Ginga Shippuu Sasuraiger","livechart":"7846","mal":"4244","_key":"7846"},{"title":"Time Bokan Series: Itadakiman","livechart":"6771","mal":"5344","_key":"6771"},{"title":"Personal Computer Travel Tanteidan","livechart":"7361","mal":"3936","_key":"7361"},{"title":"Dr. Slump Movie 03: Arale-chan Hoyoyo! Sekai Isshuu Dai Race","livechart":"10991","mal":"7667","_key":"10991"}]
+[
+    {
+        "title": "Soukou Kihei Votoms",
+        "livechart": "4892",
+        "mal": "2582",
+        "_key": "4892"
+    },
+    {
+        "title": "Genma Taisen",
+        "livechart": "6291",
+        "mal": "1626",
+        "_key": "6291"
+    },
+    {
+        "title": "Lady Georgie",
+        "livechart": "6634",
+        "mal": "2542",
+        "_key": "6634"
+    },
+    {
+        "title": "Time Bokan Series: Itadakiman",
+        "livechart": "6771",
+        "mal": "5344",
+        "_key": "6771"
+    },
+    {
+        "title": "Spoon Oba-san",
+        "livechart": "6860",
+        "mal": "2612",
+        "_key": "6860"
+    },
+    {
+        "title": "Stop!! Hibari-kun!",
+        "livechart": "7341",
+        "mal": "3332",
+        "_key": "7341"
+    },
+    {
+        "title": "Personal Computer Travel Tanteidan",
+        "livechart": "7361",
+        "mal": "3936",
+        "_key": "7361"
+    },
+    {
+        "title": "Perman (1983)",
+        "livechart": "7607",
+        "mal": "11595",
+        "_key": "7607"
+    },
+    {
+        "title": "Uchuu Senkan Yamato: Kanketsu-hen",
+        "livechart": "7752",
+        "mal": "3072",
+        "_key": "7752"
+    },
+    {
+        "title": "Nanako SOS",
+        "livechart": "7793",
+        "mal": "3619",
+        "_key": "7793"
+    },
+    {
+        "title": "Ginga Shippuu Sasuraiger",
+        "livechart": "7846",
+        "mal": "4244",
+        "_key": "7846"
+    },
+    {
+        "title": "Crusher Joe",
+        "livechart": "7998",
+        "mal": "2722",
+        "_key": "7998"
+    },
+    {
+        "title": "Golgo 13",
+        "livechart": "8434",
+        "mal": "1760",
+        "_key": "8434"
+    },
+    {
+        "title": "Aishite Knight",
+        "livechart": "8827",
+        "mal": "2221",
+        "_key": "8827"
+    },
+    {
+        "title": "Doraemon: It's Spring!",
+        "livechart": "8877",
+        "mal": "2638",
+        "_key": "8877"
+    },
+    {
+        "title": "Doraemon Movie 04: Nobita no Kaitei Kiganjou",
+        "livechart": "8900",
+        "mal": "2667",
+        "_key": "8900"
+    },
+    {
+        "title": "Kinnikuman",
+        "livechart": "9296",
+        "mal": "3272",
+        "_key": "9296"
+    },
+    {
+        "title": "Dr. Slump Movie 03: Arale-chan Hoyoyo! Sekai Isshuu Dai Race",
+        "livechart": "10991",
+        "mal": "7667",
+        "_key": "10991"
+    }
+]

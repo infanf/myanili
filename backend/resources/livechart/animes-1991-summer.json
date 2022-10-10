@@ -1,1 +1,140 @@
-[{"title":"Dragon Ball Z Movie 05: Tobikkiri no Saikyou tai Saikyou","livechart":"4294","mal":"898","_key":"4294"},{"title":"Omoide Poroporo","livechart":"3077","mal":"1029","_key":"3077"},{"title":"Ginga Eiyuu Densetsu","livechart":"3708","mal":"820","_key":"3708"},{"title":"3x3 Eyes","livechart":"5777","mal":"300","_key":"5777"},{"title":"Arslan Senki","livechart":"5160","mal":"1762","_key":"5160"},{"title":"Oniisama e...","livechart":"5206","mal":"795","_key":"5206"},{"title":"Urusei Yatsura Movie 6: Itsudatte My Darling","livechart":"8722","mal":"1925","_key":"8722"},{"title":"Fushigi no Umi no Nadia: Original Movie","livechart":"7030","mal":"1252","_key":"7030"},{"title":"Bubblegum Crash","livechart":"8400","mal":"1348","_key":"8400"},{"title":"RG Veda","livechart":"8567","mal":"439","_key":"8567"},{"title":"Sol Bianca","livechart":"9161","mal":"1443","_key":"9161"},{"title":"Yami no Shihosha Judge","livechart":"6928","mal":"1340","_key":"6928"},{"title":"Silent Möbius: The Motion Picture","livechart":"8310","mal":"2099","_key":"8310"},{"title":"Detonator Orgun","livechart":"7293","mal":"1178","_key":"7293"},{"title":"Mobile Suit SD Gundam Musha, Knight, Commando","livechart":"7423","mal":"9087","_key":"7423"},{"title":"Souryuuden","livechart":"7483","mal":"1742","_key":"7483"},{"title":"Shiawasette Naani","livechart":"9154","mal":"13441","_key":"9154"},{"title":"Yuukan Club","livechart":"7443","mal":"3778","_key":"7443"},{"title":"Jungle Wars","livechart":"6861","mal":"17473","_key":"6861"},{"title":"Dragon Quest: Dai no Daibouken (1991)","livechart":"10880","mal":"7435","_key":"10880"},{"title":"Magical★Taruruuto-kun: Moeru! Yuujou no Mahou Taisen","livechart":"10661","mal":"22981","_key":"10661"},{"title":"Sore Ike! Anpanman: Dokin-chan no Dokidoki Calendar","livechart":"11405","mal":"22037","_key":"11405"},{"title":"Sore Ike! Anpanman: Tobe! Tobe! Chibigon","livechart":"11427","mal":"10057","_key":"11427"}]
+[
+    {
+        "title": "Omoide Poroporo",
+        "livechart": "3077",
+        "mal": "1029",
+        "_key": "3077"
+    },
+    {
+        "title": "Ginga Eiyuu Densetsu",
+        "livechart": "3708",
+        "mal": "820",
+        "_key": "3708"
+    },
+    {
+        "title": "Dragon Ball Z Movie 05: Tobikkiri no Saikyou tai Saikyou",
+        "livechart": "4294",
+        "mal": "898",
+        "_key": "4294"
+    },
+    {
+        "title": "Arslan Senki",
+        "livechart": "5160",
+        "mal": "1762",
+        "_key": "5160"
+    },
+    {
+        "title": "Oniisama e...",
+        "livechart": "5206",
+        "mal": "795",
+        "_key": "5206"
+    },
+    {
+        "title": "3x3 Eyes",
+        "livechart": "5777",
+        "mal": "300",
+        "_key": "5777"
+    },
+    {
+        "title": "Jungle Wars",
+        "livechart": "6861",
+        "mal": "17473",
+        "_key": "6861"
+    },
+    {
+        "title": "Yami no Shihosha Judge",
+        "livechart": "6928",
+        "mal": "1340",
+        "_key": "6928"
+    },
+    {
+        "title": "Fushigi no Umi no Nadia: Original Movie",
+        "livechart": "7030",
+        "mal": "1252",
+        "_key": "7030"
+    },
+    {
+        "title": "Detonator Orgun",
+        "livechart": "7293",
+        "mal": "1178",
+        "_key": "7293"
+    },
+    {
+        "title": "Mobile Suit SD Gundam Musha, Knight, Commando",
+        "livechart": "7423",
+        "mal": "9087",
+        "_key": "7423"
+    },
+    {
+        "title": "Yuukan Club",
+        "livechart": "7443",
+        "mal": "3778",
+        "_key": "7443"
+    },
+    {
+        "title": "Souryuuden",
+        "livechart": "7483",
+        "mal": "1742",
+        "_key": "7483"
+    },
+    {
+        "title": "Silent M\u00f6bius: The Motion Picture",
+        "livechart": "8310",
+        "mal": "2099",
+        "_key": "8310"
+    },
+    {
+        "title": "Bubblegum Crash",
+        "livechart": "8400",
+        "mal": "1348",
+        "_key": "8400"
+    },
+    {
+        "title": "RG Veda",
+        "livechart": "8567",
+        "mal": "439",
+        "_key": "8567"
+    },
+    {
+        "title": "Urusei Yatsura Movie 6: Itsudatte My Darling",
+        "livechart": "8722",
+        "mal": "1925",
+        "_key": "8722"
+    },
+    {
+        "title": "Shiawasette Naani",
+        "livechart": "9154",
+        "mal": "13441",
+        "_key": "9154"
+    },
+    {
+        "title": "Sol Bianca",
+        "livechart": "9161",
+        "mal": "1443",
+        "_key": "9161"
+    },
+    {
+        "title": "Magical\u2605Taruruuto-kun: Moeru! Yuujou no Mahou Taisen",
+        "livechart": "10661",
+        "mal": "22981",
+        "_key": "10661"
+    },
+    {
+        "title": "Dragon Quest: Dai no Daibouken (1991)",
+        "livechart": "10880",
+        "mal": "7435",
+        "_key": "10880"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Dokin-chan no Dokidoki Calendar",
+        "livechart": "11405",
+        "mal": "22037",
+        "_key": "11405"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Tobe! Tobe! Chibigon",
+        "livechart": "11427",
+        "mal": "10057",
+        "_key": "11427"
+    }
+]

@@ -1,1 +1,104 @@
-[{"title":"3x3 Eyes","livechart":"5777","mal":"300","_key":"5777"},{"title":"Mama wa Shougaku 4 Nensei","livechart":"7773","mal":"333","_key":"7773"},{"title":"Uchuu no Kishi Tekkaman Blade","livechart":"6976","mal":"1459","_key":"6976"},{"title":"Bubblegum Crash","livechart":"8400","mal":"1348","_key":"8400"},{"title":"Fushigi no Umi no Nadia Specials","livechart":"7062","mal":"3381","_key":"7062"},{"title":"Handsome Girl","livechart":"7014","mal":"1115","_key":"7014"},{"title":"Densetsu no Yuusha Da Garn","livechart":"8173","mal":"2803","_key":"8173"},{"title":"Daisougen no Chiisana Tenshi: Bush Baby","livechart":"7142","mal":"2913","_key":"7142"},{"title":"Hana no Mahoutsukai Mary Bell","livechart":"8249","mal":"2804","_key":"8249"},{"title":"Monkey Punch no Sekai: Alice","livechart":"8986","mal":"3640","_key":"8986"},{"title":"Gall Force: New Era","livechart":"8814","mal":"2065","_key":"8814"},{"title":"Chameleon (OVA)","livechart":"8075","mal":"5353","_key":"8075"},{"title":"Neko Neko Fantasia","livechart":"8150","mal":"8496","_key":"8150"},{"title":"Karo to Piyobupt: Ouchi","livechart":"9115","mal":"7445","_key":"9115"},{"title":"Karo to Piyobupt: Sandwich","livechart":"9114","mal":"7446","_key":"9114"},{"title":"Karo to Piyobupt: Ame no Hi","livechart":"9112","mal":"7488","_key":"9112"},{"title":"Kennel Tokorozawa","livechart":"11026","mal":"13715","_key":"11026"}]
+[
+    {
+        "title": "3x3 Eyes",
+        "livechart": "5777",
+        "mal": "300",
+        "_key": "5777"
+    },
+    {
+        "title": "Uchuu no Kishi Tekkaman Blade",
+        "livechart": "6976",
+        "mal": "1459",
+        "_key": "6976"
+    },
+    {
+        "title": "Handsome Girl",
+        "livechart": "7014",
+        "mal": "1115",
+        "_key": "7014"
+    },
+    {
+        "title": "Fushigi no Umi no Nadia Specials",
+        "livechart": "7062",
+        "mal": "3381",
+        "_key": "7062"
+    },
+    {
+        "title": "Daisougen no Chiisana Tenshi: Bush Baby",
+        "livechart": "7142",
+        "mal": "2913",
+        "_key": "7142"
+    },
+    {
+        "title": "Mama wa Shougaku 4 Nensei",
+        "livechart": "7773",
+        "mal": "333",
+        "_key": "7773"
+    },
+    {
+        "title": "Chameleon (OVA)",
+        "livechart": "8075",
+        "mal": "5353",
+        "_key": "8075"
+    },
+    {
+        "title": "Neko Neko Fantasia",
+        "livechart": "8150",
+        "mal": "8496",
+        "_key": "8150"
+    },
+    {
+        "title": "Densetsu no Yuusha Da Garn",
+        "livechart": "8173",
+        "mal": "2803",
+        "_key": "8173"
+    },
+    {
+        "title": "Hana no Mahoutsukai Mary Bell",
+        "livechart": "8249",
+        "mal": "2804",
+        "_key": "8249"
+    },
+    {
+        "title": "Bubblegum Crash",
+        "livechart": "8400",
+        "mal": "1348",
+        "_key": "8400"
+    },
+    {
+        "title": "Gall Force: New Era",
+        "livechart": "8814",
+        "mal": "2065",
+        "_key": "8814"
+    },
+    {
+        "title": "Monkey Punch no Sekai: Alice",
+        "livechart": "8986",
+        "mal": "3640",
+        "_key": "8986"
+    },
+    {
+        "title": "Karo to Piyobupt: Ame no Hi",
+        "livechart": "9112",
+        "mal": "7488",
+        "_key": "9112"
+    },
+    {
+        "title": "Karo to Piyobupt: Sandwich",
+        "livechart": "9114",
+        "mal": "7446",
+        "_key": "9114"
+    },
+    {
+        "title": "Karo to Piyobupt: Ouchi",
+        "livechart": "9115",
+        "mal": "7445",
+        "_key": "9115"
+    },
+    {
+        "title": "Kennel Tokorozawa",
+        "livechart": "11026",
+        "mal": "13715",
+        "_key": "11026"
+    }
+]

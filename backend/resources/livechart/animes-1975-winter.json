@@ -1,1 +1,14 @@
-[{"title":"Flanders no Inu","livechart":"7273","mal":"2553","_key":"7273"},{"title":"4.Eyes","livechart":"6978","mal":"30665","_key":"6978"}]
+[
+    {
+        "title": "4.Eyes",
+        "livechart": "6978",
+        "mal": "30665",
+        "_key": "6978"
+    },
+    {
+        "title": "Flanders no Inu",
+        "livechart": "7273",
+        "mal": "2553",
+        "_key": "7273"
+    }
+]

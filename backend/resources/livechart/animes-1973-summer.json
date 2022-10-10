@@ -1,1 +1,14 @@
-[{"title":"Kanashimi no Belladonna","livechart":"9216","mal":"3220","_key":"9216"},{"title":"Mazinger Z tai Devilman","livechart":"6627","mal":"3898","_key":"6627"}]
+[
+    {
+        "title": "Mazinger Z tai Devilman",
+        "livechart": "6627",
+        "mal": "3898",
+        "_key": "6627"
+    },
+    {
+        "title": "Kanashimi no Belladonna",
+        "livechart": "9216",
+        "mal": "3220",
+        "_key": "9216"
+    }
+]

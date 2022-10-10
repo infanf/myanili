@@ -14,7 +14,7 @@ document.querySelectorAll('article.anime').forEach(e => {
   animes.push(anime);
 });
 const season = location.pathname.replace(/^\/([a-z]+)-(\d+).*/, '$2-$1');
-const jsonFile = new File([JSON.stringify(animes)], `animes-${season}.json`, {
+const jsonFile = new File([JSON.stringify(animes.sort((a,b)=>(a._key - b._key)), null, 4)], `animes-${season}.json`, {
   type: 'application/json',
 });
 const a = document.createElement('a');

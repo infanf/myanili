@@ -1,1 +1,110 @@
-[{"title":"Mimi wo Sumaseba","livechart":"3080","mal":"585","_key":"3080"},{"title":"Dragon Ball Z Movie 13: Ryuuken Bakuhatsu!! Gokuu ga Yaraneba Dare ga Yaru","livechart":"4463","mal":"906","_key":"4463"},{"title":"On Your Mark","livechart":"6385","mal":"1047","_key":"6385"},{"title":"Slayers: The Motion Picture","livechart":"5109","mal":"536","_key":"5109"},{"title":"Slam Dunk: Hoero Basketman-damashii! Hanamichi to Rukawa no Atsuki Natsu","livechart":"5690","mal":"2499","_key":"5690"},{"title":"3x3 Eyes Seima Densetsu","livechart":"6605","mal":"1225","_key":"6605"},{"title":"Fushigi no Kuni no Miyuki-chan","livechart":"6169","mal":"1496","_key":"6169"},{"title":"H2","livechart":"6296","mal":"386","_key":"6296"},{"title":"Lupin III: Harimao no Zaihou wo Oe!!","livechart":"9335","mal":"1434","_key":"9335"},{"title":"Ranma ½: DoCo Music Video","livechart":"7704","mal":"10824","_key":"7704"},{"title":"Mahou Shoujo Pretty Sammy","livechart":"8799","mal":"1918","_key":"8799"},{"title":"Anne no Nikki","livechart":"7477","mal":"3829","_key":"7477"},{"title":"Dirty Pair Flash 2","livechart":"8388","mal":"12343","_key":"8388"},{"title":"Hajimari no Boukensha-tachi: Legend of Crystania","livechart":"8579","mal":"515","_key":"8579"},{"title":"Hikyou Tanken Fam & Ihrlie","livechart":"6970","mal":"1181","_key":"6970"},{"title":"Nurse Angel Ririka SOS","livechart":"7347","mal":"616","_key":"7347"},{"title":"Sore Ike! Anpanman: Anpanman to Yukai na Nakama-tachi","livechart":"11408","mal":"21933","_key":"11408"},{"title":"Sore Ike! Anpanman: Yuurei Sen wo Yattsukero!!","livechart":"11417","mal":"10058","_key":"11417"}]
+[
+    {
+        "title": "Mimi wo Sumaseba",
+        "livechart": "3080",
+        "mal": "585",
+        "_key": "3080"
+    },
+    {
+        "title": "Dragon Ball Z Movie 13: Ryuuken Bakuhatsu!! Gokuu ga Yaraneba Dare ga Yaru",
+        "livechart": "4463",
+        "mal": "906",
+        "_key": "4463"
+    },
+    {
+        "title": "Slayers: The Motion Picture",
+        "livechart": "5109",
+        "mal": "536",
+        "_key": "5109"
+    },
+    {
+        "title": "Slam Dunk: Hoero Basketman-damashii! Hanamichi to Rukawa no Atsuki Natsu",
+        "livechart": "5690",
+        "mal": "2499",
+        "_key": "5690"
+    },
+    {
+        "title": "Fushigi no Kuni no Miyuki-chan",
+        "livechart": "6169",
+        "mal": "1496",
+        "_key": "6169"
+    },
+    {
+        "title": "H2",
+        "livechart": "6296",
+        "mal": "386",
+        "_key": "6296"
+    },
+    {
+        "title": "On Your Mark",
+        "livechart": "6385",
+        "mal": "1047",
+        "_key": "6385"
+    },
+    {
+        "title": "3x3 Eyes Seima Densetsu",
+        "livechart": "6605",
+        "mal": "1225",
+        "_key": "6605"
+    },
+    {
+        "title": "Hikyou Tanken Fam & Ihrlie",
+        "livechart": "6970",
+        "mal": "1181",
+        "_key": "6970"
+    },
+    {
+        "title": "Nurse Angel Ririka SOS",
+        "livechart": "7347",
+        "mal": "616",
+        "_key": "7347"
+    },
+    {
+        "title": "Anne no Nikki",
+        "livechart": "7477",
+        "mal": "3829",
+        "_key": "7477"
+    },
+    {
+        "title": "Ranma \u00bd: DoCo Music Video",
+        "livechart": "7704",
+        "mal": "10824",
+        "_key": "7704"
+    },
+    {
+        "title": "Dirty Pair Flash 2",
+        "livechart": "8388",
+        "mal": "12343",
+        "_key": "8388"
+    },
+    {
+        "title": "Hajimari no Boukensha-tachi: Legend of Crystania",
+        "livechart": "8579",
+        "mal": "515",
+        "_key": "8579"
+    },
+    {
+        "title": "Mahou Shoujo Pretty Sammy",
+        "livechart": "8799",
+        "mal": "1918",
+        "_key": "8799"
+    },
+    {
+        "title": "Lupin III: Harimao no Zaihou wo Oe!!",
+        "livechart": "9335",
+        "mal": "1434",
+        "_key": "9335"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Anpanman to Yukai na Nakama-tachi",
+        "livechart": "11408",
+        "mal": "21933",
+        "_key": "11408"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Yuurei Sen wo Yattsukero!!",
+        "livechart": "11417",
+        "mal": "10058",
+        "_key": "11417"
+    }
+]

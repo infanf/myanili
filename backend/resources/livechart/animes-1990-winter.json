@@ -1,1 +1,104 @@
-[{"title":"Watashi no Ashinaga Ojisan","livechart":"6909","mal":"1375","_key":"6909"},{"title":"Be-Boy Kidnapp'n Idol","livechart":"7409","mal":"2220","_key":"7409"},{"title":"Devilman: Yochou Sirene-hen","livechart":"7906","mal":"2355","_key":"7906"},{"title":"Kyattou Ninden Teyandee","livechart":"7047","mal":"1261","_key":"7047"},{"title":"Chibi Maruko-chan","livechart":"8279","mal":"951","_key":"8279"},{"title":"Be-Bop Highschool","livechart":"9129","mal":"9645","_key":"9129"},{"title":"Dragon Quest: Abel Yuusha Densetsu","livechart":"7302","mal":"2819","_key":"7302"},{"title":"Dirty Pair: Bouryaku no 005-bin","livechart":"7262","mal":"1795","_key":"7262"},{"title":"Assemble Insert","livechart":"7834","mal":"2414","_key":"7834"},{"title":"Shuten Douji","livechart":"9145","mal":"1227","_key":"9145"},{"title":"Gall Force: Chikyuu Shou","livechart":"8813","mal":"2064","_key":"8813"},{"title":"Ankoku Shinwa","livechart":"6223","mal":"1966","_key":"6223"},{"title":"Satsujin Kippu wa Heart-iro","livechart":"6143","mal":"16247","_key":"6143"},{"title":"Teki wa Kaizoku: Neko-tachi no Kyouen","livechart":"6812","mal":"2679","_key":"6812"},{"title":"Choujuu Kishin Dancougar: Hakunetsu no Shuushou","livechart":"7184","mal":"5629","_key":"7184"},{"title":"Heisei Tensai Bakabon","livechart":"9584","mal":"19961","_key":"9584"},{"title":"Chinpui Specials","livechart":"10368","mal":"10039","_key":"10368"}]
+[
+    {
+        "title": "Satsujin Kippu wa Heart-iro",
+        "livechart": "6143",
+        "mal": "16247",
+        "_key": "6143"
+    },
+    {
+        "title": "Ankoku Shinwa",
+        "livechart": "6223",
+        "mal": "1966",
+        "_key": "6223"
+    },
+    {
+        "title": "Teki wa Kaizoku: Neko-tachi no Kyouen",
+        "livechart": "6812",
+        "mal": "2679",
+        "_key": "6812"
+    },
+    {
+        "title": "Watashi no Ashinaga Ojisan",
+        "livechart": "6909",
+        "mal": "1375",
+        "_key": "6909"
+    },
+    {
+        "title": "Kyattou Ninden Teyandee",
+        "livechart": "7047",
+        "mal": "1261",
+        "_key": "7047"
+    },
+    {
+        "title": "Choujuu Kishin Dancougar: Hakunetsu no Shuushou",
+        "livechart": "7184",
+        "mal": "5629",
+        "_key": "7184"
+    },
+    {
+        "title": "Dirty Pair: Bouryaku no 005-bin",
+        "livechart": "7262",
+        "mal": "1795",
+        "_key": "7262"
+    },
+    {
+        "title": "Dragon Quest: Abel Yuusha Densetsu",
+        "livechart": "7302",
+        "mal": "2819",
+        "_key": "7302"
+    },
+    {
+        "title": "Be-Boy Kidnapp'n Idol",
+        "livechart": "7409",
+        "mal": "2220",
+        "_key": "7409"
+    },
+    {
+        "title": "Assemble Insert",
+        "livechart": "7834",
+        "mal": "2414",
+        "_key": "7834"
+    },
+    {
+        "title": "Devilman: Yochou Sirene-hen",
+        "livechart": "7906",
+        "mal": "2355",
+        "_key": "7906"
+    },
+    {
+        "title": "Chibi Maruko-chan",
+        "livechart": "8279",
+        "mal": "951",
+        "_key": "8279"
+    },
+    {
+        "title": "Gall Force: Chikyuu Shou",
+        "livechart": "8813",
+        "mal": "2064",
+        "_key": "8813"
+    },
+    {
+        "title": "Be-Bop Highschool",
+        "livechart": "9129",
+        "mal": "9645",
+        "_key": "9129"
+    },
+    {
+        "title": "Shuten Douji",
+        "livechart": "9145",
+        "mal": "1227",
+        "_key": "9145"
+    },
+    {
+        "title": "Heisei Tensai Bakabon",
+        "livechart": "9584",
+        "mal": "19961",
+        "_key": "9584"
+    },
+    {
+        "title": "Chinpui Specials",
+        "livechart": "10368",
+        "mal": "10039",
+        "_key": "10368"
+    }
+]

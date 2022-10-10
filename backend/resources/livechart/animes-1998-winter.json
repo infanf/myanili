@@ -1,1 +1,157 @@
-[{"title":"Perfect Blue","livechart":"3399","mal":"437","_key":"3399"},{"title":"Seihou Bukyou Outlaw Star","livechart":"3870","mal":"400","_key":"3870"},{"title":"Mobile Suit Gundam: The 08th MS Team","livechart":"4109","mal":"81","_key":"4109"},{"title":"Rurouni Kenshin: Meiji Kenkaku Romantan - Ishinshishi e no Chinkonka","livechart":"4637","mal":"46","_key":"4637"},{"title":"Tekken","livechart":"7890","mal":"537","_key":"7890"},{"title":"Ginga Eiyuu Densetsu Gaiden","livechart":"4484","mal":"3371","_key":"4484"},{"title":"El Hazard: The Alternative World","livechart":"8214","mal":"115","_key":"8214"},{"title":"Macross Dynamite 7","livechart":"6546","mal":"1398","_key":"6546"},{"title":"Burn Up Excess","livechart":"6626","mal":"370","_key":"6626"},{"title":"Golgo 13: Queen Bee","livechart":"8748","mal":"1761","_key":"8748"},{"title":"Bannou Bunka Neko-Musume (1998)","livechart":"9006","mal":"375","_key":"9006"},{"title":"Sakura Taisen: Ouka Kenran","livechart":"7792","mal":"1165","_key":"7792"},{"title":"Silent Möbius","livechart":"5774","mal":"1517","_key":"5774"},{"title":"Shihaisha no Tasogare","livechart":"6681","mal":"1245","_key":"6681"},{"title":"Bomberman B-Daman Bakugaiden","livechart":"8320","mal":"1672","_key":"8320"},{"title":"Makai Tenshou","livechart":"7301","mal":"1455","_key":"7301"},{"title":"Future GPX Cyber Formula Sin","livechart":"8404","mal":"1395","_key":"8404"},{"title":"Sexy Commando Gaiden: Sugoiyo!! Masaru-san","livechart":"6686","mal":"582","_key":"6686"},{"title":"Gekiganger 3: The Movie","livechart":"8454","mal":"2067","_key":"8454"},{"title":"Detatoko Princess","livechart":"8507","mal":"2693","_key":"8507"},{"title":"Fushigi Mahou Fun Fun Pharmacy","livechart":"6796","mal":"8503","_key":"6796"},{"title":"Bakusou Kyoudai Let's & Go MAX","livechart":"10931","mal":"2709","_key":"10931"},{"title":"Kakomareta Sekai","livechart":"6668","mal":"10354","_key":"6668"},{"title":"Mahoutsukai Tai! vs. Shamanic Princess","livechart":"9081","mal":"5466","_key":"9081"},{"title":"Kochira Katsushikaku Kameari Kouenmae Hashutsujo Special: Vacance wa Hageshii no ga Osuki!?","livechart":"11479","_key":"11479"},{"title":"Sore Ike! Anpanman: Anpanman to Oyakusoku","livechart":"11406","mal":"21973","_key":"11406"}]
+[
+    {
+        "title": "Perfect Blue",
+        "livechart": "3399",
+        "mal": "437",
+        "_key": "3399"
+    },
+    {
+        "title": "Seihou Bukyou Outlaw Star",
+        "livechart": "3870",
+        "mal": "400",
+        "_key": "3870"
+    },
+    {
+        "title": "Mobile Suit Gundam: The 08th MS Team",
+        "livechart": "4109",
+        "mal": "81",
+        "_key": "4109"
+    },
+    {
+        "title": "Ginga Eiyuu Densetsu Gaiden",
+        "livechart": "4484",
+        "mal": "3371",
+        "_key": "4484"
+    },
+    {
+        "title": "Rurouni Kenshin: Meiji Kenkaku Romantan - Ishinshishi e no Chinkonka",
+        "livechart": "4637",
+        "mal": "46",
+        "_key": "4637"
+    },
+    {
+        "title": "Silent M\u00f6bius",
+        "livechart": "5774",
+        "mal": "1517",
+        "_key": "5774"
+    },
+    {
+        "title": "Macross Dynamite 7",
+        "livechart": "6546",
+        "mal": "1398",
+        "_key": "6546"
+    },
+    {
+        "title": "Burn Up Excess",
+        "livechart": "6626",
+        "mal": "370",
+        "_key": "6626"
+    },
+    {
+        "title": "Kakomareta Sekai",
+        "livechart": "6668",
+        "mal": "10354",
+        "_key": "6668"
+    },
+    {
+        "title": "Shihaisha no Tasogare",
+        "livechart": "6681",
+        "mal": "1245",
+        "_key": "6681"
+    },
+    {
+        "title": "Sexy Commando Gaiden: Sugoiyo!! Masaru-san",
+        "livechart": "6686",
+        "mal": "582",
+        "_key": "6686"
+    },
+    {
+        "title": "Fushigi Mahou Fun Fun Pharmacy",
+        "livechart": "6796",
+        "mal": "8503",
+        "_key": "6796"
+    },
+    {
+        "title": "Makai Tenshou",
+        "livechart": "7301",
+        "mal": "1455",
+        "_key": "7301"
+    },
+    {
+        "title": "Sakura Taisen: Ouka Kenran",
+        "livechart": "7792",
+        "mal": "1165",
+        "_key": "7792"
+    },
+    {
+        "title": "Tekken",
+        "livechart": "7890",
+        "mal": "537",
+        "_key": "7890"
+    },
+    {
+        "title": "El Hazard: The Alternative World",
+        "livechart": "8214",
+        "mal": "115",
+        "_key": "8214"
+    },
+    {
+        "title": "Bomberman B-Daman Bakugaiden",
+        "livechart": "8320",
+        "mal": "1672",
+        "_key": "8320"
+    },
+    {
+        "title": "Future GPX Cyber Formula Sin",
+        "livechart": "8404",
+        "mal": "1395",
+        "_key": "8404"
+    },
+    {
+        "title": "Gekiganger 3: The Movie",
+        "livechart": "8454",
+        "mal": "2067",
+        "_key": "8454"
+    },
+    {
+        "title": "Detatoko Princess",
+        "livechart": "8507",
+        "mal": "2693",
+        "_key": "8507"
+    },
+    {
+        "title": "Golgo 13: Queen Bee",
+        "livechart": "8748",
+        "mal": "1761",
+        "_key": "8748"
+    },
+    {
+        "title": "Bannou Bunka Neko-Musume (1998)",
+        "livechart": "9006",
+        "mal": "375",
+        "_key": "9006"
+    },
+    {
+        "title": "Mahoutsukai Tai! vs. Shamanic Princess",
+        "livechart": "9081",
+        "mal": "5466",
+        "_key": "9081"
+    },
+    {
+        "title": "Bakusou Kyoudai Let's & Go MAX",
+        "livechart": "10931",
+        "mal": "2709",
+        "_key": "10931"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Anpanman to Oyakusoku",
+        "livechart": "11406",
+        "mal": "21973",
+        "_key": "11406"
+    },
+    {
+        "title": "Kochira Katsushikaku Kameari Kouenmae Hashutsujo Special: Vacance wa Hageshii no ga Osuki!?",
+        "livechart": "11479",
+        "_key": "11479"
+    }
+]

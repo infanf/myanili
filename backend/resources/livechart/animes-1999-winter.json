@@ -1,1 +1,140 @@
-[{"title":"Neon Genesis Evangelion: The End of Evangelion","livechart":"3633","mal":"32","_key":"3633"},{"title":"Rurouni Kenshin: Meiji Kenkaku Romantan - Tsuioku-hen","livechart":"3796","mal":"44","_key":"3796"},{"title":"Ojamajo Doremi","livechart":"5331","mal":"350","_key":"5331"},{"title":"Kamikaze Kaitou Jeanne","livechart":"5328","mal":"142","_key":"5328"},{"title":"Seikai no Monshou","livechart":"4157","mal":"290","_key":"4157"},{"title":"Rurouni Kenshin Special","livechart":"5810","mal":"12067","_key":"5810"},{"title":"Pokemon: Pikachu no Fuyuyasumi","livechart":"5217","mal":"4874","_key":"5217"},{"title":"Iketeru Futari","livechart":"6289","mal":"637","_key":"6289"},{"title":"Tooi Sekai","livechart":"4601","mal":"2210","_key":"4601"},{"title":"Seihou Bukyou Outlaw Star Specials","livechart":"6921","mal":"33713","_key":"6921"},{"title":"Himiko-den","livechart":"8184","mal":"360","_key":"8184"},{"title":"Kashou no Tsuki: Aki Kyougen","livechart":"7512","mal":"1036","_key":"7512"},{"title":"Domo-kun","livechart":"8857","mal":"7643","_key":"8857"},{"title":"Devilman Memorial","livechart":"8116","mal":"35952","_key":"8116"},{"title":"DNA Sights 999.9","livechart":"8449","mal":"2019","_key":"8449"},{"title":"Herlock Saga: Nibelung no Yubiwa","livechart":"8822","mal":"1645","_key":"8822"},{"title":"Sotsugyou M: Ore-tachi no Carnival","livechart":"7636","mal":"2779","_key":"7636"},{"title":"Beast Wars Neo","livechart":"6651","mal":"6511","_key":"6651"},{"title":"Tekkon Kinkreet Pilot","livechart":"8947","mal":"32247","_key":"8947"},{"title":"Shishunki Bishoujo Gattai Robo Z-MIND","livechart":"7770","mal":"2731","_key":"7770"},{"title":"Beast Wars Second Chou Seimeitai Transformers: Lio Convoy Kiki Ippatsu! Movie","livechart":"7950","mal":"5289","_key":"7950"},{"title":"Nanatsu no Hoshi","livechart":"8874","mal":"26335","_key":"8874"},{"title":"Dennou Sentai Voogie's★Angel: Forever and Ever","livechart":"11049","mal":"17131","_key":"11049"}]
+[
+    {
+        "title": "Neon Genesis Evangelion: The End of Evangelion",
+        "livechart": "3633",
+        "mal": "32",
+        "_key": "3633"
+    },
+    {
+        "title": "Rurouni Kenshin: Meiji Kenkaku Romantan - Tsuioku-hen",
+        "livechart": "3796",
+        "mal": "44",
+        "_key": "3796"
+    },
+    {
+        "title": "Seikai no Monshou",
+        "livechart": "4157",
+        "mal": "290",
+        "_key": "4157"
+    },
+    {
+        "title": "Tooi Sekai",
+        "livechart": "4601",
+        "mal": "2210",
+        "_key": "4601"
+    },
+    {
+        "title": "Pokemon: Pikachu no Fuyuyasumi",
+        "livechart": "5217",
+        "mal": "4874",
+        "_key": "5217"
+    },
+    {
+        "title": "Kamikaze Kaitou Jeanne",
+        "livechart": "5328",
+        "mal": "142",
+        "_key": "5328"
+    },
+    {
+        "title": "Ojamajo Doremi",
+        "livechart": "5331",
+        "mal": "350",
+        "_key": "5331"
+    },
+    {
+        "title": "Rurouni Kenshin Special",
+        "livechart": "5810",
+        "mal": "12067",
+        "_key": "5810"
+    },
+    {
+        "title": "Iketeru Futari",
+        "livechart": "6289",
+        "mal": "637",
+        "_key": "6289"
+    },
+    {
+        "title": "Beast Wars Neo",
+        "livechart": "6651",
+        "mal": "6511",
+        "_key": "6651"
+    },
+    {
+        "title": "Seihou Bukyou Outlaw Star Specials",
+        "livechart": "6921",
+        "mal": "33713",
+        "_key": "6921"
+    },
+    {
+        "title": "Kashou no Tsuki: Aki Kyougen",
+        "livechart": "7512",
+        "mal": "1036",
+        "_key": "7512"
+    },
+    {
+        "title": "Sotsugyou M: Ore-tachi no Carnival",
+        "livechart": "7636",
+        "mal": "2779",
+        "_key": "7636"
+    },
+    {
+        "title": "Shishunki Bishoujo Gattai Robo Z-MIND",
+        "livechart": "7770",
+        "mal": "2731",
+        "_key": "7770"
+    },
+    {
+        "title": "Beast Wars Second Chou Seimeitai Transformers: Lio Convoy Kiki Ippatsu! Movie",
+        "livechart": "7950",
+        "mal": "5289",
+        "_key": "7950"
+    },
+    {
+        "title": "Devilman Memorial",
+        "livechart": "8116",
+        "mal": "35952",
+        "_key": "8116"
+    },
+    {
+        "title": "Himiko-den",
+        "livechart": "8184",
+        "mal": "360",
+        "_key": "8184"
+    },
+    {
+        "title": "DNA Sights 999.9",
+        "livechart": "8449",
+        "mal": "2019",
+        "_key": "8449"
+    },
+    {
+        "title": "Herlock Saga: Nibelung no Yubiwa",
+        "livechart": "8822",
+        "mal": "1645",
+        "_key": "8822"
+    },
+    {
+        "title": "Domo-kun",
+        "livechart": "8857",
+        "mal": "7643",
+        "_key": "8857"
+    },
+    {
+        "title": "Nanatsu no Hoshi",
+        "livechart": "8874",
+        "mal": "26335",
+        "_key": "8874"
+    },
+    {
+        "title": "Tekkon Kinkreet Pilot",
+        "livechart": "8947",
+        "mal": "32247",
+        "_key": "8947"
+    },
+    {
+        "title": "Dennou Sentai Voogie's\u2605Angel: Forever and Ever",
+        "livechart": "11049",
+        "mal": "17131",
+        "_key": "11049"
+    }
+]

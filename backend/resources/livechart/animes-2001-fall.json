@@ -1,1 +1,217 @@
-[{"title":"Hellsing","livechart":"3639","mal":"270","_key":"3639"},{"title":"Cowboy Bebop: Tengoku no Tobira","livechart":"3419","mal":"5","_key":"3419"},{"title":"Tennis no Ouji-sama","livechart":"4029","mal":"22","_key":"4029"},{"title":"Groove Adventure Rave","livechart":"4116","mal":"246","_key":"4116"},{"title":"Hikaru no Go","livechart":"4084","mal":"135","_key":"4084"},{"title":"Captain Tsubasa: Road to 2002","livechart":"4490","mal":"1614","_key":"4490"},{"title":"Mahoromatic: Automatic Maiden","livechart":"3991","mal":"276","_key":"3991"},{"title":"Vandread: The Second Stage","livechart":"4431","mal":"181","_key":"4431"},{"title":"X","livechart":"4244","mal":"156","_key":"4244"},{"title":"Hoshi no Kirby","livechart":"5402","mal":"2390","_key":"5402"},{"title":"Cyborg 009: The Cyborg Soldier","livechart":"5863","mal":"1678","_key":"5863"},{"title":"Final Fantasy: Unlimited","livechart":"6449","mal":"1157","_key":"6449"},{"title":"Otogi Story Tenshi no Shippo","livechart":"6058","mal":"682","_key":"6058"},{"title":"Chicchana Yukitsukai Sugar","livechart":"6721","mal":"831","_key":"6721"},{"title":"Hanaukyou Maid-tai OVA","livechart":"5282","mal":"797","_key":"5282"},{"title":"Najica Dengeki Sakusen","livechart":"7853","mal":"321","_key":"7853"},{"title":"Kaze no Youjinbou","livechart":"6742","mal":"1145","_key":"6742"},{"title":"Gekitou! Crush Gear Turbo","livechart":"8733","mal":"3012","_key":"8733"},{"title":"Project ARMS: The 2nd Chapter","livechart":"7602","mal":"1493","_key":"7602"},{"title":"I: Wish You Were Here","livechart":"6662","mal":"1156","_key":"6662"},{"title":"Mazinkaiser","livechart":"6234","mal":"1064","_key":"6234"},{"title":"Kokoro Toshokan","livechart":"5946","mal":"799","_key":"5946"},{"title":"Memories Off","livechart":"6597","mal":"361","_key":"6597"},{"title":"Babel Nisei (2001)","livechart":"8427","mal":"1664","_key":"8427"},{"title":"Mobile Suit Gundam: Zeonic Front - Indignation of Zeon.","livechart":"7540","mal":"20667","_key":"7540"},{"title":"6 Angels","livechart":"6158","mal":"2475","_key":"6158"},{"title":"Shiawase Sou no Okojo-san","livechart":"8494","mal":"2934","_key":"8494"},{"title":"Shenmue: The Movie","livechart":"9059","mal":"4524","_key":"9059"},{"title":"Koro no Dai Sanpo","livechart":"8608","mal":"6975","_key":"8608"},{"title":"Kujiratori","livechart":"7605","mal":"2895","_key":"7605"},{"title":"Generation of Chaos","livechart":"7314","mal":"2776","_key":"7314"},{"title":"Kikaider 01 The Animation","livechart":"6971","mal":"1768","_key":"6971"},{"title":"Piroppo","livechart":"8575","mal":"5018","_key":"8575"},{"title":"The SoulTaker: Tamashii-gari - Komugi Daisakusen","livechart":"11279","mal":"3849","_key":"11279"},{"title":"Kochira Katsushikaku Kameari Kouenmae Hashutsujo Special: Yukemuri Porori! 2001-nen - Kyoto no Tabi","livechart":"11487","_key":"11487"},{"title":"Boku no Chikyuu wo Mamotte: Kiniro no Toki Nagarete","livechart":"11031","mal":"10036","_key":"11031"}]
+[
+    {
+        "title": "Cowboy Bebop: Tengoku no Tobira",
+        "livechart": "3419",
+        "mal": "5",
+        "_key": "3419"
+    },
+    {
+        "title": "Hellsing",
+        "livechart": "3639",
+        "mal": "270",
+        "_key": "3639"
+    },
+    {
+        "title": "Mahoromatic: Automatic Maiden",
+        "livechart": "3991",
+        "mal": "276",
+        "_key": "3991"
+    },
+    {
+        "title": "Tennis no Ouji-sama",
+        "livechart": "4029",
+        "mal": "22",
+        "_key": "4029"
+    },
+    {
+        "title": "Hikaru no Go",
+        "livechart": "4084",
+        "mal": "135",
+        "_key": "4084"
+    },
+    {
+        "title": "Groove Adventure Rave",
+        "livechart": "4116",
+        "mal": "246",
+        "_key": "4116"
+    },
+    {
+        "title": "X",
+        "livechart": "4244",
+        "mal": "156",
+        "_key": "4244"
+    },
+    {
+        "title": "Vandread: The Second Stage",
+        "livechart": "4431",
+        "mal": "181",
+        "_key": "4431"
+    },
+    {
+        "title": "Captain Tsubasa: Road to 2002",
+        "livechart": "4490",
+        "mal": "1614",
+        "_key": "4490"
+    },
+    {
+        "title": "Hanaukyou Maid-tai OVA",
+        "livechart": "5282",
+        "mal": "797",
+        "_key": "5282"
+    },
+    {
+        "title": "Hoshi no Kirby",
+        "livechart": "5402",
+        "mal": "2390",
+        "_key": "5402"
+    },
+    {
+        "title": "Cyborg 009: The Cyborg Soldier",
+        "livechart": "5863",
+        "mal": "1678",
+        "_key": "5863"
+    },
+    {
+        "title": "Kokoro Toshokan",
+        "livechart": "5946",
+        "mal": "799",
+        "_key": "5946"
+    },
+    {
+        "title": "Otogi Story Tenshi no Shippo",
+        "livechart": "6058",
+        "mal": "682",
+        "_key": "6058"
+    },
+    {
+        "title": "6 Angels",
+        "livechart": "6158",
+        "mal": "2475",
+        "_key": "6158"
+    },
+    {
+        "title": "Mazinkaiser",
+        "livechart": "6234",
+        "mal": "1064",
+        "_key": "6234"
+    },
+    {
+        "title": "Final Fantasy: Unlimited",
+        "livechart": "6449",
+        "mal": "1157",
+        "_key": "6449"
+    },
+    {
+        "title": "Memories Off",
+        "livechart": "6597",
+        "mal": "361",
+        "_key": "6597"
+    },
+    {
+        "title": "I: Wish You Were Here",
+        "livechart": "6662",
+        "mal": "1156",
+        "_key": "6662"
+    },
+    {
+        "title": "Chicchana Yukitsukai Sugar",
+        "livechart": "6721",
+        "mal": "831",
+        "_key": "6721"
+    },
+    {
+        "title": "Kaze no Youjinbou",
+        "livechart": "6742",
+        "mal": "1145",
+        "_key": "6742"
+    },
+    {
+        "title": "Kikaider 01 The Animation",
+        "livechart": "6971",
+        "mal": "1768",
+        "_key": "6971"
+    },
+    {
+        "title": "Generation of Chaos",
+        "livechart": "7314",
+        "mal": "2776",
+        "_key": "7314"
+    },
+    {
+        "title": "Mobile Suit Gundam: Zeonic Front - Indignation of Zeon.",
+        "livechart": "7540",
+        "mal": "20667",
+        "_key": "7540"
+    },
+    {
+        "title": "Project ARMS: The 2nd Chapter",
+        "livechart": "7602",
+        "mal": "1493",
+        "_key": "7602"
+    },
+    {
+        "title": "Kujiratori",
+        "livechart": "7605",
+        "mal": "2895",
+        "_key": "7605"
+    },
+    {
+        "title": "Najica Dengeki Sakusen",
+        "livechart": "7853",
+        "mal": "321",
+        "_key": "7853"
+    },
+    {
+        "title": "Babel Nisei (2001)",
+        "livechart": "8427",
+        "mal": "1664",
+        "_key": "8427"
+    },
+    {
+        "title": "Shiawase Sou no Okojo-san",
+        "livechart": "8494",
+        "mal": "2934",
+        "_key": "8494"
+    },
+    {
+        "title": "Piroppo",
+        "livechart": "8575",
+        "mal": "5018",
+        "_key": "8575"
+    },
+    {
+        "title": "Koro no Dai Sanpo",
+        "livechart": "8608",
+        "mal": "6975",
+        "_key": "8608"
+    },
+    {
+        "title": "Gekitou! Crush Gear Turbo",
+        "livechart": "8733",
+        "mal": "3012",
+        "_key": "8733"
+    },
+    {
+        "title": "Shenmue: The Movie",
+        "livechart": "9059",
+        "mal": "4524",
+        "_key": "9059"
+    },
+    {
+        "title": "Boku no Chikyuu wo Mamotte: Kiniro no Toki Nagarete",
+        "livechart": "11031",
+        "mal": "10036",
+        "_key": "11031"
+    },
+    {
+        "title": "The SoulTaker: Tamashii-gari - Komugi Daisakusen",
+        "livechart": "11279",
+        "mal": "3849",
+        "_key": "11279"
+    },
+    {
+        "title": "Kochira Katsushikaku Kameari Kouenmae Hashutsujo Special: Yukemuri Porori! 2001-nen - Kyoto no Tabi",
+        "livechart": "11487",
+        "_key": "11487"
+    }
+]

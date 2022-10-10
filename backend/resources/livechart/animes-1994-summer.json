@@ -1,1 +1,170 @@
-[{"title":"Dragon Ball Z Movie 11: Super Senshi Gekiha!! Katsu no wa Ore da","livechart":"4304","mal":"904","_key":"4304"},{"title":"JoJo no Kimyou na Bouken","livechart":"5036","mal":"666","_key":"5036"},{"title":"Heisei Tanuki Gassen Ponpoko","livechart":"3083","mal":"1030","_key":"3083"},{"title":"Ginga Eiyuu Densetsu","livechart":"3708","mal":"820","_key":"3708"},{"title":"Macross Plus","livechart":"4354","mal":"474","_key":"4354"},{"title":"Grappler Baki","livechart":"9326","mal":"1859","_key":"9326"},{"title":"Slam Dunk: Zenkoku Seiha Da! - Sakuragi Hanamichi","livechart":"5443","mal":"1861","_key":"5443"},{"title":"Street Fighter II Movie","livechart":"8024","mal":"1362","_key":"8024"},{"title":"Ranma ½: Chou Musabetsu Kessen! Ranma Team vs. Densetsu no Houou","livechart":"6633","mal":"1010","_key":"6633"},{"title":"Iria: Zeiram The Animation","livechart":"5521","mal":"432","_key":"5521"},{"title":"Kizuna","livechart":"6102","mal":"733","_key":"6102"},{"title":"Fatal Fury: The Motion Picture","livechart":"7282","mal":"504","_key":"7282"},{"title":"Boku wa Konomama Kaeranai","livechart":"8147","mal":"1216","_key":"8147"},{"title":"Osakana wa Ami no Naka","livechart":"6149","mal":"752","_key":"6149"},{"title":"Bronze: Kouji Nanjo Cathexis","livechart":"7253","mal":"3007","_key":"7253"},{"title":"Tanin no Kankei","livechart":"8570","mal":"4451","_key":"8570"},{"title":"Yuugen Kaisha","livechart":"7579","mal":"599","_key":"7579"},{"title":"Junkers Come Here","livechart":"8716","mal":"1116","_key":"8716"},{"title":"Huckleberry Finn Monogatari","livechart":"9063","mal":"4800","_key":"9063"},{"title":"GS Mikami: Gokuraku Daisakusen!!","livechart":"7071","mal":"3037","_key":"7071"},{"title":"Nana Toshi Monogatari: Hokkyokukai Sensen","livechart":"9061","mal":"4617","_key":"9061"},{"title":"Maps","livechart":"9167","mal":"1620","_key":"9167"},{"title":"Guskou Budori no Denki","livechart":"8636","mal":"8450","_key":"8636"},{"title":"Cosmic Fantasy: Ginga Mehyou no Wana","livechart":"7961","mal":"5990","_key":"7961"},{"title":"Dr. Slump Movie 09: Arale-chan N-cha!! Wakuwaku Hot no Natsuyasumi","livechart":"10996","mal":"7158","_key":"10996"},{"title":"Sore Ike! Anpanman: Minna Atsumare! Anpanman World","livechart":"11398","mal":"21961","_key":"11398"},{"title":"Sore Ike! Anpanman: Lyrical☆Magical Mahou no Gakkou","livechart":"11433","mal":"22035","_key":"11433"},{"title":"Lupin III: Moeyo Zantetsuken!","livechart":"11512","mal":"1417","_key":"11512"}]
+[
+    {
+        "title": "Heisei Tanuki Gassen Ponpoko",
+        "livechart": "3083",
+        "mal": "1030",
+        "_key": "3083"
+    },
+    {
+        "title": "Ginga Eiyuu Densetsu",
+        "livechart": "3708",
+        "mal": "820",
+        "_key": "3708"
+    },
+    {
+        "title": "Dragon Ball Z Movie 11: Super Senshi Gekiha!! Katsu no wa Ore da",
+        "livechart": "4304",
+        "mal": "904",
+        "_key": "4304"
+    },
+    {
+        "title": "Macross Plus",
+        "livechart": "4354",
+        "mal": "474",
+        "_key": "4354"
+    },
+    {
+        "title": "JoJo no Kimyou na Bouken",
+        "livechart": "5036",
+        "mal": "666",
+        "_key": "5036"
+    },
+    {
+        "title": "Slam Dunk: Zenkoku Seiha Da! - Sakuragi Hanamichi",
+        "livechart": "5443",
+        "mal": "1861",
+        "_key": "5443"
+    },
+    {
+        "title": "Iria: Zeiram The Animation",
+        "livechart": "5521",
+        "mal": "432",
+        "_key": "5521"
+    },
+    {
+        "title": "Kizuna",
+        "livechart": "6102",
+        "mal": "733",
+        "_key": "6102"
+    },
+    {
+        "title": "Osakana wa Ami no Naka",
+        "livechart": "6149",
+        "mal": "752",
+        "_key": "6149"
+    },
+    {
+        "title": "Ranma \u00bd: Chou Musabetsu Kessen! Ranma Team vs. Densetsu no Houou",
+        "livechart": "6633",
+        "mal": "1010",
+        "_key": "6633"
+    },
+    {
+        "title": "GS Mikami: Gokuraku Daisakusen!!",
+        "livechart": "7071",
+        "mal": "3037",
+        "_key": "7071"
+    },
+    {
+        "title": "Bronze: Kouji Nanjo Cathexis",
+        "livechart": "7253",
+        "mal": "3007",
+        "_key": "7253"
+    },
+    {
+        "title": "Fatal Fury: The Motion Picture",
+        "livechart": "7282",
+        "mal": "504",
+        "_key": "7282"
+    },
+    {
+        "title": "Yuugen Kaisha",
+        "livechart": "7579",
+        "mal": "599",
+        "_key": "7579"
+    },
+    {
+        "title": "Cosmic Fantasy: Ginga Mehyou no Wana",
+        "livechart": "7961",
+        "mal": "5990",
+        "_key": "7961"
+    },
+    {
+        "title": "Street Fighter II Movie",
+        "livechart": "8024",
+        "mal": "1362",
+        "_key": "8024"
+    },
+    {
+        "title": "Boku wa Konomama Kaeranai",
+        "livechart": "8147",
+        "mal": "1216",
+        "_key": "8147"
+    },
+    {
+        "title": "Tanin no Kankei",
+        "livechart": "8570",
+        "mal": "4451",
+        "_key": "8570"
+    },
+    {
+        "title": "Guskou Budori no Denki",
+        "livechart": "8636",
+        "mal": "8450",
+        "_key": "8636"
+    },
+    {
+        "title": "Junkers Come Here",
+        "livechart": "8716",
+        "mal": "1116",
+        "_key": "8716"
+    },
+    {
+        "title": "Nana Toshi Monogatari: Hokkyokukai Sensen",
+        "livechart": "9061",
+        "mal": "4617",
+        "_key": "9061"
+    },
+    {
+        "title": "Huckleberry Finn Monogatari",
+        "livechart": "9063",
+        "mal": "4800",
+        "_key": "9063"
+    },
+    {
+        "title": "Maps",
+        "livechart": "9167",
+        "mal": "1620",
+        "_key": "9167"
+    },
+    {
+        "title": "Grappler Baki",
+        "livechart": "9326",
+        "mal": "1859",
+        "_key": "9326"
+    },
+    {
+        "title": "Dr. Slump Movie 09: Arale-chan N-cha!! Wakuwaku Hot no Natsuyasumi",
+        "livechart": "10996",
+        "mal": "7158",
+        "_key": "10996"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Minna Atsumare! Anpanman World",
+        "livechart": "11398",
+        "mal": "21961",
+        "_key": "11398"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Lyrical\u2606Magical Mahou no Gakkou",
+        "livechart": "11433",
+        "mal": "22035",
+        "_key": "11433"
+    },
+    {
+        "title": "Lupin III: Moeyo Zantetsuken!",
+        "livechart": "11512",
+        "mal": "1417",
+        "_key": "11512"
+    }
+]

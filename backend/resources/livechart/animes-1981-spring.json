@@ -1,1 +1,80 @@
-[{"title":"Mobile Suit Gundam I","livechart":"4695","mal":"1090","_key":"4695"},{"title":"Dr. Slump: Arale-chan","livechart":"8828","mal":"2222","_key":"8828"},{"title":"Tiger Mask Nisei","livechart":"8475","mal":"5832","_key":"8475"},{"title":"Doraemon Movie 02: Nobita no Uchuu Kaitakushi","livechart":"8897","mal":"2662","_key":"8897"},{"title":"Hyakujuu-Ou GoLion","livechart":"6104","mal":"1448","_key":"6104"},{"title":"Hello! Sandybell","livechart":"8244","mal":"2799","_key":"8244"},{"title":"Natsu e no Tobira","livechart":"6795","mal":"2621","_key":"6795"},{"title":"Meiken Jolie","livechart":"7551","mal":"3836","_key":"7551"},{"title":"Shin Taketori Monogatari: 1000-nen Joou","livechart":"6783","mal":"1548","_key":"6783"},{"title":"Unico","livechart":"6968","mal":"2427","_key":"6968"},{"title":"Jarinko Chie","livechart":"7668","mal":"3946","_key":"7668"},{"title":"Helen Keller Monogatari: Ai to Hikari no Tenshi","livechart":"7841","mal":"6728","_key":"7841"},{"title":"Ai no Gakkou Cuore Monogatari","livechart":"8005","mal":"3835","_key":"8005"}]
+[
+    {
+        "title": "Mobile Suit Gundam I",
+        "livechart": "4695",
+        "mal": "1090",
+        "_key": "4695"
+    },
+    {
+        "title": "Hyakujuu-Ou GoLion",
+        "livechart": "6104",
+        "mal": "1448",
+        "_key": "6104"
+    },
+    {
+        "title": "Shin Taketori Monogatari: 1000-nen Joou",
+        "livechart": "6783",
+        "mal": "1548",
+        "_key": "6783"
+    },
+    {
+        "title": "Natsu e no Tobira",
+        "livechart": "6795",
+        "mal": "2621",
+        "_key": "6795"
+    },
+    {
+        "title": "Unico",
+        "livechart": "6968",
+        "mal": "2427",
+        "_key": "6968"
+    },
+    {
+        "title": "Meiken Jolie",
+        "livechart": "7551",
+        "mal": "3836",
+        "_key": "7551"
+    },
+    {
+        "title": "Jarinko Chie",
+        "livechart": "7668",
+        "mal": "3946",
+        "_key": "7668"
+    },
+    {
+        "title": "Helen Keller Monogatari: Ai to Hikari no Tenshi",
+        "livechart": "7841",
+        "mal": "6728",
+        "_key": "7841"
+    },
+    {
+        "title": "Ai no Gakkou Cuore Monogatari",
+        "livechart": "8005",
+        "mal": "3835",
+        "_key": "8005"
+    },
+    {
+        "title": "Hello! Sandybell",
+        "livechart": "8244",
+        "mal": "2799",
+        "_key": "8244"
+    },
+    {
+        "title": "Tiger Mask Nisei",
+        "livechart": "8475",
+        "mal": "5832",
+        "_key": "8475"
+    },
+    {
+        "title": "Dr. Slump: Arale-chan",
+        "livechart": "8828",
+        "mal": "2222",
+        "_key": "8828"
+    },
+    {
+        "title": "Doraemon Movie 02: Nobita no Uchuu Kaitakushi",
+        "livechart": "8897",
+        "mal": "2662",
+        "_key": "8897"
+    }
+]

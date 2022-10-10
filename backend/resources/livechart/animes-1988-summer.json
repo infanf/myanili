@@ -1,1 +1,80 @@
-[{"title":"Akira","livechart":"3613","mal":"47","_key":"3613"},{"title":"Dragon Ball Movie 3: Makafushigi Daibouken","livechart":"4815","mal":"892","_key":"4815"},{"title":"Dragon Ball Specials","livechart":"4919","mal":"2520","_key":"4919"},{"title":"Kyuuketsuhime Miyu","livechart":"5405","mal":"1384","_key":"5405"},{"title":"Saint Seiya: Shinku no Shounen Densetsu","livechart":"5911","mal":"1255","_key":"5911"},{"title":"Deimos no Hanayome: Ran no Kumikyoku","livechart":"5811","mal":"5918","_key":"5811"},{"title":"Project A-Ko 3: Cinderella Rhapsody","livechart":"9152","mal":"1297","_key":"9152"},{"title":"Doraemon: Treasure of the Shinugumi Mountain","livechart":"8883","mal":"2644","_key":"8883"},{"title":"Antique Heart","livechart":"7731","mal":"5926","_key":"7731"},{"title":"Tokyo Vice","livechart":"8807","mal":"2003","_key":"8807"},{"title":"Kaze no Matasaburou","livechart":"7638","mal":"12141","_key":"7638"},{"title":"What's Michael? 2","livechart":"6896","mal":"12037","_key":"6896"},{"title":"Akai Koudan Zillion: Utahime Yakyoku","livechart":"11241","mal":"2689","_key":"11241"}]
+[
+    {
+        "title": "Akira",
+        "livechart": "3613",
+        "mal": "47",
+        "_key": "3613"
+    },
+    {
+        "title": "Dragon Ball Movie 3: Makafushigi Daibouken",
+        "livechart": "4815",
+        "mal": "892",
+        "_key": "4815"
+    },
+    {
+        "title": "Dragon Ball Specials",
+        "livechart": "4919",
+        "mal": "2520",
+        "_key": "4919"
+    },
+    {
+        "title": "Kyuuketsuhime Miyu",
+        "livechart": "5405",
+        "mal": "1384",
+        "_key": "5405"
+    },
+    {
+        "title": "Deimos no Hanayome: Ran no Kumikyoku",
+        "livechart": "5811",
+        "mal": "5918",
+        "_key": "5811"
+    },
+    {
+        "title": "Saint Seiya: Shinku no Shounen Densetsu",
+        "livechart": "5911",
+        "mal": "1255",
+        "_key": "5911"
+    },
+    {
+        "title": "What's Michael? 2",
+        "livechart": "6896",
+        "mal": "12037",
+        "_key": "6896"
+    },
+    {
+        "title": "Kaze no Matasaburou",
+        "livechart": "7638",
+        "mal": "12141",
+        "_key": "7638"
+    },
+    {
+        "title": "Antique Heart",
+        "livechart": "7731",
+        "mal": "5926",
+        "_key": "7731"
+    },
+    {
+        "title": "Tokyo Vice",
+        "livechart": "8807",
+        "mal": "2003",
+        "_key": "8807"
+    },
+    {
+        "title": "Doraemon: Treasure of the Shinugumi Mountain",
+        "livechart": "8883",
+        "mal": "2644",
+        "_key": "8883"
+    },
+    {
+        "title": "Project A-Ko 3: Cinderella Rhapsody",
+        "livechart": "9152",
+        "mal": "1297",
+        "_key": "9152"
+    },
+    {
+        "title": "Akai Koudan Zillion: Utahime Yakyoku",
+        "livechart": "11241",
+        "mal": "2689",
+        "_key": "11241"
+    }
+]

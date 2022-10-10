@@ -1,1 +1,205 @@
-[{"title":"Perfect Blue","livechart":"3399","mal":"437","_key":"3399"},{"title":"Kareshi Kanojo no Jijou","livechart":"3754","mal":"145","_key":"3754"},{"title":"Hunter x Hunter Pilot","livechart":"6373","mal":"10189","_key":"6373"},{"title":"Majutsushi Orphen","livechart":"4950","mal":"1017","_key":"4950"},{"title":"Ao no 6-gou","livechart":"5065","mal":"1051","_key":"5065"},{"title":"Bubblegum Crisis Tokyo 2040","livechart":"8384","mal":"568","_key":"8384"},{"title":"Spriggan","livechart":"5799","mal":"420","_key":"5799"},{"title":"Devilman Lady","livechart":"5981","mal":"1629","_key":"5981"},{"title":"Saber Marionette J to X","livechart":"5802","mal":"1231","_key":"5802"},{"title":"Slayers Excellent","livechart":"5582","mal":"1171","_key":"5582"},{"title":"Gasaraki","livechart":"6242","mal":"782","_key":"6242"},{"title":"Suteki desu wa, Sakura-chan! Tomoyo no Cardcaptor Sakura Katsuyaku Video Nikki!","livechart":"4645","mal":"2424","_key":"4645"},{"title":"Ginga Eiyuu Densetsu Gaiden","livechart":"4484","mal":"3371","_key":"4484"},{"title":"Chousoku Spinner","livechart":"8169","mal":"2703","_key":"8169"},{"title":"Master Keaton","livechart":"4853","mal":"1483","_key":"4853"},{"title":"Mamotte Shugogetten!","livechart":"9087","mal":"626","_key":"9087"},{"title":"Yume de Aetara (TV)","livechart":"8609","mal":"718","_key":"8609"},{"title":"Eat-Man '98","livechart":"6260","mal":"1599","_key":"6260"},{"title":"Yoiko","livechart":"7042","mal":"4591","_key":"7042"},{"title":"Jikuu Tantei Genshi-kun","livechart":"6858","mal":"2281","_key":"6858"},{"title":"Kurogane Communication","livechart":"7679","mal":"1660","_key":"7679"},{"title":"Generator Gawl","livechart":"6870","mal":"1022","_key":"6870"},{"title":"Super Doll Licca-chan","livechart":"6207","mal":"2766","_key":"6207"},{"title":"Kaiketsu Jouki Tanteidan","livechart":"8484","mal":"2704","_key":"8484"},{"title":"Kujira no Chouyaku","livechart":"7684","mal":"1204","_key":"7684"},{"title":"Popolocrois Monogatari","livechart":"9053","mal":"4191","_key":"9053"},{"title":"Totsugeki! Pappara-tai","livechart":"8580","mal":"5278","_key":"8580"},{"title":"Bannou Bunka Neko-Musume DASH!","livechart":"10425","mal":"374","_key":"10425"},{"title":"Ojarumaru","livechart":"9060","mal":"4459","_key":"9060"},{"title":"DinoZone","livechart":"8522","mal":"3499","_key":"8522"},{"title":"Kochira Katsushikaku Kameari Kouenmae Hashutsujo Special: Dai Hard 2! Shijou Saitei no Kessen","livechart":"11482","_key":"11482"},{"title":"Let's Nupu Nupu","livechart":"11214","mal":"5132","_key":"11214"},{"title":"Saint Luminous Jogakuin","livechart":"10936","mal":"2781","_key":"10936"},{"title":"Dokkiri Doctor","livechart":"11299","mal":"4554","_key":"11299"}]
+[
+    {
+        "title": "Perfect Blue",
+        "livechart": "3399",
+        "mal": "437",
+        "_key": "3399"
+    },
+    {
+        "title": "Kareshi Kanojo no Jijou",
+        "livechart": "3754",
+        "mal": "145",
+        "_key": "3754"
+    },
+    {
+        "title": "Ginga Eiyuu Densetsu Gaiden",
+        "livechart": "4484",
+        "mal": "3371",
+        "_key": "4484"
+    },
+    {
+        "title": "Suteki desu wa, Sakura-chan! Tomoyo no Cardcaptor Sakura Katsuyaku Video Nikki!",
+        "livechart": "4645",
+        "mal": "2424",
+        "_key": "4645"
+    },
+    {
+        "title": "Master Keaton",
+        "livechart": "4853",
+        "mal": "1483",
+        "_key": "4853"
+    },
+    {
+        "title": "Majutsushi Orphen",
+        "livechart": "4950",
+        "mal": "1017",
+        "_key": "4950"
+    },
+    {
+        "title": "Ao no 6-gou",
+        "livechart": "5065",
+        "mal": "1051",
+        "_key": "5065"
+    },
+    {
+        "title": "Slayers Excellent",
+        "livechart": "5582",
+        "mal": "1171",
+        "_key": "5582"
+    },
+    {
+        "title": "Spriggan",
+        "livechart": "5799",
+        "mal": "420",
+        "_key": "5799"
+    },
+    {
+        "title": "Saber Marionette J to X",
+        "livechart": "5802",
+        "mal": "1231",
+        "_key": "5802"
+    },
+    {
+        "title": "Devilman Lady",
+        "livechart": "5981",
+        "mal": "1629",
+        "_key": "5981"
+    },
+    {
+        "title": "Super Doll Licca-chan",
+        "livechart": "6207",
+        "mal": "2766",
+        "_key": "6207"
+    },
+    {
+        "title": "Gasaraki",
+        "livechart": "6242",
+        "mal": "782",
+        "_key": "6242"
+    },
+    {
+        "title": "Eat-Man '98",
+        "livechart": "6260",
+        "mal": "1599",
+        "_key": "6260"
+    },
+    {
+        "title": "Hunter x Hunter Pilot",
+        "livechart": "6373",
+        "mal": "10189",
+        "_key": "6373"
+    },
+    {
+        "title": "Jikuu Tantei Genshi-kun",
+        "livechart": "6858",
+        "mal": "2281",
+        "_key": "6858"
+    },
+    {
+        "title": "Generator Gawl",
+        "livechart": "6870",
+        "mal": "1022",
+        "_key": "6870"
+    },
+    {
+        "title": "Yoiko",
+        "livechart": "7042",
+        "mal": "4591",
+        "_key": "7042"
+    },
+    {
+        "title": "Kurogane Communication",
+        "livechart": "7679",
+        "mal": "1660",
+        "_key": "7679"
+    },
+    {
+        "title": "Kujira no Chouyaku",
+        "livechart": "7684",
+        "mal": "1204",
+        "_key": "7684"
+    },
+    {
+        "title": "Chousoku Spinner",
+        "livechart": "8169",
+        "mal": "2703",
+        "_key": "8169"
+    },
+    {
+        "title": "Bubblegum Crisis Tokyo 2040",
+        "livechart": "8384",
+        "mal": "568",
+        "_key": "8384"
+    },
+    {
+        "title": "Kaiketsu Jouki Tanteidan",
+        "livechart": "8484",
+        "mal": "2704",
+        "_key": "8484"
+    },
+    {
+        "title": "DinoZone",
+        "livechart": "8522",
+        "mal": "3499",
+        "_key": "8522"
+    },
+    {
+        "title": "Totsugeki! Pappara-tai",
+        "livechart": "8580",
+        "mal": "5278",
+        "_key": "8580"
+    },
+    {
+        "title": "Yume de Aetara (TV)",
+        "livechart": "8609",
+        "mal": "718",
+        "_key": "8609"
+    },
+    {
+        "title": "Popolocrois Monogatari",
+        "livechart": "9053",
+        "mal": "4191",
+        "_key": "9053"
+    },
+    {
+        "title": "Ojarumaru",
+        "livechart": "9060",
+        "mal": "4459",
+        "_key": "9060"
+    },
+    {
+        "title": "Mamotte Shugogetten!",
+        "livechart": "9087",
+        "mal": "626",
+        "_key": "9087"
+    },
+    {
+        "title": "Bannou Bunka Neko-Musume DASH!",
+        "livechart": "10425",
+        "mal": "374",
+        "_key": "10425"
+    },
+    {
+        "title": "Saint Luminous Jogakuin",
+        "livechart": "10936",
+        "mal": "2781",
+        "_key": "10936"
+    },
+    {
+        "title": "Let's Nupu Nupu",
+        "livechart": "11214",
+        "mal": "5132",
+        "_key": "11214"
+    },
+    {
+        "title": "Dokkiri Doctor",
+        "livechart": "11299",
+        "mal": "4554",
+        "_key": "11299"
+    },
+    {
+        "title": "Kochira Katsushikaku Kameari Kouenmae Hashutsujo Special: Dai Hard 2! Shijou Saitei no Kessen",
+        "livechart": "11482",
+        "_key": "11482"
+    }
+]

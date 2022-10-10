@@ -1,1 +1,80 @@
-[{"title":"Urusei Yatsura","livechart":"4301","mal":"1293","_key":"4301"},{"title":"Ninja Hattori-kun","livechart":"6315","mal":"4936","_key":"6315"},{"title":"Maicching Machiko-sensei","livechart":"7990","mal":"3391","_key":"7990"},{"title":"Dash! Kappei","livechart":"9172","mal":"2748","_key":"9172"},{"title":"Uchuu Densetsu Ulysses 31","livechart":"6161","mal":"2331","_key":"6161"},{"title":"Nils no Fushigi na Tabi (Movie)","livechart":"7609","mal":"7664","_key":"7609"},{"title":"Anime Oyako Gekijou","livechart":"7447","mal":"2882","_key":"7447"},{"title":"Taiyou no Kiba Dagram","livechart":"8465","mal":"2257","_key":"8465"},{"title":"Rokushin Gattai GodMars","livechart":"7721","mal":"3399","_key":"7721"},{"title":"Wanwan Sanjuushi","livechart":"8068","mal":"3761","_key":"8068"},{"title":"Ginga Senpuu Braiger","livechart":"7782","mal":"4240","_key":"7782"},{"title":"Manga Mitokoumon","livechart":"9182","mal":"11829","_key":"9182"},{"title":"Jarinko Chie (TV)","livechart":"11308","mal":"3947","_key":"11308"}]
+[
+    {
+        "title": "Urusei Yatsura",
+        "livechart": "4301",
+        "mal": "1293",
+        "_key": "4301"
+    },
+    {
+        "title": "Uchuu Densetsu Ulysses 31",
+        "livechart": "6161",
+        "mal": "2331",
+        "_key": "6161"
+    },
+    {
+        "title": "Ninja Hattori-kun",
+        "livechart": "6315",
+        "mal": "4936",
+        "_key": "6315"
+    },
+    {
+        "title": "Anime Oyako Gekijou",
+        "livechart": "7447",
+        "mal": "2882",
+        "_key": "7447"
+    },
+    {
+        "title": "Nils no Fushigi na Tabi (Movie)",
+        "livechart": "7609",
+        "mal": "7664",
+        "_key": "7609"
+    },
+    {
+        "title": "Rokushin Gattai GodMars",
+        "livechart": "7721",
+        "mal": "3399",
+        "_key": "7721"
+    },
+    {
+        "title": "Ginga Senpuu Braiger",
+        "livechart": "7782",
+        "mal": "4240",
+        "_key": "7782"
+    },
+    {
+        "title": "Maicching Machiko-sensei",
+        "livechart": "7990",
+        "mal": "3391",
+        "_key": "7990"
+    },
+    {
+        "title": "Wanwan Sanjuushi",
+        "livechart": "8068",
+        "mal": "3761",
+        "_key": "8068"
+    },
+    {
+        "title": "Taiyou no Kiba Dagram",
+        "livechart": "8465",
+        "mal": "2257",
+        "_key": "8465"
+    },
+    {
+        "title": "Dash! Kappei",
+        "livechart": "9172",
+        "mal": "2748",
+        "_key": "9172"
+    },
+    {
+        "title": "Manga Mitokoumon",
+        "livechart": "9182",
+        "mal": "11829",
+        "_key": "9182"
+    },
+    {
+        "title": "Jarinko Chie (TV)",
+        "livechart": "11308",
+        "mal": "3947",
+        "_key": "11308"
+    }
+]

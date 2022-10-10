@@ -1,1 +1,302 @@
-[{"title":"Digimon Tamers","livechart":"3980","mal":"874","_key":"3980"},{"title":"One Piece Movie 2: Nejimaki-jima no Daibouken","livechart":"4166","mal":"460","_key":"4166"},{"title":"Meitantei Conan Movie 05: Tengoku e no Count Down","livechart":"4809","mal":"1364","_key":"4809"},{"title":"JoJo no Kimyou na Bouken: Adventure","livechart":"4885","mal":"665","_key":"4885"},{"title":"One Piece: Jango no Dance Carnival","livechart":"4723","mal":"2385","_key":"4723"},{"title":"Noir","livechart":"3891","mal":"272","_key":"3891"},{"title":"Digimon Adventure 02: Diablomon no Gyakushuu","livechart":"4643","mal":"2398","_key":"4643"},{"title":"Hanaukyou Maid-tai","livechart":"4742","mal":"403","_key":"4742"},{"title":"Initial D Extra Stage","livechart":"7013","mal":"822","_key":"7013"},{"title":"Shin Shirayuki-hime Densetsu Prétear","livechart":"5511","mal":"100","_key":"5511"},{"title":"Metropolis","livechart":"3943","mal":"522","_key":"3943"},{"title":"Sister Princess","livechart":"5861","mal":"836","_key":"5861"},{"title":"Kidou Tenshi Angelic Layer","livechart":"5006","mal":"52","_key":"5006"},{"title":"R.O.D OVA","livechart":"4027","mal":"208","_key":"4027"},{"title":"Galaxy Angel","livechart":"5454","mal":"383","_key":"5454"},{"title":"Mahou Senshi Louie","livechart":"7161","mal":"1164","_key":"7161"},{"title":"Comic Party","livechart":"7822","mal":"289","_key":"7822"},{"title":"Super GALS! Kotobuki Ran","livechart":"5433","mal":"1728","_key":"5433"},{"title":"The SoulTaker: Tamashii-gari","livechart":"6306","mal":"1048","_key":"6306"},{"title":"Taiho Shichau zo: Second Season","livechart":"7380","mal":"2014","_key":"7380"},{"title":"Geneshaft","livechart":"5297","mal":"909","_key":"5297"},{"title":"Doraemon Movie 22: Nobita to Tsubasa no Yuusha-tachi","livechart":"8888","mal":"2654","_key":"8888"},{"title":"Puni Puni☆Poemii","livechart":"5095","mal":"564","_key":"5095"},{"title":"Star Ocean EX","livechart":"7797","mal":"1005","_key":"7797"},{"title":"Koutetsu Tenshi Kurumi 2","livechart":"6704","mal":"555","_key":"6704"},{"title":"Project ARMS","livechart":"6738","mal":"1492","_key":"6738"},{"title":"Jungle wa Itsumo Hare nochi Guu","livechart":"5366","mal":"253","_key":"5366"},{"title":"Zone of the Enders: Dolores, I","livechart":"6103","mal":"1249","_key":"6103"},{"title":"Kizuna: Koi no kara Sawagi","livechart":"7713","mal":"734","_key":"7713"},{"title":"Figure 17: Tsubasa & Hikaru","livechart":"6268","mal":"1126","_key":"6268"},{"title":"Shin Chou Kyou Ryo: Condor Hero","livechart":"6823","mal":"959","_key":"6823"},{"title":"Shingu: Secret of the Stellar Wars","livechart":"7528","mal":"1179","_key":"7528"},{"title":"Koutetsu Tenshi Kurumi Zero","livechart":"7269","mal":"556","_key":"7269"},{"title":"Chance Triangle Session","livechart":"7631","mal":"2495","_key":"7631"},{"title":"Offside (TV)","livechart":"9076","mal":"5200","_key":"9076"},{"title":"Crayon Shin-chan Movie 09: Arashi wo Yobu Mouretsu! Otona Teikoku no Gyakushuu","livechart":"7211","mal":"2450","_key":"7211"},{"title":"Animation Seisaku Shinkou Kuromi-chan","livechart":"9333","mal":"1797","_key":"9333"},{"title":"Haja Kyosei G Dangaiou","livechart":"8340","mal":"2521","_key":"8340"},{"title":"Run=Dim","livechart":"7865","mal":"2362","_key":"7865"},{"title":"Doraemon: Ganbare! Gian!!","livechart":"8887","mal":"2653","_key":"8887"},{"title":"Dorami & Doraemons: Space Land's Critical Event","livechart":"8882","mal":"2645","_key":"8882"},{"title":"Kimi to Boku","livechart":"6288","mal":"20505","_key":"6288"},{"title":"Dennou Boukenki Webdiver","livechart":"8256","mal":"3561","_key":"8256"},{"title":"Parappa the Rapper","livechart":"8542","mal":"3736","_key":"8542"},{"title":"Medaka no Gakkou","livechart":"9128","mal":"9519","_key":"9128"},{"title":"Di Gi Charat Ohanami Special","livechart":"7771","mal":"1755","_key":"7771"},{"title":"Maetel Legend","livechart":"10498","mal":"1495","_key":"10498"},{"title":"Dr. Rin ni Kiitemite!","livechart":"9332","mal":"2259","_key":"9332"},{"title":"Genei Toushi Bastof Lemon","livechart":"8253","mal":"3151","_key":"8253"},{"title":"Gyouten Ningen Batsealer","livechart":"6846","mal":"7109","_key":"6846"}]
+[
+    {
+        "title": "Noir",
+        "livechart": "3891",
+        "mal": "272",
+        "_key": "3891"
+    },
+    {
+        "title": "Metropolis",
+        "livechart": "3943",
+        "mal": "522",
+        "_key": "3943"
+    },
+    {
+        "title": "Digimon Tamers",
+        "livechart": "3980",
+        "mal": "874",
+        "_key": "3980"
+    },
+    {
+        "title": "R.O.D OVA",
+        "livechart": "4027",
+        "mal": "208",
+        "_key": "4027"
+    },
+    {
+        "title": "One Piece Movie 2: Nejimaki-jima no Daibouken",
+        "livechart": "4166",
+        "mal": "460",
+        "_key": "4166"
+    },
+    {
+        "title": "Digimon Adventure 02: Diablomon no Gyakushuu",
+        "livechart": "4643",
+        "mal": "2398",
+        "_key": "4643"
+    },
+    {
+        "title": "One Piece: Jango no Dance Carnival",
+        "livechart": "4723",
+        "mal": "2385",
+        "_key": "4723"
+    },
+    {
+        "title": "Hanaukyou Maid-tai",
+        "livechart": "4742",
+        "mal": "403",
+        "_key": "4742"
+    },
+    {
+        "title": "Meitantei Conan Movie 05: Tengoku e no Count Down",
+        "livechart": "4809",
+        "mal": "1364",
+        "_key": "4809"
+    },
+    {
+        "title": "JoJo no Kimyou na Bouken: Adventure",
+        "livechart": "4885",
+        "mal": "665",
+        "_key": "4885"
+    },
+    {
+        "title": "Kidou Tenshi Angelic Layer",
+        "livechart": "5006",
+        "mal": "52",
+        "_key": "5006"
+    },
+    {
+        "title": "Puni Puni\u2606Poemii",
+        "livechart": "5095",
+        "mal": "564",
+        "_key": "5095"
+    },
+    {
+        "title": "Geneshaft",
+        "livechart": "5297",
+        "mal": "909",
+        "_key": "5297"
+    },
+    {
+        "title": "Jungle wa Itsumo Hare nochi Guu",
+        "livechart": "5366",
+        "mal": "253",
+        "_key": "5366"
+    },
+    {
+        "title": "Super GALS! Kotobuki Ran",
+        "livechart": "5433",
+        "mal": "1728",
+        "_key": "5433"
+    },
+    {
+        "title": "Galaxy Angel",
+        "livechart": "5454",
+        "mal": "383",
+        "_key": "5454"
+    },
+    {
+        "title": "Shin Shirayuki-hime Densetsu Pr\u00e9tear",
+        "livechart": "5511",
+        "mal": "100",
+        "_key": "5511"
+    },
+    {
+        "title": "Sister Princess",
+        "livechart": "5861",
+        "mal": "836",
+        "_key": "5861"
+    },
+    {
+        "title": "Zone of the Enders: Dolores, I",
+        "livechart": "6103",
+        "mal": "1249",
+        "_key": "6103"
+    },
+    {
+        "title": "Figure 17: Tsubasa & Hikaru",
+        "livechart": "6268",
+        "mal": "1126",
+        "_key": "6268"
+    },
+    {
+        "title": "Kimi to Boku",
+        "livechart": "6288",
+        "mal": "20505",
+        "_key": "6288"
+    },
+    {
+        "title": "The SoulTaker: Tamashii-gari",
+        "livechart": "6306",
+        "mal": "1048",
+        "_key": "6306"
+    },
+    {
+        "title": "Koutetsu Tenshi Kurumi 2",
+        "livechart": "6704",
+        "mal": "555",
+        "_key": "6704"
+    },
+    {
+        "title": "Project ARMS",
+        "livechart": "6738",
+        "mal": "1492",
+        "_key": "6738"
+    },
+    {
+        "title": "Shin Chou Kyou Ryo: Condor Hero",
+        "livechart": "6823",
+        "mal": "959",
+        "_key": "6823"
+    },
+    {
+        "title": "Gyouten Ningen Batsealer",
+        "livechart": "6846",
+        "mal": "7109",
+        "_key": "6846"
+    },
+    {
+        "title": "Initial D Extra Stage",
+        "livechart": "7013",
+        "mal": "822",
+        "_key": "7013"
+    },
+    {
+        "title": "Mahou Senshi Louie",
+        "livechart": "7161",
+        "mal": "1164",
+        "_key": "7161"
+    },
+    {
+        "title": "Crayon Shin-chan Movie 09: Arashi wo Yobu Mouretsu! Otona Teikoku no Gyakushuu",
+        "livechart": "7211",
+        "mal": "2450",
+        "_key": "7211"
+    },
+    {
+        "title": "Koutetsu Tenshi Kurumi Zero",
+        "livechart": "7269",
+        "mal": "556",
+        "_key": "7269"
+    },
+    {
+        "title": "Taiho Shichau zo: Second Season",
+        "livechart": "7380",
+        "mal": "2014",
+        "_key": "7380"
+    },
+    {
+        "title": "Shingu: Secret of the Stellar Wars",
+        "livechart": "7528",
+        "mal": "1179",
+        "_key": "7528"
+    },
+    {
+        "title": "Chance Triangle Session",
+        "livechart": "7631",
+        "mal": "2495",
+        "_key": "7631"
+    },
+    {
+        "title": "Kizuna: Koi no kara Sawagi",
+        "livechart": "7713",
+        "mal": "734",
+        "_key": "7713"
+    },
+    {
+        "title": "Di Gi Charat Ohanami Special",
+        "livechart": "7771",
+        "mal": "1755",
+        "_key": "7771"
+    },
+    {
+        "title": "Star Ocean EX",
+        "livechart": "7797",
+        "mal": "1005",
+        "_key": "7797"
+    },
+    {
+        "title": "Comic Party",
+        "livechart": "7822",
+        "mal": "289",
+        "_key": "7822"
+    },
+    {
+        "title": "Run=Dim",
+        "livechart": "7865",
+        "mal": "2362",
+        "_key": "7865"
+    },
+    {
+        "title": "Genei Toushi Bastof Lemon",
+        "livechart": "8253",
+        "mal": "3151",
+        "_key": "8253"
+    },
+    {
+        "title": "Dennou Boukenki Webdiver",
+        "livechart": "8256",
+        "mal": "3561",
+        "_key": "8256"
+    },
+    {
+        "title": "Haja Kyosei G Dangaiou",
+        "livechart": "8340",
+        "mal": "2521",
+        "_key": "8340"
+    },
+    {
+        "title": "Parappa the Rapper",
+        "livechart": "8542",
+        "mal": "3736",
+        "_key": "8542"
+    },
+    {
+        "title": "Dorami & Doraemons: Space Land's Critical Event",
+        "livechart": "8882",
+        "mal": "2645",
+        "_key": "8882"
+    },
+    {
+        "title": "Doraemon: Ganbare! Gian!!",
+        "livechart": "8887",
+        "mal": "2653",
+        "_key": "8887"
+    },
+    {
+        "title": "Doraemon Movie 22: Nobita to Tsubasa no Yuusha-tachi",
+        "livechart": "8888",
+        "mal": "2654",
+        "_key": "8888"
+    },
+    {
+        "title": "Offside (TV)",
+        "livechart": "9076",
+        "mal": "5200",
+        "_key": "9076"
+    },
+    {
+        "title": "Medaka no Gakkou",
+        "livechart": "9128",
+        "mal": "9519",
+        "_key": "9128"
+    },
+    {
+        "title": "Dr. Rin ni Kiitemite!",
+        "livechart": "9332",
+        "mal": "2259",
+        "_key": "9332"
+    },
+    {
+        "title": "Animation Seisaku Shinkou Kuromi-chan",
+        "livechart": "9333",
+        "mal": "1797",
+        "_key": "9333"
+    },
+    {
+        "title": "Maetel Legend",
+        "livechart": "10498",
+        "mal": "1495",
+        "_key": "10498"
+    }
+]

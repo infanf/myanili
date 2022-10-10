@@ -1,1 +1,116 @@
-[{"title":"Neon Genesis Evangelion","livechart":"3590","mal":"30","_key":"3590"},{"title":"Golden Boy","livechart":"3750","mal":"268","_key":"3750"},{"title":"Gunsmith Cats","livechart":"5467","mal":"650","_key":"5467"},{"title":"Bakuretsu Hunters","livechart":"6248","mal":"495","_key":"6248"},{"title":"Ranma ½ Super","livechart":"6302","mal":"1011","_key":"6302"},{"title":"Shinpi no Sekai El-Hazard","livechart":"8216","mal":"116","_key":"8216"},{"title":"Taiho Shichau zo","livechart":"5191","mal":"1577","_key":"5191"},{"title":"Kaitou Saint Tail","livechart":"6552","mal":"1567","_key":"6552"},{"title":"Virtua Fighter","livechart":"8272","mal":"961","_key":"8272"},{"title":"Macross Plus Movie Edition","livechart":"5490","mal":"1211","_key":"5490"},{"title":"Tenchi Muyou! Ryououki 2nd Season Picture Drama","livechart":"6564","mal":"10351","_key":"6564"},{"title":"Macross 7 Movie: Ginga ga Ore wo Yondeiru!","livechart":"6555","mal":"1400","_key":"6555"},{"title":"Gokinjo Monogatari","livechart":"7453","mal":"852","_key":"7453"},{"title":"Mojakou","livechart":"8911","mal":"2736","_key":"8911"},{"title":"Yousei Hime Ren","livechart":"6818","mal":"1630","_key":"6818"},{"title":"Ginga Ojousama Densetsu Yuna: Kanashimi no Siren","livechart":"7317","mal":"2473","_key":"7317"},{"title":"Gotou ni Naritai.","livechart":"7387","mal":"8120","_key":"7387"},{"title":"Idol Project","livechart":"8453","mal":"2072","_key":"8453"},{"title":"Touma Kishinden Oni","livechart":"8338","mal":"2366","_key":"8338"}]
+[
+    {
+        "title": "Neon Genesis Evangelion",
+        "livechart": "3590",
+        "mal": "30",
+        "_key": "3590"
+    },
+    {
+        "title": "Golden Boy",
+        "livechart": "3750",
+        "mal": "268",
+        "_key": "3750"
+    },
+    {
+        "title": "Taiho Shichau zo",
+        "livechart": "5191",
+        "mal": "1577",
+        "_key": "5191"
+    },
+    {
+        "title": "Gunsmith Cats",
+        "livechart": "5467",
+        "mal": "650",
+        "_key": "5467"
+    },
+    {
+        "title": "Macross Plus Movie Edition",
+        "livechart": "5490",
+        "mal": "1211",
+        "_key": "5490"
+    },
+    {
+        "title": "Bakuretsu Hunters",
+        "livechart": "6248",
+        "mal": "495",
+        "_key": "6248"
+    },
+    {
+        "title": "Ranma \u00bd Super",
+        "livechart": "6302",
+        "mal": "1011",
+        "_key": "6302"
+    },
+    {
+        "title": "Kaitou Saint Tail",
+        "livechart": "6552",
+        "mal": "1567",
+        "_key": "6552"
+    },
+    {
+        "title": "Macross 7 Movie: Ginga ga Ore wo Yondeiru!",
+        "livechart": "6555",
+        "mal": "1400",
+        "_key": "6555"
+    },
+    {
+        "title": "Tenchi Muyou! Ryououki 2nd Season Picture Drama",
+        "livechart": "6564",
+        "mal": "10351",
+        "_key": "6564"
+    },
+    {
+        "title": "Yousei Hime Ren",
+        "livechart": "6818",
+        "mal": "1630",
+        "_key": "6818"
+    },
+    {
+        "title": "Ginga Ojousama Densetsu Yuna: Kanashimi no Siren",
+        "livechart": "7317",
+        "mal": "2473",
+        "_key": "7317"
+    },
+    {
+        "title": "Gotou ni Naritai.",
+        "livechart": "7387",
+        "mal": "8120",
+        "_key": "7387"
+    },
+    {
+        "title": "Gokinjo Monogatari",
+        "livechart": "7453",
+        "mal": "852",
+        "_key": "7453"
+    },
+    {
+        "title": "Shinpi no Sekai El-Hazard",
+        "livechart": "8216",
+        "mal": "116",
+        "_key": "8216"
+    },
+    {
+        "title": "Virtua Fighter",
+        "livechart": "8272",
+        "mal": "961",
+        "_key": "8272"
+    },
+    {
+        "title": "Touma Kishinden Oni",
+        "livechart": "8338",
+        "mal": "2366",
+        "_key": "8338"
+    },
+    {
+        "title": "Idol Project",
+        "livechart": "8453",
+        "mal": "2072",
+        "_key": "8453"
+    },
+    {
+        "title": "Mojakou",
+        "livechart": "8911",
+        "mal": "2736",
+        "_key": "8911"
+    }
+]

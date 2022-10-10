@@ -1,1 +1,20 @@
-[{"title":"Wan Wan Chuushingura","livechart":"7412","mal":"9228","_key":"7412"},{"title":"0-sen Hayato","livechart":"9148","mal":"12763","_key":"9148"},{"title":"Ookami Shounen Ken (Movie)","livechart":"8833","mal":"23007","_key":"8833"}]
+[
+    {
+        "title": "Wan Wan Chuushingura",
+        "livechart": "7412",
+        "mal": "9228",
+        "_key": "7412"
+    },
+    {
+        "title": "Ookami Shounen Ken (Movie)",
+        "livechart": "8833",
+        "mal": "23007",
+        "_key": "8833"
+    },
+    {
+        "title": "0-sen Hayato",
+        "livechart": "9148",
+        "mal": "12763",
+        "_key": "9148"
+    }
+]

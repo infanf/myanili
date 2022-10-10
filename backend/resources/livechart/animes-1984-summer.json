@@ -1,1 +1,38 @@
-[{"title":"Macross: Do You Remember Love?","livechart":"4741","mal":"1089","_key":"4741"},{"title":"Mahou no Yousei Persia","livechart":"8811","mal":"2039","_key":"8811"},{"title":"Daishizen no Majuu: Bagi","livechart":"6962","mal":"2312","_key":"6962"},{"title":"SF Shinseiki Lensman","livechart":"9168","mal":"2770","_key":"9168"},{"title":"Kuroi Ame ni Utarete","livechart":"7182","mal":"19135","_key":"7182"},{"title":"84 Taekwon V","livechart":"7280","mal":"16564","_key":"7280"}]
+[
+    {
+        "title": "Macross: Do You Remember Love?",
+        "livechart": "4741",
+        "mal": "1089",
+        "_key": "4741"
+    },
+    {
+        "title": "Daishizen no Majuu: Bagi",
+        "livechart": "6962",
+        "mal": "2312",
+        "_key": "6962"
+    },
+    {
+        "title": "Kuroi Ame ni Utarete",
+        "livechart": "7182",
+        "mal": "19135",
+        "_key": "7182"
+    },
+    {
+        "title": "84 Taekwon V",
+        "livechart": "7280",
+        "mal": "16564",
+        "_key": "7280"
+    },
+    {
+        "title": "Mahou no Yousei Persia",
+        "livechart": "8811",
+        "mal": "2039",
+        "_key": "8811"
+    },
+    {
+        "title": "SF Shinseiki Lensman",
+        "livechart": "9168",
+        "mal": "2770",
+        "_key": "9168"
+    }
+]
