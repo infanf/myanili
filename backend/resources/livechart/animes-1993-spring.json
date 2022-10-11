@@ -1,1 +1,116 @@
-[{"title":"Dragon Ball Z Movie 08: Moetsukiro!! Nessen, Ressen, Chougekisen","livechart":"4264","mal":"901","_key":"4264"},{"title":"Bishoujo Senshi Sailor Moon R","livechart":"4684","mal":"740","_key":"4684"},{"title":"Umi ga Kikoeru","livechart":"3079","mal":"743","_key":"3079"},{"title":"Aa! Megami-sama!","livechart":"4503","mal":"49","_key":"4503"},{"title":"Mobile Suit Victory Gundam","livechart":"5587","mal":"89","_key":"5587"},{"title":"Doraemon Movie 14: Nobita to Buriki no Labyrinth","livechart":"8893","mal":"2659","_key":"8893"},{"title":"Ghost Sweeper GS Mikami","livechart":"5816","mal":"2400","_key":"5816"},{"title":"Dragon Half","livechart":"7855","mal":"870","_key":"7855"},{"title":"Ranma ½: Totteoki Talk Best of Memories","livechart":"6817","mal":"10822","_key":"6817"},{"title":"Kenyuu Densetsu Yaiba","livechart":"6304","mal":"2335","_key":"6304"},{"title":"Nintama Rantarou","livechart":"9317","mal":"1199","_key":"9317"},{"title":"Dragon League","livechart":"9075","mal":"5197","_key":"9075"},{"title":"Doraemon: Featherplace","livechart":"8875","mal":"2635","_key":"8875"},{"title":"Unkai no Meikyuu Zeguy","livechart":"9142","mal":"1176","_key":"9142"},{"title":"Mobile Suit SD Gundam Festival","livechart":"7316","mal":"9098","_key":"7316"},{"title":"Nekketsu Saikyou Go-Saurer","livechart":"10089","mal":"5395","_key":"10089"},{"title":"Kishin Heidan","livechart":"6885","mal":"3061","_key":"6885"},{"title":"Kyouryuu Wakusei","livechart":"7359","mal":"7681","_key":"7359"},{"title":"Shippuu! Iron Leaguer","livechart":"10074","mal":"2758","_key":"10074"}]
+[
+    {
+        "title": "Umi ga Kikoeru",
+        "livechart": "3079",
+        "mal": "743",
+        "_key": "3079"
+    },
+    {
+        "title": "Dragon Ball Z Movie 08: Moetsukiro!! Nessen, Ressen, Chougekisen",
+        "livechart": "4264",
+        "mal": "901",
+        "_key": "4264"
+    },
+    {
+        "title": "Aa! Megami-sama!",
+        "livechart": "4503",
+        "mal": "49",
+        "_key": "4503"
+    },
+    {
+        "title": "Bishoujo Senshi Sailor Moon R",
+        "livechart": "4684",
+        "mal": "740",
+        "_key": "4684"
+    },
+    {
+        "title": "Mobile Suit Victory Gundam",
+        "livechart": "5587",
+        "mal": "89",
+        "_key": "5587"
+    },
+    {
+        "title": "Ghost Sweeper GS Mikami",
+        "livechart": "5816",
+        "mal": "2400",
+        "_key": "5816"
+    },
+    {
+        "title": "Kenyuu Densetsu Yaiba",
+        "livechart": "6304",
+        "mal": "2335",
+        "_key": "6304"
+    },
+    {
+        "title": "Ranma \u00bd: Totteoki Talk Best of Memories",
+        "livechart": "6817",
+        "mal": "10822",
+        "_key": "6817"
+    },
+    {
+        "title": "Kishin Heidan",
+        "livechart": "6885",
+        "mal": "3061",
+        "_key": "6885"
+    },
+    {
+        "title": "Mobile Suit SD Gundam Festival",
+        "livechart": "7316",
+        "mal": "9098",
+        "_key": "7316"
+    },
+    {
+        "title": "Kyouryuu Wakusei",
+        "livechart": "7359",
+        "mal": "7681",
+        "_key": "7359"
+    },
+    {
+        "title": "Dragon Half",
+        "livechart": "7855",
+        "mal": "870",
+        "_key": "7855"
+    },
+    {
+        "title": "Doraemon: Featherplace",
+        "livechart": "8875",
+        "mal": "2635",
+        "_key": "8875"
+    },
+    {
+        "title": "Doraemon Movie 14: Nobita to Buriki no Labyrinth",
+        "livechart": "8893",
+        "mal": "2659",
+        "_key": "8893"
+    },
+    {
+        "title": "Dragon League",
+        "livechart": "9075",
+        "mal": "5197",
+        "_key": "9075"
+    },
+    {
+        "title": "Unkai no Meikyuu Zeguy",
+        "livechart": "9142",
+        "mal": "1176",
+        "_key": "9142"
+    },
+    {
+        "title": "Nintama Rantarou",
+        "livechart": "9317",
+        "mal": "1199",
+        "_key": "9317"
+    },
+    {
+        "title": "Shippuu! Iron Leaguer",
+        "livechart": "10074",
+        "mal": "2758",
+        "_key": "10074"
+    },
+    {
+        "title": "Nekketsu Saikyou Go-Saurer",
+        "livechart": "10089",
+        "mal": "5395",
+        "_key": "10089"
+    }
+]

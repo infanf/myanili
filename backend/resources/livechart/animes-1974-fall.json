@@ -1,1 +1,32 @@
-[{"title":"Uchuu Senkan Yamato","livechart":"4380","mal":"1650","_key":"4380"},{"title":"Great Mazinger","livechart":"9082","mal":"5658","_key":"9082"},{"title":"Barbapapa","livechart":"7619","mal":"2823","_key":"7619"},{"title":"Calimero","livechart":"7492","mal":"2827","_key":"7492"},{"title":"Hurricane Polymar","livechart":"9065","mal":"4808","_key":"9065"}]
+[
+    {
+        "title": "Uchuu Senkan Yamato",
+        "livechart": "4380",
+        "mal": "1650",
+        "_key": "4380"
+    },
+    {
+        "title": "Calimero",
+        "livechart": "7492",
+        "mal": "2827",
+        "_key": "7492"
+    },
+    {
+        "title": "Barbapapa",
+        "livechart": "7619",
+        "mal": "2823",
+        "_key": "7619"
+    },
+    {
+        "title": "Hurricane Polymar",
+        "livechart": "9065",
+        "mal": "4808",
+        "_key": "9065"
+    },
+    {
+        "title": "Great Mazinger",
+        "livechart": "9082",
+        "mal": "5658",
+        "_key": "9082"
+    }
+]

@@ -1,1 +1,26 @@
-[{"title":"Ginga Tetsudou 999","livechart":"6299","mal":"1491","_key":"6299"},{"title":"Takarajima","livechart":"6144","mal":"2618","_key":"6144"},{"title":"Uchuu Senkan Yamato 2","livechart":"6765","mal":"1651","_key":"6765"},{"title":"Captain Future","livechart":"7115","mal":"2561","_key":"7115"}]
+[
+    {
+        "title": "Takarajima",
+        "livechart": "6144",
+        "mal": "2618",
+        "_key": "6144"
+    },
+    {
+        "title": "Ginga Tetsudou 999",
+        "livechart": "6299",
+        "mal": "1491",
+        "_key": "6299"
+    },
+    {
+        "title": "Uchuu Senkan Yamato 2",
+        "livechart": "6765",
+        "mal": "1651",
+        "_key": "6765"
+    },
+    {
+        "title": "Captain Future",
+        "livechart": "7115",
+        "mal": "2561",
+        "_key": "7115"
+    }
+]

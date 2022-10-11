@@ -1,1 +1,32 @@
-[{"title":"Ginga Tetsudou 999 (Movie)","livechart":"7191","mal":"1301","_key":"7191"},{"title":"Uchuu Senkan Yamato: Aratanaru Tabidachi","livechart":"7010","mal":"3071","_key":"7010"},{"title":"Kaitei Choutokkyuu: Marine Express","livechart":"6559","mal":"3175","_key":"6559"},{"title":"Umi no Triton (1979)","livechart":"7737","mal":"7626","_key":"7737"},{"title":"Kagaku Bouken-tai Tansar 5","livechart":"10088","mal":"10965","_key":"10088"}]
+[
+    {
+        "title": "Kaitei Choutokkyuu: Marine Express",
+        "livechart": "6559",
+        "mal": "3175",
+        "_key": "6559"
+    },
+    {
+        "title": "Uchuu Senkan Yamato: Aratanaru Tabidachi",
+        "livechart": "7010",
+        "mal": "3071",
+        "_key": "7010"
+    },
+    {
+        "title": "Ginga Tetsudou 999 (Movie)",
+        "livechart": "7191",
+        "mal": "1301",
+        "_key": "7191"
+    },
+    {
+        "title": "Umi no Triton (1979)",
+        "livechart": "7737",
+        "mal": "7626",
+        "_key": "7737"
+    },
+    {
+        "title": "Kagaku Bouken-tai Tansar 5",
+        "livechart": "10088",
+        "mal": "10965",
+        "_key": "10088"
+    }
+]

@@ -37,7 +37,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const animes = await this.animeService.list('watching');
+    const animes = await this.animeService.list('watching', { limit: 1000 });
     this.animes = animes
       .filter(anime => {
         if (!anime.my_extension) return true;

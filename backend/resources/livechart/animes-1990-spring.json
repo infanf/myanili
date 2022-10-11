@@ -1,1 +1,134 @@
-[{"title":"Dragon Ball Z Movie 02: Kono Yo de Ichiban Tsuyoi Yatsu","livechart":"4152","mal":"895","_key":"4152"},{"title":"Fushigi no Umi no Nadia","livechart":"4995","mal":"1251","_key":"4995"},{"title":"Tanoshii Muumin Ikka","livechart":"5667","mal":"2150","_key":"5667"},{"title":"Doraemon Movie 11: Nobita to Animal Planet","livechart":"8906","mal":"2677","_key":"8906"},{"title":"Kumo no You ni Kaze no You ni","livechart":"9441","mal":"1032","_key":"9441"},{"title":"Sol Bianca","livechart":"9161","mal":"1443","_key":"9161"},{"title":"NG Knight Ramune & 40","livechart":"8234","mal":"2084","_key":"8234"},{"title":"Mahou no Angel Sweet Mint","livechart":"8307","mal":"2040","_key":"8307"},{"title":"SD Gundam Gaiden","livechart":"6906","mal":"1939","_key":"6906"},{"title":"Yagami-kun no Katei no Jijou","livechart":"7174","mal":"4537","_key":"7174"},{"title":"Mobile Suit SD Gundam Mk III","livechart":"7514","mal":"2305","_key":"7514"},{"title":"Umezu Kazuo no Noroi","livechart":"5882","mal":"6276","_key":"5882"},{"title":"Versailles no Bara: Seimei Aru Kagiri Aishite","livechart":"8069","mal":"3868","_key":"8069"},{"title":"Hashire! Shiroi Ookami","livechart":"8046","mal":"5936","_key":"8046"},{"title":"Maroko","livechart":"7630","mal":"4640","_key":"7630"},{"title":"Idol Tenshi Youkoso Youko","livechart":"8062","mal":"4928","_key":"8062"},{"title":"Super Real Mahjong: Kasumi Miki Shouko no Hajimemashite","livechart":"7568","mal":"17991","_key":"7568"},{"title":"Gdleen","livechart":"6641","mal":"7139","_key":"6641"},{"title":"Carol","livechart":"6943","mal":"2054","_key":"6943"},{"title":"Akuma-kun: Youkoso Akuma Land e!!","livechart":"10910","mal":"8227","_key":"10910"},{"title":"Chinpui: Eri-sama Katsudou Daishashin","livechart":"10369","mal":"10040","_key":"10369"},{"title":"Gatapishi","livechart":"11102","mal":"20243","_key":"11102"}]
+[
+    {
+        "title": "Dragon Ball Z Movie 02: Kono Yo de Ichiban Tsuyoi Yatsu",
+        "livechart": "4152",
+        "mal": "895",
+        "_key": "4152"
+    },
+    {
+        "title": "Fushigi no Umi no Nadia",
+        "livechart": "4995",
+        "mal": "1251",
+        "_key": "4995"
+    },
+    {
+        "title": "Tanoshii Muumin Ikka",
+        "livechart": "5667",
+        "mal": "2150",
+        "_key": "5667"
+    },
+    {
+        "title": "Umezu Kazuo no Noroi",
+        "livechart": "5882",
+        "mal": "6276",
+        "_key": "5882"
+    },
+    {
+        "title": "Gdleen",
+        "livechart": "6641",
+        "mal": "7139",
+        "_key": "6641"
+    },
+    {
+        "title": "SD Gundam Gaiden",
+        "livechart": "6906",
+        "mal": "1939",
+        "_key": "6906"
+    },
+    {
+        "title": "Carol",
+        "livechart": "6943",
+        "mal": "2054",
+        "_key": "6943"
+    },
+    {
+        "title": "Yagami-kun no Katei no Jijou",
+        "livechart": "7174",
+        "mal": "4537",
+        "_key": "7174"
+    },
+    {
+        "title": "Mobile Suit SD Gundam Mk III",
+        "livechart": "7514",
+        "mal": "2305",
+        "_key": "7514"
+    },
+    {
+        "title": "Super Real Mahjong: Kasumi Miki Shouko no Hajimemashite",
+        "livechart": "7568",
+        "mal": "17991",
+        "_key": "7568"
+    },
+    {
+        "title": "Maroko",
+        "livechart": "7630",
+        "mal": "4640",
+        "_key": "7630"
+    },
+    {
+        "title": "Hashire! Shiroi Ookami",
+        "livechart": "8046",
+        "mal": "5936",
+        "_key": "8046"
+    },
+    {
+        "title": "Idol Tenshi Youkoso Youko",
+        "livechart": "8062",
+        "mal": "4928",
+        "_key": "8062"
+    },
+    {
+        "title": "Versailles no Bara: Seimei Aru Kagiri Aishite",
+        "livechart": "8069",
+        "mal": "3868",
+        "_key": "8069"
+    },
+    {
+        "title": "NG Knight Ramune & 40",
+        "livechart": "8234",
+        "mal": "2084",
+        "_key": "8234"
+    },
+    {
+        "title": "Mahou no Angel Sweet Mint",
+        "livechart": "8307",
+        "mal": "2040",
+        "_key": "8307"
+    },
+    {
+        "title": "Doraemon Movie 11: Nobita to Animal Planet",
+        "livechart": "8906",
+        "mal": "2677",
+        "_key": "8906"
+    },
+    {
+        "title": "Sol Bianca",
+        "livechart": "9161",
+        "mal": "1443",
+        "_key": "9161"
+    },
+    {
+        "title": "Kumo no You ni Kaze no You ni",
+        "livechart": "9441",
+        "mal": "1032",
+        "_key": "9441"
+    },
+    {
+        "title": "Chinpui: Eri-sama Katsudou Daishashin",
+        "livechart": "10369",
+        "mal": "10040",
+        "_key": "10369"
+    },
+    {
+        "title": "Akuma-kun: Youkoso Akuma Land e!!",
+        "livechart": "10910",
+        "mal": "8227",
+        "_key": "10910"
+    },
+    {
+        "title": "Gatapishi",
+        "livechart": "11102",
+        "mal": "20243",
+        "_key": "11102"
+    }
+]

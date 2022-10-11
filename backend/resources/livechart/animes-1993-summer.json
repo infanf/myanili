@@ -1,1 +1,110 @@
-[{"title":"Dragon Ball Z Movie 09: Ginga Girigiri!! Bucchigiri no Sugoi Yatsu","livechart":"4367","mal":"902","_key":"4367"},{"title":"Dragon Ball Z: Saiya-jin Zetsumetsu Keikaku","livechart":"5074","mal":"984","_key":"5074"},{"title":"Juubee Ninpuuchou","livechart":"4037","mal":"617","_key":"4037"},{"title":"Yuu☆Yuu☆Hakusho (Movie)","livechart":"5856","mal":"882","_key":"5856"},{"title":"Gunnm","livechart":"4694","mal":"1016","_key":"4694"},{"title":"Ushio to Tora","livechart":"5483","mal":"842","_key":"5483"},{"title":"Kidou Keisatsu Patlabor 2 the Movie","livechart":"4863","mal":"1096","_key":"4863"},{"title":"Lupin III: Lupin Ansatsu Shirei","livechart":"7545","mal":"1438","_key":"7545"},{"title":"Crayon Shin-chan Movie 01: Action Kamen vs. Haigure Maou","livechart":"8622","mal":"8358","_key":"8622"},{"title":"Giant Robo the Animation: Chikyuu ga Seishi Suru Hi","livechart":"5869","mal":"2321","_key":"5869"},{"title":"Fatal Fury 2: The New Battle","livechart":"8750","mal":"1800","_key":"8750"},{"title":"Casshern: Robot Hunter","livechart":"5474","mal":"1598","_key":"5474"},{"title":"Eightman After","livechart":"9446","mal":"1344","_key":"9446"},{"title":"3 Choume no Tama: Uchi no Tama Shirimasenka?","livechart":"8318","mal":"2467","_key":"8318"},{"title":"Ohoshi-sama no Rail","livechart":"9155","mal":"1329","_key":"9155"},{"title":"Dr. Slump Movie 06: Arale-chan N-cha! Penguin Mura wa Hare Nochi Hare","livechart":"10993","mal":"7816","_key":"10993"},{"title":"Dr. Slump Movie 07: Arale-chan N-cha! Penguin Mura yori Ai wo Komete","livechart":"10994","mal":"7157","_key":"10994"},{"title":"Sore Ike! Anpanman: Kyouryuu Nosshii no Daibouken","livechart":"11426","mal":"10056","_key":"11426"}]
+[
+    {
+        "title": "Juubee Ninpuuchou",
+        "livechart": "4037",
+        "mal": "617",
+        "_key": "4037"
+    },
+    {
+        "title": "Dragon Ball Z Movie 09: Ginga Girigiri!! Bucchigiri no Sugoi Yatsu",
+        "livechart": "4367",
+        "mal": "902",
+        "_key": "4367"
+    },
+    {
+        "title": "Gunnm",
+        "livechart": "4694",
+        "mal": "1016",
+        "_key": "4694"
+    },
+    {
+        "title": "Kidou Keisatsu Patlabor 2 the Movie",
+        "livechart": "4863",
+        "mal": "1096",
+        "_key": "4863"
+    },
+    {
+        "title": "Dragon Ball Z: Saiya-jin Zetsumetsu Keikaku",
+        "livechart": "5074",
+        "mal": "984",
+        "_key": "5074"
+    },
+    {
+        "title": "Casshern: Robot Hunter",
+        "livechart": "5474",
+        "mal": "1598",
+        "_key": "5474"
+    },
+    {
+        "title": "Ushio to Tora",
+        "livechart": "5483",
+        "mal": "842",
+        "_key": "5483"
+    },
+    {
+        "title": "Yuu\u2606Yuu\u2606Hakusho (Movie)",
+        "livechart": "5856",
+        "mal": "882",
+        "_key": "5856"
+    },
+    {
+        "title": "Giant Robo the Animation: Chikyuu ga Seishi Suru Hi",
+        "livechart": "5869",
+        "mal": "2321",
+        "_key": "5869"
+    },
+    {
+        "title": "Lupin III: Lupin Ansatsu Shirei",
+        "livechart": "7545",
+        "mal": "1438",
+        "_key": "7545"
+    },
+    {
+        "title": "3 Choume no Tama: Uchi no Tama Shirimasenka?",
+        "livechart": "8318",
+        "mal": "2467",
+        "_key": "8318"
+    },
+    {
+        "title": "Crayon Shin-chan Movie 01: Action Kamen vs. Haigure Maou",
+        "livechart": "8622",
+        "mal": "8358",
+        "_key": "8622"
+    },
+    {
+        "title": "Fatal Fury 2: The New Battle",
+        "livechart": "8750",
+        "mal": "1800",
+        "_key": "8750"
+    },
+    {
+        "title": "Ohoshi-sama no Rail",
+        "livechart": "9155",
+        "mal": "1329",
+        "_key": "9155"
+    },
+    {
+        "title": "Eightman After",
+        "livechart": "9446",
+        "mal": "1344",
+        "_key": "9446"
+    },
+    {
+        "title": "Dr. Slump Movie 06: Arale-chan N-cha! Penguin Mura wa Hare Nochi Hare",
+        "livechart": "10993",
+        "mal": "7816",
+        "_key": "10993"
+    },
+    {
+        "title": "Dr. Slump Movie 07: Arale-chan N-cha! Penguin Mura yori Ai wo Komete",
+        "livechart": "10994",
+        "mal": "7157",
+        "_key": "10994"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Kyouryuu Nosshii no Daibouken",
+        "livechart": "11426",
+        "mal": "10056",
+        "_key": "11426"
+    }
+]

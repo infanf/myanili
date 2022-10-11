@@ -1,1 +1,20 @@
-[{"title":"Haha wo Tazunete Sanzenri","livechart":"7371","mal":"1663","_key":"7371"},{"title":"Groizer X","livechart":"7820","mal":"5131","_key":"7820"},{"title":"Fengshen Bang","livechart":"9431","mal":"35379","_key":"9431"}]
+[
+    {
+        "title": "Haha wo Tazunete Sanzenri",
+        "livechart": "7371",
+        "mal": "1663",
+        "_key": "7371"
+    },
+    {
+        "title": "Groizer X",
+        "livechart": "7820",
+        "mal": "5131",
+        "_key": "7820"
+    },
+    {
+        "title": "Fengshen Bang",
+        "livechart": "9431",
+        "mal": "35379",
+        "_key": "9431"
+    }
+]

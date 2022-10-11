@@ -1,1 +1,338 @@
-[{"title":"Mahou Sensei Negima!","livechart":"3811","mal":"157","_key":"3811"},{"title":"Air","livechart":"3572","mal":"101","_key":"3572"},{"title":"Pocket Monsters Advanced Generation: Rekkuu no Houmonsha Deoxys","livechart":"4479","mal":"1122","_key":"4479"},{"title":"Kumo no Mukou, Yakusoku no Basho","livechart":"3393","mal":"433","_key":"3393"},{"title":"Aa! Megami-sama! (TV)","livechart":"3892","mal":"50","_key":"3892"},{"title":"Girls Bravo: Second Season","livechart":"4068","mal":"487","_key":"4068"},{"title":"InuYasha: Guren no Houraijima","livechart":"4805","mal":"449","_key":"4805"},{"title":"Meitantei Conan Movie 08: Ginyoku no Magician","livechart":"4710","mal":"1367","_key":"4710"},{"title":"Peach Girl","livechart":"5512","mal":"325","_key":"5512"},{"title":"Air Movie","livechart":"3573","mal":"713","_key":"3573"},{"title":"Kino no Tabi: Nanika wo Suru Tame ni - Life Goes On.","livechart":"4155","mal":"1379","_key":"4155"},{"title":"Suki na Mono wa Suki Dakara Shou ga Nai!!","livechart":"4996","mal":"1532","_key":"4996"},{"title":"Aa! Megami-sama!","livechart":"4503","mal":"49","_key":"4503"},{"title":"Tenkuu Danzai Skelter+Heaven","livechart":"4550","mal":"3287","_key":"4550"},{"title":"Mind Game","livechart":"4366","mal":"875","_key":"4366"},{"title":"Meitantei Conan: Suihei Senjou no Strategy Recap","livechart":"7417","mal":"7471","_key":"7417"},{"title":"Digimon X-Evolution","livechart":"5638","mal":"2123","_key":"5638"},{"title":"Futari wa Precure: Max Heart","livechart":"5317","mal":"1929","_key":"5317"},{"title":"Tennis no Ouji-sama Movie 1: Futari no Samurai - The First Game","livechart":"5764","mal":"815","_key":"5764"},{"title":"Mahoraba ~Heartful Days~","livechart":"4779","mal":"519","_key":"4779"},{"title":"Iriya no Sora, UFO no Natsu","livechart":"4622","mal":"358","_key":"4622"},{"title":"Xenosaga The Animation","livechart":"5497","mal":"184","_key":"5497"},{"title":"Tennis no Ouji-sama: Atobe kara no Okurimono - Kimi ni Sasageru Tennis Prince Matsuri","livechart":"7952","mal":"814","_key":"7952"},{"title":"Buzzer Beater","livechart":"7664","mal":"406","_key":"7664"},{"title":"Shin Angyo Onshi","livechart":"6556","mal":"884","_key":"6556"},{"title":"Lime-iro Ryuukitan X","livechart":"7411","mal":"2308","_key":"7411"},{"title":"Starship Operators","livechart":"4782","mal":"342","_key":"4782"},{"title":"Eyeshield 21: Jump Festa 2005 Special","livechart":"8593","mal":"6418","_key":"8593"},{"title":"Jinki:Extend","livechart":"6551","mal":"141","_key":"6551"},{"title":"Gallery Fake","livechart":"5480","mal":"364","_key":"5480"},{"title":"UG☆Ultimate Girls","livechart":"6563","mal":"354","_key":"6563"},{"title":"Transformers Galaxy Force","livechart":"8647","mal":"928","_key":"8647"},{"title":"Kujibiki Unbalance","livechart":"6775","mal":"669","_key":"6775"},{"title":"Backkom","livechart":"8319","mal":"12145","_key":"8319"},{"title":"Magical Canan","livechart":"6069","mal":"349","_key":"6069"},{"title":"Ame to Shoujo to Watashi no Tegami","livechart":"6487","mal":"1223","_key":"6487"},{"title":"Watashi no Kao","livechart":"7183","mal":"28843","_key":"7183"},{"title":"Konjiki no Gash Bell!!: Ougon no Chichi wo Motsu Otoko","livechart":"8614","mal":"7430","_key":"8614"},{"title":"Sentou Yousei Shoujo Tasukete! Mave-chan","livechart":"7598","mal":"1515","_key":"7598"},{"title":"Anima","livechart":"8399","mal":"13513","_key":"8399"},{"title":"Damekko Doubutsu","livechart":"9067","mal":"485","_key":"9067"},{"title":"Masuda Kousuke Gekijou Gag Manga Biyori","livechart":"8213","mal":"1196","_key":"8213"},{"title":"Guardian Hearts-Power UP!","livechart":"6917","mal":"3157","_key":"6917"},{"title":"Wind: A Breath of Heart Specials","livechart":"7856","mal":"2027","_key":"7856"},{"title":"Majime ni Fumajime Kaiketsu Zorori","livechart":"9797","mal":"2707","_key":"9797"},{"title":"Tsuki wa Higashi ni Hi wa Nishi ni: Operation Sanctuary OVA","livechart":"7481","mal":"12881","_key":"7481"},{"title":"W: Wish Omake","livechart":"8056","mal":"9967","_key":"8056"},{"title":"Shinsatsushitsu","livechart":"8835","mal":"23059","_key":"8835"},{"title":"Otogi Juushi Akazukin OVA","livechart":"9052","mal":"402","_key":"9052"},{"title":"Doku Tenshi no Shippo","livechart":"8126","mal":"2485","_key":"8126"},{"title":"Yoshino no Hime","livechart":"7056","mal":"4660","_key":"7056"},{"title":"Shinshaku Sengoku Eiyuu Densetsu: Sanada Juu Yuushi","livechart":"7955","mal":"989","_key":"7955"},{"title":"Appaga Piryohae","livechart":"8122","mal":"4099","_key":"8122"},{"title":"Sore Ike! Anpanman: Anpanman to Christmas no Hoshi","livechart":"11411","mal":"16988","_key":"11411"},{"title":"Mafukiden: Pandarian","livechart":"11298","mal":"4049","_key":"11298"},{"title":"B-Legend! Battle B-Daman Fire Spirits!","livechart":"11286","mal":"4667","_key":"11286"}]
+[
+    {
+        "title": "Kumo no Mukou, Yakusoku no Basho",
+        "livechart": "3393",
+        "mal": "433",
+        "_key": "3393"
+    },
+    {
+        "title": "Air",
+        "livechart": "3572",
+        "mal": "101",
+        "_key": "3572"
+    },
+    {
+        "title": "Air Movie",
+        "livechart": "3573",
+        "mal": "713",
+        "_key": "3573"
+    },
+    {
+        "title": "Mahou Sensei Negima!",
+        "livechart": "3811",
+        "mal": "157",
+        "_key": "3811"
+    },
+    {
+        "title": "Aa! Megami-sama! (TV)",
+        "livechart": "3892",
+        "mal": "50",
+        "_key": "3892"
+    },
+    {
+        "title": "Girls Bravo: Second Season",
+        "livechart": "4068",
+        "mal": "487",
+        "_key": "4068"
+    },
+    {
+        "title": "Kino no Tabi: Nanika wo Suru Tame ni - Life Goes On.",
+        "livechart": "4155",
+        "mal": "1379",
+        "_key": "4155"
+    },
+    {
+        "title": "Mind Game",
+        "livechart": "4366",
+        "mal": "875",
+        "_key": "4366"
+    },
+    {
+        "title": "Pocket Monsters Advanced Generation: Rekkuu no Houmonsha Deoxys",
+        "livechart": "4479",
+        "mal": "1122",
+        "_key": "4479"
+    },
+    {
+        "title": "Aa! Megami-sama!",
+        "livechart": "4503",
+        "mal": "49",
+        "_key": "4503"
+    },
+    {
+        "title": "Tenkuu Danzai Skelter+Heaven",
+        "livechart": "4550",
+        "mal": "3287",
+        "_key": "4550"
+    },
+    {
+        "title": "Iriya no Sora, UFO no Natsu",
+        "livechart": "4622",
+        "mal": "358",
+        "_key": "4622"
+    },
+    {
+        "title": "Meitantei Conan Movie 08: Ginyoku no Magician",
+        "livechart": "4710",
+        "mal": "1367",
+        "_key": "4710"
+    },
+    {
+        "title": "Mahoraba ~Heartful Days~",
+        "livechart": "4779",
+        "mal": "519",
+        "_key": "4779"
+    },
+    {
+        "title": "Starship Operators",
+        "livechart": "4782",
+        "mal": "342",
+        "_key": "4782"
+    },
+    {
+        "title": "InuYasha: Guren no Houraijima",
+        "livechart": "4805",
+        "mal": "449",
+        "_key": "4805"
+    },
+    {
+        "title": "Suki na Mono wa Suki Dakara Shou ga Nai!!",
+        "livechart": "4996",
+        "mal": "1532",
+        "_key": "4996"
+    },
+    {
+        "title": "Futari wa Precure: Max Heart",
+        "livechart": "5317",
+        "mal": "1929",
+        "_key": "5317"
+    },
+    {
+        "title": "Gallery Fake",
+        "livechart": "5480",
+        "mal": "364",
+        "_key": "5480"
+    },
+    {
+        "title": "Xenosaga The Animation",
+        "livechart": "5497",
+        "mal": "184",
+        "_key": "5497"
+    },
+    {
+        "title": "Peach Girl",
+        "livechart": "5512",
+        "mal": "325",
+        "_key": "5512"
+    },
+    {
+        "title": "Digimon X-Evolution",
+        "livechart": "5638",
+        "mal": "2123",
+        "_key": "5638"
+    },
+    {
+        "title": "Tennis no Ouji-sama Movie 1: Futari no Samurai - The First Game",
+        "livechart": "5764",
+        "mal": "815",
+        "_key": "5764"
+    },
+    {
+        "title": "Magical Canan",
+        "livechart": "6069",
+        "mal": "349",
+        "_key": "6069"
+    },
+    {
+        "title": "Ame to Shoujo to Watashi no Tegami",
+        "livechart": "6487",
+        "mal": "1223",
+        "_key": "6487"
+    },
+    {
+        "title": "Jinki:Extend",
+        "livechart": "6551",
+        "mal": "141",
+        "_key": "6551"
+    },
+    {
+        "title": "Shin Angyo Onshi",
+        "livechart": "6556",
+        "mal": "884",
+        "_key": "6556"
+    },
+    {
+        "title": "UG\u2606Ultimate Girls",
+        "livechart": "6563",
+        "mal": "354",
+        "_key": "6563"
+    },
+    {
+        "title": "Kujibiki Unbalance",
+        "livechart": "6775",
+        "mal": "669",
+        "_key": "6775"
+    },
+    {
+        "title": "Guardian Hearts-Power UP!",
+        "livechart": "6917",
+        "mal": "3157",
+        "_key": "6917"
+    },
+    {
+        "title": "Yoshino no Hime",
+        "livechart": "7056",
+        "mal": "4660",
+        "_key": "7056"
+    },
+    {
+        "title": "Watashi no Kao",
+        "livechart": "7183",
+        "mal": "28843",
+        "_key": "7183"
+    },
+    {
+        "title": "Lime-iro Ryuukitan X",
+        "livechart": "7411",
+        "mal": "2308",
+        "_key": "7411"
+    },
+    {
+        "title": "Meitantei Conan: Suihei Senjou no Strategy Recap",
+        "livechart": "7417",
+        "mal": "7471",
+        "_key": "7417"
+    },
+    {
+        "title": "Tsuki wa Higashi ni Hi wa Nishi ni: Operation Sanctuary OVA",
+        "livechart": "7481",
+        "mal": "12881",
+        "_key": "7481"
+    },
+    {
+        "title": "Sentou Yousei Shoujo Tasukete! Mave-chan",
+        "livechart": "7598",
+        "mal": "1515",
+        "_key": "7598"
+    },
+    {
+        "title": "Buzzer Beater",
+        "livechart": "7664",
+        "mal": "406",
+        "_key": "7664"
+    },
+    {
+        "title": "Wind: A Breath of Heart Specials",
+        "livechart": "7856",
+        "mal": "2027",
+        "_key": "7856"
+    },
+    {
+        "title": "Tennis no Ouji-sama: Atobe kara no Okurimono - Kimi ni Sasageru Tennis Prince Matsuri",
+        "livechart": "7952",
+        "mal": "814",
+        "_key": "7952"
+    },
+    {
+        "title": "Shinshaku Sengoku Eiyuu Densetsu: Sanada Juu Yuushi",
+        "livechart": "7955",
+        "mal": "989",
+        "_key": "7955"
+    },
+    {
+        "title": "W: Wish Omake",
+        "livechart": "8056",
+        "mal": "9967",
+        "_key": "8056"
+    },
+    {
+        "title": "Appaga Piryohae",
+        "livechart": "8122",
+        "mal": "4099",
+        "_key": "8122"
+    },
+    {
+        "title": "Doku Tenshi no Shippo",
+        "livechart": "8126",
+        "mal": "2485",
+        "_key": "8126"
+    },
+    {
+        "title": "Masuda Kousuke Gekijou Gag Manga Biyori",
+        "livechart": "8213",
+        "mal": "1196",
+        "_key": "8213"
+    },
+    {
+        "title": "Backkom",
+        "livechart": "8319",
+        "mal": "12145",
+        "_key": "8319"
+    },
+    {
+        "title": "Anima",
+        "livechart": "8399",
+        "mal": "13513",
+        "_key": "8399"
+    },
+    {
+        "title": "Eyeshield 21: Jump Festa 2005 Special",
+        "livechart": "8593",
+        "mal": "6418",
+        "_key": "8593"
+    },
+    {
+        "title": "Konjiki no Gash Bell!!: Ougon no Chichi wo Motsu Otoko",
+        "livechart": "8614",
+        "mal": "7430",
+        "_key": "8614"
+    },
+    {
+        "title": "Transformers Galaxy Force",
+        "livechart": "8647",
+        "mal": "928",
+        "_key": "8647"
+    },
+    {
+        "title": "Shinsatsushitsu",
+        "livechart": "8835",
+        "mal": "23059",
+        "_key": "8835"
+    },
+    {
+        "title": "Otogi Juushi Akazukin OVA",
+        "livechart": "9052",
+        "mal": "402",
+        "_key": "9052"
+    },
+    {
+        "title": "Damekko Doubutsu",
+        "livechart": "9067",
+        "mal": "485",
+        "_key": "9067"
+    },
+    {
+        "title": "Majime ni Fumajime Kaiketsu Zorori",
+        "livechart": "9797",
+        "mal": "2707",
+        "_key": "9797"
+    },
+    {
+        "title": "B-Legend! Battle B-Daman Fire Spirits!",
+        "livechart": "11286",
+        "mal": "4667",
+        "_key": "11286"
+    },
+    {
+        "title": "Mafukiden: Pandarian",
+        "livechart": "11298",
+        "mal": "4049",
+        "_key": "11298"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Anpanman to Christmas no Hoshi",
+        "livechart": "11411",
+        "mal": "16988",
+        "_key": "11411"
+    }
+]

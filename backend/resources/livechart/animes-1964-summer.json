@@ -1,1 +1,14 @@
-[{"title":"Tetsuwan Atom: Uchuu no Yuusha","livechart":"8655","mal":"10342","_key":"8655"},{"title":"Shounen Ninja Kaze no Fujimaru","livechart":"6832","mal":"13307","_key":"6832"}]
+[
+    {
+        "title": "Shounen Ninja Kaze no Fujimaru",
+        "livechart": "6832",
+        "mal": "13307",
+        "_key": "6832"
+    },
+    {
+        "title": "Tetsuwan Atom: Uchuu no Yuusha",
+        "livechart": "8655",
+        "mal": "10342",
+        "_key": "8655"
+    }
+]

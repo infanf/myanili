@@ -1,1 +1,140 @@
-[{"title":"Kenpuu Denki Berserk","livechart":"3627","mal":"33","_key":"3627"},{"title":"Mobile Suit Gundam: The 08th MS Team","livechart":"4109","mal":"81","_key":"4109"},{"title":"Kyuuketsuhime Miyu (TV)","livechart":"5136","mal":"690","_key":"5136"},{"title":"Dr. Slump","livechart":"6206","mal":"3312","_key":"6206"},{"title":"Rurouni Kenshin: Special Techniques","livechart":"6692","mal":"4664","_key":"6692"},{"title":"Elf wo Karu Mono-tachi II","livechart":"8601","mal":"1046","_key":"8601"},{"title":"Photon","livechart":"5770","mal":"1944","_key":"5770"},{"title":"Saber Marionette J Again","livechart":"6466","mal":"1191","_key":"6466"},{"title":"Baby☆Love","livechart":"7507","mal":"722","_key":"7507"},{"title":"Battle Athletes Daiundoukai (TV)","livechart":"9143","mal":"1186","_key":"9143"},{"title":"Virus: Virus Buster Serge","livechart":"6782","mal":"2364","_key":"6782"},{"title":"Battle Athletes Daiundoukai","livechart":"8742","mal":"1185","_key":"8742"},{"title":"Elf-ban Kakyuusei: Anata dake wo Mitsumete...","livechart":"8288","mal":"661","_key":"8288"},{"title":"Onkyo Seimeitai Noiseman","livechart":"6588","mal":"1978","_key":"6588"},{"title":"Princess Rouge","livechart":"7259","mal":"1644","_key":"7259"},{"title":"Yume no Crayon Oukoku","livechart":"8760","mal":"4651","_key":"8760"},{"title":"Yakumotatsu","livechart":"7935","mal":"1026","_key":"7935"},{"title":"Chikyuu ga Ugoita Hi","livechart":"8493","mal":"2915","_key":"8493"},{"title":"Shinkai Densetsu Meremanoid","livechart":"6986","mal":"15579","_key":"6986"},{"title":"Chou Mashin Eiyuuden Wataru","livechart":"9806","mal":"3432","_key":"9806"},{"title":"Bakumatsu no Spasibo","livechart":"8619","mal":"8092","_key":"8619"},{"title":"Sakura Momoko Gekijou: Coji-Coji","livechart":"10670","mal":"3869","_key":"10670"},{"title":"Dennou Sentai Voogie's★Angel","livechart":"11048","mal":"2453","_key":"11048"}]
+[
+    {
+        "title": "Kenpuu Denki Berserk",
+        "livechart": "3627",
+        "mal": "33",
+        "_key": "3627"
+    },
+    {
+        "title": "Mobile Suit Gundam: The 08th MS Team",
+        "livechart": "4109",
+        "mal": "81",
+        "_key": "4109"
+    },
+    {
+        "title": "Kyuuketsuhime Miyu (TV)",
+        "livechart": "5136",
+        "mal": "690",
+        "_key": "5136"
+    },
+    {
+        "title": "Photon",
+        "livechart": "5770",
+        "mal": "1944",
+        "_key": "5770"
+    },
+    {
+        "title": "Dr. Slump",
+        "livechart": "6206",
+        "mal": "3312",
+        "_key": "6206"
+    },
+    {
+        "title": "Saber Marionette J Again",
+        "livechart": "6466",
+        "mal": "1191",
+        "_key": "6466"
+    },
+    {
+        "title": "Onkyo Seimeitai Noiseman",
+        "livechart": "6588",
+        "mal": "1978",
+        "_key": "6588"
+    },
+    {
+        "title": "Rurouni Kenshin: Special Techniques",
+        "livechart": "6692",
+        "mal": "4664",
+        "_key": "6692"
+    },
+    {
+        "title": "Virus: Virus Buster Serge",
+        "livechart": "6782",
+        "mal": "2364",
+        "_key": "6782"
+    },
+    {
+        "title": "Shinkai Densetsu Meremanoid",
+        "livechart": "6986",
+        "mal": "15579",
+        "_key": "6986"
+    },
+    {
+        "title": "Princess Rouge",
+        "livechart": "7259",
+        "mal": "1644",
+        "_key": "7259"
+    },
+    {
+        "title": "Baby\u2606Love",
+        "livechart": "7507",
+        "mal": "722",
+        "_key": "7507"
+    },
+    {
+        "title": "Yakumotatsu",
+        "livechart": "7935",
+        "mal": "1026",
+        "_key": "7935"
+    },
+    {
+        "title": "Elf-ban Kakyuusei: Anata dake wo Mitsumete...",
+        "livechart": "8288",
+        "mal": "661",
+        "_key": "8288"
+    },
+    {
+        "title": "Chikyuu ga Ugoita Hi",
+        "livechart": "8493",
+        "mal": "2915",
+        "_key": "8493"
+    },
+    {
+        "title": "Elf wo Karu Mono-tachi II",
+        "livechart": "8601",
+        "mal": "1046",
+        "_key": "8601"
+    },
+    {
+        "title": "Bakumatsu no Spasibo",
+        "livechart": "8619",
+        "mal": "8092",
+        "_key": "8619"
+    },
+    {
+        "title": "Battle Athletes Daiundoukai",
+        "livechart": "8742",
+        "mal": "1185",
+        "_key": "8742"
+    },
+    {
+        "title": "Yume no Crayon Oukoku",
+        "livechart": "8760",
+        "mal": "4651",
+        "_key": "8760"
+    },
+    {
+        "title": "Battle Athletes Daiundoukai (TV)",
+        "livechart": "9143",
+        "mal": "1186",
+        "_key": "9143"
+    },
+    {
+        "title": "Chou Mashin Eiyuuden Wataru",
+        "livechart": "9806",
+        "mal": "3432",
+        "_key": "9806"
+    },
+    {
+        "title": "Sakura Momoko Gekijou: Coji-Coji",
+        "livechart": "10670",
+        "mal": "3869",
+        "_key": "10670"
+    },
+    {
+        "title": "Dennou Sentai Voogie's\u2605Angel",
+        "livechart": "11048",
+        "mal": "2453",
+        "_key": "11048"
+    }
+]

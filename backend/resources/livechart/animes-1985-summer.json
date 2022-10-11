@@ -1,1 +1,86 @@
-[{"title":"Dirty Pair","livechart":"5865","mal":"424","_key":"5865"},{"title":"Captain Tsubasa: Europe Daikessen","livechart":"7222","mal":"2118","_key":"7222"},{"title":"Lupin III: Babylon no Ougon Densetsu","livechart":"7552","mal":"1433","_key":"7552"},{"title":"Tatakae! Chou Robot Seimeitai Transformers","livechart":"5620","mal":"2268","_key":"5620"},{"title":"Ginga Tetsudou no Yoru","livechart":"6241","mal":"1441","_key":"6241"},{"title":"Mahou no Star Magical Emi","livechart":"7769","mal":"2038","_key":"7769"},{"title":"Mahou no Princess Minky Momo vs. Mahou no Tenshi Creamy Mami","livechart":"6419","mal":"8972","_key":"6419"},{"title":"Mahou no Tenshi Creamy Mami: Long Goodbye","livechart":"7166","mal":"2046","_key":"7166"},{"title":"Area 88 Movie","livechart":"10073","mal":"33232","_key":"10073"},{"title":"Soukou Kihei Votoms: The Last Red Shoulder","livechart":"6913","mal":"2583","_key":"6913"},{"title":"Odin: Koushi Hansen Starlight","livechart":"6740","mal":"1287","_key":"6740"},{"title":"Onboro Film","livechart":"6905","mal":"2550","_key":"6905"},{"title":"Mahou no Princess Minky Momo: Yume no Naka no Rondo","livechart":"7151","mal":"2272","_key":"7151"},{"title":"Dr. Slump Movie 05: Arale-chan Hoyoyo! Yume no Miyako Mechapolis","livechart":"10992","mal":"8547","_key":"10992"}]
+[
+    {
+        "title": "Tatakae! Chou Robot Seimeitai Transformers",
+        "livechart": "5620",
+        "mal": "2268",
+        "_key": "5620"
+    },
+    {
+        "title": "Dirty Pair",
+        "livechart": "5865",
+        "mal": "424",
+        "_key": "5865"
+    },
+    {
+        "title": "Ginga Tetsudou no Yoru",
+        "livechart": "6241",
+        "mal": "1441",
+        "_key": "6241"
+    },
+    {
+        "title": "Mahou no Princess Minky Momo vs. Mahou no Tenshi Creamy Mami",
+        "livechart": "6419",
+        "mal": "8972",
+        "_key": "6419"
+    },
+    {
+        "title": "Odin: Koushi Hansen Starlight",
+        "livechart": "6740",
+        "mal": "1287",
+        "_key": "6740"
+    },
+    {
+        "title": "Onboro Film",
+        "livechart": "6905",
+        "mal": "2550",
+        "_key": "6905"
+    },
+    {
+        "title": "Soukou Kihei Votoms: The Last Red Shoulder",
+        "livechart": "6913",
+        "mal": "2583",
+        "_key": "6913"
+    },
+    {
+        "title": "Mahou no Princess Minky Momo: Yume no Naka no Rondo",
+        "livechart": "7151",
+        "mal": "2272",
+        "_key": "7151"
+    },
+    {
+        "title": "Mahou no Tenshi Creamy Mami: Long Goodbye",
+        "livechart": "7166",
+        "mal": "2046",
+        "_key": "7166"
+    },
+    {
+        "title": "Captain Tsubasa: Europe Daikessen",
+        "livechart": "7222",
+        "mal": "2118",
+        "_key": "7222"
+    },
+    {
+        "title": "Lupin III: Babylon no Ougon Densetsu",
+        "livechart": "7552",
+        "mal": "1433",
+        "_key": "7552"
+    },
+    {
+        "title": "Mahou no Star Magical Emi",
+        "livechart": "7769",
+        "mal": "2038",
+        "_key": "7769"
+    },
+    {
+        "title": "Area 88 Movie",
+        "livechart": "10073",
+        "mal": "33232",
+        "_key": "10073"
+    },
+    {
+        "title": "Dr. Slump Movie 05: Arale-chan Hoyoyo! Yume no Miyako Mechapolis",
+        "livechart": "10992",
+        "mal": "8547",
+        "_key": "10992"
+    }
+]

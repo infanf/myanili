@@ -1,1 +1,86 @@
-[{"title":"Akira","livechart":"3613","mal":"47","_key":"3613"},{"title":"Top wo Nerae! Gunbuster","livechart":"3961","mal":"949","_key":"3961"},{"title":"Makai Toshi Shinjuku","livechart":"5676","mal":"499","_key":"5676"},{"title":"Kimagure Orange☆Road: Ano Hi ni Kaeritai","livechart":"7060","mal":"2454","_key":"7060"},{"title":"Top wo Nerae! Kagaku Kouza","livechart":"6507","mal":"5462","_key":"6507"},{"title":"Crying Freeman","livechart":"6842","mal":"1153","_key":"6842"},{"title":"Shin Grimm Meisaku Gekijou","livechart":"7337","mal":"4061","_key":"7337"},{"title":"Gall Force 3: Stardust War","livechart":"7735","mal":"2062","_key":"7735"},{"title":"Kikou Ryohei Mellowlink","livechart":"8452","mal":"2048","_key":"8452"},{"title":"Uchuu no Senshi","livechart":"7663","mal":"2516","_key":"7663"},{"title":"Oishinbo","livechart":"6835","mal":"1093","_key":"6835"},{"title":"Meiou Project Zeorymer","livechart":"7188","mal":"1832","_key":"7188"},{"title":"Kosuke-sama Rikimaru-sama: Konpeitou no Ryuu","livechart":"6881","mal":"3214","_key":"6881"},{"title":"Sore Ike! Anpanman","livechart":"11428","mal":"1960","_key":"11428"}]
+[
+    {
+        "title": "Akira",
+        "livechart": "3613",
+        "mal": "47",
+        "_key": "3613"
+    },
+    {
+        "title": "Top wo Nerae! Gunbuster",
+        "livechart": "3961",
+        "mal": "949",
+        "_key": "3961"
+    },
+    {
+        "title": "Makai Toshi Shinjuku",
+        "livechart": "5676",
+        "mal": "499",
+        "_key": "5676"
+    },
+    {
+        "title": "Top wo Nerae! Kagaku Kouza",
+        "livechart": "6507",
+        "mal": "5462",
+        "_key": "6507"
+    },
+    {
+        "title": "Oishinbo",
+        "livechart": "6835",
+        "mal": "1093",
+        "_key": "6835"
+    },
+    {
+        "title": "Crying Freeman",
+        "livechart": "6842",
+        "mal": "1153",
+        "_key": "6842"
+    },
+    {
+        "title": "Kosuke-sama Rikimaru-sama: Konpeitou no Ryuu",
+        "livechart": "6881",
+        "mal": "3214",
+        "_key": "6881"
+    },
+    {
+        "title": "Kimagure Orange\u2606Road: Ano Hi ni Kaeritai",
+        "livechart": "7060",
+        "mal": "2454",
+        "_key": "7060"
+    },
+    {
+        "title": "Meiou Project Zeorymer",
+        "livechart": "7188",
+        "mal": "1832",
+        "_key": "7188"
+    },
+    {
+        "title": "Shin Grimm Meisaku Gekijou",
+        "livechart": "7337",
+        "mal": "4061",
+        "_key": "7337"
+    },
+    {
+        "title": "Uchuu no Senshi",
+        "livechart": "7663",
+        "mal": "2516",
+        "_key": "7663"
+    },
+    {
+        "title": "Gall Force 3: Stardust War",
+        "livechart": "7735",
+        "mal": "2062",
+        "_key": "7735"
+    },
+    {
+        "title": "Kikou Ryohei Mellowlink",
+        "livechart": "8452",
+        "mal": "2048",
+        "_key": "8452"
+    },
+    {
+        "title": "Sore Ike! Anpanman",
+        "livechart": "11428",
+        "mal": "1960",
+        "_key": "11428"
+    }
+]

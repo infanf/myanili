@@ -1,1 +1,146 @@
-[{"title":"Yuu☆Yuu☆Hakusho","livechart":"3676","mal":"392","_key":"3676"},{"title":"Dragon Ball Z: Atsumare! Gokuu World","livechart":"6390","mal":"6714","_key":"6390"},{"title":"Tenchi Muyou! Ryououki","livechart":"4613","mal":"539","_key":"4613"},{"title":"Ushio to Tora","livechart":"5483","mal":"842","_key":"5483"},{"title":"Tokyo Babylon","livechart":"6568","mal":"1043","_key":"6568"},{"title":"Hime-chan no Ribbon","livechart":"6135","mal":"2037","_key":"6135"},{"title":"Bannou Bunka Neko-Musume","livechart":"6940","mal":"373","_key":"6940"},{"title":"Tsuyoshi Shikkari Shinasai","livechart":"7643","mal":"5992","_key":"7643"},{"title":"Kaze no Naka no Shoujo: Kinpatsu no Jeanie","livechart":"7626","mal":"3110","_key":"7626"},{"title":"Green Legend Ran","livechart":"7323","mal":"1169","_key":"7323"},{"title":"Nandarou","livechart":"5804","mal":"2897","_key":"5804"},{"title":"Shin Calimero","livechart":"6202","mal":"7004","_key":"6202"},{"title":"Sora Iro no Tane","livechart":"5832","mal":"2616","_key":"5832"},{"title":"Future GPX Cyber Formula 11","livechart":"8402","mal":"1392","_key":"8402"},{"title":"Flanders no Inu, Boku no Patrasche","livechart":"7427","mal":"2624","_key":"7427"},{"title":"Hello Harinezumi: Satsui no Ryoubun","livechart":"9064","mal":"4756","_key":"9064"},{"title":"Dragon Slayer Eiyuu Densetsu: Ouji no Tabidachi","livechart":"7747","mal":"3025","_key":"7747"},{"title":"Jigen Sengokushi: Kuro no Shishi - Jinnai-hen","livechart":"6558","mal":"1759","_key":"6558"},{"title":"Gensou Jotan Ellcia","livechart":"6751","mal":"3461","_key":"6751"},{"title":"Neko Hiki no Oruorane","livechart":"5909","mal":"5925","_key":"5909"},{"title":"Mikan Enikki","livechart":"8516","mal":"3345","_key":"8516"},{"title":"Scramble Wars: Tsuppashire! Genom Trophy Rally","livechart":"7117","mal":"2466","_key":"7117"},{"title":"Non-tan to Issho","livechart":"8317","mal":"17601","_key":"8317"},{"title":"Kobo-chan","livechart":"11001","mal":"19585","_key":"11001"}]
+[
+    {
+        "title": "Yuu\u2606Yuu\u2606Hakusho",
+        "livechart": "3676",
+        "mal": "392",
+        "_key": "3676"
+    },
+    {
+        "title": "Tenchi Muyou! Ryououki",
+        "livechart": "4613",
+        "mal": "539",
+        "_key": "4613"
+    },
+    {
+        "title": "Ushio to Tora",
+        "livechart": "5483",
+        "mal": "842",
+        "_key": "5483"
+    },
+    {
+        "title": "Nandarou",
+        "livechart": "5804",
+        "mal": "2897",
+        "_key": "5804"
+    },
+    {
+        "title": "Sora Iro no Tane",
+        "livechart": "5832",
+        "mal": "2616",
+        "_key": "5832"
+    },
+    {
+        "title": "Neko Hiki no Oruorane",
+        "livechart": "5909",
+        "mal": "5925",
+        "_key": "5909"
+    },
+    {
+        "title": "Hime-chan no Ribbon",
+        "livechart": "6135",
+        "mal": "2037",
+        "_key": "6135"
+    },
+    {
+        "title": "Shin Calimero",
+        "livechart": "6202",
+        "mal": "7004",
+        "_key": "6202"
+    },
+    {
+        "title": "Dragon Ball Z: Atsumare! Gokuu World",
+        "livechart": "6390",
+        "mal": "6714",
+        "_key": "6390"
+    },
+    {
+        "title": "Jigen Sengokushi: Kuro no Shishi - Jinnai-hen",
+        "livechart": "6558",
+        "mal": "1759",
+        "_key": "6558"
+    },
+    {
+        "title": "Tokyo Babylon",
+        "livechart": "6568",
+        "mal": "1043",
+        "_key": "6568"
+    },
+    {
+        "title": "Gensou Jotan Ellcia",
+        "livechart": "6751",
+        "mal": "3461",
+        "_key": "6751"
+    },
+    {
+        "title": "Bannou Bunka Neko-Musume",
+        "livechart": "6940",
+        "mal": "373",
+        "_key": "6940"
+    },
+    {
+        "title": "Scramble Wars: Tsuppashire! Genom Trophy Rally",
+        "livechart": "7117",
+        "mal": "2466",
+        "_key": "7117"
+    },
+    {
+        "title": "Green Legend Ran",
+        "livechart": "7323",
+        "mal": "1169",
+        "_key": "7323"
+    },
+    {
+        "title": "Flanders no Inu, Boku no Patrasche",
+        "livechart": "7427",
+        "mal": "2624",
+        "_key": "7427"
+    },
+    {
+        "title": "Kaze no Naka no Shoujo: Kinpatsu no Jeanie",
+        "livechart": "7626",
+        "mal": "3110",
+        "_key": "7626"
+    },
+    {
+        "title": "Tsuyoshi Shikkari Shinasai",
+        "livechart": "7643",
+        "mal": "5992",
+        "_key": "7643"
+    },
+    {
+        "title": "Dragon Slayer Eiyuu Densetsu: Ouji no Tabidachi",
+        "livechart": "7747",
+        "mal": "3025",
+        "_key": "7747"
+    },
+    {
+        "title": "Non-tan to Issho",
+        "livechart": "8317",
+        "mal": "17601",
+        "_key": "8317"
+    },
+    {
+        "title": "Future GPX Cyber Formula 11",
+        "livechart": "8402",
+        "mal": "1392",
+        "_key": "8402"
+    },
+    {
+        "title": "Mikan Enikki",
+        "livechart": "8516",
+        "mal": "3345",
+        "_key": "8516"
+    },
+    {
+        "title": "Hello Harinezumi: Satsui no Ryoubun",
+        "livechart": "9064",
+        "mal": "4756",
+        "_key": "9064"
+    },
+    {
+        "title": "Kobo-chan",
+        "livechart": "11001",
+        "mal": "19585",
+        "_key": "11001"
+    }
+]

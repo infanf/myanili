@@ -1,1 +1,122 @@
-[{"title":"Ginga Eiyuu Densetsu","livechart":"3708","mal":"820","_key":"3708"},{"title":"Ginga Eiyuu Densetsu: Waga Yuku wa Hoshi no Taikai","livechart":"4443","mal":"3014","_key":"4443"},{"title":"Lupin III: Fuuma Ichizoku no Inbou","livechart":"9298","mal":"1432","_key":"9298"},{"title":"Urusei Yatsura Movie 5: Final","livechart":"8724","mal":"1924","_key":"8724"},{"title":"Sakigake!! Otokojuku","livechart":"7260","mal":"2903","_key":"7260"},{"title":"Dirty Pair OVA","livechart":"6613","mal":"4200","_key":"6613"},{"title":"Osomatsu-kun (1988)","livechart":"5710","mal":"9883","_key":"5710"},{"title":"Genji Monogatari","livechart":"7881","mal":"3488","_key":"7881"},{"title":"Metal Skin Panic MADOX-01","livechart":"7691","mal":"2461","_key":"7691"},{"title":"Battle Royal High School","livechart":"6709","mal":"3625","_key":"6709"},{"title":"Shoukoushi Cedie","livechart":"6877","mal":"2555","_key":"6877"},{"title":"Gegege no Kitarou: Jigoku-hen","livechart":"8082","mal":"8158","_key":"8082"},{"title":"Jigazou","livechart":"7465","mal":"4966","_key":"7465"},{"title":"Hi no Tori: Uchuu-hen","livechart":"7589","mal":"2998","_key":"7589"},{"title":"Mori no Densetsu","livechart":"8846","mal":"2456","_key":"8846"},{"title":"Seisenshi Dunbine OVA","livechart":"7932","mal":"5372","_key":"7932"},{"title":"Tang Lang Bu Chan","livechart":"7675","mal":"31972","_key":"7675"},{"title":"Cheonbangjichuk Hani","livechart":"8283","mal":"17893","_key":"8283"},{"title":"Katte ni Shirokuma","livechart":"6954","mal":"9832","_key":"6954"},{"title":"Maison Ikkoku: Kanketsu-hen","livechart":"11066","mal":"2460","_key":"11066"}]
+[
+    {
+        "title": "Ginga Eiyuu Densetsu",
+        "livechart": "3708",
+        "mal": "820",
+        "_key": "3708"
+    },
+    {
+        "title": "Ginga Eiyuu Densetsu: Waga Yuku wa Hoshi no Taikai",
+        "livechart": "4443",
+        "mal": "3014",
+        "_key": "4443"
+    },
+    {
+        "title": "Osomatsu-kun (1988)",
+        "livechart": "5710",
+        "mal": "9883",
+        "_key": "5710"
+    },
+    {
+        "title": "Dirty Pair OVA",
+        "livechart": "6613",
+        "mal": "4200",
+        "_key": "6613"
+    },
+    {
+        "title": "Battle Royal High School",
+        "livechart": "6709",
+        "mal": "3625",
+        "_key": "6709"
+    },
+    {
+        "title": "Shoukoushi Cedie",
+        "livechart": "6877",
+        "mal": "2555",
+        "_key": "6877"
+    },
+    {
+        "title": "Katte ni Shirokuma",
+        "livechart": "6954",
+        "mal": "9832",
+        "_key": "6954"
+    },
+    {
+        "title": "Sakigake!! Otokojuku",
+        "livechart": "7260",
+        "mal": "2903",
+        "_key": "7260"
+    },
+    {
+        "title": "Jigazou",
+        "livechart": "7465",
+        "mal": "4966",
+        "_key": "7465"
+    },
+    {
+        "title": "Hi no Tori: Uchuu-hen",
+        "livechart": "7589",
+        "mal": "2998",
+        "_key": "7589"
+    },
+    {
+        "title": "Tang Lang Bu Chan",
+        "livechart": "7675",
+        "mal": "31972",
+        "_key": "7675"
+    },
+    {
+        "title": "Metal Skin Panic MADOX-01",
+        "livechart": "7691",
+        "mal": "2461",
+        "_key": "7691"
+    },
+    {
+        "title": "Genji Monogatari",
+        "livechart": "7881",
+        "mal": "3488",
+        "_key": "7881"
+    },
+    {
+        "title": "Seisenshi Dunbine OVA",
+        "livechart": "7932",
+        "mal": "5372",
+        "_key": "7932"
+    },
+    {
+        "title": "Gegege no Kitarou: Jigoku-hen",
+        "livechart": "8082",
+        "mal": "8158",
+        "_key": "8082"
+    },
+    {
+        "title": "Cheonbangjichuk Hani",
+        "livechart": "8283",
+        "mal": "17893",
+        "_key": "8283"
+    },
+    {
+        "title": "Urusei Yatsura Movie 5: Final",
+        "livechart": "8724",
+        "mal": "1924",
+        "_key": "8724"
+    },
+    {
+        "title": "Mori no Densetsu",
+        "livechart": "8846",
+        "mal": "2456",
+        "_key": "8846"
+    },
+    {
+        "title": "Lupin III: Fuuma Ichizoku no Inbou",
+        "livechart": "9298",
+        "mal": "1432",
+        "_key": "9298"
+    },
+    {
+        "title": "Maison Ikkoku: Kanketsu-hen",
+        "livechart": "11066",
+        "mal": "2460",
+        "_key": "11066"
+    }
+]

@@ -1,1 +1,32 @@
-[{"title":"Candy Candy","livechart":"5367","mal":"2800","_key":"5367"},{"title":"Manga Sekai Mukashibanashi","livechart":"9088","mal":"6262","_key":"9088"},{"title":"Magnerobo Ga-Keen","livechart":"6874","mal":"3932","_key":"6874"},{"title":"Little Lulu to Chicchai Nakama","livechart":"9032","mal":"3823","_key":"9032"},{"title":"Paul no Miracle Daisakusen","livechart":"10378","mal":"4013","_key":"10378"}]
+[
+    {
+        "title": "Candy Candy",
+        "livechart": "5367",
+        "mal": "2800",
+        "_key": "5367"
+    },
+    {
+        "title": "Magnerobo Ga-Keen",
+        "livechart": "6874",
+        "mal": "3932",
+        "_key": "6874"
+    },
+    {
+        "title": "Little Lulu to Chicchai Nakama",
+        "livechart": "9032",
+        "mal": "3823",
+        "_key": "9032"
+    },
+    {
+        "title": "Manga Sekai Mukashibanashi",
+        "livechart": "9088",
+        "mal": "6262",
+        "_key": "9088"
+    },
+    {
+        "title": "Paul no Miracle Daisakusen",
+        "livechart": "10378",
+        "mal": "4013",
+        "_key": "10378"
+    }
+]

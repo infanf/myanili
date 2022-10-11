@@ -1,1 +1,74 @@
-[{"title":"Dragon Ball Z Special 1: Tatta Hitori no Saishuu Kessen","livechart":"4243","mal":"986","_key":"4243"},{"title":"Ranma ½: Nettou Uta Gassen","livechart":"6126","mal":"6713","_key":"6126"},{"title":"Violence Jack: Hell's Wind-hen","livechart":"7699","mal":"1343","_key":"7699"},{"title":"Kidou Keisatsu Patlabor: New OVA","livechart":"5473","mal":"1289","_key":"5473"},{"title":"Mobile Suit SD Gundam Mk IV","livechart":"7582","mal":"2304","_key":"7582"},{"title":"Mainichi ga Nichiyoubi","livechart":"7091","mal":"2059","_key":"7091"},{"title":"Mobile Suit SD Gundam Mk V","livechart":"7662","mal":"6792","_key":"7662"},{"title":"Mitsume ga Tooru","livechart":"7879","mal":"5249","_key":"7879"},{"title":"Pygmalio","livechart":"6911","mal":"3765","_key":"6911"},{"title":"Magical★Taruruuto-kun","livechart":"10659","mal":"5274","_key":"10659"},{"title":"Kobo-chan Special","livechart":"11002","mal":"39344","_key":"11002"},{"title":"Chouon Senshi Borgman: Lovers Rain","livechart":"11340","mal":"3763","_key":"11340"}]
+[
+    {
+        "title": "Dragon Ball Z Special 1: Tatta Hitori no Saishuu Kessen",
+        "livechart": "4243",
+        "mal": "986",
+        "_key": "4243"
+    },
+    {
+        "title": "Kidou Keisatsu Patlabor: New OVA",
+        "livechart": "5473",
+        "mal": "1289",
+        "_key": "5473"
+    },
+    {
+        "title": "Ranma \u00bd: Nettou Uta Gassen",
+        "livechart": "6126",
+        "mal": "6713",
+        "_key": "6126"
+    },
+    {
+        "title": "Pygmalio",
+        "livechart": "6911",
+        "mal": "3765",
+        "_key": "6911"
+    },
+    {
+        "title": "Mainichi ga Nichiyoubi",
+        "livechart": "7091",
+        "mal": "2059",
+        "_key": "7091"
+    },
+    {
+        "title": "Mobile Suit SD Gundam Mk IV",
+        "livechart": "7582",
+        "mal": "2304",
+        "_key": "7582"
+    },
+    {
+        "title": "Mobile Suit SD Gundam Mk V",
+        "livechart": "7662",
+        "mal": "6792",
+        "_key": "7662"
+    },
+    {
+        "title": "Violence Jack: Hell's Wind-hen",
+        "livechart": "7699",
+        "mal": "1343",
+        "_key": "7699"
+    },
+    {
+        "title": "Mitsume ga Tooru",
+        "livechart": "7879",
+        "mal": "5249",
+        "_key": "7879"
+    },
+    {
+        "title": "Magical\u2605Taruruuto-kun",
+        "livechart": "10659",
+        "mal": "5274",
+        "_key": "10659"
+    },
+    {
+        "title": "Kobo-chan Special",
+        "livechart": "11002",
+        "mal": "39344",
+        "_key": "11002"
+    },
+    {
+        "title": "Chouon Senshi Borgman: Lovers Rain",
+        "livechart": "11340",
+        "mal": "3763",
+        "_key": "11340"
+    }
+]

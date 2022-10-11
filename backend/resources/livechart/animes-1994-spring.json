@@ -1,1 +1,134 @@
-[{"title":"Dragon Ball Z Movie 10: Kiken na Futari! Super Senshi wa Nemurenai","livechart":"4268","mal":"903","_key":"4268"},{"title":"Bishoujo Senshi Sailor Moon S","livechart":"4962","mal":"532","_key":"4962"},{"title":"Mobile Fighter G Gundam","livechart":"5097","mal":"96","_key":"5097"},{"title":"Aa! Megami-sama!","livechart":"4503","mal":"49","_key":"4503"},{"title":"Marmalade Boy","livechart":"5691","mal":"334","_key":"5691"},{"title":"Yuu☆Yuu☆Hakusho: Meikai Shitou-hen - Honoo no Kizuna","livechart":"6060","mal":"883","_key":"6060"},{"title":"Slam Dunk (Movie)","livechart":"4970","mal":"1764","_key":"4970"},{"title":"Doraemon Movie 15: Nobita to Mugen Sankenshi","livechart":"8905","mal":"2676","_key":"8905"},{"title":"Crayon Shin-chan Movie 02: Buriburi Oukoku no Hihou","livechart":"8546","mal":"3745","_key":"8546"},{"title":"Genocyber","livechart":"6029","mal":"2775","_key":"6029"},{"title":"Tenchi Muyou!: Galaxy Police Mihoshi Space Adventure","livechart":"6460","mal":"2725","_key":"6460"},{"title":"Ginga Sengoku Gunyuuden Rai","livechart":"8200","mal":"3907","_key":"8200"},{"title":"Final Fantasy","livechart":"6535","mal":"426","_key":"6535"},{"title":"Plastic Little","livechart":"5506","mal":"2332","_key":"5506"},{"title":"Houkago no Shokuinshitsu","livechart":"6667","mal":"730","_key":"6667"},{"title":"Red Baron","livechart":"8467","mal":"2283","_key":"8467"},{"title":"Kitty's Paradise","livechart":"6821","mal":"4023","_key":"6821"},{"title":"Shirayuki Hime no Densetsu","livechart":"9514","mal":"3809","_key":"9514"},{"title":"Tottemo! Luckyman","livechart":"6892","mal":"3672","_key":"6892"},{"title":"Goal FH: Field Hunter","livechart":"9077","mal":"5217","_key":"9077"},{"title":"Osamu to Musashi","livechart":"7295","mal":"19731","_key":"7295"},{"title":"Dr. Slump Movie 08: Arale-chan Hoyoyo!! Tasuketa Same ni Tsurerarete...","livechart":"10995","mal":"8548","_key":"10995"}]
+[
+    {
+        "title": "Dragon Ball Z Movie 10: Kiken na Futari! Super Senshi wa Nemurenai",
+        "livechart": "4268",
+        "mal": "903",
+        "_key": "4268"
+    },
+    {
+        "title": "Aa! Megami-sama!",
+        "livechart": "4503",
+        "mal": "49",
+        "_key": "4503"
+    },
+    {
+        "title": "Bishoujo Senshi Sailor Moon S",
+        "livechart": "4962",
+        "mal": "532",
+        "_key": "4962"
+    },
+    {
+        "title": "Slam Dunk (Movie)",
+        "livechart": "4970",
+        "mal": "1764",
+        "_key": "4970"
+    },
+    {
+        "title": "Mobile Fighter G Gundam",
+        "livechart": "5097",
+        "mal": "96",
+        "_key": "5097"
+    },
+    {
+        "title": "Plastic Little",
+        "livechart": "5506",
+        "mal": "2332",
+        "_key": "5506"
+    },
+    {
+        "title": "Marmalade Boy",
+        "livechart": "5691",
+        "mal": "334",
+        "_key": "5691"
+    },
+    {
+        "title": "Genocyber",
+        "livechart": "6029",
+        "mal": "2775",
+        "_key": "6029"
+    },
+    {
+        "title": "Yuu\u2606Yuu\u2606Hakusho: Meikai Shitou-hen - Honoo no Kizuna",
+        "livechart": "6060",
+        "mal": "883",
+        "_key": "6060"
+    },
+    {
+        "title": "Tenchi Muyou!: Galaxy Police Mihoshi Space Adventure",
+        "livechart": "6460",
+        "mal": "2725",
+        "_key": "6460"
+    },
+    {
+        "title": "Final Fantasy",
+        "livechart": "6535",
+        "mal": "426",
+        "_key": "6535"
+    },
+    {
+        "title": "Houkago no Shokuinshitsu",
+        "livechart": "6667",
+        "mal": "730",
+        "_key": "6667"
+    },
+    {
+        "title": "Kitty's Paradise",
+        "livechart": "6821",
+        "mal": "4023",
+        "_key": "6821"
+    },
+    {
+        "title": "Tottemo! Luckyman",
+        "livechart": "6892",
+        "mal": "3672",
+        "_key": "6892"
+    },
+    {
+        "title": "Osamu to Musashi",
+        "livechart": "7295",
+        "mal": "19731",
+        "_key": "7295"
+    },
+    {
+        "title": "Ginga Sengoku Gunyuuden Rai",
+        "livechart": "8200",
+        "mal": "3907",
+        "_key": "8200"
+    },
+    {
+        "title": "Red Baron",
+        "livechart": "8467",
+        "mal": "2283",
+        "_key": "8467"
+    },
+    {
+        "title": "Crayon Shin-chan Movie 02: Buriburi Oukoku no Hihou",
+        "livechart": "8546",
+        "mal": "3745",
+        "_key": "8546"
+    },
+    {
+        "title": "Doraemon Movie 15: Nobita to Mugen Sankenshi",
+        "livechart": "8905",
+        "mal": "2676",
+        "_key": "8905"
+    },
+    {
+        "title": "Goal FH: Field Hunter",
+        "livechart": "9077",
+        "mal": "5217",
+        "_key": "9077"
+    },
+    {
+        "title": "Shirayuki Hime no Densetsu",
+        "livechart": "9514",
+        "mal": "3809",
+        "_key": "9514"
+    },
+    {
+        "title": "Dr. Slump Movie 08: Arale-chan Hoyoyo!! Tasuketa Same ni Tsurerarete...",
+        "livechart": "10995",
+        "mal": "8548",
+        "_key": "10995"
+    }
+]

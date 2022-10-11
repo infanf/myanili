@@ -1,1 +1,44 @@
-[{"title":"Kazoku Robinson Hyouryuuki: Fushigi na Shima no Flone","livechart":"6461","mal":"2544","_key":"6461"},{"title":"Doraemon: Doraemon Comes Back","livechart":"8740","mal":"2634","_key":"8740"},{"title":"Sayonara Ginga Tetsudou 999: Andromeda Shuuchakueki","livechart":"8394","mal":"1302","_key":"8394"},{"title":"Time Bokan Series: Yattodetaman","livechart":"7629","mal":"4154","_key":"7629"},{"title":"Cyborg 009: Chou Ginga Densetsu","livechart":"8611","mal":"7336","_key":"8611"},{"title":"Jiu Se Lu","livechart":"6536","mal":"9951","_key":"6536"},{"title":"Arano no Sakebi Koe: Hoero, Buck","livechart":"8065","mal":"4074","_key":"8065"}]
+[
+    {
+        "title": "Kazoku Robinson Hyouryuuki: Fushigi na Shima no Flone",
+        "livechart": "6461",
+        "mal": "2544",
+        "_key": "6461"
+    },
+    {
+        "title": "Jiu Se Lu",
+        "livechart": "6536",
+        "mal": "9951",
+        "_key": "6536"
+    },
+    {
+        "title": "Time Bokan Series: Yattodetaman",
+        "livechart": "7629",
+        "mal": "4154",
+        "_key": "7629"
+    },
+    {
+        "title": "Arano no Sakebi Koe: Hoero, Buck",
+        "livechart": "8065",
+        "mal": "4074",
+        "_key": "8065"
+    },
+    {
+        "title": "Sayonara Ginga Tetsudou 999: Andromeda Shuuchakueki",
+        "livechart": "8394",
+        "mal": "1302",
+        "_key": "8394"
+    },
+    {
+        "title": "Cyborg 009: Chou Ginga Densetsu",
+        "livechart": "8611",
+        "mal": "7336",
+        "_key": "8611"
+    },
+    {
+        "title": "Doraemon: Doraemon Comes Back",
+        "livechart": "8740",
+        "mal": "2634",
+        "_key": "8740"
+    }
+]

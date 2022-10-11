@@ -1,1 +1,50 @@
-[{"title":"Hadashi no Gen","livechart":"4511","mal":"1824","_key":"4511"},{"title":"Cat's Eye","livechart":"5765","mal":"2043","_key":"5765"},{"title":"Mahou no Tenshi Creamy Mami","livechart":"7129","mal":"2044","_key":"7129"},{"title":"Choujikuu Seiki Orguss","livechart":"6926","mal":"2089","_key":"6926"},{"title":"Unico: Mahou no Shima e","livechart":"6924","mal":"2429","_key":"6924"},{"title":"Plawres Sanshirou","livechart":"8792","mal":"1873","_key":"8792"},{"title":"Psychoarmor Govarian","livechart":"10412","mal":"6428","_key":"10412"},{"title":"Choro Q Dagram","livechart":"7068","mal":"2258","_key":"7068"}]
+[
+    {
+        "title": "Hadashi no Gen",
+        "livechart": "4511",
+        "mal": "1824",
+        "_key": "4511"
+    },
+    {
+        "title": "Cat's Eye",
+        "livechart": "5765",
+        "mal": "2043",
+        "_key": "5765"
+    },
+    {
+        "title": "Unico: Mahou no Shima e",
+        "livechart": "6924",
+        "mal": "2429",
+        "_key": "6924"
+    },
+    {
+        "title": "Choujikuu Seiki Orguss",
+        "livechart": "6926",
+        "mal": "2089",
+        "_key": "6926"
+    },
+    {
+        "title": "Choro Q Dagram",
+        "livechart": "7068",
+        "mal": "2258",
+        "_key": "7068"
+    },
+    {
+        "title": "Mahou no Tenshi Creamy Mami",
+        "livechart": "7129",
+        "mal": "2044",
+        "_key": "7129"
+    },
+    {
+        "title": "Plawres Sanshirou",
+        "livechart": "8792",
+        "mal": "1873",
+        "_key": "8792"
+    },
+    {
+        "title": "Psychoarmor Govarian",
+        "livechart": "10412",
+        "mal": "6428",
+        "_key": "10412"
+    }
+]

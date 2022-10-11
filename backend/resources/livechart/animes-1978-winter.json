@@ -1,1 +1,20 @@
-[{"title":"Perrine Monogatari","livechart":"7484","mal":"2549","_key":"7484"},{"title":"Yuki no Joou","livechart":"8975","mal":"34946","_key":"8975"},{"title":"77Danui Bimil","livechart":"8124","mal":"16812","_key":"8124"}]
+[
+    {
+        "title": "Perrine Monogatari",
+        "livechart": "7484",
+        "mal": "2549",
+        "_key": "7484"
+    },
+    {
+        "title": "77Danui Bimil",
+        "livechart": "8124",
+        "mal": "16812",
+        "_key": "8124"
+    },
+    {
+        "title": "Yuki no Joou",
+        "livechart": "8975",
+        "mal": "34946",
+        "_key": "8975"
+    }
+]

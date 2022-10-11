@@ -1,1 +1,170 @@
-[{"title":"Great Teacher Onizuka","livechart":"3642","mal":"245","_key":"3642"},{"title":"Pocket Monsters: Maboroshi no Pokemon Lugia Bakutan","livechart":"3979","mal":"1117","_key":"3979"},{"title":"Cardcaptor Sakura Movie 1","livechart":"4216","mal":"371","_key":"4216"},{"title":"Medarot","livechart":"6036","mal":"1138","_key":"6036"},{"title":"Mobile Suit Gundam: The 08th MS Team","livechart":"4109","mal":"81","_key":"4109"},{"title":"Pikachu Tankentai","livechart":"5332","mal":"4792","_key":"5332"},{"title":"Tonari no Yamada-kun","livechart":"3082","mal":"415","_key":"3082"},{"title":"Gravitation: Lyrics of Love","livechart":"5280","mal":"507","_key":"5280"},{"title":"Shoujo Kakumei Utena: Adolescence Mokushiroku","livechart":"4737","mal":"441","_key":"4737"},{"title":"Oruchuban Ebichu","livechart":"5712","mal":"1060","_key":"5712"},{"title":"Kachou Ouji","livechart":"5173","mal":"1025","_key":"5173"},{"title":"Senkaiden Houshin Engi","livechart":"8289","mal":"1108","_key":"8289"},{"title":"Mahoutsukai Tai!","livechart":"6430","mal":"630","_key":"6430"},{"title":"Lupin III: Ai no Da Capo - Fujiko's Unlucky Days","livechart":"9334","mal":"1431","_key":"9334"},{"title":"Kakyuusei (TV)","livechart":"7982","mal":"2609","_key":"7982"},{"title":"Master Keaton OVA","livechart":"5766","mal":"1910","_key":"5766"},{"title":"Nekojiru Gekijou Jirujiru Original","livechart":"8287","mal":"1062","_key":"8287"},{"title":"Chivas 1-2-3","livechart":"7406","mal":"1228","_key":"7406"},{"title":"Tenamonya Voyagers","livechart":"8209","mal":"773","_key":"8209"},{"title":"Happy Birthday: Inochi Kagayaku Toki","livechart":"6444","mal":"9931","_key":"6444"},{"title":"Me gumi no Daigo: Kajiba no Baka Yarou","livechart":"7929","mal":"3147","_key":"7929"},{"title":"Papa to Odorou","livechart":"7081","mal":"4742","_key":"7081"},{"title":"Inuki Kanako Zekkyou Collection: Gakkou ga Kowai!","livechart":"7725","mal":"8920","_key":"7725"},{"title":"Super Doll Licca-chan: Licca-chan Zettai Zetsumei! Doll Knights no Kiseki","livechart":"8088","mal":"10199","_key":"8088"},{"title":"Torajima no Miime","livechart":"8277","mal":"9344","_key":"8277"},{"title":"Sore Ike! Anpanman: Anpanman to Tanoshii Nakama-tachi","livechart":"11415","mal":"27501","_key":"11415"},{"title":"Sore Ike! Anpanman: Yuuki no Hana ga Hiraku Toki","livechart":"11393","mal":"21971","_key":"11393"},{"title":"Dokkiri Doctor Special","livechart":"11300","mal":"13781","_key":"11300"}]
+[
+    {
+        "title": "Tonari no Yamada-kun",
+        "livechart": "3082",
+        "mal": "415",
+        "_key": "3082"
+    },
+    {
+        "title": "Great Teacher Onizuka",
+        "livechart": "3642",
+        "mal": "245",
+        "_key": "3642"
+    },
+    {
+        "title": "Pocket Monsters: Maboroshi no Pokemon Lugia Bakutan",
+        "livechart": "3979",
+        "mal": "1117",
+        "_key": "3979"
+    },
+    {
+        "title": "Mobile Suit Gundam: The 08th MS Team",
+        "livechart": "4109",
+        "mal": "81",
+        "_key": "4109"
+    },
+    {
+        "title": "Cardcaptor Sakura Movie 1",
+        "livechart": "4216",
+        "mal": "371",
+        "_key": "4216"
+    },
+    {
+        "title": "Shoujo Kakumei Utena: Adolescence Mokushiroku",
+        "livechart": "4737",
+        "mal": "441",
+        "_key": "4737"
+    },
+    {
+        "title": "Kachou Ouji",
+        "livechart": "5173",
+        "mal": "1025",
+        "_key": "5173"
+    },
+    {
+        "title": "Gravitation: Lyrics of Love",
+        "livechart": "5280",
+        "mal": "507",
+        "_key": "5280"
+    },
+    {
+        "title": "Pikachu Tankentai",
+        "livechart": "5332",
+        "mal": "4792",
+        "_key": "5332"
+    },
+    {
+        "title": "Oruchuban Ebichu",
+        "livechart": "5712",
+        "mal": "1060",
+        "_key": "5712"
+    },
+    {
+        "title": "Master Keaton OVA",
+        "livechart": "5766",
+        "mal": "1910",
+        "_key": "5766"
+    },
+    {
+        "title": "Medarot",
+        "livechart": "6036",
+        "mal": "1138",
+        "_key": "6036"
+    },
+    {
+        "title": "Mahoutsukai Tai!",
+        "livechart": "6430",
+        "mal": "630",
+        "_key": "6430"
+    },
+    {
+        "title": "Happy Birthday: Inochi Kagayaku Toki",
+        "livechart": "6444",
+        "mal": "9931",
+        "_key": "6444"
+    },
+    {
+        "title": "Papa to Odorou",
+        "livechart": "7081",
+        "mal": "4742",
+        "_key": "7081"
+    },
+    {
+        "title": "Chivas 1-2-3",
+        "livechart": "7406",
+        "mal": "1228",
+        "_key": "7406"
+    },
+    {
+        "title": "Inuki Kanako Zekkyou Collection: Gakkou ga Kowai!",
+        "livechart": "7725",
+        "mal": "8920",
+        "_key": "7725"
+    },
+    {
+        "title": "Me gumi no Daigo: Kajiba no Baka Yarou",
+        "livechart": "7929",
+        "mal": "3147",
+        "_key": "7929"
+    },
+    {
+        "title": "Kakyuusei (TV)",
+        "livechart": "7982",
+        "mal": "2609",
+        "_key": "7982"
+    },
+    {
+        "title": "Super Doll Licca-chan: Licca-chan Zettai Zetsumei! Doll Knights no Kiseki",
+        "livechart": "8088",
+        "mal": "10199",
+        "_key": "8088"
+    },
+    {
+        "title": "Tenamonya Voyagers",
+        "livechart": "8209",
+        "mal": "773",
+        "_key": "8209"
+    },
+    {
+        "title": "Torajima no Miime",
+        "livechart": "8277",
+        "mal": "9344",
+        "_key": "8277"
+    },
+    {
+        "title": "Nekojiru Gekijou Jirujiru Original",
+        "livechart": "8287",
+        "mal": "1062",
+        "_key": "8287"
+    },
+    {
+        "title": "Senkaiden Houshin Engi",
+        "livechart": "8289",
+        "mal": "1108",
+        "_key": "8289"
+    },
+    {
+        "title": "Lupin III: Ai no Da Capo - Fujiko's Unlucky Days",
+        "livechart": "9334",
+        "mal": "1431",
+        "_key": "9334"
+    },
+    {
+        "title": "Dokkiri Doctor Special",
+        "livechart": "11300",
+        "mal": "13781",
+        "_key": "11300"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Yuuki no Hana ga Hiraku Toki",
+        "livechart": "11393",
+        "mal": "21971",
+        "_key": "11393"
+    },
+    {
+        "title": "Sore Ike! Anpanman: Anpanman to Tanoshii Nakama-tachi",
+        "livechart": "11415",
+        "mal": "27501",
+        "_key": "11415"
+    }
+]

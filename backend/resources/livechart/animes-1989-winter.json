@@ -1,1 +1,110 @@
-[{"title":"Ginga Eiyuu Densetsu","livechart":"3708","mal":"820","_key":"3708"},{"title":"Top wo Nerae! Gunbuster","livechart":"3961","mal":"949","_key":"3961"},{"title":"Riding Bean","livechart":"5581","mal":"917","_key":"5581"},{"title":"Violence Jack: Jigoku Gai-hen","livechart":"7149","mal":"1342","_key":"7149"},{"title":"Midnight Eye: Gokuu","livechart":"8747","mal":"1879","_key":"8747"},{"title":"All That Gundam","livechart":"8121","mal":"5270","_key":"8121"},{"title":"One Pound Gospel","livechart":"6895","mal":"1328","_key":"6895"},{"title":"Uchuu Kazoku Carlvinson","livechart":"7199","mal":"4533","_key":"7199"},{"title":"Seijuuki Cyguard","livechart":"7805","mal":"3882","_key":"7805"},{"title":"Yousei Ou","livechart":"7238","mal":"7818","_key":"7238"},{"title":"Chinpui","livechart":"10367","mal":"5908","_key":"10367"},{"title":"Obocchama-kun","livechart":"10465","mal":"20075","_key":"10465"},{"title":"2020 Nyeon Ujuui Wonder Kiddy","livechart":"7125","mal":"16696","_key":"7125"},{"title":"Maison Ikkoku: Shiki Utsuriyuku Kisetsu no Naka de","livechart":"11065","mal":"3483","_key":"11065"},{"title":"Esper Mami Special: My Angel Mami-chan","livechart":"10874","mal":"10000","_key":"10874"},{"title":"Warau Salesman Dai SP-banashi","livechart":"11262","mal":"35116","_key":"11262"},{"title":"Crusher Joe OVA","livechart":"11401","mal":"2696","_key":"11401"},{"title":"Chouon Senshi Borgman: Madnight☆Gigs!","livechart":"11339","mal":"30571","_key":"11339"}]
+[
+    {
+        "title": "Ginga Eiyuu Densetsu",
+        "livechart": "3708",
+        "mal": "820",
+        "_key": "3708"
+    },
+    {
+        "title": "Top wo Nerae! Gunbuster",
+        "livechart": "3961",
+        "mal": "949",
+        "_key": "3961"
+    },
+    {
+        "title": "Riding Bean",
+        "livechart": "5581",
+        "mal": "917",
+        "_key": "5581"
+    },
+    {
+        "title": "One Pound Gospel",
+        "livechart": "6895",
+        "mal": "1328",
+        "_key": "6895"
+    },
+    {
+        "title": "2020 Nyeon Ujuui Wonder Kiddy",
+        "livechart": "7125",
+        "mal": "16696",
+        "_key": "7125"
+    },
+    {
+        "title": "Violence Jack: Jigoku Gai-hen",
+        "livechart": "7149",
+        "mal": "1342",
+        "_key": "7149"
+    },
+    {
+        "title": "Uchuu Kazoku Carlvinson",
+        "livechart": "7199",
+        "mal": "4533",
+        "_key": "7199"
+    },
+    {
+        "title": "Yousei Ou",
+        "livechart": "7238",
+        "mal": "7818",
+        "_key": "7238"
+    },
+    {
+        "title": "Seijuuki Cyguard",
+        "livechart": "7805",
+        "mal": "3882",
+        "_key": "7805"
+    },
+    {
+        "title": "All That Gundam",
+        "livechart": "8121",
+        "mal": "5270",
+        "_key": "8121"
+    },
+    {
+        "title": "Midnight Eye: Gokuu",
+        "livechart": "8747",
+        "mal": "1879",
+        "_key": "8747"
+    },
+    {
+        "title": "Chinpui",
+        "livechart": "10367",
+        "mal": "5908",
+        "_key": "10367"
+    },
+    {
+        "title": "Obocchama-kun",
+        "livechart": "10465",
+        "mal": "20075",
+        "_key": "10465"
+    },
+    {
+        "title": "Esper Mami Special: My Angel Mami-chan",
+        "livechart": "10874",
+        "mal": "10000",
+        "_key": "10874"
+    },
+    {
+        "title": "Maison Ikkoku: Shiki Utsuriyuku Kisetsu no Naka de",
+        "livechart": "11065",
+        "mal": "3483",
+        "_key": "11065"
+    },
+    {
+        "title": "Warau Salesman Dai SP-banashi",
+        "livechart": "11262",
+        "mal": "35116",
+        "_key": "11262"
+    },
+    {
+        "title": "Chouon Senshi Borgman: Madnight\u2606Gigs!",
+        "livechart": "11339",
+        "mal": "30571",
+        "_key": "11339"
+    },
+    {
+        "title": "Crusher Joe OVA",
+        "livechart": "11401",
+        "mal": "2696",
+        "_key": "11401"
+    }
+]
