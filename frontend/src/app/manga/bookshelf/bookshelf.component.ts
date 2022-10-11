@@ -20,7 +20,7 @@ export class BookshelfWrapperComponent implements OnInit {
 
   async ngOnInit() {
     this.glob.busy();
-    this.mangas = await this.mangaservice.list('reading');
+    this.mangas = await this.mangaservice.list('reading', { limit: 1000 });
     this.glob.notbusy();
   }
 
