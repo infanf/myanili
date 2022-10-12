@@ -52,8 +52,13 @@ export class MangaListComponent implements OnInit {
     );
   }
 
-  handleScroll(event: { target: Element; visible: boolean }) {
-    if (event.visible) this.loadMore();
+  async handleScroll(event: { target: Element; visible: boolean }) {
+    if (!event.visible) return;
+    let maxTries = 50;
+    while (this.loading && maxTries-- > 0) {
+      await this.glob.sleep(100);
+    }
+    this.loadMore();
   }
 
   async loadMore() {
