@@ -1,0 +1,20 @@
+<div class="grid m-2">
+  <myanili-media-card
+    *ngFor="let manga of mangas"
+    [status]="manga.list_status.status"
+    [poster]="manga.node.main_picture?.medium || manga.node.main_picture?.large"
+    [title]="
+      manga.my_extension?.displayName ||
+      (lang === 'en'
+        ? manga.node.alternative_titles?.en
+        : lang === 'jp'
+        ? manga.node.alternative_titles?.ja
+        : manga.node.title) ||
+      manga.node.title
+    "
+    [progress]="manga.list_status.num_chapters_read"
+    [parts]="manga.node.num_chapters"
+    [mediaType]="manga.node.media_type"
+    routerLink="/manga/details/{{ manga.node.id }}"
+  ></myanili-media-card>
+</div>

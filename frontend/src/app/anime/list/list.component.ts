@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ListAnime, WatchStatus } from '@models/anime';
 import { GlobalService } from 'src/app/global.service';
@@ -9,9 +9,8 @@ import { AnimeService } from '../anime.service';
 @Component({
   selector: 'myanili-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
 })
-export class AnimeListComponent implements OnInit {
+export class AnimeListComponent {
   @Input() status?: WatchStatus;
   animes: ListAnime[] = [];
   nextAnimes: ListAnime[] = [];
@@ -32,12 +31,12 @@ export class AnimeListComponent implements OnInit {
         this.animes = [];
         this.glob.setTitle(`Watchlist – ${newStatus.replace(/_/g, ' ')}`);
         this.glob.busy();
-        this.ngOnInit();
+        this.update();
       }
     });
   }
 
-  async ngOnInit() {
+  async update() {
     this.loadedAll = false;
     this.nextAnimes = await this.animeService.list(this.status, {
       limit: 50,
@@ -47,8 +46,13 @@ export class AnimeListComponent implements OnInit {
     this.glob.notbusy();
   }
 
-  handleScroll(event: { target: Element; visible: boolean }) {
-    if (event.visible) this.loadMore();
+  async handleScroll(event: { target: Element; visible: boolean }) {
+    if (!event.visible) return;
+    let maxTries = 50;
+    while (this.loading && maxTries-- > 0) {
+      await this.glob.sleep(100);
+    }
+    this.loadMore();
   }
 
   async loadMore() {

@@ -1,77 +1,15 @@
 <section>
-  <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
-    <thead class="sticky">
-      <tr>
-        <th></th>
-        <th
-          class="d-lg-table-cell"
-          [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
-        >
-          Name
-        </th>
-        <th class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">English Name</th>
-        <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Japanese Name</th>
-        <th class="d-none d-sm-table-cell">Author</th>
-        <th><span class="d-none d-md-inline">Platform</span></th>
-        <th>Chapter</th>
-        <th>Volume</th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let manga of mangas">
-        <tr
-          class="cursor-pointer"
-          [class]="{
-            'fw-bold': manga.list_status.status === 'reading' && !manga.my_extension?.ongoing
-          }"
-          routerLink="/manga/details/{{ manga.node.id }}"
-        >
-          <td>
-            <myanili-icon name="{{ manga.node.media_type | mal: 'mediaicon' }}"></myanili-icon>
-          </td>
-          <td
-            class="d-lg-table-cell"
-            [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
-          >
-            {{ manga.my_extension?.displayName || manga.node.title }}
-          </td>
-          <td class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">
-            {{ manga.node.alternative_titles?.en || manga.node.title }}
-          </td>
-          <td class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">
-            {{ manga.node.alternative_titles?.ja }}
-          </td>
-          <td class="d-none d-sm-table-cell">
-            <div *ngFor="let author of getAuthor(manga.node)">{{ author }}</div>
-          </td>
-          <td>
-            <myanili-platform
-              [provider]="manga.my_extension?.platform"
-              [publisher]="manga.my_extension?.publisher"
-            ></myanili-platform>
-          </td>
-          <td style="white-space: nowrap">
-            <myanili-icon-progress
-              *ngIf="manga.list_status.status === 'reading'"
-              [percent]="
-                manga.node.num_chapters
-                  ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
-                  : 0
-              "
-            ></myanili-icon-progress>
-            {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
-          </td>
-          <td>{{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
+  <myanili-manga-list *ngIf="layout === 'list'" [mangas]="mangas"></myanili-manga-list>
+  <myanili-manga-grid *ngIf="layout !== 'list'" [mangas]="mangas"></myanili-manga-grid>
   <div
     *ngIf="mangas.length && !loadedAll"
-    class="text-center"
+    style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
     inViewport
     (inViewportAction)="handleScroll($event)"
   >
+    &nbsp;
+  </div>
+  <div *ngIf="loading" class="text-center">
     <myanili-icon name="loading"></myanili-icon>
     Loading more...
   </div>

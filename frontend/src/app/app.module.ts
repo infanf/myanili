@@ -45,7 +45,9 @@ import { MangaCharactersComponent } from './manga/details/characters/characters.
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaRecommendationsComponent } from './manga/details/recommendations/recommendations.component';
 import { MangaRelatedComponent } from './manga/details/related/related.component';
+import { MangaListGridComponent } from './manga/list/grid/grid.component';
 import { MangaListComponent } from './manga/list/list.component';
+import { MangaListListComponent } from './manga/list/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -106,6 +108,8 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     AboutComponent,
     NewVersionComponent,
     MigrateBakaComponent,
+    MangaListListComponent,
+    MangaListGridComponent,
   ],
   imports: [
     BrowserModule,

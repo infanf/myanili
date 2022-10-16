@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ListManga, MangaNode, ReadStatus } from '@models/manga';
+import { ListManga, ReadStatus } from '@models/manga';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
 
@@ -17,6 +17,7 @@ export class MangaListComponent implements OnInit {
   loadedAll = false;
   loading = false;
 
+  layout = 'list';
   lang = 'en';
 
   constructor(
@@ -26,6 +27,7 @@ export class MangaListComponent implements OnInit {
     private glob: GlobalService,
   ) {
     this.settings.language.subscribe(lang => (this.lang = lang));
+    this.settings.layout.subscribe(layout => (this.layout = layout));
   }
 
   async ngOnInit() {
@@ -44,16 +46,13 @@ export class MangaListComponent implements OnInit {
     });
   }
 
-  getAuthor(manga: MangaNode): string[] {
-    return (
-      manga.authors?.map(
-        author => `${author.node.last_name} ${author.node.first_name} (${author.role})`,
-      ) || []
-    );
-  }
-
-  handleScroll(event: { target: Element; visible: boolean }) {
-    if (event.visible) this.loadMore();
+  async handleScroll(event: { target: Element; visible: boolean }) {
+    if (!event.visible) return;
+    let maxTries = 50;
+    while (this.loading && maxTries-- > 0) {
+      await this.glob.sleep(100);
+    }
+    this.loadMore();
   }
 
   async loadMore() {

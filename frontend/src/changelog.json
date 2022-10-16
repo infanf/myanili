@@ -1,6 +1,12 @@
 {
-  "version": "2.15.2",
+  "version": "2.15.3",
   "changes": [
+    {
+      "version": "2.15.3",
+      "features": [
+        "grid view for mangas"
+      ]
+    },
     {
       "version": "2.15.2",
       "fixes": [
