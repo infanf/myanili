@@ -755,12 +755,6 @@
         "_key": "10731"
     },
     {
-        "title": "Ningen Fushin no Boukensha-tachi ga Sekai wo Sukuu You Desu",
-        "livechart": "10749",
-        "mal": "49612",
-        "_key": "10749"
-    },
-    {
         "title": "Chiyu Mahou no Machigatta Tsukaikata: Senjou wo Kakeru Kaifuku Youin",
         "livechart": "10750",
         "mal": "49613",
@@ -1065,7 +1059,7 @@
         "_key": "11083"
     },
     {
-        "title": "Kimetsu no Yaiba: Katanakaji Sato-hen",
+        "title": "Kimetsu no Yaiba: Katanakaji no Sato-hen",
         "livechart": "11084",
         "mal": "51019",
         "_key": "11084"
@@ -1116,12 +1110,6 @@
         "livechart": "11124",
         "mal": "51219",
         "_key": "11124"
-    },
-    {
-        "title": "Spy Kyoushitsu",
-        "livechart": "11129",
-        "mal": "51252",
-        "_key": "11129"
     },
     {
         "title": "FLCL: Grunge",
@@ -1354,12 +1342,6 @@
         "livechart": "11266",
         "mal": "52085",
         "_key": "11266"
-    },
-    {
-        "title": "TRIGUN STAMPEDE",
-        "livechart": "11267",
-        "mal": "52093",
-        "_key": "11267"
     },
     {
         "title": "Mononoke Movie",
@@ -1627,6 +1609,7 @@
     {
         "title": "Arifureta Shokugyou de Sekai Saikyou 3rd Season",
         "livechart": "11465",
+        "mal": "52995",
         "_key": "11465"
     },
     {
@@ -1661,6 +1644,7 @@
     {
         "title": "Kanojo mo Kanojo 2nd Season",
         "livechart": "11507",
+        "mal": "53040",
         "_key": "11507"
     },
     {
@@ -1733,16 +1717,39 @@
     {
         "title": "Hoshikuzu Telepath",
         "livechart": "11546",
+        "mal": "53262",
         "_key": "11546"
     },
     {
         "title": "Love Live! Superstar!! 3rd Season",
         "livechart": "11549",
+        "mal": "53287",
         "_key": "11549"
     },
     {
         "title": "Ojou to Banken-kun",
         "livechart": "11550",
         "_key": "11550"
+    },
+    {
+        "title": "Shuumatsu Train Doko e Iku?",
+        "livechart": "11552",
+        "_key": "11552"
+    },
+    {
+        "title": "New P.A. Works Buddy Anime",
+        "livechart": "11557",
+        "_key": "11557"
+    },
+    {
+        "title": "Uchi no Kaisha no Chiisai Senpai no Hanashi",
+        "livechart": "11561",
+        "_key": "11561"
+    },
+    {
+        "title": "Tengoku Daimakyou",
+        "livechart": "11562",
+        "mal": "53393",
+        "_key": "11562"
     }
 ]
