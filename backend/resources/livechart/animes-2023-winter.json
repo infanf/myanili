@@ -78,7 +78,7 @@
         "_key": "10573"
     },
     {
-        "title": "VINLAND SAGA Season 2",
+        "title": "VINLAND SAGA SEASON 2",
         "livechart": "10618",
         "mal": "49387",
         "_key": "10618"
@@ -396,11 +396,13 @@
     {
         "title": "Gokushufudo Season 2",
         "livechart": "11525",
+        "mal": "53148",
         "_key": "11525"
     },
     {
         "title": "Aggressive Retsuko Season 5",
         "livechart": "11527",
+        "mal": "50598",
         "_key": "11527"
     },
     {
@@ -412,6 +414,7 @@
     {
         "title": "Ars no Kyojuu",
         "livechart": "11530",
+        "mal": "53179",
         "_key": "11530"
     },
     {
@@ -432,8 +435,19 @@
         "_key": "11541"
     },
     {
-        "title": "Kagejitsu!",
+        "title": "Kage-jitsu!",
         "livechart": "11544",
         "_key": "11544"
+    },
+    {
+        "title": "Buddy Daddies",
+        "livechart": "11557",
+        "mal": "53411",
+        "_key": "11557"
+    },
+    {
+        "title": "LUPIN ZERO",
+        "livechart": "11573",
+        "_key": "11573"
     }
 ]

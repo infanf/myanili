@@ -478,12 +478,6 @@
         "_key": "9757"
     },
     {
-        "title": "Amrita no Kyouen",
-        "livechart": "9763",
-        "mal": "41029",
-        "_key": "9763"
-    },
-    {
         "title": "Mo Du Zhe",
         "livechart": "9948",
         "mal": "41919",
@@ -1661,12 +1655,13 @@
     {
         "title": "Sono Bisque Doll wa Koi wo Suru (Sequel)",
         "livechart": "11514",
-        "mal": "17630",
+        "mal": "53065",
         "_key": "11514"
     },
     {
         "title": "LUPIN THE 3rd VS CAT'S EYE",
         "livechart": "11518",
+        "mal": "53109",
         "_key": "11518"
     },
     {
@@ -1684,11 +1679,13 @@
     {
         "title": "Onmyoji",
         "livechart": "11524",
+        "mal": "53151",
         "_key": "11524"
     },
     {
         "title": "ONIMUSHA",
         "livechart": "11526",
+        "mal": "53150",
         "_key": "11526"
     },
     {
@@ -1704,7 +1701,7 @@
         "_key": "11532"
     },
     {
-        "title": "REVENGER",
+        "title": "Revenger",
         "livechart": "11534",
         "mal": "53213",
         "_key": "11534"
@@ -1712,6 +1709,7 @@
     {
         "title": "Seija Musou: Salaryman, Isekai de Ikinokoru Tame ni Ayumu Michi",
         "livechart": "11545",
+        "mal": "53263",
         "_key": "11545"
     },
     {
@@ -1729,21 +1727,19 @@
     {
         "title": "Ojou to Banken-kun",
         "livechart": "11550",
+        "mal": "53300",
         "_key": "11550"
     },
     {
         "title": "Shuumatsu Train Doko e Iku?",
         "livechart": "11552",
+        "mal": "53356",
         "_key": "11552"
-    },
-    {
-        "title": "New P.A. Works Buddy Anime",
-        "livechart": "11557",
-        "_key": "11557"
     },
     {
         "title": "Uchi no Kaisha no Chiisai Senpai no Hanashi",
         "livechart": "11561",
+        "mal": "53379",
         "_key": "11561"
     },
     {
@@ -1751,5 +1747,22 @@
         "livechart": "11562",
         "mal": "53393",
         "_key": "11562"
+    },
+    {
+        "title": "Bartender (New Animation Project)",
+        "livechart": "11570",
+        "mal": "53407",
+        "_key": "11570"
+    },
+    {
+        "title": "Yuru Camp\u25b3 Season 3",
+        "livechart": "11571",
+        "mal": "53410",
+        "_key": "11571"
+    },
+    {
+        "title": "FLAGLIA",
+        "livechart": "11574",
+        "_key": "11574"
     }
 ]
