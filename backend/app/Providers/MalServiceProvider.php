@@ -356,7 +356,11 @@ class MalServiceProvider extends ServiceProvider
         curl_setopt($ch, CURLOPT_TIMEOUT, 1);
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $body = curl_exec($ch);
         curl_close($ch);
-        return $code >= 500;
+        if ($code >= 500) return true;
+        if (strpos($body, 'is currently under scheduled maintenance') !== false) return true;
+        return false;
+
     }
 }
