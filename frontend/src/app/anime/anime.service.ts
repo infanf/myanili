@@ -315,8 +315,13 @@ export class AnimeService {
 
   async getLivechartId(malId?: number): Promise<number | undefined> {
     if (!malId) return undefined;
-    const response = await fetch(`${this.backendUrl}/livechart/${malId}`);
-    if (!response.ok) return undefined;
-    return ((await response.json()) as { livechart: number }).livechart || undefined;
+    try {
+      const response = await this.cache.fetch<{ livechart: number } | undefined>(
+        `${this.backendUrl}livechart/${malId}`,
+      );
+      return response?.livechart;
+    } catch (e) {
+      return undefined;
+    }
   }
 }

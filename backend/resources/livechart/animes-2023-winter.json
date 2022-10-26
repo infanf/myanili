@@ -60,6 +60,12 @@
         "_key": "10488"
     },
     {
+        "title": "RE:cycle of the PENGUINDRUM Part 1: Kimi no Ressha wa Seizon Senryaku",
+        "livechart": "10503",
+        "mal": "48624",
+        "_key": "10503"
+    },
+    {
         "title": "Zannen na Ikimono Jiten The Movie",
         "livechart": "10527",
         "mal": "49843",
@@ -72,7 +78,7 @@
         "_key": "10573"
     },
     {
-        "title": "VINLAND SAGA Season 2",
+        "title": "VINLAND SAGA SEASON 2",
         "livechart": "10618",
         "mal": "49387",
         "_key": "10618"
@@ -108,10 +114,22 @@
         "_key": "10683"
     },
     {
+        "title": "RE:cycle of the PENGUINDRUM Part 2: Boku wa Kimi wo Aishiteru",
+        "livechart": "10688",
+        "mal": "48624",
+        "_key": "10688"
+    },
+    {
         "title": "Kaitou Queen wa Circus ga Osuki",
         "livechart": "10695",
         "mal": "49423",
         "_key": "10695"
+    },
+    {
+        "title": "Ningen Fushin no Boukensha-tachi ga Sekai wo Sukuu You Desu",
+        "livechart": "10749",
+        "mal": "49612",
+        "_key": "10749"
     },
     {
         "title": "CARDFIGHT!! VANGUARD will+Dress Season 2",
@@ -204,7 +222,7 @@
         "_key": "11057"
     },
     {
-        "title": "NieR:Automata Ver 1.1a",
+        "title": "NieR:Automata Ver1.1a",
         "livechart": "11087",
         "mal": "51105",
         "_key": "11087"
@@ -214,6 +232,12 @@
         "livechart": "11100",
         "mal": "51116",
         "_key": "11100"
+    },
+    {
+        "title": "Spy Kyoushitsu",
+        "livechart": "11129",
+        "mal": "51252",
+        "_key": "11129"
     },
     {
         "title": "Inu ni Nattara Suki na Hito ni Hirowareta.",
@@ -276,6 +300,12 @@
         "_key": "11246"
     },
     {
+        "title": "TRIGUN STAMPEDE",
+        "livechart": "11267",
+        "mal": "52093",
+        "_key": "11267"
+    },
+    {
         "title": "Koori Zokusei Danshi to Cool na Douryou Joshi",
         "livechart": "11282",
         "mal": "52173",
@@ -286,6 +316,12 @@
         "livechart": "11285",
         "mal": "52461",
         "_key": "11285"
+    },
+    {
+        "title": "Kaguya-sama wa Kokurasetai -First Kiss wa Owaranai-",
+        "livechart": "11293",
+        "mal": "52198",
+        "_key": "11293"
     },
     {
         "title": "BIRDIE WING -Golf Girls\u2019 Story- Season 2",
@@ -360,11 +396,13 @@
     {
         "title": "Gokushufudo Season 2",
         "livechart": "11525",
+        "mal": "53148",
         "_key": "11525"
     },
     {
         "title": "Aggressive Retsuko Season 5",
         "livechart": "11527",
+        "mal": "50598",
         "_key": "11527"
     },
     {
@@ -376,6 +414,7 @@
     {
         "title": "Ars no Kyojuu",
         "livechart": "11530",
+        "mal": "53179",
         "_key": "11530"
     },
     {
@@ -396,8 +435,19 @@
         "_key": "11541"
     },
     {
-        "title": "Kagejitsu!",
+        "title": "Kage-jitsu!",
         "livechart": "11544",
         "_key": "11544"
+    },
+    {
+        "title": "Buddy Daddies",
+        "livechart": "11557",
+        "mal": "53411",
+        "_key": "11557"
+    },
+    {
+        "title": "LUPIN ZERO",
+        "livechart": "11573",
+        "_key": "11573"
     }
 ]

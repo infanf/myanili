@@ -63,15 +63,18 @@ export class MangaDetailsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.cache.getValues<Manga>(this.id, 'manga').then(mangaCached => {
-      if (mangaCached && !this.manga) {
-        this.manga = mangaCached;
-        this.title = mangaCached.title;
-        this.fromCache = true;
-        this.glob.setTitle(mangaCached.title);
-        this.glob.notbusy();
-      }
-    });
+    this.cache
+      .getValues<Manga>(this.id, 'manga')
+      .then(mangaCached => {
+        if (mangaCached && !this.manga) {
+          this.manga = mangaCached;
+          this.title = mangaCached.title;
+          this.fromCache = true;
+          this.glob.setTitle(mangaCached.title);
+          this.glob.notbusy();
+        }
+      })
+      .catch(() => {});
     const manga = await this.mangaService.getManga(this.id);
     if (manga.mean) {
       this.setRating('mal', {
@@ -519,8 +522,9 @@ export class MangaDetailsComponent implements OnInit {
   }
 
   getBakaUrl() {
-    if (!this.manga?.my_extension?.bakaId)
+    if (!this.manga?.my_extension?.bakaId) {
       return `https://www.mangaupdates.com/series.html?search=${this.manga?.title}`;
+    }
     if (String(Number(this.manga.my_extension.bakaId)) === String(this.manga.my_extension.bakaId)) {
       return `https://www.mangaupdates.com/series.html?id=${this.manga.my_extension.bakaId}`;
     }

@@ -340,23 +340,21 @@ class MalServiceProvider extends ServiceProvider
             ), true
         );
         $list = $response['data'];
-        // while ($response['paging'] && isset($response['paging']['next'])) {
-        //     $response = json_decode(self::get($response['paging']['next']), true);
-        //     $list = array_merge($list, $response['data']);
-        // }
         return $list;
     }
 
     public static function getMaintenance()
     {
         $ch = curl_init('https://myanimelist.net/');
-        curl_setopt($ch, CURLOPT_NOBODY, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-        curl_exec($ch);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        $body = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        return $code >= 500;
+        if ($code >= 500) return true;
+        if (strpos($body, 'is currently under scheduled maintenance') !== false) return true;
+        return false;
+
     }
 }

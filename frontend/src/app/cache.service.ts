@@ -30,7 +30,9 @@ export class CacheService {
   }
 
   getTitle(id: number, type: 'anime' | 'manga'): Promise<string> {
-    return this.getValue<string>(id, type, 'title').then(title => `${title}` || '');
+    return this.getValue<string>(id, type, 'title')
+      .then(title => `${title}` || '')
+      .catch(() => '');
   }
 
   async saveValues(

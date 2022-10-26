@@ -1,5 +1,11 @@
 [
     {
+        "title": "Amrita no Kyouen",
+        "livechart": "9763",
+        "mal": "41029",
+        "_key": "9763"
+    },
+    {
         "title": "ARGONAVIS AXIA",
         "livechart": "10322",
         "mal": "45731",
@@ -18,7 +24,7 @@
         "_key": "10555"
     },
     {
-        "title": "Rakudai Majo: Fuuki to Yami no Majo",
+        "title": "Rakudai Majo: Fuka to Yami no Majo",
         "livechart": "10834",
         "mal": "51404",
         "_key": "10834"
@@ -112,6 +118,7 @@
     {
         "title": "Tokyo Mew Mew New~\u2661 2nd Season",
         "livechart": "11517",
+        "mal": "53097",
         "_key": "11517"
     },
     {
