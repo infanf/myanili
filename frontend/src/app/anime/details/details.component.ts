@@ -81,15 +81,18 @@ export class AnimeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     this.title = '';
-    this.cache.getValues<Anime>(this.id, 'anime').then(animeCached => {
-      if (animeCached && !this.anime) {
-        this.title = animeCached.title;
-        this.anime = animeCached;
-        this.glob.setTitle(animeCached.title);
-        this.fromCache = true;
-        this.glob.notbusy();
-      }
-    });
+    this.cache
+      .getValues<Anime>(this.id, 'anime')
+      .then(animeCached => {
+        if (animeCached && !this.anime) {
+          this.title = animeCached.title;
+          this.anime = animeCached;
+          this.glob.setTitle(animeCached.title);
+          this.fromCache = true;
+          this.glob.notbusy();
+        }
+      })
+      .catch(() => {});
     const anime = await this.animeService.getAnime(this.id);
 
     if (anime.mean) {
