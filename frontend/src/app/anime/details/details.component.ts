@@ -193,6 +193,16 @@ export class AnimeDetailsComponent implements OnInit {
         }),
       );
     }
+    if (!this.anime.my_extension.trakt) {
+      promises.push(
+        this.animeService.getTraktData(this.id).then(traktData => {
+          if (traktData && this?.anime?.my_extension) {
+            this.anime.my_extension.trakt = String(traktData.id);
+            this.anime.my_extension.seasonNumber = traktData.season;
+          }
+        }),
+      );
+    }
     await Promise.all(promises);
     if (promises.length && anime.my_extension) {
       await this.animeService.updateAnime(
@@ -213,6 +223,8 @@ export class AnimeDetailsComponent implements OnInit {
               annictId: this.anime.my_extension.annictId,
               anisearchId: this.anime.my_extension.anisearchId,
               livechartId: this.anime.my_extension.livechartId,
+              trakt: this.anime.my_extension.trakt,
+              seasonNumber: this.anime.my_extension.seasonNumber,
             }),
           ),
         },

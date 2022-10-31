@@ -3,6 +3,7 @@
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 use App\Providers\TraktServiceProvider as TraktServiceProvider;
+use GuzzleHttp\Psr7\Request;
 
 $router->group(['prefix' => 'trakt'], function () use ($router) {
     $router->get('auth', function () {
@@ -23,7 +24,6 @@ $router->group(['prefix' => 'trakt'], function () use ($router) {
             }
 
             exit('Invalid state');
-
         } else {
             try {
                 $accessToken = $provider->getAccessToken('authorization_code', [
@@ -68,5 +68,38 @@ $router->group(['prefix' => 'trakt'], function () use ($router) {
             }
         }
         return [];
+    });
+
+    $router->get('/{id}', function (string $id) {
+        $traktId = null;
+        $type = null;
+        $malId = intval($id);
+        if (!$malId) {
+            return response()->json([
+                'error' => 'Invalid ID',
+            ], 400);
+        }
+        $traktShows = json_decode(file_get_contents('../resources/trakt-shows.json'), true);
+        $traktMovies = json_decode(file_get_contents('../resources/trakt-movies.json'), true);
+        $filteredShows = array_filter($traktShows, fn ($show) => $show['mal'] === $malId);
+        $filteredMovies = array_filter($traktMovies, fn ($movie) => $movie['mal'] === $malId);
+        if (count($filteredShows) === 1) {
+            $traktShow = current($filteredShows);
+            return response()->json([
+                'id' => $traktShow['trakt'],
+                'type' => 'show',
+                'season' => $traktShow['season'],
+            ]);
+        }
+        if (count($filteredMovies) === 1) {
+            $traktMovie = current($filteredMovies);
+            return response()->json([
+                'id' => $traktMovie['trakt'],
+                'type' => 'movie',
+            ]);
+        }
+        return response()->json([
+            'error' => 'Not found',
+        ], 404);
     });
 });
