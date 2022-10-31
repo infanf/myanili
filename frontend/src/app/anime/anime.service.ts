@@ -319,4 +319,22 @@ export class AnimeService {
     if (!response.ok) return undefined;
     return ((await response.json()) as { livechart: number }).livechart || undefined;
   }
+
+  async getTraktData(malId?: number): Promise<
+    | {
+        id: number;
+        type: 'show' | 'movie';
+        season?: number;
+      }
+    | undefined
+  > {
+    if (!malId) return undefined;
+    const response = await fetch(`${this.backendUrl}/trakt/${malId}`);
+    if (!response.ok) return undefined;
+    return (await response.json()) as {
+      id: number;
+      type: 'show' | 'movie';
+      season?: number;
+    };
+  }
 }
