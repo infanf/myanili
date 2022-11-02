@@ -1,0 +1,13 @@
+<ng-container *ngIf="related_liveaction.length">
+  <div class="mb-3">
+    <strong class="text-dark">Live Action</strong>
+    <div class="grid my-2">
+      <myanili-media-card
+        *ngFor="let movie of related_liveaction"
+        [poster]="movie.poster"
+        [title]="movie.title"
+        (click)="open(movie.link)"
+      ></myanili-media-card>
+    </div>
+  </div>
+</ng-container>

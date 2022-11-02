@@ -55,8 +55,7 @@ class AnisearchServiceProvider extends ServiceProvider
             $meta = $finder->query("{$node->getNodePath()}//span[@class='details']/span[@class='date']")->item(0)->nodeValue ?? '';
             preg_match('/(?P<type>[^,]+),\s*(?P<episodes>[\d\?\+]*)\s*(\((?P<year>\d+)\))?/', $meta, $matches);
             $anime['type'] = $matches['type'] ?? '';
-$anime['episodes'] = strpos($matches['episodes'], '+') ? 0 : intval($matches['episodes'] ?? 0);
-
+            $anime['episodes'] = strpos($matches['episodes'], '+') ? 0 : intval($matches['episodes'] ?? 0);
             $anime['year'] = $matches['year'] ?? '';
             $rating = $finder->query("{$node->getNodePath()}//*[@class='rating']/*[@class='star0']")->item(0);
             $anime['rating'] = floatval($rating ? $rating->getAttribute('title') : '');
@@ -101,9 +100,8 @@ $anime['episodes'] = strpos($matches['episodes'], '+') ? 0 : intval($matches['ep
             $meta = $finder->query("{$node->getNodePath()}//span[@class='details']/span[@class='date']")->item(0)->nodeValue ?? '';
             preg_match('/(?P<type>[^,]+),\s*(?P<volumes>[\d\?\+]*)(\/(?P<chapters>[\d\?\+]*))?\s*(\((?P<year>\d+)\))?/', $meta, $matches);
             $manga['type'] = $matches['type'] ?? '';
-$manga['chapters'] = strpos($matches['chapters'], '+') ? 0 : intval($matches['chapters']) ?? 0;
-$manga['volumes'] = strpos($matches['volumes'], '+') ? 0 : intval($matches['volumes']) ?? 0;
-
+            $manga['chapters'] = strpos($matches['chapters'], '+') ? 0 : intval($matches['chapters']) ?? 0;
+            $manga['volumes'] = strpos($matches['volumes'], '+') ? 0 : intval($matches['volumes']) ?? 0;
             $manga['year'] = $matches['year'] ?? '';
             $rating = $finder->query("{$node->getNodePath()}//*[@class='rating']/*[@class='star0']")->item(0);
             $manga['rating'] = floatval($rating ? $rating->getAttribute('title') : '');
@@ -134,30 +132,49 @@ $manga['volumes'] = strpos($matches['volumes'], '+') ? 0 : intval($matches['volu
         ];
     }
 
-    // public static function getManga(int $id)
-    // {
-    //     $url = "https://www.mangaupdates.com/series.html?id={$id}";
-    //     $ch = curl_init($url);
-    //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    //     curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
-    //     $response = curl_exec($ch);
-    //     if (!$response || curl_getinfo($ch, CURLINFO_HTTP_CODE) >= 400) {
-    //         return [
-    //             'votes' => 0,
-    //             'score' => 0,
-    //         ];
-    //     }
-    //     $text = preg_replace('/\s*<[^>]*>\s*|\s+/', ' ', $response);
-    //     preg_match('/\((?P<votes>\d+) votes\) Bayesian Average: (?P<score>[\d\.]+)/', $text, $matches);
-    //     if (isset($matches['votes'])&&isset($matches['score'])) {
-    //         return [
-    //             'votes' => \intval($matches['votes']),
-    //             'score' => floatval($matches['score']),
-    //         ];
-    //     }
-    //     return [
-    //             'votes' => 0,
-    //             'score' => 0,
-    //         ];
-    // }
+    public static function getRelations(int $id, string $type = "anime")
+    {
+        $url = static::$baseUrl . "{$type}/{$id}/relations";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_COOKIE, "page_relation_mode=overall");
+        $response = curl_exec($ch);
+        $doc = new \DOMDocument();
+        @$doc->loadHTML($response);
+        $finder = new \DOMXPath($doc);
+        $relations = [];
+        $types = ['anime', 'manga', 'movie'];
+        foreach ($types as $type) {
+            $relationRows = $finder->query("//*[@id=\"relations_{$type}\"]//tbody/tr") ?? [];
+            foreach ($relationRows as $row) {
+                $relation = [];
+                $relation['type'] = $type;
+                $titleCol = $finder->query("{$row->getNodePath()}/th[@class=\"showpop\"]")->item(0);
+                $titleLink = $finder->query("{$titleCol->getNodePath()}/a")->item(0);
+                $relation['title'] = $titleLink->nodeValue ?? '';
+                $link = $titleLink->getAttribute('href');
+                $relation['link'] = $link ? static::$baseUrl . $link : '';
+                $linkArray = explode('/', $link);
+                $relation['id'] = intval(array_pop($linkArray));
+                $tooltip = $titleCol->getAttribute('data-tooltip');
+                preg_match('/<img src="(?P<poster>[^"]+)"/', $tooltip, $matches);
+                $relation['poster'] = $matches['poster'] ?? '';
+                $relation['relation'] = $finder->query("{$titleCol->getNodePath()}/span")->item(0)->nodeValue ?? '';
+                $mediaTypeYear = $finder->query("{$row->getNodePath()}/td[@title=\"Type / Episodes / Year\"]")->item(0)->nodeValue ?? '';
+                preg_match('/(?P<type>[^,]+),\s*(?P<episodes>[\d\?\+]*)(\/(?P<chapters>[\d\?\+]*))?\s*(\((?P<year>\d+)\))?/', $mediaTypeYear, $matches);
+                $relation['media_type'] = $matches['type'] ?? '';
+                $relation['episodes'] = strpos($matches['episodes'], '+') ? 0 : intval($matches['episodes']) ?? 0;
+                $relation['volumes'] = strpos($matches['chapters'], '+') ? 0 : intval($matches['chapters']) ?? 0;
+                $relation['year'] = $matches['year'] ?? '';
+                $mainGenres = $finder->query("{$row->getNodePath()}/td[@title=\"Main genres\"]") ?? [];
+                $relation['genres'] = array_map(function ($node) {
+                    return $node->nodeValue;
+                }, iterator_to_array($mainGenres));
+                $relations[] = $relation;
+            }
+        }
+        return $relations;
+    }
 }

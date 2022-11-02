@@ -37,6 +37,7 @@ import { CharacterMangaComponent } from './character/manga/manga.component';
 import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
 import { GraphQLModule } from './graphql/graphql.module';
+import { LiveactionRelatedComponent } from './liveaction/related/related.component';
 import {
   BookshelfComponent,
   BookshelfWrapperComponent,
@@ -110,6 +111,7 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     MigrateBakaComponent,
     MangaListListComponent,
     MangaListGridComponent,
+    LiveactionRelatedComponent,
   ],
   imports: [
     BrowserModule,
