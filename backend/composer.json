@@ -1,6 +1,6 @@
 {
   "name": "infanf/myanili-backend",
-  "version": "2.15.4",
+  "version": "2.15.5",
   "license": "MIT",
   "type": "project",
   "require": {
@@ -43,7 +43,8 @@
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
     "post-install-cmd": [
-      "cd resources/livechart && php create-cache.php"
+      "cd resources/livechart && php create-cache.php",
+      "cd resources/trakt && php create-cache.php"
     ]
   }
 }

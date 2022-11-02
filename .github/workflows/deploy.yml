@@ -1,4 +1,4 @@
-name: Backend Deployment
+name: Deployment
 on:
   push:
     tags:
@@ -45,13 +45,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Deploy Backend
         uses: docker/build-push-action@v3
         with:
           context: '{{defaultContext}}:backend'
           push: true
           tags: ${{ steps.meta-backend.outputs.tags }}
-      - name: Build and push
+      - name: Deploy Frontend
         uses: docker/build-push-action@v3
         with:
           context: '{{defaultContext}}:frontend'
