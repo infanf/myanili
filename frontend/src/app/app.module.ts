@@ -12,7 +12,6 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { InViewportModule } from 'ng-in-viewport';
 import { environment } from 'src/environments/environment';
 
-import { AboutComponent } from './about/about.component';
 import { AnimeCharactersComponent } from './anime/details/characters/characters.component';
 import { AnimeDetailsComponent } from './anime/details/details.component';
 import { AnimeRecommendationsComponent } from './anime/details/recommendations/recommendations.component';
@@ -58,6 +57,7 @@ import { PersonMangaComponent } from './person/manga/manga.component';
 import { PersonComponent } from './person/person.component';
 import { PersonStaffComponent } from './person/staff/staff.component';
 import { SearchComponent } from './search/search.component';
+import { AboutComponent } from './settings/about/about.component';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { MigrateBakaComponent } from './settings/migrate-baka/migrate-baka.component';
 import { NewVersionComponent } from './settings/new-version/new-version.component';

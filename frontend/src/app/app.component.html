@@ -12,9 +12,3 @@
   </div>
 </ng-container>
 <myanili-navbar-bottom *ngIf="loggedIn && loggedIn != '***loading***'"></myanili-navbar-bottom>
-<footer class="bg-white border-top">
-  &copy; {{ today | date: 'Y' }}
-  <a href="https://github.com/infanf/myanili" target="_blank" class="link-secondary">infanf</a>
-  &middot;
-  <a class="cursor-pointer link-secondary" (click)="showAbout()">About / Privacy</a>
-</footer>

@@ -7,3 +7,11 @@
     min-height: 58px;
   }
 }
+
+.navbar-expand .navbar-collapse {
+  display: grid !important;
+  grid-template-columns: 1fr auto 1fr;
+  @media (max-width: 359px) {
+    grid-template-columns: auto auto;
+  }
+}
