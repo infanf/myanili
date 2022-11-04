@@ -51,8 +51,8 @@ import { MangaListComponent } from './manga/list/list.component';
 import { MangaListListComponent } from './manga/list/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
+import { NavbarBottomComponent } from './navbar/bottom/bottom.component';
+import { NavbarTopComponent } from './navbar/top/top.component';
 import { PersonAnimeComponent } from './person/anime/anime.component';
 import { PersonMangaComponent } from './person/manga/manga.component';
 import { PersonComponent } from './person/person.component';
@@ -67,7 +67,7 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
+    NavbarTopComponent,
     AnimeListComponent,
     AnimeDetailsComponent,
     WatchlistComponent,
@@ -96,7 +96,6 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     AnimeListGridComponent,
     AnimeListListComponent,
     PlatformComponent,
-    QuickaddComponent,
     SeasonGridComponent,
     SeasonListComponent,
     ChangelogComponent,
@@ -112,6 +111,7 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     MangaListListComponent,
     MangaListGridComponent,
     LiveactionRelatedComponent,
+    NavbarBottomComponent,
   ],
   imports: [
     BrowserModule,

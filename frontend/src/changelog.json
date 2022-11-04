@@ -4,6 +4,7 @@
     {
       "version": "2.16.0",
       "features": [
+        "Remodel navigation",
         "Link live action adaptions on anisearch"
       ]
     },

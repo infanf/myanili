@@ -147,7 +147,7 @@ overlay.overlay-shown {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 0.5rem;
 
   @media (max-width: 540px) {
@@ -160,7 +160,11 @@ overlay.overlay-shown {
 }
 
 body {
-  margin-bottom: 2.25rem;
+  margin-bottom: 5.75rem;
+}
+
+.navbar-dark {
+  --bs-navbar-color: hwb(0 100% 0% / 0.45);
 }
 
 @import 'styles/dark-theme.scss';
