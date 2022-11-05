@@ -14,6 +14,7 @@ export class SeasonComponent {
   year!: number;
   season!: number;
   onlyInList = true;
+  title = 'Season';
 
   lang = 'en';
   layout = 'list';
@@ -29,6 +30,7 @@ export class SeasonComponent {
       this.glob.busy();
       if (await this.update(season.year, season.season)) {
         const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
+        this.title = `${seasons[this.season]} ${this.year}`;
         this.glob.setTitle(`${season.year} ${seasons[season.season]} – List`);
         this.glob.notbusy();
       }

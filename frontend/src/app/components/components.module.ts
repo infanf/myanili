@@ -14,6 +14,7 @@ import { RatingComponent } from './dialogue/rating/rating.component';
 import { DoubleCardComponent } from './double-card/double-card.component';
 import { ExternalRatingComponent } from './external-rating/external-rating.component';
 import { FlagPipe } from './flag.pipe';
+import { HeaderComponent } from './header/header.component';
 import { MalPipe } from './mal.pipe';
 import { MediaCardComponent } from './media-card/media-card.component';
 import { StatusBadgeComponent } from './media-card/status-badge/status-badge.component';
@@ -45,6 +46,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     ExternalRatingComponent,
     PosterRatingComponent,
     MySvgIconComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -79,6 +81,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     ExternalRatingComponent,
     PosterRatingComponent,
     MySvgIconComponent,
+    HeaderComponent,
     MalPipe,
     FlagPipe,
     TimePipe,
