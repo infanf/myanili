@@ -1,3 +1,11 @@
 .navbar-nav {
   flex-basis: 100%;
 }
+
+.navbar {
+  transition: bottom 0.5s ease-in-out;
+}
+
+.nav-divider {
+  border-left: 1px solid var(--bs-navbar-disabled-color);
+}

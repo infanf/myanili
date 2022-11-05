@@ -1,4 +1,7 @@
-<nav class="navbar navbar-dark navbar-expand bg-blue fixed-bottom">
+<nav
+  class="navbar navbar-dark navbar-expand bg-blue fixed-bottom"
+  [ngStyle]="{ 'bottom.rem': -bottom }"
+>
   <div class="container-fluid">
     <ul class="navbar-nav d-flex justify-content-evenly">
       <ng-container *ngIf="module === 'anime'; then animeNav; else mangaNav"></ng-container>
@@ -19,36 +22,38 @@
       <span class="ms-2 d-none d-lg-inline">Schedule</span>
     </a>
   </li>
+  <li class="nav-divider"></li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/anime/list/watching" routerLinkActive="active">
-      <myanili-icon name="eye"></myanili-icon>
+      <myanili-icon-status status="watching"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">Watching</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/anime/list/plan_to_watch" routerLinkActive="active">
-      <myanili-icon name="clock"></myanili-icon>
+      <myanili-icon-status status="plan_to_watch"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">Planning</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/anime/list/on_hold" routerLinkActive="active">
-      <myanili-icon name="hourglass"></myanili-icon>
+      <myanili-icon-status status="on_hold"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">On Hold</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/anime/list/completed" routerLinkActive="active">
-      <myanili-icon name="check2"></myanili-icon>
+      <myanili-icon-status status="completed"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">Completed</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/anime/list/dropped" routerLinkActive="active">
-      <myanili-icon name="trash"></myanili-icon>
+      <myanili-icon-status status="dropped"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">Dropped</span>
     </a>
   </li>
+  <li class="nav-divider"></li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/anime/season" routerLinkActive="active">
       <myanili-icon name="4-square"></myanili-icon>
@@ -65,40 +70,42 @@
 <ng-template #mangaNav>
   <li class="nav-item">
     <a class="nav-link" routerLink="/manga/bookshelf" routerLinkActive="active">
-      <myanili-icon name="view-list"></myanili-icon>
+      <myanili-icon name="columns"></myanili-icon>
       <span class="ms-2 d-none d-lg-inline">Bookshelf</span>
     </a>
   </li>
+  <li class="nav-divider"></li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/manga/list/reading" routerLinkActive="active">
-      <myanili-icon name="eye"></myanili-icon>
+      <myanili-icon-status status="reading"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">Reading</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/manga/list/plan_to_read" routerLinkActive="active">
-      <myanili-icon name="clock"></myanili-icon>
+      <myanili-icon-status status="plan_to_read"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">Planning</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/manga/list/on_hold" routerLinkActive="active">
-      <myanili-icon name="hourglass"></myanili-icon>
+      <myanili-icon-status status="on_hold"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">On Hold</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/manga/list/completed" routerLinkActive="active">
-      <myanili-icon name="check2"></myanili-icon>
+      <myanili-icon-status status="completed"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">Completed</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/manga/list/dropped" routerLinkActive="active">
-      <myanili-icon name="trash"></myanili-icon>
+      <myanili-icon-status status="dropped"></myanili-icon-status>
       <span class="ms-2 d-none d-lg-inline">Dropped</span>
     </a>
   </li>
+  <li class="nav-divider"></li>
   <li class="nav-item">
     <a class="nav-link" routerLink="/manga/search" routerLinkActive="active">
       <myanili-icon name="search"></myanili-icon>
