@@ -4,8 +4,12 @@
     {
       "version": "2.16.0",
       "features": [
-        "Minor redesign: add bottom navigation and headers",
+        "redesign: add bottom navigation bar",
+        "redesign: headers for list views",
         "Link live action adaptions on anisearch"
+      ],
+      "fixes": [
+        "use mathematical average for manga-updates score instead of bayesian average"
       ]
     },
     {
