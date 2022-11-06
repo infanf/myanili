@@ -41,7 +41,7 @@ export class ScheduleComponent {
 
   async update(year?: number, season?: number): Promise<boolean | undefined> {
     if (!this.year || (this.season !== 0 && !this.season)) return;
-    const allAnime = await this.animeService.season(this.year, this.season);
+    const allAnime = await this.animeService.season(this.year, this.season).catch(() => []);
     if (year && season && (year !== this.year || season !== this.season)) return;
     this.animes = allAnime.sort(
       (a, b) =>

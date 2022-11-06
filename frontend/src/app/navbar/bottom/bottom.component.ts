@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GlobalService } from 'src/app/global.service';
 
 import { NavbarService } from '../navbar.service';
 
@@ -8,21 +9,17 @@ import { NavbarService } from '../navbar.service';
   styleUrls: ['./bottom.component.scss'],
 })
 export class NavbarBottomComponent {
-  constructor(private navbarService: NavbarService) {
+  module?: 'anime' | 'manga';
+  lastPosition = 0;
+  hide = false;
+
+  constructor(private navbarService: NavbarService, private glob: GlobalService) {
     this.navbarService.module.subscribe(module => {
       this.module = module;
     });
-    window.document.onscroll = () => {
-      const currentPositon = window.pageYOffset;
-      if (currentPositon > 60 && currentPositon > this.lastPosition) {
-        this.bottom = 3.5;
-      } else {
-        this.bottom = 0;
-      }
-      this.lastPosition = currentPositon;
-    };
+
+    this.glob.hideNavbar.subscribe(hide => {
+      this.hide = hide;
+    });
   }
-  module?: 'anime' | 'manga';
-  lastPosition = 0;
-  bottom = 0;
 }

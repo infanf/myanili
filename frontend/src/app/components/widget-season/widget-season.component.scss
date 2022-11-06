@@ -1,0 +1,15 @@
+.season-widget {
+    color: var(--bs-white);
+    position: fixed;
+    right: 0;
+    bottom: 4rem;
+    padding: 0.5rem 1rem;
+    background: var(--bs-blue);
+    border-radius: 2rem 0 0 2rem;
+    transition: right 0.5s ease-in-out;
+    z-index: 1500;
+
+    &.hide {
+        right: -10rem;
+    }
+}

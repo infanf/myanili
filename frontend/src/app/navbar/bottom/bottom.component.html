@@ -1,7 +1,4 @@
-<nav
-  class="navbar navbar-dark navbar-expand bg-blue fixed-bottom"
-  [ngStyle]="{ 'bottom.rem': -bottom }"
->
+<nav class="navbar navbar-dark navbar-expand bg-blue fixed-bottom" [ngClass]="{ hide }">
   <div class="container-fluid">
     <ul class="navbar-nav d-flex justify-content-evenly">
       <ng-container *ngIf="module === 'anime'; then animeNav; else mangaNav"></ng-container>

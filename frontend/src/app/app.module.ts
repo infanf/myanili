@@ -62,7 +62,6 @@ import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { MigrateBakaComponent } from './settings/migrate-baka/migrate-baka.component';
 import { NewVersionComponent } from './settings/new-version/new-version.component';
 import { SettingsComponent } from './settings/settings.component';
-import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +73,6 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     ScheduleComponent,
     SeasonComponent,
     SettingsComponent,
-    WidgetSeasonComponent,
     StreamingComponent,
     MangaDetailsComponent,
     MangaListComponent,

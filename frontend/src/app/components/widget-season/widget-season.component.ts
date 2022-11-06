@@ -1,23 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { Season, SeasonNumber } from '@models/components';
-
-import { SettingsService } from '../settings.service';
+import { GlobalService } from 'src/app/global.service';
+import { SettingsService } from 'src/app/settings/settings.service';
 
 @Component({
   selector: 'myanili-widget-season',
   templateUrl: './widget-season.component.html',
+  styleUrls: ['./widget-season.component.scss'],
 })
 export class WidgetSeasonComponent implements OnInit {
   season: Season;
   currentSeason: Season;
   icons = ['snow', 'flower1', 'sun', 'clouds'];
+  lastPosition = 0;
+  hide = false;
 
-  constructor(private settings: SettingsService) {
+  constructor(private settings: SettingsService, private glob: GlobalService) {
     this.currentSeason = {
       year: new Date().getFullYear(),
       season: Math.floor(new Date().getMonth() / 3) as unknown as 0 | 1 | 2 | 3,
     };
     this.season = this.currentSeason;
+    this.glob.hideNavbar.subscribe(hide => {
+      this.hide = hide;
+    });
   }
 
   ngOnInit(): void {

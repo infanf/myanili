@@ -26,6 +26,7 @@ import { MySvgIconComponent } from './svg-icon/svg-icon.component';
 import { TimePipe } from './time.pipe';
 import { ValuePairArrayComponent } from './value-pair-array/value-pair-array.component';
 import { ValuePairComponent } from './value-pair/value-pair.component';
+import { WidgetSeasonComponent } from './widget-season/widget-season.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     PosterRatingComponent,
     MySvgIconComponent,
     HeaderComponent,
+    WidgetSeasonComponent,
   ],
   imports: [
     CommonModule,
@@ -82,6 +84,7 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     PosterRatingComponent,
     MySvgIconComponent,
     HeaderComponent,
+    WidgetSeasonComponent,
     MalPipe,
     FlagPipe,
     TimePipe,
