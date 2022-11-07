@@ -162,11 +162,14 @@ class AnisearchServiceProvider extends ServiceProvider
                 preg_match('/<img src="(?P<poster>[^"]+)"/', $tooltip, $matches);
                 $relation['poster'] = $matches['poster'] ?? '';
                 $relation['relation'] = $finder->query("{$titleCol->getNodePath()}/span")->item(0)->nodeValue ?? '';
+                if ($relation['relation'] === '?') {
+                    $relation['relation'] = "Adaption";
+                }
                 $mediaTypeYear = $finder->query("{$row->getNodePath()}/td[@title=\"Type / Episodes / Year\"]")->item(0)->nodeValue ?? '';
                 preg_match('/(?P<type>[^,]+),\s*(?P<episodes>[\d\?\+]*)(\/(?P<chapters>[\d\?\+]*))?\s*(\((?P<year>\d+)\))?/', $mediaTypeYear, $matches);
                 $relation['media_type'] = $matches['type'] ?? '';
                 $relation['episodes'] = strpos($matches['episodes'], '+') ? 0 : intval($matches['episodes']) ?? 0;
-                $relation['volumes'] = strpos($matches['chapters'], '+') ? 0 : intval($matches['chapters']) ?? 0;
+                $relation['volumes'] = isset($matches['chapters']) ? strpos($matches['chapters'], '+') ? 0 : intval($matches['chapters']) ?? 0 : 0;
                 $relation['year'] = $matches['year'] ?? '';
                 $mainGenres = $finder->query("{$row->getNodePath()}/td[@title=\"Main genres\"]") ?? [];
                 $relation['genres'] = array_map(function ($node) {

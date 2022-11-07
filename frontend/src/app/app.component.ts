@@ -12,6 +12,7 @@ import { MalService } from './mal.service';
 })
 export class AppComponent {
   today = new Date();
+  hideNavbar = false;
   constructor(
     public malService: MalService,
     private swUpdate: SwUpdate,
@@ -32,6 +33,7 @@ export class AppComponent {
     });
     this.glob.isBusy.subscribe(busy => (this.busy = busy));
     this.glob.loadingPercent.subscribe(perc => (this.loadingPercent = perc));
+    this.glob.hideNavbar.subscribe(hide => (this.hideNavbar = hide));
   }
   loggedIn?: string | false = 'loading';
   busy = true;
