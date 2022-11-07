@@ -12,6 +12,12 @@
         "_key": "9855"
     },
     {
+        "title": "Tsurune Movie -Hajimari no Issha-",
+        "livechart": "10188",
+        "mal": "43556",
+        "_key": "10188"
+    },
+    {
         "title": "Hikari no Ou",
         "livechart": "10208",
         "mal": "43760",
@@ -120,10 +126,16 @@
         "_key": "10688"
     },
     {
-        "title": "Kaitou Queen wa Circus ga Osuki",
+        "title": "Kaitou QUEEN wa Circus ga Osuki",
         "livechart": "10695",
         "mal": "49423",
         "_key": "10695"
+    },
+    {
+        "title": "Toutotsu ni Egypt Shin 2nd Season",
+        "livechart": "10731",
+        "mal": "49522",
+        "_key": "10731"
     },
     {
         "title": "Ningen Fushin no Boukensha-tachi ga Sekai wo Sukuu You Desu",
@@ -138,6 +150,18 @@
         "_key": "10787"
     },
     {
+        "title": "Sugar Apple Fairy Tale",
+        "livechart": "10823",
+        "mal": "49980",
+        "_key": "10823"
+    },
+    {
+        "title": "Kiyoneko",
+        "livechart": "10844",
+        "mal": "50529",
+        "_key": "10844"
+    },
+    {
         "title": "BLUE GIANT Movie",
         "livechart": "10845",
         "mal": "50183",
@@ -150,6 +174,12 @@
         "_key": "10850"
     },
     {
+        "title": "Technoroid OVERMIND",
+        "livechart": "10867",
+        "mal": "50284",
+        "_key": "10867"
+    },
+    {
         "title": "Nanatsu no Taizai Movie: Ensa no Edinburgh",
         "livechart": "10878",
         "mal": "50315",
@@ -160,6 +190,12 @@
         "livechart": "10879",
         "mal": "50330",
         "_key": "10879"
+    },
+    {
+        "title": "Mononogatari",
+        "livechart": "10889",
+        "mal": "50384",
+        "_key": "10889"
     },
     {
         "title": "Eiyuuou, Bu wo Kiwameru Tame Tenseisu. Soshite, Sekai Saikyou no Minarai Kishi\u2640",
@@ -318,16 +354,16 @@
         "_key": "11285"
     },
     {
+        "title": "Kin no Kuni Mizu no Kuni",
+        "livechart": "11287",
+        "mal": "52186",
+        "_key": "11287"
+    },
+    {
         "title": "Kaguya-sama wa Kokurasetai -First Kiss wa Owaranai-",
         "livechart": "11293",
         "mal": "52198",
         "_key": "11293"
-    },
-    {
-        "title": "BIRDIE WING -Golf Girls\u2019 Story- Season 2",
-        "livechart": "11296",
-        "mal": "52229",
-        "_key": "11296"
     },
     {
         "title": "Kaiketsu Zorori Movie: Lalala Star Tanjou",
@@ -351,6 +387,11 @@
         "livechart": "11329",
         "mal": "52364",
         "_key": "11329"
+    },
+    {
+        "title": "Aikatsu! 10th STORY ~Mirai e no STARWAY~ (2023)",
+        "livechart": "11334",
+        "_key": "11334"
     },
     {
         "title": "Kaiko Sareta Ankoku Heishi (30-dai) no Slow na Second Life",
@@ -377,6 +418,12 @@
         "_key": "11374"
     },
     {
+        "title": "Tondemo Skill de Isekai Hourou Meshi",
+        "livechart": "11379",
+        "mal": "53446",
+        "_key": "11379"
+    },
+    {
         "title": "Tsurune -Tsunagari no Issha-",
         "livechart": "11383",
         "mal": "52826",
@@ -391,6 +438,7 @@
     {
         "title": "UniteUp!",
         "livechart": "11521",
+        "mal": "53132",
         "_key": "11521"
     },
     {
@@ -418,6 +466,12 @@
         "_key": "11530"
     },
     {
+        "title": "Revenger",
+        "livechart": "11534",
+        "mal": "53213",
+        "_key": "11534"
+    },
+    {
         "title": "Dungeon ni Deai wo Motomeru no wa Machigatteiru no Darou ka IV: Fuka Shou - Yakusai-hen",
         "livechart": "11536",
         "mal": "53111",
@@ -435,7 +489,7 @@
         "_key": "11541"
     },
     {
-        "title": "Kage-jitsu!",
+        "title": "KAGE-JITSU!",
         "livechart": "11544",
         "_key": "11544"
     },
@@ -448,6 +502,7 @@
     {
         "title": "LUPIN ZERO",
         "livechart": "11573",
+        "mal": "53414",
         "_key": "11573"
     }
 ]
