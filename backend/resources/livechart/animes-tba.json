@@ -541,12 +541,6 @@
         "_key": "10265"
     },
     {
-        "title": "Kuma Kuma Kuma Bear 2nd Season",
-        "livechart": "10290",
-        "mal": "45486",
-        "_key": "10290"
-    },
-    {
         "title": "Asatir: Mirai no Mukashibanashi 2nd Season",
         "livechart": "10312",
         "_key": "10312"
@@ -743,12 +737,6 @@
         "_key": "10715"
     },
     {
-        "title": "Toutotsu ni Egypt Shin 2nd Season",
-        "livechart": "10731",
-        "mal": "49522",
-        "_key": "10731"
-    },
-    {
         "title": "Chiyu Mahou no Machigatta Tsukaikata: Senjou wo Kakeru Kaifuku Youin",
         "livechart": "10750",
         "mal": "49613",
@@ -832,12 +820,6 @@
         "_key": "10810"
     },
     {
-        "title": "Sugar Apple Fairy Tale",
-        "livechart": "10823",
-        "mal": "49980",
-        "_key": "10823"
-    },
-    {
         "title": "Kimi to Boku no Saigo no Senjou, Aruiwa Sekai ga Hajimaru Seisen Season II",
         "livechart": "10824",
         "mal": "49981",
@@ -856,12 +838,6 @@
         "_key": "10839"
     },
     {
-        "title": "Kiyo Neko",
-        "livechart": "10844",
-        "mal": "50529",
-        "_key": "10844"
-    },
-    {
         "title": "Seiken Gakuin no Makentsukai",
         "livechart": "10846",
         "mal": "50184",
@@ -874,12 +850,6 @@
         "_key": "10856"
     },
     {
-        "title": "TECHNOROID: OVERMIND",
-        "livechart": "10867",
-        "mal": "50284",
-        "_key": "10867"
-    },
-    {
         "title": "Seirei Gensouki 2nd Season",
         "livechart": "10875",
         "mal": "50306",
@@ -890,12 +860,6 @@
         "livechart": "10876",
         "mal": "50307",
         "_key": "10876"
-    },
-    {
-        "title": "Mononogatari",
-        "livechart": "10889",
-        "mal": "50384",
-        "_key": "10889"
     },
     {
         "title": "Skip to Loafer",
@@ -1229,21 +1193,10 @@
         "_key": "11194"
     },
     {
-        "title": "Otonari ni Ginga",
-        "livechart": "11195",
-        "mal": "51705",
-        "_key": "11195"
-    },
-    {
         "title": "Biao Ren: Blades of the Guardians",
         "livechart": "11200",
         "mal": "44388",
         "_key": "11200"
-    },
-    {
-        "title": "Uma Musume: Pretty Derby (Web)",
-        "livechart": "11205",
-        "_key": "11205"
     },
     {
         "title": "Level 1 dakedo Unique Skill de Saikyou desu",
@@ -1260,6 +1213,7 @@
     {
         "title": "Watashi no Yuri wa Oshigoto Desu!",
         "livechart": "11219",
+        "mal": "51817",
         "_key": "11219"
     },
     {
@@ -1378,12 +1332,6 @@
         "livechart": "11320",
         "mal": "52299",
         "_key": "11320"
-    },
-    {
-        "title": "Kanojo ga Koushakutei ni Itta Riyuu",
-        "livechart": "11321",
-        "mal": "52308",
-        "_key": "11321"
     },
     {
         "title": "Shangri-La Frontier",
@@ -1701,12 +1649,6 @@
         "_key": "11532"
     },
     {
-        "title": "Revenger",
-        "livechart": "11534",
-        "mal": "53213",
-        "_key": "11534"
-    },
-    {
         "title": "Seija Musou: Salaryman, Isekai de Ikinokoru Tame ni Ayumu Michi",
         "livechart": "11545",
         "mal": "53263",
@@ -1749,6 +1691,11 @@
         "_key": "11562"
     },
     {
+        "title": "Boushoku no Berserk: Ore dake Level to Iu Gainen wo Toppa suru",
+        "livechart": "11567",
+        "_key": "11567"
+    },
+    {
         "title": "Bartender (New Animation Project)",
         "livechart": "11570",
         "mal": "53407",
@@ -1763,6 +1710,90 @@
     {
         "title": "FLAGLIA",
         "livechart": "11574",
+        "mal": "53424",
         "_key": "11574"
+    },
+    {
+        "title": "Dosanko Gal wa Namara Menkoi",
+        "livechart": "11575",
+        "mal": "53421",
+        "_key": "11575"
+    },
+    {
+        "title": "Hyakushou Kizoku",
+        "livechart": "11576",
+        "mal": "53426",
+        "_key": "11576"
+    },
+    {
+        "title": "AYAKA",
+        "livechart": "11577",
+        "mal": "53428",
+        "_key": "11577"
+    },
+    {
+        "title": "Maou no Ore ga Dorei Elf wo Yome ni Shitanda ga, Dou Medereba Ii?",
+        "livechart": "11578",
+        "mal": "53434",
+        "_key": "11578"
+    },
+    {
+        "title": "Xian Wang de Richang Shenghuo 4th Season",
+        "livechart": "11582",
+        "_key": "11582"
+    },
+    {
+        "title": "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita 2nd Season",
+        "livechart": "11585",
+        "mal": "53488",
+        "_key": "11585"
+    },
+    {
+        "title": "Boukensha ni Naritai to Miyako ni Deteitta Musume ga S-Rank ni Natteta",
+        "livechart": "11586",
+        "_key": "11586"
+    },
+    {
+        "title": "Busu ni Hanataba wo.",
+        "livechart": "11587",
+        "_key": "11587"
+    },
+    {
+        "title": "Bai Yao Pu 4th Season",
+        "livechart": "11588",
+        "_key": "11588"
+    },
+    {
+        "title": "Wu Shan Wu Xing 2nd Season",
+        "livechart": "11590",
+        "_key": "11590"
+    },
+    {
+        "title": "Tu Bian Ying Xiong X",
+        "livechart": "11591",
+        "_key": "11591"
+    },
+    {
+        "title": "Xiao Lu He Xiao Lan 2nd Season",
+        "livechart": "11592",
+        "mal": "53448",
+        "_key": "11592"
+    },
+    {
+        "title": "Han Hua Ri Ji 4th Season",
+        "livechart": "11594",
+        "_key": "11594"
+    },
+    {
+        "title": "Tensei shitara Dainana Ouji Datta node, Kimama ni Majutsu wo Kiwamemasu",
+        "livechart": "11595",
+        "mal": "53516",
+        "_key": "11595"
+    },
+    {
+        "title": "Sword Art Online (New Original Movie)",
+        "livechart": "11599",
+        "mal": "53529",
+        "_key": "11599"
     }
 ]

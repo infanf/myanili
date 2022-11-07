@@ -342,7 +342,7 @@
         "_key": "10963"
     },
     {
-        "title": "Pop Team Epic Season 2",
+        "title": "Poputepipikku 2nd Season",
         "livechart": "10970",
         "mal": "50663",
         "_key": "10970"
@@ -480,12 +480,6 @@
         "_key": "11268"
     },
     {
-        "title": "Kin no Kuni Mizu no Kuni",
-        "livechart": "11287",
-        "mal": "52186",
-        "_key": "11287"
-    },
-    {
         "title": "Akiba Maid Sensou",
         "livechart": "11291",
         "mal": "52193",
@@ -586,5 +580,10 @@
         "title": "Kenkou Takarabune Sukoyaka 7",
         "livechart": "11563",
         "_key": "11563"
+    },
+    {
+        "title": "Shin Shinka no Mi Gekijou",
+        "livechart": "11596",
+        "_key": "11596"
     }
 ]

@@ -17,6 +17,7 @@ export class AnimeListComponent {
   layout = 'list';
   loadedAll = false;
   loading = false;
+  title = 'Watchlist';
 
   constructor(
     private animeService: AnimeService,
@@ -29,7 +30,9 @@ export class AnimeListComponent {
       if (newStatus !== this.status) {
         this.status = newStatus;
         this.animes = [];
-        this.glob.setTitle(`Watchlist – ${newStatus.replace(/_/g, ' ')}`);
+        const status = newStatus.replace(/_/g, ' ');
+        this.title = status.charAt(0).toUpperCase() + status.slice(1);
+        this.glob.setTitle(`Watchlist – ${this.title}`);
         this.glob.busy();
         this.update();
       }

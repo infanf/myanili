@@ -16,6 +16,7 @@ export class MangaListComponent implements OnInit {
   nextMangas: ListManga[] = [];
   loadedAll = false;
   loading = false;
+  title = 'Mangalist';
 
   layout = 'list';
   lang = 'en';
@@ -36,6 +37,8 @@ export class MangaListComponent implements OnInit {
       if (newStatus !== this.status) {
         this.status = newStatus;
         this.mangas = [];
+        const status = newStatus.replace(/_/g, ' ');
+        this.title = status.charAt(0).toUpperCase() + status.slice(1);
         this.glob.setTitle(`Bookshelf – ${newStatus.replace(/_/g, ' ')}`);
         this.glob.busy();
         this.loadedAll = false;

@@ -1,9 +1,9 @@
 <section class="container-fluid sticky-header py-3 bg-white">
   <form class="input-group" (submit)="search()">
-    <div class="btn btn-primary" [class]="{ active: type === 'anime' }" routerLink="/search/anime">
+    <div class="btn btn-primary" routerLink="/anime/search" routerLinkActive="active">
       <myanili-icon name="film"></myanili-icon>
     </div>
-    <div class="btn btn-primary" [class]="{ active: type === 'manga' }" routerLink="/search/manga">
+    <div class="btn btn-primary" routerLink="/manga/search" routerLinkActive="active">
       <myanili-icon name="book-half"></myanili-icon>
     </div>
     <input

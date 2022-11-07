@@ -755,6 +755,10 @@
               [related_manga]="anime.related_manga"
               [has_covers]="false"
             ></myanili-manga-related>
+            <myanili-liveaction-related
+              type="anime"
+              [anisearchId]="anime.my_extension?.anisearchId || 0"
+            ></myanili-liveaction-related>
           </section>
         </ng-template>
       </li>

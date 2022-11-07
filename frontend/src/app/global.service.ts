@@ -15,6 +15,8 @@ export class GlobalService {
   private readonly titlePostfix = ' – MyAniLi';
   private lastTitle = '';
   version = packageJson.version;
+  lastPosition = 0;
+  private hideNavbarSubject = new BehaviorSubject<boolean>(false);
 
   constructor(private titleService: Title, private ref: ApplicationRef) {
     if (window.matchMedia) {
@@ -27,6 +29,11 @@ export class GlobalService {
         this.ref.tick();
       });
     }
+    window.document.onscroll = () => {
+      const currentPositon = window.pageYOffset;
+      this.hideNavbarSubject.next(currentPositon > 60 && currentPositon > this.lastPosition);
+      this.lastPosition = currentPositon;
+    };
   }
 
   setTitle(title: string) {
@@ -48,6 +55,10 @@ export class GlobalService {
 
   get darkMode() {
     return this.darkModeSubject.asObservable();
+  }
+
+  get hideNavbar() {
+    return this.hideNavbarSubject.asObservable();
   }
 
   busy(number = 0) {

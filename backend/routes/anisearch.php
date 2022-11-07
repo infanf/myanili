@@ -25,4 +25,8 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
     $router->get('{type}/rating/{id}', function (string $type, int $id) {
         return AnisearchServiceProvider::getRating($id, $type);
     });
+
+    $router->get('{type}/relations/{id}', function (string $type, int $id) {
+        return AnisearchServiceProvider::getRelations($id, $type);
+    });
 });

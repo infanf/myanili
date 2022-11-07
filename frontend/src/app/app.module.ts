@@ -12,7 +12,6 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { InViewportModule } from 'ng-in-viewport';
 import { environment } from 'src/environments/environment';
 
-import { AboutComponent } from './about/about.component';
 import { AnimeCharactersComponent } from './anime/details/characters/characters.component';
 import { AnimeDetailsComponent } from './anime/details/details.component';
 import { AnimeRecommendationsComponent } from './anime/details/recommendations/recommendations.component';
@@ -37,6 +36,7 @@ import { CharacterMangaComponent } from './character/manga/manga.component';
 import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
 import { GraphQLModule } from './graphql/graphql.module';
+import { LiveactionRelatedComponent } from './liveaction/related/related.component';
 import {
   BookshelfComponent,
   BookshelfWrapperComponent,
@@ -50,30 +50,29 @@ import { MangaListComponent } from './manga/list/list.component';
 import { MangaListListComponent } from './manga/list/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { QuickaddComponent } from './navbar/quickadd/quickadd.component';
+import { NavbarBottomComponent } from './navbar/bottom/bottom.component';
+import { NavbarTopComponent } from './navbar/top/top.component';
 import { PersonAnimeComponent } from './person/anime/anime.component';
 import { PersonMangaComponent } from './person/manga/manga.component';
 import { PersonComponent } from './person/person.component';
 import { PersonStaffComponent } from './person/staff/staff.component';
 import { SearchComponent } from './search/search.component';
+import { AboutComponent } from './settings/about/about.component';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
 import { MigrateBakaComponent } from './settings/migrate-baka/migrate-baka.component';
 import { NewVersionComponent } from './settings/new-version/new-version.component';
 import { SettingsComponent } from './settings/settings.component';
-import { WidgetSeasonComponent } from './settings/widget-season/widget-season.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
+    NavbarTopComponent,
     AnimeListComponent,
     AnimeDetailsComponent,
     WatchlistComponent,
     ScheduleComponent,
     SeasonComponent,
     SettingsComponent,
-    WidgetSeasonComponent,
     StreamingComponent,
     MangaDetailsComponent,
     MangaListComponent,
@@ -95,7 +94,6 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     AnimeListGridComponent,
     AnimeListListComponent,
     PlatformComponent,
-    QuickaddComponent,
     SeasonGridComponent,
     SeasonListComponent,
     ChangelogComponent,
@@ -110,6 +108,8 @@ import { WidgetSeasonComponent } from './settings/widget-season/widget-season.co
     MigrateBakaComponent,
     MangaListListComponent,
     MangaListGridComponent,
+    LiveactionRelatedComponent,
+    NavbarBottomComponent,
   ],
   imports: [
     BrowserModule,

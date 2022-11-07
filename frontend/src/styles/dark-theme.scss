@@ -102,12 +102,4 @@
   .table-striped > tbody > tr:nth-of-type(odd):not(.text-green) {
     color: $text-color !important;
   }
-
-  .nav-link {
-    color: inherit;
-  }
-
-  .nav-link:hover, .nav-link:focus {
-    color: inherit;
-  }
 }

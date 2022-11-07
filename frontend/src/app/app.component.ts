@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { DialogueService } from '@components/dialogue/dialogue.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { AboutComponent } from './about/about.component';
 import { GlobalService } from './global.service';
 import { MalService } from './mal.service';
 
@@ -18,7 +16,6 @@ export class AppComponent {
     public malService: MalService,
     private swUpdate: SwUpdate,
     private glob: GlobalService,
-    private modal: NgbModal,
     private dialogue: DialogueService,
   ) {
     this.setupUpdates();
@@ -59,9 +56,5 @@ export class AppComponent {
       });
     });
     this.swUpdate.checkForUpdate();
-  }
-
-  showAbout() {
-    this.modal.open(AboutComponent);
   }
 }

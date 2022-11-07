@@ -7,5 +7,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AboutComponent {
   phone = window.atob('KzQ5IDE3NSA2Mzk1MDE0');
+  today = new Date();
   constructor(public modal: NgbActiveModal) {}
 }

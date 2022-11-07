@@ -3,19 +3,28 @@ import { AnisearchAnimeList, AnisearchMangaList } from '@models/anisearch';
 import { ExtRating } from '@models/components';
 import { environment } from 'src/environments/environment';
 
+import { CacheService } from './cache.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AnisearchService {
   private backendUrl = `${environment.backend}anisearch/`;
 
+  constructor(private cache: CacheService) {}
+
   async getAnimes(query: string): Promise<AnisearchAnimeList> {
     if (query) {
       const url = `${this.backendUrl}anime/search/${query}`;
-      const result = await fetch(url);
-      if (result.ok) {
-        return result.json();
-      }
+      const result = await this.cache.fetch<AnisearchAnimeList>(url);
+      return (
+        result || {
+          link: '',
+          page: 1,
+          pages: 1,
+          nodes: [],
+        }
+      );
     }
     return {
       link: '',
@@ -28,10 +37,15 @@ export class AnisearchService {
   async getMangas(query: string): Promise<AnisearchMangaList> {
     if (query) {
       const url = `${this.backendUrl}manga/search/${query}`;
-      const result = await fetch(url);
-      if (result.ok) {
-        return result.json();
-      }
+      const result = await this.cache.fetch<AnisearchMangaList>(url);
+      return (
+        result || {
+          link: '',
+          page: 1,
+          pages: 1,
+          nodes: [],
+        }
+      );
     }
     return {
       link: '',
@@ -44,11 +58,7 @@ export class AnisearchService {
   async getRating(id?: number, type = 'anime'): Promise<ExtRating | undefined> {
     if (!id) return;
     const url = `${this.backendUrl}${type}/rating/${id}`;
-    const result = await fetch(url);
-    if (result.ok) {
-      return result.json();
-    }
-    return;
+    return this.cache.fetch<ExtRating>(url);
   }
 
   async getId(
@@ -79,4 +89,24 @@ export class AnisearchService {
     }
     return;
   }
+
+  async getRelated(id: number, type: 'anime' | 'manga'): Promise<AnisearchRelated[]> {
+    const url = `${this.backendUrl}${type}/relations/${id}`;
+    const result = await this.cache.fetch<AnisearchRelated[]>(url);
+    return result || [];
+  }
+}
+
+export interface AnisearchRelated {
+  type: 'anime' | 'manga' | 'movie';
+  title: string;
+  link: string;
+  id: number;
+  poster?: string;
+  relation: string;
+  media_type: string;
+  episodes: number;
+  volumes: number;
+  year: number;
+  genres: string[];
 }

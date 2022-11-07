@@ -14,6 +14,7 @@ import { RatingComponent } from './dialogue/rating/rating.component';
 import { DoubleCardComponent } from './double-card/double-card.component';
 import { ExternalRatingComponent } from './external-rating/external-rating.component';
 import { FlagPipe } from './flag.pipe';
+import { HeaderComponent } from './header/header.component';
 import { MalPipe } from './mal.pipe';
 import { MediaCardComponent } from './media-card/media-card.component';
 import { StatusBadgeComponent } from './media-card/status-badge/status-badge.component';
@@ -25,6 +26,7 @@ import { MySvgIconComponent } from './svg-icon/svg-icon.component';
 import { TimePipe } from './time.pipe';
 import { ValuePairArrayComponent } from './value-pair-array/value-pair-array.component';
 import { ValuePairComponent } from './value-pair/value-pair.component';
+import { WidgetSeasonComponent } from './widget-season/widget-season.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     ExternalRatingComponent,
     PosterRatingComponent,
     MySvgIconComponent,
+    HeaderComponent,
+    WidgetSeasonComponent,
   ],
   imports: [
     CommonModule,
@@ -79,6 +83,8 @@ import { ValuePairComponent } from './value-pair/value-pair.component';
     ExternalRatingComponent,
     PosterRatingComponent,
     MySvgIconComponent,
+    HeaderComponent,
+    WidgetSeasonComponent,
     MalPipe,
     FlagPipe,
     TimePipe,

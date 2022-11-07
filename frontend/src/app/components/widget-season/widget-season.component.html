@@ -1,0 +1,22 @@
+<div class="season-widget" [ngClass]="{hide}">
+  <myanili-icon
+    name="calendar-range"
+    (click)="setCurrentSeason()"
+    class="me-1 cursor-pointer"
+    *ngIf="season.season !== currentSeason.season || season.year !== currentSeason.year"
+  ></myanili-icon>
+  <myanili-icon
+    name="arrow-down-left-circle"
+    (click)="changeSeason(-1)"
+    class="me-1 cursor-pointer"
+  ></myanili-icon>
+  <span>
+    {{ season.year }}
+    <myanili-icon [name]="icons[season.season]"></myanili-icon>
+  </span>
+  <myanili-icon
+    name="arrow-up-right-circle"
+    (click)="changeSeason(1)"
+    class="ms-1 cursor-pointer"
+  ></myanili-icon>
+</div>

@@ -1,4 +1,4 @@
-<myanili-navbar></myanili-navbar>
+<myanili-navbar-top></myanili-navbar-top>
 <ng-container *ngIf="loggedIn && loggedIn != '***loading***'">
   <router-outlet></router-outlet>
   <div class="busy-overlay" *ngIf="busy">
@@ -11,9 +11,4 @@
     ></myanili-icon-progress>
   </div>
 </ng-container>
-<footer class="bg-white border-top">
-  &copy; {{ today | date: 'Y' }}
-  <a href="https://github.com/infanf/myanili" target="_blank" class="link-secondary">infanf</a>
-  &middot;
-  <a class="cursor-pointer link-secondary" (click)="showAbout()">About / Privacy</a>
-</footer>
+<myanili-navbar-bottom *ngIf="loggedIn && loggedIn != '***loading***'"></myanili-navbar-bottom>
