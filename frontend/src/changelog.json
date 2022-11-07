@@ -1,6 +1,13 @@
 {
-  "version": "2.16.0",
+  "version": "2.16.1",
   "changes": [
+    {
+      "version": "2.16.1",
+      "fixes": [
+        "Padding when bottom nav isn't hidden",
+        "anisearch relations not showing up"
+      ]
+    },
     {
       "version": "2.16.0",
       "features": [
@@ -84,7 +91,9 @@
     },
     {
       "version": "2.13.1",
-      "other": ["optimize app to reduce size"]
+      "other": [
+        "optimize app to reduce size"
+      ]
     },
     {
       "version": "2.13.0",
@@ -92,19 +101,27 @@
         "Catch and inform about MAL maintenance",
         "show start date for upcoming anime in schedule"
       ],
-      "fixes": ["recently watched ongoing shows not listetd in watchlist"]
+      "fixes": [
+        "recently watched ongoing shows not listetd in watchlist"
+      ]
     },
     {
       "version": "2.12.3",
-      "fixes": ["handle annict results without poster"]
+      "fixes": [
+        "handle annict results without poster"
+      ]
     },
     {
       "version": "2.12.2",
-      "fixes": ["aniverse icon missing"]
+      "fixes": [
+        "aniverse icon missing"
+      ]
     },
     {
       "version": "2.12.1",
-      "fixes": ["manga search on submit switched to anime"]
+      "fixes": [
+        "manga search on submit switched to anime"
+      ]
     },
     {
       "version": "2.12.0",
@@ -113,33 +130,51 @@
         "add book publisher logos",
         "add restart button for on-hold book series"
       ],
-      "fixes": ["app prompt autofocus"]
+      "fixes": [
+        "app prompt autofocus"
+      ]
     },
     {
       "version": "2.11.3",
-      "fixes": ["new mangaupdates.com series id and url structure"]
+      "fixes": [
+        "new mangaupdates.com series id and url structure"
+      ]
     },
     {
       "version": "2.11.2",
-      "fixes": ["manga characters"],
-      "other": ["Improve baka manga, kitsu and anisearch background search"]
+      "fixes": [
+        "manga characters"
+      ],
+      "other": [
+        "Improve baka manga, kitsu and anisearch background search"
+      ]
     },
     {
       "version": "2.11.1",
-      "fixes": ["no episode rule for movies and specials"]
+      "fixes": [
+        "no episode rule for movies and specials"
+      ]
     },
     {
       "version": "2.11.0",
-      "features": ["3 episode rule"],
-      "other": ["styled implementation of system dialogues"]
+      "features": [
+        "3 episode rule"
+      ],
+      "other": [
+        "styled implementation of system dialogues"
+      ]
     },
     {
       "version": "2.10.2",
-      "fixes": ["footer margin"]
+      "fixes": [
+        "footer margin"
+      ]
     },
     {
       "version": "2.10.1",
-      "other": ["Add legal and privacy information"]
+      "other": [
+        "Add legal and privacy information"
+      ]
     },
     {
       "version": "2.10.0",
@@ -147,8 +182,13 @@
         "migrate from jikan v3 to v4",
         "redo links in characters and persons to grid layout"
       ],
-      "fixes": ["show other in changelog (if available)", "website favicons never worked"],
-      "other": ["optimize caching"]
+      "fixes": [
+        "show other in changelog (if available)",
+        "website favicons never worked"
+      ],
+      "other": [
+        "optimize caching"
+      ]
     },
     {
       "version": "2.9.3",
@@ -156,15 +196,22 @@
         "use input type \"search\" for searches",
         "hide kitsu links when no kitsu ID is found"
       ],
-      "other": ["cleanup code base", "restructure grid layouts using css grid"]
+      "other": [
+        "cleanup code base",
+        "restructure grid layouts using css grid"
+      ]
     },
     {
       "version": "2.9.2",
-      "features": ["add official website to anime details"]
+      "features": [
+        "add official website to anime details"
+      ]
     },
     {
       "version": "2.9.1",
-      "fixes": ["re-add reading platform WEBTOON"]
+      "fixes": [
+        "re-add reading platform WEBTOON"
+      ]
     },
     {
       "version": "2.9.0",
@@ -174,7 +221,9 @@
         "filter out hentai from season view and search results",
         "show related media as cards similar to recommendations"
       ],
-      "fixes": ["adjust modal border radius to updated design"]
+      "fixes": [
+        "adjust modal border radius to updated design"
+      ]
     }
   ]
 }
