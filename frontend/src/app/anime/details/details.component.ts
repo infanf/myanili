@@ -252,6 +252,8 @@ export class AnimeDetailsComponent implements OnInit {
       num_watched_episodes: this.anime.my_list_status.num_episodes_watched,
       priority: this.anime.my_list_status.priority,
       rewatch_value: this.anime.my_list_status.rewatch_value,
+      start_date: this.anime.my_list_status.start_date,
+      finish_date: this.anime.my_list_status.finish_date,
       tags: this.anime.my_list_status.tags?.join(','),
     };
     try {
@@ -322,6 +324,12 @@ export class AnimeDetailsComponent implements OnInit {
     }
     if (this.editBackup.tags !== this.anime.my_list_status.tags?.join(',')) {
       updateData.tags = this.editBackup?.tags;
+    }
+    if (this.editBackup.start_date !== this.anime.my_list_status.start_date) {
+      updateData.start_date = this.editBackup?.start_date;
+    }
+    if (this.editBackup.finish_date !== this.anime.my_list_status.finish_date) {
+      updateData.finish_date = this.editBackup?.finish_date;
     }
     await this.animeService.updateAnime(
       {

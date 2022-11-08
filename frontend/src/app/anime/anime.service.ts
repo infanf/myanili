@@ -135,6 +135,12 @@ export class AnimeService {
     },
     data: Partial<MyAnimeUpdate>,
   ): Promise<MyAnimeStatus> {
+    if (data.status === 'completed') {
+      data.finish_date = data.finish_date || DateTime.local().toISODate();
+    }
+    if (data.status === 'watching') {
+      data.start_date = data.start_date || DateTime.local().toISODate();
+    }
     const [malResponse] = await Promise.all([
       this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),
       (async () => {
@@ -143,12 +149,28 @@ export class AnimeService {
             ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME');
           }
           if (!ids.anilistId) return;
+          const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
+          const finishDate = data.finish_date ? DateTime.fromISO(data.finish_date) : undefined;
           return this.anilist.updateEntry(ids.anilistId, {
             progress: data.num_watched_episodes,
             scoreRaw: data.score ? data.score * 10 : undefined,
             status: this.anilist.statusFromMal(data.status, data.is_rewatching),
             notes: data.comments,
             repeat: data.num_times_rewatched,
+            startedAt: startDate
+              ? {
+                  year: startDate.year,
+                  month: startDate.month,
+                  day: startDate.day,
+                }
+              : undefined,
+            completedAt: finishDate
+              ? {
+                  year: finishDate.year,
+                  month: finishDate.month,
+                  day: finishDate.day,
+                }
+              : undefined,
           });
         }
         return;
@@ -163,6 +185,8 @@ export class AnimeService {
           ratingTwenty: (data.score || 0) * 2 || undefined,
           status: this.kitsu.statusFromMal(data.status),
           notes: data.comments,
+          startedAt: data.start_date,
+          finishedAt: data.finish_date,
           reconsuming: data.is_rewatching,
           reconsumeCount: data.num_times_rewatched,
         });
