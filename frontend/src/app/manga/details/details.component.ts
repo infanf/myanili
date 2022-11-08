@@ -174,6 +174,8 @@ export class MangaDetailsComponent implements OnInit {
       num_volumes_read: this.manga.my_list_status.num_volumes_read,
       priority: this.manga.my_list_status.priority,
       reread_value: this.manga.my_list_status.reread_value,
+      start_date: this.manga.my_list_status.start_date,
+      finish_date: this.manga.my_list_status.finish_date,
       tags: this.manga.my_list_status.tags,
     };
     try {
@@ -230,6 +232,12 @@ export class MangaDetailsComponent implements OnInit {
     }
     if (this.editBackup.tags !== this.manga.my_list_status.tags) {
       updateData.tags = this.editBackup?.tags;
+    }
+    if (this.editBackup.start_date !== this.manga.my_list_status.start_date) {
+      updateData.start_date = this.editBackup?.start_date;
+    }
+    if (this.editBackup.finish_date !== this.manga.my_list_status.finish_date) {
+      updateData.finish_date = this.editBackup?.finish_date;
     }
     await this.mangaService.updateManga(
       {
