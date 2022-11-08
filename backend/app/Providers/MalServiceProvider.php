@@ -140,10 +140,6 @@ class MalServiceProvider extends ServiceProvider
             ), true
         );
         $list = $response['data'];
-        // while ($response['paging'] && isset($response['paging']['next'])) {
-        //     $response = json_decode(self::get($response['paging']['next']), true);
-        //     $list = array_merge($list, $response['data']);
-        // }
         return $list;
     }
 
@@ -177,10 +173,6 @@ class MalServiceProvider extends ServiceProvider
             ), true
         );
         $list = $response['data'];
-        // while ($response['paging'] && isset($response['paging']['next'])) {
-        //     $response = json_decode(self::get($response['paging']['next']), true);
-        //     $list = array_merge($list, $response['data']);
-        // }
         return $list;
     }
 
@@ -195,7 +187,7 @@ class MalServiceProvider extends ServiceProvider
             "broadcast",
             "end_date",
             "alternative_titles",
-            "my_list_status{comments}",
+            "my_list_status{comments,start_date,finish_date}",
             "nsfw",
             "rating"
         ];
@@ -242,7 +234,7 @@ class MalServiceProvider extends ServiceProvider
             "media_type",
             "status",
             "genres",
-            "my_list_status{comments}",
+            "my_list_status{comments,start_date,finish_date}",
             "num_episodes",
             "start_season",
             "broadcast",
@@ -252,7 +244,7 @@ class MalServiceProvider extends ServiceProvider
             "pictures",
             "background",
             "related_anime{status}",
-            "related_manga",
+            "related_manga{status}",
             "recommendations",
             "studios",
             "statistics",
@@ -284,7 +276,7 @@ class MalServiceProvider extends ServiceProvider
             "media_type",
             "status",
             "genres",
-            "my_list_status{comments}",
+            "my_list_status{comments,start_date,finish_date}",
             "serialization",
             "num_chapters",
             "num_volumes",
@@ -319,7 +311,7 @@ class MalServiceProvider extends ServiceProvider
             "start_date",
             "end_date",
             "alternative_titles",
-            "my_list_status{comments}",
+            "my_list_status{comments,start_date,finish_date}",
             "mean",
             "genres",
             "status",
