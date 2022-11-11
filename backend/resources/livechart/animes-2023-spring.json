@@ -83,6 +83,12 @@
         "_key": "11205"
     },
     {
+        "title": "Watashi no Yuri wa Oshigoto Desu!",
+        "livechart": "11219",
+        "mal": "51817",
+        "_key": "11219"
+    },
+    {
         "title": "Star Wars: Visions Volume 2",
         "livechart": "11236",
         "_key": "11236"
@@ -129,6 +135,12 @@
         "_key": "11456"
     },
     {
+        "title": "Megami no Cafe Terrace",
+        "livechart": "11463",
+        "mal": "52973",
+        "_key": "11463"
+    },
+    {
         "title": "Youjo Shachou R",
         "livechart": "11515",
         "_key": "11515"
@@ -143,5 +155,10 @@
         "title": "Mobile Suit Gundam: Suisei no Majo 2nd Cour",
         "livechart": "11531",
         "_key": "11531"
+    },
+    {
+        "title": "Meitantei Conan Movie 2023",
+        "livechart": "11601",
+        "_key": "11601"
     }
 ]

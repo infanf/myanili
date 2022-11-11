@@ -80,8 +80,8 @@ interface MyStatus {
   num_episodes_watched: number;
   is_rewatching: boolean;
   num_times_rewatched: number;
-  start_date?: Date;
-  finish_date?: Date;
+  start_date?: string;
+  finish_date?: string;
   priority: number;
   rewatch_value: number;
   tags: string[];
@@ -100,6 +100,8 @@ interface MyUpdate {
   priority: number;
   num_times_rewatched: number;
   rewatch_value: number;
+  start_date: string;
+  finish_date: string;
   tags: string;
   comments: string;
 }

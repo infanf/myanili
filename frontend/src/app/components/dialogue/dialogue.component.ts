@@ -15,7 +15,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DialogueComponent implements OnInit, AfterViewInit {
   @Input() title?: string;
-  @Input() message?: string;
+  @Input() message = '';
   @Input() prompt?: {
     placeholder?: string;
     type?: InputType;
@@ -36,7 +36,7 @@ export class DialogueComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.valueInput?.first.nativeElement?.focus();
+    this.valueInput?.first?.nativeElement?.focus();
   }
 
   submit<T>(value: T) {

@@ -1,6 +1,12 @@
 {
-  "version": "2.16.1",
+  "version": "2.17.0",
   "changes": [
+    {
+      "version": "2.17.0",
+      "features": [
+        "start and finish date for series"
+      ]
+    },
     {
       "version": "2.16.1",
       "fixes": [

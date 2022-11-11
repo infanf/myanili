@@ -23,8 +23,14 @@ interface SaveMedialistEntry {
   hiddenFromStatusLists: boolean;
   customLists: [string];
   advancedScores: [number];
-  startedAt: Date;
-  completedAt: Date;
+  startedAt: FuzzyDate;
+  completedAt: FuzzyDate;
+}
+
+interface FuzzyDate {
+  year: number;
+  month: number;
+  day: number;
 }
 
 export type AnilistSaveMedialistEntry = SaveMedialistEntry;

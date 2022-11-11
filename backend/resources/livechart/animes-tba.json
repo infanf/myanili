@@ -1041,7 +1041,7 @@
         "_key": "11104"
     },
     {
-        "title": "Untitled Kizuna AI Anime Project",
+        "title": "Kizuna no Allele",
         "livechart": "11106",
         "_key": "11106"
     },
@@ -1211,12 +1211,6 @@
         "_key": "11213"
     },
     {
-        "title": "Watashi no Yuri wa Oshigoto Desu!",
-        "livechart": "11219",
-        "mal": "51817",
-        "_key": "11219"
-    },
-    {
         "title": "\"Touken Ranbu\" Kyoden Moyuru Honnouji",
         "livechart": "11221",
         "_key": "11221"
@@ -1381,12 +1375,6 @@
         "_key": "11345"
     },
     {
-        "title": "Dark Gathering",
-        "livechart": "11347",
-        "mal": "52505",
-        "_key": "11347"
-    },
-    {
         "title": "Boku no Kokoro no Yabai Yatsu",
         "livechart": "11349",
         "mal": "52578",
@@ -1537,12 +1525,6 @@
         "_key": "11461"
     },
     {
-        "title": "Megami no Cafe Terrace",
-        "livechart": "11463",
-        "mal": "52973",
-        "_key": "11463"
-    },
-    {
         "title": "Dekoboko Majo no Oyako Jijou",
         "livechart": "11464",
         "mal": "52985",
@@ -1691,6 +1673,11 @@
         "_key": "11562"
     },
     {
+        "title": "Saijaku Tamer wa Gomi Hiroi no Tabi wo Hajimemashita.",
+        "livechart": "11564",
+        "_key": "11564"
+    },
+    {
         "title": "Boushoku no Berserk: Ore dake Level to Iu Gainen wo Toppa suru",
         "livechart": "11567",
         "_key": "11567"
@@ -1706,12 +1693,6 @@
         "livechart": "11571",
         "mal": "53410",
         "_key": "11571"
-    },
-    {
-        "title": "FLAGLIA",
-        "livechart": "11574",
-        "mal": "53424",
-        "_key": "11574"
     },
     {
         "title": "Dosanko Gal wa Namara Menkoi",
@@ -1795,5 +1776,20 @@
         "livechart": "11599",
         "mal": "53529",
         "_key": "11599"
+    },
+    {
+        "title": "i\u2606Ris the Movie - Full Energy!! -",
+        "livechart": "11600",
+        "_key": "11600"
+    },
+    {
+        "title": "Tensei Shitara Slime Datta Ken 3rd Season",
+        "livechart": "11606",
+        "_key": "11606"
+    },
+    {
+        "title": "The Marginal Service",
+        "livechart": "11607",
+        "_key": "11607"
     }
 ]

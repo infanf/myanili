@@ -12,6 +12,7 @@ import {
   ReadStatus,
 } from '@models/manga';
 import { Base64 } from 'js-base64';
+import { DateTime } from 'luxon';
 import { environment } from 'src/environments/environment';
 import { compareTwoStrings } from 'string-similarity';
 
@@ -95,6 +96,12 @@ export class MangaService {
     },
     data: Partial<MyMangaUpdate>,
   ): Promise<MyMangaStatus> {
+    if (data.status === 'completed') {
+      data.finish_date = data.finish_date || DateTime.local().toISODate();
+    }
+    if (data.status === 'reading') {
+      data.start_date = data.start_date || DateTime.local().toISODate();
+    }
     const [malResponse] = await Promise.all([
       this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
       (async () => {
@@ -103,6 +110,8 @@ export class MangaService {
             ids.anilistId = await this.anilist.getId(ids.malId, 'MANGA');
           }
           if (!ids.anilistId) return;
+          const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
+          const finishDate = data.finish_date ? DateTime.fromISO(data.finish_date) : undefined;
           return this.anilist.updateEntry(ids.anilistId, {
             progress: data.num_chapters_read,
             progressVolumes: data.num_volumes_read,
@@ -110,6 +119,20 @@ export class MangaService {
             status: this.anilist.statusFromMal(data.status, data.is_rereading),
             notes: data.comments,
             repeat: data.num_times_reread,
+            startedAt: startDate
+              ? {
+                  year: startDate.year,
+                  month: startDate.month,
+                  day: startDate.day,
+                }
+              : undefined,
+            completedAt: finishDate
+              ? {
+                  year: finishDate.year,
+                  month: finishDate.month,
+                  day: finishDate.day,
+                }
+              : undefined,
           });
         }
         return;
@@ -124,6 +147,8 @@ export class MangaService {
           ratingTwenty: (data.score || 0) * 2 || undefined,
           status: this.kitsu.statusFromMal(data.status),
           notes: data.comments,
+          startedAt: data.start_date,
+          finishedAt: data.finish_date,
           reconsuming: data.is_rereading,
           reconsumeCount: data.num_times_reread,
         });

@@ -52,8 +52,8 @@ interface EntryAttributes {
   private: boolean;
   reactionSkipped: string;
   progressedAt?: Date;
-  startedAt?: Date;
-  finishedAt?: Date;
+  startedAt?: string;
+  finishedAt?: string;
   rating: string;
   ratingTwenty?: number;
 }

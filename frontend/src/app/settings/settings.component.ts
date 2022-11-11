@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import { AnilistUser } from '@models/anilist';
 import { BakaUser } from '@models/baka';
 import { KitsuUser } from '@models/kitsu';
@@ -46,6 +47,7 @@ export class SettingsComponent implements OnInit {
     private annict: AnnictService,
     private baka: MangaupdatesService,
     public modal: NgbActiveModal,
+    private dialogue: DialogueService,
   ) {
     this.settings.language.subscribe(lang => {
       this.lang = lang;
@@ -103,12 +105,25 @@ export class SettingsComponent implements OnInit {
     this.settings.setLayout(this.layout);
   }
 
+  malConnect() {
+    this.mal.login();
+  }
+
   async malLogoff() {
     this.glob.busy();
-    if (confirm(`Log out account ${this.malLoggedIn?.name}?`)) {
-      await this.mal.get('/logoff');
+    const malLogoff = await this.dialogue.confirm(
+      'Are you sure you want to log off from MyAnimeList?\nAll your other accounts will be logged off as well.',
+      'Log off from MyAnimeList',
+    );
+    if (malLogoff) {
+      await this.mal.get('logoff');
       await this.mal.checkLogin();
       this.traktLogoff();
+      this.simklLogoff();
+      this.annictLogoff();
+      this.anilistLogoff();
+      this.kitsuLogoff();
+      this.bakaLogoff();
     }
     this.glob.notbusy();
   }

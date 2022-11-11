@@ -188,6 +188,30 @@
           </ng-template>
         </div>
       </div>
+      <div class="row my-2" *ngIf="edit && editBackup">
+        <div class="col-4 fw-bold text-end">Started</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editBackup!.start_date"
+            [disabled]="busy"
+            type="date"
+            enterkeyhint="done"
+          />
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && editBackup">
+        <div class="col-4 fw-bold text-end">Finished</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editBackup!.finish_date"
+            [disabled]="busy"
+            type="date"
+            enterkeyhint="done"
+          />
+        </div>
+      </div>
       <div class="row" *ngIf="!edit && manga && manga.my_extension && manga.my_extension.platform">
         <div class="col-4 fw-bold text-end">Platform</div>
         <div class="col-8">

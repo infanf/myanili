@@ -82,6 +82,8 @@ interface MyUpdate {
   priority: number;
   num_times_reread: number;
   reread_value: number;
+  start_date: string;
+  finish_date: string;
   tags: string;
   comments: string;
 }
@@ -112,8 +114,8 @@ interface MyStatus {
   score: number;
   num_volumes_read: number;
   num_chapters_read: number;
-  start_date?: Date;
-  finish_date?: Date;
+  start_date?: string;
+  finish_date?: string;
   priority: number;
   num_times_reread: number;
   reread_value: number;
