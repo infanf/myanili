@@ -10,7 +10,7 @@
   ></button>
 </div>
 <div class="modal-body">
-  {{ message }}
+  <div *ngIf="message" style="white-space: pre-line">{{ message }}</div>
   <form *ngIf="prompt" (submit)="submit(prompt.value)">
     <input
       [type]="prompt.type"

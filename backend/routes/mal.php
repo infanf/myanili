@@ -159,8 +159,13 @@ JAVASCRIPT;
     });
 
     $router->get('logoff', function () {
-        setcookie('MAL_ACCESS_TOKEN', '', 0);
-        setcookie('MAL_REFRESH_TOKEN', '', 0);
+        // remove all session variables and cookies
+        session_unset();
+        setcookie('MAL_ACCESS_TOKEN', '', time() - 3600, "/");
+        unset($_COOKIE['MAL_ACCESS_TOKEN']);
+        setcookie('MAL_REFRESH_TOKEN', '', time() - 3600, "/");
+        unset($_COOKIE['MAL_REFRESH_TOKEN']);
+        return ['success' => true];
     });
 
     $router->get('animes/season/{year}/{season}/songs', function (int $year, int $season) {
