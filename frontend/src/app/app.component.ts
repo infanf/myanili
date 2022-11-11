@@ -40,7 +40,7 @@ export class AppComponent {
   loadingPercent = 0;
 
   setupUpdates() {
-    this.swUpdate.versionUpdates.subscribe(() => {
+    this.swUpdate.available.subscribe(() => {
       this.swUpdate.activateUpdate().then(async e => {
         const message = 'Application has been updated.\nConfirm to reload now.';
         const reload = await this.dialogue.open(
