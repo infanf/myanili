@@ -36,12 +36,12 @@ export class SettingsService {
       const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
       this.setNsfw(nsfw);
       const knownVersion = String(localStorage.getItem('myaniliVersion')) || '0.0.0';
-      if (this.glob.changelog.version !== knownVersion) {
+      if (this.glob.version !== knownVersion) {
         const changeNotes = this.glob.changelog.changes.filter(c =>
-          c.version.startsWith(this.glob.changelog.version.replace(/\.\d+$/, '')),
+          c.version.startsWith(this.glob.version.replace(/\.\d+$/, '')),
         );
         if (changeNotes) {
-          localStorage.setItem('myaniliVersion', this.glob.changelog.version);
+          localStorage.setItem('myaniliVersion', this.glob.version);
           const changelogModal = this.modalService.open(NewVersionComponent);
           changelogModal.componentInstance.changelog = {
             version: this.glob.version,

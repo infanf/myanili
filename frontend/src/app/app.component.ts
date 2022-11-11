@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
+import { SwUpdate, VersionEvent } from '@angular/service-worker';
 import { DialogueService } from '@components/dialogue/dialogue.service';
 
 import { GlobalService } from './global.service';
@@ -40,7 +40,10 @@ export class AppComponent {
   loadingPercent = 0;
 
   setupUpdates() {
-    this.swUpdate.available.subscribe(() => {
+    this.swUpdate.versionUpdates.subscribe((event: VersionEvent) => {
+      if (event.type !== 'VERSION_READY') {
+        return;
+      }
       this.swUpdate.activateUpdate().then(async e => {
         const message = 'Application has been updated.\nConfirm to reload now.';
         const reload = await this.dialogue.open(

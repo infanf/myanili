@@ -87,7 +87,6 @@ export class GlobalService {
 }
 
 export interface Changelog {
-  version: string;
   changes: [
     {
       version: string;
