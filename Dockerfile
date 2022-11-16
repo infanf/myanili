@@ -1,4 +1,4 @@
-FROM webdevops/php-apache-dev:8.1
+FROM webdevops/php-apache:8.2
 RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - 
 RUN apt-get install -yqq nodejs 
 RUN npm i --location=global npm @angular/cli
