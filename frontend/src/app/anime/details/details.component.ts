@@ -11,6 +11,7 @@ import { Anime, AnimeEpisodeRule, AnimeExtension, MyAnimeUpdate, WatchStatus } f
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
+import { DateTime } from 'luxon';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
 import { CacheService } from 'src/app/cache.service';
@@ -408,6 +409,10 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
+    const data = { status } as Partial<MyAnimeUpdate>;
+    if (status === 'watching' && !this.anime.my_list_status?.start_date) {
+      data.start_date = DateTime.local().toISODate();
+    }
     await this.animeService.updateAnime(
       {
         malId: this.anime.id,
@@ -416,7 +421,7 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
       },
-      { status },
+      data,
     );
     await this.ngOnInit();
     this.busy = false;
@@ -454,6 +459,7 @@ export class AnimeDetailsComponent implements OnInit {
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
+      data.finish_date = DateTime.local().toISODate();
       data.is_rewatching = false;
       if (this.anime.my_list_status.is_rewatching) {
         data.num_times_rewatched = this.anime.my_list_status.num_times_rewatched + 1 || 1;
@@ -533,7 +539,11 @@ export class AnimeDetailsComponent implements OnInit {
             false,
           );
           if (status) {
-            await this.animeService.updateAnime({ malId: sequel.id }, { status });
+            const sequelData = { status } as Partial<MyAnimeUpdate>;
+            if (status === 'watching') {
+              sequelData.start_date = DateTime.local().toISODate();
+            }
+            await this.animeService.updateAnime({ malId: sequel.id }, sequelData);
           }
         }
         this.ngOnInit();
