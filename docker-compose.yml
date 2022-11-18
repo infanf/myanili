@@ -2,8 +2,6 @@ services:
   app:
     build: .
     container_name: myanili_app
-    # depends_on: 
-    #   - jikan
     ports:
       - 4280:80
       - 4200:4200
@@ -12,18 +10,3 @@ services:
       - ./frontend:/frontend
     dns:
       - 8.8.8.8
-  # jikan:
-  #   build:
-  #     context: jikan
-  #     dockerfile: Dockerfile
-  #   container_name: myanili_jikan
-  #   depends_on:
-  #     - jikan-redis
-  #   ports:
-  #     - "9001:8000"
-  #   networks:
-  #     - default
-
-  # jikan-redis:
-  #   image: redis
-  #   container_name: myanili_redis

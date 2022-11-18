@@ -544,6 +544,8 @@ export class AnimeDetailsComponent implements OnInit {
     this.anime.my_list_status.score = animeStatus.score;
     this.anime.my_list_status.is_rewatching = animeStatus.is_rewatching;
     this.anime.my_list_status.num_times_rewatched = animeStatus.num_times_rewatched;
+    this.anime.my_list_status.start_date = animeStatus.start_date;
+    this.anime.my_list_status.finish_date = animeStatus.finish_date;
     this.glob.notbusy();
   }
 
