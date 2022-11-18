@@ -125,6 +125,7 @@ export class WatchlistComponent implements OnInit {
     let completed = false;
     if (currentEpisode + 1 === anime.node.num_episodes) {
       data.status = 'completed';
+      data.finish_date = DateTime.local().toISODate();
       data.is_rewatching = false;
       if (anime.list_status.is_rewatching) {
         data.num_times_rewatched = anime.list_status.num_times_rewatched + 1 || 1;
@@ -208,7 +209,11 @@ export class WatchlistComponent implements OnInit {
             false,
           );
           if (status) {
-            await this.animeService.updateAnime({ malId: sequel.id }, { status });
+            const sequelData = { status } as Partial<MyAnimeUpdate>;
+            if (status === 'watching') {
+              sequelData.start_date = DateTime.local().toISODate();
+            }
+            await this.animeService.updateAnime({ malId: sequel.id }, sequelData);
           }
         }
         this.ngOnInit();

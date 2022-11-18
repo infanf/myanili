@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DialogueService } from '@components/dialogue/dialogue.service';
 import { ListManga, MyMangaUpdate } from '@models/manga';
+import { DateTime } from 'luxon';
 import { GlobalService } from 'src/app/global.service';
 import { SettingsService } from 'src/app/settings/settings.service';
 
@@ -80,6 +81,7 @@ export class BookshelfComponent {
     if (currentVolume + 1 === manga.node.num_volumes) {
       this.glob.busy();
       data.status = 'completed';
+      data.finish_date = DateTime.local().toISODate();
       if (manga.node.num_chapters) data.num_chapters_read = manga.node.num_chapters;
       completed = true;
       if (!manga.list_status?.score) {
@@ -116,6 +118,7 @@ export class BookshelfComponent {
     if (currentChapter + 1 === manga.node.num_chapters) {
       this.glob.busy();
       data.status = 'completed';
+      data.finish_date = DateTime.local().toISODate();
       if (manga.node.num_volumes) data.num_volumes_read = manga.node.num_volumes;
       completed = true;
       if (!manga.list_status?.score) {

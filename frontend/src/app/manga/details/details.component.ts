@@ -9,6 +9,7 @@ import { ExtRating } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Base64 } from 'js-base64';
+import { DateTime } from 'luxon';
 import { AnilistService } from 'src/app/anilist.service';
 import { AnisearchService } from 'src/app/anisearch.service';
 import { CacheService } from 'src/app/cache.service';
@@ -263,6 +264,10 @@ export class MangaDetailsComponent implements OnInit {
     if (!this.manga) return;
     this.glob.busy();
     this.busy = true;
+    const data = { status } as Partial<MyMangaUpdate>;
+    if (status === 'reading' && !this.manga.my_list_status?.start_date) {
+      data.start_date = DateTime.local().toISODate();
+    }
     await this.mangaService.updateManga(
       {
         malId: this.manga.id,
@@ -270,7 +275,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         bakaId: this.manga.my_extension?.bakaId,
       },
-      { status },
+      data,
     );
     await this.ngOnInit();
     this.busy = false;
@@ -322,6 +327,7 @@ export class MangaDetailsComponent implements OnInit {
         status: 'reading',
         num_chapters_read: 0,
         num_volumes_read: 0,
+        start_date: DateTime.local().toISODate(),
       },
     );
     await this.ngOnInit();
@@ -351,6 +357,7 @@ export class MangaDetailsComponent implements OnInit {
       data.num_chapters_read === this.manga.num_chapters
     ) {
       data.status = 'completed';
+      data.finish_date = DateTime.local().toISODate();
       data.is_rereading = false;
       if (this.manga.my_list_status.is_rereading) {
         data.num_times_reread = this.manga.my_list_status.num_times_reread + 1 || 1;

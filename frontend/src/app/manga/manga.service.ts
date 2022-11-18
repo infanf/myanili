@@ -96,18 +96,6 @@ export class MangaService {
     },
     data: Partial<MyMangaUpdate>,
   ): Promise<MyMangaStatus> {
-    if (data.status === 'completed') {
-      const finishDate = DateTime.local().toISODate();
-      if (!data.finish_date || new Date(data.finish_date).toString().includes('nvalid')) {
-        data.finish_date = finishDate;
-      }
-    }
-    if (data.status === 'reading') {
-      const startDate = DateTime.local().toISODate();
-      if (!data.start_date || new Date(data.start_date).toString().includes('nvalid')) {
-        data.start_date = startDate;
-      }
-    }
     const [malResponse] = await Promise.all([
       this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
       (async () => {
