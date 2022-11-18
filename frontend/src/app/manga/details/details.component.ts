@@ -378,6 +378,9 @@ export class MangaDetailsComponent implements OnInit {
     this.manga.my_list_status.score = statusResponse.score;
     this.manga.my_list_status.num_times_reread = statusResponse.num_times_reread;
     this.manga.my_list_status.is_rereading = statusResponse.is_rereading;
+    this.manga.my_list_status.updated_at = statusResponse.updated_at;
+    this.manga.my_list_status.start_date = statusResponse.start_date;
+    this.manga.my_list_status.finish_date = statusResponse.finish_date;
     this.glob.notbusy();
   }
 

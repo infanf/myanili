@@ -1,9 +1,16 @@
 {
   "changes": [
     {
+      "version": "2.17.2",
+      "fixes": [
+        "status won't update when closing the ratings popup",
+        "start and finish date aren't visible in details after status changes"
+      ]
+    },
+    {
       "version": "2.17.1",
       "fixes": [
-        "new version is wrongly detected"
+        "new version is wrongly detected resulting in infinite reloads"
       ]
     },
     {
