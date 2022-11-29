@@ -562,12 +562,6 @@
         "_key": "10352"
     },
     {
-        "title": "Niehime to Kemono no Ou",
-        "livechart": "10357",
-        "mal": "46422",
-        "_key": "10357"
-    },
-    {
         "title": "Tai-Ari deshita. Ojou-sama wa Kakutou Game Nante Shinai",
         "livechart": "10360",
         "mal": "46488",
@@ -613,12 +607,6 @@
         "livechart": "10453",
         "mal": "48425",
         "_key": "10453"
-    },
-    {
-        "title": "Eiyuu Densetsu: Sen no Kiseki - Northern War",
-        "livechart": "10459",
-        "mal": "48441",
-        "_key": "10459"
     },
     {
         "title": "Untitled Sunao Katabuchi Film",
@@ -741,12 +729,6 @@
         "livechart": "10750",
         "mal": "49613",
         "_key": "10750"
-    },
-    {
-        "title": "Shuumatsu no Walk\u00fcre \u2161",
-        "livechart": "10754",
-        "mal": "49618",
-        "_key": "10754"
     },
     {
         "title": "Beat & Motion",
@@ -903,31 +885,10 @@
         "_key": "10941"
     },
     {
-        "title": "GRIDMAN UNIVERSE",
-        "livechart": "10942",
-        "mal": "50587",
-        "_key": "10942"
-    },
-    {
         "title": "Mahou Tsukai no Yoru",
         "livechart": "10945",
         "mal": "50668",
         "_key": "10945"
-    },
-    {
-        "title": "Jashin-chan Dropkick X: Furano-hen",
-        "livechart": "10949",
-        "_key": "10949"
-    },
-    {
-        "title": "Jashin-chan Dropkick X: Obihiro-hen",
-        "livechart": "10950",
-        "_key": "10950"
-    },
-    {
-        "title": "Jashin-chan Dropkick X: Kushiro-hen",
-        "livechart": "10951",
-        "_key": "10951"
     },
     {
         "title": "Rurouni Kenshin: Meiji Kenkaku Romantan (2023)",
@@ -1043,6 +1004,7 @@
     {
         "title": "Kizuna no Allele",
         "livechart": "11106",
+        "mal": "51139",
         "_key": "11106"
     },
     {
@@ -1128,18 +1090,6 @@
         "livechart": "11169",
         "mal": "51461",
         "_key": "11169"
-    },
-    {
-        "title": "Masamune-kun no Revenge R",
-        "livechart": "11170",
-        "mal": "51498",
-        "_key": "11170"
-    },
-    {
-        "title": "THE iDOLM@STER Cinderella Girls: U149",
-        "livechart": "11173",
-        "mal": "51536",
-        "_key": "11173"
     },
     {
         "title": "Shingeki no Kyojin: The Final Season Kanketsu-hen",
@@ -1489,12 +1439,6 @@
         "_key": "11382"
     },
     {
-        "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta",
-        "livechart": "11384",
-        "mal": "52830",
-        "_key": "11384"
-    },
-    {
         "title": "Quanzhi Gaoshou 3rd Season ",
         "livechart": "11385",
         "mal": "49559",
@@ -1643,6 +1587,12 @@
         "_key": "11546"
     },
     {
+        "title": "Yumemiru Danshi wa Genjitsushugisha",
+        "livechart": "11547",
+        "mal": "53632",
+        "_key": "11547"
+    },
+    {
         "title": "Love Live! Superstar!! 3rd Season",
         "livechart": "11549",
         "mal": "53287",
@@ -1705,12 +1655,6 @@
         "livechart": "11576",
         "mal": "53426",
         "_key": "11576"
-    },
-    {
-        "title": "AYAKA",
-        "livechart": "11577",
-        "mal": "53428",
-        "_key": "11577"
     },
     {
         "title": "Maou no Ore ga Dorei Elf wo Yome ni Shitanda ga, Dou Medereba Ii?",
@@ -1791,5 +1735,45 @@
         "title": "The Marginal Service",
         "livechart": "11607",
         "_key": "11607"
+    },
+    {
+        "title": "Untitled Anime from \"Expelled from Paradise\" Production Team",
+        "livechart": "11612",
+        "_key": "11612"
+    },
+    {
+        "title": "Jijou wo Shiranai Tenkousei ga Guigui Kuru.",
+        "livechart": "11616",
+        "mal": "53621",
+        "_key": "11616"
+    },
+    {
+        "title": "Bye Bye, Earth",
+        "livechart": "11627",
+        "mal": "53626",
+        "_key": "11627"
+    },
+    {
+        "title": "GAMERA -Rebirth-",
+        "livechart": "11628",
+        "_key": "11628"
+    },
+    {
+        "title": "Bullbuster",
+        "livechart": "11636",
+        "mal": "53633",
+        "_key": "11636"
+    },
+    {
+        "title": "Yomawari Neko",
+        "livechart": "11659",
+        "mal": "53655",
+        "_key": "11659"
+    },
+    {
+        "title": "Pole Princess!!",
+        "livechart": "11681",
+        "mal": "53680",
+        "_key": "11681"
     }
 ]

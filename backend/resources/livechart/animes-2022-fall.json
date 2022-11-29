@@ -569,6 +569,7 @@
     {
         "title": "Shinmai Renkinjutsushi no Tenpo Keiei Mini Anime",
         "livechart": "11539",
+        "mal": "53248",
         "_key": "11539"
     },
     {
@@ -584,6 +585,18 @@
     {
         "title": "Shin Shinka no Mi Gekijou",
         "livechart": "11596",
+        "mal": "53595",
         "_key": "11596"
+    },
+    {
+        "title": "Zen: Grogu to Makkuro Kurosuke",
+        "livechart": "11609",
+        "mal": "53599",
+        "_key": "11609"
+    },
+    {
+        "title": "Blue Archive: beautiful day dreamer",
+        "livechart": "11669",
+        "_key": "11669"
     }
 ]
