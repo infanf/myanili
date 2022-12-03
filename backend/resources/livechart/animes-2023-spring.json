@@ -18,6 +18,12 @@
         "_key": "10322"
     },
     {
+        "title": "Niehime to Kemono no Ou",
+        "livechart": "10357",
+        "mal": "46422",
+        "_key": "10357"
+    },
+    {
         "title": "Black Clover: Mahou Tei no Ken",
         "livechart": "10495",
         "mal": "48585",
@@ -36,6 +42,12 @@
         "_key": "10834"
     },
     {
+        "title": "GRIDMAN UNIVERSE",
+        "livechart": "10942",
+        "mal": "50587",
+        "_key": "10942"
+    },
+    {
         "title": "Dr. STONE 3rd Season",
         "livechart": "10957",
         "mal": "48549",
@@ -46,6 +58,18 @@
         "livechart": "11076",
         "mal": "50002",
         "_key": "11076"
+    },
+    {
+        "title": "Masamune-kun no Revenge R",
+        "livechart": "11170",
+        "mal": "51498",
+        "_key": "11170"
+    },
+    {
+        "title": "THE iDOLM@STER Cinderella Girls: U149",
+        "livechart": "11173",
+        "mal": "51536",
+        "_key": "11173"
     },
     {
         "title": "Ao no Orchestra",
@@ -129,6 +153,12 @@
         "_key": "11353"
     },
     {
+        "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta",
+        "livechart": "11384",
+        "mal": "52830",
+        "_key": "11384"
+    },
+    {
         "title": "Mahou Tsukai no Yome Season 2",
         "livechart": "11456",
         "mal": "52955",
@@ -157,8 +187,37 @@
         "_key": "11531"
     },
     {
+        "title": "AYAKA",
+        "livechart": "11577",
+        "mal": "53428",
+        "_key": "11577"
+    },
+    {
         "title": "Meitantei Conan Movie 2023",
         "livechart": "11601",
         "_key": "11601"
+    },
+    {
+        "title": "Princess Principal: Crown Handler - Chapter 3",
+        "livechart": "11610",
+        "mal": "41141",
+        "_key": "11610"
+    },
+    {
+        "title": "Dead Mount Death Play",
+        "livechart": "11611",
+        "mal": "53613",
+        "_key": "11611"
+    },
+    {
+        "title": "Den Den no Dennou Densha",
+        "livechart": "11629",
+        "_key": "11629"
+    },
+    {
+        "title": "World Dai Star",
+        "livechart": "11684",
+        "mal": "53698",
+        "_key": "11684"
     }
 ]

@@ -24,6 +24,12 @@
         "_key": "10208"
     },
     {
+        "title": "Doraemon Movie 41: Nobita no Little Star Wars 2021",
+        "livechart": "10221",
+        "mal": "44025",
+        "_key": "10221"
+    },
+    {
         "title": "Kyokou Suiri Season 2",
         "livechart": "10237",
         "mal": "44204",
@@ -58,6 +64,12 @@
         "livechart": "10448",
         "mal": "48417",
         "_key": "10448"
+    },
+    {
+        "title": "Eiyuu Densetsu: Sen no Kiseki - Northern War",
+        "livechart": "10459",
+        "mal": "48441",
+        "_key": "10459"
     },
     {
         "title": "Go-toubun no Hanayome Movie",
@@ -142,6 +154,12 @@
         "livechart": "10749",
         "mal": "49612",
         "_key": "10749"
+    },
+    {
+        "title": "Shuumatsu no Walk\u00fcre II",
+        "livechart": "10754",
+        "mal": "49618",
+        "_key": "10754"
     },
     {
         "title": "CARDFIGHT!! VANGUARD will+Dress Season 2",
@@ -258,6 +276,12 @@
         "_key": "11057"
     },
     {
+        "title": "Delicious Party\u2661Precure Movie: Yume Miru \u2661 Oko-sama Lunch",
+        "livechart": "11063",
+        "mal": "50963",
+        "_key": "11063"
+    },
+    {
         "title": "NieR:Automata Ver1.1a",
         "livechart": "11087",
         "mal": "51105",
@@ -368,6 +392,7 @@
     {
         "title": "Kaiketsu Zorori Movie: Lalala Star Tanjou",
         "livechart": "11303",
+        "mal": "53391",
         "_key": "11303"
     },
     {
@@ -430,7 +455,7 @@
         "_key": "11383"
     },
     {
-        "title": "Nijiyon Animation",
+        "title": "NIJIYON ANIMATION",
         "livechart": "11516",
         "mal": "53077",
         "_key": "11516"
@@ -491,6 +516,7 @@
     {
         "title": "KAGE-JITSU!",
         "livechart": "11544",
+        "mal": "53406",
         "_key": "11544"
     },
     {
@@ -506,9 +532,20 @@
         "_key": "11573"
     },
     {
-        "title": "FLAGLIA",
+        "title": "\"FLAGLIA\" ~Natsuyasumi no Monogatari~",
         "livechart": "11574",
         "mal": "53424",
         "_key": "11574"
+    },
+    {
+        "title": "Youkai Watch \u266a Jibanyan VS Komasan Monge Daikessen da Nyan",
+        "livechart": "11638",
+        "_key": "11638"
+    },
+    {
+        "title": "Violet Evergarden: Recollections",
+        "livechart": "11685",
+        "mal": "53672",
+        "_key": "11685"
     }
 ]

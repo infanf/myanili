@@ -16,6 +16,7 @@ export class GlobalService {
   private lastTitle = '';
   version = packageJson.version;
   lastPosition = 0;
+  scrollTimeout = false;
   private hideNavbarSubject = new BehaviorSubject<boolean>(false);
 
   constructor(private titleService: Title, private ref: ApplicationRef) {
@@ -29,9 +30,28 @@ export class GlobalService {
         this.ref.tick();
       });
     }
+
     window.document.onscroll = () => {
-      const currentPositon = window.pageYOffset;
-      this.hideNavbarSubject.next(currentPositon > 60 && currentPositon > this.lastPosition);
+      if (this.scrollTimeout) {
+        return;
+      }
+      this.scrollTimeout = true;
+      window.setTimeout(() => {
+        this.scrollTimeout = false;
+      }, 100);
+      const currentPositon = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const documentHeight = window.document.body.scrollHeight;
+      console.table({
+        currentPositon,
+        viewportHeight,
+        documentHeight,
+      });
+      this.hideNavbarSubject.next(
+        currentPositon > 60 &&
+          currentPositon > this.lastPosition &&
+          viewportHeight + currentPositon < documentHeight,
+      );
       this.lastPosition = currentPositon;
     };
   }
