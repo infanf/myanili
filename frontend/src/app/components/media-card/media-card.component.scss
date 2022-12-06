@@ -16,6 +16,9 @@
   width: 100%;
   height: calc(100% + 2px);
   background: rgb(255 255 255 / 0.75);
+  @media (prefers-color-scheme: dark) {
+    background: rgb(0 0 0 / 0.75);
+  }
   backdrop-filter: blur(5px);
   color: var(--color-black);
   transition: all 0.3s ease;
