@@ -46,7 +46,9 @@ export class SeasonComponent {
   }
 
   async update(year?: number, season?: number): Promise<boolean | undefined> {
-    const animes = await this.animeService.season(this.year, this.season).catch(() => []);
+    const animes = (await this.animeService.season(this.year, this.season).catch(() => [])).sort(
+      (anime, bnime) => (bnime.num_list_users || 0) - (anime.num_list_users || 0),
+    );
     if (year && season && (year !== this.year || season !== this.season)) return;
     if (this.onlyInList) {
       this.animes = animes.filter(anime => anime.my_list_status);

@@ -42,11 +42,6 @@ export class GlobalService {
       const currentPositon = window.scrollY;
       const viewportHeight = window.innerHeight;
       const documentHeight = window.document.body.scrollHeight;
-      console.table({
-        currentPositon,
-        viewportHeight,
-        documentHeight,
-      });
       this.hideNavbarSubject.next(
         currentPositon > 60 &&
           currentPositon > this.lastPosition &&
