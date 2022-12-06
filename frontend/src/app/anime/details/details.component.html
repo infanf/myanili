@@ -110,8 +110,8 @@
         </div>
       </myanili-value-pair>
       <myanili-value-pair *ngIf="anime" name="Type">
-        <myanili-icon name="{{ anime.media_type | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
-        {{ anime!.media_type | mal: 'mediatype' }}
+        <myanili-icon name="{{ anime.media_type | mal : 'mediaicon' }}" class="me-1"></myanili-icon>
+        {{ anime!.media_type | mal : 'mediatype' }}
       </myanili-value-pair>
       <myanili-value-pair *ngIf="anime && anime.start_date" name="Aired">
         <span class="text-nowrap">{{
@@ -123,10 +123,10 @@
         }}</span>
       </myanili-value-pair>
       <myanili-value-pair *ngIf="anime" name="Source">
-        {{ anime!.source | mal: 'mediatype' }}
+        {{ anime!.source | mal : 'mediatype' }}
       </myanili-value-pair>
       <myanili-value-pair *ngIf="anime?.rating" name="Rating">
-        {{ anime!.rating | mal: 'rating' }}
+        {{ anime!.rating | mal : 'rating' }}
       </myanili-value-pair>
       <div class="row" *ngIf="anime?.my_list_status" [class]="{ 'my-2': edit }">
         <div class="col-4 fw-bold text-end">My&nbsp;List</div>
@@ -136,7 +136,7 @@
             {{
               anime!.my_list_status!.is_rewatching
                 ? 'Rewatching'
-                : (anime!.my_list_status!.status | mal: 'mystatus')
+                : (anime!.my_list_status!.status | mal : 'mystatus')
             }}
             <myanili-icon
               *ngIf="
@@ -175,7 +175,7 @@
                 "
                 [value]="status"
               >
-                {{ status | mal: 'mystatus' }}
+                {{ status | mal : 'mystatus' }}
               </option>
             </select>
           </ng-template>
@@ -297,23 +297,18 @@
         <div class="col-8">
           <a
             *ngIf="anime.my_extension.externalStreamingId"
-            href="{{ anime.my_extension.externalStreaming | stream: 'urlprefix' }}{{
+            href="{{ anime.my_extension.externalStreaming | stream : 'urlprefix' }}{{
               anime.my_extension.externalStreamingId
             }}"
             target="_blank"
           >
-            <svg-icon
-              [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-              class="ml-1"
-              src="/assets/stream/{{ anime.my_extension.externalStreaming }}.svg"
-            ></svg-icon>
           </a>
-          <svg-icon
-            *ngIf="!anime.my_extension.externalStreamingId"
-            [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-            class="ml-1"
-            src="/assets/stream/{{ anime.my_extension.externalStreaming }}.svg"
-          ></svg-icon>
+          <myanili-streaming
+            *ngIf="anime.my_extension.externalStreaming"
+            [provider]="anime.my_extension.externalStreaming"
+            [country]="anime.my_extension.simulCountry"
+            variant="full"
+          ></myanili-streaming>
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && editExtension">
@@ -472,7 +467,7 @@
           ></myanili-icon>
           {{ anime.num_episodes || '?' }}
           <span *ngIf="anime?.average_episode_duration">
-            &times; {{ (anime!.average_episode_duration || 0) / 60 | number: '1.0-0' }} min
+            &times; {{ (anime!.average_episode_duration || 0) / 60 | number : '1.0-0' }} min
           </span>
         </div>
       </div>

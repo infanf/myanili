@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class StreamingComponent implements OnInit {
   @Input() provider?: string;
   @Input() country?: string;
+  @Input() variant?: 'icon' | 'full';
   constructor() {}
 
   ngOnInit(): void {}

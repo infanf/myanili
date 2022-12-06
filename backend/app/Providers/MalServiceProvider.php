@@ -192,7 +192,10 @@ class MalServiceProvider extends ServiceProvider
             "rating",
             "popularity",
             "genres",
-            "num_list_users"
+            "num_list_users",
+            "synopsis",
+            "studios",
+            "source",
         ];
         $params = [
             "fields" => implode(',', $fields),
