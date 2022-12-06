@@ -5,12 +5,14 @@
     <img loading="lazy" src="/assets/blank-poster.svg" alt="poster" class="card-img" />
   </picture>
   <div class="card-overlay">
-    <myanili-icon
-      *ngIf="mediaType"
-      name="{{ mediaType | mal: 'mediaicon' }}"
-      class="me-1"
-    ></myanili-icon>
-    {{ title }}
+    <span class="line-clamp">
+      <myanili-icon
+        *ngIf="mediaType"
+        name="{{ mediaType | mal : 'mediaicon' }}"
+        class="me-1"
+      ></myanili-icon>
+      {{ title }}
+    </span>
   </div>
   <myanili-status-badge
     [status]="status"

@@ -1,23 +1,32 @@
 .card-overlay {
-    position: absolute;
-    bottom: 0;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    width: 100%;
-    text-shadow: 0 0 3px black;
-    font-weight: 600;
-    max-height: 60%;
+  position: absolute;
+  bottom: 0;
+  padding: 0.5rem;
+  background: linear-gradient(
+    rgb(0 0 0 / 0) 0%, 
+    rgb(0 0 0 / 0.1) 0.25rem, 
+    rgb(0 0 0 / 0.5) 1rem
+  );
+  color: #fff;
+  width: 100%;
+  text-shadow: 0 0 3px black;
+  font-weight: 600;
+  text-overflow: ellipsis;
+
+  span.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
-  
-  picture {
-    height: 100%;
-  }
-  
-  img {
-    height: 100%;
-    aspect-ratio: 2/3;
-    object-fit: cover;
-  }
+}
+
+picture {
+  height: 100%;
+}
+
+img {
+  height: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+}
