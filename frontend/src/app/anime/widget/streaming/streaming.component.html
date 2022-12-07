@@ -2,15 +2,21 @@
   <ng-container *ngIf="provider">
     <svg-icon
       class="d-md-inline d-none"
+      [ngClass]="{
+        'd-none': variant !== 'full'
+      }"
       [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
       src="/assets/stream/{{ provider || 'plex' }}.svg"
     ></svg-icon>
     <svg-icon
-      class="d-md-none"
+      [ngClass]="{
+        'd-none': variant === 'full',
+        'd-md-none': !variant
+      }"
       [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
       src="/assets/stream/icon-{{ provider || 'plex' }}.svg"
     ></svg-icon>
-    <span class="flag">{{ country | flag: true }}</span>
+    <span class="flag">{{ country | flag : true }}</span>
   </ng-container>
   <ng-container *ngIf="!provider">
     <svg class="d-md-inline d-none" style="width: 5rem; height: 1rem"></svg>

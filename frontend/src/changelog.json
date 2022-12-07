@@ -1,6 +1,14 @@
 {
   "changes": [
     {
+      "version": "2.18.0",
+      "features": [
+        "Sort seasonal animes by popularity",
+        "Add genres to season list view",
+        "Add details on hover to season grid view"
+      ]
+    },
+    {
       "version": "2.17.3",
       "fixes": [
         "Flickering when scrolled to the bottom and the viewport is resized"

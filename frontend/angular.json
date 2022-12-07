@@ -50,13 +50,7 @@
             "allowedCommonJsDependencies": ["crypto-js", "moment", "string-similarity", "@components/luxon-helper"]
           },
           "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
+            "deployment": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -78,6 +72,40 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
+            },
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/prod/environment.ts"
+                }
+              ]
+            },
+            "beta": {
+              "assets": [
+                {
+                  "glob": "favicon.ico",
+                  "input": "./src/environments/beta",
+                  "output": "/"
+                },
+                {
+                  "glob": "manifest.webmanifest",
+                  "input": "./src/environments/beta",
+                  "output": "/"
+                },
+                "src/assets",
+                {
+                  "glob": "bootstrap-icons.svg",
+                  "input": "./node_modules/bootstrap-icons/",
+                  "output": "/"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/beta/environment.ts"
+                }
+              ]
             }
           }
         },

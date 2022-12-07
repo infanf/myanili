@@ -163,4 +163,21 @@ overlay.overlay-shown {
   --bs-navbar-color: hwb(0 100% 0% / 0.45);
 }
 
+.line-clamp {
+  --clamp-lines: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: var(--clamp-lines);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dot-between:not(:last-child)::after {
+  content: '·';
+  margin: 0 0.25rem;
+}
+
+.hyphens {
+  hyphens: auto;
+}
+
 @import 'styles/dark-theme.scss';

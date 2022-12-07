@@ -145,6 +145,9 @@ export interface AnimeNode {
     start_time?: string;
   };
   start_season?: MalSeason;
+  genres?: Genre[];
+  popularity?: number;
+  num_list_users?: number;
 }
 
 interface RelatedAnimeInterface {

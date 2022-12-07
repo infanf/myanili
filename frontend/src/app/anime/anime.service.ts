@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   Anime,
   AnimeExtension,
@@ -40,6 +41,7 @@ export class AnimeService {
     private trakt: TraktService,
     private cache: CacheService,
     private settings: SettingsService,
+    private dialogue: DialogueService,
   ) {
     this.settings.nsfw.subscribe(nsfw => {
       this.nsfw = nsfw;
@@ -122,6 +124,44 @@ export class AnimeService {
     }
     this.cache.saveValues(anime.id, 'anime', animeToSave, true);
     return anime;
+  }
+
+  async addAnime(
+    anime: Partial<Anime>,
+    data: Partial<MyAnimeUpdate> = {},
+  ): Promise<MyAnimeStatus | undefined> {
+    data.status = 'plan_to_watch';
+    if (!anime.id) return;
+    if (
+      anime.media_type !== 'movie' &&
+      anime.media_type !== 'special' &&
+      (!anime.num_episodes || anime.num_episodes > 3)
+    ) {
+      const episodeRule = await this.dialogue.open(
+        `Do you want to set yourself an episode rule for "${anime.title}"?
+          You will be asked if you want to continue watching after set episodes.`,
+        'Add anime',
+        [
+          { label: '1 Episode', value: 1 },
+          { label: '3 Episodes', value: 3 },
+          { label: 'Just add', value: 0 },
+        ],
+        0,
+      );
+      if (episodeRule) {
+        data.comments = Base64.encode(JSON.stringify({ episodeRule }));
+      }
+    }
+    return await this.updateAnime(
+      {
+        malId: anime.id,
+        anilistId: anime.my_extension?.anilistId,
+        kitsuId: anime.my_extension?.kitsuId,
+        simklId: anime.my_extension?.simklId,
+        annictId: anime.my_extension?.annictId,
+      },
+      data,
+    );
   }
 
   async updateAnime(

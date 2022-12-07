@@ -120,7 +120,10 @@
             {{ result.alternative_titles?.ja }}
           </td>
           <td routerLink="/{{ type }}/details/{{ result.id }}" class="d-none d-md-table-cell">
-            <span *ngFor="let genre of result.genres" class="badge bg-primary rounded-pill me-1">
+            <span
+              *ngFor="let genre of result.genres"
+              class="badge text-bg-primary rounded-pill me-1"
+            >
               {{ genre.name }}
             </span>
           </td>

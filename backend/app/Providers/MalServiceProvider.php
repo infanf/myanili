@@ -189,7 +189,13 @@ class MalServiceProvider extends ServiceProvider
             "alternative_titles",
             "my_list_status{comments,start_date,finish_date}",
             "nsfw",
-            "rating"
+            "rating",
+            "popularity",
+            "genres",
+            "num_list_users",
+            "synopsis",
+            "studios",
+            "source",
         ];
         $params = [
             "fields" => implode(',', $fields),
