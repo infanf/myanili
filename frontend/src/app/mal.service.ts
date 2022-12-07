@@ -66,9 +66,13 @@ export class MalService {
       const response = await this.cache.fetch<Jikan4Response<T>>(`${environment.jikanUrl}${url}`);
       return response.data;
     } catch (e) {
-      const response = await fetch(`${environment.jikanFallbackUrl}${url}`);
-      const result = (await response.json()) as unknown as Jikan4Response<T>;
-      return result.data;
+      try {
+        const response = await fetch(`${environment.jikanFallbackUrl}${url}`);
+        const result = (await response.json()) as unknown as Jikan4Response<T>;
+        return result.data;
+      } catch (ex) {
+        return undefined as unknown as T;
+      }
     }
   }
 

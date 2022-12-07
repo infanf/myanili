@@ -60,6 +60,8 @@ export class AppComponent {
         }
       });
     });
-    this.swUpdate.checkForUpdate();
+    this.swUpdate.checkForUpdate().catch(e => {
+      console.log(e.message);
+    });
   }
 }

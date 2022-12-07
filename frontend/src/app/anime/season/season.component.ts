@@ -11,9 +11,9 @@ import { AnimeService } from '../anime.service';
 })
 export class SeasonComponent {
   animes: Array<Partial<Anime>> = [];
-  year!: number;
-  season!: number;
-  onlyInList = true;
+  year?: number;
+  season?: number;
+  onlyInList?: boolean;
   title = 'Season';
 
   lang = 'en';
@@ -24,9 +24,14 @@ export class SeasonComponent {
     private settings: SettingsService,
     private glob: GlobalService,
   ) {
+    this.initSubscriptions();
+  }
+
+  initSubscriptions() {
     this.settings.season.subscribe(async season => {
       this.year = season.year;
       this.season = season.season;
+      if (this.onlyInList === undefined) return;
       this.glob.busy();
       if (await this.update(season.year, season.season)) {
         const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
@@ -38,6 +43,7 @@ export class SeasonComponent {
     this.settings.language.subscribe(lang => (this.lang = lang));
     this.settings.layout.subscribe(layout => (this.layout = layout));
     this.settings.onlyInList.subscribe(async inList => {
+      if (!this.year || this.season === undefined || this.onlyInList === inList) return;
       this.onlyInList = inList;
       this.glob.busy();
       await this.update();
@@ -46,10 +52,13 @@ export class SeasonComponent {
   }
 
   async update(year?: number, season?: number): Promise<boolean | undefined> {
+    if (!this.year || this.season === undefined) return;
     const animes = (await this.animeService.season(this.year, this.season).catch(() => [])).sort(
       (anime, bnime) => (bnime.num_list_users || 0) - (anime.num_list_users || 0),
     );
-    if (year && season && (year !== this.year || season !== this.season)) return;
+    if (year && season && (year !== this.year || season !== this.season)) {
+      return;
+    }
     if (this.onlyInList) {
       this.animes = animes.filter(anime => anime.my_list_status);
     } else {
