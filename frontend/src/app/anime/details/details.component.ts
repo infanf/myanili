@@ -368,39 +368,7 @@ export class AnimeDetailsComponent implements OnInit {
   async addAnime() {
     if (!this.anime) return;
     this.busy = true;
-    const data = {
-      status: 'plan_to_watch',
-    } as Partial<MyAnimeUpdate>;
-    if (
-      this.anime.media_type !== 'movie' &&
-      this.anime.media_type !== 'special' &&
-      (!this.anime.num_episodes || this.anime.num_episodes > 3)
-    ) {
-      const episodeRule = await this.dialogue.open(
-        `Do you want to set yourself an episode rule for "${this.anime.title}"?
-          You will be asked if you want to continue watching after set episodes.`,
-        'Add anime',
-        [
-          { label: '1 Episode', value: 1 },
-          { label: '3 Episodes', value: 3 },
-          { label: 'Just add', value: 0 },
-        ],
-        0,
-      );
-      if (episodeRule) {
-        data.comments = Base64.encode(JSON.stringify({ episodeRule }));
-      }
-    }
-    await this.animeService.updateAnime(
-      {
-        malId: this.anime.id,
-        anilistId: this.anime.my_extension?.anilistId,
-        kitsuId: this.anime.my_extension?.kitsuId,
-        simklId: this.anime.my_extension?.simklId,
-        annictId: this.anime.my_extension?.annictId,
-      },
-      data,
-    );
+    await this.animeService.addAnime(this.anime);
     await this.ngOnInit();
     this.busy = false;
   }

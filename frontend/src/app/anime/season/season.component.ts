@@ -58,22 +58,12 @@ export class SeasonComponent {
     return true;
   }
 
-  async addToList(anime: Partial<Anime>) {
+  async addToList(anime: Partial<Anime>, $event?: Event) {
+    $event?.stopPropagation();
     if (anime.my_list_status || anime.busy || !anime.id) return;
     anime.busy = true;
-    const statusResponse = await this.animeService.updateAnime(
-      {
-        malId: anime.id,
-        anilistId: anime.my_extension?.anilistId,
-        kitsuId: anime.my_extension?.kitsuId,
-        simklId: anime.my_extension?.simklId,
-        annictId: anime.my_extension?.annictId,
-      },
-      {
-        status: 'plan_to_watch',
-      },
-    );
-    anime.my_list_status = statusResponse;
+    const statusResponse = await this.animeService.addAnime(anime);
+    if (statusResponse) anime.my_list_status = statusResponse;
     delete anime.busy;
   }
 }

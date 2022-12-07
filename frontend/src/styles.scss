@@ -164,8 +164,9 @@ overlay.overlay-shown {
 }
 
 .line-clamp {
+  --clamp-lines: 3;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: var(--clamp-lines);
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
