@@ -21,7 +21,7 @@
       <div class="fw-bold">
         <myanili-icon
           *ngIf="anime.media_type"
-          name="{{ anime.media_type | mal: 'mediaicon' }}"
+          name="{{ anime.media_type | mal : 'mediaicon' }}"
           class="me-1"
         ></myanili-icon>
         {{
@@ -48,11 +48,11 @@
             studio.name
           }}</span>
         </div>
-        <div *ngIf="anime.source">Source: {{ anime.source | mal: 'mediatype' }}</div>
+        <div *ngIf="anime.source">Source: {{ anime.source | mal : 'mediatype' }}</div>
         <div>
           <ng-container *ngIf="anime.my_list_status; else addanime">
             Status:
-            {{ anime.my_list_status.status | mal: 'mystatus' }}
+            {{ anime.my_list_status.status | mal : 'mystatus' }}
             <myanili-icon-status [status]="anime.my_list_status.status"></myanili-icon-status>
           </ng-container>
           <ng-template #addanime>
@@ -68,7 +68,7 @@
           [country]="anime.my_extension?.simulCountry"
           variant="full"
         ></myanili-streaming>
-        <div class="mt-2" *ngIf="anime.synopsis">{{ anime.synopsis }}</div>
+        <div class="mt-2 hyphens" *ngIf="anime.synopsis">{{ anime.synopsis }}</div>
       </small>
     </div>
   </myanili-media-card>
