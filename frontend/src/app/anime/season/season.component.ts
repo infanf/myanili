@@ -24,6 +24,7 @@ export class SeasonComponent {
     private settings: SettingsService,
     private glob: GlobalService,
   ) {
+    this.settings.language.subscribe(lang => (this.lang = lang));
     this.initSubscriptions();
   }
 
@@ -40,7 +41,6 @@ export class SeasonComponent {
         this.glob.notbusy();
       }
     });
-    this.settings.language.subscribe(lang => (this.lang = lang));
     this.settings.layout.subscribe(layout => (this.layout = layout));
     this.settings.onlyInList.subscribe(async inList => {
       if (!this.year || this.season === undefined || this.onlyInList === inList) return;
