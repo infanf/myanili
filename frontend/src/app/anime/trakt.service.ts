@@ -57,6 +57,8 @@ export class TraktService {
             return this.checkLogin();
           }
         }
+        // return on 500 http status code
+        if (response.status >= 500) return;
       } catch (e) {
         console.log(e);
       }

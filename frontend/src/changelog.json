@@ -1,6 +1,12 @@
 {
   "changes": [
     {
+      "version": "2.18.1",
+      "fixes": [
+        "handle trakt maintenance"
+      ]
+    },
+    {
       "version": "2.18.0",
       "features": [
         "Sort seasonal animes by popularity",
