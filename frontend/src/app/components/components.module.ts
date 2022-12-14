@@ -24,6 +24,7 @@ import { PosterRatingComponent } from './poster-rating/poster-rating.component';
 import { StreamPipe } from './stream.pipe';
 import { MySvgIconComponent } from './svg-icon/svg-icon.component';
 import { TimePipe } from './time.pipe';
+import { ToasterComponent } from './toaster/toaster.component';
 import { ValuePairArrayComponent } from './value-pair-array/value-pair-array.component';
 import { ValuePairComponent } from './value-pair/value-pair.component';
 import { WidgetSeasonComponent } from './widget-season/widget-season.component';
@@ -49,6 +50,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     MySvgIconComponent,
     HeaderComponent,
     WidgetSeasonComponent,
+    ToasterComponent,
   ],
   imports: [
     CommonModule,
@@ -85,6 +87,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     MySvgIconComponent,
     HeaderComponent,
     WidgetSeasonComponent,
+    ToasterComponent,
     MalPipe,
     FlagPipe,
     TimePipe,

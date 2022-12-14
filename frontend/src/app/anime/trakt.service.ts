@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DialogueService } from '@components/dialogue/dialogue.service';
+import { ToasterService } from '@components/toaster/toaster.service';
 import { MyAnimeUpdate } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { BehaviorSubject } from 'rxjs';
@@ -14,7 +15,7 @@ export class TraktService {
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
-  constructor(private dialogue: DialogueService) {
+  constructor(private dialogue: DialogueService, private toaster: ToasterService) {
     this.clientId = String(localStorage.getItem('traktClientId'));
     this.accessToken = String(localStorage.getItem('traktAccessToken'));
     this.refreshToken = String(localStorage.getItem('traktRefreshToken'));
@@ -58,7 +59,10 @@ export class TraktService {
           }
         }
         // return on 500 http status code
-        if (response.status >= 500) return;
+        if (response.status >= 500) {
+          this.toaster.addError('trakt.tv is currently unavailable, please try again later.', 0);
+          return;
+        }
       } catch (e) {
         console.log(e);
       }

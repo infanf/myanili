@@ -1,0 +1,21 @@
+<section id="toaster" [ngClass]="{ higher: !hideNavbar }" *ngIf="service.messages$; let messages">
+  <div
+    class="alert alert-dismissible px-2 py-1"
+    role="alert"
+    *ngFor="let message of messages"
+    [ngClass]="{
+      'alert-success': message.type === 'success',
+      'alert-danger': message.type === 'error',
+      'alert-primary': message.type === 'info'
+    }"
+  >
+    <span>{{ message.message }}</span>
+
+    <button
+      type="button"
+      class="btn-close p-2"
+      (click)="service.removeMessage(message.id)"
+      aria-label="Close"
+    ></button>
+  </div>
+</section>
