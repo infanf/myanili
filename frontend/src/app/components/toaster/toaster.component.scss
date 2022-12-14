@@ -10,3 +10,9 @@
     bottom: 3rem;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .btn-close {
+    filter: unset;
+  }
+}
