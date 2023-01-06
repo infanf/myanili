@@ -33,12 +33,14 @@
             <span class="d-none d-sm-inline">MyAniLi</span>
           </span>
           <div class="d-flex align-items-center ms-auto">
-            <div class="d-flex cursor-pointer" *ngIf="user" (click)="showSettings()">
+            <div class="d-flex cursor-pointer" *ngIf="user">
               <span class="my-auto me-3 text-white">{{ user!.name }}</span>
+              <myanili-notifications></myanili-notifications>
               <img
                 [src]="user!.picture"
                 style="height: 32px; border-radius: 50%"
                 alt="{{ user!.name }}"
+                (click)="showSettings()"
               />
             </div>
           </div>
