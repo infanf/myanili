@@ -16,6 +16,7 @@ export class AnilistNotificationsService {
     return new Promise<AnilistNotification[]>(r => {
       this.client
         .query<NotificationsResult>({
+          fetchPolicy: 'no-cache',
           errorPolicy: 'ignore',
           query: gql`
             query ($page: Int, $perPage: Int, $types: [NotificationType]) {
@@ -302,8 +303,6 @@ export class AnilistNotificationsService {
         })
         .subscribe(
           result => {
-            console.log({ result });
-
             const notifications = result.data.Page.notifications.map(
               AnilistNotificationsService.mapNotification,
             );
@@ -330,7 +329,9 @@ export class AnilistNotificationsService {
             {
               Page(page: 1, perPage: 1) {
                 notifications(resetNotificationCount: true) {
-                  id
+                  ... on AiringNotification {
+                    id
+                  }
                 }
               }
             }
@@ -352,12 +353,19 @@ export class AnilistNotificationsService {
     const alNotification = {
       unread: false,
       text: notification.context,
-      url: 'https://anilist.co/notifications',
+      url: notification.activityId
+        ? `https://anilist.co/activity/${notification.activityId}`
+        : 'https://anilist.co/notifications',
+      createdAt: new Date(notification.createdAt * 1000),
     } as AnilistNotification;
     if (notification.user) {
       alNotification.text = `${notification.user.name}${notification.context}`;
     } else if (notification.media) {
       alNotification.text = `${notification.media.title.userPreferred}${notification.context}`;
+      alNotification.media = {
+        id: notification.media.id,
+        type: notification.media.type,
+      };
       alNotification.url = `https://anilist.co/${notification.media.type.toLowerCase()}/${
         notification.media.id
       }`;
@@ -386,6 +394,8 @@ interface Notification {
   id: number;
   type: AnilistNotificationType;
   context: string;
+  createdAt: number;
+  activityId?: number;
   user?: {
     name: string;
   };

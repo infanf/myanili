@@ -51,6 +51,7 @@ import { MangaListListComponent } from './manga/list/list/list.component';
 import { MagazineComponent } from './manga/magazine/magazine.component';
 import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarBottomComponent } from './navbar/bottom/bottom.component';
+import { NotificationsComponent } from './navbar/notifications/notifications.component';
 import { NavbarTopComponent } from './navbar/top/top.component';
 import { PersonAnimeComponent } from './person/anime/anime.component';
 import { PersonMangaComponent } from './person/manga/manga.component';
@@ -110,6 +111,7 @@ import { SettingsComponent } from './settings/settings.component';
     MangaListGridComponent,
     LiveactionRelatedComponent,
     NavbarBottomComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule,

@@ -47,6 +47,11 @@ export interface AnilistNotification {
   text: string;
   url: string;
   unread: boolean;
+  createdAt: Date;
+  media?: {
+    id: number;
+    type: 'ANIME' | 'MANGA';
+  };
 }
 
 export type AnilistNotificationType =

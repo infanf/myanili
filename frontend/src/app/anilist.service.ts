@@ -3,6 +3,7 @@ import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   AnilistMediaListStatus,
   AnilistNotification,
+  AnilistNotificationType,
   AnilistSaveMedialistEntry,
   AnilistUser,
 } from '@models/anilist';
@@ -142,8 +143,16 @@ export class AnilistService {
     return this.anilistMedia.getRating(id, type);
   }
 
-  async getNotifications(): Promise<AnilistNotification[]> {
-    return this.anilistNotifications.getNotifications();
+  async getNotifications(
+    perPage = 10,
+    page = 1,
+    types?: AnilistNotificationType[],
+  ): Promise<AnilistNotification[]> {
+    return this.anilistNotifications.getNotifications(perPage, page, types);
+  }
+
+  async markNotificationsAsRead(): Promise<boolean> {
+    return this.anilistNotifications.markAsRead();
   }
 
   statusFromMal(
