@@ -4,12 +4,12 @@
     ngbDropdownToggle
   ></myanili-icon>
   <div
-    class="dropdown-menu dropdown-menu-end"
+    class="dropdown-menu dropdown-menu-end py-0"
     ngbDropdownMenu
     aria-labelledby="notificationsDropdown"
     style="--bs-dropdown-min-width: 16rem"
   >
-    <table class="table table-striped table-sm table-hover my-0">
+    <table class="table table-striped table-sm table-hover my-0" darkTable>
       <thead>
         <tr *ngIf="notificationsList.length && unreadNotificationsCount" (click)="markRead()">
           <th>
