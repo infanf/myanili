@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 import { DialogueService } from '@components/dialogue/dialogue.service';
-import { AnilistMediaListStatus, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
+import {
+  AnilistMediaListStatus,
+  AnilistNotification,
+  AnilistSaveMedialistEntry,
+  AnilistUser,
+} from '@models/anilist';
 import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { ReadStatus } from '@models/manga';
 import { Apollo, gql } from 'apollo-angular';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+
+import { AnilistLibraryService } from './anilist/library.service';
+import { AnilistMediaService } from './anilist/media.service';
+import { AnilistNotificationsService } from './anilist/notifications.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +25,12 @@ export class AnilistService {
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<AnilistUser | undefined>(undefined);
+  private anilistMedia: AnilistMediaService;
+  private anilistNotifications: AnilistNotificationsService;
+  private anilistLibrary: AnilistLibraryService;
+
   loggedIn = false;
-  constructor(public client: Apollo, private dialogue: DialogueService) {
+  constructor(private client: Apollo, private dialogue: DialogueService) {
     this.clientId = String(localStorage.getItem('anilistClientId'));
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
@@ -34,6 +47,9 @@ export class AnilistService {
           localStorage.removeItem('anilistAccessToken');
         });
     }
+    this.anilistMedia = new AnilistMediaService(this.client);
+    this.anilistNotifications = new AnilistNotificationsService(this.client);
+    this.anilistLibrary = new AnilistLibraryService(this.client, this.user);
   }
 
   async login() {
@@ -104,269 +120,30 @@ export class AnilistService {
   }
 
   async getId(idMal: number, type: 'ANIME' | 'MANGA'): Promise<number | undefined> {
-    const requestResult = await new Promise<number | undefined>(r => {
-      this.client
-        .query<{ Media?: { id: number } }>({
-          errorPolicy: 'ignore',
-          query: gql`
-            query Media($idMal: Int, $type: MediaType) {
-              Media(idMal: $idMal, type: $type) {
-                id
-              }
-            }
-          `,
-          variables: { idMal, type },
-        })
-        .subscribe(
-          result => {
-            r(result.data.Media?.id);
-          },
-          error => {
-            console.log({ error });
-            r(undefined);
-          },
-        );
-    });
-    return requestResult;
+    return this.anilistMedia.getId(idMal, type);
   }
 
   async getMalId(id: number, type: 'ANIME' | 'MANGA'): Promise<number | undefined> {
-    const requestResult = await new Promise<number | undefined>(r => {
-      this.client
-        .query<{ Media?: { idMal: number } }>({
-          errorPolicy: 'ignore',
-          query: gql`
-            query Media($id: Int, $type: MediaType) {
-              Media(id: $id, type: $type) {
-                idMal
-              }
-            }
-          `,
-          variables: { id, type },
-        })
-        .subscribe(
-          result => {
-            r(result.data.Media?.idMal);
-          },
-          error => {
-            console.log({ error });
-            r(undefined);
-          },
-        );
-    });
-    return requestResult;
+    return this.anilistMedia.getMalId(id, type);
   }
-
   async updateEntry(id: number, data: Partial<AnilistSaveMedialistEntry>) {
-    return new Promise(r => {
-      data.mediaId = id;
-      const variables = JSON.parse(JSON.stringify(data));
-      this.client
-        .mutate({
-          errorPolicy: 'ignore',
-          mutation: gql`
-            mutation (
-              $id: Int
-              $mediaId: Int
-              $status: MediaListStatus
-              $scoreRaw: Int
-              $progress: Int
-              $progressVolumes: Int
-              $repeat: Int
-              $private: Boolean
-              $notes: String
-              $customLists: [String]
-              $hiddenFromStatusLists: Boolean
-              $advancedScores: [Float]
-              $startedAt: FuzzyDateInput
-              $completedAt: FuzzyDateInput
-            ) {
-              SaveMediaListEntry(
-                id: $id
-                mediaId: $mediaId
-                status: $status
-                scoreRaw: $scoreRaw
-                progress: $progress
-                progressVolumes: $progressVolumes
-                repeat: $repeat
-                private: $private
-                notes: $notes
-                customLists: $customLists
-                hiddenFromStatusLists: $hiddenFromStatusLists
-                advancedScores: $advancedScores
-                startedAt: $startedAt
-                completedAt: $completedAt
-              ) {
-                id
-                mediaId
-                status
-                score
-                advancedScores
-                progress
-                progressVolumes
-                repeat
-                priority
-                private
-                hiddenFromStatusLists
-                customLists
-                notes
-                updatedAt
-                startedAt {
-                  year
-                  month
-                  day
-                }
-                completedAt {
-                  year
-                  month
-                  day
-                }
-                user {
-                  id
-                  name
-                }
-                media {
-                  id
-                  title {
-                    userPreferred
-                  }
-                  coverImage {
-                    large
-                  }
-                  type
-                  format
-                  status
-                  episodes
-                  volumes
-                  chapters
-                  averageScore
-                  popularity
-                  isAdult
-                  startDate {
-                    year
-                  }
-                }
-              }
-            }
-          `,
-          variables,
-        })
-        .subscribe(r, error => {
-          console.log({ error });
-          r(undefined);
-        });
-    });
+    return this.anilistLibrary.updateEntry(id, data);
   }
 
   async getMediaListId(id: number): Promise<number | undefined> {
-    return new Promise(async r => {
-      const user = await new Promise<AnilistUser | undefined>(res => this.user.subscribe(res));
-      if (!user) {
-        return r(undefined);
-      }
-      this.client
-        .query<{ MediaList?: { id: number } }>({
-          errorPolicy: 'ignore',
-          query: gql`
-            query MediaList($id: Int, $userId: Int) {
-              MediaList(mediaId: $id, userId: $userId) {
-                id
-              }
-            }
-          `,
-          variables: { id, userId: user.id },
-        })
-        .subscribe(
-          result => {
-            r(result.data.MediaList?.id);
-          },
-          error => {
-            console.log({ error });
-            r(undefined);
-          },
-        );
-    });
+    return this.anilistLibrary.getMediaListId(id);
   }
 
   async deleteEntry(mediaId?: number): Promise<{ deleted: boolean; msg?: string }> {
-    if (!mediaId) {
-      return { deleted: false, msg: 'No mediaId provided' };
-    }
-    return new Promise(async r => {
-      const id = await this.getMediaListId(mediaId);
-      if (!id) {
-        r({ deleted: false });
-        return;
-      }
-      const variables = { id };
-      this.client
-        .mutate<{ DeleteMediaListEntry: { deleted: boolean } }>({
-          errorPolicy: 'ignore',
-          mutation: gql`
-            mutation ($id: Int) {
-              DeleteMediaListEntry(id: $id) {
-                deleted
-              }
-            }
-          `,
-          variables,
-        })
-        .subscribe(
-          result => {
-            r({ deleted: result.data?.DeleteMediaListEntry.deleted || false });
-          },
-          error => {
-            console.log({ error });
-            r({ deleted: false, msg: error.message });
-          },
-        );
-    });
+    return this.anilistLibrary.deleteEntry(mediaId);
   }
 
   async getRating(id?: number, type: 'ANIME' | 'MANGA' = 'ANIME'): Promise<ExtRating | undefined> {
-    if (!id) return;
-    return new Promise(r => {
-      this.client
-        .query<{
-          Media?: { averageScore: number; stats: { scoreDistribution: Array<{ amount: number }> } };
-        }>({
-          errorPolicy: 'ignore',
-          query: gql`
-            query Media($id: Int, $type: MediaType) {
-              Media(id: $id, type: $type) {
-                averageScore
-                stats {
-                  scoreDistribution {
-                    amount
-                    score
-                  }
-                }
-              }
-            }
-          `,
-          variables: { id, type },
-        })
-        .subscribe(
-          result => {
-            if (result.data.Media?.averageScore) {
-              r({
-                nom: result.data.Media?.averageScore,
-                norm: result.data.Media?.averageScore,
-                unit: '%',
-                ratings: result.data.Media.stats.scoreDistribution
-                  .map(a => a.amount)
-                  .reduce((a, b) => a + b),
-              });
-            } else {
-              r(undefined);
-            }
-          },
-          e => {
-            console.log({ e });
-            r(undefined);
-          },
-        );
-    });
+    return this.anilistMedia.getRating(id, type);
+  }
+
+  async getNotifications(): Promise<AnilistNotification[]> {
+    return this.anilistNotifications.getNotifications();
   }
 
   statusFromMal(
