@@ -361,9 +361,9 @@ export class AnilistNotificationsService {
       createdAt: new Date(notification.createdAt * 1000),
     } as AnilistNotification;
     if (notification.user) {
-      alNotification.text = `${notification.user.name}${notification.context}`;
+      alNotification.text = `<span class="text-secondary">${notification.user.name}</span>${notification.context}`;
     } else if (notification.media) {
-      alNotification.text = `${notification.media.title.userPreferred}${notification.context}`;
+      alNotification.text = `<span class="text-primary">${notification.media.title.userPreferred}</span>${notification.context}`;
       alNotification.media = {
         id: notification.media.id,
         type: notification.media.type,

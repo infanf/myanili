@@ -28,9 +28,7 @@
             <myanili-icon-mal *ngIf="notification.platform == 'mal'"></myanili-icon-mal>
             <myanili-icon-kitsu *ngIf="notification.platform == 'kitsu'"></myanili-icon-kitsu>
           </td>
-          <td [class]="{ 'fw-bold': notification.unread }">
-            {{ notification.text }}
-          </td>
+          <td [class]="{ 'fw-bold': notification.unread }" [innerHTML]="notification.text"></td>
           <td>
             {{ notification.createdAt | dateAgo }}
           </td>
