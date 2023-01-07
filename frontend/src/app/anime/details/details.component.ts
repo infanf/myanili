@@ -10,18 +10,17 @@ import { TraktComponent } from '@external/trakt/trakt.component';
 import { Anime, AnimeEpisodeRule, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnilistService } from '@services/anilist.service';
+import { AnimeService } from '@services/anime/anime.service';
+import { AnnictService } from '@services/anime/annict.service';
+import { SimklService } from '@services/anime/simkl.service';
+import { TraktService } from '@services/anime/trakt.service';
+import { AnisearchService } from '@services/anisearch.service';
+import { CacheService } from '@services/cache.service';
+import { GlobalService } from '@services/global.service';
+import { KitsuService } from '@services/kitsu.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
-import { AnilistService } from 'src/app/anilist.service';
-import { AnisearchService } from 'src/app/anisearch.service';
-import { CacheService } from 'src/app/cache.service';
-import { GlobalService } from 'src/app/global.service';
-import { KitsuService } from 'src/app/kitsu.service';
-
-import { AnimeService } from '../anime.service';
-import { AnnictService } from '../annict.service';
-import { SimklService } from '../simkl.service';
-import { TraktService } from '../trakt.service';
 
 @Component({
   selector: 'myanili-anime-details',

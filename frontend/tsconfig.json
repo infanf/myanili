@@ -36,7 +36,10 @@
       ],
       "@components/*": [
         "src/app/components/*"
-      ]
+      ],
+      "@services/*": [
+        "src/app/services/*"
+      ],
     },
     "resolveJsonModule": true,
     "useDefineForClassFields": false

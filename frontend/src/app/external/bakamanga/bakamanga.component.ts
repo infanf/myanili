@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ExternalComponent } from '@external/external.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MangaupdatesService } from 'src/app/manga/mangaupdates.service';
+import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 
 @Component({
   selector: 'myanili-bakamanga',

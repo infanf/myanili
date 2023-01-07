@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
+import { MangaService } from '@app/services/manga/manga.service';
 import { MangaExtension } from '@models/manga';
+import { MalService } from '@services/mal.service';
+import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 import { Base64 } from 'js-base64';
-import { MalService } from 'src/app/mal.service';
-import { MangaService } from 'src/app/manga/manga.service';
-import { MangaupdatesService } from 'src/app/manga/mangaupdates.service';
 
 @Component({
   selector: 'myanili-migrate-baka',

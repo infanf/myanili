@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GlobalService } from 'src/app/global.service';
+import { GlobalService } from '@services/global.service';
 
 import { ToasterService } from './toaster.service';
 

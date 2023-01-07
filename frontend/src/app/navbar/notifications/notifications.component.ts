@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AnilistService } from '@app/anilist.service';
+import { AnilistService } from '@services/anilist.service';
 
 @Component({
   selector: 'myanili-notifications',

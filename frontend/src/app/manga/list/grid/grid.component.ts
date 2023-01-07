@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ListManga, MangaNode } from '@models/manga';
-import { SettingsService } from 'src/app/settings/settings.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-manga-grid',

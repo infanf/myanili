@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Jikan4MangaCharacter } from '@models/jikan';
-
-import { MangaService } from '../../manga.service';
+import { MangaService } from '@services/manga/manga.service';
 
 @Component({
   selector: 'myanili-manga-characters',

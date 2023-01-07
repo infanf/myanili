@@ -1,11 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DialogueService } from '@components/dialogue/dialogue.service';
 import { ListManga, MyMangaUpdate } from '@models/manga';
+import { GlobalService } from '@services/global.service';
+import { MangaService } from '@services/manga/manga.service';
+import { SettingsService } from '@services/settings.service';
 import { DateTime } from 'luxon';
-import { GlobalService } from 'src/app/global.service';
-import { SettingsService } from 'src/app/settings/settings.service';
-
-import { MangaService } from '../manga.service';
 
 @Component({
   selector: 'myanili-bookshelf-wrapper',

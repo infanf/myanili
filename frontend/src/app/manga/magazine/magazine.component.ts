@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JikanMagazine } from '@models/jikan';
-import { GlobalService } from 'src/app/global.service';
-import { MalService } from 'src/app/mal.service';
+import { GlobalService } from '@services/global.service';
+import { MalService } from '@services/mal.service';
 
 @Component({
   selector: 'myanili-magazine',

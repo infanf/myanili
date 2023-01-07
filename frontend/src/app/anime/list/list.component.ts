@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ListAnime, WatchStatus } from '@models/anime';
-import { GlobalService } from 'src/app/global.service';
-import { SettingsService } from 'src/app/settings/settings.service';
-
-import { AnimeService } from '../anime.service';
+import { AnimeService } from '@services/anime/anime.service';
+import { GlobalService } from '@services/global.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-list',

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnisearchService } from '@services/anisearch.service';
 
-import { AnisearchService } from '../../anisearch.service';
 import { ExternalComponent } from '../external.component';
 
 @Component({

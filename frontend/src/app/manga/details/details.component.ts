@@ -8,16 +8,15 @@ import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { ExtRating } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnilistService } from '@services/anilist.service';
+import { AnisearchService } from '@services/anisearch.service';
+import { CacheService } from '@services/cache.service';
+import { GlobalService } from '@services/global.service';
+import { KitsuService } from '@services/kitsu.service';
+import { MangaService } from '@services/manga/manga.service';
+import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
-import { AnilistService } from 'src/app/anilist.service';
-import { AnisearchService } from 'src/app/anisearch.service';
-import { CacheService } from 'src/app/cache.service';
-import { GlobalService } from 'src/app/global.service';
-import { KitsuService } from 'src/app/kitsu.service';
-
-import { MangaService } from '../manga.service';
-import { MangaupdatesService } from '../mangaupdates.service';
 
 @Component({
   selector: 'myanili-manga-details',

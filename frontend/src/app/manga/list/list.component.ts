@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ListManga, ReadStatus } from '@models/manga';
-import { GlobalService } from 'src/app/global.service';
-import { SettingsService } from 'src/app/settings/settings.service';
-
-import { MangaService } from '../manga.service';
+import { GlobalService } from '@services/global.service';
+import { MangaService } from '@services/manga/manga.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-list',

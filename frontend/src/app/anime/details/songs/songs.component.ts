@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { DialogueService } from '@components/dialogue/dialogue.service';
 import { Anime, AnimeTheme } from '@models/anime';
+import { GlobalService } from '@services/global.service';
+import { MalService } from '@services/mal.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { GlobalService } from 'src/app/global.service';
-import { MalService } from 'src/app/mal.service';
 
 @Component({
   selector: 'myanili-anime-songs',
