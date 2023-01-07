@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   pure: true,
 })
 export class DateAgoPipe implements PipeTransform {
-  transform(value: Date | string | number): string {
+  transform(value: Date | string | number, args: number): string {
     if (value) {
       const seconds = Math.floor((+new Date() - +new Date(value)) / 1000);
       const intervals: { [key: string]: number } = {

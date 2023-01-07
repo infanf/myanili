@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnilistService } from '@app/anilist.service';
 
@@ -18,14 +18,24 @@ import { AnilistService } from '@app/anilist.service';
     `,
   ],
 })
-export class NotificationsComponent implements OnInit {
+export class NotificationsComponent implements OnInit, OnDestroy {
+  refresher = 0;
+  private interval = 0;
   private notificationsAl: Notification[] = [];
   private notificationsMal: Notification[] = [];
   private notificationsKitsu: Notification[] = [];
-  constructor(private anilist: AnilistService, private _router: Router) {}
+  constructor(private anilist: AnilistService, private _router: Router) {
+    setInterval(() => {
+      this.refresher = Math.random();
+    }, 10000);
+  }
 
   ngOnInit() {
     this.initAl();
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
   }
 
   initAl() {

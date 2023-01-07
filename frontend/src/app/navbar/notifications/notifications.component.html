@@ -30,7 +30,7 @@
           </td>
           <td [class]="{ 'fw-bold': notification.unread }" [innerHTML]="notification.text"></td>
           <td>
-            {{ notification.createdAt | dateAgo }}
+            {{ notification.createdAt | dateAgo : refresher }}
           </td>
         </tr>
       </tbody>
