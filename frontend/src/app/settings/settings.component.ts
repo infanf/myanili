@@ -63,7 +63,6 @@ export class SettingsComponent implements OnInit {
     });
     this.anilist.user.subscribe(user => {
       this.anilistLoggedIn = user;
-      this.anilist.getNotifications().then(console.log);
     });
     this.kitsu.user.subscribe(user => {
       this.kitsuLoggedIn = user;

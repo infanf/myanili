@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnilistService } from '@app/anilist.service';
 
@@ -18,25 +18,19 @@ import { AnilistService } from '@app/anilist.service';
     `,
   ],
 })
-export class NotificationsComponent implements OnInit, OnDestroy {
-  private notifications: Notification[] = [];
-  private interval = 0;
+export class NotificationsComponent implements OnInit {
+  private notificationsAl: Notification[] = [];
+  private notificationsMal: Notification[] = [];
+  private notificationsKitsu: Notification[] = [];
   constructor(private anilist: AnilistService, private _router: Router) {}
 
   ngOnInit() {
-    this.update();
-    setInterval(() => {
-      this.update();
-    }, 60000);
+    this.initAl();
   }
 
-  ngOnDestroy() {
-    clearInterval(this.interval);
-  }
-
-  update() {
-    this.notifications = [];
-    this.anilist.getNotifications(100).then(notifications => {
+  initAl() {
+    this.anilist.notifications.subscribe(notifications => {
+      const notificationsAl = [] as Notification[];
       notifications.forEach(async alNotification => {
         const notification = {
           platform: 'al',
@@ -59,18 +53,26 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             };
           }
         }
-        this.notifications.push(notification);
+        notificationsAl.push(notification);
       });
+      this.notificationsAl = notificationsAl;
     });
   }
 
   async markRead() {
     const result = await this.anilist.markNotificationsAsRead();
-    if (result) this.update();
+    if (result) {
+      this.notificationsAl.forEach(n => (n.unread = false));
+    }
   }
 
   get notificationsList() {
-    return this.notifications
+    const notifications = [
+      ...this.notificationsAl,
+      ...this.notificationsMal,
+      ...this.notificationsKitsu,
+    ];
+    return notifications
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .filter(n => {
         const isUnread = n.unread;
@@ -80,7 +82,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   get unreadNotificationsCount() {
-    return this.notifications.filter(n => n.unread).length;
+    return this.notificationsList.filter(n => n.unread).length;
   }
 
   callback(notification: Notification) {

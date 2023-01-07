@@ -3,7 +3,6 @@ import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   AnilistMediaListStatus,
   AnilistNotification,
-  AnilistNotificationType,
   AnilistSaveMedialistEntry,
   AnilistUser,
 } from '@models/anilist';
@@ -11,7 +10,7 @@ import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { ReadStatus } from '@models/manga';
 import { Apollo, gql } from 'apollo-angular';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { AnilistLibraryService } from './anilist/library.service';
@@ -143,12 +142,8 @@ export class AnilistService {
     return this.anilistMedia.getRating(id, type);
   }
 
-  async getNotifications(
-    perPage = 10,
-    page = 1,
-    types?: AnilistNotificationType[],
-  ): Promise<AnilistNotification[]> {
-    return this.anilistNotifications.getNotifications(perPage, page, types);
+  get notifications(): Observable<AnilistNotification[]> {
+    return this.anilistNotifications.notifications;
   }
 
   async markNotificationsAsRead(): Promise<boolean> {
