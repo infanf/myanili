@@ -25,8 +25,14 @@
         <tr *ngFor="let notification of notificationsList" (click)="callback(notification)">
           <td>
             <myanili-icon-anilist *ngIf="notification.platform == 'al'"></myanili-icon-anilist>
-            <myanili-icon-mal *ngIf="notification.platform == 'mal'"></myanili-icon-mal>
-            <myanili-icon-kitsu *ngIf="notification.platform == 'kitsu'"></myanili-icon-kitsu>
+            <myanili-icon-mal
+              *ngIf="notification.platform == 'mal'"
+              class="text-primary"
+            ></myanili-icon-mal>
+            <myanili-icon-kitsu
+              *ngIf="notification.platform == 'kitsu'"
+              style="color: #e75e45"
+            ></myanili-icon-kitsu>
           </td>
           <td [class]="{ 'fw-bold': notification.unread }" [innerHTML]="notification.text"></td>
           <td>

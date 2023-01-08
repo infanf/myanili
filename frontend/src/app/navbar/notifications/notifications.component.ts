@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnilistService } from '@services/anilist.service';
+import { KitsuService } from '@services/kitsu.service';
 
 @Component({
   selector: 'myanili-notifications',
@@ -24,7 +25,11 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   private notificationsAl: Notification[] = [];
   private notificationsMal: Notification[] = [];
   private notificationsKitsu: Notification[] = [];
-  constructor(private anilist: AnilistService, private _router: Router) {
+  constructor(
+    private anilist: AnilistService,
+    private kitsu: KitsuService,
+    private _router: Router,
+  ) {
     setInterval(() => {
       this.refresher = Math.random();
     }, 10000);
@@ -32,6 +37,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initAl();
+    this.initKitsu();
   }
 
   ngOnDestroy() {
@@ -69,11 +75,40 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     });
   }
 
+  initKitsu() {
+    this.kitsu.notifications.subscribe(notifications => {
+      if (!notifications) {
+        this.notificationsKitsu = [];
+        return;
+      }
+      const notificationsKitsu = [] as Notification[];
+      notifications.forEach(kNotification => {
+        const notification = {
+          platform: 'kitsu',
+          text: kNotification.text,
+          unread: kNotification.unread,
+          createdAt: new Date(kNotification.createdAt),
+          callback() {
+            window.open(kNotification.url, '_blank');
+          },
+        } as Notification;
+        notificationsKitsu.push(notification);
+      });
+      this.notificationsKitsu = notificationsKitsu;
+    });
+  }
+
   async markRead() {
-    const result = await this.anilist.markNotificationsAsRead();
-    if (result) {
-      this.notificationsAl.forEach(n => (n.unread = false));
-    }
+    this.anilist.markNotificationsAsRead().then(result => {
+      if (result) {
+        this.notificationsAl.forEach(n => (n.unread = false));
+      }
+    });
+    this.kitsu.markNotificationsAsRead().then(result => {
+      if (result) {
+        this.notificationsKitsu.forEach(n => (n.unread = false));
+      }
+    });
   }
 
   get notificationsList() {

@@ -22,9 +22,6 @@
       "dom"
     ],
     "paths": {
-      "@app/*": [
-        "src/app/*"
-      ],
       "@models/*": [
         "src/app/models/*"
       ],
@@ -39,6 +36,9 @@
       ],
       "@services/*": [
         "src/app/services/*"
+      ],
+      "@app/*": [
+        "src/app/*"
       ],
     },
     "resolveJsonModule": true,

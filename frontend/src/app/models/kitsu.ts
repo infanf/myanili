@@ -160,3 +160,15 @@ interface User {
 }
 
 export type KitsuUser = User;
+
+export interface KitsuNotification {
+  id: string;
+  text: string;
+  url: string;
+  unread: boolean;
+  createdAt: Date;
+  media?: {
+    id: number;
+    type: 'anime' | 'manga';
+  };
+}
