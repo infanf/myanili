@@ -1,6 +1,12 @@
 {
   "changes": [
     {
+      "version": "2.19.0",
+      "features": [
+        "add notifications from Anilist and Kitsu"
+      ]
+    },
+    {
       "version": "2.18.1",
       "fixes": [
         "handle trakt maintenance"
