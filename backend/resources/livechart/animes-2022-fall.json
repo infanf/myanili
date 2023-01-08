@@ -518,6 +518,7 @@
     {
         "title": "Chickip Dancers 2nd Season",
         "livechart": "11361",
+        "mal": "53320",
         "_key": "11361"
     },
     {
@@ -553,6 +554,7 @@
     {
         "title": "Chibiham, Juicy & Me",
         "livechart": "11472",
+        "mal": "53403",
         "_key": "11472"
     },
     {
@@ -583,6 +585,12 @@
         "_key": "11563"
     },
     {
+        "title": "Eiyuuou, Bu wo Kiwameru Tame Tenseisu. Mini",
+        "livechart": "11572",
+        "mal": "53619",
+        "_key": "11572"
+    },
+    {
         "title": "Shin Shinka no Mi Gekijou",
         "livechart": "11596",
         "mal": "53595",
@@ -597,6 +605,7 @@
     {
         "title": "Blue Archive: beautiful day dreamer",
         "livechart": "11669",
+        "mal": "53670",
         "_key": "11669"
     }
 ]
