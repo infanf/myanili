@@ -4,6 +4,10 @@
       "version": "2.19.0",
       "features": [
         "add notifications from Anilist and Kitsu"
+      ],
+      "other":
+      [
+        "add ADN and AKIBA PASS TV to streaming platforms"
       ]
     },
     {
