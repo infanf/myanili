@@ -12,7 +12,7 @@
         "_key": "9855"
     },
     {
-        "title": "Tsurune Movie -Hajimari no Issha-",
+        "title": "Tsurune Movie - Hajimari no Issha -",
         "livechart": "10188",
         "mal": "43556",
         "_key": "10188"
@@ -60,13 +60,13 @@
         "_key": "10418"
     },
     {
-        "title": "Maou Gakuin no Futekigousha II",
+        "title": "Maou Gakuin no Futekigousha \u2161",
         "livechart": "10448",
         "mal": "48417",
         "_key": "10448"
     },
     {
-        "title": "Eiyuu Densetsu: Sen no Kiseki - Northern War",
+        "title": "The Legend of Heroes: Sen no Kiseki - Northern War",
         "livechart": "10459",
         "mal": "48441",
         "_key": "10459"
@@ -168,6 +168,12 @@
         "_key": "10787"
     },
     {
+        "title": "Jyoshikousei to Mahou no Note",
+        "livechart": "10796",
+        "mal": "49851",
+        "_key": "10796"
+    },
+    {
         "title": "Sugar Apple Fairy Tale",
         "livechart": "10823",
         "mal": "49980",
@@ -232,6 +238,11 @@
         "livechart": "10956",
         "mal": "50608",
         "_key": "10956"
+    },
+    {
+        "title": "Kyouki Sanmyaku: Naked Peak",
+        "livechart": "10959",
+        "_key": "10959"
     },
     {
         "title": "Kyuuketsuki Sugu Shinu 2",
@@ -437,19 +448,13 @@
         "_key": "11368"
     },
     {
-        "title": "Fate\/strange Fake -Whispers of Dawn-",
-        "livechart": "11374",
-        "mal": "53127",
-        "_key": "11374"
-    },
-    {
         "title": "Tondemo Skill de Isekai Hourou Meshi",
         "livechart": "11379",
         "mal": "53446",
         "_key": "11379"
     },
     {
-        "title": "Tsurune -Tsunagari no Issha-",
+        "title": "Tsurune - Tsunagari no Issha -",
         "livechart": "11383",
         "mal": "52826",
         "_key": "11383"
@@ -459,6 +464,12 @@
         "livechart": "11516",
         "mal": "53077",
         "_key": "11516"
+    },
+    {
+        "title": "LUPIN THE 3rd VS CAT'S EYE",
+        "livechart": "11518",
+        "mal": "53109",
+        "_key": "11518"
     },
     {
         "title": "UniteUp!",
@@ -491,7 +502,7 @@
         "_key": "11530"
     },
     {
-        "title": "Revenger",
+        "title": "REVENGER",
         "livechart": "11534",
         "mal": "53213",
         "_key": "11534"
@@ -540,12 +551,92 @@
     {
         "title": "Youkai Watch \u266a Jibanyan VS Komasan Monge Daikessen da Nyan",
         "livechart": "11638",
+        "mal": "53634",
         "_key": "11638"
     },
     {
-        "title": "Violet Evergarden: Recollections",
-        "livechart": "11685",
-        "mal": "53672",
-        "_key": "11685"
+        "title": "Hirogaru Sky! Precure",
+        "livechart": "11687",
+        "mal": "53716",
+        "_key": "11687"
+    },
+    {
+        "title": "Saint Seiya: Knights of the Zodiac Season 3",
+        "livechart": "11692",
+        "mal": "53748",
+        "_key": "11692"
+    },
+    {
+        "title": "Meitantei Conan: Haibara Ai Monogatari ~Kurogane no Mystery Train~",
+        "livechart": "11715",
+        "mal": "53780",
+        "_key": "11715"
+    },
+    {
+        "title": "Li Shi Zhentan Shiwusuo: A Day in Lungmen",
+        "livechart": "11719",
+        "mal": "53852",
+        "_key": "11719"
+    },
+    {
+        "title": "Huang Jin Ting Yuan: Dong Ri Li De Xin Nian Yuan Wang",
+        "livechart": "11721",
+        "_key": "11721"
+    },
+    {
+        "title": "Kimetsu no Yaiba: Jougen Shuuketsu, Soshite Katanakaji no Sato e",
+        "livechart": "11722",
+        "_key": "11722"
+    },
+    {
+        "title": "Oemojisangjuui",
+        "livechart": "11723",
+        "mal": "53149",
+        "_key": "11723"
+    },
+    {
+        "title": "Space Idol",
+        "livechart": "11727",
+        "_key": "11727"
+    },
+    {
+        "title": "Futaribun no Shoumei",
+        "livechart": "11731",
+        "mal": "53933",
+        "_key": "11731"
+    },
+    {
+        "title": "Pocket Monsters: Mezase Pokemon Master",
+        "livechart": "11733",
+        "mal": "53874",
+        "_key": "11733"
+    },
+    {
+        "title": "Pocket Monsters (2019): Harukanaru Aoi Sora",
+        "livechart": "11734",
+        "mal": "53873",
+        "_key": "11734"
+    },
+    {
+        "title": "Joukaku Gattai Oshirobots",
+        "livechart": "11737",
+        "_key": "11737"
+    },
+    {
+        "title": "Pole Princess!! Episode 0",
+        "livechart": "11759",
+        "_key": "11759"
+    },
+    {
+        "title": "Kobayashi-san no Tsundere Kouza",
+        "livechart": "11760",
+        "mal": "53958",
+        "_key": "11760"
+    },
+    {
+        "title": "Fate\/Grand Order: Fujimaru Ritsuka wa Wakaranai",
+        "livechart": "11765",
+        "mal": "54042",
+        "_key": "11765"
     }
 ]

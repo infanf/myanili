@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Jikan4PersonAnimes } from '@models/jikan';
-import { MalService } from 'src/app/mal.service';
+import { MalService } from '@services/mal.service';
 
 @Component({
   selector: 'myanili-person-staff',

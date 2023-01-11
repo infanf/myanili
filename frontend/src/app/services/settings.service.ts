@@ -4,9 +4,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 
-import { GlobalService } from '../global.service';
+import { NewVersionComponent } from '../settings/new-version/new-version.component';
 
-import { NewVersionComponent } from './new-version/new-version.component';
+import { GlobalService } from './global.service';
 
 @Injectable({
   providedIn: 'root',

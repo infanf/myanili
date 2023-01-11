@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Jikan4Person } from '@models/jikan';
-
-import { GlobalService } from '../global.service';
-import { MalService } from '../mal.service';
+import { GlobalService } from '@services/global.service';
+import { MalService } from '@services/mal.service';
 
 @Component({
   selector: 'myanili-person',

@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RelatedManga } from '@models/manga';
-
-import { MangaService } from '../../manga.service';
+import { MangaService } from '@services/manga/manga.service';
 
 @Component({
   selector: 'myanili-manga-related',

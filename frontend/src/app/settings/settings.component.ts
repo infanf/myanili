@@ -5,17 +5,15 @@ import { BakaUser } from '@models/baka';
 import { KitsuUser } from '@models/kitsu';
 import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { AnilistService } from '../anilist.service';
-import { AnnictService } from '../anime/annict.service';
-import { SimklService, SimklUser } from '../anime/simkl.service';
-import { TraktService } from '../anime/trakt.service';
-import { GlobalService } from '../global.service';
-import { KitsuService } from '../kitsu.service';
-import { MalService } from '../mal.service';
-import { MangaupdatesService } from '../manga/mangaupdates.service';
-
-import { Language, SettingsService } from './settings.service';
+import { AnilistService } from '@services/anilist.service';
+import { AnnictService } from '@services/anime/annict.service';
+import { SimklService, SimklUser } from '@services/anime/simkl.service';
+import { TraktService } from '@services/anime/trakt.service';
+import { GlobalService } from '@services/global.service';
+import { KitsuService } from '@services/kitsu.service';
+import { MalService } from '@services/mal.service';
+import { MangaupdatesService } from '@services/manga/mangaupdates.service';
+import { Language, SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-settings',

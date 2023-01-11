@@ -10,14 +10,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Anime } from '@models/anime';
 import { Manga } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AnilistService } from '@services/anilist.service';
+import { GlobalService } from '@services/global.service';
+import { KitsuService } from '@services/kitsu.service';
+import { MalService } from '@services/mal.service';
+import { Language, SettingsService } from '@services/settings.service';
 
-import { AnilistService } from '../anilist.service';
 import { AnimeDetailsComponent } from '../anime/details/details.component';
-import { GlobalService } from '../global.service';
-import { KitsuService } from '../kitsu.service';
-import { MalService } from '../mal.service';
 import { MangaDetailsComponent } from '../manga/details/details.component';
-import { Language, SettingsService } from '../settings/settings.service';
 
 @Component({
   selector: 'myanili-search',

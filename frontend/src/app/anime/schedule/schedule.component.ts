@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { DateTimeFrom } from '@components/luxon-helper';
 import { Anime } from '@models/anime';
 import { Weekday } from '@models/components';
+import { AnimeService } from '@services/anime/anime.service';
+import { GlobalService } from '@services/global.service';
+import { Language, SettingsService } from '@services/settings.service';
 import { DateTime } from 'luxon';
-
-import { GlobalService } from '../../global.service';
-import { Language, SettingsService } from '../../settings/settings.service';
-import { AnimeService } from '../anime.service';
 
 @Component({
   selector: 'myanili-schedule',

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AnimeCharacter } from '@models/anime';
 import { Jikan4AnimeCharacter } from '@models/jikan';
-
-import { AnimeService } from '../../anime.service';
+import { AnimeService } from '@services/anime/anime.service';
 
 @Component({
   selector: 'myanili-anime-characters',

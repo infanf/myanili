@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RelatedAnime } from '@models/anime';
-
-import { AnimeService } from '../../anime.service';
+import { AnimeService } from '@services/anime/anime.service';
 
 @Component({
   selector: 'myanili-anime-related',

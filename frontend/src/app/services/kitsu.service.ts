@@ -12,6 +12,7 @@ import {
   KitsuUser,
 } from '@models/kitsu';
 import { ReadStatus } from '@models/manga';
+import { KitsuNotificationsService } from '@services/kitsu/notifications.service';
 import * as CryptoJS from 'crypto-js';
 import { BehaviorSubject } from 'rxjs';
 import { compareTwoStrings } from 'string-similarity';
@@ -20,7 +21,7 @@ import { compareTwoStrings } from 'string-similarity';
   providedIn: 'root',
 })
 export class KitsuService {
-  private baseUrl = 'https://kitsu.io/api/edge/';
+  private readonly baseUrl = 'https://kitsu.io/api/edge/';
   private accessToken = '';
   private refreshToken = '';
   // not app specific, see https://kitsu.docs.apiary.io/#introduction/authentication/app-registration
@@ -29,14 +30,18 @@ export class KitsuService {
     '54d7307928f63414defd96399fc31ba847961ceaecef3a5fd93144e960c0e151';
   private userSubject = new BehaviorSubject<KitsuUser | undefined>(undefined);
   loggedIn = false;
+  private kitsuNotifications: KitsuNotificationsService;
 
   constructor(private dialogue: DialogueService) {
     this.accessToken = String(localStorage.getItem('kitsuAccessToken'));
     this.refreshToken = String(localStorage.getItem('kitsuRefreshToken'));
+    this.kitsuNotifications = new KitsuNotificationsService();
     if (this.accessToken && this.accessToken !== 'null') {
+      this.kitsuNotifications.updateAccess = this.accessToken;
       this.login()
         .then(user => {
           if (user) {
+            this.kitsuNotifications.updateUserId = user.id;
             this.userSubject.next(user);
           } else {
             throw new Error('User not found');
@@ -202,6 +207,7 @@ export class KitsuService {
     if (result.ok) {
       const response = (await result.json()) as OauthResponse;
       this.accessToken = response.access_token;
+      this.kitsuNotifications.updateAccess = this.accessToken;
       localStorage.setItem('kitsuAccessToken', this.accessToken);
       this.refreshToken = response.refresh_token;
       localStorage.setItem('kitsuRefreshToken', this.refreshToken);
@@ -212,6 +218,7 @@ export class KitsuService {
 
   logoff() {
     this.accessToken = '';
+    this.kitsuNotifications.updateAccess = '';
     this.refreshToken = '';
     this.userSubject.next(undefined);
     this.loggedIn = false;
@@ -229,6 +236,7 @@ export class KitsuService {
       const response = (await result.json()) as KitsuResponse<KitsuUser[]>;
       if (response.data.length) {
         const userdata = response.data[0];
+        this.kitsuNotifications.updateUserId = userdata.id;
         this.userSubject.next(userdata);
         return userdata;
       }
@@ -392,6 +400,14 @@ export class KitsuService {
       }
     }
     return;
+  }
+
+  get notifications() {
+    return this.kitsuNotifications.notifications;
+  }
+
+  async markNotificationsAsRead() {
+    return this.kitsuNotifications.markAsRead();
   }
 
   statusFromMal(malStatus?: WatchStatus | ReadStatus): KitsuStatus | undefined {

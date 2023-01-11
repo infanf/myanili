@@ -12,19 +12,17 @@ import {
 import { Weekday } from '@models/components';
 import { Jikan4AnimeCharacter, Jikan4Staff, Jikan4WorkRelation } from '@models/jikan';
 import { RelatedManga } from '@models/manga';
+import { AnilistService } from '@services/anilist.service';
+import { AnnictService } from '@services/anime/annict.service';
+import { SimklService } from '@services/anime/simkl.service';
+import { TraktService } from '@services/anime/trakt.service';
+import { CacheService } from '@services/cache.service';
+import { KitsuService } from '@services/kitsu.service';
+import { MalService } from '@services/mal.service';
+import { SettingsService } from '@services/settings.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 import { environment } from 'src/environments/environment';
-
-import { AnilistService } from '../anilist.service';
-import { CacheService } from '../cache.service';
-import { KitsuService } from '../kitsu.service';
-import { MalService } from '../mal.service';
-import { SettingsService } from '../settings/settings.service';
-
-import { AnnictService } from './annict.service';
-import { SimklService } from './simkl.service';
-import { TraktService } from './trakt.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { AnisearchRelated, AnisearchService } from 'src/app/anisearch.service';
+import { AnisearchRelated, AnisearchService } from '@services/anisearch.service';
 
 @Component({
   selector: 'myanili-liveaction-related',

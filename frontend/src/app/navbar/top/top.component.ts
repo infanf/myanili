@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { MalUser } from '@models/user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MalService } from 'src/app/mal.service';
+import { MalService } from '@services/mal.service';
+import { NavbarService } from '@services/navbar.service';
 import { SettingsComponent } from 'src/app/settings/settings.component';
-
-import { NavbarService } from '../navbar.service';
 
 @Component({
   selector: 'myanili-navbar-top',

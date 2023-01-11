@@ -8,6 +8,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { AppRoutingModule } from '../app-routing.module';
 
+import { DateAgoPipe } from './date-ago.pipe';
 import { DayPipe } from './day.pipe';
 import { DialogueComponent } from './dialogue/dialogue.component';
 import { RatingComponent } from './dialogue/rating/rating.component';
@@ -51,6 +52,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     HeaderComponent,
     WidgetSeasonComponent,
     ToasterComponent,
+    DateAgoPipe,
   ],
   imports: [
     CommonModule,
@@ -95,6 +97,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     StreamPipe,
     PlatformPipe,
     Nl2brPipe,
+    DateAgoPipe,
   ],
   providers: [TimePipe, StreamPipe, PlatformPipe, DayPipe],
 })

@@ -3,14 +3,13 @@ import { Button } from '@components/dialogue/dialogue.component';
 import { DialogueService } from '@components/dialogue/dialogue.service';
 import { DateTimeFrom } from '@components/luxon-helper';
 import { Anime, AnimeEpisodeRule, ListAnime, MyAnimeUpdate, WatchStatus } from '@models/anime';
+import { AnimeService } from '@services/anime/anime.service';
+import { SimklService } from '@services/anime/simkl.service';
+import { TraktService } from '@services/anime/trakt.service';
+import { GlobalService } from '@services/global.service';
+import { Language, SettingsService } from '@services/settings.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
-import { GlobalService } from 'src/app/global.service';
-import { Language, SettingsService } from 'src/app/settings/settings.service';
-
-import { AnimeService } from '../anime.service';
-import { SimklService } from '../simkl.service';
-import { TraktService } from '../trakt.service';
 
 @Component({
   selector: 'myanili-watchlist',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Season, SeasonNumber } from '@models/components';
-import { GlobalService } from 'src/app/global.service';
-import { SettingsService } from 'src/app/settings/settings.service';
+import { GlobalService } from '@services/global.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-widget-season',

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { GlobalService } from 'src/app/global.service';
-
-import { NavbarService } from '../navbar.service';
+import { GlobalService } from '@services/global.service';
+import { NavbarService } from '@services/navbar.service';
 
 @Component({
   selector: 'myanili-navbar-bottom',

@@ -2,8 +2,8 @@ import { ApplicationRef, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
-import packageJson from '../../package.json';
-import * as changelog from '../changelog.json';
+import packageJson from '../../../package.json';
+import * as changelog from '../../changelog.json';
 
 @Injectable({
   providedIn: 'root',

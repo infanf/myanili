@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ExternalComponent } from '@external/external.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { AnnictService } from '../../anime/annict.service';
+import { AnnictService } from '@services/anime/annict.service';
 
 @Component({
   selector: 'myanili-annict',

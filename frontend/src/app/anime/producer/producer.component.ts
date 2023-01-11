@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Jikan4Anime, Jikan4Producer } from '@models/jikan';
-import { MalService } from 'src/app/mal.service';
-
-import { GlobalService } from '../../global.service';
+import { GlobalService } from '@services/global.service';
+import { MalService } from '@services/mal.service';
 
 @Component({
   selector: 'myanili-producer',

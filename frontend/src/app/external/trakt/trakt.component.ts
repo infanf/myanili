@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TraktService } from '@services/anime/trakt.service';
 import { environment } from 'src/environments/environment';
 
-import { TraktService } from '../../anime/trakt.service';
 import { ExternalComponent } from '../external.component';
 
 @Component({

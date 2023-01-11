@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { SwUpdate, VersionEvent } from '@angular/service-worker';
 import { DialogueService } from '@components/dialogue/dialogue.service';
-
-import { GlobalService } from './global.service';
-import { MalService } from './mal.service';
+import { GlobalService } from '@services/global.service';
+import { MalService } from '@services/mal.service';
 
 @Component({
   selector: 'myanili-root',

@@ -6,6 +6,12 @@
         "_key": "9763"
     },
     {
+        "title": "Watashi ni Tenshi ga Maiorita! Precious Friends",
+        "livechart": "10231",
+        "mal": "44141",
+        "_key": "10231"
+    },
+    {
         "title": "Kuma Kuma Kuma Bear Punch!",
         "livechart": "10290",
         "mal": "45486",
@@ -24,6 +30,18 @@
         "_key": "10357"
     },
     {
+        "title": "Jigokuraku",
+        "livechart": "10371",
+        "mal": "46569",
+        "_key": "10371"
+    },
+    {
+        "title": "Uta no\u2606Prince-sama\u266a Maji Love ST\u2606RISH Tours",
+        "livechart": "10493",
+        "mal": "48573",
+        "_key": "10493"
+    },
+    {
         "title": "Black Clover: Mahou Tei no Ken",
         "livechart": "10495",
         "mal": "48585",
@@ -36,10 +54,34 @@
         "_key": "10555"
     },
     {
+        "title": "ARGONAVIS the Movie: Ryusei no Obligato",
+        "livechart": "10567",
+        "mal": "49471",
+        "_key": "10567"
+    },
+    {
+        "title": "Mahou Shoujo Magical Destroyers",
+        "livechart": "10580",
+        "mal": "48981",
+        "_key": "10580"
+    },
+    {
+        "title": "Kono Subarashii Sekai ni Bakuen wo!",
+        "livechart": "10708",
+        "mal": "51958",
+        "_key": "10708"
+    },
+    {
         "title": "Rakudai Majo: Fuka to Yami no Majo",
         "livechart": "10834",
         "mal": "51404",
         "_key": "10834"
+    },
+    {
+        "title": "Isekai Shoukan wa Nidome desu",
+        "livechart": "10856",
+        "mal": "50220",
+        "_key": "10856"
     },
     {
         "title": "GRIDMAN UNIVERSE",
@@ -54,10 +96,28 @@
         "_key": "10957"
     },
     {
+        "title": "Kimi wa Houkago Insomnia",
+        "livechart": "11024",
+        "mal": "50796",
+        "_key": "11024"
+    },
+    {
         "title": "EDENS ZERO Season 2",
         "livechart": "11076",
         "mal": "50002",
         "_key": "11076"
+    },
+    {
+        "title": "Kimetsu no Yaiba: Katanakaji no Sato-hen",
+        "livechart": "11084",
+        "mal": "51019",
+        "_key": "11084"
+    },
+    {
+        "title": "Opus.COLORs",
+        "livechart": "11161",
+        "mal": "51415",
+        "_key": "11161"
     },
     {
         "title": "Masamune-kun no Revenge R",
@@ -104,6 +164,7 @@
     {
         "title": "Uma Musume: Pretty Derby - Road to the Top",
         "livechart": "11205",
+        "mal": "51761",
         "_key": "11205"
     },
     {
@@ -116,6 +177,12 @@
         "title": "Star Wars: Visions Volume 2",
         "livechart": "11236",
         "_key": "11236"
+    },
+    {
+        "title": "\u3010OSHI NO KO\u3011",
+        "livechart": "11247",
+        "mal": "52034",
+        "_key": "11247"
     },
     {
         "title": "Shiro Seijo to Kuro Bokushi",
@@ -136,6 +203,12 @@
         "_key": "11296"
     },
     {
+        "title": "MASHLE",
+        "livechart": "11318",
+        "mal": "52211",
+        "_key": "11318"
+    },
+    {
         "title": "Kanojo ga Koushakutei ni Itta Riyuu",
         "livechart": "11321",
         "mal": "52308",
@@ -144,13 +217,38 @@
     {
         "title": "Doraemon Movie 42: Nobita to Sora no Utopia",
         "livechart": "11323",
+        "mal": "52318",
         "_key": "11323"
+    },
+    {
+        "title": "Boku no Kokoro no Yabai Yatsu",
+        "livechart": "11349",
+        "mal": "52578",
+        "_key": "11349"
     },
     {
         "title": "Tensei Kizoku no Isekai Boukenroku: Jichou wo Shiranai Kamigami no Shito",
         "livechart": "11353",
         "mal": "52608",
         "_key": "11353"
+    },
+    {
+        "title": "MIX Season 2",
+        "livechart": "11355",
+        "mal": "52614",
+        "_key": "11355"
+    },
+    {
+        "title": "Ousama Ranking: Yuuki no Takarabako",
+        "livechart": "11360",
+        "mal": "52657",
+        "_key": "11360"
+    },
+    {
+        "title": "Yamada-kun to Lv999 no Koi wo Suru",
+        "livechart": "11373",
+        "mal": "53126",
+        "_key": "11373"
     },
     {
         "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta",
@@ -182,8 +280,15 @@
         "_key": "11517"
     },
     {
-        "title": "Mobile Suit Gundam: Suisei no Majo 2nd Cour",
+        "title": "Kawaisugi Crisis",
+        "livechart": "11529",
+        "mal": "53163",
+        "_key": "11529"
+    },
+    {
+        "title": "Mobile Suit Gundam: Suisei no Majo Season 2",
         "livechart": "11531",
+        "mal": "53199",
         "_key": "11531"
     },
     {
@@ -193,9 +298,16 @@
         "_key": "11577"
     },
     {
-        "title": "Meitantei Conan Movie 2023",
+        "title": "Meitantei Conan Movie 26: Kurogane no Submarine",
         "livechart": "11601",
+        "mal": "53540",
         "_key": "11601"
+    },
+    {
+        "title": "The Marginal Service",
+        "livechart": "11607",
+        "mal": "53587",
+        "_key": "11607"
     },
     {
         "title": "Princess Principal: Crown Handler - Chapter 3",
@@ -219,5 +331,31 @@
         "livechart": "11684",
         "mal": "53698",
         "_key": "11684"
+    },
+    {
+        "title": "Pocket Monsters (2023)",
+        "livechart": "11732",
+        "_key": "11732"
+    },
+    {
+        "title": "Tousouchuu: Great Mission",
+        "livechart": "11763",
+        "mal": "54040",
+        "_key": "11763"
+    },
+    {
+        "title": "Inu ni Nattara Suki na Hito ni Hirowareta. Specials",
+        "livechart": "11766",
+        "_key": "11766"
+    },
+    {
+        "title": "NIJIYON ANIMATION Specials",
+        "livechart": "11768",
+        "_key": "11768"
+    },
+    {
+        "title": "IDOLiSH7 Movie: LIVE 4bit BEYOND THE PERiOD",
+        "livechart": "11769",
+        "_key": "11769"
     }
 ]

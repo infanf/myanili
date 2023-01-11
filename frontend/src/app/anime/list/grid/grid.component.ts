@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ListAnime } from '@models/anime';
-import { SettingsService } from 'src/app/settings/settings.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-anime-grid',

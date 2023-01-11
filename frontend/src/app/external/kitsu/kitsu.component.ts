@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ExternalComponent } from '@external/external.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { KitsuService } from '../../kitsu.service';
+import { KitsuService } from '@services/kitsu.service';
 
 @Component({
   selector: 'myanili-kitsu',

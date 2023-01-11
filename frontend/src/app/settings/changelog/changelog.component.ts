@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Changelog, GlobalService } from 'src/app/global.service';
+import { Changelog, GlobalService } from '@services/global.service';
 
 @Component({
   selector: 'myanili-changelog',
