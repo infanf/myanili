@@ -193,12 +193,14 @@ export class AnimeDetailsComponent implements OnInit {
         }),
       );
     }
-    if (!this.anime.my_extension.trakt) {
+    if (!this.anime.my_extension.trakt || !this.anime.my_extension.series) {
       promises.push(
         this.animeService.getTraktData(this.id).then(traktData => {
           if (traktData && this?.anime?.my_extension) {
-            this.anime.my_extension.trakt = String(traktData.id);
-            this.anime.my_extension.seasonNumber = traktData.season;
+            this.anime.my_extension.trakt = this.anime.my_extension.trakt || String(traktData.id);
+            this.anime.my_extension.seasonNumber =
+              this.anime.my_extension.seasonNumber || traktData.season;
+            this.anime.my_extension.series = this.anime.my_extension.series || traktData.title;
           }
         }),
       );

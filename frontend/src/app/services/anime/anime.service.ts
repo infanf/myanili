@@ -385,17 +385,19 @@ export class AnimeService {
     | {
         id: number;
         type: 'show' | 'movie';
+        title: string;
         season?: number;
       }
     | undefined
   > {
     if (!malId) return undefined;
-    const response = await fetch(`${this.backendUrl}/trakt/${malId}`);
-    if (!response.ok) return undefined;
-    return (await response.json()) as {
-      id: number;
-      type: 'show' | 'movie';
-      season?: number;
-    };
+    return this.cache
+      .fetch<{
+        id: number;
+        type: 'show' | 'movie';
+        title: string;
+        season?: number;
+      }>(`${this.backendUrl}trakt/${malId}`)
+      .catch(() => undefined);
   }
 }
