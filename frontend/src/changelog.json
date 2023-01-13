@@ -1,6 +1,15 @@
 {
   "changes": [
     {
+      "version": "2.19.1",
+      "features": [
+        "get series names from trakt cache"
+      ],
+      "other": [
+        "upgrade dependencies"
+      ]
+    },
+    {
       "version": "2.19.0",
       "features": [
         "add notifications from Anilist and Kitsu"
