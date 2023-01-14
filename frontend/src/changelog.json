@@ -4,7 +4,8 @@
       "version": "2.20.0",
       "features": [
         "add timezone settings to watch time",
-        "get series names from trakt cache"
+        "get series names from trakt cache",
+        "lazy load search results"
       ],
       "other": [
         "upgrade dependencies"

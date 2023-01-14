@@ -13,7 +13,7 @@
       type="search"
       #searchbar
     />
-    <button class="btn btn-primary" (click)="search()">
+    <button class="btn btn-primary" type="submit">
       <myanili-icon name="search"></myanili-icon>
     </button>
   </form>
@@ -25,7 +25,7 @@
       <div class="col-md-4 mb-3">
         <select class="form-control" [(ngModel)]="filter.type" multiple>
           <option *ngFor="let type of allFilters.type" [value]="type">
-            {{ type | mal: 'mediatype' }}
+            {{ type | mal : 'mediatype' }}
           </option>
         </select>
       </div>
@@ -39,7 +39,7 @@
       <div class="col-md-4 mb-3">
         <select class="form-control" [(ngModel)]="filter.status" multiple>
           <option *ngFor="let status of allFilters.status" [value]="status">
-            {{ status | mal: 'mystatus' }}
+            {{ status | mal : 'mystatus' }}
           </option>
         </select>
       </div>
@@ -129,8 +129,8 @@
           </td>
 
           <td routerLink="/{{ type }}/details/{{ result.id }}">
-            <myanili-icon name="{{ result.media_type | mal: 'mediaicon' }}"></myanili-icon>
-            <span class="d-none d-md-inline ms-1">{{ result.media_type | mal: 'mediatype' }}</span>
+            <myanili-icon name="{{ result.media_type | mal : 'mediaicon' }}"></myanili-icon>
+            <span class="d-none d-md-inline ms-1">{{ result.media_type | mal : 'mediatype' }}</span>
           </td>
           <td routerLink="/{{ type }}/details/{{ result.id }}" class="text-nowrap">
             <circle-progress
@@ -145,10 +145,10 @@
                   : '#82204a'
               "
             ></circle-progress>
-            <span class="ms-1">{{ result.mean | number: '1.2-5' }}</span>
+            <span class="ms-1">{{ result.mean | number : '1.2-5' }}</span>
           </td>
           <td routerLink="/{{ type }}/details/{{ result.id }}">
-            {{ result.start_date | date: 'y' }}
+            {{ result.start_date | date : 'y' }}
           </td>
           <td (click)="open(result.id)">
             <myanili-icon [name]="'window-stack'"></myanili-icon>
@@ -157,4 +157,16 @@
       </ng-container>
     </tbody>
   </table>
+  <div
+    *ngIf="results.length && !loadedAll"
+    style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
+    inViewport
+    (inViewportAction)="handleScroll($event)"
+  >
+    &nbsp;
+  </div>
+  <div *ngIf="loading" class="text-center">
+    <myanili-icon name="loading"></myanili-icon>
+    Loading more...
+  </div>
 </section>

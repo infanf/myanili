@@ -28,7 +28,10 @@ export class SearchComponent implements AfterViewInit {
   @Input() type: 'anime' | 'manga' = 'anime';
   lang: Language = 'default';
   results: Array<Anime | Manga> = [];
+  nextResults: Array<Anime | Manga> = [];
   resultsFiltered: Array<Anime | Manga> = [];
+  loadedAll = false;
+  loading = false;
   query = '';
   // tslint:disable-next-line:no-any
   @ViewChildren('searchbar') sb?: QueryList<ElementRef>;
@@ -89,25 +92,52 @@ export class SearchComponent implements AfterViewInit {
       return this.addFromKitsu(this.query);
     }
     this.glob.setTitle(`Search: ${this.query}`);
-    this.results = (
+    this.nextResults = (
       await this.malService.get<Array<{ node: Anime | Manga }>>(
         this.type + 's',
         new URLSearchParams({
           query: this.query,
-          limit: '500',
+          limit: '50',
+          offset: '0',
         }),
       )
-    )
-      .filter(result =>
-        this.nsfw ? true : !result.node.genres?.map(g => g.name).includes('Hentai'),
-      )
-      .map(result => result.node);
+    ).map(result => result.node);
+    this.results = [];
+    this.loadMore();
+    this.glob.notbusy();
+  }
+
+  async handleScroll(event: { target: Element; visible: boolean }) {
+    if (!event.visible) return;
+    let maxTries = 50;
+    while (this.loading && maxTries-- > 0) {
+      await this.glob.sleep(100);
+    }
+    this.loadMore();
+  }
+
+  async loadMore() {
+    if (this.nextResults.length < 20) this.loadedAll = true;
+    this.results.push(...this.nextResults);
     this.allFilters.type = [...new Set(this.results.map(result => result.media_type))].sort();
     this.allFilters.status = [...new Set(this.results.map(result => result.status))].sort();
     const genres = this.results.map(result => result.genres?.map(g => g.name) || []);
     this.allFilters.genre = [...new Set(genres.reduce((acc, cur) => acc.concat(cur), []))].sort();
+    this.nextResults = [];
     this.filterResults();
-    this.glob.notbusy();
+    if (this.loadedAll || this.loading) return;
+    this.loading = true;
+    this.nextResults = (
+      await this.malService.get<Array<{ node: Anime | Manga }>>(
+        this.type + 's',
+        new URLSearchParams({
+          query: this.query,
+          limit: '20',
+          offset: String(this.results.length),
+        }),
+      )
+    ).map(result => result.node);
+    this.loading = false;
   }
 
   filterResults() {
@@ -125,8 +155,9 @@ export class SearchComponent implements AfterViewInit {
           }
         }
       }
-      return true;
+      return this.nsfw ? true : !result.genres?.map(g => g.name).includes('Hentai');
     });
+    if (this.resultsFiltered.length < 20) this.loadMore();
   }
 
   open(id: number) {
