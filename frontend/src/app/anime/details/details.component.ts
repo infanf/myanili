@@ -216,7 +216,7 @@ export class AnimeDetailsComponent implements OnInit {
       );
     }
     await Promise.all(promises);
-    if (promises.length && anime.my_extension) {
+    if (promises.length && anime.my_extension && anime.my_list_status?.status) {
       await this.animeService.updateAnime(
         {
           malId: anime.id,
