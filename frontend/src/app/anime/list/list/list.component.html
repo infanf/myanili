@@ -27,7 +27,7 @@
         routerLink="/anime/details/{{ anime.node.id }}"
       >
         <td>
-          <myanili-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}"></myanili-icon>
+          <myanili-icon name="{{ anime.node.media_type | mal : 'mediaicon' }}"></myanili-icon>
         </td>
         <td
           class="d-lg-table-cell"
@@ -53,14 +53,14 @@
           {{ anime.node.start_season?.year || anime.node.start_date }}
           <myanili-icon
             class="d-sm-none"
-            name="{{ anime.node.start_season?.season | mal: 'seasonicon' }}"
+            name="{{ anime.node.start_season?.season | mal : 'seasonicon' }}"
           ></myanili-icon>
           <span class="d-none d-sm-inline">{{ anime.node.start_season?.season | titlecase }}</span>
         </td>
         <td>
           <myanili-streaming
             [provider]="anime.my_extension?.externalStreaming"
-            [country]="anime.my_extension?.simulCountry"
+            [country]="anime.my_extension?.simulcast?.country"
           ></myanili-streaming>
         </td>
         <td style="white-space: nowrap">

@@ -1,16 +1,18 @@
+import { Base64 } from 'js-base64';
+import { DateTime } from 'luxon';
+import Timezone from 'timezone-enum';
+
 import { Genre, Nsfw, Picture, Studio } from './components';
 import { RelatedManga } from './manga';
 
-interface ListAnimeInterface {
+export interface ListAnime {
   node: AnimeNode;
   list_status: MyAnimeStatus;
   my_extension?: AnimeExtension;
   busy?: boolean;
 }
 
-export type ListAnime = ListAnimeInterface;
-
-interface AnimeInterface {
+export interface Anime {
   id: number;
   title: string;
   main_picture?: Picture;
@@ -69,12 +71,10 @@ interface AnimeInterface {
   website_promise?: Promise<string | undefined>;
 }
 
-export type Anime = AnimeInterface;
-
 export type AnimeType = 'unknown' | 'tv' | 'ova' | 'movie' | 'special' | 'ona' | 'music';
 export type AnimeStatus = 'finished_airing' | 'currently_airing' | 'not_yet_aired';
 
-interface MyStatus {
+export interface MyAnimeStatus {
   status?: WatchStatus;
   score: number;
   num_episodes_watched: number;
@@ -88,11 +88,9 @@ interface MyStatus {
   updated_at: Date;
   comments: string;
 }
-
-export type MyAnimeStatus = MyStatus;
 export type WatchStatus = 'watching' | 'completed' | 'on_hold' | 'dropped' | 'plan_to_watch';
 
-interface MyUpdate {
+export interface MyAnimeUpdate {
   status: WatchStatus;
   is_rewatching: boolean;
   score: number;
@@ -106,23 +104,17 @@ interface MyUpdate {
   comments: string;
 }
 
-export type MyAnimeUpdate = MyUpdate;
-
-interface SeasonInterface {
+export interface MalSeason {
   year: number;
   season: 'winter' | 'spring' | 'summer' | 'fall';
 }
 
-export type MalSeason = SeasonInterface;
-
-interface Theme {
+export interface AnimeTheme {
   id: number;
   anime_id: number;
   text: string;
   spotify?: string;
 }
-
-export type AnimeTheme = Theme;
 
 export interface AnimeNode {
   id: number;
@@ -150,22 +142,37 @@ export interface AnimeNode {
   num_list_users?: number;
 }
 
-interface RelatedAnimeInterface {
+export interface RelatedAnime {
   node: AnimeNode;
   relation_type: string;
   relation_type_formatted: string;
 }
 
-export type RelatedAnime = RelatedAnimeInterface;
+interface SimulcastData {
+  day?: number[];
+  time?: string;
+  tz?: Timezone;
+  country?: string;
+}
 
-interface AnimeExtensionInterface {
+export interface AnimeExtension {
   series?: string;
   seasonNumber?: number;
   episodeCorOffset?: number;
   externalStreaming?: string;
   externalStreamingId?: string;
+  simulcast: SimulcastData;
+  /**
+   * @deprecated use simulcast.day instead
+   */
   simulDay?: number | number[];
+  /**
+   * @deprecated use simulcast.time instead
+   */
   simulTime?: string;
+  /**
+   * @deprecated use simulcast.country instead
+   */
   simulCountry?: string;
   trakt?: string;
   anilistId?: number;
@@ -179,8 +186,6 @@ interface AnimeExtensionInterface {
   displayName?: string;
   episodeRule?: number;
 }
-
-export type AnimeExtension = AnimeExtensionInterface;
 
 interface Character {
   mal_id: number;
@@ -217,4 +222,54 @@ export enum AnimeEpisodeRule {
   DROP = 0,
   CONTINUE = 1,
   ASK_AGAIN = 2,
+}
+
+export function migrateSimulcasts(extension: Partial<AnimeExtension>): AnimeExtension {
+  if (!extension.simulcast) {
+    extension.simulcast = {};
+  }
+  const simulDay = extension.simulDay;
+  const simulDays = [];
+  if (simulDay && typeof simulDay === 'number') {
+    simulDays.push(simulDay);
+  } else if (simulDay && Array.isArray(simulDay)) {
+    simulDays.push(...simulDay);
+  }
+  extension.simulcast.time = extension.simulcast.time || extension.simulTime;
+  extension.simulcast.country = extension.simulcast.country || extension.simulCountry;
+  extension.simulcast.tz = extension.simulcast.tz || Timezone.UTC;
+  extension.simulcast.day = extension.simulcast.day || simulDays;
+  delete extension.simulDay;
+  delete extension.simulTime;
+  delete extension.simulCountry;
+  return extension as AnimeExtension;
+}
+
+export function parseExtension(comments: string): AnimeExtension {
+  try {
+    const extension = JSON.parse(Base64.decode(comments)) as unknown as Partial<AnimeExtension>;
+    return migrateSimulcasts(extension);
+  } catch (e) {
+    return {
+      simulcast: {},
+    } as AnimeExtension;
+  }
+}
+
+export function daysToLocal(simulcast?: SimulcastData): number[] {
+  if (!simulcast) return [];
+  const [hour, minute] = simulcast?.time?.split(':').map(Number) || [0, 0];
+  return (
+    simulcast?.day?.map(
+      weekday =>
+        DateTime.local()
+          .setZone(simulcast.tz || 'UTC')
+          .set({
+            hour,
+            minute,
+            weekday,
+          })
+          .toLocal().weekday,
+    ) || []
+  );
 }

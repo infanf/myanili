@@ -59,26 +59,22 @@
           <td>
             <myanili-streaming
               [provider]="anime.my_extension?.externalStreaming"
-              [country]="anime.my_extension?.simulCountry"
+              [country]="anime.my_extension?.simulcast?.country"
             ></myanili-streaming>
           </td>
           <td>
             {{
-              anime.my_extension?.simulTime
-                ? getLast8am().weekday % 7 === anime.my_extension?.simulDay ||
-                  toArray(anime.my_extension?.simulDay).includes(getLast8am().weekday % 7)
-                  ? (anime.my_extension!.simulTime!.substr(0, 5) | time)
-                  : (getLastDay(anime.my_extension?.simulDay) | day)
+              anime.my_extension?.simulcast?.time
+                ? anime.my_extension?.simulcast?.day?.includes(getLast8am().weekday % 7)
+                  ? (anime.my_extension!.simulcast.time!.substr(0, 5)
+                    | time : anime.my_extension!.simulcast.tz)
+                  : (getLastDay(anime.my_extension?.simulcast?.day) | day)
                 : ''
             }}
           </td>
           <td>
             <myanili-icon
-              *ngIf="
-                (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0) &&
-                  isInSeason(anime);
-                else plusIcon
-              "
+              *ngIf="anime.my_extension?.simulcast?.day && isInSeason(anime); else plusIcon"
               [class]="{ 'cursor-pointer': !isSeen(anime) }"
               class="mx-2"
               [name]="anime.busy ? 'loading-circle' : isSeen(anime) ? 'check-circle' : 'circle'"

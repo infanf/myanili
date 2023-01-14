@@ -65,7 +65,7 @@
         <myanili-streaming
           *ngIf="anime.my_extension?.externalStreaming"
           [provider]="anime.my_extension?.externalStreaming"
-          [country]="anime.my_extension?.simulCountry"
+          [country]="anime.my_extension?.simulcast?.country"
           variant="full"
         ></myanili-streaming>
         <div class="mt-2 hyphens" *ngIf="anime.synopsis">{{ anime.synopsis }}</div>

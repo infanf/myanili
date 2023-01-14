@@ -1,8 +1,9 @@
 {
   "changes": [
     {
-      "version": "2.19.1",
+      "version": "2.20.0",
       "features": [
+        "add timezone settings to watch time",
         "get series names from trakt cache"
       ],
       "other": [

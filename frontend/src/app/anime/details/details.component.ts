@@ -7,7 +7,15 @@ import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { TraktComponent } from '@external/trakt/trakt.component';
-import { Anime, AnimeEpisodeRule, AnimeExtension, MyAnimeUpdate, WatchStatus } from '@models/anime';
+import {
+  Anime,
+  AnimeEpisodeRule,
+  AnimeExtension,
+  daysToLocal,
+  MyAnimeUpdate,
+  parseExtension,
+  WatchStatus,
+} from '@models/anime';
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
@@ -21,6 +29,7 @@ import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
+import Timezone from 'timezone-enum';
 
 @Component({
   selector: 'myanili-anime-details',
@@ -36,7 +45,7 @@ export class AnimeDetailsComponent implements OnInit {
   fromCache = false;
   busy = false;
   editBackup?: Partial<MyAnimeUpdate>;
-  editExtension?: AnimeExtension;
+  editExtension?: { simulcast: {} } & AnimeExtension;
   traktUser?: string;
   annictUser?: string;
   activeTab = 1;
@@ -110,6 +119,7 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime.my_extension) {
       this.anime.my_extension = {
         malId: anime.id,
+        simulcast: {},
       };
     } else {
       this.anime.my_extension.malId = anime.id;
@@ -259,9 +269,7 @@ export class AnimeDetailsComponent implements OnInit {
       tags: this.anime.my_list_status.tags?.join(','),
     };
     try {
-      const extension = JSON.parse(
-        Base64.decode(this.anime.my_list_status.comments),
-      ) as unknown as Partial<AnimeExtension>;
+      const extension = parseExtension(this.anime.my_list_status.comments);
       this.editExtension = {
         series: '',
         seasonNumber: 1,
@@ -276,17 +284,9 @@ export class AnimeDetailsComponent implements OnInit {
         episodeCorOffset: 0,
         externalStreaming: '',
         externalStreamingId: '',
-        simulCountry: '',
-        simulDay: [],
-        simulTime: undefined,
+        simulcast: {},
         ...this.anime.my_extension,
       };
-    }
-    if (typeof this.editExtension.simulDay === 'number') {
-      this.editExtension.simulDay = [this.editExtension.simulDay];
-    }
-    if (!this.editExtension.simulDay) {
-      this.editExtension.simulDay = [];
     }
   }
 
@@ -297,12 +297,6 @@ export class AnimeDetailsComponent implements OnInit {
       return;
     }
     this.busy = true;
-    if (this.editExtension && this.editExtension.simulDay) {
-      if (typeof this.editExtension.simulDay !== 'object') {
-        this.editExtension.simulDay = [this.editExtension.simulDay];
-      }
-      this.editExtension.simulDay = this.editExtension.simulDay.map(d => Number(d));
-    }
     const updateData = {
       comments: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyAnimeUpdate>;
@@ -610,9 +604,8 @@ export class AnimeDetailsComponent implements OnInit {
     });
   }
 
-  getDay(day?: number | number[]): string {
-    if (!day && day !== 0) return '';
-    if (typeof day === 'number') day = [day];
+  getDay(simulcast: AnimeExtension['simulcast']): string {
+    const day = daysToLocal(simulcast);
     const names = day.map(d => this.animeService.getDay(d));
     return names.join(', ');
   }
@@ -681,5 +674,9 @@ export class AnimeDetailsComponent implements OnInit {
       });
       if (!exists) this.ratings.push({ provider, rating });
     }
+  }
+
+  get timezones() {
+    return Object.values(Timezone);
   }
 }

@@ -17,21 +17,25 @@
             <div
               [class]="{
                 twolines:
-                  anime.my_list_status?.status === 'plan_to_watch' && anime.my_extension!.simulTime
+                  anime.my_list_status?.status === 'plan_to_watch' &&
+                  anime.my_extension!.simulcast.time
               }"
             >
               <div class="fst-italic" *ngIf="anime.my_list_status?.status === 'plan_to_watch'">
-                {{ anime.start_date | date: 'dd.MM.' }}
+                {{ anime.start_date | date : 'dd.MM.' }}
               </div>
-              <div *ngIf="anime.my_extension?.simulTime">
-                {{ anime.my_extension!.simulTime!.substr(0, 5) | time }}
+              <div *ngIf="anime.my_extension?.simulcast?.time">
+                {{
+                  anime.my_extension!.simulcast.time!.substr(0, 5)
+                    | time : anime.my_extension!.simulcast.tz
+                }}
               </div>
             </div>
           </td>
           <td>
             <myanili-streaming
               [provider]="anime.my_extension?.externalStreaming"
-              [country]="anime.my_extension?.simulCountry"
+              [country]="anime.my_extension?.simulcast?.country"
             ></myanili-streaming>
             <span
               [routerLink]="'/anime/details/' + anime.id!"
@@ -66,14 +70,14 @@
         >
           <td class="fst-italic">
             <ng-container *ngIf="length(anime.start_date) === 10; else monthOnly">{{
-              anime.start_date | date: 'dd.MM.'
+              anime.start_date | date : 'dd.MM.'
             }}</ng-container>
-            <ng-template #monthOnly>{{ anime.start_date | date: 'MMM' }}.</ng-template>
+            <ng-template #monthOnly>{{ anime.start_date | date : 'MMM' }}.</ng-template>
           </td>
           <td>
             <myanili-streaming
               [provider]="anime.my_extension?.externalStreaming"
-              [country]="anime.my_extension?.simulCountry"
+              [country]="anime.my_extension?.simulcast?.country"
             ></myanili-streaming>
             <span
               [routerLink]="'/anime/details/' + anime.id!"

@@ -234,18 +234,15 @@
       </myanili-value-pair>
       <myanili-value-pair
         *ngIf="
-          !edit &&
-            anime &&
-            anime.my_extension &&
-            (anime.my_extension?.simulDay?.toString() || anime.my_extension?.simulDay === 0);
+          !edit && anime && anime.my_extension && anime.my_extension?.simulcast?.day?.length;
           else broadcast
         "
         name="Watch on"
       >
-        {{ getDay(anime.my_extension.simulDay) }}
-        <span *ngIf="anime.my_extension.simulTime">
+        {{ getDay(anime.my_extension.simulcast) }}
+        <span *ngIf="anime.my_extension.simulcast.time">
           <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
-          {{ anime.my_extension.simulTime.substr(0, 5) | time }}</span
+          {{ anime.my_extension.simulcast.time | time : anime.my_extension.simulcast.tz }}</span
         >
       </myanili-value-pair>
       <ng-template #broadcast>
@@ -263,10 +260,10 @@
       </ng-template>
       <div class="row my-2" *ngIf="edit && editExtension">
         <div class="col-4 fw-bold text-end">Watch on</div>
-        <div class="col-4">
+        <div class="col-8">
           <select
             class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.simulDay"
+            [(ngModel)]="editExtension!.simulcast.day"
             [disabled]="busy"
             multiple
           >
@@ -279,14 +276,30 @@
             <option [value]="0">Sunday</option>
           </select>
         </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && editExtension">
+        <div class="col-4 fw-bold text-end">Watch at</div>
         <div class="col-4">
           <input
             class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.simulTime"
+            [(ngModel)]="editExtension!.simulcast.time"
             type="time"
             [disabled]="busy"
             enterkeyhint="done"
           />
+        </div>
+        <div class="col-4">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.simulcast.tz"
+            list="timezones"
+            placeholder="Timezone"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <datalist id="timezones">
+            <option *ngFor="let tz of timezones" [value]="tz"></option>
+          </datalist>
         </div>
       </div>
       <div
@@ -306,7 +319,7 @@
           <myanili-streaming
             *ngIf="anime.my_extension.externalStreaming"
             [provider]="anime.my_extension.externalStreaming"
-            [country]="anime.my_extension.simulCountry"
+            [country]="anime.my_extension.simulcast.country"
             variant="full"
           ></myanili-streaming>
         </div>
@@ -327,7 +340,7 @@
         <div class="col-3">
           <input
             class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.simulCountry"
+            [(ngModel)]="editExtension!.simulcast.country"
             [disabled]="busy"
             enterkeyhint="done"
           />

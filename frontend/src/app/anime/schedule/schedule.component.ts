@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DateTimeFrom } from '@components/luxon-helper';
-import { Anime } from '@models/anime';
+import { Anime, daysToLocal } from '@models/anime';
 import { Weekday } from '@models/components';
 import { AnimeService } from '@services/anime/anime.service';
 import { GlobalService } from '@services/global.service';
@@ -44,21 +44,23 @@ export class ScheduleComponent {
     if (year && season && (year !== this.year || season !== this.season)) return;
     this.animes = allAnime.sort(
       (a, b) =>
-        Number(a.my_extension?.simulTime ? a.my_extension.simulTime.replace(/\D/g, '') : 0) -
-        Number(b.my_extension?.simulTime ? b.my_extension.simulTime.replace(/\D/g, '') : 0),
+        Number(
+          a.my_extension?.simulcast.time ? a.my_extension.simulcast.time.replace(/\D/g, '') : 0,
+        ) -
+        Number(
+          b.my_extension?.simulcast.time ? b.my_extension.simulcast.time.replace(/\D/g, '') : 0,
+        ),
     );
     return true;
   }
 
   getAnimes(day: number): Array<Partial<Anime>> {
     return this.animes.filter(anime => {
-      let simulDay = anime.my_extension?.simulDay;
-      if (!simulDay && simulDay !== 0) return false;
-      if (!Array.isArray(simulDay)) simulDay = [simulDay];
+      if (!anime.my_extension) return false;
+      let simulDay = daysToLocal(anime.my_extension.simulcast);
       simulDay = simulDay.map(d => Number(d) % 7) as number[];
       return (
-        ((simulDay.includes(day % 7) && anime.my_extension?.simulDay !== null) ||
-          (anime.broadcast?.weekday === day && !simulDay.length)) &&
+        (simulDay.includes(day % 7) || (anime.broadcast?.weekday === day && !simulDay.length)) &&
         anime.my_list_status?.status !== 'dropped'
       );
     });
@@ -71,9 +73,7 @@ export class ScheduleComponent {
           anime.my_list_status && // is in my list
           anime.my_list_status?.status !== 'dropped' &&
           !anime.broadcast?.day_of_the_week &&
-          (!anime.my_extension?.simulDay || // include empty days
-            (Array.isArray(anime.my_extension.simulDay) && !anime.my_extension.simulDay.length)) && // include empty arrays of days
-          anime.my_extension?.simulDay !== 0 && // exclude sundays
+          !anime.my_extension?.simulcast.day?.length && // include empty arrays of days
           ['tv', 'ova', 'ona'].includes(anime.media_type || ''),
       )
       .sort(

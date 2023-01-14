@@ -2,7 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Button } from '@components/dialogue/dialogue.component';
 import { DialogueService } from '@components/dialogue/dialogue.service';
 import { DateTimeFrom } from '@components/luxon-helper';
-import { Anime, AnimeEpisodeRule, ListAnime, MyAnimeUpdate, WatchStatus } from '@models/anime';
+import {
+  Anime,
+  AnimeEpisodeRule,
+  daysToLocal,
+  ListAnime,
+  MyAnimeUpdate,
+  WatchStatus,
+} from '@models/anime';
 import { AnimeService } from '@services/anime/anime.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
@@ -40,13 +47,9 @@ export class WatchlistComponent implements OnInit {
     this.animes = animes
       .filter(anime => {
         if (!anime.my_extension) return true;
-        if (
-          (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) ||
-          (Array.isArray(anime.my_extension?.simulDay) && anime.my_extension?.simulDay.length === 0)
-        ) {
-          return true;
-        }
-        const lastAiredWeekday = this.animeService.getLastDay(anime.my_extension.simulDay);
+        if (!anime.my_extension.simulcast.day?.length) return true;
+        const simulDay = daysToLocal(anime.my_extension.simulcast);
+        const lastAiredWeekday = this.animeService.getLastDay(simulDay);
         const last8amWeekday = this.getLast8am().weekday % 7;
         if (lastAiredWeekday === last8amWeekday) {
           return true;
@@ -69,23 +72,16 @@ export class WatchlistComponent implements OnInit {
 
   toSortIndex(anime: ListAnime): number {
     if (!anime.my_extension) return 0;
-    if (
-      (!anime.my_extension?.simulDay && anime.my_extension?.simulDay !== 0) ||
-      (Array.isArray(anime.my_extension?.simulDay) && anime.my_extension?.simulDay.length === 0)
-    ) {
-      return 0;
-    }
-    if (
-      this.animeService.getLastDay(anime.my_extension.simulDay) ===
-      this.getLast8am().weekday % 7
-    ) {
-      return Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0);
+    if (!anime.my_extension?.simulcast.day?.length) return 0;
+    const days = daysToLocal(anime.my_extension.simulcast);
+    if (this.animeService.getLastDay(days) === this.getLast8am().weekday % 7) {
+      return Number(anime.my_extension.simulcast.time?.replace(/\D/g, '') || 0);
     }
     return (
-      (this.animeService.getLastDay(anime.my_extension.simulDay) +
+      (this.animeService.getLastDay(days) +
         14 -
         this.getLast8am().weekday +
-        Number(anime.my_extension.simulTime?.replace(/\D/g, '') || 0) / 10000) %
+        Number(anime.my_extension.simulcast.time?.replace(/\D/g, '') || 0) / 10000) %
       7
     );
   }
@@ -109,9 +105,7 @@ export class WatchlistComponent implements OnInit {
 
   async markSeen(anime: ListAnime) {
     if (
-      (this.isSeen(anime) &&
-        this.isInSeason(anime) &&
-        (anime.my_extension?.simulDay || anime.my_extension?.simulDay === 0)) ||
+      (this.isSeen(anime) && this.isInSeason(anime) && anime.my_extension?.simulcast.day) ||
       anime.busy
     ) {
       return;
