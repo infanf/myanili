@@ -185,6 +185,7 @@ export interface AnimeExtension {
   fandomSlug?: string;
   displayName?: string;
   episodeRule?: number;
+  lastWatchedAt?: Date;
 }
 
 interface Character {

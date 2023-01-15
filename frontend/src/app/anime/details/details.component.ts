@@ -419,6 +419,7 @@ export class AnimeDetailsComponent implements OnInit {
     const data = {
       num_watched_episodes: currentEpisode + 1,
     } as Partial<MyAnimeUpdate>;
+    if (this.anime.my_extension) this.anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
@@ -448,9 +449,9 @@ export class AnimeDetailsComponent implements OnInit {
       }
       if (continueWatching === AnimeEpisodeRule.ASK_AGAIN) {
         this.anime.my_extension.episodeRule++;
-        data.comments = Base64.encode(JSON.stringify(this.anime.my_extension));
       }
     }
+    data.comments = Base64.encode(JSON.stringify(this.anime.my_extension));
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
         {

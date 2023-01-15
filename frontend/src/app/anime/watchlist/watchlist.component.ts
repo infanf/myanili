@@ -55,12 +55,15 @@ export class WatchlistComponent implements OnInit {
           return true;
         }
         const lastAiredDaysAgo = (last8amWeekday - lastAiredWeekday + 14) % 7;
+        if (lastAiredDaysAgo === 0) return true;
         if (lastAiredDaysAgo <= 4) {
           const inFuture = DateTimeFrom(anime.node.start_date) > DateTimeFrom();
           const newShow = anime.list_status.num_episodes_watched === 0;
+          const lastWatched = DateTimeFrom(
+            anime.my_extension.lastWatchedAt || anime.list_status.updated_at,
+          );
           return (
-            DateTimeFrom(anime.list_status.updated_at) <
-              DateTimeFrom().minus({ day: lastAiredDaysAgo + 1 }) ||
+            lastWatched < DateTimeFrom().minus({ day: lastAiredDaysAgo + 1 }) ||
             (!inFuture && newShow)
           );
         }
@@ -115,6 +118,7 @@ export class WatchlistComponent implements OnInit {
     const data = {
       num_watched_episodes: currentEpisode + 1,
     } as Partial<MyAnimeUpdate>;
+    if (anime.my_extension) anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
     if (currentEpisode + 1 === anime.node.num_episodes) {
       data.status = 'completed';
@@ -144,9 +148,9 @@ export class WatchlistComponent implements OnInit {
       }
       if (continueWatching === AnimeEpisodeRule.ASK_AGAIN) {
         anime.my_extension.episodeRule++;
-        data.comments = Base64.encode(JSON.stringify(anime.my_extension));
       }
     }
+    data.comments = Base64.encode(JSON.stringify(anime.my_extension));
     const fullAnime = await this.animeService.getAnime(anime.node.id);
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
