@@ -89,6 +89,7 @@ $router->group(['prefix' => 'trakt'], function () use ($router) {
                 'id' => $traktShow['trakt'],
                 'type' => 'show',
                 'season' => $traktShow['season'],
+                'title' => $traktShow['title'],
             ]);
         }
         if (count($filteredMovies) === 1) {
@@ -96,6 +97,7 @@ $router->group(['prefix' => 'trakt'], function () use ($router) {
             return response()->json([
                 'id' => $traktMovie['trakt'],
                 'type' => 'movie',
+                'title' => $traktShow['title'],
             ]);
         }
         return response()->json([

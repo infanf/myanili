@@ -12,8 +12,9 @@ $showsTr = $showsXpath->query("//tbody/tr");
 $shows = [];
 foreach ($showsTr as $show) {
     $showTd = $showsXpath->query("td", $show);
-    $traktLink = $showsXpath->query("a", $showTd->item(0))?->item(0)?->getAttribute("href");
-    $traktId = preg_match("/\/shows\/([0-9]+)/", $traktLink, $matches) ? $matches[1] : null;
+    $traktLink = $showsXpath->query("a", $showTd->item(0))?->item(0);
+    $traktTitle = $traktLink?->nodeValue;
+    $traktId = preg_match("/\/shows\/([0-9]+)/", $traktLink?->getAttribute("href"), $matches) ? $matches[1] : null;
     if (!$traktId) {
         continue;
     }
@@ -30,6 +31,7 @@ foreach ($showsTr as $show) {
             "trakt" => intval($traktId),
             "season" => intval($seasonNo),
             "mal" => intval($malId),
+            "title" => $traktTitle,
         ];
     }
 }
@@ -47,8 +49,9 @@ $moviesTr = $moviesXpath->query("//tbody/tr");
 $movies = [];
 foreach ($moviesTr as $movie) {
     $movieTd = $moviesXpath->query("td", $movie);
-    $traktLink = $moviesXpath->query("a", $movieTd->item(0))?->item(0)?->getAttribute("href");
-    $traktId = preg_match("/\/movies\/([0-9]+)/", $traktLink, $matches) ? $matches[1] : null;
+    $traktLink = $moviesXpath->query("a", $movieTd->item(0))?->item(0);
+    $traktTitle = $traktLink?->nodeValue;
+    $traktId = preg_match("/\/movies\/([0-9]+)/", $traktLink?->getAttribute("href"), $matches) ? $matches[1] : null;
     if (!$traktId) {
         continue;
     }
@@ -60,6 +63,7 @@ foreach ($moviesTr as $movie) {
     $movies[] = [
         "trakt" => intval($traktId),
         "mal" => intval($malId),
+        "title" => $traktTitle,
     ];
 }
 

@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   Anime,
-  AnimeExtension,
   AnimeNode,
   ListAnime,
   MyAnimeStatus,
   MyAnimeUpdate,
+  parseExtension,
   WatchStatus,
 } from '@models/anime';
 import { Weekday } from '@models/components';
@@ -76,8 +76,7 @@ export class AnimeService {
       const comments = anime.list_status.comments;
       if (!comments) return anime;
       try {
-        const json = Base64.decode(comments);
-        const my_extension = JSON.parse(json) as AnimeExtension;
+        const my_extension = parseExtension(comments);
         return { ...anime, my_extension } as ListAnime;
       } catch (e) {}
       return anime;
@@ -94,8 +93,7 @@ export class AnimeService {
       const comments = anime.my_list_status?.comments;
       if (!comments) return anime;
       try {
-        const json = Base64.decode(comments);
-        const my_extension = JSON.parse(json) as AnimeExtension;
+        const my_extension = parseExtension(comments);
         return { ...anime, my_extension } as Anime;
       } catch (e) {}
       return anime as Anime;
@@ -104,7 +102,7 @@ export class AnimeService {
 
   async getAnime(id: number) {
     const anime = await this.malService.get<Anime>('anime/' + id);
-    const comments = anime.my_list_status?.comments;
+    const comments = `${anime.my_list_status?.comments}`;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
     if (!anime.website) anime.website_promise = this.getWebsite(id);
     this.fixBroadcast(anime);
@@ -113,12 +111,8 @@ export class AnimeService {
     delete animeToSave.website_promise;
     delete animeToSave.related_manga_promise;
     if (comments) {
-      try {
-        const json = Base64.decode(comments);
-        const my_extension = JSON.parse(json) as AnimeExtension;
-        anime.my_extension = my_extension;
-        animeToSave.my_extension = my_extension;
-      } catch (e) {}
+      animeToSave.my_extension = parseExtension(comments);
+      anime.my_extension = animeToSave.my_extension;
     }
     this.cache.saveValues(anime.id, 'anime', animeToSave, true);
     return anime;
@@ -385,17 +379,19 @@ export class AnimeService {
     | {
         id: number;
         type: 'show' | 'movie';
+        title: string;
         season?: number;
       }
     | undefined
   > {
     if (!malId) return undefined;
-    const response = await fetch(`${this.backendUrl}/trakt/${malId}`);
-    if (!response.ok) return undefined;
-    return (await response.json()) as {
-      id: number;
-      type: 'show' | 'movie';
-      season?: number;
-    };
+    return this.cache
+      .fetch<{
+        id: number;
+        type: 'show' | 'movie';
+        title: string;
+        season?: number;
+      }>(`${this.backendUrl}trakt/${malId}`)
+      .catch(() => undefined);
   }
 }

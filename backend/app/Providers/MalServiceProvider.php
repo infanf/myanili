@@ -81,7 +81,8 @@ class MalServiceProvider extends ServiceProvider
             self::get(
                 implode('/', [self::baseUrl, $type, $id]),
                 $params
-            ), true
+            ),
+            true
         );
         return $response;
     }
@@ -93,7 +94,8 @@ class MalServiceProvider extends ServiceProvider
             self::put(
                 implode('/', [self::baseUrl, $type, $id, 'my_list_status']),
                 $requestParams
-            ), true
+            ),
+            true
         );
         return $response;
     }
@@ -103,7 +105,8 @@ class MalServiceProvider extends ServiceProvider
         $response = json_decode(
             self::delete(
                 implode('/', [self::baseUrl, $type, $id, 'my_list_status']),
-            ), true
+            ),
+            true
         );
         return $response;
     }
@@ -137,7 +140,8 @@ class MalServiceProvider extends ServiceProvider
             self::get(
                 self::baseUrl . '/users/@me/animelist',
                 $params
-            ), true
+            ),
+            true
         );
         $list = $response['data'];
         return $list;
@@ -170,7 +174,8 @@ class MalServiceProvider extends ServiceProvider
             self::get(
                 self::baseUrl . '/users/@me/mangalist',
                 $params
-            ), true
+            ),
+            true
         );
         $list = $response['data'];
         return $list;
@@ -206,7 +211,8 @@ class MalServiceProvider extends ServiceProvider
             self::get(
                 self::baseUrl . "/anime/season/$year/{$seasons[$season]}",
                 $params
-            ), true
+            ),
+            true
         );
         $list = $response['data'];
         while ($response['paging'] && isset($response['paging']['next'])) {
@@ -302,13 +308,18 @@ class MalServiceProvider extends ServiceProvider
         $response = json_decode(
             self::get(
                 self::baseUrl . '/users/@me',
-            ), true
+            ),
+            true
         );
         return $response;
     }
 
     public static function getList(string $type, string $query, $limit = 50, $offset = 0)
     {
+        if (strlen($query) < 3) {
+            if (strlen($query) === 0) return [];
+            $query = "{$query} {$query}";
+        }
         $type = $type === 'manga' ? 'manga' : 'anime';
         $fields = [
             "num_episodes",
@@ -335,10 +346,14 @@ class MalServiceProvider extends ServiceProvider
             self::get(
                 self::baseUrl . "/" . $type,
                 $params
-            ), true
+            ),
+            true
         );
-        $list = $response['data'];
-        return $list;
+        try {
+            return $response['data'];
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public static function getMaintenance()
@@ -353,6 +368,5 @@ class MalServiceProvider extends ServiceProvider
         if ($code >= 500) return true;
         if (strpos($body, 'is currently under scheduled maintenance') !== false) return true;
         return false;
-
     }
 }

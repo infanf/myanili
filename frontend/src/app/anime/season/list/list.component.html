@@ -62,13 +62,13 @@
           </span>
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
-          <myanili-icon name="{{ anime.media_type | mal: 'mediaicon' }}"></myanili-icon>
-          <span class="d-none d-md-inline ms-1">{{ anime.media_type | mal: 'mediatype' }}</span>
+          <myanili-icon name="{{ anime.media_type | mal : 'mediaicon' }}"></myanili-icon>
+          <span class="d-none d-md-inline ms-1">{{ anime.media_type | mal : 'mediatype' }}</span>
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
           <myanili-streaming
             [provider]="anime.my_extension?.externalStreaming"
-            [country]="anime.my_extension?.simulCountry"
+            [country]="anime.my_extension?.simulcast?.country"
           ></myanili-streaming>
         </td>
         <td style="white-space: nowrap">
