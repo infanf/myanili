@@ -7,7 +7,6 @@ import { ExternalModule } from '@external/external.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { ApolloModule } from 'apollo-angular';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { InViewportModule } from 'ng-in-viewport';
 import { environment } from 'src/environments/environment';
@@ -35,7 +34,6 @@ import { CharacterComponent } from './character/character.component';
 import { CharacterMangaComponent } from './character/manga/manga.component';
 import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
-import { GraphQLModule } from './graphql/graphql.module';
 import { LiveactionRelatedComponent } from './liveaction/related/related.component';
 import {
   BookshelfComponent,
@@ -136,12 +134,10 @@ import { SettingsComponent } from './settings/settings.component';
       class: 'align-text-top',
     }),
     AngularSvgIconModule.forRoot(),
-    GraphQLModule,
     IconModule,
     ExternalModule,
     DirectivesModule,
     ComponentsModule,
-    ApolloModule,
     InViewportModule,
   ],
   providers: [Title],
