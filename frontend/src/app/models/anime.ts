@@ -1,4 +1,4 @@
-import { Base64 } from 'js-base64';
+// import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
 
@@ -247,6 +247,7 @@ export function migrateSimulcasts(extension: Partial<AnimeExtension>): AnimeExte
 }
 
 export function parseExtension(comments: string): AnimeExtension {
+  const { Base64 } = require('js-base64');
   try {
     const extension = JSON.parse(Base64.decode(comments)) as unknown as Partial<AnimeExtension>;
     return migrateSimulcasts(extension);

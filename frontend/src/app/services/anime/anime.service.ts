@@ -20,7 +20,6 @@ import { CacheService } from '@services/cache.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { SettingsService } from '@services/settings.service';
-import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 import { environment } from 'src/environments/environment';
 
@@ -141,6 +140,7 @@ export class AnimeService {
         0,
       );
       if (episodeRule) {
+        const { Base64 } = await import('js-base64');
         data.comments = Base64.encode(JSON.stringify({ episodeRule }));
       }
     }

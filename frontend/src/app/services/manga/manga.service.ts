@@ -11,7 +11,6 @@ import {
   MyMangaUpdate,
   ReadStatus,
 } from '@models/manga';
-import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 import { environment } from 'src/environments/environment';
 import { compareTwoStrings } from 'string-similarity';
@@ -38,34 +37,37 @@ export class MangaService {
   async list(status?: ReadStatus, options?: { limit?: number; offset?: number }) {
     options = { limit: 50, offset: 0, ...options };
     const mangas = await this.malService.myMangaList(status, options);
-    return mangas.map(manga => {
-      if (manga.node.title) {
-        const mangaToSave = {
-          id: manga.node.id,
-          title: manga.node.title,
-          created_at: new Date(),
-          updated_at: manga.list_status.updated_at,
-          mean: 0,
-          media_type: manga.node.media_type || 'unknown',
-          num_list_users: 0,
-          num_scoring_users: 0,
-          recommendations: [],
-          related_manga: [],
-          related_anime: [],
-          genres: [],
-          pictures: [],
-        };
-        this.cache.saveValues(manga.node.id, 'manga', mangaToSave);
-      }
-      const comments = manga.list_status.comments;
-      if (!comments) return manga;
-      try {
-        const json = Base64.decode(comments);
-        const my_extension = JSON.parse(json) as MangaExtension;
-        return { ...manga, my_extension } as ListManga;
-      } catch (e) {}
-      return manga;
-    });
+    return Promise.all(
+      mangas.map(async manga => {
+        if (manga.node.title) {
+          const mangaToSave = {
+            id: manga.node.id,
+            title: manga.node.title,
+            created_at: new Date(),
+            updated_at: manga.list_status.updated_at,
+            mean: 0,
+            media_type: manga.node.media_type || 'unknown',
+            num_list_users: 0,
+            num_scoring_users: 0,
+            recommendations: [],
+            related_manga: [],
+            related_anime: [],
+            genres: [],
+            pictures: [],
+          };
+          this.cache.saveValues(manga.node.id, 'manga', mangaToSave);
+        }
+        const comments = manga.list_status.comments;
+        if (!comments) return manga;
+        try {
+          const { Base64 } = await import('js-base64');
+          const json = Base64.decode(comments);
+          const my_extension = JSON.parse(json) as MangaExtension;
+          return { ...manga, my_extension } as ListManga;
+        } catch (e) {}
+        return manga;
+      }),
+    );
   }
 
   async getManga(id: number, extend = true) {
@@ -77,6 +79,7 @@ export class MangaService {
     delete mangaToSave.related_anime_promise;
     if (comments) {
       try {
+        const { Base64 } = await import('js-base64');
         const json = Base64.decode(comments);
         const my_extension = JSON.parse(json) as MangaExtension;
         manga.my_extension = my_extension;

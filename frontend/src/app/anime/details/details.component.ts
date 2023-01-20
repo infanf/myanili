@@ -27,7 +27,6 @@ import { AnisearchService } from '@services/anisearch.service';
 import { CacheService } from '@services/cache.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
-import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
 
@@ -215,6 +214,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     await Promise.all(promises);
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
+      const { Base64 } = await import('js-base64');
       await this.animeService.updateAnime(
         {
           malId: anime.id,
@@ -295,6 +295,7 @@ export class AnimeDetailsComponent implements OnInit {
       return;
     }
     this.busy = true;
+    const { Base64 } = await import('js-base64');
     const updateData = {
       comments: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyAnimeUpdate>;
@@ -449,6 +450,7 @@ export class AnimeDetailsComponent implements OnInit {
         this.anime.my_extension.episodeRule++;
       }
     }
+    const { Base64 } = await import('js-base64');
     data.comments = Base64.encode(JSON.stringify(this.anime.my_extension));
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
