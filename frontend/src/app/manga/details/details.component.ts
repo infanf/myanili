@@ -15,7 +15,6 @@ import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MangaService } from '@services/manga/manga.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'myanili-manga-details',
@@ -267,6 +266,7 @@ export class MangaDetailsComponent implements OnInit {
     this.busy = true;
     const data = { status } as Partial<MyMangaUpdate>;
     if (status === 'reading' && !this.manga.my_list_status?.start_date) {
+      const { DateTime } = require('luxon') as typeof import('luxon');
       data.start_date = DateTime.local().toISODate();
     }
     await this.mangaService.updateManga(
@@ -317,6 +317,7 @@ export class MangaDetailsComponent implements OnInit {
       this.glob.notbusy();
       return;
     }
+    const { DateTime } = require('luxon') as typeof import('luxon');
     await this.mangaService.updateManga(
       {
         malId: this.manga.id,
@@ -358,6 +359,7 @@ export class MangaDetailsComponent implements OnInit {
       data.num_chapters_read === this.manga.num_chapters
     ) {
       data.status = 'completed';
+      const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date = DateTime.local().toISODate();
       data.is_rereading = false;
       if (this.manga.my_list_status.is_rereading) {

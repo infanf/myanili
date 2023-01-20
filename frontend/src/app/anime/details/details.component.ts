@@ -27,7 +27,6 @@ import { AnisearchService } from '@services/anisearch.service';
 import { CacheService } from '@services/cache.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
-import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
 
 @Component({
@@ -373,6 +372,7 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     const data = { status } as Partial<MyAnimeUpdate>;
     if (status === 'watching' && !this.anime.my_list_status?.start_date) {
+      const { DateTime } = await import('luxon');
       data.start_date = DateTime.local().toISODate();
     }
     await this.animeService.updateAnime(
@@ -422,6 +422,7 @@ export class AnimeDetailsComponent implements OnInit {
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
+      const { DateTime } = await import('luxon');
       data.finish_date = DateTime.local().toISODate();
       data.is_rewatching = false;
       if (this.anime.my_list_status.is_rewatching) {
@@ -505,6 +506,7 @@ export class AnimeDetailsComponent implements OnInit {
           if (status) {
             const sequelData = { status } as Partial<MyAnimeUpdate>;
             if (status === 'watching') {
+              const { DateTime } = await import('luxon');
               sequelData.start_date = DateTime.local().toISODate();
             }
             await this.animeService.updateAnime({ malId: sequel.id }, sequelData);

@@ -20,7 +20,6 @@ import { CacheService } from '@services/cache.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { SettingsService } from '@services/settings.service';
-import { DateTime } from 'luxon';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -175,6 +174,7 @@ export class AnimeService {
             ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME');
           }
           if (!ids.anilistId) return;
+          const { DateTime } = require('luxon') as typeof import('luxon');
           const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
           const finishDate = data.finish_date ? DateTime.fromISO(data.finish_date) : undefined;
           return this.anilist.updateEntry(ids.anilistId, {
@@ -293,6 +293,7 @@ export class AnimeService {
       return (Math.floor(days) % 7) as Weekday;
     }
     const mapper = (d: number) => {
+      const { DateTime } = require('luxon') as typeof import('luxon');
       const todayFinal = today || DateTime.now().weekday % 7;
       const delta = (6 + d - todayFinal) % 7;
       return delta;
@@ -305,6 +306,7 @@ export class AnimeService {
     if (typeof day === 'object') {
       day = this.getLastDay(day);
     }
+    const { DateTime } = require('luxon') as typeof import('luxon');
     return DateTime.now().set({ weekday: day }).toFormat('cccc');
   }
 
@@ -322,6 +324,7 @@ export class AnimeService {
    */
   fixBroadcast(anime: Anime | AnimeNode) {
     if (anime.broadcast?.day_of_the_week && anime.broadcast?.start_time) {
+      const { DateTime } = require('luxon') as typeof import('luxon');
       let date = DateTime.now().setZone('Asia/Tokyo');
       let weekday;
       switch (anime.broadcast.day_of_the_week) {

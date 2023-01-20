@@ -1,5 +1,3 @@
-// import { Base64 } from 'js-base64';
-import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
 
 import { Genre, Nsfw, Picture, Studio } from './components';
@@ -261,6 +259,7 @@ export function parseExtension(comments: string): AnimeExtension {
 export function daysToLocal(simulcast?: SimulcastData): number[] {
   if (!simulcast) return [];
   const [hour, minute] = simulcast?.time?.split(':').map(Number) || [0, 0];
+  const { DateTime } = require('luxon') as typeof import('luxon');
   return (
     simulcast?.day?.map(
       weekday =>

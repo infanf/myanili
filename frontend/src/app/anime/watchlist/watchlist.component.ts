@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Button } from '@components/dialogue/dialogue.component';
 import { DialogueService } from '@components/dialogue/dialogue.service';
-import { DateTimeFrom } from '@components/luxon-helper';
 import {
   Anime,
   AnimeEpisodeRule,
@@ -15,7 +14,6 @@ import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { GlobalService } from '@services/global.service';
 import { Language, SettingsService } from '@services/settings.service';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'myanili-watchlist',
@@ -43,6 +41,7 @@ export class WatchlistComponent implements OnInit {
 
   async ngOnInit() {
     const animes = await this.animeService.list('watching', { limit: 1000 });
+    const { DateTimeFrom } = await import('@components/luxon-helper');
     this.animes = animes
       .filter(anime => {
         if (!anime.my_extension) return true;
@@ -91,6 +90,8 @@ export class WatchlistComponent implements OnInit {
   }
 
   isSeen(anime: ListAnime): boolean {
+    const { DateTimeFrom } =
+      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
     if (anime.list_status.num_episodes_watched === 0) return false;
     const updateDate = DateTimeFrom(
       anime.my_extension?.lastWatchedAt || anime.list_status.updated_at,
@@ -98,9 +99,11 @@ export class WatchlistComponent implements OnInit {
     return this.getLast8am() < updateDate;
   }
 
-  getLast8am(): DateTime {
+  getLast8am() {
+    const { DateTimeFrom } =
+      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
     const now = DateTimeFrom();
-    const eightAm = DateTime.now().set({
+    const eightAm = DateTimeFrom().set({
       hour: 8,
       minute: 0,
       second: 0,
@@ -123,6 +126,7 @@ export class WatchlistComponent implements OnInit {
     } as Partial<MyAnimeUpdate>;
     if (anime.my_extension) anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
+    const { DateTime } = await import('luxon');
     if (currentEpisode + 1 === anime.node.num_episodes) {
       data.status = 'completed';
       data.finish_date = DateTime.local().toISODate();
@@ -245,6 +249,8 @@ export class WatchlistComponent implements OnInit {
   }
 
   isInSeason(anime: ListAnime): boolean {
+    const { DateTimeFrom } =
+      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
     if (anime.node.start_date) {
       if (DateTimeFrom(anime.node.start_date).minus({ days: 6 }) < DateTimeFrom()) {
         if (

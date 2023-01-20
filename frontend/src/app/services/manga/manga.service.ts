@@ -11,7 +11,6 @@ import {
   MyMangaUpdate,
   ReadStatus,
 } from '@models/manga';
-import { DateTime } from 'luxon';
 import { environment } from 'src/environments/environment';
 import { compareTwoStrings } from 'string-similarity';
 
@@ -107,6 +106,7 @@ export class MangaService {
             ids.anilistId = await this.anilist.getId(ids.malId, 'MANGA');
           }
           if (!ids.anilistId) return;
+          const { DateTime } = require('luxon') as typeof import('luxon');
           const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
           const finishDate = data.finish_date ? DateTime.fromISO(data.finish_date) : undefined;
           return this.anilist.updateEntry(ids.anilistId, {
