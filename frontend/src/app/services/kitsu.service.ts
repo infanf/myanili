@@ -13,7 +13,6 @@ import {
 } from '@models/kitsu';
 import { ReadStatus } from '@models/manga';
 import { KitsuNotificationsService } from '@services/kitsu/notifications.service';
-import * as CryptoJS from 'crypto-js';
 import { BehaviorSubject } from 'rxjs';
 import { compareTwoStrings } from 'string-similarity';
 
@@ -152,6 +151,7 @@ export class KitsuService {
     password?: string,
     saveLogin = false,
   ): Promise<KitsuUser | undefined> {
+    const CryptoJS = await import('crypto-js');
     if (saveLogin && username && password) {
       const usernameEncrypted = CryptoJS.AES.encrypt(username, this.clientId).toString();
       const passwordEncrypted = CryptoJS.AES.encrypt(password, this.clientId).toString();
