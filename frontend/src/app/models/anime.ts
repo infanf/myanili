@@ -236,10 +236,10 @@ export function migrateSimulcasts(extension: Partial<AnimeExtension>): AnimeExte
   } else if (simulDay && Array.isArray(simulDay)) {
     simulDays.push(...simulDay);
   }
-  extension.simulcast.time = extension.simulcast.time || extension.simulTime;
-  extension.simulcast.country = extension.simulcast.country || extension.simulCountry;
-  extension.simulcast.tz = extension.simulcast.tz || Timezone.UTC;
-  extension.simulcast.day = extension.simulcast.day || simulDays;
+  extension.simulcast.time ||= extension.simulTime;
+  extension.simulcast.country ||= extension.simulCountry;
+  extension.simulcast.tz ||= Timezone.UTC;
+  extension.simulcast.day ||= simulDays;
   delete extension.simulDay;
   delete extension.simulTime;
   delete extension.simulCountry;
