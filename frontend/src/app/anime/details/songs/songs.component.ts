@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { Anime, AnimeTheme } from '@models/anime';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MalService } from '@services/mal.service';
 import { DeviceDetectorService } from 'ngx-device-detector';

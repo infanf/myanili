@@ -8,26 +8,22 @@ import { ExternalModule } from '@external/external.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgCircleProgressModule } from 'ng-circle-progress';
-import { InViewportModule } from 'ng-in-viewport';
 import { environment } from 'src/environments/environment';
 
 import { AppComponent } from './app.component';
 import { DirectivesModule } from './directives/directives.module';
 import { NavbarModule } from './navbar/navbar.module';
-import { RelatedModule } from './related/related.module';
-import { SearchComponent } from './search/search.component';
-import { AboutComponent } from './settings/about/about.component';
-import { ChangelogComponent } from './settings/changelog/changelog.component';
-import { MigrateBakaComponent } from './settings/migrate-baka/migrate-baka.component';
-import { NewVersionComponent } from './settings/new-version/new-version.component';
-import { SettingsComponent } from './settings/settings.component';
+import { SettingsModule } from './settings/settings.module';
 
 const routes: Routes = [
-  { path: ':type/search', component: SearchComponent },
+  { path: 'anime/search', redirectTo: 'search/anime', pathMatch: 'full' },
   { path: 'anime', loadChildren: () => import('@anime/anime.module').then(m => m.AnimeModule) },
+  { path: 'manga/search', redirectTo: 'search/manga', pathMatch: 'full' },
   { path: 'manga', loadChildren: () => import('@manga/manga.module').then(m => m.MangaModule) },
-  { path: 'search', redirectTo: '/anime/search', pathMatch: 'full' },
+  {
+    path: 'search',
+    loadChildren: () => import('./search/search.module').then(m => m.SearchModule),
+  },
   {
     path: 'character',
     loadChildren: () => import('./character/character.module').then(m => m.CharacterModule),
@@ -40,45 +36,20 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    AboutComponent,
-    AppComponent,
-    ChangelogComponent,
-    MigrateBakaComponent,
-    NewVersionComponent,
-    SearchComponent,
-    SettingsComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     NgbModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    NgCircleProgressModule.forRoot({
-      radius: 7,
-      outerStrokeWidth: 1,
-      innerStrokeWidth: 1,
-      space: -1,
-      showBackground: false,
-      showTitle: false,
-      showUnits: false,
-      showSubtitle: false,
-      outerStrokeColor: 'currentColor',
-      innerStrokeColor: '#88888818',
-      animation: false,
-      backgroundPadding: 0,
-      outerStrokeLinecap: 'butt',
-      class: 'align-text-top',
-    }),
     AngularSvgIconModule.forRoot(),
     IconModule,
-    ExternalModule,
     DirectivesModule,
+    ExternalModule,
     ComponentsModule,
-    InViewportModule,
     NavbarModule,
-    RelatedModule,
     RouterModule.forRoot(routes, { useHash: true }),
+    SettingsModule,
   ],
   providers: [Title],
 

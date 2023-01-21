@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Button } from '@components/dialogue/dialogue.component';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   Anime,
   AnimeEpisodeRule,
@@ -12,6 +11,7 @@ import {
 import { AnimeService } from '@services/anime/anime.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { Language, SettingsService } from '@services/settings.service';
 

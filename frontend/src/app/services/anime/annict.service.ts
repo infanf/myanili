@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
+import { DialogueService } from '@services/dialogue.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 

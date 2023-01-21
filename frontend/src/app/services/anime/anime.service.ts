@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   Anime,
   AnimeNode,
@@ -17,6 +16,7 @@ import { AnnictService } from '@services/anime/annict.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { CacheService } from '@services/cache.service';
+import { DialogueService } from '@services/dialogue.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { SettingsService } from '@services/settings.service';

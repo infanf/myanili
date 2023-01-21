@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { PlatformPipe } from '@components/platform.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
@@ -11,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
 import { AnisearchService } from '@services/anisearch.service';
 import { CacheService } from '@services/cache.service';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MangaService } from '@services/manga/manga.service';

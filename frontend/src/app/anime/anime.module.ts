@@ -8,7 +8,6 @@ import { ComponentsModule } from '@components/components.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgCircleProgressModule } from 'ng-circle-progress';
 import { InViewportModule } from 'ng-in-viewport';
 
 import { AnimeCharactersComponent } from './details/characters/characters.component';
@@ -55,22 +54,6 @@ import { StreamingComponent } from './widget/streaming/streaming.component';
     IconModule,
     InViewportModule,
     NgbModule,
-    NgCircleProgressModule.forRoot({
-      radius: 7,
-      outerStrokeWidth: 1,
-      innerStrokeWidth: 1,
-      space: -1,
-      showBackground: false,
-      showTitle: false,
-      showUnits: false,
-      showSubtitle: false,
-      outerStrokeColor: 'currentColor',
-      innerStrokeColor: '#88888818',
-      animation: false,
-      backgroundPadding: 0,
-      outerStrokeLinecap: 'butt',
-      class: 'align-text-top',
-    }),
     RelatedModule,
     RouterModule.forChild([
       { path: 'list', component: AnimeListComponent },

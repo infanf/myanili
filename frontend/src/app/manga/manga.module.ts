@@ -8,7 +8,6 @@ import { ComponentsModule } from '@components/components.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgCircleProgressModule } from 'ng-circle-progress';
 import { InViewportModule } from 'ng-in-viewport';
 
 import { BookshelfComponent, BookshelfWrapperComponent } from './bookshelf/bookshelf.component';
@@ -43,22 +42,6 @@ import { PlatformComponent } from './widget/platform/platform.component';
     DirectivesModule,
     FormsModule,
     NgbModule,
-    NgCircleProgressModule.forRoot({
-      radius: 7,
-      outerStrokeWidth: 1,
-      innerStrokeWidth: 1,
-      space: -1,
-      showBackground: false,
-      showTitle: false,
-      showUnits: false,
-      showSubtitle: false,
-      outerStrokeColor: 'currentColor',
-      innerStrokeColor: '#88888818',
-      animation: false,
-      backgroundPadding: 0,
-      outerStrokeLinecap: 'butt',
-      class: 'align-text-top',
-    }),
     RelatedModule,
     RouterModule.forChild([
       { path: 'list', component: MangaListComponent },
