@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ComponentsModule } from '@components/components.module';
 import { ExternalModule } from '@external/external.module';
@@ -11,30 +12,12 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { InViewportModule } from 'ng-in-viewport';
 import { environment } from 'src/environments/environment';
 
-import { AnimeCharactersComponent } from './anime/details/characters/characters.component';
-import { AnimeDetailsComponent } from './anime/details/details.component';
-import { AnimeRecommendationsComponent } from './anime/details/recommendations/recommendations.component';
-import { AnimeRelatedComponent } from './anime/details/related/related.component';
-import { AnimeSongsComponent } from './anime/details/songs/songs.component';
-import { StaffComponent } from './anime/details/staff/staff.component';
-import { AnimeListGridComponent } from './anime/list/grid/grid.component';
-import { AnimeListComponent } from './anime/list/list.component';
-import { AnimeListListComponent } from './anime/list/list/list.component';
-import { ProducerComponent } from './anime/producer/producer.component';
-import { ScheduleComponent } from './anime/schedule/schedule.component';
-import { SeasonGridComponent } from './anime/season/grid/grid.component';
-import { SeasonListComponent } from './anime/season/list/list.component';
-import { SeasonComponent } from './anime/season/season.component';
-import { WatchlistComponent } from './anime/watchlist/watchlist.component';
-import { StreamingComponent } from './anime/widget/streaming/streaming.component';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharacterAnimeComponent } from './character/anime/anime.component';
 import { CharacterComponent } from './character/character.component';
 import { CharacterMangaComponent } from './character/manga/manga.component';
 import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
-import { LiveactionRelatedComponent } from './liveaction/related/related.component';
 import {
   BookshelfComponent,
   BookshelfWrapperComponent,
@@ -42,7 +25,6 @@ import {
 import { MangaCharactersComponent } from './manga/details/characters/characters.component';
 import { MangaDetailsComponent } from './manga/details/details.component';
 import { MangaRecommendationsComponent } from './manga/details/recommendations/recommendations.component';
-import { MangaRelatedComponent } from './manga/details/related/related.component';
 import { MangaListGridComponent } from './manga/list/grid/grid.component';
 import { MangaListComponent } from './manga/list/list.component';
 import { MangaListListComponent } from './manga/list/list/list.component';
@@ -55,6 +37,7 @@ import { PersonAnimeComponent } from './person/anime/anime.component';
 import { PersonMangaComponent } from './person/manga/manga.component';
 import { PersonComponent } from './person/person.component';
 import { PersonStaffComponent } from './person/staff/staff.component';
+import { RelatedModule } from './related/related.module';
 import { SearchComponent } from './search/search.component';
 import { AboutComponent } from './settings/about/about.component';
 import { ChangelogComponent } from './settings/changelog/changelog.component';
@@ -62,58 +45,54 @@ import { MigrateBakaComponent } from './settings/migrate-baka/migrate-baka.compo
 import { NewVersionComponent } from './settings/new-version/new-version.component';
 import { SettingsComponent } from './settings/settings.component';
 
+const routes: Routes = [
+  { path: ':type/search', component: SearchComponent },
+  { path: 'anime', loadChildren: () => import('@anime/anime.module').then(m => m.AnimeModule) },
+  { path: 'manga/list', component: MangaListComponent },
+  { path: 'manga/list/:status', component: MangaListComponent },
+  { path: 'manga/bookshelf', component: BookshelfWrapperComponent },
+  { path: 'manga/details/:id', component: MangaDetailsComponent },
+  { path: 'manga/magazine/:id', component: MagazineComponent },
+  { path: 'manga', redirectTo: '/manga/bookshelf', pathMatch: 'full' },
+  { path: 'search', redirectTo: '/anime/search', pathMatch: 'full' },
+  { path: 'character/:id', component: CharacterComponent },
+  { path: 'person/:id', component: PersonComponent },
+  { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
+];
+
 @NgModule({
   declarations: [
+    AboutComponent,
     AppComponent,
-    NavbarTopComponent,
-    AnimeListComponent,
-    AnimeDetailsComponent,
-    WatchlistComponent,
-    ScheduleComponent,
-    SeasonComponent,
-    SettingsComponent,
-    StreamingComponent,
-    MangaDetailsComponent,
-    MangaListComponent,
-    SearchComponent,
-    AnimeCharactersComponent,
-    AnimeRecommendationsComponent,
-    AnimeRelatedComponent,
-    MangaRelatedComponent,
-    AnimeSongsComponent,
-    MangaRecommendationsComponent,
-    MangaCharactersComponent,
-    CharacterComponent,
-    PersonComponent,
-    ProducerComponent,
-    MagazineComponent,
-    StaffComponent,
     BookshelfComponent,
     BookshelfWrapperComponent,
-    AnimeListGridComponent,
-    AnimeListListComponent,
-    PlatformComponent,
-    SeasonGridComponent,
-    SeasonListComponent,
     ChangelogComponent,
     CharacterAnimeComponent,
+    CharacterComponent,
     CharacterMangaComponent,
     CharacterVoicesComponent,
+    MagazineComponent,
+    MangaCharactersComponent,
+    MangaDetailsComponent,
+    MangaListComponent,
+    MangaListGridComponent,
+    MangaListListComponent,
+    MangaRecommendationsComponent,
+    MigrateBakaComponent,
+    NavbarBottomComponent,
+    NavbarTopComponent,
+    NewVersionComponent,
+    NotificationsComponent,
     PersonAnimeComponent,
+    PersonComponent,
     PersonMangaComponent,
     PersonStaffComponent,
-    AboutComponent,
-    NewVersionComponent,
-    MigrateBakaComponent,
-    MangaListListComponent,
-    MangaListGridComponent,
-    LiveactionRelatedComponent,
-    NavbarBottomComponent,
-    NotificationsComponent,
+    PlatformComponent,
+    SearchComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     NgbModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
@@ -139,6 +118,8 @@ import { SettingsComponent } from './settings/settings.component';
     DirectivesModule,
     ComponentsModule,
     InViewportModule,
+    RelatedModule,
+    RouterModule.forRoot(routes, { useHash: true }),
   ],
   providers: [Title],
 

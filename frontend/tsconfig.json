@@ -31,6 +31,12 @@
       "@external/*": [
         "src/app/external/*"
       ],
+      "@anime/*": [
+        "src/app/anime/*"
+      ],
+      "@manga/*": [
+        "src/app/manga/*"
+      ],
       "@components/*": [
         "src/app/components/*"
       ],

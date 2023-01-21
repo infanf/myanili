@@ -95,7 +95,7 @@ export class AnilistLibraryService {
     data.mediaId = id;
     const variables = JSON.parse(JSON.stringify(data));
     return this.client
-      .query(QUERY, variables)
+      .mutation(QUERY, variables)
       .toPromise()
       .catch(error => {
         console.log({ error });
@@ -143,7 +143,7 @@ export class AnilistLibraryService {
       }
     `;
     return this.client
-      .query<{ DeleteMediaListEntry: { deleted: boolean } }>(QUERY, { id })
+      .mutation<{ DeleteMediaListEntry: { deleted: boolean } }>(QUERY, { id })
       .toPromise()
       .then(result => ({ deleted: result.data?.DeleteMediaListEntry.deleted || false }))
       .catch(error => {
