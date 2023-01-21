@@ -72,6 +72,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     AnisearchIconComponent,
     ProgressIconComponent,
     LoadingIconComponent,
+    NgCircleProgressModule,
   ],
 })
 export class IconModule {}

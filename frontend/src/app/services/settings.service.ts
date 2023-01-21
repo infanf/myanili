@@ -3,8 +3,6 @@ import { Season, SeasonNumber } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
 
-import { NewVersionComponent } from '../settings/new-version/new-version.component';
-
 import { GlobalService } from './global.service';
 
 @Injectable({
@@ -41,11 +39,15 @@ export class SettingsService {
         );
         if (changeNotes) {
           localStorage.setItem('myaniliVersion', this.glob.version);
-          const changelogModal = this.modalService.open(NewVersionComponent);
-          changelogModal.componentInstance.changelog = {
-            version: this.glob.version,
-            changes: [...changeNotes],
-          };
+          import('../settings/new-version/new-version.component').then(
+            ({ NewVersionComponent }) => {
+              const changelogModal = this.modalService.open(NewVersionComponent);
+              changelogModal.componentInstance.changelog = {
+                version: this.glob.version,
+                changes: [...changeNotes],
+              };
+            },
+          );
         }
       }
     } catch (e) {}

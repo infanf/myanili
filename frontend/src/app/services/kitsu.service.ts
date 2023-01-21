@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import {
@@ -12,6 +11,7 @@ import {
   KitsuUser,
 } from '@models/kitsu';
 import { ReadStatus } from '@models/manga';
+import { DialogueService } from '@services/dialogue.service';
 import { KitsuNotificationsService } from '@services/kitsu/notifications.service';
 import { BehaviorSubject } from 'rxjs';
 import { compareTwoStrings } from 'string-similarity';

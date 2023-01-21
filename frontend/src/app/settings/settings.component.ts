@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { AnilistUser } from '@models/anilist';
 import { BakaUser } from '@models/baka';
 import { KitsuUser } from '@models/kitsu';
@@ -9,6 +8,7 @@ import { AnilistService } from '@services/anilist.service';
 import { AnnictService } from '@services/anime/annict.service';
 import { SimklService, SimklUser } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';

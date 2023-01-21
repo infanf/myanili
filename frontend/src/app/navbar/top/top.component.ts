@@ -3,7 +3,6 @@ import { MalUser } from '@models/user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MalService } from '@services/mal.service';
 import { NavbarService } from '@services/navbar.service';
-import { SettingsComponent } from 'src/app/settings/settings.component';
 
 @Component({
   selector: 'myanili-navbar-top',
@@ -30,7 +29,8 @@ export class NavbarTopComponent {
   user?: MalUser;
   module?: 'anime' | 'manga';
 
-  showSettings() {
+  async showSettings() {
+    const { SettingsComponent } = await import('../../settings/settings.component');
     this.modal.open(SettingsComponent);
   }
 }

@@ -3,7 +3,7 @@ import { AnisearchRelated, AnisearchService } from '@services/anisearch.service'
 
 @Component({
   selector: 'myanili-liveaction-related',
-  templateUrl: './related.component.html',
+  templateUrl: './liveaction.component.html',
 })
 export class LiveactionRelatedComponent implements OnInit, OnChanges {
   @Input() anisearchId!: number;

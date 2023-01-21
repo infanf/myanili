@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   AnilistMediaListStatus,
   AnilistNotification,
@@ -9,6 +8,7 @@ import {
 import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { ReadStatus } from '@models/manga';
+import { DialogueService } from '@services/dialogue.service';
 import { Client } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';

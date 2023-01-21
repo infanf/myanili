@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { ToasterService } from '@components/toaster/toaster.service';
 import { MyAnimeUpdate } from '@models/anime';
 import { ExtRating } from '@models/components';
+import { DialogueService } from '@services/dialogue.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 

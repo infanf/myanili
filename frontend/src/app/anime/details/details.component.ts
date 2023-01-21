@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Button } from '@components/dialogue/dialogue.component';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnictComponent } from '@external/annict/annict.component';
@@ -25,6 +24,7 @@ import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { AnisearchService } from '@services/anisearch.service';
 import { CacheService } from '@services/cache.service';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import Timezone from 'timezone-enum';

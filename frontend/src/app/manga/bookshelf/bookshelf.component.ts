@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { ListManga, MyMangaUpdate } from '@models/manga';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MangaService } from '@services/manga/manga.service';
 import { SettingsService } from '@services/settings.service';

@@ -4,7 +4,7 @@ import { MangaService } from '@services/manga/manga.service';
 
 @Component({
   selector: 'myanili-manga-related',
-  templateUrl: './related.component.html',
+  templateUrl: './manga.component.html',
 })
 export class MangaRelatedComponent {
   @Input() related_manga: RelatedManga[] = [];
