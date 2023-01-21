@@ -18,18 +18,6 @@ import { CharacterComponent } from './character/character.component';
 import { CharacterMangaComponent } from './character/manga/manga.component';
 import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
-import {
-  BookshelfComponent,
-  BookshelfWrapperComponent,
-} from './manga/bookshelf/bookshelf.component';
-import { MangaCharactersComponent } from './manga/details/characters/characters.component';
-import { MangaDetailsComponent } from './manga/details/details.component';
-import { MangaRecommendationsComponent } from './manga/details/recommendations/recommendations.component';
-import { MangaListGridComponent } from './manga/list/grid/grid.component';
-import { MangaListComponent } from './manga/list/list.component';
-import { MangaListListComponent } from './manga/list/list/list.component';
-import { MagazineComponent } from './manga/magazine/magazine.component';
-import { PlatformComponent } from './manga/widget/platform/platform.component';
 import { NavbarBottomComponent } from './navbar/bottom/bottom.component';
 import { NotificationsComponent } from './navbar/notifications/notifications.component';
 import { NavbarTopComponent } from './navbar/top/top.component';
@@ -48,12 +36,7 @@ import { SettingsComponent } from './settings/settings.component';
 const routes: Routes = [
   { path: ':type/search', component: SearchComponent },
   { path: 'anime', loadChildren: () => import('@anime/anime.module').then(m => m.AnimeModule) },
-  { path: 'manga/list', component: MangaListComponent },
-  { path: 'manga/list/:status', component: MangaListComponent },
-  { path: 'manga/bookshelf', component: BookshelfWrapperComponent },
-  { path: 'manga/details/:id', component: MangaDetailsComponent },
-  { path: 'manga/magazine/:id', component: MagazineComponent },
-  { path: 'manga', redirectTo: '/manga/bookshelf', pathMatch: 'full' },
+  { path: 'manga', loadChildren: () => import('@manga/manga.module').then(m => m.MangaModule) },
   { path: 'search', redirectTo: '/anime/search', pathMatch: 'full' },
   { path: 'character/:id', component: CharacterComponent },
   { path: 'person/:id', component: PersonComponent },
@@ -64,20 +47,11 @@ const routes: Routes = [
   declarations: [
     AboutComponent,
     AppComponent,
-    BookshelfComponent,
-    BookshelfWrapperComponent,
     ChangelogComponent,
     CharacterAnimeComponent,
     CharacterComponent,
     CharacterMangaComponent,
     CharacterVoicesComponent,
-    MagazineComponent,
-    MangaCharactersComponent,
-    MangaDetailsComponent,
-    MangaListComponent,
-    MangaListGridComponent,
-    MangaListListComponent,
-    MangaRecommendationsComponent,
     MigrateBakaComponent,
     NavbarBottomComponent,
     NavbarTopComponent,
@@ -87,7 +61,6 @@ const routes: Routes = [
     PersonComponent,
     PersonMangaComponent,
     PersonStaffComponent,
-    PlatformComponent,
     SearchComponent,
     SettingsComponent,
   ],
