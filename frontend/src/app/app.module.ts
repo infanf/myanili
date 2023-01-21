@@ -13,18 +13,8 @@ import { InViewportModule } from 'ng-in-viewport';
 import { environment } from 'src/environments/environment';
 
 import { AppComponent } from './app.component';
-import { CharacterAnimeComponent } from './character/anime/anime.component';
-import { CharacterComponent } from './character/character.component';
-import { CharacterMangaComponent } from './character/manga/manga.component';
-import { CharacterVoicesComponent } from './character/voices/voices.component';
 import { DirectivesModule } from './directives/directives.module';
-import { NavbarBottomComponent } from './navbar/bottom/bottom.component';
-import { NotificationsComponent } from './navbar/notifications/notifications.component';
-import { NavbarTopComponent } from './navbar/top/top.component';
-import { PersonAnimeComponent } from './person/anime/anime.component';
-import { PersonMangaComponent } from './person/manga/manga.component';
-import { PersonComponent } from './person/person.component';
-import { PersonStaffComponent } from './person/staff/staff.component';
+import { NavbarModule } from './navbar/navbar.module';
 import { RelatedModule } from './related/related.module';
 import { SearchComponent } from './search/search.component';
 import { AboutComponent } from './settings/about/about.component';
@@ -38,8 +28,14 @@ const routes: Routes = [
   { path: 'anime', loadChildren: () => import('@anime/anime.module').then(m => m.AnimeModule) },
   { path: 'manga', loadChildren: () => import('@manga/manga.module').then(m => m.MangaModule) },
   { path: 'search', redirectTo: '/anime/search', pathMatch: 'full' },
-  { path: 'character/:id', component: CharacterComponent },
-  { path: 'person/:id', component: PersonComponent },
+  {
+    path: 'character',
+    loadChildren: () => import('./character/character.module').then(m => m.CharacterModule),
+  },
+  {
+    path: 'person',
+    loadChildren: () => import('./person/person.module').then(m => m.PersonModule),
+  },
   { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
 ];
 
@@ -48,19 +44,8 @@ const routes: Routes = [
     AboutComponent,
     AppComponent,
     ChangelogComponent,
-    CharacterAnimeComponent,
-    CharacterComponent,
-    CharacterMangaComponent,
-    CharacterVoicesComponent,
     MigrateBakaComponent,
-    NavbarBottomComponent,
-    NavbarTopComponent,
     NewVersionComponent,
-    NotificationsComponent,
-    PersonAnimeComponent,
-    PersonComponent,
-    PersonMangaComponent,
-    PersonStaffComponent,
     SearchComponent,
     SettingsComponent,
   ],
@@ -91,6 +76,7 @@ const routes: Routes = [
     DirectivesModule,
     ComponentsModule,
     InViewportModule,
+    NavbarModule,
     RelatedModule,
     RouterModule.forRoot(routes, { useHash: true }),
   ],
