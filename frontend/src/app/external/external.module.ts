@@ -10,6 +10,7 @@ import { AnnictComponent } from './annict/annict.component';
 import { BakamangaComponent } from './bakamanga/bakamanga.component';
 import { ExternalComponent } from './external.component';
 import { KitsuComponent } from './kitsu/kitsu.component';
+import { LivechartComponent } from './livechart/livechart.component';
 import { TraktComponent } from './trakt/trakt.component';
 
 @NgModule({
@@ -20,6 +21,7 @@ import { TraktComponent } from './trakt/trakt.component';
     BakamangaComponent,
     AnnictComponent,
     KitsuComponent,
+    LivechartComponent,
   ],
   imports: [FormsModule, CommonModule, IconModule, DirectivesModule],
   exports: [],

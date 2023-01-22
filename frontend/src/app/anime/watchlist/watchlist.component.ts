@@ -172,6 +172,7 @@ export class WatchlistComponent implements OnInit {
             id: anime.my_extension?.trakt,
             season: anime.node.media_type === 'movie' ? -1 : anime.my_extension?.seasonNumber,
           },
+          livechartId: anime.my_extension?.livechartId,
         },
         data,
       ),

@@ -22,6 +22,8 @@ import { MalService } from '@services/mal.service';
 import { SettingsService } from '@services/settings.service';
 import { environment } from 'src/environments/environment';
 
+import { LivechartService } from './livechart.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -35,6 +37,7 @@ export class AnimeService {
     private simkl: SimklService,
     private annict: AnnictService,
     private trakt: TraktService,
+    private livechart: LivechartService,
     private cache: CacheService,
     private settings: SettingsService,
     private dialogue: DialogueService,
@@ -150,6 +153,7 @@ export class AnimeService {
         kitsuId: anime.my_extension?.kitsuId,
         simklId: anime.my_extension?.simklId,
         annictId: anime.my_extension?.annictId,
+        livechartId: anime.my_extension?.livechartId,
       },
       data,
     );
@@ -163,6 +167,7 @@ export class AnimeService {
       simklId?: number;
       annictId?: number;
       trakt?: { id?: string; season?: number };
+      livechartId?: number;
     },
     data: Partial<MyAnimeUpdate>,
   ): Promise<MyAnimeStatus> {
@@ -220,6 +225,11 @@ export class AnimeService {
       this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
+      this.livechart.updateAnime(ids.livechartId, {
+        status: this.livechart.statusFromMal(data.status),
+        rating: data.score,
+        episodesWatched: data.num_watched_episodes,
+      }),
     ]);
     return malResponse;
   }
@@ -231,6 +241,7 @@ export class AnimeService {
     simklId?: number;
     annictId?: number;
     traktId?: string;
+    livechartId?: number;
   }) {
     await Promise.all([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
@@ -239,6 +250,7 @@ export class AnimeService {
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
       this.trakt.ignore(ids.traktId),
+      this.livechart.deleteAnime(ids.livechartId),
     ]);
     return true;
   }
