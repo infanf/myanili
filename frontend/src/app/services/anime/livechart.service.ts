@@ -22,9 +22,11 @@ export class LivechartService {
     this.client = createClient({
       url: 'https://www.livechart.me/graphql',
       fetchOptions: () => {
-        const token = this.accessToken;
+        const token = this.accessToken !== 'null' ? this.accessToken : undefined;
         return {
-          headers: { authorization: token ? `Bearer ${token}` : '' },
+          headers: {
+            authorization: token ? `Bearer ${token}` : '',
+          },
         };
       },
     });
