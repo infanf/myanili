@@ -259,7 +259,7 @@ export class AnimeService {
     const links = await this.malService.getJikanData<Array<{ name: string; url: string }>>(
       `anime/${id}/external`,
     );
-    const website = links.find(link => link.name.includes('Official'));
+    const website = links?.find(link => link.name.includes('Official'));
     return website?.url;
   }
 
