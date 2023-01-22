@@ -292,6 +292,7 @@ export class AnimeService {
     if (typeof days === 'number') {
       return (Math.floor(days) % 7) as Weekday;
     }
+    days = days.map(d => Math.floor(d) % 7);
     const mapper = (d: number) => {
       const todayFinal = today || DateTime.now().weekday % 7;
       const delta = (6 + d - todayFinal) % 7;
