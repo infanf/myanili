@@ -6,6 +6,7 @@ import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
 import { AnnictService } from '@services/anime/annict.service';
+import { LivechartService } from '@services/anime/livechart.service';
 import { SimklService, SimklUser } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { DialogueService } from '@services/dialogue.service';
@@ -30,6 +31,8 @@ export class SettingsComponent implements OnInit {
   kitsuData?: { username: string; password: string; saveLogin: boolean };
   bakaLoggedIn?: BakaUser;
   bakaData?: { username: string; password: string; saveLogin: boolean };
+  livechartLoggedIn?: string;
+  livechartData?: { username: string; password: string; saveLogin: boolean };
   inlist = 'false';
   layout = 'list';
   nsfw = 'true';
@@ -44,6 +47,7 @@ export class SettingsComponent implements OnInit {
     private simkl: SimklService,
     private annict: AnnictService,
     private baka: MangaupdatesService,
+    private livechart: LivechartService,
     public modal: NgbActiveModal,
     private dialogue: DialogueService,
   ) {
@@ -70,6 +74,9 @@ export class SettingsComponent implements OnInit {
     });
     this.baka.user.subscribe(user => {
       this.bakaLoggedIn = user;
+    });
+    this.livechart.user.subscribe(user => {
+      this.livechartLoggedIn = user;
     });
     this.settings.onlyInList.subscribe(inList => {
       this.inlist = JSON.stringify(inList);
@@ -205,5 +212,27 @@ export class SettingsComponent implements OnInit {
 
   async bakaLogoff() {
     this.baka.logoff();
+  }
+
+  async livechartConnect() {
+    if (!this.livechartData) {
+      this.livechartData = {
+        username: '',
+        password: '',
+        saveLogin: false,
+      };
+      return;
+    }
+    this.glob.busy();
+    await this.livechart.login(
+      this.livechartData?.username,
+      this.livechartData?.password,
+      this.livechartData?.saveLogin,
+    );
+    this.glob.notbusy();
+  }
+
+  async livechartLogoff() {
+    this.livechart.logoff();
   }
 }
