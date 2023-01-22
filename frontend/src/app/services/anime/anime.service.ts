@@ -292,6 +292,7 @@ export class AnimeService {
     if (typeof days === 'number') {
       return (Math.floor(days) % 7) as Weekday;
     }
+    days = days.map(d => Math.floor(d) % 7);
     const mapper = (d: number) => {
       const { DateTime } = require('luxon') as typeof import('luxon');
       const todayFinal = today || DateTime.now().weekday % 7;

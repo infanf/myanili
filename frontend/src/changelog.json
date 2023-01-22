@@ -1,6 +1,12 @@
 {
   "changes": [
     {
+      "version": "2.20.1",
+      "fixes": [
+        "watchlist sorting on sundays"
+      ]
+    },
+    {
       "version": "2.20.0",
       "features": [
         "add timezone settings to watch time",
