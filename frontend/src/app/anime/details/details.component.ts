@@ -342,6 +342,7 @@ export class AnimeDetailsComponent implements OnInit {
           id: this.anime.my_extension?.trakt,
           season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
         },
+        livechartId: this.anime.my_extension?.livechartId,
       },
       updateData,
     );
@@ -388,6 +389,7 @@ export class AnimeDetailsComponent implements OnInit {
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
+        livechartId: this.anime.my_extension?.livechartId,
       },
       data,
     );
@@ -406,6 +408,7 @@ export class AnimeDetailsComponent implements OnInit {
         kitsuId: this.anime.my_extension?.kitsuId,
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
+        livechartId: this.anime.my_extension?.livechartId,
       },
       {
         status: 'completed',
@@ -467,6 +470,7 @@ export class AnimeDetailsComponent implements OnInit {
           kitsuId: this.anime.my_extension?.kitsuId,
           simklId: this.anime.my_extension?.simklId,
           annictId: this.anime.my_extension?.annictId,
+          livechartId: this.anime.my_extension?.livechartId,
         },
         data,
       ),

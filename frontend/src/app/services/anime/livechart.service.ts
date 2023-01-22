@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
 import { Client } from '@urql/core';
@@ -179,10 +180,10 @@ export class LivechartService {
   }
 
   async updateAnime(
-    id: number,
-    updateData: { status?: LivechartStatus; episodes?: number; rating?: number },
+    id?: number,
+    attributes?: { status?: LivechartStatus; episodesWatched?: number; rating?: number },
   ) {
-    if (!id) return;
+    if (!id || !attributes) return;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
       mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
@@ -220,12 +221,32 @@ export class LivechartService {
           status?: LivechartStatus;
         };
         ratingScale: 'RATING_10';
-      }>(MUTATION, { animeId: id })
+      }>(MUTATION, { animeId: id, attributes })
       .toPromise();
     if (error || !data) {
       console.log(error);
       return;
     }
+  }
+
+  async deleteAnime(id?: number): Promise<boolean> {
+    if (!id) return false;
+    const { gql } = await import('@urql/core');
+    const MUTATION = gql`
+      mutation DeleteLibraryEntry($animeId: ID!) {
+        deleteLibraryEntry(animeId: $animeId) {
+          libraryEntry {
+            animeDatabaseId
+          }
+        }
+      }
+    `;
+    const { data, error } = await this.client.mutation(MUTATION, { animeId: id }).toPromise();
+    if (error || !data) {
+      console.log(error);
+      return false;
+    }
+    return true;
   }
 
   async login(
@@ -339,6 +360,37 @@ export class LivechartService {
 
   get user() {
     return this.userSubject.asObservable();
+  }
+
+  statusFromMal(status?: WatchStatus): LivechartStatus | undefined {
+    switch (status) {
+      case 'watching':
+        return 'WATCHING';
+      case 'completed':
+        return 'COMPLETED';
+      case 'on_hold':
+      case 'plan_to_watch':
+        return 'CONSIDERING';
+      case 'dropped':
+        return 'SKIPPING';
+      default:
+        return undefined;
+    }
+  }
+
+  statusToMal(status?: LivechartStatus): WatchStatus | undefined {
+    switch (status) {
+      case 'WATCHING':
+        return 'watching';
+      case 'COMPLETED':
+        return 'completed';
+      case 'CONSIDERING':
+        return 'plan_to_watch';
+      case 'SKIPPING':
+        return 'dropped';
+      default:
+        return undefined;
+    }
   }
 }
 
