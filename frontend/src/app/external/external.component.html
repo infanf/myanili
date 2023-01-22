@@ -21,6 +21,7 @@
           [src]="node.poster"
           class="float-start rounded me-2"
           width="120px"
+          loading="lazy"
         />
         <b>{{ node.title }}</b>
         <span *ngIf="node.year" class="ms-1">({{ node.year }})</span>

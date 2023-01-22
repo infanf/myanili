@@ -441,12 +441,17 @@
       <div class="row my-2" *ngIf="edit && anime && editExtension">
         <div class="col-4 fw-bold text-end">LiveChart.me</div>
         <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.livechartId"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
+          <div class="input-group input-group-sm">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.livechartId"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+            <button class="btn btn-primary" (click)="findLivechart()">
+              <myanili-icon-livechart></myanili-icon-livechart>
+            </button>
+          </div>
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && anime && editExtension">
@@ -678,7 +683,11 @@
             </div>
             <div class="row">
               <div class="col-4">
-                <td class="text-nowrap"></td>
+                <td class="text-nowrap">
+                  <myanili-external-rating
+                    [rating]="getRating('livechart')"
+                  ></myanili-external-rating>
+                </td>
               </div>
               <div class="col-8">
                 <myanili-icon-livechart></myanili-icon-livechart>

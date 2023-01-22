@@ -5,6 +5,7 @@ import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
+import { LivechartComponent } from '@external/livechart/livechart.component';
 import { TraktComponent } from '@external/trakt/trakt.component';
 import {
   Anime,
@@ -20,6 +21,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
 import { AnimeService } from '@services/anime/anime.service';
 import { AnnictService } from '@services/anime/annict.service';
+import { LivechartService } from '@services/anime/livechart.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { AnisearchService } from '@services/anisearch.service';
@@ -62,6 +64,7 @@ export class AnimeDetailsComponent implements OnInit {
     private simkl: SimklService,
     private annict: AnnictService,
     private anisearch: AnisearchService,
+    private livechart: LivechartService,
     private cache: CacheService,
     private dialogue: DialogueService,
   ) {
@@ -193,13 +196,16 @@ export class AnimeDetailsComponent implements OnInit {
       );
     }
     if (!this.anime.my_extension.livechartId) {
-      promises.push(
-        this.animeService.getLivechartId(this.id).then(livechartId => {
-          if (livechartId && this?.anime?.my_extension) {
-            this.anime.my_extension.livechartId = livechartId;
-          }
-        }),
-      );
+      const livechartPromise = new Promise(async resolve => {
+        const livechartId =
+          (await this.livechart.getId(this.id, anime.title)) ||
+          (await this.animeService.getLivechartId(this.id));
+        if (livechartId && this?.anime?.my_extension) {
+          this.anime.my_extension.livechartId = livechartId;
+        }
+        resolve(livechartId);
+      });
+      promises.push(livechartPromise);
     }
     if (!this.anime.my_extension.trakt || !this.anime.my_extension.series) {
       promises.push(
@@ -607,6 +613,15 @@ export class AnimeDetailsComponent implements OnInit {
     });
   }
 
+  async findLivechart() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(LivechartComponent);
+    modal.componentInstance.title = this.anime.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.livechartId = Number(value);
+    });
+  }
+
   getDay(simulcast: AnimeExtension['simulcast']): string {
     const day = daysToLocal(simulcast);
     const names = day.map(d => this.animeService.getDay(d));
@@ -647,6 +662,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('anisearch')) {
       this.anisearch.getRating(this.anime?.my_extension?.anisearchId).then(rating => {
         this.setRating('anisearch', rating);
+      });
+    }
+    if (!this.getRating('livechart')) {
+      this.livechart.getRating(this.anime?.my_extension?.livechartId).then(rating => {
+        this.setRating('livechart', rating);
       });
     }
   }
