@@ -185,7 +185,7 @@ export class LivechartService {
     id?: number,
     attributes?: { status?: LivechartStatus; episodesWatched?: number; rating?: number },
   ) {
-    if (!id || !attributes) return;
+    if (!id || !attributes || !(await this.checkLogin())) return;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
       mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
@@ -232,7 +232,7 @@ export class LivechartService {
   }
 
   async deleteAnime(id?: number): Promise<boolean> {
-    if (!id) return false;
+    if (!id || !(await this.checkLogin())) return false;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
       mutation DeleteLibraryEntry($animeId: ID!) {
@@ -334,7 +334,7 @@ export class LivechartService {
       }
     `;
     const { data, error } = await this.client
-      .query<{ viewer: { username: string } }>(QUERY, {})
+      .query<{ viewer?: { username: string } }>(QUERY, {})
       .toPromise();
     if (error || !data) {
       console.log(error);
@@ -342,11 +342,11 @@ export class LivechartService {
       return;
     }
     this.loggedIn = true;
-    if (refresh) {
-      await this.login();
-      return this.checkLogin(false);
+    const username = data.viewer?.username;
+    if (!username && refresh) {
+      return this.login();
     }
-    return data.viewer.username;
+    return username;
   }
 
   logoff() {
