@@ -296,20 +296,9 @@
                 type="password"
                 [(ngModel)]="livechartData.password"
               />
-              <div class="form-check">
-                <input
-                  [(ngModel)]="livechartData.saveLogin"
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="kitsuSaveLogin"
-                />
-                <label class="form-check-label" for="kitsuSaveLogin">
-                  Save credentials locally<br /><small class="text-secondary"
-                    >Only use if you keep getting logged out. Your username and password will be
-                    stored in localStorage on your device.</small
-                  >
-                </label>
+              <div class="text-secondary mb-1">
+                Disclaimer: Your username and password will be stored in localStorage on your
+                device.
               </div>
             </ng-container>
             <button

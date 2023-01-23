@@ -31,9 +31,11 @@ export class LivechartService {
       },
     });
     this.accessToken = String(localStorage.getItem('livechartAccessToken'));
+    if (this.accessToken === 'null') this.accessToken = '';
     this.refreshToken = String(localStorage.getItem('livechartRefreshToken'));
+    if (this.refreshToken === 'null') this.refreshToken = '';
     this.expires = Number(localStorage.getItem('livechartExpires') || 0);
-    if (this.accessToken && this.accessToken !== 'null') {
+    if (this.accessToken) {
       this.login()
         .then(user => {
           if (user) {
@@ -44,8 +46,8 @@ export class LivechartService {
         })
         .catch(e => {
           this.dialogue.alert(
-            'Could not connect to Kitsu, please check your account settings.',
-            'Kitsu Connection Error',
+            'Could not connect to Livechart.me, please check your account settings.',
+            'Livechart.me Connection Error',
           );
           this.logoff();
         });
@@ -278,8 +280,11 @@ export class LivechartService {
         return;
       }
       const resultRefresh = await fetch('https://www.livechart.me/api/v2/tokens/@current', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          cors: 'no-cors',
+        },
         body: new URLSearchParams({
           refresh_token: this.refreshToken,
         }),
@@ -321,7 +326,7 @@ export class LivechartService {
   }
 
   async checkLogin(refresh = true): Promise<string | undefined> {
-    if (!this.accessToken) {
+    if (!this.accessToken || this.accessToken === 'null') {
       this.logoff();
       return;
     }
@@ -335,14 +340,15 @@ export class LivechartService {
     `;
     const { data, error } = await this.client
       .query<{ viewer?: { username: string } }>(QUERY, {})
-      .toPromise();
-    if (error || !data) {
+      .toPromise()
+      .catch(() => ({ data: undefined, error: false }));
+    if (!refresh && (error || !data)) {
       console.log(error);
       this.logoff();
       return;
     }
     this.loggedIn = true;
-    const username = data.viewer?.username;
+    const username = data?.viewer?.username;
     if (!username && refresh) {
       return this.login();
     }

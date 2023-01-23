@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
+import { Client } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -12,10 +13,23 @@ export class AnnictService {
   private accessToken?: string;
   private readonly baseUrl = 'https://api.annict.com/v1/';
   private readonly graphqlUrl = 'https://api.annict.com/graphql';
+  private client!: Client;
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
 
   constructor(private dialogue: DialogueService) {
     this.accessToken = String(localStorage.getItem('annictAccessToken'));
+    if (this.accessToken === 'null') this.accessToken = undefined;
+    const { createClient } = require('@urql/core') as typeof import('@urql/core');
+    this.client = createClient({
+      url: this.graphqlUrl,
+      fetchOptions: () => {
+        return {
+          headers: {
+            authorization: this.accessToken ? `Bearer ${this.accessToken}` : '',
+          },
+        };
+      },
+    });
     if (this.accessToken) {
       this.checkLogin()
         .then(user => {
@@ -75,9 +89,10 @@ export class AnnictService {
   async getId(malId: number, title: string): Promise<number | undefined> {
     if (!malId || !title || !this.accessToken) return;
     title = title.replace('!', '！').replace('?', '');
-    const query = `
-      query {
-        searchWorks(titles: ["${title}","${title.replace(/\s/g, '')}"]) {
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query AnimeSearch($titles: [String!]!) {
+        searchWorks(titles: $titles) {
           nodes {
             annictId
             malAnimeId
@@ -85,20 +100,18 @@ export class AnnictService {
         }
       }
     `;
-    const result = await fetch(this.graphqlUrl, {
-      method: 'POST',
-      headers: new Headers({
-        Authorization: `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({ query, variables: {} }),
-    });
-    if (!result.ok) return;
-    const response = (await result.json()) as {
-      data: { searchWorks: { nodes: Array<{ annictId: number; malAnimeId?: string }> } };
-    };
-    if (response.data?.searchWorks?.nodes?.length) {
-      const endResult = response.data?.searchWorks?.nodes.filter(
+    const { data, error } = await this.client
+      .query<{
+        searchWorks: {
+          nodes: Array<{ annictId: number; malAnimeId?: string }>;
+        };
+      }>(QUERY, {
+        titles: [...new Set([title, title.replace(/\s/g, '')])],
+      })
+      .toPromise();
+    if (error || !data) return;
+    if (data.searchWorks?.nodes?.length) {
+      const endResult = data.searchWorks?.nodes.filter(
         series => Number(series.malAnimeId) === malId,
       );
       if (endResult.length) {
@@ -114,9 +127,10 @@ export class AnnictService {
 
   async getRating(id?: number): Promise<ExtRating | undefined> {
     if (!id || !this.accessToken) return;
-    const query = `
-      query {
-        searchWorks(annictIds: [${id}]) {
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query AnimeSearch($ids: [Int!]!) {
+        searchWorks(annictIds: $ids) {
           nodes {
             satisfactionRate
             reviewsCount
@@ -124,22 +138,23 @@ export class AnnictService {
         }
       }
     `;
-    const result = await fetch(this.graphqlUrl, {
-      method: 'POST',
-      headers: this.getFetchHeader(),
-      body: JSON.stringify({ query, variables: {} }),
-    });
-    if (!result.ok) return;
-    const response = (await result.json()) as {
-      data: { searchWorks: { nodes: Array<{ satisfactionRate?: number; reviewsCount?: number }> } };
-    };
-    const rating = response.data?.searchWorks?.nodes[0]?.satisfactionRate;
+    const { data, error } = await this.client
+      .query<{
+        searchWorks: {
+          nodes: Array<{ satisfactionRate?: number; reviewsCount?: number }>;
+        };
+      }>(QUERY, {
+        ids: [id],
+      })
+      .toPromise();
+    if (error || !data) return;
+    const rating = data.searchWorks?.nodes[0]?.satisfactionRate;
     return rating
       ? {
           nom: rating,
           norm: rating,
           unit: '%',
-          ratings: response.data.searchWorks.nodes[0].reviewsCount,
+          ratings: data.searchWorks.nodes[0].reviewsCount,
         }
       : undefined;
   }
@@ -158,8 +173,10 @@ export class AnnictService {
   > {
     if (!title || !this.accessToken) return;
     const titleReplaced = title.replace('!', '').replace('?', '');
-    const query = `query {
-        searchWorks(titles: ["${titleReplaced}","${title}","${title.replace(/\s/g, '')}"]) {
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query AnimeSearch($titles: [String!]!) {
+        searchWorks(titles: $titles) {
           nodes {
             title
             titleRo
@@ -174,17 +191,8 @@ export class AnnictService {
         }
       }
     `;
-    const result = await fetch(this.graphqlUrl, {
-      method: 'POST',
-      headers: new Headers({
-        Authorization: `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({ query, variables: {} }),
-    });
-    if (!result.ok) return;
-    const response = (await result.json()) as {
-      data: {
+    const { data, error } = await this.client
+      .query<{
         searchWorks: {
           nodes: Array<{
             annictId: number;
@@ -196,9 +204,12 @@ export class AnnictService {
             image?: { recommendedImageUrl: string };
           }>;
         };
-      };
-    };
-    return response.data?.searchWorks?.nodes || [];
+      }>(QUERY, {
+        titles: [...new Set([title, titleReplaced, title.replace(/\s/g, '')])], // ["${titleReplaced}","${title}","${title.replace(/\s/g, '')}"]
+      })
+      .toPromise();
+    if (error || !data) return;
+    return data.searchWorks?.nodes || [];
   }
 
   async updateEntry(annictId?: number, data?: Partial<MyAnimeUpdate>) {

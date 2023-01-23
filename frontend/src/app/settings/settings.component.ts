@@ -227,7 +227,7 @@ export class SettingsComponent implements OnInit {
     await this.livechart.login(
       this.livechartData?.username,
       this.livechartData?.password,
-      this.livechartData?.saveLogin,
+      true, // livechart api doesn't support cross origin requests for token refresh
     );
     this.glob.notbusy();
   }
