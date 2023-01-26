@@ -25,6 +25,7 @@ import { LivechartService } from '@services/anime/livechart.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { AnisearchService } from '@services/anisearch.service';
+import { AnnService } from '@services/ann.service';
 import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
@@ -65,6 +66,7 @@ export class AnimeDetailsComponent implements OnInit {
     private annict: AnnictService,
     private anisearch: AnisearchService,
     private livechart: LivechartService,
+    private ann: AnnService,
     private cache: CacheService,
     private dialogue: DialogueService,
   ) {
@@ -206,6 +208,19 @@ export class AnimeDetailsComponent implements OnInit {
         resolve(livechartId);
       });
       promises.push(livechartPromise);
+    }
+    if (!this.anime.my_extension.annId) {
+      const annPromise = this.ann
+        .getEntries(this.anime.alternative_titles?.en || this.anime.title)
+        .then(annResult => {
+          if (annResult.ann.anime.length) {
+            const annId = annResult.ann.anime[0]._attributes.id;
+            if (annId && this?.anime?.my_extension) {
+              this.anime.my_extension.annId = annId;
+            }
+          }
+        });
+      promises.push(annPromise);
     }
     if (!this.anime.my_extension.trakt || !this.anime.my_extension.series) {
       promises.push(
