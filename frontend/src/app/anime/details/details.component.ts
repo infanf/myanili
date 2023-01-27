@@ -211,13 +211,10 @@ export class AnimeDetailsComponent implements OnInit {
     }
     if (!this.anime.my_extension.annId) {
       const annPromise = this.ann
-        .getEntries(this.anime.alternative_titles?.en || this.anime.title)
-        .then(annResult => {
-          if (annResult.ann.anime.length) {
-            const annId = annResult.ann.anime[0]._attributes.id;
-            if (annId && this?.anime?.my_extension) {
-              this.anime.my_extension.annId = annId;
-            }
+        .getId(this.anime.alternative_titles?.en || this.anime.title)
+        .then(annId => {
+          if (annId && this?.anime?.my_extension) {
+            this.anime.my_extension.annId = annId;
           }
         });
       promises.push(annPromise);

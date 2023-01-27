@@ -16,6 +16,18 @@ export class AnnService {
     return AnnService.xmlJson<AnnResponse>(data);
   }
 
+  async getId(title: string, type: 'anime' | 'manga' = 'anime'): Promise<number | undefined> {
+    const data = await this.getEntries(title);
+    const entries = data.ann[type];
+    if (entries.length === 1) return entries[0]._attributes.id;
+    const { compareTwoStrings } = await import('string-similarity');
+    const entriesByTitle = entries.filter(
+      e => compareTwoStrings(e._attributes.name.toLowerCase(), title.toLowerCase()) > 0.9,
+    );
+    if (entriesByTitle.length === 1) return entriesByTitle[0]._attributes.id;
+    return undefined;
+  }
+
   static xmlJson<T>(xml: string): T {
     const { xml2json } = require('xml-js') as typeof import('xml-js');
     return JSON.parse(
