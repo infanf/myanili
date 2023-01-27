@@ -168,7 +168,7 @@ export class LivechartService {
     `;
     const { data, error } = await this.client
       .query<{
-        singleAnime: { aggregateRating: { count: number; weightedValue: number } };
+        singleAnime: { aggregateRating?: { count: number; weightedValue: number } };
       }>(QUERY, { id })
       .toPromise();
     if (error || !data) {
@@ -176,6 +176,7 @@ export class LivechartService {
       return;
     }
     const { aggregateRating } = data.singleAnime;
+    if (!aggregateRating) return;
     return {
       norm: aggregateRating.weightedValue * 10,
       ratings: aggregateRating.count,
