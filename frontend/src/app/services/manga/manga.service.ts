@@ -178,9 +178,8 @@ export class MangaService {
   }
 
   async getAnimes(id: number): Promise<RelatedAnime[]> {
-    const relationTypes = await this.malService.getJikanData<Jikan4WorkRelation[]>(
-      `manga/${id}/relations`,
-    );
+    const relationTypes =
+      (await this.malService.getJikanData<Jikan4WorkRelation[]>(`manga/${id}/relations`)) || [];
     const animes = [] as RelatedAnime[];
     for (const relationType of relationTypes) {
       for (const related of relationType.entry) {

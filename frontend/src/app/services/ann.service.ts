@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ExtRating } from '@models/components';
 
 import { CacheService } from './cache.service';
 
@@ -16,9 +17,17 @@ export class AnnService {
     return AnnService.xmlJson<AnnResponse>(data);
   }
 
+  async getEntry(id: number, type: 'anime' | 'manga' = 'anime') {
+    const url = `${this.baseUrl}?${type}=${id}`;
+    const data = await this.cache.fetchRaw(url);
+    const response = AnnService.xmlJson<AnnResponse>(data);
+    return response.ann[type][0];
+  }
+
   async getId(title: string, type: 'anime' | 'manga' = 'anime'): Promise<number | undefined> {
     const data = await this.getEntries(title);
     const entries = data.ann[type];
+    if (!entries) return;
     if (entries.length === 1) return entries[0]._attributes.id;
     const { compareTwoStrings } = await import('string-similarity');
     const entriesByTitle = entries.filter(
@@ -26,6 +35,21 @@ export class AnnService {
     );
     if (entriesByTitle.length === 1) return entriesByTitle[0]._attributes.id;
     return undefined;
+  }
+
+  async getRating(id?: number, type: 'anime' | 'manga' = 'anime'): Promise<ExtRating | undefined> {
+    if (!id) return;
+    const entry = await this.getEntry(id, type);
+    if (!entry?.ratings) return;
+    const score = Number(
+      entry.ratings._attributes.bayesian_score || entry.ratings._attributes.weighted_score || 0,
+    );
+    if (!score) return;
+    return {
+      nom: score,
+      norm: score * 10,
+      ratings: Number(entry.ratings._attributes.nb_votes),
+    };
   }
 
   static xmlJson<T>(xml: string): T {
@@ -53,6 +77,7 @@ interface AnnMedia {
     'generated-on': Date;
   };
   info: [AnnInfo];
+  ratings: AnnRating;
 }
 
 type AnnManga = AnnMedia;
@@ -91,6 +116,14 @@ interface AnnInfoText {
     lang: string;
   };
   _text: string;
+}
+
+interface AnnRating {
+  _attributes: {
+    nb_votes: number;
+    weighted_score: number;
+    bayesian_score: number;
+  };
 }
 // {
 //     {

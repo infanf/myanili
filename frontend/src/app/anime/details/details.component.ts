@@ -685,6 +685,11 @@ export class AnimeDetailsComponent implements OnInit {
         this.setRating('livechart', rating);
       });
     }
+    if (!this.getRating('ann')) {
+      this.ann.getRating(this.anime?.my_extension?.annId).then(rating => {
+        this.setRating('ann', rating);
+      });
+    }
   }
 
   get meanRating(): number {
