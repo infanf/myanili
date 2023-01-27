@@ -147,6 +147,7 @@ interface MangaExtensionInterface {
   bakaId?: number | string;
   bakaMigrated?: boolean;
   anisearchId?: number;
+  annId?: number;
   fandomSlug?: string;
 }
 

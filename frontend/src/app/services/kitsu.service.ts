@@ -14,7 +14,6 @@ import { ReadStatus } from '@models/manga';
 import { DialogueService } from '@services/dialogue.service';
 import { KitsuNotificationsService } from '@services/kitsu/notifications.service';
 import { BehaviorSubject } from 'rxjs';
-import { compareTwoStrings } from 'string-similarity';
 
 @Injectable({
   providedIn: 'root',
@@ -91,6 +90,7 @@ export class KitsuService {
       const title = search.title;
       const results = await this.getDataFromName(search.title, type);
       if (results.length) {
+        const { compareTwoStrings } = await import('string-similarity');
         const foundResult = results.find(result => {
           const titleSimilarity = compareTwoStrings(title, result.attributes.canonicalTitle);
           if (search.year) {

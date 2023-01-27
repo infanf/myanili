@@ -47,6 +47,7 @@
     "string-similarity": "^4.0.4",
     "timezone-enum": "^1.0.1",
     "tslib": "^2.1.0",
+    "xml-js": "^1.6.11",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

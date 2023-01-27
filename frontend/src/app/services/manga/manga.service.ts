@@ -12,7 +12,6 @@ import {
   ReadStatus,
 } from '@models/manga';
 import { environment } from 'src/environments/environment';
-import { compareTwoStrings } from 'string-similarity';
 
 import { AnilistService } from '../anilist.service';
 import { CacheService } from '../cache.service';
@@ -179,9 +178,8 @@ export class MangaService {
   }
 
   async getAnimes(id: number): Promise<RelatedAnime[]> {
-    const relationTypes = await this.malService.getJikanData<Jikan4WorkRelation[]>(
-      `manga/${id}/relations`,
-    );
+    const relationTypes =
+      (await this.malService.getJikanData<Jikan4WorkRelation[]>(`manga/${id}/relations`)) || [];
     const animes = [] as RelatedAnime[];
     for (const relationType of relationTypes) {
       for (const related of relationType.entry) {
@@ -232,6 +230,7 @@ export class MangaService {
       return Math.abs(m.year - mangaStart) <= 1;
     });
     if (bakaMangas.length === 1) return bakaMangas[0].id;
+    const { compareTwoStrings } = await import('string-similarity');
     const bakaMangasByTitle = bakaMangas.filter(m => compareTwoStrings(m.title, manga.title) > 0.9);
     if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].id;
     return bakaMangas.find(m => m.title.toLowerCase() === manga.title.toLowerCase())?.id;
