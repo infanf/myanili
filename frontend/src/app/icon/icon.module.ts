@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
@@ -53,6 +54,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
       backgroundPadding: 0,
       outerStrokeLinecap: 'butt',
     }),
+    HttpClientModule,
   ],
   exports: [
     IconComponent,
@@ -70,6 +72,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     AnisearchIconComponent,
     ProgressIconComponent,
     LoadingIconComponent,
+    NgCircleProgressModule,
   ],
 })
 export class IconModule {}

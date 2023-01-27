@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Season, SeasonNumber } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DateTime } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
-
-import { NewVersionComponent } from '../settings/new-version/new-version.component';
 
 import { GlobalService } from './global.service';
 
@@ -13,8 +10,8 @@ import { GlobalService } from './global.service';
 })
 export class SettingsService {
   private seasonSubject = new BehaviorSubject<Season>({
-    year: DateTime.now().year,
-    season: Math.floor((DateTime.now().month - 1) / 3) as SeasonNumber,
+    year: new Date().getFullYear(),
+    season: Math.floor(new Date().getMonth() / 3) as SeasonNumber,
   });
   private languageSubject = new BehaviorSubject<Language>('default');
   private inList = new BehaviorSubject<boolean>(false);
@@ -42,11 +39,15 @@ export class SettingsService {
         );
         if (changeNotes) {
           localStorage.setItem('myaniliVersion', this.glob.version);
-          const changelogModal = this.modalService.open(NewVersionComponent);
-          changelogModal.componentInstance.changelog = {
-            version: this.glob.version,
-            changes: [...changeNotes],
-          };
+          import('../settings/new-version/new-version.component').then(
+            ({ NewVersionComponent }) => {
+              const changelogModal = this.modalService.open(NewVersionComponent);
+              changelogModal.componentInstance.changelog = {
+                version: this.glob.version,
+                changes: [...changeNotes],
+              };
+            },
+          );
         }
       }
     } catch (e) {}
@@ -64,8 +65,8 @@ export class SettingsService {
 
   resetSeason() {
     this.seasonSubject.next({
-      year: DateTime.now().year,
-      season: Math.floor((DateTime.now().month - 1) / 3) as SeasonNumber,
+      year: new Date().getFullYear(),
+      season: Math.floor(new Date().getMonth() / 3) as SeasonNumber,
     });
     localStorage.removeItem('season');
   }

@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { ListManga, MyMangaUpdate } from '@models/manga';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MangaService } from '@services/manga/manga.service';
 import { SettingsService } from '@services/settings.service';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'myanili-bookshelf-wrapper',
@@ -80,6 +79,7 @@ export class BookshelfComponent {
     if (currentVolume + 1 === manga.node.num_volumes) {
       this.glob.busy();
       data.status = 'completed';
+      const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date = DateTime.local().toISODate();
       if (manga.node.num_chapters) data.num_chapters_read = manga.node.num_chapters;
       completed = true;
@@ -117,6 +117,7 @@ export class BookshelfComponent {
     if (currentChapter + 1 === manga.node.num_chapters) {
       this.glob.busy();
       data.status = 'completed';
+      const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date = DateTime.local().toISODate();
       if (manga.node.num_volumes) data.num_volumes_read = manga.node.num_volumes;
       completed = true;

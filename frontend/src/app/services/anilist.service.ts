@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   AnilistMediaListStatus,
   AnilistNotification,
@@ -9,7 +8,8 @@ import {
 import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { ReadStatus } from '@models/manga';
-import { Apollo, gql } from 'apollo-angular';
+import { DialogueService } from '@services/dialogue.service';
+import { Client } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -28,12 +28,24 @@ export class AnilistService {
   private anilistMedia: AnilistMediaService;
   private anilistNotifications: AnilistNotificationsService;
   private anilistLibrary: AnilistLibraryService;
+  private client!: Client;
 
   loggedIn = false;
-  constructor(private client: Apollo, private dialogue: DialogueService) {
+  constructor(private dialogue: DialogueService) {
     this.clientId = String(localStorage.getItem('anilistClientId'));
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
+    const { createClient } = require('@urql/core') as typeof import('@urql/core');
+    this.client = createClient({
+      url: 'https://graphql.anilist.co',
+      fetchOptions: () => {
+        return {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`,
+          },
+        };
+      },
+    });
     if (this.accessToken) {
       this.checkLogin()
         .then(user => {
@@ -77,33 +89,28 @@ export class AnilistService {
   }
 
   async checkLogin(): Promise<AnilistUser | undefined> {
-    const requestResult = await new Promise<AnilistUser | undefined>(r => {
-      this.client
-        .query<{ Viewer: AnilistUser }>({
-          errorPolicy: 'ignore',
-          query: gql`
-            {
-              Viewer {
-                id
-                name
-                avatar {
-                  large
-                  medium
-                }
-              }
-            }
-          `,
-        })
-        .subscribe(
-          result => {
-            r(result.data.Viewer);
-          },
-          error => {
-            console.log({ error });
-            r(undefined);
-          },
-        );
-    });
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      {
+        Viewer {
+          id
+          name
+          avatar {
+            large
+            medium
+          }
+        }
+      }
+    `;
+
+    const result = await this.client
+      .query<{ Viewer: AnilistUser }>(QUERY, {})
+      .toPromise()
+      .catch(error => {
+        console.log({ error });
+        return undefined;
+      });
+    const requestResult = result?.data?.Viewer;
     this.loggedIn = !!requestResult;
     return requestResult;
   }

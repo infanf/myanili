@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { IconModule } from '@icon/icon.module';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgCircleProgressModule } from 'ng-circle-progress';
-
-import { AppRoutingModule } from '../app-routing.module';
 
 import { DateAgoPipe } from './date-ago.pipe';
 import { DayPipe } from './day.pipe';
@@ -59,24 +57,8 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     FormsModule,
     IconModule,
     NgbModalModule,
-    AppRoutingModule,
-    NgCircleProgressModule.forRoot({
-      radius: 7,
-      outerStrokeWidth: 1,
-      innerStrokeWidth: 1,
-      space: -1,
-      showBackground: false,
-      showTitle: false,
-      showUnits: false,
-      showSubtitle: false,
-      outerStrokeColor: 'currentColor',
-      innerStrokeColor: '#88888818',
-      animation: false,
-      backgroundPadding: 0,
-      outerStrokeLinecap: 'butt',
-      class: 'align-text-top',
-    }),
     AngularSvgIconModule.forRoot(),
+    RouterModule,
   ],
   exports: [
     ValuePairComponent,

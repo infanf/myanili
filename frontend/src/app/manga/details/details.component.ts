@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import { PlatformPipe } from '@components/platform.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
@@ -11,12 +10,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
 import { AnisearchService } from '@services/anisearch.service';
 import { CacheService } from '@services/cache.service';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MangaService } from '@services/manga/manga.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
-import { Base64 } from 'js-base64';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'myanili-manga-details',
@@ -128,6 +126,7 @@ export class MangaDetailsComponent implements OnInit {
       this.manga.my_extension.anisearchId = anisearchId || this.manga.my_extension.anisearchId;
       this.manga.my_extension.bakaId = bakaId || this.manga.my_extension.bakaId;
       if (manga.my_list_status) {
+        const { Base64 } = await import('js-base64');
         await this.mangaService.updateManga(
           { malId: manga.id, kitsuId, anilistId },
           {
@@ -179,6 +178,7 @@ export class MangaDetailsComponent implements OnInit {
       tags: this.manga.my_list_status.tags,
     };
     try {
+      const { Base64 } = await import('js-base64');
       const extension = JSON.parse(
         Base64.decode(this.manga.my_list_status.comments),
       ) as unknown as Partial<MangaExtension>;
@@ -206,6 +206,7 @@ export class MangaDetailsComponent implements OnInit {
       return;
     }
     this.busy = true;
+    const { Base64 } = await import('js-base64');
     const updateData = {
       comments: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyMangaUpdate>;
@@ -265,6 +266,7 @@ export class MangaDetailsComponent implements OnInit {
     this.busy = true;
     const data = { status } as Partial<MyMangaUpdate>;
     if (status === 'reading' && !this.manga.my_list_status?.start_date) {
+      const { DateTime } = require('luxon') as typeof import('luxon');
       data.start_date = DateTime.local().toISODate();
     }
     await this.mangaService.updateManga(
@@ -315,6 +317,7 @@ export class MangaDetailsComponent implements OnInit {
       this.glob.notbusy();
       return;
     }
+    const { DateTime } = require('luxon') as typeof import('luxon');
     await this.mangaService.updateManga(
       {
         malId: this.manga.id,
@@ -356,6 +359,7 @@ export class MangaDetailsComponent implements OnInit {
       data.num_chapters_read === this.manga.num_chapters
     ) {
       data.status = 'completed';
+      const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date = DateTime.local().toISODate();
       data.is_rereading = false;
       if (this.manga.my_list_status.is_rereading) {

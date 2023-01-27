@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { DateTimeFrom } from '@components/luxon-helper';
 import { Anime, daysToLocal } from '@models/anime';
 import { Weekday } from '@models/components';
 import { AnimeService } from '@services/anime/anime.service';
 import { GlobalService } from '@services/global.service';
 import { Language, SettingsService } from '@services/settings.service';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'myanili-schedule',
@@ -14,7 +12,7 @@ import { DateTime } from 'luxon';
 })
 export class ScheduleComponent {
   animes: Array<Partial<Anime>> = [];
-  today = DateTime.now().weekday as Weekday;
+  today: Weekday = 0;
   lang: Language = 'jp';
   year?: number;
   season?: number;
@@ -23,6 +21,8 @@ export class ScheduleComponent {
     private settings: SettingsService,
     private glob: GlobalService,
   ) {
+    const { DateTime } = require('luxon') as typeof import('luxon');
+    this.today = DateTime.now().weekday as Weekday;
     this.settings.season.subscribe(async season => {
       this.year = season.year;
       this.season = season.season;
@@ -67,6 +67,8 @@ export class ScheduleComponent {
   }
 
   getOtherAnimes(): Array<Partial<Anime>> {
+    const { DateTimeFrom } =
+      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
     return this.animes
       .filter(
         anime =>
@@ -82,6 +84,7 @@ export class ScheduleComponent {
   }
 
   getDay(day: number): string {
+    const { DateTime } = require('luxon') as typeof import('luxon');
     return DateTime.now()
       .set({ weekday: this.today + day })
       .toFormat('cccc');

@@ -1,321 +1,32 @@
-import { Injectable } from '@angular/core';
 import { AnilistNotification, AnilistNotificationType } from '@models/anilist';
-import { Apollo, gql } from 'apollo-angular';
+import { Client } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class AnilistNotificationsService {
   private notificationsSubject = new BehaviorSubject<AnilistNotification[]>([]);
 
-  constructor(private client: Apollo) {
+  constructor(private client: Client) {
     this.loadNotifications(100);
   }
 
-  private loadNotifications(perPage = 10, page = 1, types?: AnilistNotificationType[]) {
-    this.client
-      .watchQuery<NotificationsResult>({
-        errorPolicy: 'ignore',
-        pollInterval: 30 * 1000,
-        query: gql`
-          query ($page: Int, $perPage: Int, $types: [NotificationType]) {
-            Viewer {
-              unreadNotificationCount
-            }
-            Page(page: $page, perPage: $perPage) {
-              pageInfo {
-                total
-                perPage
-                currentPage
-                lastPage
-                hasNextPage
-              }
-              notifications(type_in: $types, resetNotificationCount: false) {
-                ... on AiringNotification {
-                  id
-                  type
-                  episode
-                  contexts
-                  media {
-                    id
-                    type
-                    bannerImage
-                    title {
-                      userPreferred
-                    }
-                  }
-                  createdAt
-                }
-                ... on RelatedMediaAdditionNotification {
-                  id
-                  type
-                  context
-                  media {
-                    id
-                    type
-                    bannerImage
-                    title {
-                      userPreferred
-                    }
-                    coverImage {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on FollowingNotification {
-                  id
-                  type
-                  context
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ActivityMessageNotification {
-                  id
-                  type
-                  context
-                  activityId
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ActivityMentionNotification {
-                  id
-                  type
-                  context
-                  activityId
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ActivityReplyNotification {
-                  id
-                  type
-                  context
-                  activityId
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ActivityReplySubscribedNotification {
-                  id
-                  type
-                  context
-                  activityId
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ActivityLikeNotification {
-                  id
-                  type
-                  context
-                  activityId
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ActivityReplyLikeNotification {
-                  id
-                  type
-                  context
-                  activityId
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ThreadCommentMentionNotification {
-                  id
-                  type
-                  context
-                  commentId
-                  thread {
-                    id
-                    title
-                  }
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ThreadCommentReplyNotification {
-                  id
-                  type
-                  context
-                  commentId
-                  thread {
-                    id
-                    title
-                  }
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ThreadCommentSubscribedNotification {
-                  id
-                  type
-                  context
-                  commentId
-                  thread {
-                    id
-                    title
-                  }
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ThreadCommentLikeNotification {
-                  id
-                  type
-                  context
-                  commentId
-                  thread {
-                    id
-                    title
-                  }
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on ThreadLikeNotification {
-                  id
-                  type
-                  context
-                  thread {
-                    id
-                    title
-                  }
-                  user {
-                    id
-                    name
-                    avatar {
-                      large
-                    }
-                  }
-                  createdAt
-                }
-                ... on MediaDataChangeNotification {
-                  id
-                  type
-                  context
-                  media {
-                    id
-                    type
-                    bannerImage
-                    title {
-                      userPreferred
-                    }
-                    coverImage {
-                      large
-                    }
-                  }
-                  reason
-                  createdAt
-                }
-                ... on MediaMergeNotification {
-                  id
-                  type
-                  context
-                  media {
-                    id
-                    type
-                    bannerImage
-                    title {
-                      userPreferred
-                    }
-                    coverImage {
-                      large
-                    }
-                  }
-                  deletedMediaTitles
-                  reason
-                  createdAt
-                }
-                ... on MediaDeletionNotification {
-                  id
-                  type
-                  context
-                  deletedMediaTitle
-                  reason
-                  createdAt
-                }
-              }
-            }
-          }
-        `,
-        variables: { perPage, page, types },
-      })
-      .valueChanges.subscribe(
-        result => {
-          const notifications = result.data.Page.notifications.map(
-            AnilistNotificationsService.mapNotification,
-          );
-          const offset = (page - 1) * perPage;
-          for (let i = 0; i < result.data.Viewer.unreadNotificationCount - offset; i++) {
-            notifications[i].unread = true;
-          }
-          this.notificationsSubject.next(notifications);
-        },
-        error => {
-          console.log({ error });
-        },
-      );
+  private async loadNotifications(perPage = 10, page = 1, types?: AnilistNotificationType[]) {
+    const { pipe, subscribe } = await import('wonka');
+    const QUERY = AnilistNotificationsService.getNotificationQuery();
+
+    pipe(
+      this.client.query<NotificationsResult>(QUERY, { perPage, page, types }),
+      subscribe(result => {
+        if (!result.data?.Page?.notifications) return;
+        const notifications = result.data.Page.notifications.map(
+          AnilistNotificationsService.mapNotification,
+        );
+        const offset = (page - 1) * perPage;
+        for (let i = 0; i < result.data.Viewer.unreadNotificationCount - offset; i++) {
+          notifications[i].unread = true;
+        }
+        this.notificationsSubject.next(notifications);
+      }),
+    );
   }
 
   get notifications(): Observable<AnilistNotification[]> {
@@ -323,32 +34,26 @@ export class AnilistNotificationsService {
   }
 
   async markAsRead(): Promise<boolean> {
-    return new Promise<boolean>(r => {
-      this.client
-        .query({
-          errorPolicy: 'ignore',
-          query: gql`
-            {
-              Page(page: 1, perPage: 1) {
-                notifications(resetNotificationCount: true) {
-                  ... on AiringNotification {
-                    id
-                  }
-                }
-              }
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      {
+        Page(page: 1, perPage: 1) {
+          notifications(resetNotificationCount: true) {
+            ... on AiringNotification {
+              id
             }
-          `,
-        })
-        .subscribe(
-          result => {
-            r(true);
-          },
-          error => {
-            console.log({ error });
-            r(false);
-          },
-        );
-    });
+          }
+        }
+      }
+    `;
+    return this.client
+      .query(QUERY, {})
+      .toPromise()
+      .then(result => !!result)
+      .catch(error => {
+        console.log({ error });
+        return false;
+      });
   }
 
   private static mapNotification(notification: Notification): AnilistNotification {
@@ -373,6 +78,291 @@ export class AnilistNotificationsService {
       }`;
     }
     return alNotification;
+  }
+
+  private static getNotificationQuery() {
+    const { gql } = require('@urql/core') as typeof import('@urql/core');
+    return gql`
+      query ($page: Int, $perPage: Int, $types: [NotificationType]) {
+        Viewer {
+          unreadNotificationCount
+        }
+        Page(page: $page, perPage: $perPage) {
+          pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+          }
+          notifications(type_in: $types, resetNotificationCount: false) {
+            ... on AiringNotification {
+              id
+              type
+              episode
+              contexts
+              media {
+                id
+                type
+                bannerImage
+                title {
+                  userPreferred
+                }
+              }
+              createdAt
+            }
+            ... on RelatedMediaAdditionNotification {
+              id
+              type
+              context
+              media {
+                id
+                type
+                bannerImage
+                title {
+                  userPreferred
+                }
+                coverImage {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on FollowingNotification {
+              id
+              type
+              context
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ActivityMessageNotification {
+              id
+              type
+              context
+              activityId
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ActivityMentionNotification {
+              id
+              type
+              context
+              activityId
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ActivityReplyNotification {
+              id
+              type
+              context
+              activityId
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ActivityReplySubscribedNotification {
+              id
+              type
+              context
+              activityId
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ActivityLikeNotification {
+              id
+              type
+              context
+              activityId
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ActivityReplyLikeNotification {
+              id
+              type
+              context
+              activityId
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ThreadCommentMentionNotification {
+              id
+              type
+              context
+              commentId
+              thread {
+                id
+                title
+              }
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ThreadCommentReplyNotification {
+              id
+              type
+              context
+              commentId
+              thread {
+                id
+                title
+              }
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ThreadCommentSubscribedNotification {
+              id
+              type
+              context
+              commentId
+              thread {
+                id
+                title
+              }
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ThreadCommentLikeNotification {
+              id
+              type
+              context
+              commentId
+              thread {
+                id
+                title
+              }
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on ThreadLikeNotification {
+              id
+              type
+              context
+              thread {
+                id
+                title
+              }
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+              createdAt
+            }
+            ... on MediaDataChangeNotification {
+              id
+              type
+              context
+              media {
+                id
+                type
+                bannerImage
+                title {
+                  userPreferred
+                }
+                coverImage {
+                  large
+                }
+              }
+              reason
+              createdAt
+            }
+            ... on MediaMergeNotification {
+              id
+              type
+              context
+              media {
+                id
+                type
+                bannerImage
+                title {
+                  userPreferred
+                }
+                coverImage {
+                  large
+                }
+              }
+              deletedMediaTitles
+              reason
+              createdAt
+            }
+            ... on MediaDeletionNotification {
+              id
+              type
+              context
+              deletedMediaTitle
+              reason
+              createdAt
+            }
+          }
+        }
+      }
+    `;
   }
 }
 

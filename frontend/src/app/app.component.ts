@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SwUpdate, VersionEvent } from '@angular/service-worker';
-import { DialogueService } from '@components/dialogue/dialogue.service';
+import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MalService } from '@services/mal.service';
 

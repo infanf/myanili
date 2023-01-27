@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DateTime } from 'luxon';
 
 @Pipe({
   name: 'day',
@@ -7,6 +6,7 @@ import { DateTime } from 'luxon';
 export class DayPipe implements PipeTransform {
   transform(value?: number | number[], format: 'ccc' | 'cccc' | 'ccccc' = 'ccc'): string {
     if (!value && value !== 0) return '';
+    const { DateTime } = require('luxon') as typeof import('luxon');
     if (typeof value === 'object') {
       return value.map(d => DateTime.now().set({ weekday: d }).toFormat(format)).join(', ');
     }

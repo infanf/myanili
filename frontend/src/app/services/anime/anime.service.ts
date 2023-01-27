@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DialogueService } from '@components/dialogue/dialogue.service';
 import {
   Anime,
   AnimeNode,
@@ -17,12 +16,13 @@ import { AnnictService } from '@services/anime/annict.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { CacheService } from '@services/cache.service';
+import { DialogueService } from '@services/dialogue.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { SettingsService } from '@services/settings.service';
-import { Base64 } from 'js-base64';
-import { DateTime } from 'luxon';
 import { environment } from 'src/environments/environment';
+
+import { LivechartService } from './livechart.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +37,7 @@ export class AnimeService {
     private simkl: SimklService,
     private annict: AnnictService,
     private trakt: TraktService,
+    private livechart: LivechartService,
     private cache: CacheService,
     private settings: SettingsService,
     private dialogue: DialogueService,
@@ -141,6 +142,7 @@ export class AnimeService {
         0,
       );
       if (episodeRule) {
+        const { Base64 } = await import('js-base64');
         data.comments = Base64.encode(JSON.stringify({ episodeRule }));
       }
     }
@@ -151,6 +153,7 @@ export class AnimeService {
         kitsuId: anime.my_extension?.kitsuId,
         simklId: anime.my_extension?.simklId,
         annictId: anime.my_extension?.annictId,
+        livechartId: anime.my_extension?.livechartId,
       },
       data,
     );
@@ -164,6 +167,7 @@ export class AnimeService {
       simklId?: number;
       annictId?: number;
       trakt?: { id?: string; season?: number };
+      livechartId?: number;
     },
     data: Partial<MyAnimeUpdate>,
   ): Promise<MyAnimeStatus> {
@@ -175,6 +179,7 @@ export class AnimeService {
             ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME');
           }
           if (!ids.anilistId) return;
+          const { DateTime } = require('luxon') as typeof import('luxon');
           const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
           const finishDate = data.finish_date ? DateTime.fromISO(data.finish_date) : undefined;
           return this.anilist.updateEntry(ids.anilistId, {
@@ -220,6 +225,11 @@ export class AnimeService {
       this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
+      this.livechart.updateAnime(ids.livechartId, {
+        status: this.livechart.statusFromMal(data.status),
+        rating: data.score,
+        episodesWatched: data.num_watched_episodes,
+      }),
     ]);
     return malResponse;
   }
@@ -231,6 +241,7 @@ export class AnimeService {
     simklId?: number;
     annictId?: number;
     traktId?: string;
+    livechartId?: number;
   }) {
     await Promise.all([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
@@ -239,6 +250,7 @@ export class AnimeService {
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
       this.trakt.ignore(ids.traktId),
+      this.livechart.deleteAnime(ids.livechartId),
     ]);
     return true;
   }
@@ -247,7 +259,7 @@ export class AnimeService {
     const links = await this.malService.getJikanData<Array<{ name: string; url: string }>>(
       `anime/${id}/external`,
     );
-    const website = links.find(link => link.name.includes('Official'));
+    const website = links?.find(link => link.name.includes('Official'));
     return website?.url;
   }
 
@@ -294,6 +306,7 @@ export class AnimeService {
     }
     days = days.map(d => Math.floor(d) % 7);
     const mapper = (d: number) => {
+      const { DateTime } = require('luxon') as typeof import('luxon');
       const todayFinal = today || DateTime.now().weekday % 7;
       const delta = (6 + d - todayFinal) % 7;
       return delta;
@@ -306,6 +319,7 @@ export class AnimeService {
     if (typeof day === 'object') {
       day = this.getLastDay(day);
     }
+    const { DateTime } = require('luxon') as typeof import('luxon');
     return DateTime.now().set({ weekday: day }).toFormat('cccc');
   }
 
@@ -323,6 +337,7 @@ export class AnimeService {
    */
   fixBroadcast(anime: Anime | AnimeNode) {
     if (anime.broadcast?.day_of_the_week && anime.broadcast?.start_time) {
+      const { DateTime } = require('luxon') as typeof import('luxon');
       let date = DateTime.now().setZone('Asia/Tokyo');
       let weekday;
       switch (anime.broadcast.day_of_the_week) {

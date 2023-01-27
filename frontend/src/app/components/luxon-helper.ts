@@ -1,8 +1,6 @@
-import { DateTime } from 'luxon';
-const parser = require('any-date-parser');
-
 // tslint:disable-next-line:no-any
-export function DateTimeFrom(date?: any): DateTime {
+export function DateTimeFrom(date?: any) {
+  const { DateTime } = require('luxon') as typeof import('luxon');
   if (!date) {
     return DateTime.now();
   }
@@ -18,6 +16,7 @@ export function DateTimeFrom(date?: any): DateTime {
   if (typeof date === 'object') {
     return DateTime.fromObject(date);
   }
+  const parser = require('any-date-parser');
   date = parser.fromString(date);
   if (date.invalid) {
     return DateTime.invalid(date.invalid);
