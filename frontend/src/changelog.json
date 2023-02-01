@@ -1,6 +1,10 @@
 {
   "changes": [
     {
+      "version": "2.22.0",
+      "features": ["Add support for AnimeNewsNetwork", "Get news from AnimeNewsNetwork"]
+    },
+    {
       "version": "2.21.0",
       "features": ["add support for Livechart.me accounts"],
       "other": ["optimize app size"]
