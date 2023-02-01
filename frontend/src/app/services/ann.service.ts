@@ -21,11 +21,14 @@ export class AnnService {
     const url = `${this.baseUrl}?${type}=${id}`;
     const data = await this.cache.fetchRaw(url);
     const response = AnnService.xmlJson<AnnResponse>(data);
+    console.debug({ response });
+    if ('warning' in response.ann) return;
     return response.ann[type][0];
   }
 
   async getId(title: string, type: 'anime' | 'manga' = 'anime'): Promise<number | undefined> {
     const data = await this.getEntries(title);
+    if ('warning' in data.ann) return;
     const entries = data.ann[type];
     if (!entries) return;
     if (entries.length === 1) return entries[0]._attributes.id;
@@ -61,10 +64,12 @@ export class AnnService {
 }
 
 interface AnnResponse {
-  ann: {
-    anime: [AnnAnime];
-    manga: [AnnManga];
-  };
+  ann:
+    | {
+        anime: [AnnAnime];
+        manga: [AnnManga];
+      }
+    | { warning: string };
 }
 
 interface AnnMedia {
@@ -112,6 +117,7 @@ interface AnnInfoText {
       | 'Genres'
       | 'Themes'
       | 'Objectionable content'
+      | 'Vintage'
       | 'Plot Summary';
     lang: string;
   };

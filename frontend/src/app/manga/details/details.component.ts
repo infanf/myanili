@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformPipe } from '@components/platform.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
+import { AnnComponent } from '@external/ann/ann.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { ExtRating } from '@models/components';
@@ -590,6 +591,16 @@ export class MangaDetailsComponent implements OnInit {
     modal.componentInstance.title = this.manga.title;
     modal.closed.subscribe((value: string) => {
       if (this.editExtension) this.editExtension.bakaId = value;
+    });
+  }
+
+  async findANN() {
+    if (!this.manga || !this.editExtension) return;
+    const modal = this.modalService.open(AnnComponent);
+    modal.componentInstance.title = this.manga.title;
+    modal.componentInstance.type = 'manga';
+    modal.closed.subscribe((value: number) => {
+      if (this.editExtension) this.editExtension.annId = Number(value);
     });
   }
 

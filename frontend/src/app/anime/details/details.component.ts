@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Button } from '@components/dialogue/dialogue.component';
 import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
+import { AnnComponent } from '@external/ann/ann.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { LivechartComponent } from '@external/livechart/livechart.component';
@@ -635,6 +636,16 @@ export class AnimeDetailsComponent implements OnInit {
     modal.componentInstance.title = this.anime.title;
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.livechartId = Number(value);
+    });
+  }
+
+  async findANN() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(AnnComponent);
+    modal.componentInstance.title = this.anime.title;
+    modal.componentInstance.type = 'anime';
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.annId = Number(value);
     });
   }
 
