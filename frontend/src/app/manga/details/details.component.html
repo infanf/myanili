@@ -651,6 +651,18 @@
           </div>
         </ng-template>
       </li>
+      <li [ngbNavItem]="3">
+        <a ngbNavLink>Characters</a>
+        <ng-template ngbNavContent>
+          <myanili-manga-characters [id]="id"></myanili-manga-characters>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="7" *ngIf="manga?.my_extension?.annId">
+        <a ngbNavLink>News</a>
+        <ng-template ngbNavContent>
+          <myanili-ann-news [annId]="manga.my_extension!.annId!" type="manga"></myanili-ann-news>
+        </ng-template>
+      </li>
       <li
         [ngbNavItem]="2"
         *ngIf="!inModal && (manga?.related_anime?.length || manga?.related_manga?.length)"
@@ -668,12 +680,6 @@
               [anisearchId]="manga.my_extension?.anisearchId || 0"
             ></myanili-liveaction-related>
           </section>
-        </ng-template>
-      </li>
-      <li [ngbNavItem]="3">
-        <a ngbNavLink>Characters</a>
-        <ng-template ngbNavContent>
-          <myanili-manga-characters [id]="id"></myanili-manga-characters>
         </ng-template>
       </li>
       <li

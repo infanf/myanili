@@ -819,6 +819,12 @@
           <myanili-anime-staff [id]="id"></myanili-anime-staff>
         </ng-template>
       </li>
+      <li [ngbNavItem]="7" *ngIf="anime?.my_extension?.annId">
+        <a ngbNavLink>News</a>
+        <ng-template ngbNavContent>
+          <myanili-ann-news [annId]="anime.my_extension!.annId!" type="anime"></myanili-ann-news>
+        </ng-template>
+      </li>
       <li
         [ngbNavItem]="4"
         *ngIf="!inModal && (anime?.related_anime?.length || anime?.related_manga?.length)"

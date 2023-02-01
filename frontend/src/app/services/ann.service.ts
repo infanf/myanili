@@ -21,7 +21,6 @@ export class AnnService {
     const url = `${this.baseUrl}?${type}=${id}`;
     const data = await this.cache.fetchRaw(url);
     const response = AnnService.xmlJson<AnnResponse>(data);
-    console.debug({ response });
     if ('warning' in response.ann) return;
     return response.ann[type][0];
   }
@@ -83,6 +82,7 @@ interface AnnMedia {
   };
   info: [AnnInfo];
   ratings: AnnRating;
+  news: [AnnNews];
 }
 
 type AnnManga = AnnMedia;
@@ -130,6 +130,14 @@ interface AnnRating {
     weighted_score: number;
     bayesian_score: number;
   };
+}
+
+export interface AnnNews {
+  _attributes: {
+    datetime: Date;
+    href: URL;
+  };
+  _text: string;
 }
 // {
 //     {
