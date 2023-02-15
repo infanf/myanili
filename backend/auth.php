@@ -8,7 +8,7 @@ if (!isset($_GET['code'])) {
     // urlAuthorize option and generates and applies any necessary parameters
     // (e.g. state).
     $authorizationUrl = $provider->getAuthorizationUrl([
-        code_challenge => $code_challenge
+        "code_challenge" => $code_challenge
     ]);
 
     // Get the state generated for you and store it to the session.
