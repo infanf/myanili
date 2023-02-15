@@ -15,7 +15,7 @@ export class ExternalComponent implements OnInit {
   async ngOnInit() {}
 }
 
-interface Node {
+export interface Node {
   id: string | number;
   title: string;
   year?: number;

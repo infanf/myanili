@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Button } from '@components/dialogue/dialogue.component';
 import { StreamPipe } from '@components/stream.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
+import { AnnComponent } from '@external/ann/ann.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { LivechartComponent } from '@external/livechart/livechart.component';
@@ -25,6 +26,7 @@ import { LivechartService } from '@services/anime/livechart.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { AnisearchService } from '@services/anisearch.service';
+import { AnnService } from '@services/ann.service';
 import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
@@ -65,6 +67,7 @@ export class AnimeDetailsComponent implements OnInit {
     private annict: AnnictService,
     private anisearch: AnisearchService,
     private livechart: LivechartService,
+    private ann: AnnService,
     private cache: CacheService,
     private dialogue: DialogueService,
   ) {
@@ -206,6 +209,16 @@ export class AnimeDetailsComponent implements OnInit {
         resolve(livechartId);
       });
       promises.push(livechartPromise);
+    }
+    if (!this.anime.my_extension.annId) {
+      const annPromise = this.ann
+        .getId(this.anime.alternative_titles?.en || this.anime.title)
+        .then(annId => {
+          if (annId && this?.anime?.my_extension) {
+            this.anime.my_extension.annId = annId;
+          }
+        });
+      promises.push(annPromise);
     }
     if (!this.anime.my_extension.trakt || !this.anime.my_extension.series) {
       promises.push(
@@ -626,6 +639,16 @@ export class AnimeDetailsComponent implements OnInit {
     });
   }
 
+  async findANN() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(AnnComponent);
+    modal.componentInstance.title = this.anime.title;
+    modal.componentInstance.type = 'anime';
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.annId = Number(value);
+    });
+  }
+
   getDay(simulcast: AnimeExtension['simulcast']): string {
     const day = daysToLocal(simulcast);
     const names = day.map(d => this.animeService.getDay(d));
@@ -671,6 +694,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('livechart')) {
       this.livechart.getRating(this.anime?.my_extension?.livechartId).then(rating => {
         this.setRating('livechart', rating);
+      });
+    }
+    if (!this.getRating('ann')) {
+      this.ann.getRating(this.anime?.my_extension?.annId).then(rating => {
+        this.setRating('ann', rating);
       });
     }
   }

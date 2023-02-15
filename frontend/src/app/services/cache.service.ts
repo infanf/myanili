@@ -6,7 +6,7 @@ import { Manga } from '@models/manga';
   providedIn: 'root',
 })
 export class CacheService {
-  dbVersion = 2;
+  dbVersion = 3;
   constructor() {
     // initialize indexedDB
     const request = indexedDB.open('mal-cache', this.dbVersion);
@@ -21,6 +21,9 @@ export class CacheService {
       }
       if (!db.objectStoreNames.contains('fetch')) {
         db.createObjectStore('fetch', { keyPath: 'url' });
+      }
+      if (!db.objectStoreNames.contains('fetchRaw')) {
+        db.createObjectStore('fetchRaw', { keyPath: 'url' });
       }
     };
   }
@@ -89,18 +92,18 @@ export class CacheService {
       .catch(() => undefined);
   }
 
-  async fetch<T>(url: string, ttl = 3600): Promise<T> {
-    const value = await new Promise(resolve => {
+  private fetchFromStore<T>(url: string, store = 'fetch'): Promise<T | undefined> {
+    return new Promise(resolve => {
       const request = indexedDB.open('mal-cache', this.dbVersion);
       request.onsuccess = () => {
         const db = request.result;
-        const transaction = db.transaction('fetch', 'readwrite');
-        const objectStore = transaction.objectStore('fetch');
+        const transaction = db.transaction(store, 'readwrite');
+        const objectStore = transaction.objectStore(store);
         const storeRequest = objectStore.get(url);
         storeRequest.onsuccess = () => {
           const result = storeRequest.result;
           if (result?.data && result.expires > Date.now()) {
-            resolve(result?.data);
+            resolve(result?.data as T);
           } else {
             resolve(undefined);
           }
@@ -109,17 +112,36 @@ export class CacheService {
       };
       request.onerror = () => resolve(undefined);
     });
+  }
+
+  // tslint:disable-next-line: no-any
+  private fetchToStore(url: string, data: any, ttl = 3600, store = 'fetch') {
+    const request = indexedDB.open('mal-cache', this.dbVersion);
+    request.onsuccess = () => {
+      const db = request.result;
+      const transaction = db.transaction(store, 'readwrite');
+      const objectStore = transaction.objectStore(store);
+      objectStore.put({ url, data, expires: ttl * 1000 + Date.now() });
+    };
+  }
+
+  async fetchRaw(url: string, ttl = 3600): Promise<string> {
+    const value = await this.fetchFromStore<string>(url, 'fetchRaw');
+    if (value) return value;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    const data = await response.text();
+    this.fetchToStore(url, data, ttl, 'fetchRaw');
+    return data;
+  }
+
+  async fetch<T>(url: string, ttl = 3600): Promise<T> {
+    const value = await this.fetchFromStore<T>(url);
     if (value) return value as T;
     const response = await fetch(url);
     if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
     const data = await response.json();
-    const request2 = indexedDB.open('mal-cache', this.dbVersion);
-    request2.onsuccess = () => {
-      const db = request2.result;
-      const transaction = db.transaction('fetch', 'readwrite');
-      const objectStore = transaction.objectStore('fetch');
-      objectStore.put({ url, data, expires: ttl * 1000 + Date.now() });
-    };
+    this.fetchToStore(url, data, ttl);
     return data;
   }
 }

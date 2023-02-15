@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformPipe } from '@components/platform.pipe';
 import { AnisearchComponent } from '@external/anisearch/anisearch.component';
+import { AnnComponent } from '@external/ann/ann.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { ExtRating } from '@models/components';
@@ -9,6 +10,7 @@ import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
 import { AnisearchService } from '@services/anisearch.service';
+import { AnnService } from '@services/ann.service';
 import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
@@ -43,6 +45,7 @@ export class MangaDetailsComponent implements OnInit {
     private kitsu: KitsuService,
     private baka: MangaupdatesService,
     private anisearch: AnisearchService,
+    private ann: AnnService,
     private modalService: NgbModal,
     private cache: CacheService,
     private dialogue: DialogueService,
@@ -94,55 +97,7 @@ export class MangaDetailsComponent implements OnInit {
     } else {
       this.manga.my_extension.malId = manga.id;
     }
-    if (
-      !this.manga.my_extension.kitsuId ||
-      !this.manga.my_extension.kitsuId.entryId ||
-      !this.manga.my_extension.anilistId ||
-      !this.manga.my_extension.anisearchId ||
-      !this.manga.my_extension.bakaId ||
-      /[a-z]/.test(String(this.manga.my_extension.bakaId))
-    ) {
-      const [anilistId, kitsuId, anisearchId, bakaId] = await Promise.all([
-        this.anilist.getId(this.id, 'MANGA'),
-        this.kitsu.getId(
-          {
-            id: this.id,
-            title: manga.title,
-            year: manga.start_date ? new Date(manga.start_date).getFullYear() : undefined,
-          },
-          'manga',
-          'myanimelist',
-          this.manga.my_extension.kitsuId?.kitsuId,
-        ),
-        this.anisearch.getId(this.manga.title, 'manga', {
-          parts: this.manga.num_chapters,
-          volumes: this.manga.num_volumes,
-          year: this.manga.start_date ? new Date(this.manga.start_date).getFullYear() : undefined,
-        }),
-        this.baka.getIdFromManga(this.manga),
-      ]);
-      this.manga.my_extension.anilistId = anilistId || this.manga.my_extension.anilistId;
-      this.manga.my_extension.kitsuId = kitsuId || this.manga.my_extension.kitsuId;
-      this.manga.my_extension.anisearchId = anisearchId || this.manga.my_extension.anisearchId;
-      this.manga.my_extension.bakaId = bakaId || this.manga.my_extension.bakaId;
-      if (manga.my_list_status) {
-        const { Base64 } = await import('js-base64');
-        await this.mangaService.updateManga(
-          { malId: manga.id, kitsuId, anilistId },
-          {
-            comments: Base64.encode(
-              JSON.stringify({
-                ...manga.my_extension,
-                kitsuId: this.manga.my_extension.kitsuId,
-                anilistId: this.manga.my_extension.anilistId,
-                anisearchId: this.manga.my_extension.anisearchId,
-                bakaId: this.manga.my_extension.bakaId,
-              }),
-            ),
-          },
-        );
-      }
-    }
+    await this.checkExternalIds(manga);
     if (!this.manga.related_anime.length) {
       this.manga.related_anime_promise.then(relatedAnime => {
         if (this.manga) this.manga.related_anime = relatedAnime;
@@ -150,6 +105,98 @@ export class MangaDetailsComponent implements OnInit {
     }
     this.glob.notbusy();
     await this.getRatings();
+  }
+
+  async checkExternalIds(manga: Manga) {
+    if (!this.manga?.my_extension) return;
+    const promises = [];
+    if (!this.manga.my_extension.kitsuId?.kitsuId) {
+      promises.push(
+        this.kitsu
+          .getId(
+            {
+              id: this.id,
+              title: manga.title,
+              year: manga.start_date ? new Date(manga.start_date).getFullYear() : undefined,
+            },
+            'manga',
+            'myanimelist',
+            this.manga.my_extension.kitsuId?.kitsuId,
+          )
+          .then(kitsuId => {
+            if (kitsuId && this?.manga?.my_extension) {
+              this.manga.my_extension.kitsuId = kitsuId;
+            }
+          }),
+      );
+    }
+    if (!this.manga.my_extension.anilistId) {
+      promises.push(
+        this.anilist.getId(this.id, 'MANGA').then(anilistId => {
+          if (anilistId && this?.manga?.my_extension) {
+            this.manga.my_extension.anilistId = anilistId;
+          }
+        }),
+      );
+    }
+    if (!this.manga.my_extension.anisearchId) {
+      promises.push(
+        this.anisearch
+          .getId(this.manga.title, 'manga', {
+            parts: this.manga.num_chapters,
+            volumes: this.manga.num_volumes,
+            year: this.manga.start_date ? new Date(this.manga.start_date).getFullYear() : undefined,
+          })
+          .then(anisearchId => {
+            if (anisearchId && this?.manga?.my_extension) {
+              this.manga.my_extension.anisearchId = anisearchId;
+            }
+          }),
+      );
+    }
+    if (!this.manga.my_extension.bakaId || /[a-z]/.test(String(this.manga.my_extension.bakaId))) {
+      promises.push(
+        this.baka.getIdFromManga(this.manga).then(bakaId => {
+          if (bakaId && this?.manga?.my_extension) {
+            this.manga.my_extension.bakaId = bakaId;
+          }
+        }),
+      );
+    }
+    if (!this.manga.my_extension.annId) {
+      promises.push(
+        this.ann
+          .getId(this.manga.alternative_titles?.en || this.manga.title, 'manga')
+          .then(annId => {
+            if (annId && this?.manga?.my_extension) {
+              this.manga.my_extension.annId = annId;
+            }
+          }),
+      );
+    }
+    await Promise.all(promises);
+    if (promises.length && manga.my_extension && manga.my_list_status) {
+      const { Base64 } = await import('js-base64');
+      await this.mangaService.updateManga(
+        {
+          malId: manga.id,
+          kitsuId: this.manga.my_extension.kitsuId,
+          anilistId: this.manga.my_extension.anilistId,
+        },
+        {
+          comments: Base64.encode(
+            JSON.stringify({
+              ...manga.my_extension,
+              kitsuId: this.manga.my_extension.kitsuId,
+              anilistId: this.manga.my_extension.anilistId,
+              anisearchId: this.manga.my_extension.anisearchId,
+              bakaId: this.manga.my_extension.bakaId,
+              annId: this.manga.my_extension.annId,
+            }),
+          ),
+        },
+      );
+    }
   }
 
   async editSave() {
@@ -477,6 +524,11 @@ export class MangaDetailsComponent implements OnInit {
         this.setRating('anisearch', rating);
       });
     }
+    if (!this.getRating('ann')) {
+      this.ann.getRating(this.manga?.my_extension?.annId, 'manga').then(rating => {
+        this.setRating('ann', rating);
+      });
+    }
   }
 
   get meanRating(): number {
@@ -539,6 +591,16 @@ export class MangaDetailsComponent implements OnInit {
     modal.componentInstance.title = this.manga.title;
     modal.closed.subscribe((value: string) => {
       if (this.editExtension) this.editExtension.bakaId = value;
+    });
+  }
+
+  async findANN() {
+    if (!this.manga || !this.editExtension) return;
+    const modal = this.modalService.open(AnnComponent);
+    modal.componentInstance.title = this.manga.title;
+    modal.componentInstance.type = 'manga';
+    modal.closed.subscribe((value: number) => {
+      if (this.editExtension) this.editExtension.annId = Number(value);
     });
   }
 

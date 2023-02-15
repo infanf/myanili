@@ -6,6 +6,7 @@ import { IconModule } from '@icon/icon.module';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+import { AnnNewsComponent } from './ann-news/ann-news.component';
 import { DateAgoPipe } from './date-ago.pipe';
 import { DayPipe } from './day.pipe';
 import { DialogueComponent } from './dialogue/dialogue.component';
@@ -51,6 +52,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     WidgetSeasonComponent,
     ToasterComponent,
     DateAgoPipe,
+    AnnNewsComponent,
   ],
   imports: [
     CommonModule,
@@ -61,6 +63,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     RouterModule,
   ],
   exports: [
+    AnnNewsComponent,
     ValuePairComponent,
     ValuePairArrayComponent,
     MediaCardComponent,

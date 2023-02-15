@@ -6,6 +6,7 @@ import { IconModule } from '@icon/icon.module';
 import { DirectivesModule } from '../directives/directives.module';
 
 import { AnisearchComponent } from './anisearch/anisearch.component';
+import { AnnComponent } from './ann/ann.component';
 import { AnnictComponent } from './annict/annict.component';
 import { BakamangaComponent } from './bakamanga/bakamanga.component';
 import { ExternalComponent } from './external.component';
@@ -22,6 +23,7 @@ import { TraktComponent } from './trakt/trakt.component';
     AnnictComponent,
     KitsuComponent,
     LivechartComponent,
+    AnnComponent,
   ],
   imports: [FormsModule, CommonModule, IconModule, DirectivesModule],
   exports: [],

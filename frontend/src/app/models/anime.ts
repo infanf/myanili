@@ -180,6 +180,8 @@ export interface AnimeExtension {
   annictId?: number;
   livechartId?: number;
   anisearchId?: number;
+  annId?: number;
+  anidbId?: number;
   fandomSlug?: string;
   displayName?: string;
   episodeRule?: number;

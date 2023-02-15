@@ -100,10 +100,10 @@
         <div class="col-4 fw-bold text-end">Type</div>
         <div class="col-8">
           <myanili-icon
-            name="{{ manga.media_type | mal: 'mediaicon' }}"
+            name="{{ manga.media_type | mal : 'mediaicon' }}"
             class="me-1"
           ></myanili-icon>
-          {{ manga!.media_type | mal: 'mediatype' }}
+          {{ manga!.media_type | mal : 'mediatype' }}
         </div>
       </div>
       <div class="row" *ngIf="manga?.serialization?.length">
@@ -136,7 +136,7 @@
             >{{
               manga!.my_list_status!.is_rereading
                 ? 'Rewatching'
-                : (manga!.my_list_status!.status | mal: 'mystatus')
+                : (manga!.my_list_status!.status | mal : 'mystatus')
             }}
             <myanili-icon
               *ngIf="
@@ -182,7 +182,7 @@
                 "
                 [value]="status"
               >
-                {{ status | mal: 'mystatus' }}
+                {{ status | mal : 'mystatus' }}
               </option>
             </select>
           </ng-template>
@@ -217,9 +217,9 @@
         <div class="col-8">
           <a
             *ngIf="manga.my_extension.platformId"
-            href="{{ manga.my_extension.platform | platform: 'urlprefix' }}{{
+            href="{{ manga.my_extension.platform | platform : 'urlprefix' }}{{
               manga.my_extension.platformId
-            }}{{ manga.my_extension.platform | platform: 'urlpostfix' }}"
+            }}{{ manga.my_extension.platform | platform : 'urlpostfix' }}"
             target="_blank"
           >
             <svg-icon
@@ -499,6 +499,25 @@
                 >
               </div>
             </div>
+            <div class="row" *ngIf="manga.my_extension?.annId">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <myanili-external-rating [rating]="getRating('ann')"></myanili-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <myanili-icon-ann></myanili-icon-ann>
+                <a
+                  class="ms-1"
+                  [href]="
+                    'https://www.animenewsnetwork.com/encyclopedia/manga.php?id=' +
+                    manga.my_extension!.annId
+                  "
+                  target="_blank"
+                  >ANN</a
+                >
+              </div>
+            </div>
             <div *ngIf="manga.my_extension?.fandomSlug" class="row">
               <div class="col-4">
                 <td class="text-nowrap"></td>
@@ -579,6 +598,22 @@
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && manga && editExtension">
+          <div class="col-4 fw-bold text-end">ANN</div>
+          <div class="col-8">
+            <div class="input-group input-group-sm">
+              <input
+                class="form-control form-control-sm"
+                [(ngModel)]="editExtension!.annId"
+                [disabled]="busy"
+                enterkeyhint="done"
+              />
+              <button class="btn btn-primary" (click)="findANN()">
+                <myanili-icon-ann></myanili-icon-ann>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && manga && editExtension">
           <div class="col-4 fw-bold text-end">Wiki</div>
           <div class="col-8">
             <div class="input-group input-group-sm">
@@ -616,6 +651,18 @@
           </div>
         </ng-template>
       </li>
+      <li [ngbNavItem]="3">
+        <a ngbNavLink>Characters</a>
+        <ng-template ngbNavContent>
+          <myanili-manga-characters [id]="id"></myanili-manga-characters>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="7" *ngIf="manga?.my_extension?.annId">
+        <a ngbNavLink>News</a>
+        <ng-template ngbNavContent>
+          <myanili-ann-news [annId]="manga.my_extension!.annId!" type="manga"></myanili-ann-news>
+        </ng-template>
+      </li>
       <li
         [ngbNavItem]="2"
         *ngIf="!inModal && (manga?.related_anime?.length || manga?.related_manga?.length)"
@@ -633,12 +680,6 @@
               [anisearchId]="manga.my_extension?.anisearchId || 0"
             ></myanili-liveaction-related>
           </section>
-        </ng-template>
-      </li>
-      <li [ngbNavItem]="3">
-        <a ngbNavLink>Characters</a>
-        <ng-template ngbNavContent>
-          <myanili-manga-characters [id]="id"></myanili-manga-characters>
         </ng-template>
       </li>
       <li

@@ -3,7 +3,6 @@ import { BakaList, BakaSeries, BakaUser, ListType } from '@models/baka';
 import { BakaManga, Manga, ReadStatus } from '@models/manga';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { compareTwoStrings } from 'string-similarity';
 
 @Injectable({
   providedIn: 'root',
@@ -104,6 +103,7 @@ export class MangaupdatesService {
       return Math.abs((m.year || 0) - mangaStart) <= 1;
     });
     if (bakaMangas.length === 1) return bakaMangas[0].series_id;
+    const { compareTwoStrings } = await import('string-similarity');
     const bakaMangasByTitle = bakaMangas.filter(m => compareTwoStrings(m.title, title) > 0.9);
     if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].series_id;
     return bakaMangas.find(m => m.title.toLowerCase() === title.toLowerCase())?.series_id;

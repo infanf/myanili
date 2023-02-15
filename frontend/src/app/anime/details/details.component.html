@@ -455,6 +455,22 @@
         </div>
       </div>
       <div class="row my-2" *ngIf="edit && anime && editExtension">
+        <div class="col-4 fw-bold text-end">ANN</div>
+        <div class="col-8">
+          <div class="input-group input-group-sm">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.annId"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+            <button class="btn btn-primary" (click)="findANN()">
+              <myanili-icon-ann></myanili-icon-ann>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && anime && editExtension">
         <div class="col-4 fw-bold text-end">Wiki</div>
         <div class="col-8">
           <div class="input-group input-group-sm">
@@ -704,6 +720,25 @@
                 >
               </div>
             </div>
+            <div class="row" *ngIf="anime.my_extension?.annId">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <myanili-external-rating [rating]="getRating('ann')"></myanili-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <myanili-icon-ann></myanili-icon-ann>
+                <a
+                  class="ms-1"
+                  [href]="
+                    'https://www.animenewsnetwork.com/encyclopedia/anime.php?id=' +
+                    anime.my_extension!.annId
+                  "
+                  target="_blank"
+                  >ANN</a
+                >
+              </div>
+            </div>
             <div *ngIf="anime.my_extension?.fandomSlug" class="row">
               <div class="col-4">
                 <td class="text-nowrap"></td>
@@ -782,6 +817,12 @@
         <a ngbNavLink>Staff</a>
         <ng-template ngbNavContent>
           <myanili-anime-staff [id]="id"></myanili-anime-staff>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="7" *ngIf="anime?.my_extension?.annId">
+        <a ngbNavLink>News</a>
+        <ng-template ngbNavContent>
+          <myanili-ann-news [annId]="anime.my_extension!.annId!" type="anime"></myanili-ann-news>
         </ng-template>
       </li>
       <li
