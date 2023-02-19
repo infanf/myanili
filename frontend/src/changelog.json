@@ -1,6 +1,10 @@
 {
   "changes": [
     {
+      "version": "2.22.1",
+      "fixes": ["Fix watchlist sorting with different timezones"]
+    },
+    {
       "version": "2.22.0",
       "features": ["Add support for AnimeNewsNetwork", "Get news from AnimeNewsNetwork"]
     },

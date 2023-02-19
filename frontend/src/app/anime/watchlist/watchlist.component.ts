@@ -78,7 +78,12 @@ export class WatchlistComponent implements OnInit {
     if (!anime.my_extension?.simulcast.day?.length) return 0;
     const days = daysToLocal(anime.my_extension.simulcast);
     if (this.animeService.getLastDay(days) === this.getLast8am().weekday % 7) {
-      return Number(anime.my_extension.simulcast.time?.replace(/\D/g, '') || 0);
+      const zone = anime.my_extension.simulcast.tz || 'UTC';
+      const time = anime.my_extension.simulcast.time || '00:00';
+      const [hour, minute] = time.split(':').map(Number);
+      const { DateTime } = require('luxon') as typeof import('luxon');
+      const localTime = DateTime.fromObject({ hour, minute }, { zone }).setZone('local');
+      return localTime.hour * 100 + localTime.minute;
     }
     return (
       (this.animeService.getLastDay(days) +
