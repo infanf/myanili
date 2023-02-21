@@ -212,7 +212,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     if (!this.anime.my_extension.annId) {
       const annPromise = this.ann
-        .getId(this.anime.alternative_titles?.en || this.anime.title)
+        .getId(this.anime.alternative_titles?.en?.replace(/^The /, '') || this.anime.title)
         .then(annId => {
           if (annId && this?.anime?.my_extension) {
             this.anime.my_extension.annId = annId;
@@ -642,7 +642,8 @@ export class AnimeDetailsComponent implements OnInit {
   async findANN() {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(AnnComponent);
-    modal.componentInstance.title = this.anime.title;
+    modal.componentInstance.title =
+      this.anime.alternative_titles?.en?.replace(/^The /, '') || this.anime.title;
     modal.componentInstance.type = 'anime';
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.annId = Number(value);

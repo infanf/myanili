@@ -166,7 +166,10 @@ export class MangaDetailsComponent implements OnInit {
     if (!this.manga.my_extension.annId) {
       promises.push(
         this.ann
-          .getId(this.manga.alternative_titles?.en || this.manga.title, 'manga')
+          .getId(
+            this.manga.alternative_titles?.en?.replace(/^The /, '') || this.manga.title,
+            'manga',
+          )
           .then(annId => {
             if (annId && this?.manga?.my_extension) {
               this.manga.my_extension.annId = annId;
@@ -598,6 +601,8 @@ export class MangaDetailsComponent implements OnInit {
     if (!this.manga || !this.editExtension) return;
     const modal = this.modalService.open(AnnComponent);
     modal.componentInstance.title = this.manga.title;
+    modal.componentInstance.title =
+      this.manga.alternative_titles?.en?.replace(/^The /, '') || this.manga.title;
     modal.componentInstance.type = 'manga';
     modal.closed.subscribe((value: number) => {
       if (this.editExtension) this.editExtension.annId = Number(value);
