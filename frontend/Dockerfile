@@ -1,8 +1,6 @@
 FROM node:18 as builder
 ARG BUILD_ENV=production
-ADD --chown=node . /app
-RUN npm i -g @angular/cli
-USER node
+ADD . /app
 WORKDIR /app
 RUN npm run build:${BUILD_ENV}
 

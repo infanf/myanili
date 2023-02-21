@@ -1,6 +1,13 @@
 {
   "changes": [
     {
+      "version": "2.22.2",
+      "fixes": [
+        "Anisearch ratings not loading",
+        "ANN search not working when title starts with \"The\""
+      ]
+    },
+    {
       "version": "2.22.1",
       "fixes": ["Fix watchlist sorting with different timezones"]
     },
