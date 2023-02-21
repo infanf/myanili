@@ -121,14 +121,19 @@ class AnisearchServiceProvider extends ServiceProvider
         $doc = new \DOMDocument();
         @$doc->loadHTML($response);
         $finder = new \DOMXPath($doc);
-        $rating = $finder->query('//*[@id="ratingstats"]/tbody/tr[2]/td[1]/span')->item(0)->nodeValue ?? 0;
-        $distribution = $finder->query('//*[@id="rating-stats"]/li/div[@class="value"]') ?? [];
+        $ldJson = $finder->query("//script[@type='application/ld+json']")->item(0)->nodeValue ?? null;
+        $rating = 0;
+        $ratings = 0;
+        try {
+            $json = json_decode($ldJson, true);
+            $rating = $json['aggregateRating']['ratingValue'] ?? 0;
+            $ratings = $json['aggregateRating']['ratingCount'] ?? 0;
+        } catch (\Exception $e) {
+        }
         return [
             "nom" => floatval($rating),
             "norm" => floatval($rating) * 20,
-            "ratings" => array_sum(array_map(function ($node) {
-                return intval($node->nodeValue);
-            }, iterator_to_array($distribution))),
+            "ratings" => intval($ratings),
         ];
     }
 
