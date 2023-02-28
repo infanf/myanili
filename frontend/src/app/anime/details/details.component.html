@@ -41,6 +41,26 @@
         [meanRating]="meanRating"
         [rating]="anime?.my_list_status?.score"
       ></myanili-poster-rating>
+      <div class="my-3">
+        <myanili-value-pair
+          *ngIf="anime?.rank"
+          [cols]="6"
+          name="Ranking"
+          value="#{{ anime!.rank | number }}"
+        ></myanili-value-pair>
+        <myanili-value-pair
+          *ngIf="anime?.popularity"
+          [cols]="6"
+          name="Popularity"
+          value="#{{ anime!.popularity | number }}"
+        ></myanili-value-pair>
+        <myanili-value-pair
+          *ngIf="anime?.num_list_users"
+          [cols]="6"
+          name="Members"
+          value="{{ anime!.num_list_users | number }}"
+        ></myanili-value-pair>
+      </div>
     </div>
 
     <!-- right column -->
@@ -357,17 +377,6 @@
           />
         </div>
       </div>
-      <div class="row my-2" *ngIf="edit && editExtension && traktUser">
-        <div class="col-4 fw-bold text-end">Trakt</div>
-        <div class="col-8">
-          <div class="input-group input-group-sm">
-            <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" />
-            <button class="btn btn-primary" (click)="findTrakt()">
-              <myanili-icon-trakt></myanili-icon-trakt>
-            </button>
-          </div>
-        </div>
-      </div>
       <div class="row my-2" *ngIf="edit && anime && editExtension">
         <div class="col-4 fw-bold text-end">Anilist</div>
         <div class="col-8">
@@ -391,6 +400,17 @@
             />
             <button class="btn btn-primary" (click)="findKitsu()">
               <myanili-icon-kitsu></myanili-icon-kitsu>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row my-2" *ngIf="edit && editExtension && traktUser">
+        <div class="col-4 fw-bold text-end">Trakt</div>
+        <div class="col-8">
+          <div class="input-group input-group-sm">
+            <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" />
+            <button class="btn btn-primary" (click)="findTrakt()">
+              <myanili-icon-trakt></myanili-icon-trakt>
             </button>
           </div>
         </div>

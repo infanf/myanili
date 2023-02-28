@@ -31,7 +31,9 @@
       </ng-template>
     </div>
   </header>
-  <!-- <hr class="mt-0" /> -->
+
+  <!-- poster -->
+
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <myanili-poster-rating
@@ -39,7 +41,30 @@
         [meanRating]="meanRating"
         [rating]="manga?.my_list_status?.score"
       ></myanili-poster-rating>
+      <div class="my-3">
+        <myanili-value-pair
+          *ngIf="manga?.rank"
+          [cols]="6"
+          name="Ranking"
+          value="#{{ manga!.rank | number }}"
+        ></myanili-value-pair>
+        <myanili-value-pair
+          *ngIf="manga?.popularity"
+          [cols]="6"
+          name="Popularity"
+          value="#{{ manga!.popularity | number }}"
+        ></myanili-value-pair>
+        <myanili-value-pair
+          *ngIf="manga?.num_list_users"
+          [cols]="6"
+          name="Members"
+          value="{{ manga!.num_list_users | number }}"
+        ></myanili-value-pair>
+      </div>
     </div>
+
+    <!-- right column -->
+
     <div class="col-sm-7 col-md-8 mb-3">
       <div class="row mb-2" *ngIf="edit && editBackup">
         <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
