@@ -130,6 +130,13 @@ class AnisearchServiceProvider extends ServiceProvider
             $ratings = $json['aggregateRating']['ratingCount'] ?? 0;
         } catch (\Exception $e) {
         }
+        if (intval($ratings) === 1 && floatval($rating) === 2.5) {
+            return [
+                "nom" => 0,
+                "norm" => 0,
+                "ratings" => 0,
+            ];
+        }
         return [
             "nom" => floatval($rating),
             "norm" => floatval($rating) * 20,
