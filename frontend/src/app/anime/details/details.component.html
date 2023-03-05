@@ -264,6 +264,15 @@
           <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
           {{ anime.my_extension.simulcast.time | time : anime.my_extension.simulcast.tz }}</span
         >
+        <myanili-icon
+          *ngIf="
+            (anime.my_list_status?.status === 'watching' || anime.my_list_status?.is_rewatching) &&
+            !edit
+          "
+          name="skip-forward"
+          class="cursor-pointer ms-2"
+          (click)="skip()"
+        ></myanili-icon>
       </myanili-value-pair>
       <ng-template #broadcast>
         <myanili-value-pair
