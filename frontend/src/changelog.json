@@ -1,6 +1,14 @@
 {
   "changes": [
     {
+      "version": "2.23.0",
+      "features": [
+        "Add skip button to remove a show from the watchlist for a week",
+        "Add MAL rankings to details page"
+      ],
+      "fixes": ["Anisearch ratings not always correct"]
+    },
+    {
       "version": "2.22.2",
       "fixes": [
         "Anisearch ratings not loading",
