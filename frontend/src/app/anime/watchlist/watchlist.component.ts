@@ -95,6 +95,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   isSeen(anime: ListAnime): boolean {
+    if (anime.busy) return false;
     const { DateTimeFrom } =
       require('@components/luxon-helper') as typeof import('@components/luxon-helper');
     if (anime.list_status.num_episodes_watched === 0) return false;

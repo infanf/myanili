@@ -548,6 +548,35 @@ export class AnimeDetailsComponent implements OnInit {
     this.glob.notbusy();
   }
 
+  async skip() {
+    if (!this.anime || !this.anime.my_list_status) return;
+    const reallySkip = await this.dialogue.confirm(`Skip ${this.anime.title} this week?`, 'Skip');
+    if (!reallySkip) return;
+    this.glob.busy();
+    if (!this.anime.my_extension) {
+      this.anime.my_extension = {
+        simulcast: {},
+      };
+    }
+    this.anime.my_extension.lastWatchedAt = new Date();
+    const { Base64 } = await import('js-base64');
+    const data = {
+      comments: Base64.encode(JSON.stringify(this.anime.my_extension)),
+    };
+    await this.animeService.updateAnime(
+      {
+        malId: this.anime.id,
+        anilistId: this.anime.my_extension?.anilistId,
+        kitsuId: this.anime.my_extension?.kitsuId,
+        simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
+        livechartId: this.anime.my_extension?.livechartId,
+      },
+      data,
+    );
+    this.glob.notbusy();
+  }
+
   async scrobbleTrakt(): Promise<boolean> {
     if (!this.anime) return false;
     return new Promise(async r => {
