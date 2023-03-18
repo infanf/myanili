@@ -506,6 +506,26 @@
                 >
               </div>
             </div>
+            <div class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <myanili-external-rating
+                    *ngIf="manga.my_extension?.mdId"
+                    [rating]="getRating('md')"
+                  ></myanili-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <myanili-icon-mangadex></myanili-icon-mangadex>
+                <a
+                  class="ms-1"
+                  [ngClass]="{ 'link-secondary': !manga.my_extension?.mdId }"
+                  [href]="getMdUrl()"
+                  target="_blank"
+                  >MangaDex</a
+                >
+              </div>
+            </div>
             <div *ngIf="manga.my_extension?.anisearchId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
@@ -603,6 +623,22 @@
               <button class="btn btn-primary" (click)="findBaka()">
                 <myanili-icon-bakamanga></myanili-icon-bakamanga>
               </button>
+            </div>
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && manga && editExtension">
+          <div class="col-4 fw-bold text-end">MangaDex</div>
+          <div class="col-8">
+            <div class="input-group input-group-sm">
+              <input
+                class="form-control form-control-sm"
+                [(ngModel)]="editExtension!.mdId"
+                [disabled]="busy"
+                enterkeyhint="done"
+              />
+              <!-- <button class="btn btn-primary" (click)="findMd()">
+                <myanili-icon-mangadex></myanili-icon-mangadex>
+              </button> -->
             </div>
           </div>
         </div>

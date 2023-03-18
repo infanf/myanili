@@ -3,6 +3,7 @@ import { ListManga, MyMangaUpdate } from '@models/manga';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MangaService } from '@services/manga/manga.service';
+import { MangadexService } from '@services/manga/mangadex.service';
 import { SettingsService } from '@services/settings.service';
 
 @Component({
@@ -55,6 +56,7 @@ export class BookshelfComponent {
 
   constructor(
     private mangaservice: MangaService,
+    private mangadex: MangadexService,
     private settings: SettingsService,
     private glob: GlobalService,
     private dialogue: DialogueService,
@@ -66,11 +68,19 @@ export class BookshelfComponent {
     if (!manga || manga.busy) return;
     manga.busy = true;
     const currentVolume = manga.list_status?.num_volumes_read || 0;
+    const currentChapter = manga.list_status?.num_chapters_read || 0;
     const data = {
       num_volumes_read: currentVolume + 1,
     } as Partial<MyMangaUpdate>;
-    let completed = false;
-    if (manga.node.num_chapters && manga.node.num_volumes) {
+    const mdId = manga.my_extension?.mdId;
+    data.num_volumes_read = currentVolume + 1;
+    if (mdId) {
+      const chapters = await this.mangadex.getChapter(mdId, currentVolume + 1);
+      if (chapters?.last) {
+        data.num_chapters_read = Math.max(chapters.last, currentChapter);
+      }
+    }
+    if (manga.node.num_chapters && manga.node.num_volumes && !data.num_chapters_read) {
       data.num_chapters_read = Math.max(
         manga.list_status?.num_chapters_read || 0,
         Math.floor(((currentVolume + 1) / manga.node.num_volumes) * manga.node.num_chapters),
@@ -82,7 +92,6 @@ export class BookshelfComponent {
       const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date = DateTime.local().toISODate();
       if (manga.node.num_chapters) data.num_chapters_read = manga.node.num_chapters;
-      completed = true;
       if (!manga.list_status?.score) {
         const myScore = await this.dialogue.rating(manga.node.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
@@ -110,17 +119,24 @@ export class BookshelfComponent {
     if (!manga || manga.busy) return;
     manga.busy = true;
     const currentChapter = manga.list_status?.num_chapters_read || 0;
+    const currentVolume = manga.list_status?.num_volumes_read || 0;
     const data = {
       num_chapters_read: currentChapter + 1,
     } as Partial<MyMangaUpdate>;
-    let completed = false;
+    const mdId = manga.my_extension?.mdId;
+    data.num_chapters_read = currentChapter + 1;
+    if (mdId) {
+      const volume = await this.mangadex.getVolume(mdId, currentChapter + 1);
+      if (volume?.last) {
+        data.num_volumes_read = Math.max(volume.volume, currentVolume);
+      }
+    }
     if (currentChapter + 1 === manga.node.num_chapters) {
       this.glob.busy();
       data.status = 'completed';
       const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date = DateTime.local().toISODate();
       if (manga.node.num_volumes) data.num_volumes_read = manga.node.num_volumes;
-      completed = true;
       if (!manga.list_status?.score) {
         const myScore = await this.dialogue.rating(manga.node.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
