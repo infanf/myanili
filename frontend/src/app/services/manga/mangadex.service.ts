@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CacheService } from '@services/cache.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MangadexService {
-  readonly baseUrl = 'https://api.mangadex.org';
+  private baseUrl = environment.backend + 'mangadex';
 
   constructor(private cache: CacheService) {}
 
