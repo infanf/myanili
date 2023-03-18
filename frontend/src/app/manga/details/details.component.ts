@@ -16,6 +16,7 @@ import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MangaService } from '@services/manga/manga.service';
+import { MangadexService } from '@services/manga/mangadex.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 
 @Component({
@@ -44,6 +45,7 @@ export class MangaDetailsComponent implements OnInit {
     private anilist: AnilistService,
     private kitsu: KitsuService,
     private baka: MangaupdatesService,
+    private mangadex: MangadexService,
     private anisearch: AnisearchService,
     private ann: AnnService,
     private modalService: NgbModal,
@@ -177,6 +179,15 @@ export class MangaDetailsComponent implements OnInit {
           }),
       );
     }
+    if (!this.manga.my_extension.mdId) {
+      promises.push(
+        this.mangadex.getByMalId(this.manga.id, this.manga.title).then(mdmanga => {
+          if (mdmanga && this?.manga?.my_extension) {
+            this.manga.my_extension.mdId = mdmanga.id;
+          }
+        }),
+      );
+    }
     await Promise.all(promises);
     if (promises.length && manga.my_extension && manga.my_list_status) {
       const { Base64 } = await import('js-base64');
@@ -195,6 +206,7 @@ export class MangaDetailsComponent implements OnInit {
               anisearchId: this.manga.my_extension.anisearchId,
               bakaId: this.manga.my_extension.bakaId,
               annId: this.manga.my_extension.annId,
+              mdId: this.manga.my_extension.mdId,
             }),
           ),
         },
@@ -522,6 +534,32 @@ export class MangaDetailsComponent implements OnInit {
         }
       });
     }
+    if (!this.getRating('md')) {
+      const mdId = this.manga?.my_extension?.mdId;
+      this.mangadex.getMangaRating(mdId).then(statistics => {
+        if (!statistics || !mdId) return;
+        if (mdId in statistics) {
+          const rating = statistics[mdId];
+          const distribution = rating.rating.distribution;
+          const ratings =
+            distribution[1] +
+            distribution[2] +
+            distribution[3] +
+            distribution[4] +
+            distribution[5] +
+            distribution[6] +
+            distribution[7] +
+            distribution[8] +
+            distribution[9] +
+            distribution[10];
+          this.setRating('md', {
+            nom: rating.rating.bayesian,
+            norm: rating.rating.bayesian * 10,
+            ratings,
+          });
+        }
+      });
+    }
     if (!this.getRating('anisearch')) {
       this.anisearch.getRating(this.manga?.my_extension?.anisearchId, 'manga').then(rating => {
         this.setRating('anisearch', rating);
@@ -617,5 +655,12 @@ export class MangaDetailsComponent implements OnInit {
       return `https://www.mangaupdates.com/series.html?id=${this.manga.my_extension.bakaId}`;
     }
     return `https://www.mangaupdates.com/series/${this.manga.my_extension.bakaId}/details`;
+  }
+
+  getMdUrl() {
+    if (!this.manga?.my_extension?.mdId) {
+      return `https://mangadex.org/search?q=${this.manga?.title}`;
+    }
+    return `https://mangadex.org/title/${this.manga.my_extension.mdId}`;
   }
 }

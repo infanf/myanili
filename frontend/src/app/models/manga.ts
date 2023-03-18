@@ -146,6 +146,7 @@ interface MangaExtensionInterface {
   kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
   bakaId?: number | string;
   bakaMigrated?: boolean;
+  mdId?: string;
   anisearchId?: number;
   annId?: number;
   fandomSlug?: string;
