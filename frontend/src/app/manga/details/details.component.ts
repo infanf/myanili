@@ -404,13 +404,30 @@ export class MangaDetailsComponent implements OnInit {
     const currentChapter = this.manga.my_list_status?.num_chapters_read || 0;
     const currentVolume = this.manga.my_list_status?.num_volumes_read || 0;
     const data = {} as Partial<MyMangaUpdate>;
+    const mdId = this.manga.my_extension?.mdId;
     if (type === 'volume') {
       data.num_volumes_read = currentVolume + 1;
+      if (mdId) {
+        const chapters = await this.mangadex.getChapter(mdId, currentVolume + 1);
+        if (chapters?.last) {
+          data.num_chapters_read = Math.max(chapters.last, currentChapter);
+        }
+      }
     } else {
       data.num_chapters_read = currentChapter + 1;
+      if (mdId) {
+        const volume = await this.mangadex.getVolume(mdId, currentChapter + 1);
+        if (volume?.last) {
+          data.num_volumes_read = Math.max(volume.volume, currentVolume);
+        }
+      }
     }
-    let completed = false;
-    if (type === 'volume' && this.manga.num_chapters && this.manga.num_volumes) {
+    if (
+      type === 'volume' &&
+      this.manga.num_chapters &&
+      this.manga.num_volumes &&
+      !data.num_chapters_read
+    ) {
       data.num_chapters_read = Math.max(
         this.manga.my_list_status?.num_chapters_read || 0,
         Math.floor(((currentVolume + 1) / this.manga.num_volumes) * this.manga.num_chapters),
@@ -429,7 +446,6 @@ export class MangaDetailsComponent implements OnInit {
       }
       if (this.manga.num_chapters) data.num_chapters_read = this.manga.num_chapters;
       if (this.manga.num_volumes) data.num_volumes_read = this.manga.num_volumes;
-      completed = true;
       if (!this.manga.my_list_status?.score) {
         const myScore = await this.dialogue.rating(this.manga.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;

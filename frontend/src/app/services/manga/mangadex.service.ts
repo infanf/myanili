@@ -39,13 +39,41 @@ export class MangadexService {
     return statistics;
   }
 
-  // async getMangaChapters(mangaId?: UUID) {
-  //   if (!mangaId) return;
-  //   const { data: chapters } = await this.cache.fetch<{ data: {} }>(
-  //     `${this.baseUrl}/manga/${mangaId}/aggregate`,
-  //   );
-  //   return chapters;
-  // }
+  async getMangaVolumes(mangaId?: UUID) {
+    if (!mangaId) return;
+    const { volumes } = await this.cache.fetch<{ volumes: { [volume: string]: Volume } }>(
+      `${this.baseUrl}/manga/${mangaId}/aggregate`,
+    );
+    return volumes;
+  }
+
+  async getVolume(mangaId: UUID, chapter: number) {
+    const volumes = await this.getMangaVolumes(mangaId);
+    const data = { volume: 0, last: false };
+    for (const volumeNo in volumes) {
+      if (!volumes.hasOwnProperty(volumeNo)) continue;
+      const volume = volumes[volumeNo];
+      if (!(String(chapter) in volume.chapters)) continue;
+      data.volume = Number(volumeNo);
+      const chapterNos = Object.keys(volume.chapters).map(Number);
+      data.last = Math.max(...chapterNos) === chapter;
+      return data;
+    }
+    return;
+  }
+
+  async getChapter(mangaId: UUID, volume: number) {
+    const volumes = await this.getMangaVolumes(mangaId);
+    const chapters = { first: 0, last: 0 };
+    if (!volumes) return;
+    if (!(String(volume) in volumes)) return;
+    for (const chapterNo in volumes[String(volume)].chapters) {
+      if (!volumes[String(volume)].chapters.hasOwnProperty(chapterNo)) continue;
+      chapters.first = Math.min(chapters.first, Number(chapterNo));
+      chapters.last = Math.max(chapters.last, Number(chapterNo));
+    }
+    return chapters;
+  }
 }
 
 interface Manga {
@@ -138,4 +166,19 @@ interface Statistics {
     };
     follows: number;
   };
+}
+
+interface Volume {
+  volume: string;
+  count: number;
+  chapters: {
+    [chapterNo: string]: Chapter;
+  };
+}
+
+interface Chapter {
+  id: UUID;
+  chapter: '156';
+  others: UUID[];
+  count: number;
 }
