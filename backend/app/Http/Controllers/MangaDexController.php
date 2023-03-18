@@ -24,13 +24,14 @@ class MangaDexController extends Controller
         $url = preg_replace('/^mangadex\//', self::$baseUrl, $request->path());
         $auth = $request->header('Authorization');
         $body = $request->getContent();
+        $params = $request->query();
         $method = $request->getMethod();
         $headers = [];
         if ($auth) {
             $headers[] = "Authorization: $auth";
         }
         $headers[] = "Content-Type: " . $request->header('Content-Type');
-        $ch = curl_init($url);
+        $ch = curl_init($url . ($params ? "?" . http_build_query($params) : ""));
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
