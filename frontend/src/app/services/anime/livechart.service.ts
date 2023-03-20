@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WatchStatus } from '@models/anime';
+import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
 import { Client } from '@urql/core';
@@ -184,11 +184,17 @@ export class LivechartService {
     };
   }
 
-  async updateAnime(
-    id?: number,
-    attributes?: { status?: LivechartStatus; episodesWatched?: number; rating?: number },
-  ) {
-    if (!id || !attributes || !(await this.checkLogin())) return;
+  async updateAnime(id?: number, updateData?: Partial<MyAnimeUpdate>) {
+    if (!id || !updateData || !(await this.checkLogin())) return;
+    const attributes = {
+      status: this.statusFromMal(updateData.status, updateData.is_rewatching),
+      rating: updateData.score,
+      episodesWatched: updateData.num_watched_episodes,
+      notes: updateData.comments,
+      startedAt: updateData.start_date,
+      finishedAt: updateData.finish_date,
+      rewatches: updateData.num_times_rewatched,
+    } as Partial<Attributes>;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
       mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
@@ -209,6 +215,10 @@ export class LivechartService {
         ratingScale
         updatedAt
         createdAt
+        notes
+        startedAt
+        finishedAt
+        rewatches
       }
       fragment problemFields on Problem {
         message
@@ -219,12 +229,8 @@ export class LivechartService {
     `;
     const { data, error } = await this.client
       .mutation<{
-        animeId: '11016';
-        attributes: {
-          episodesWatched?: 3;
-          rating?: null;
-          status?: LivechartStatus;
-        };
+        animeId: string;
+        attributes: Partial<Attributes>;
         ratingScale: 'RATING_10';
       }>(MUTATION, { animeId: id, attributes })
       .toPromise();
@@ -236,17 +242,43 @@ export class LivechartService {
 
   async deleteAnime(id?: number): Promise<boolean> {
     if (!id || !(await this.checkLogin())) return false;
+    const attributes = {
+      status: 'SKIPPING',
+    } as Partial<Attributes>;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
-      mutation DeleteLibraryEntry($animeId: ID!) {
-        deleteLibraryEntry(animeId: $animeId) {
+      mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
+        upsertLibraryEntry(animeId: $animeId, attributes: $attributes, ratingScale: RATING_10) {
           libraryEntry {
-            animeDatabaseId
+            ...viewerLibraryEntryFields
+          }
+          problems {
+            ...problemFields
           }
         }
       }
+      fragment viewerLibraryEntryFields on LibraryEntry {
+        animeDatabaseId
+        status
+        updatedAt
+        createdAt
+      }
+      fragment problemFields on Problem {
+        message
+        shortMessage
+        path
+        pathString
+      }
     `;
-    const { data, error } = await this.client.mutation(MUTATION, { animeId: id }).toPromise();
+    const { data, error } = await this.client
+      .mutation<{
+        animeId: string;
+        attributes: {
+          status?: LivechartStatus;
+        };
+        ratingScale: 'RATING_10';
+      }>(MUTATION, { animeId: id, attributes })
+      .toPromise();
     if (error || !data) {
       console.log(error);
       return false;
@@ -371,17 +403,19 @@ export class LivechartService {
     return this.userSubject.asObservable();
   }
 
-  statusFromMal(status?: WatchStatus): LivechartStatus | undefined {
+  statusFromMal(status?: WatchStatus, rewatching = false): LivechartStatus | undefined {
     switch (status) {
       case 'watching':
+        if (rewatching) return 'REWATCHING';
         return 'WATCHING';
       case 'completed':
         return 'COMPLETED';
       case 'on_hold':
+        return 'PAUSED';
       case 'plan_to_watch':
-        return 'CONSIDERING';
+        return 'PLANNING';
       case 'dropped':
-        return 'SKIPPING';
+        return 'DROPPED';
       default:
         return undefined;
     }
@@ -390,12 +424,17 @@ export class LivechartService {
   statusToMal(status?: LivechartStatus): WatchStatus | undefined {
     switch (status) {
       case 'WATCHING':
+      case 'REWATCHING':
         return 'watching';
       case 'COMPLETED':
         return 'completed';
       case 'CONSIDERING':
+      case 'PLANNING':
         return 'plan_to_watch';
+      case 'PAUSED':
+        return 'on_hold';
       case 'SKIPPING':
+      case 'DROPPED':
         return 'dropped';
       default:
         return undefined;
@@ -410,4 +449,22 @@ interface OauthResponse {
   refresh_token: string;
 }
 
-type LivechartStatus = 'WATCHING' | 'CONSIDERING' | 'COMPLETED' | 'SKIPPING';
+type LivechartStatus =
+  | 'PLANNING'
+  | 'PAUSED'
+  | 'WATCHING'
+  | 'REWATCHING'
+  | 'CONSIDERING'
+  | 'DROPPED'
+  | 'COMPLETED'
+  | 'SKIPPING';
+
+interface Attributes {
+  status: LivechartStatus;
+  episodesWatched: number;
+  rating: number;
+  rewatches: number;
+  startedAt: string;
+  finishedAt: string;
+  notes: string;
+}
