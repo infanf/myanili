@@ -19,7 +19,7 @@ export class IconStatusComponent extends IconComponent implements OnInit {
         this.name = 'eye';
         break;
       case 'on_hold':
-        this.name = 'hourglass';
+        this.name = 'pause-btn';
         break;
       case 'dropped':
         this.name = 'trash';
@@ -29,7 +29,7 @@ export class IconStatusComponent extends IconComponent implements OnInit {
         break;
       case 'plan_to_watch':
       case 'plan_to_read':
-        this.name = 'clock';
+        this.name = 'list-check';
         break;
       default:
         this.name = 'question';
