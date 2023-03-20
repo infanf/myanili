@@ -225,11 +225,7 @@ export class AnimeService {
       this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
-      this.livechart.updateAnime(ids.livechartId, {
-        status: this.livechart.statusFromMal(data.status),
-        rating: data.score,
-        episodesWatched: data.num_watched_episodes,
-      }),
+      this.livechart.updateAnime(ids.livechartId, data),
     ]);
     return malResponse;
   }

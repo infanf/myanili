@@ -272,9 +272,11 @@
         <div class="col-7">
           <ng-container *ngIf="livechartLoggedIn; else livechartConnectTemplate">
             <myanili-icon-livechart class="me-1"></myanili-icon-livechart>
-            <a href="https://www.livechart.me/users/edit" target="_blank">{{
-              livechartLoggedIn
-            }}</a>
+            <a
+              href="https://www.livechart.me/users/{{ livechartLoggedIn }}/library"
+              target="_blank"
+              >{{ livechartLoggedIn }}</a
+            >
             <myanili-icon
               class="cursor-pointer"
               name="x"
