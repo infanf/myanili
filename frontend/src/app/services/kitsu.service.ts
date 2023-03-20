@@ -392,10 +392,10 @@ export class KitsuService {
           }
         }
         return {
-          nom: Math.round(Number(response.data.attributes.averageRating) / 10) / 2,
+          nom: Math.round(Number(response.data.attributes.averageRating) * 100) / 100,
           norm: Number(response.data.attributes.averageRating),
           ratings,
-          unit: '/ 5',
+          unit: '%',
         };
       }
     }
