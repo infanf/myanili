@@ -1,6 +1,12 @@
 {
   "changes": [
     {
+      "version": "2.24.2",
+      "fixes": [
+        "updates not going through to livchart"
+      ]
+    },
+    {
       "version": "2.24.1",
       "fixes": [
         "no longer need to store livechart credentials in local storage"

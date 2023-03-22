@@ -218,7 +218,6 @@ export class LivechartService {
       status: this.statusFromMal(updateData.status, updateData.is_rewatching),
       rating: updateData.score,
       episodesWatched: updateData.num_watched_episodes,
-      notes: updateData.comments,
       startedAt: updateData.start_date,
       finishedAt: updateData.finish_date,
       rewatches: updateData.num_times_rewatched,
@@ -243,10 +242,6 @@ export class LivechartService {
         ratingScale
         updatedAt
         createdAt
-        notes
-        startedAt
-        finishedAt
-        rewatches
       }
       fragment problemFields on Problem {
         message
@@ -376,7 +371,7 @@ export class LivechartService {
       }
     `;
     const { data, error } = await this.client
-      .query<{ viewer?: { username: string } }>(QUERY, {})
+      .query<{ viewer?: { username: string } }>(QUERY, {}, { requestPolicy: 'network-only' })
       .toPromise()
       .catch(() => ({ data: undefined, error: false }));
     if (!refresh && (error || !data)) {
