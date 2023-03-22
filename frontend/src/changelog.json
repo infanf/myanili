@@ -1,6 +1,12 @@
 {
   "changes": [
     {
+      "version": "2.24.1",
+      "fixes": [
+        "no longer need to store livechart credentials in local storage"
+      ]
+    },
+    {
       "version": "2.24.0",
       "features": [
         "Integrate MangaDex: Link to MangaDex entry from details page",
