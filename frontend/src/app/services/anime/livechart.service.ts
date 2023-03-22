@@ -14,7 +14,6 @@ export class LivechartService {
   private refreshToken = '';
   private expires = 0;
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
-  private readonly key = 'livechart';
   loggedIn = false;
 
   constructor(private dialogue: DialogueService) {
@@ -286,44 +285,20 @@ export class LivechartService {
     return true;
   }
 
-  async login(
-    username?: string,
-    password?: string,
-    saveLogin = false,
-  ): Promise<string | undefined> {
-    const CryptoJS = await import('crypto-js');
-    if (saveLogin && username && password) {
-      const usernameEncrypted = CryptoJS.AES.encrypt(username, this.key).toString();
-      const passwordEncrypted = CryptoJS.AES.encrypt(password, this.key).toString();
-      localStorage.setItem('livechartUsername', usernameEncrypted);
-      localStorage.setItem('livechartPassword', passwordEncrypted);
-    }
-    if (!username && !password) {
-      const usernameEncrypted = localStorage.getItem('livechartUsername') || undefined;
-      const passwordEncrypted = localStorage.getItem('livechartPassword') || undefined;
-      if (usernameEncrypted && passwordEncrypted) {
-        username = CryptoJS.AES.decrypt(usernameEncrypted, this.key).toString(CryptoJS.enc.Utf8);
-        password = CryptoJS.AES.decrypt(passwordEncrypted, this.key).toString(CryptoJS.enc.Utf8);
-      }
-    }
-
+  async login(username?: string, password?: string): Promise<string | undefined> {
     if (!username || !password) {
       if (!this.refreshToken) {
         this.logoff();
         return;
       }
-      const resultRefresh = await fetch('https://www.livechart.me/api/v2/tokens/@current', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          cors: 'no-cors',
-        },
+      const resultRefresh = await fetch('https://www.livechart.me/api/v1/auth/refresh', {
+        method: 'POST',
         body: new URLSearchParams({
           refresh_token: this.refreshToken,
         }),
       });
       if (resultRefresh.ok) {
-        const response = (await resultRefresh.json()) as OauthResponse;
+        const response = (await resultRefresh.json()) as AuthResponse;
         this.accessToken = response.access_token;
         localStorage.setItem('livechartAccessToken', this.accessToken);
         this.refreshToken = response.refresh_token;
@@ -346,7 +321,7 @@ export class LivechartService {
     };
     const result = await fetch('https://www.livechart.me/api/v2/tokens', options);
     if (result.ok) {
-      const response = (await result.json()) as OauthResponse;
+      const response = (await result.json()) as AuthResponse;
       this.accessToken = response.access_token;
       localStorage.setItem('livechartAccessToken', this.accessToken);
       this.refreshToken = response.refresh_token;
@@ -442,7 +417,7 @@ export class LivechartService {
   }
 }
 
-interface OauthResponse {
+interface AuthResponse {
   access_token: string;
   token_type: 'Bearer';
   expires_in: number;
