@@ -114,7 +114,6 @@ $app->router->group([
     require "{$routesDir}/anisearch.php";
     require "{$routesDir}/annict.php";
     require "{$routesDir}/baka.php";
-    require "{$routesDir}/livechart.php";
     require "{$routesDir}/mal.php";
     require "{$routesDir}/mangadex.php";
     require "{$routesDir}/simkl.php";

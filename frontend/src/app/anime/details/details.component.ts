@@ -200,9 +200,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     if (!this.anime.my_extension.livechartId) {
       const livechartPromise = new Promise(async resolve => {
-        const livechartId =
-          (await this.livechart.getId(this.id, anime.title)) ||
-          (await this.animeService.getLivechartId(this.id));
+        const livechartId = await this.livechart.getId(this.id, anime.title);
         if (livechartId && this?.anime?.my_extension) {
           this.anime.my_extension.livechartId = livechartId;
         }
