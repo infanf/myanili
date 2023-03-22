@@ -87,6 +87,35 @@ export class LivechartService {
     return node?.databaseId;
   }
 
+  async getAnidbId(id: number): Promise<number | undefined> {
+    if (!id) return undefined;
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query GetFullSingleAnime($id: ID!) {
+        singleAnime(id: $id) {
+          anidbUrl
+        }
+      }
+    `;
+    const { data, error } = await this.client
+      .query<{
+        singleAnime: {
+          anidbUrl?: string;
+        };
+      }>(QUERY, { id })
+      .toPromise();
+    if (error || !data) {
+      console.log(error);
+      return;
+    }
+    const anidbUrl = data.singleAnime.anidbUrl;
+    if (!anidbUrl) return;
+    const regex = /a(\d+)$/;
+    const match = regex.exec(anidbUrl);
+    if (!match) return;
+    return Number(match[1]);
+  }
+
   async getAnimes(term: string) {
     const { gql } = await import('@urql/core');
     const QUERY = gql`

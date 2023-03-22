@@ -20,6 +20,7 @@ import {
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
+import { AnidbService } from '@services/anime/anidb.service';
 import { AnimeService } from '@services/anime/anime.service';
 import { AnnictService } from '@services/anime/annict.service';
 import { LivechartService } from '@services/anime/livechart.service';
@@ -68,6 +69,7 @@ export class AnimeDetailsComponent implements OnInit {
     private anisearch: AnisearchService,
     private livechart: LivechartService,
     private ann: AnnService,
+    private anidb: AnidbService,
     private cache: CacheService,
     private dialogue: DialogueService,
   ) {
@@ -229,6 +231,15 @@ export class AnimeDetailsComponent implements OnInit {
       );
     }
     await Promise.all(promises);
+    if (!this.anime.my_extension.anidbId) {
+      const anidbId = await this.anidb.getId({
+        kitsuId: Number(this.anime.my_extension.kitsuId?.kitsuId),
+        livechartId: this.anime.my_extension.livechartId,
+      });
+      if (anidbId && this?.anime?.my_extension) {
+        this.anime.my_extension.anidbId = anidbId;
+      }
+    }
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
       const { Base64 } = await import('js-base64');
       await this.animeService.updateAnime(
@@ -727,6 +738,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('ann')) {
       this.ann.getRating(this.anime?.my_extension?.annId).then(rating => {
         this.setRating('ann', rating);
+      });
+    }
+    if (!this.getRating('anidb')) {
+      this.anidb.getRating(this.anime?.my_extension?.anidbId).then(rating => {
+        this.setRating('anidb', rating);
       });
     }
   }
