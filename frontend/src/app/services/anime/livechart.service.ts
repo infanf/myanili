@@ -405,8 +405,7 @@ export class LivechartService {
   statusFromMal(status?: WatchStatus, rewatching = false): LivechartStatus | undefined {
     switch (status) {
       case 'watching':
-        if (rewatching) return 'REWATCHING';
-        return 'WATCHING';
+        return rewatching ? 'REWATCHING' : 'WATCHING';
       case 'completed':
         return 'COMPLETED';
       case 'on_hold':
