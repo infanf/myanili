@@ -28,7 +28,9 @@ export class AnidbService {
   }
 
   private async getXml(params: { [key: string]: string }) {
-    const response = await fetch(this.getUrl(params));
+    const response = await fetch(this.getUrl(params), {
+      referrerPolicy: 'unsafe-url',
+    });
     const xml = await response.text();
     const parser = new DOMParser();
     return parser.parseFromString(xml, 'text/xml');
