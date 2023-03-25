@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ExtRating } from '@models/components';
 import { KitsuService } from '@services/kitsu.service';
+import { environment } from 'src/environments/environment';
 
 import { LivechartService } from './livechart.service';
 
@@ -8,7 +9,7 @@ import { LivechartService } from './livechart.service';
   providedIn: 'root',
 })
 export class AnidbService {
-  private readonly baseUrl = 'http://api.anidb.net:9001/httpapi';
+  private readonly baseUrl = environment.backend + 'anidb/httpapi';
   private readonly client = 'myanilist';
   private readonly clientver = 2;
   private readonly protover = 1;
@@ -28,9 +29,7 @@ export class AnidbService {
   }
 
   private async getXml(params: { [key: string]: string }) {
-    const response = await fetch(this.getUrl(params), {
-      referrerPolicy: 'unsafe-url',
-    });
+    const response = await fetch(this.getUrl(params));
     const xml = await response.text();
     const parser = new DOMParser();
     return parser.parseFromString(xml, 'text/xml');

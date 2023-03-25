@@ -110,6 +110,7 @@ $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
     $routesDir = __DIR__.'/../routes';
+    require "{$routesDir}/anidb.php";
     require "{$routesDir}/anilist.php";
     require "{$routesDir}/anisearch.php";
     require "{$routesDir}/annict.php";
