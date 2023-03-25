@@ -23,26 +23,39 @@ export class ScheduleComponent {
   ) {
     const { DateTime } = require('luxon') as typeof import('luxon');
     this.today = DateTime.now().weekday as Weekday;
-    this.settings.season.subscribe(async season => {
-      this.year = season.year;
-      this.season = season.season;
-      this.glob.busy();
-      if (await this.update(season.year, season.season)) {
-        const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
-        this.glob.setTitle(`${season.year} ${seasons[season.season]} – Schedule`);
-        this.glob.notbusy();
-      }
-    });
+    const { Observable, switchMap } = require('rxjs') as typeof import('rxjs');
+    this.settings.season
+      .pipe(
+        switchMap(season => {
+          this.year = season.year;
+          this.season = season.season;
+          this.glob.busy();
+          return new Observable<Array<Partial<Anime>> | undefined>(observer => {
+            this.update(season.year, season.season).then(animes => {
+              observer.next(animes);
+              observer.complete();
+            });
+          });
+        }),
+      )
+      .subscribe(animes => {
+        if (animes) {
+          const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
+          this.glob.setTitle(`${this.year} ${seasons[this.season || 0]} – Schedule`);
+          this.glob.notbusy();
+          this.animes = animes;
+        }
+      });
     this.settings.language.subscribe(lang => {
       this.lang = lang;
     });
   }
 
-  async update(year?: number, season?: number): Promise<boolean | undefined> {
+  async update(year?: number, season?: number) {
     if (!this.year || (this.season !== 0 && !this.season)) return;
     const allAnime = await this.animeService.season(this.year, this.season).catch(() => []);
     if (year && season && (year !== this.year || season !== this.season)) return;
-    this.animes = allAnime.sort(
+    return allAnime.sort(
       (a, b) =>
         Number(
           a.my_extension?.simulcast.time ? a.my_extension.simulcast.time.replace(/\D/g, '') : 0,
@@ -51,7 +64,6 @@ export class ScheduleComponent {
           b.my_extension?.simulcast.time ? b.my_extension.simulcast.time.replace(/\D/g, '') : 0,
         ),
     );
-    return true;
   }
 
   getAnimes(day: number): Array<Partial<Anime>> {

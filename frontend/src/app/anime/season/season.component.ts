@@ -28,29 +28,53 @@ export class SeasonComponent {
   }
 
   initSubscriptions() {
-    this.settings.season.subscribe(async season => {
-      this.year = season.year;
-      this.season = season.season;
-      if (this.onlyInList === undefined) return;
-      this.glob.busy();
-      if (await this.update(season.year, season.season)) {
-        const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
-        this.title = `${seasons[this.season]} ${this.year}`;
-        this.glob.setTitle(`${season.year} ${seasons[season.season]} – List`);
-        this.glob.notbusy();
-      }
-    });
+    const { Observable, switchMap } = require('rxjs') as typeof import('rxjs');
+    this.settings.season
+      .pipe(
+        switchMap(season => {
+          this.year = season.year;
+          this.season = season.season;
+          this.glob.busy();
+          return new Observable<Array<Partial<Anime>> | undefined>(observer => {
+            this.update(season.year, season.season).then(animes => {
+              observer.next(animes);
+              observer.complete();
+            });
+          });
+        }),
+      )
+      .subscribe(animes => {
+        if (animes) {
+          const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
+          this.glob.setTitle(`${this.year} ${seasons[this.season || 0]} – Schedule`);
+          this.glob.notbusy();
+          this.animes = animes;
+        }
+      });
     this.settings.layout.subscribe(layout => (this.layout = layout));
-    this.settings.onlyInList.subscribe(async inList => {
-      if (!this.year || this.season === undefined || this.onlyInList === inList) return;
-      this.onlyInList = inList;
-      this.glob.busy();
-      await this.update();
-      this.glob.notbusy();
-    });
+    this.settings.onlyInList
+      .pipe(
+        switchMap(inList => {
+          return new Observable<Array<Partial<Anime>> | undefined>(observer => {
+            if (!this.year || this.season === undefined || this.onlyInList === inList) return;
+            this.onlyInList = inList;
+            this.glob.busy();
+            this.update().then(animes => {
+              observer.next(animes);
+              observer.complete();
+            });
+          });
+        }),
+      )
+      .subscribe(animes => {
+        if (animes) {
+          this.glob.notbusy();
+          this.animes = animes;
+        }
+      });
   }
 
-  async update(year?: number, season?: number): Promise<boolean | undefined> {
+  async update(year?: number, season?: number) {
     if (!this.year || this.season === undefined) return;
     const animes = (await this.animeService.season(this.year, this.season).catch(() => [])).sort(
       (anime, bnime) => (bnime.num_list_users || 0) - (anime.num_list_users || 0),
@@ -59,11 +83,9 @@ export class SeasonComponent {
       return;
     }
     if (this.onlyInList) {
-      this.animes = animes.filter(anime => anime.my_list_status);
-    } else {
-      this.animes = animes;
+      return animes.filter(anime => anime.my_list_status);
     }
-    return true;
+    return animes;
   }
 
   async addToList(anime: Partial<Anime>, $event?: Event) {
