@@ -865,7 +865,10 @@
         </ng-template>
       </li>
       <li [ngbNavItem]="8" *ngIf="streams.length">
-        <a ngbNavLink>Streams</a>
+        <a ngbNavLink class="text-nowrap">
+          Streams
+          <small class="text-muted" *ngIf="streamsAvailable"> ({{ streamsAvailable }}) </small>
+        </a>
         <ng-template ngbNavContent>
           <myanili-anime-streams [streams]="streams"></myanili-anime-streams>
         </ng-template>

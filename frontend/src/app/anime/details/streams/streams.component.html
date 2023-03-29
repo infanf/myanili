@@ -3,16 +3,29 @@
     href="{{ stream.url }}"
     class="align-items-center d-flex m-3"
     target="_blank"
-    style="gap: 1rem"
+    style="gap: 1rem; text-decoration: none"
     *ngFor="let stream of streams"
     [ngStyle]="{ opacity: stream.availableInViewerRegion ? 1 : 0.5 }"
   >
     <div>
-      <img [src]="stream.streamingService.logo.url + '?style=small&format=png'" alt="" />
+      <img
+        [src]="stream.streamingService.logo.url + '?style=small&format=png'"
+        srcset="
+          {{stream.streamingService.logo.url}}?style=small&format=png   1x,
+          {{stream.streamingService.logo.url}}?style=small&format=webp  1x,
+          {{stream.streamingService.logo.url}}?style=medium&format=png  2x,
+          {{stream.streamingService.logo.url}}?style=medium&format=webp 2x
+        "
+        alt="{{ stream.displayName }}"
+        width="40"
+        height="40"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
     <div>
-      <div>{{ stream.displayName }}</div>
-      <div class="text-muted" style="font-size: smaller">{{ stream.comment }}</div>
+      <div style="text-decoration: underline">{{ stream.displayName }}</div>
+      <small class="text-muted" style="text-decoration: none">{{ stream.comment }}</small>
     </div>
   </a>
 </div>

@@ -279,6 +279,10 @@ export class AnimeDetailsComponent implements OnInit {
     this.streams = await this.livechart.getStreams(this.anime.my_extension.livechartId);
   }
 
+  get streamsAvailable() {
+    return this.streams.filter(stream => stream.availableInViewerRegion).length;
+  }
+
   async editSave() {
     if (this.busy) return;
     if (this.anime?.my_list_status) {
