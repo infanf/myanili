@@ -1,15 +1,26 @@
 {
   "changes": [
     {
+      "version": "2.25.0",
+      "features": 
+      [
+        "Add Link to aniDB entry from details page",
+        "Add streaming platforms from LiveChart"
+      ],
+      "fixes": [
+        "optimize season changes in schedule and season overview"
+      ]
+    },
+    {
       "version": "2.24.2",
       "fixes": [
-        "updates not going through to livchart"
+        "updates not going through to LiveChart"
       ]
     },
     {
       "version": "2.24.1",
       "fixes": [
-        "no longer need to store livechart credentials in local storage"
+        "no longer need to store LiveChart credentials in local storage"
       ]
     },
     {

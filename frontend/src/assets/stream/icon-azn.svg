@@ -1,12 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
-  <defs/>
   <defs>
-    <radialGradient id="b" cx="50.7" cy="5.8" r="32" fx="50.7" fy="5.8" gradientTransform="matrix(1.52777 .80632 -.6365 1.206 -20.3 -41.6)" gradientUnits="userSpaceOnUse" xlink:href="#a"/>
-    <linearGradient id="a">
+    <radialGradient id="primevideoiconb" cx="50.7" cy="5.8" r="32" fx="50.7" fy="5.8" gradientTransform="matrix(1.52777 .80632 -.6365 1.206 -20.3 -41.6)" gradientUnits="userSpaceOnUse" xlink:href="#primevideoicona"/>
+    <linearGradient id="primevideoicona">
       <stop offset="0" stop-color="#00a8e1"/>
       <stop offset="1" stop-color="#232f3e"/>
     </linearGradient>
   </defs>
-  <path fill="url(#b)" d="M26.3 63.6a32.3 32.1 0 01-2-62.6 32 32 0 0130.3 8.3 32.5 32.3 0 019 17.1c.6 2.6.5 9.2 0 12a32.3 32.3 0 01-23 24.6c-2.3.7-3.5 1-7.4 1-3.1 0-5.4 0-7-.4z"/>
+  <path fill="url(#primevideoiconb)" d="M26.3 63.6a32.3 32.1 0 01-2-62.6 32 32 0 0130.3 8.3 32.5 32.3 0 019 17.1c.6 2.6.5 9.2 0 12a32.3 32.3 0 01-23 24.6c-2.3.7-3.5 1-7.4 1-3.1 0-5.4 0-7-.4z"/>
   <path fill="#fff" d="M36 38.7c10.5-5 11.8-5.8 11.9-6.4 0-.4 0-1-.3-1l-11.8-5.7c-9.8-4.6-11.5-5.4-12.1-5l-.6.2v11.4c0 10 0 11.4.4 11.8.2.3.6.4.7.4l12-5.7z"/>
 </svg>

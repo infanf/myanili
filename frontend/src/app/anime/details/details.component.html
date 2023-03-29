@@ -651,6 +651,22 @@
                 >
               </div>
             </div>
+            <div *ngIf="anime.my_extension?.anidbId" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <myanili-external-rating [rating]="getRating('anidb')"></myanili-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <myanili-icon-anidb></myanili-icon-anidb>
+                <a
+                  class="ms-1"
+                  [href]="'https://anidb.net/anime/' + anime.my_extension!.anidbId"
+                  target="_blank"
+                  >aniDB</a
+                >
+              </div>
+            </div>
             <div *ngIf="anime && anime.my_extension && anime.my_extension.trakt" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
@@ -846,6 +862,15 @@
         <a ngbNavLink>Staff</a>
         <ng-template ngbNavContent>
           <myanili-anime-staff [id]="id"></myanili-anime-staff>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="8" *ngIf="streams.length">
+        <a ngbNavLink class="text-nowrap">
+          Streams
+          <small class="text-muted" *ngIf="streamsAvailable"> ({{ streamsAvailable }}) </small>
+        </a>
+        <ng-template ngbNavContent>
+          <myanili-anime-streams [streams]="streams"></myanili-anime-streams>
         </ng-template>
       </li>
       <li [ngbNavItem]="7" *ngIf="anime?.my_extension?.annId">
