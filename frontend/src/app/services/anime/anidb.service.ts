@@ -10,17 +10,11 @@ import { LivechartService } from './livechart.service';
 })
 export class AnidbService {
   private readonly baseUrl = environment.backend + 'anidb/httpapi';
-  private readonly client = 'myanilist';
-  private readonly clientver = 2;
-  private readonly protover = 1;
 
   constructor(private kitsu: KitsuService, private livechart: LivechartService) {}
 
   private getUrl(params: { [key: string]: string }) {
     const url = new URL(this.baseUrl);
-    url.searchParams.set('client', this.client);
-    url.searchParams.set('clientver', this.clientver.toString());
-    url.searchParams.set('protover', this.protover.toString());
     for (const key in params) {
       if (!params.hasOwnProperty(key)) continue;
       url.searchParams.set(key, params[key]);
