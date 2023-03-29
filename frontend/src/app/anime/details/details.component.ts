@@ -23,7 +23,7 @@ import { AnilistService } from '@services/anilist.service';
 import { AnidbService } from '@services/anime/anidb.service';
 import { AnimeService } from '@services/anime/anime.service';
 import { AnnictService } from '@services/anime/annict.service';
-import { LivechartService } from '@services/anime/livechart.service';
+import { LegacyStream, LivechartService } from '@services/anime/livechart.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { AnisearchService } from '@services/anisearch.service';
@@ -54,6 +54,7 @@ export class AnimeDetailsComponent implements OnInit {
   activeTab = 1;
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   @Input() inModal = false;
+  streams: LegacyStream[] = [];
 
   constructor(
     private animeService: AnimeService,
@@ -77,6 +78,7 @@ export class AnimeDetailsComponent implements OnInit {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
         this.ratings = [];
+        this.streams = [];
         this.id = newId;
         delete this.title;
         delete this.anime;
@@ -140,6 +142,9 @@ export class AnimeDetailsComponent implements OnInit {
       this.anime.website_promise?.then(website => {
         if (this.anime) this.anime.website = website;
       });
+    }
+    if (!this.streams.length) {
+      this.initStreams();
     }
     this.glob.notbusy();
     await this.getRatings();
@@ -267,6 +272,11 @@ export class AnimeDetailsComponent implements OnInit {
         },
       );
     }
+  }
+
+  async initStreams() {
+    if (!this.anime?.my_extension?.livechartId) return;
+    this.streams = await this.livechart.getStreams(this.anime.my_extension.livechartId);
   }
 
   async editSave() {

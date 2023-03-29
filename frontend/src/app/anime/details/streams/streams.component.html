@@ -1,0 +1,18 @@
+<div class="streams">
+  <a
+    href="{{ stream.url }}"
+    class="align-items-center d-flex m-3"
+    target="_blank"
+    style="gap: 1rem"
+    *ngFor="let stream of streams"
+    [ngStyle]="{ opacity: stream.availableInViewerRegion ? 1 : 0.5 }"
+  >
+    <div>
+      <img [src]="stream.streamingService.logo.url + '?style=small&format=png'" alt="" />
+    </div>
+    <div>
+      <div>{{ stream.displayName }}</div>
+      <div class="text-muted" style="font-size: smaller">{{ stream.comment }}</div>
+    </div>
+  </a>
+</div>

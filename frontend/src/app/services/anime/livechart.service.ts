@@ -309,6 +309,93 @@ export class LivechartService {
     return true;
   }
 
+  async getStreams(animeId: number): Promise<LegacyStream[]> {
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query GetLegacyStreams(
+        $beforeCursor: String
+        $afterCursor: String
+        $first: Int
+        $last: Int
+        $availableInViewerRegion: Boolean
+        $animeId: ID!
+      ) {
+        legacyStreams(
+          before: $beforeCursor
+          after: $afterCursor
+          first: $first
+          last: $last
+          availableInViewerRegion: $availableInViewerRegion
+          animeId: $animeId
+        ) {
+          nodes {
+            __typename
+            ...legacyStreamFragment
+          }
+          pageInfo {
+            __typename
+            ...pageInfoFragment
+          }
+        }
+      }
+      fragment onTheFlyImageFields on OnTheFlyImage {
+        url
+        cacheNamespace
+        styles {
+          name
+          formats
+          width
+          height
+        }
+      }
+      fragment legacyStreamFragment on LegacyStream {
+        databaseId
+        animeDatabaseId
+        streamingServiceDatabaseId
+        url
+        comment
+        availableInViewerRegion
+        displayName
+        updatedAt
+        createdAt
+        streamingService {
+          databaseId
+          name
+          logo {
+            __typename
+            ...onTheFlyImageFields
+          }
+          updatedAt
+          createdAt
+        }
+      }
+      fragment pageInfoFragment on PageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+    `;
+    const { data, error } = await this.client
+      .query<{
+        legacyStreams: {
+          nodes: LegacyStream[];
+          pageInfo: {
+            hasPreviousPage: boolean;
+            hasNextPage: boolean;
+            startCursor: string;
+            endCursor: string;
+          };
+        };
+      }>(QUERY, { animeId, availableInViewerRegion: false })
+      .toPromise();
+    if (error || !data) {
+      console.log(error);
+      return [];
+    }
+    return data.legacyStreams.nodes;
+  }
+
   async login(username?: string, password?: string): Promise<string | undefined> {
     if (!username || !password) {
       if (!this.refreshToken) {
@@ -465,4 +552,28 @@ interface Attributes {
   startedAt: string;
   finishedAt: string;
   notes: string;
+}
+
+export interface LegacyStream {
+  databaseId: number;
+  animeDatabaseId: number;
+  streamingServiceDatabaseId: number;
+  url: string;
+  comment: string;
+  availableInViewerRegion: boolean;
+  displayName: string;
+  updatedAt: string;
+  createdAt: string;
+  streamingService: {
+    databaseId: number;
+    name: string;
+    logo: OnTheFlyImage;
+    updatedAt: string;
+    createdAt: string;
+  };
+}
+
+interface OnTheFlyImage {
+  url: string;
+  cacheNamespace: string;
 }
