@@ -133,6 +133,7 @@ export class LivechartService {
             }
             startDate {
               value
+              precision
             }
             synopsis {
               markdown
@@ -160,6 +161,7 @@ export class LivechartService {
               };
               startDate: {
                 value: Date;
+                precision: 'NONE' | 'YEAR' | 'MONTH_AND_YEAR' | 'DATE' | 'DATE_AND_TIME';
               };
               synopsis: {
                 markdown: string;

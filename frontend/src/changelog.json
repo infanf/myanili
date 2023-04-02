@@ -1,6 +1,12 @@
 {
   "changes": [
     {
+      "version": "2.25.1",
+      "fixes": [
+        "LiveChart start date wrong"
+      ]
+    },
+    {
       "version": "2.25.0",
       "features": 
       [
