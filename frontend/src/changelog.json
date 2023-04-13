@@ -1,6 +1,12 @@
 {
   "changes": [
     {
+      "version": "2.25.2",
+      "fixes": [
+        "Add server side AniDB cache to prevent client bans"
+      ]
+    },
+    {
       "version": "2.25.1",
       "fixes": [
         "LiveChart start date wrong"
