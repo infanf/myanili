@@ -214,7 +214,7 @@ export class SearchComponent implements AfterViewInit {
       id = Number(idStr);
     }
     if (!id) return;
-    const malId = await this.kitsu.getExternalId(id, type, 'myanimelist');
+    const malId = await this.kitsu.getExternalId(id, type, `myanimelist/${type}`);
     if (!malId) return;
     if (type === 'anime') {
       this._router.navigate(['anime', 'details', malId]);

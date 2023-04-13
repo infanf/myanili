@@ -225,11 +225,7 @@ export class AnimeService {
       this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
-      this.livechart.updateAnime(ids.livechartId, {
-        status: this.livechart.statusFromMal(data.status),
-        rating: data.score,
-        episodesWatched: data.num_watched_episodes,
-      }),
+      this.livechart.updateAnime(ids.livechartId, data),
     ]);
     return malResponse;
   }
@@ -376,18 +372,6 @@ export class AnimeService {
       anime.broadcast.weekday = date.setZone('system').weekday % 7;
       anime.broadcast.day_of_the_week = date.setZone('system').toFormat('cccc');
       anime.broadcast.start_time = date.setZone('system').toFormat('HH:mm');
-    }
-  }
-
-  async getLivechartId(malId?: number): Promise<number | undefined> {
-    if (!malId) return undefined;
-    try {
-      const response = await this.cache.fetch<{ livechart: number } | undefined>(
-        `${this.backendUrl}livechart/${malId}`,
-      );
-      return response?.livechart;
-    } catch (e) {
-      return undefined;
     }
   }
 

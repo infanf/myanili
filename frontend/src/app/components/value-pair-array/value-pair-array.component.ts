@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 export class ValuePairArrayComponent {
   @Input() value?: string[];
   @Input() name!: string;
+  @Input() cols = 4;
 }

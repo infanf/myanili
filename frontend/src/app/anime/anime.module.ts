@@ -15,6 +15,7 @@ import { AnimeDetailsComponent } from './details/details.component';
 import { AnimeRecommendationsComponent } from './details/recommendations/recommendations.component';
 import { AnimeSongsComponent } from './details/songs/songs.component';
 import { StaffComponent } from './details/staff/staff.component';
+import { StreamsComponent } from './details/streams/streams.component';
 import { AnimeListGridComponent } from './list/grid/grid.component';
 import { AnimeListComponent } from './list/list.component';
 import { AnimeListListComponent } from './list/list/list.component';
@@ -44,6 +45,7 @@ import { StreamingComponent } from './widget/streaming/streaming.component';
     StaffComponent,
     StreamingComponent,
     WatchlistComponent,
+    StreamsComponent,
   ],
   imports: [
     AngularSvgIconModule.forRoot(),

@@ -224,11 +224,7 @@ export class SettingsComponent implements OnInit {
       return;
     }
     this.glob.busy();
-    await this.livechart.login(
-      this.livechartData?.username,
-      this.livechartData?.password,
-      true, // livechart api doesn't support cross origin requests for token refresh
-    );
+    await this.livechart.login(this.livechartData?.username, this.livechartData?.password);
     this.glob.notbusy();
   }
 

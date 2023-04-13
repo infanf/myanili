@@ -31,7 +31,9 @@
       </ng-template>
     </div>
   </header>
-  <!-- <hr class="mt-0" /> -->
+
+  <!-- poster -->
+
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <myanili-poster-rating
@@ -39,7 +41,30 @@
         [meanRating]="meanRating"
         [rating]="manga?.my_list_status?.score"
       ></myanili-poster-rating>
+      <div class="my-3">
+        <myanili-value-pair
+          *ngIf="manga?.rank"
+          [cols]="6"
+          name="Ranking"
+          value="#{{ manga!.rank | number }}"
+        ></myanili-value-pair>
+        <myanili-value-pair
+          *ngIf="manga?.popularity"
+          [cols]="6"
+          name="Popularity"
+          value="#{{ manga!.popularity | number }}"
+        ></myanili-value-pair>
+        <myanili-value-pair
+          *ngIf="manga?.num_list_users"
+          [cols]="6"
+          name="Members"
+          value="{{ manga!.num_list_users | number }}"
+        ></myanili-value-pair>
+      </div>
     </div>
+
+    <!-- right column -->
+
     <div class="col-sm-7 col-md-8 mb-3">
       <div class="row mb-2" *ngIf="edit && editBackup">
         <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
@@ -481,6 +506,26 @@
                 >
               </div>
             </div>
+            <div class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <myanili-external-rating
+                    *ngIf="manga.my_extension?.mdId"
+                    [rating]="getRating('md')"
+                  ></myanili-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <myanili-icon-mangadex></myanili-icon-mangadex>
+                <a
+                  class="ms-1"
+                  [ngClass]="{ 'link-secondary': !manga.my_extension?.mdId }"
+                  [href]="getMdUrl()"
+                  target="_blank"
+                  >MangaDex</a
+                >
+              </div>
+            </div>
             <div *ngIf="manga.my_extension?.anisearchId" class="row">
               <div class="col-4">
                 <td class="text-nowrap">
@@ -578,6 +623,22 @@
               <button class="btn btn-primary" (click)="findBaka()">
                 <myanili-icon-bakamanga></myanili-icon-bakamanga>
               </button>
+            </div>
+          </div>
+        </div>
+        <div class="row my-2" *ngIf="edit && manga && editExtension">
+          <div class="col-4 fw-bold text-end">MangaDex</div>
+          <div class="col-8">
+            <div class="input-group input-group-sm">
+              <input
+                class="form-control form-control-sm"
+                [(ngModel)]="editExtension!.mdId"
+                [disabled]="busy"
+                enterkeyhint="done"
+              />
+              <!-- <button class="btn btn-primary" (click)="findMd()">
+                <myanili-icon-mangadex></myanili-icon-mangadex>
+              </button> -->
             </div>
           </div>
         </div>

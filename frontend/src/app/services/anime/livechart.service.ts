@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WatchStatus } from '@models/anime';
+import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
 import { Client } from '@urql/core';
@@ -14,7 +14,6 @@ export class LivechartService {
   private refreshToken = '';
   private expires = 0;
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
-  private readonly key = 'livechart';
   loggedIn = false;
 
   constructor(private dialogue: DialogueService) {
@@ -88,6 +87,35 @@ export class LivechartService {
     return node?.databaseId;
   }
 
+  async getAnidbId(id: number): Promise<number | undefined> {
+    if (!id) return undefined;
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query GetFullSingleAnime($id: ID!) {
+        singleAnime(id: $id) {
+          anidbUrl
+        }
+      }
+    `;
+    const { data, error } = await this.client
+      .query<{
+        singleAnime: {
+          anidbUrl?: string;
+        };
+      }>(QUERY, { id })
+      .toPromise();
+    if (error || !data) {
+      console.log(error);
+      return;
+    }
+    const anidbUrl = data.singleAnime.anidbUrl;
+    if (!anidbUrl) return;
+    const regex = /a(\d+)$/;
+    const match = regex.exec(anidbUrl);
+    if (!match) return;
+    return Number(match[1]);
+  }
+
   async getAnimes(term: string) {
     const { gql } = await import('@urql/core');
     const QUERY = gql`
@@ -105,6 +133,7 @@ export class LivechartService {
             }
             startDate {
               value
+              precision
             }
             synopsis {
               markdown
@@ -132,6 +161,7 @@ export class LivechartService {
               };
               startDate: {
                 value: Date;
+                precision: 'NONE' | 'YEAR' | 'MONTH_AND_YEAR' | 'DATE' | 'DATE_AND_TIME';
               };
               synopsis: {
                 markdown: string;
@@ -184,11 +214,16 @@ export class LivechartService {
     };
   }
 
-  async updateAnime(
-    id?: number,
-    attributes?: { status?: LivechartStatus; episodesWatched?: number; rating?: number },
-  ) {
-    if (!id || !attributes || !(await this.checkLogin())) return;
+  async updateAnime(id?: number, updateData?: Partial<MyAnimeUpdate>) {
+    if (!id || !updateData || !(await this.checkLogin())) return;
+    const attributes = {
+      status: this.statusFromMal(updateData.status, updateData.is_rewatching),
+      rating: updateData.score,
+      episodesWatched: updateData.num_watched_episodes,
+      startedAt: updateData.start_date,
+      finishedAt: updateData.finish_date,
+      rewatches: updateData.num_times_rewatched,
+    } as Partial<Attributes>;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
       mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
@@ -219,12 +254,8 @@ export class LivechartService {
     `;
     const { data, error } = await this.client
       .mutation<{
-        animeId: '11016';
-        attributes: {
-          episodesWatched?: 3;
-          rating?: null;
-          status?: LivechartStatus;
-        };
+        animeId: string;
+        attributes: Partial<Attributes>;
         ratingScale: 'RATING_10';
       }>(MUTATION, { animeId: id, attributes })
       .toPromise();
@@ -236,17 +267,43 @@ export class LivechartService {
 
   async deleteAnime(id?: number): Promise<boolean> {
     if (!id || !(await this.checkLogin())) return false;
+    const attributes = {
+      status: 'SKIPPING',
+    } as Partial<Attributes>;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
-      mutation DeleteLibraryEntry($animeId: ID!) {
-        deleteLibraryEntry(animeId: $animeId) {
+      mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
+        upsertLibraryEntry(animeId: $animeId, attributes: $attributes, ratingScale: RATING_10) {
           libraryEntry {
-            animeDatabaseId
+            ...viewerLibraryEntryFields
+          }
+          problems {
+            ...problemFields
           }
         }
       }
+      fragment viewerLibraryEntryFields on LibraryEntry {
+        animeDatabaseId
+        status
+        updatedAt
+        createdAt
+      }
+      fragment problemFields on Problem {
+        message
+        shortMessage
+        path
+        pathString
+      }
     `;
-    const { data, error } = await this.client.mutation(MUTATION, { animeId: id }).toPromise();
+    const { data, error } = await this.client
+      .mutation<{
+        animeId: string;
+        attributes: {
+          status?: LivechartStatus;
+        };
+        ratingScale: 'RATING_10';
+      }>(MUTATION, { animeId: id, attributes })
+      .toPromise();
     if (error || !data) {
       console.log(error);
       return false;
@@ -254,44 +311,107 @@ export class LivechartService {
     return true;
   }
 
-  async login(
-    username?: string,
-    password?: string,
-    saveLogin = false,
-  ): Promise<string | undefined> {
-    const CryptoJS = await import('crypto-js');
-    if (saveLogin && username && password) {
-      const usernameEncrypted = CryptoJS.AES.encrypt(username, this.key).toString();
-      const passwordEncrypted = CryptoJS.AES.encrypt(password, this.key).toString();
-      localStorage.setItem('livechartUsername', usernameEncrypted);
-      localStorage.setItem('livechartPassword', passwordEncrypted);
-    }
-    if (!username && !password) {
-      const usernameEncrypted = localStorage.getItem('livechartUsername') || undefined;
-      const passwordEncrypted = localStorage.getItem('livechartPassword') || undefined;
-      if (usernameEncrypted && passwordEncrypted) {
-        username = CryptoJS.AES.decrypt(usernameEncrypted, this.key).toString(CryptoJS.enc.Utf8);
-        password = CryptoJS.AES.decrypt(passwordEncrypted, this.key).toString(CryptoJS.enc.Utf8);
+  async getStreams(animeId: number): Promise<LegacyStream[]> {
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query GetLegacyStreams(
+        $beforeCursor: String
+        $afterCursor: String
+        $first: Int
+        $last: Int
+        $availableInViewerRegion: Boolean
+        $animeId: ID!
+      ) {
+        legacyStreams(
+          before: $beforeCursor
+          after: $afterCursor
+          first: $first
+          last: $last
+          availableInViewerRegion: $availableInViewerRegion
+          animeId: $animeId
+        ) {
+          nodes {
+            __typename
+            ...legacyStreamFragment
+          }
+          pageInfo {
+            __typename
+            ...pageInfoFragment
+          }
+        }
       }
+      fragment onTheFlyImageFields on OnTheFlyImage {
+        url
+        cacheNamespace
+        styles {
+          name
+          formats
+          width
+          height
+        }
+      }
+      fragment legacyStreamFragment on LegacyStream {
+        databaseId
+        animeDatabaseId
+        streamingServiceDatabaseId
+        url
+        comment
+        availableInViewerRegion
+        displayName
+        updatedAt
+        createdAt
+        streamingService {
+          databaseId
+          name
+          logo {
+            __typename
+            ...onTheFlyImageFields
+          }
+          updatedAt
+          createdAt
+        }
+      }
+      fragment pageInfoFragment on PageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+    `;
+    const { data, error } = await this.client
+      .query<{
+        legacyStreams: {
+          nodes: LegacyStream[];
+          pageInfo: {
+            hasPreviousPage: boolean;
+            hasNextPage: boolean;
+            startCursor: string;
+            endCursor: string;
+          };
+        };
+      }>(QUERY, { animeId, availableInViewerRegion: false })
+      .toPromise();
+    if (error || !data) {
+      console.log(error);
+      return [];
     }
+    return data.legacyStreams.nodes;
+  }
 
+  async login(username?: string, password?: string): Promise<string | undefined> {
     if (!username || !password) {
       if (!this.refreshToken) {
         this.logoff();
         return;
       }
-      const resultRefresh = await fetch('https://www.livechart.me/api/v2/tokens/@current', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          cors: 'no-cors',
-        },
+      const resultRefresh = await fetch('https://www.livechart.me/api/v1/auth/refresh', {
+        method: 'POST',
         body: new URLSearchParams({
           refresh_token: this.refreshToken,
         }),
       });
       if (resultRefresh.ok) {
-        const response = (await resultRefresh.json()) as OauthResponse;
+        const response = (await resultRefresh.json()) as AuthResponse;
         this.accessToken = response.access_token;
         localStorage.setItem('livechartAccessToken', this.accessToken);
         this.refreshToken = response.refresh_token;
@@ -314,7 +434,7 @@ export class LivechartService {
     };
     const result = await fetch('https://www.livechart.me/api/v2/tokens', options);
     if (result.ok) {
-      const response = (await result.json()) as OauthResponse;
+      const response = (await result.json()) as AuthResponse;
       this.accessToken = response.access_token;
       localStorage.setItem('livechartAccessToken', this.accessToken);
       this.refreshToken = response.refresh_token;
@@ -340,7 +460,7 @@ export class LivechartService {
       }
     `;
     const { data, error } = await this.client
-      .query<{ viewer?: { username: string } }>(QUERY, {})
+      .query<{ viewer?: { username: string } }>(QUERY, {}, { requestPolicy: 'network-only' })
       .toPromise()
       .catch(() => ({ data: undefined, error: false }));
     if (!refresh && (error || !data)) {
@@ -371,17 +491,18 @@ export class LivechartService {
     return this.userSubject.asObservable();
   }
 
-  statusFromMal(status?: WatchStatus): LivechartStatus | undefined {
+  statusFromMal(status?: WatchStatus, rewatching = false): LivechartStatus | undefined {
     switch (status) {
       case 'watching':
-        return 'WATCHING';
+        return rewatching ? 'REWATCHING' : 'WATCHING';
       case 'completed':
         return 'COMPLETED';
       case 'on_hold':
+        return 'PAUSED';
       case 'plan_to_watch':
-        return 'CONSIDERING';
+        return 'PLANNING';
       case 'dropped':
-        return 'SKIPPING';
+        return 'DROPPED';
       default:
         return undefined;
     }
@@ -390,12 +511,17 @@ export class LivechartService {
   statusToMal(status?: LivechartStatus): WatchStatus | undefined {
     switch (status) {
       case 'WATCHING':
+      case 'REWATCHING':
         return 'watching';
       case 'COMPLETED':
         return 'completed';
       case 'CONSIDERING':
+      case 'PLANNING':
         return 'plan_to_watch';
+      case 'PAUSED':
+        return 'on_hold';
       case 'SKIPPING':
+      case 'DROPPED':
         return 'dropped';
       default:
         return undefined;
@@ -403,11 +529,53 @@ export class LivechartService {
   }
 }
 
-interface OauthResponse {
+interface AuthResponse {
   access_token: string;
   token_type: 'Bearer';
   expires_in: number;
   refresh_token: string;
 }
 
-type LivechartStatus = 'WATCHING' | 'CONSIDERING' | 'COMPLETED' | 'SKIPPING';
+type LivechartStatus =
+  | 'PLANNING'
+  | 'PAUSED'
+  | 'WATCHING'
+  | 'REWATCHING'
+  | 'CONSIDERING'
+  | 'DROPPED'
+  | 'COMPLETED'
+  | 'SKIPPING';
+
+interface Attributes {
+  status: LivechartStatus;
+  episodesWatched: number;
+  rating: number;
+  rewatches: number;
+  startedAt: string;
+  finishedAt: string;
+  notes: string;
+}
+
+export interface LegacyStream {
+  databaseId: number;
+  animeDatabaseId: number;
+  streamingServiceDatabaseId: number;
+  url: string;
+  comment: string;
+  availableInViewerRegion: boolean;
+  displayName: string;
+  updatedAt: string;
+  createdAt: string;
+  streamingService: {
+    databaseId: number;
+    name: string;
+    logo: OnTheFlyImage;
+    updatedAt: string;
+    createdAt: string;
+  };
+}
+
+interface OnTheFlyImage {
+  url: string;
+  cacheNamespace: string;
+}

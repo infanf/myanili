@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Middleware\CorsMiddleware;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
+class AnidbController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    private static $baseUrl = "http://api.anidb.net:9001/";
+
+    public function redirect(Request $request) {
+        $url = preg_replace('/^anidb\//', self::$baseUrl, $request->path());
+        $auth = $request->header('Authorization');
+        $body = $request->getContent();
+        $params = $request->query();
+        $method = $request->getMethod();
+        $headers = [];
+        if ($auth) {
+            $headers[] = "Authorization: $auth";
+        }
+        $headers[] = "Content-Type: " . $request->header('Content-Type');
+        if ($params) {
+            $url .= "?" . http_build_query($params);
+        }
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_ENCODING => "gzip",
+        ]);
+        if ($method !== "GET" && $body) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        }
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return (new Response($response, curl_getinfo($ch, CURLINFO_HTTP_CODE) ))
+        ->header('Content-Type', curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
+    }
+}

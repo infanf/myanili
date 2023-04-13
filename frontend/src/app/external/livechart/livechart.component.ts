@@ -22,9 +22,11 @@ export class LivechartComponent extends ExternalComponent {
         title: anime.romajiTitle,
         id: anime.databaseId,
         url: `https://www.livechart.me/anime/${anime.databaseId}`,
-        year: anime.startDate?.value ? new Date(anime.startDate?.value).getFullYear() : undefined,
+        year:
+          anime.startDate?.precision !== 'NONE' && anime.startDate?.value
+            ? new Date(anime.startDate?.value).getFullYear()
+            : undefined,
         description: anime.synopsis?.markdown,
-        // poster: anime.poster?.url ? `${environment.backend}livechart/img?url=${encodeURIComponent(anime.poster.url)}` : undefined,
         genres: anime.tags?.filter(tag => !tag.hidden).map(tag => tag.name) || [],
       })) || [];
     this.searching = false;

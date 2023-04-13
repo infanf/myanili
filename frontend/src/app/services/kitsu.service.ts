@@ -133,9 +133,9 @@ export class KitsuService {
     return [];
   }
 
-  async getExternalId(id: number, type: 'anime' | 'manga', externalSite = 'myanimelist') {
+  async getExternalId(id: number, type: 'anime' | 'manga', externalSite: string) {
     const result = await fetch(
-      `${this.baseUrl}${type}/${id}/mappings?filter[externalSite]=${externalSite}/${type}`,
+      `${this.baseUrl}${type}/${id}/mappings?filter[externalSite]=${externalSite}`,
     );
     if (result.ok) {
       const response = (await result.json()) as unknown as KitsuResponse<KitsuMappingData[]>;
@@ -392,10 +392,10 @@ export class KitsuService {
           }
         }
         return {
-          nom: Math.round(Number(response.data.attributes.averageRating) / 10) / 2,
+          nom: Math.round(Number(response.data.attributes.averageRating) * 100) / 100,
           norm: Number(response.data.attributes.averageRating),
           ratings,
-          unit: '/ 5',
+          unit: '%',
         };
       }
     }

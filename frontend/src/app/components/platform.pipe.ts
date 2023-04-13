@@ -31,6 +31,11 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://mangaplus.shueisha.co.jp/titles/',
     },
     {
+      id: 'mup',
+      name: 'Manga UP!',
+      urlprefix: 'https://global.manga-up.com/manga/',
+    },
+    {
       id: 'mdex',
       name: 'Mangadex',
       urlprefix: 'https://mangadex.org/title/',

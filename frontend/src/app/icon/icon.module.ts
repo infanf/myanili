@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
+import { AnidbComponent } from './anidb/anidb.component';
 import { AnilistIconComponent } from './anilist/anilist.component';
 import { AnisearchIconComponent } from './anisearch/anisearch.component';
 import { AnnComponent } from './ann/ann.component';
@@ -14,6 +15,7 @@ import { KitsuIconComponent } from './kitsu/kitsu.component';
 import { LivechartIconComponent } from './livechart/livechart.component';
 import { LoadingIconComponent } from './loading/loading.component';
 import { MalIconComponent } from './mal/mal.component';
+import { MangadexIconComponent } from './mangadex/mangadex.component';
 import { ProgressIconComponent } from './progress/progress.component';
 import { SimklIconComponent } from './simkl/simkl.component';
 import { SpotifyIconComponent } from './spotify/spotify.component';
@@ -23,6 +25,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
 @NgModule({
   declarations: [
     IconComponent,
+    AnidbComponent,
     AnilistIconComponent,
     AnnComponent,
     AnnictIconComponent,
@@ -31,6 +34,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     KitsuIconComponent,
     LivechartIconComponent,
     MalIconComponent,
+    MangadexIconComponent,
     SimklIconComponent,
     SpotifyIconComponent,
     IconStatusComponent,
@@ -60,6 +64,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
   ],
   exports: [
     IconComponent,
+    AnidbComponent,
     AnilistIconComponent,
     AnnComponent,
     AnnictIconComponent,
@@ -68,6 +73,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     KitsuIconComponent,
     LivechartIconComponent,
     MalIconComponent,
+    MangadexIconComponent,
     SimklIconComponent,
     SpotifyIconComponent,
     IconStatusComponent,
