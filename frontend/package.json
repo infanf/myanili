@@ -30,7 +30,7 @@
     "@angular/service-worker": "^16.0.0",
     "@ng-bootstrap/ng-bootstrap": "^14.0.0",
     "@popperjs/core": "^2.11.7",
-    "@urql/core": "^3.1.1",
+    "@urql/core": "^4.0.7",
     "angular-svg-icon": "^16.0.0",
     "any-date-parser": "^1.5.3",
     "bootstrap": "^5.2.3",

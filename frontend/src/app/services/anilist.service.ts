@@ -35,7 +35,8 @@ export class AnilistService {
     this.clientId = String(localStorage.getItem('anilistClientId'));
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
-    const { createClient } = require('@urql/core') as typeof import('@urql/core');
+    const { createClient, cacheExchange, fetchExchange } =
+      require('@urql/core') as typeof import('@urql/core');
     this.client = createClient({
       url: 'https://graphql.anilist.co',
       fetchOptions: () => {
@@ -45,6 +46,7 @@ export class AnilistService {
           },
         };
       },
+      exchanges: [cacheExchange, fetchExchange],
     });
     if (this.accessToken) {
       this.checkLogin()
