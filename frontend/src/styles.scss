@@ -24,13 +24,14 @@ $theme-colors: (
   'spotify': hsl(141, 73%, 42%),
   'trakt': hsl(358, 85%, 52%),
   'light': $light,
-  'dark': $dark // "white": #eff7ff,,,
+  'dark': $dark // "white": #eff7ff
 );
 
 @import 'bootstrap/scss/bootstrap';
 
-.cursor-pointer {
+.cursor-pointer:not(.selectable) {
   cursor: pointer;
+  user-select: none;
 }
 
 circle-progress {
