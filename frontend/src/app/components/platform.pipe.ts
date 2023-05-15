@@ -37,8 +37,13 @@ export class PlatformPipe implements PipeTransform {
     },
     {
       id: 'mdex',
-      name: 'Mangadex',
+      name: 'MangaDex',
       urlprefix: 'https://mangadex.org/title/',
+    },
+    {
+      id: 'mangamo',
+      name: 'Mangamo',
+      urlprefix: 'https://mangamo.com/',
     },
     {
       id: 'twit',
