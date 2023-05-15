@@ -33,6 +33,9 @@ class AnidbController extends Controller
             $headers[] = "Authorization: $auth";
         }
         $headers[] = "Content-Type: " . $request->header('Content-Type');
+        $headers[] = "Accept: " . $request->header('Accept');
+        $headers[] = "Accept-Encoding: gzip";
+        $headers[] = "User-Agent: " . $request->header('User-Agent');
         if ($params) {
             $url .= "?" . http_build_query($params);
         }
