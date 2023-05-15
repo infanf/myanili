@@ -138,6 +138,7 @@ interface MangaExtensionInterface {
   platform?: string;
   platformId?: string;
   ongoing?: boolean;
+  hideShelf?: boolean;
   publisher?: string;
   publisherWebsite?: string;
   displayName?: string;
