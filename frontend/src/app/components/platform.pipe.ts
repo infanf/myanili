@@ -11,6 +11,11 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://amazon.de/dp/',
     },
     {
+      id: 'azuki',
+      name: 'azuki',
+      urlprefix: 'https://azuki.co/series/',
+    },
+    {
       id: 'kinun',
       name: 'Kindle Unlimited',
       urlprefix: 'https://amazon.de/dp/',
