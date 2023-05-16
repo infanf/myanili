@@ -87,6 +87,11 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://www.webcomicsapp.com/comic/',
     },
     {
+      id: 'kmanga',
+      name: 'K MANGA',
+      urlprefix: 'https://kmanga.kodansha.com/',
+    },
+    {
       id: 'renta',
       name: 'Renta!',
       urlprefix: 'https://www.ebookrenta.com/renta/sc/frm/item/',
