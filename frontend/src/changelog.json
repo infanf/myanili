@@ -1,9 +1,16 @@
 {
   "changes": [
     {
-      "version": "2.25.2",
+      "version": "2.26.0",
+      "features": [
+        "Manga details: add option to hide series on bookshelf",
+        "Manga platforms: add MangaUP!, K MANGA, Azuki and Mangamo"
+      ],
       "fixes": [
-        "Add server side AniDB cache to prevent client bans"
+        "Activities: disable text selection on links"
+      ],
+      "other": [
+        "Update dependencies"
       ]
     },
     {
@@ -14,8 +21,7 @@
     },
     {
       "version": "2.25.0",
-      "features": 
-      [
+      "features": [
         "Add Link to aniDB entry from details page",
         "Add streaming platforms from LiveChart"
       ],
