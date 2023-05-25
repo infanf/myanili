@@ -92,7 +92,7 @@ export class BookshelfComponent {
       this.glob.busy();
       data.status = 'completed';
       const { DateTime } = require('luxon') as typeof import('luxon');
-      data.finish_date = DateTime.local().toISODate();
+      data.finish_date = DateTime.local().toISODate() || undefined;
       if (manga.node.num_chapters) data.num_chapters_read = manga.node.num_chapters;
       if (!manga.list_status?.score) {
         const myScore = await this.dialogue.rating(manga.node.title);
@@ -137,7 +137,7 @@ export class BookshelfComponent {
       this.glob.busy();
       data.status = 'completed';
       const { DateTime } = require('luxon') as typeof import('luxon');
-      data.finish_date = DateTime.local().toISODate();
+      data.finish_date = DateTime.local().toISODate() || undefined;
       if (manga.node.num_volumes) data.num_volumes_read = manga.node.num_volumes;
       if (!manga.list_status?.score) {
         const myScore = await this.dialogue.rating(manga.node.title);

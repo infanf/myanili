@@ -135,7 +135,7 @@ export class WatchlistComponent implements OnInit {
     const { DateTime } = await import('luxon');
     if (currentEpisode + 1 === anime.node.num_episodes) {
       data.status = 'completed';
-      data.finish_date = DateTime.local().toISODate();
+      data.finish_date = DateTime.local().toISODate() || undefined;
       data.is_rewatching = false;
       if (anime.list_status.is_rewatching) {
         data.num_times_rewatched = anime.list_status.num_times_rewatched + 1 || 1;
@@ -223,7 +223,7 @@ export class WatchlistComponent implements OnInit {
           if (status) {
             const sequelData = { status } as Partial<MyAnimeUpdate>;
             if (status === 'watching') {
-              sequelData.start_date = DateTime.local().toISODate();
+              sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
             await this.animeService.updateAnime({ malId: sequel.id }, sequelData);
           }

@@ -416,7 +416,7 @@ export class AnimeDetailsComponent implements OnInit {
     const data = { status } as Partial<MyAnimeUpdate>;
     if (status === 'watching' && !this.anime.my_list_status?.start_date) {
       const { DateTime } = await import('luxon');
-      data.start_date = DateTime.local().toISODate();
+      data.start_date = DateTime.local().toISODate() || undefined;
     }
     await this.animeService.updateAnime(
       {
@@ -468,7 +468,7 @@ export class AnimeDetailsComponent implements OnInit {
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
       const { DateTime } = await import('luxon');
-      data.finish_date = DateTime.local().toISODate();
+      data.finish_date = DateTime.local().toISODate() || undefined;
       data.is_rewatching = false;
       if (this.anime.my_list_status.is_rewatching) {
         data.num_times_rewatched = this.anime.my_list_status.num_times_rewatched + 1 || 1;
@@ -553,7 +553,7 @@ export class AnimeDetailsComponent implements OnInit {
             const sequelData = { status } as Partial<MyAnimeUpdate>;
             if (status === 'watching') {
               const { DateTime } = await import('luxon');
-              sequelData.start_date = DateTime.local().toISODate();
+              sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
             await this.animeService.updateAnime({ malId: sequel.id }, sequelData);
           }

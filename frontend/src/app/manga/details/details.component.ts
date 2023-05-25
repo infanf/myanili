@@ -329,7 +329,7 @@ export class MangaDetailsComponent implements OnInit {
     const data = { status } as Partial<MyMangaUpdate>;
     if (status === 'reading' && !this.manga.my_list_status?.start_date) {
       const { DateTime } = require('luxon') as typeof import('luxon');
-      data.start_date = DateTime.local().toISODate();
+      data.start_date = DateTime.local().toISODate() || undefined;
     }
     await this.mangaService.updateManga(
       {
@@ -391,7 +391,7 @@ export class MangaDetailsComponent implements OnInit {
         status: 'reading',
         num_chapters_read: 0,
         num_volumes_read: 0,
-        start_date: DateTime.local().toISODate(),
+        start_date: DateTime.local().toISODate() || undefined,
       },
     );
     await this.ngOnInit();
@@ -439,7 +439,7 @@ export class MangaDetailsComponent implements OnInit {
     ) {
       data.status = 'completed';
       const { DateTime } = require('luxon') as typeof import('luxon');
-      data.finish_date = DateTime.local().toISODate();
+      data.finish_date = DateTime.local().toISODate() || undefined;
       data.is_rereading = false;
       if (this.manga.my_list_status.is_rereading) {
         data.num_times_reread = this.manga.my_list_status.num_times_reread + 1 || 1;
