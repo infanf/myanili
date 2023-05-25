@@ -240,6 +240,10 @@ export function migrateSimulcasts(extension: Partial<AnimeExtension>): AnimeExte
   extension.simulcast.country ||= extension.simulCountry;
   extension.simulcast.tz ||= Timezone.UTC;
   extension.simulcast.day ||= simulDays;
+  if (!extension.simulcast.time) {
+    extension.simulcast.tz =
+      (Intl.DateTimeFormat().resolvedOptions().timeZone as Timezone) || Timezone.UTC;
+  }
   delete extension.simulDay;
   delete extension.simulTime;
   delete extension.simulCountry;

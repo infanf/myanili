@@ -11,6 +11,11 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://amazon.de/dp/',
     },
     {
+      id: 'azuki',
+      name: 'azuki',
+      urlprefix: 'https://azuki.co/series/',
+    },
+    {
       id: 'kinun',
       name: 'Kindle Unlimited',
       urlprefix: 'https://amazon.de/dp/',
@@ -31,9 +36,19 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://mangaplus.shueisha.co.jp/titles/',
     },
     {
+      id: 'mup',
+      name: 'Manga UP!',
+      urlprefix: 'https://global.manga-up.com/manga/',
+    },
+    {
       id: 'mdex',
-      name: 'Mangadex',
+      name: 'MangaDex',
       urlprefix: 'https://mangadex.org/title/',
+    },
+    {
+      id: 'mangamo',
+      name: 'Mangamo',
+      urlprefix: 'https://mangamo.com/',
     },
     {
       id: 'twit',
@@ -70,6 +85,11 @@ export class PlatformPipe implements PipeTransform {
       id: 'webcomics',
       name: 'WebComics',
       urlprefix: 'https://www.webcomicsapp.com/comic/',
+    },
+    {
+      id: 'kmanga',
+      name: 'K MANGA',
+      urlprefix: 'https://kmanga.kodansha.com/',
     },
     {
       id: 'renta',

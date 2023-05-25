@@ -17,7 +17,8 @@ export class LivechartService {
   loggedIn = false;
 
   constructor(private dialogue: DialogueService) {
-    const { createClient } = require('@urql/core') as typeof import('@urql/core');
+    const { createClient, cacheExchange, fetchExchange } =
+      require('@urql/core') as typeof import('@urql/core');
     this.client = createClient({
       url: 'https://www.livechart.me/graphql',
       fetchOptions: () => {
@@ -28,6 +29,7 @@ export class LivechartService {
           },
         };
       },
+      exchanges: [cacheExchange, fetchExchange],
     });
     this.accessToken = String(localStorage.getItem('livechartAccessToken'));
     if (this.accessToken === 'null') this.accessToken = '';

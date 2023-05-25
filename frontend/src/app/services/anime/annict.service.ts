@@ -19,7 +19,8 @@ export class AnnictService {
   constructor(private dialogue: DialogueService) {
     this.accessToken = String(localStorage.getItem('annictAccessToken'));
     if (this.accessToken === 'null') this.accessToken = undefined;
-    const { createClient } = require('@urql/core') as typeof import('@urql/core');
+    const { createClient, cacheExchange, fetchExchange } =
+      require('@urql/core') as typeof import('@urql/core');
     this.client = createClient({
       url: this.graphqlUrl,
       fetchOptions: () => {
@@ -29,6 +30,7 @@ export class AnnictService {
           },
         };
       },
+      exchanges: [cacheExchange, fetchExchange],
     });
     if (this.accessToken) {
       this.checkLogin()

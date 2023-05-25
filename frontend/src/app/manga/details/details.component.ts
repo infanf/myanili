@@ -622,6 +622,12 @@ export class MangaDetailsComponent implements OnInit {
     this.editExtension.ongoing = ongoing;
   }
 
+  changeShelf() {
+    const hideShelf = !this.editExtension?.hideShelf;
+    if (!this.editExtension) this.editExtension = { hideShelf };
+    this.editExtension.hideShelf = hideShelf;
+  }
+
   async findKitsu() {
     if (!this.manga || !this.editExtension) return;
     const modal = this.modalService.open(KitsuComponent);
