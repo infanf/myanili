@@ -3,6 +3,17 @@
   $text-color: #fff;
   $body-color: #fff;
 
+  :root {
+    --bs-main-color: $text-color;
+    --bs-body-color: $body-color;
+    --bs-body-bg: $background-color;
+    --bs-secondary-color: hwb(0 100% 0% / 0.75);
+    --bs-secondary-bg: hwb(0 100% 80%);
+    --bs-tertiary-color: hwb(0 100% 0% / 0.5);
+    --bs-tertiary-bg: hwb(0 100% 50%);
+    --bs-emphasis-color: hwb(0 100% 0%);
+  }
+
   body {
     background-color: $background-color;
     color: $text-color;
@@ -22,16 +33,22 @@
     background-color: $background-color !important;
   }
 
-  .link-primary,
+  .link-primary {
+    color: hwb(215 28% 0%) !important;
+  }
+
   a {
-    color: #4895ff;
+    color: hwb(215 28% 0%);
   }
 
   .link-primary:hover,
-  .link-primary:focus,
+  .link-primary:focus {
+    color: hwb(215 44% 0%) !important;
+  }
+  
   a:hover,
   a:focus {
-    color: #70acff;
+    color: hwb(215 44% 0%);
   }
 
   $border-color: #1a1e22;
