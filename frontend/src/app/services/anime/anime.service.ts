@@ -47,8 +47,15 @@ export class AnimeService {
     });
   }
 
-  async list(status?: WatchStatus, options?: { limit?: number; offset?: number }) {
+  async list(
+    status?: WatchStatus | WatchStatus[],
+    options?: { limit?: number; sort?: string; offset?: number },
+  ): Promise<ListAnime[]> {
     options = { limit: 50, offset: 0, ...options };
+    if (Array.isArray(status)) {
+      const animeArray = await Promise.all(status.map(s => this.list(s, options)));
+      return animeArray.flat();
+    }
     const animes = await this.malService.myList(status, options);
     return animes.map(anime => {
       if (anime.node.title) {
