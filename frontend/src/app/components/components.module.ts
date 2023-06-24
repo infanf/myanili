@@ -10,7 +10,7 @@ import { AnnNewsComponent } from './ann-news/ann-news.component';
 import { DateAgoPipe } from './date-ago.pipe';
 import { DayPipe } from './day.pipe';
 import { DialogueComponent } from './dialogue/dialogue.component';
-import { RatingComponent } from './dialogue/rating/rating.component';
+import { RatingDialogueComponent } from './dialogue/rating/rating.component';
 import { DoubleCardComponent } from './double-card/double-card.component';
 import { ExternalRatingComponent } from './external-rating/external-rating.component';
 import { FlagPipe } from './flag.pipe';
@@ -21,6 +21,7 @@ import { StatusBadgeComponent } from './media-card/status-badge/status-badge.com
 import { Nl2brPipe } from './nl2br.pipe';
 import { PlatformPipe } from './platform.pipe';
 import { PosterRatingComponent } from './poster-rating/poster-rating.component';
+import { RatingComponent } from './rating/rating.component';
 import { StreamPipe } from './stream.pipe';
 import { MySvgIconComponent } from './svg-icon/svg-icon.component';
 import { TimePipe } from './time.pipe';
@@ -43,6 +44,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     PlatformPipe,
     Nl2brPipe,
     DialogueComponent,
+    RatingDialogueComponent,
     RatingComponent,
     DoubleCardComponent,
     ExternalRatingComponent,
@@ -71,6 +73,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     StatusBadgeComponent,
     ExternalRatingComponent,
     PosterRatingComponent,
+    RatingComponent,
     MySvgIconComponent,
     HeaderComponent,
     WidgetSeasonComponent,

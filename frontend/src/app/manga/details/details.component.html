@@ -69,15 +69,7 @@
       <div class="row mb-2" *ngIf="edit && editBackup">
         <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
         <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editBackup.score"
-            min="0"
-            max="10"
-            type="number"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
+          <myanili-rating [(rating)]="editBackup.score" [size]="16"></myanili-rating>
         </div>
       </div>
       <div class="row" *ngIf="manga?.my_extension?.displayName && !edit">
