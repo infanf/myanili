@@ -40,10 +40,14 @@ export class WatchlistComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const animes = await this.animeService.list('watching', { limit: 1000 });
+    const animes = await this.getAnimes();
     const { DateTimeFrom } = await import('@components/luxon-helper');
     this.animes = animes
       .filter(anime => {
+        const lastWatched = DateTimeFrom(anime.my_extension?.lastWatchedAt || 'yesterday');
+        if (anime.list_status.status === 'completed') {
+          return lastWatched > this.getLast8am();
+        }
         if (!anime.my_extension) return true;
         if (!anime.my_extension.simulcast.day?.length) return true;
         const simulDay = daysToLocal(anime.my_extension.simulcast);
@@ -52,7 +56,6 @@ export class WatchlistComponent implements OnInit {
         if (lastAiredWeekday === last8amWeekday) {
           return true;
         }
-        const lastWatched = DateTimeFrom(anime.my_extension.lastWatchedAt || 'yesterday');
         if (lastWatched > this.getLast8am()) return true;
         const lastAiredDaysAgo = (last8amWeekday - lastAiredWeekday + 14) % 7;
         if (lastAiredDaysAgo === 0) return true;
@@ -71,6 +74,13 @@ export class WatchlistComponent implements OnInit {
       })
       .sort((a, b) => this.toSortIndex(a) - this.toSortIndex(b));
     this.glob.notbusy();
+  }
+
+  async getAnimes() {
+    return this.animeService.list(['watching', 'completed'], {
+      limit: 100,
+      sort: 'list_updated_at',
+    });
   }
 
   toSortIndex(anime: ListAnime): number {

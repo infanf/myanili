@@ -311,6 +311,9 @@ class MalServiceProvider extends ServiceProvider
             ),
             true
         );
+        if (isset($response['name'])) {
+            self::logUser($response['name']);
+        }
         return $response;
     }
 
@@ -368,5 +371,29 @@ class MalServiceProvider extends ServiceProvider
         if ($code >= 500) return true;
         if (strpos($body, 'is currently under scheduled maintenance') !== false) return true;
         return false;
+    }
+
+    private static function logUser(string $name)
+    {
+        $fileName = dirname(dirname(__DIR__)).'/users.csv';
+        // load csv from /app/users.csv
+        // username;last_login
+        $users = [];
+        if (!file_exists($fileName)) {
+            file_put_contents($fileName, '');
+        }
+        $file = fopen($fileName, 'r');
+        while (($line = fgetcsv($file, null, ";")) !== false) {
+            $users[$line[0]] = $line[1];
+        }
+        fclose($file);
+        // add or update user
+        $users[$name] = date(DATE_ISO8601);
+        // save csv to /app/users.csv
+        $file = fopen($fileName, 'w');
+        foreach ($users as $name => $last_login) {
+            fputcsv($file, [$name, $last_login], ';');
+        }
+        fclose($file);
     }
 }

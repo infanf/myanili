@@ -55,8 +55,10 @@ export class DialogueService {
   }
 
   async rating(title: string): Promise<number> {
-    const { RatingComponent } = await import('../components/dialogue/rating/rating.component');
-    const modal = this.modalService.open(RatingComponent);
+    const { RatingDialogueComponent } = await import(
+      '../components/dialogue/rating/rating.component'
+    );
+    const modal = this.modalService.open(RatingDialogueComponent);
     modal.componentInstance.title = title;
     return modal.result.catch(() => 0);
   }
