@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "jikan",
+      "source": "raw.githubusercontent.com_jikan-me_jikan-rest_master_storage_api-docs_api-docs.json",
+      "integrity": "sha512-/6DMQu2k23EdXzpadmI3EDVrfta7tOGnfYx6mU1ljaAUYKA3o+A21oijfhkUF5o2OF5xizg/8eZvvr4fGv6syQ==",
+      "installerVersion": "5.0.8"
+    }
+  ]
+}
