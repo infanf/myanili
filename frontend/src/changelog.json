@@ -1,6 +1,17 @@
 {
   "changes": [
     {
+      "version": "2.26.1",
+      "features": [
+        "Manga details: set rating using stars",
+        "Watchlist: show shows that were completed today"
+      ],
+      "other": [
+        "Update dependencies",
+        "Adjust dark mode for Bootstrap 5.3"
+      ]
+    },
+    {
       "version": "2.26.0",
       "features": [
         "Manga details: add option to hide series on bookshelf",
