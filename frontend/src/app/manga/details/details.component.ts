@@ -5,7 +5,7 @@ import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnComponent } from '@external/ann/ann.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
-import { ExtRating } from '@models/components';
+import { ExtRating, Weekday } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
@@ -684,5 +684,16 @@ export class MangaDetailsComponent implements OnInit {
       return `https://mangadex.org/search?q=${this.manga?.title}`;
     }
     return `https://mangadex.org/title/${this.manga.my_extension.mdId}`;
+  }
+
+  getDay(simulpub?: Weekday[]): string {
+    if (!simulpub) return '';
+    return simulpub
+      .map(day => {
+        const { DateTime } = require('luxon') as typeof import('luxon');
+        const date = DateTime.local().set({ weekday: day });
+        return date.weekdayLong;
+      })
+      .join(', ');
   }
 }

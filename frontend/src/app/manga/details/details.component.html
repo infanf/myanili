@@ -229,6 +229,28 @@
           />
         </div>
       </div>
+      <myanili-value-pair
+        *ngIf="!edit && manga && manga.my_extension && manga.my_extension?.simulpub?.length"
+        name="Simulpub"
+      >
+        {{ getDay(manga.my_extension.simulpub) }}
+      </myanili-value-pair>
+      <myanili-value-pair *ngIf="edit && editExtension" name="Simulpub">
+        <select
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.simulpub"
+          [disabled]="busy"
+          multiple
+        >
+          <option [value]="1">Monday</option>
+          <option [value]="2">Tuesday</option>
+          <option [value]="3">Wednesday</option>
+          <option [value]="4">Thursday</option>
+          <option [value]="5">Friday</option>
+          <option [value]="6">Saturday</option>
+          <option [value]="0">Sunday</option>
+        </select>
+      </myanili-value-pair>
       <div class="row" *ngIf="!edit && manga && manga.my_extension && manga.my_extension.platform">
         <div class="col-4 fw-bold text-end">Platform</div>
         <div class="col-8">
