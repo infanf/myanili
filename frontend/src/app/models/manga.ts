@@ -1,5 +1,5 @@
 import { RelatedAnime } from './anime';
-import { Genre, Nsfw, Person, Picture, Studio } from './components';
+import { Genre, Nsfw, Person, Picture, Studio, Weekday } from './components';
 
 export type ReadStatus = 'reading' | 'completed' | 'on_hold' | 'dropped' | 'plan_to_read';
 
@@ -151,6 +151,7 @@ interface MangaExtensionInterface {
   anisearchId?: number;
   annId?: number;
   fandomSlug?: string;
+  simulpub?: Weekday[];
 }
 
 export type MangaExtension = MangaExtensionInterface;

@@ -13,6 +13,20 @@
       </tr>
     </thead>
     <tbody myanili-bookshelf [mangas]="reading"></tbody>
+    <ng-container *ngIf="simulpub.length">
+      <thead>
+        <tr>
+          <th
+            colspan="4"
+            class="text-center"
+            style="box-shadow: 0 -1px 0 inset currentColor, 0 1px 0 inset currentColor"
+          >
+            Today
+          </th>
+        </tr>
+      </thead>
+      <tbody myanili-bookshelf [mangas]="simulpub"></tbody>
+    </ng-container>
     <thead>
       <tr>
         <th

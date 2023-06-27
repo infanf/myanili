@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Weekday } from '@models/components';
 import { ListManga, MyMangaUpdate } from '@models/manga';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
@@ -27,24 +28,25 @@ export class BookshelfWrapperComponent implements OnInit {
   }
 
   get reading(): ListManga[] {
-    return this.mangas
-      .filter(manga => !manga.my_extension?.ongoing)
-      .sort((a, b) => {
-        const textA = a.my_extension?.displayName || a.node.title;
-        const textB = b.my_extension?.displayName || b.node.title;
-        return textA < textB ? -1 : textA > textB ? 1 : 0;
-      });
+    return this.mangas.filter(manga => !manga.my_extension?.ongoing).sort(defaultSort);
   }
 
   get ongoing(): ListManga[] {
-    return this.mangas
-      .filter(manga => manga.my_extension?.ongoing)
-      .sort((a, b) => {
-        const textA = a.my_extension?.displayName || a.node.title;
-        const textB = b.my_extension?.displayName || b.node.title;
-        return textA < textB ? -1 : textA > textB ? 1 : 0;
-      });
+    return this.mangas.filter(manga => manga.my_extension?.ongoing).sort(defaultSort);
   }
+
+  get simulpub(): ListManga[] {
+    const weekday = new Date().getDay() as Weekday;
+    return this.mangas
+      .filter(manga => manga.my_extension?.simulpub?.includes(weekday))
+      .sort(defaultSort);
+  }
+}
+
+function defaultSort(a: ListManga, b: ListManga) {
+  const textA = a.my_extension?.displayName || a.node.title;
+  const textB = b.my_extension?.displayName || b.node.title;
+  return textA < textB ? -1 : textA > textB ? 1 : 0;
 }
 
 @Component({
