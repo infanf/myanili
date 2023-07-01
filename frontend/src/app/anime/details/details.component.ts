@@ -610,7 +610,9 @@ export class AnimeDetailsComponent implements OnInit {
           ? await this.trakt.scrobbleMovie(this.anime.my_extension.trakt)
           : await this.trakt.scrobble(
               this.anime.my_extension.trakt,
-              this.anime.my_extension.seasonNumber || 1,
+              this.anime.my_extension.seasonNumber === 0
+                ? 0
+                : this.anime.my_extension.seasonNumber || 1,
               (this.anime.my_list_status?.num_episodes_watched || 0) +
                 1 +
                 (this.anime.my_extension.episodeCorOffset || 0),
