@@ -1,6 +1,12 @@
 {
   "changes": [
     {
+      "version": "2.26.2",
+      "fixes": [
+        "Trakt: scrobble specials as season 0, not 1"
+      ]
+    },
+    {
       "version": "2.26.1",
       "features": [
         "Manga details: set rating using stars",
