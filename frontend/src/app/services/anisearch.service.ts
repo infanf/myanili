@@ -15,7 +15,9 @@ export class AnisearchService {
 
   async getAnimes(query: string): Promise<AnisearchAnimeList> {
     if (query) {
-      const url = `${this.backendUrl}anime/search/${query}`;
+      const url = `${this.backendUrl}anime/search/${encodeURI(
+        query.replace(/[\/\\\?\#\&]/g, ' '),
+      )}`;
       const result = await this.cache.fetch<AnisearchAnimeList>(url);
       return (
         result || {
