@@ -3,7 +3,7 @@ export const changelog: Changelog = {
     {
       version: '2.27.0',
       features: [
-        'Watchlist: show shows that were completed today',
+        'Watchlist: show shows that were dropped today',
         'Bookshelf: add simulpub/today section to bookshelf',
       ],
     },
@@ -300,9 +300,11 @@ export const changelog: Changelog = {
 
 export interface Changelog {
   changes: Array<{
-    version: string;
+    version: Version;
     features?: string[];
     fixes?: string[];
     other?: string[];
   }>;
 }
+
+type Version = `${number}.${number}.${number}`;

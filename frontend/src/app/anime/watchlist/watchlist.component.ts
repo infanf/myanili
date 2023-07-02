@@ -45,7 +45,7 @@ export class WatchlistComponent implements OnInit {
     this.animes = animes
       .filter(anime => {
         const lastWatched = DateTimeFrom(anime.my_extension?.lastWatchedAt || 'yesterday');
-        if (anime.list_status.status === 'completed') {
+        if (['completed', 'dropped'].includes(anime.list_status.status || '')) {
           return lastWatched > this.getLast8am();
         }
         if (!anime.my_extension) return true;
@@ -77,7 +77,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   async getAnimes() {
-    return this.animeService.list(['watching', 'completed'], {
+    return this.animeService.list(['watching', 'completed', 'dropped'], {
       limit: 100,
       sort: 'list_updated_at',
     });
