@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Changelog } from '@services/global.service';
+import { Changelog } from 'src/changelog';
 
 @Component({
   selector: 'myanili-new-version',
