@@ -42,7 +42,7 @@
           {{ anime.node.alternative_titles?.ja }}
         </td>
         <td class="d-none d-sm-table-cell">
-          {{ anime.my_extension?.series || anime.node.title }}
+          {{ anime.node.title }}
           <span
             class="text-muted"
             *ngIf="anime.my_extension?.seasonNumber && anime.my_extension?.seasonNumber != 1"

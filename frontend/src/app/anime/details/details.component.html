@@ -101,17 +101,6 @@
         name="Synonyms"
         [value]="anime?.alternative_titles?.synonyms"
       ></myanili-value-pair-array>
-      <div class="row my-2" *ngIf="edit && editExtension">
-        <div class="col-4 fw-bold text-end">Series</div>
-        <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.series"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
-        </div>
-      </div>
       <myanili-value-pair *ngIf="anime?.studios && anime!.studios.length" name="Studio">
         <div
           class="link-primary cursor-pointer"

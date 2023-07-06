@@ -154,6 +154,9 @@ interface SimulcastData {
 }
 
 export interface AnimeExtension {
+  /**
+   * @deprecated
+   */
   series?: string;
   seasonNumber?: number;
   episodeCorOffset?: number;
