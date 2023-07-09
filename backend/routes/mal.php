@@ -58,13 +58,15 @@ JAVASCRIPT;
     $router->get('list', function (Request $request) {
         $limit = $request->input('limit', 50);
         $offset = $request->input('offset', 0);
-        return MalServiceProvider::getMyList(null, $limit, $offset);
+        $sort = $request->input('sort', 'list_updated_at');
+        return MalServiceProvider::getMyList(null, $limit, $offset, $sort);
     });
 
     $router->get('list/{status}', function ($status, Request $request) {
         $limit = $request->input('limit', 50);
         $offset = $request->input('offset', 0);
-        return MalServiceProvider::getMyList($status, $limit, $offset);
+        $sort = $request->input('sort', 'list_updated_at');
+        return MalServiceProvider::getMyList($status, $limit, $offset, $sort);
     });
 
     $router->get('mangalist', function (Request $request) {
