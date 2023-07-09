@@ -92,7 +92,7 @@
         <div class="col-8">{{ manga?.alternative_titles?.en }}</div>
       </div>
       <div class="row" *ngIf="manga?.alternative_titles?.ja">
-        <div class="col-4 fw-bold text-end">Japanese</div>
+        <div class="col-4 fw-bold text-end">{{ originalLanguage }}</div>
         <div class="col-8">{{ manga?.alternative_titles?.ja }}</div>
       </div>
       <div class="row" *ngIf="manga?.alternative_titles?.synonyms?.length">

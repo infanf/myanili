@@ -9,7 +9,7 @@
         Name
       </th>
       <th class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">English Name</th>
-      <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Japanese Name</th>
+      <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Native Name</th>
       <th class="d-none d-sm-table-cell">Author</th>
       <th><span class="d-none d-md-inline">Platform</span></th>
       <th>Chapter</th>
@@ -26,7 +26,7 @@
         routerLink="/manga/details/{{ manga.node.id }}"
       >
         <td>
-          <myanili-icon name="{{ manga.node.media_type | mal: 'mediaicon' }}"></myanili-icon>
+          <myanili-icon name="{{ manga.node.media_type | mal : 'mediaicon' }}"></myanili-icon>
         </td>
         <td
           class="d-lg-table-cell"

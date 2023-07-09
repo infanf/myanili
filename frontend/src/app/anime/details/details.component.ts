@@ -55,6 +55,7 @@ export class AnimeDetailsComponent implements OnInit {
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   @Input() inModal = false;
   streams: LegacyStream[] = [];
+  originalLanguage = 'Japanese';
 
   constructor(
     private animeService: AnimeService,
@@ -150,6 +151,17 @@ export class AnimeDetailsComponent implements OnInit {
     await this.getRatings();
   }
 
+  async getOriginalLanguage() {
+    const anilistId = this.anime?.my_extension?.anilistId;
+    if (!anilistId) {
+      this.originalLanguage = 'Japanese';
+      return;
+    }
+    this.anilist.getLang(anilistId).then(lang => {
+      this.originalLanguage = lang || 'Japanese';
+    });
+  }
+
   async checkExternalIds(anime: Anime) {
     if (!this.anime || !this.anime.my_extension) return;
     const promises = [];
@@ -169,9 +181,12 @@ export class AnimeDetailsComponent implements OnInit {
         this.anilist.getId(this.id, 'ANIME').then(anilistId => {
           if (anilistId && this?.anime?.my_extension) {
             this.anime.my_extension.anilistId = anilistId;
+            this.getOriginalLanguage();
           }
         }),
       );
+    } else {
+      this.getOriginalLanguage();
     }
     if (!this.anime.my_extension.simklId) {
       promises.push(

@@ -93,7 +93,7 @@
         *ngIf="anime?.alternative_titles?.en"
       ></myanili-value-pair>
       <myanili-value-pair
-        name="Japanese"
+        name="{{ originalLanguage }}"
         [value]="anime?.alternative_titles?.ja"
         *ngIf="anime?.alternative_titles?.ja"
       ></myanili-value-pair>

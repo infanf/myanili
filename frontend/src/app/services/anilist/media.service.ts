@@ -78,4 +78,43 @@ export class AnilistMediaService {
       ratings: result.data.Media.stats.scoreDistribution.map(a => a.amount).reduce((a, b) => a + b),
     };
   }
+
+  async getLang(id: number): Promise<string | undefined> {
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query Media($id: Int) {
+        Media(id: $id) {
+          countryOfOrigin
+        }
+      }
+    `;
+    const result = await this.client
+      .query<{ Media?: { countryOfOrigin: string } }>(QUERY, {
+        id,
+      })
+      .toPromise()
+      .catch(error => {
+        console.log({ error });
+        return undefined;
+      });
+    const lang = result?.data?.Media?.countryOfOrigin;
+    if (!lang) return;
+
+    switch (lang) {
+      case 'JP':
+        return 'Japanese';
+      case 'KR':
+        return 'Korean';
+      case 'CN':
+        return 'Mandarin';
+      default:
+        break;
+    }
+    const languageNames = new Intl.DisplayNames(['en'], {
+      type: 'language',
+    });
+    const languageName = languageNames.of(lang);
+    if (languageName?.toLocaleLowerCase() !== lang.toLocaleLowerCase()) return languageName;
+    return 'Native';
+  }
 }

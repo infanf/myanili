@@ -37,6 +37,8 @@ export class MangaDetailsComponent implements OnInit {
   editExtension?: MangaExtension;
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   activeTab = 1;
+  originalLanguage = 'Japanese';
+
   constructor(
     private mangaService: MangaService,
     private route: ActivatedRoute,
@@ -109,6 +111,17 @@ export class MangaDetailsComponent implements OnInit {
     await this.getRatings();
   }
 
+  async getOriginalLanguage() {
+    const anilistId = this.manga?.my_extension?.anilistId;
+    if (!anilistId) {
+      this.originalLanguage = 'Japanese';
+      return;
+    }
+    this.anilist.getLang(anilistId).then(lang => {
+      this.originalLanguage = lang || 'Japanese';
+    });
+  }
+
   async checkExternalIds(manga: Manga) {
     if (!this.manga?.my_extension) return;
     const promises = [];
@@ -137,9 +150,12 @@ export class MangaDetailsComponent implements OnInit {
         this.anilist.getId(this.id, 'MANGA').then(anilistId => {
           if (anilistId && this?.manga?.my_extension) {
             this.manga.my_extension.anilistId = anilistId;
+            this.getOriginalLanguage();
           }
         }),
       );
+    } else {
+      this.getOriginalLanguage();
     }
     if (!this.manga.my_extension.anisearchId) {
       promises.push(
