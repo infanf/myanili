@@ -11,6 +11,10 @@ export class MangapassionService {
 
   async searchManga(query: string) {
     if (!query) return [];
+    const { getCountryCode } = await import('@zma-lab/user-geolocation');
+    const countryCode = await getCountryCode();
+    if (!countryCode || !['DE', 'AT', 'CH', 'LI', 'NL', 'BE', 'LU'].includes(countryCode))
+      return [];
     const mangas = await this.cache.fetch<PassionManga[]>(
       `${this.baseUrl}/editions?search[title]=${query}`,
     );
