@@ -17,6 +17,7 @@ import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MangaService } from '@services/manga/manga.service';
 import { MangadexService } from '@services/manga/mangadex.service';
+import { MangapassionService } from '@services/manga/mangapassion.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 
 @Component({
@@ -48,6 +49,7 @@ export class MangaDetailsComponent implements OnInit {
     private kitsu: KitsuService,
     private baka: MangaupdatesService,
     private mangadex: MangadexService,
+    private mangapassion: MangapassionService,
     private anisearch: AnisearchService,
     private ann: AnnService,
     private modalService: NgbModal,
@@ -204,6 +206,22 @@ export class MangaDetailsComponent implements OnInit {
         }),
       );
     }
+    if (!this.manga.my_extension.mpasId) {
+      const titles = [this.manga.title];
+      if (this.manga.alternative_titles?.en) {
+        titles.push(this.manga.alternative_titles.en);
+      }
+      if (this.manga.alternative_titles?.ja) {
+        titles.push(this.manga.alternative_titles.ja);
+      }
+      promises.push(
+        this.mangapassion.getIdFromTitle(titles).then(mpasId => {
+          if (mpasId && this?.manga?.my_extension) {
+            this.manga.my_extension.mpasId = mpasId;
+          }
+        }),
+      );
+    }
     await Promise.all(promises);
     if (promises.length && manga.my_extension && manga.my_list_status) {
       const { Base64 } = await import('js-base64');
@@ -223,6 +241,7 @@ export class MangaDetailsComponent implements OnInit {
               bakaId: this.manga.my_extension.bakaId,
               annId: this.manga.my_extension.annId,
               mdId: this.manga.my_extension.mdId,
+              mpasId: this.manga.my_extension.mpasId,
             }),
           ),
         },

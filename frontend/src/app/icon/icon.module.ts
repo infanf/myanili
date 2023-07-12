@@ -15,6 +15,7 @@ import { KitsuIconComponent } from './kitsu/kitsu.component';
 import { LivechartIconComponent } from './livechart/livechart.component';
 import { LoadingIconComponent } from './loading/loading.component';
 import { MalIconComponent } from './mal/mal.component';
+import { MangaPassionComponent } from './manga-passion/manga-passion.component';
 import { MangadexIconComponent } from './mangadex/mangadex.component';
 import { ProgressIconComponent } from './progress/progress.component';
 import { SimklIconComponent } from './simkl/simkl.component';
@@ -42,6 +43,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     AnisearchIconComponent,
     ProgressIconComponent,
     LoadingIconComponent,
+    MangaPassionComponent,
   ],
   imports: [
     CommonModule,
@@ -74,6 +76,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     LivechartIconComponent,
     MalIconComponent,
     MangadexIconComponent,
+    MangaPassionComponent,
     SimklIconComponent,
     SpotifyIconComponent,
     IconStatusComponent,

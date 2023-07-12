@@ -592,6 +592,18 @@
                 >
               </div>
             </div>
+            <div class="row" *ngIf="manga.my_extension?.mpasId">
+              <div class="col-4"></div>
+              <div class="col-8">
+                <myanili-icon-manga-passion></myanili-icon-manga-passion>
+                <a
+                  class="ms-1"
+                  [href]="'https://www.manga-passion.de/editions/' + manga.my_extension!.mpasId"
+                  target="_blank"
+                  >Manga Passion</a
+                >
+              </div>
+            </div>
             <div *ngIf="manga.my_extension?.fandomSlug" class="row">
               <div class="col-4">
                 <td class="text-nowrap"></td>

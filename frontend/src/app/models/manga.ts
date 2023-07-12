@@ -150,6 +150,8 @@ interface MangaExtensionInterface {
   mdId?: string;
   anisearchId?: number;
   annId?: number;
+  /** manga-passion.de */
+  mpasId?: number;
   fandomSlug?: string;
   simulpub?: Weekday[];
 }
