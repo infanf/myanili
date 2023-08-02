@@ -15,7 +15,7 @@ import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
-import { Language, SettingsService } from '@services/settings.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-watchlist',
@@ -24,14 +24,13 @@ import { Language, SettingsService } from '@services/settings.service';
 })
 export class WatchlistComponent implements OnInit {
   private _animes: ListAnime[] = [];
-  lang: Language = 'default';
   autoFilter = false;
   private _airDates: AirDate[] = [];
 
   constructor(
     private animeService: AnimeService,
     private anilist: AnilistService,
-    private settings: SettingsService,
+    public settings: SettingsService,
     private glob: GlobalService,
     private trakt: TraktService,
     private simkl: SimklService,
@@ -39,9 +38,6 @@ export class WatchlistComponent implements OnInit {
   ) {
     this.glob.setTitle('Watchlist – Today');
     this.glob.busy();
-    this.settings.language.subscribe(lang => {
-      this.lang = lang;
-    });
     this.settings.autoFilter.subscribe(autoFilter => {
       this.autoFilter = autoFilter;
     });

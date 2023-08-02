@@ -56,17 +56,13 @@ function defaultSort(a: ListManga, b: ListManga) {
 export class BookshelfComponent {
   @Input() mangas: ListManga[] = [];
 
-  lang = 'en';
-
   constructor(
     private mangaservice: MangaService,
     private mangadex: MangadexService,
-    private settings: SettingsService,
+    public settings: SettingsService,
     private glob: GlobalService,
     private dialogue: DialogueService,
-  ) {
-    this.settings.language.subscribe(lang => (this.lang = lang));
-  }
+  ) {}
 
   async plusOneVolume(manga: ListManga) {
     if (!manga || manga.busy) return;

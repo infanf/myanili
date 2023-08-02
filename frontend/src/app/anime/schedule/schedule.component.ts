@@ -3,7 +3,7 @@ import { Anime, daysToLocal } from '@models/anime';
 import { Weekday } from '@models/components';
 import { AnimeService } from '@services/anime/anime.service';
 import { GlobalService } from '@services/global.service';
-import { Language, SettingsService } from '@services/settings.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-schedule',
@@ -13,12 +13,11 @@ import { Language, SettingsService } from '@services/settings.service';
 export class ScheduleComponent {
   animes: Array<Partial<Anime>> = [];
   today: Weekday = 0;
-  lang: Language = 'jp';
   year?: number;
   season?: number;
   constructor(
     private readonly animeService: AnimeService,
-    private settings: SettingsService,
+    public settings: SettingsService,
     private glob: GlobalService,
   ) {
     const { DateTime } = require('luxon') as typeof import('luxon');
@@ -46,9 +45,6 @@ export class ScheduleComponent {
           this.animes = animes;
         }
       });
-    this.settings.language.subscribe(lang => {
-      this.lang = lang;
-    });
   }
 
   async update(year?: number, season?: number) {

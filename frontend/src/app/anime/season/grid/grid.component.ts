@@ -10,7 +10,6 @@ import { SeasonComponent } from '../season.component';
 export class SeasonGridComponent extends SeasonComponent {
   @Input() animes: Array<Partial<Anime>> = [];
 
-  initSubscriptions() {}
   ngOnInit(): void {}
 
   classColor(anime?: Partial<Anime>): string {

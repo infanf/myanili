@@ -9,9 +9,5 @@ import { SettingsService } from '@services/settings.service';
 export class AnimeListListComponent {
   @Input() animes: ListAnime[] = [];
 
-  lang = 'en';
-
-  constructor(private settings: SettingsService) {
-    this.settings.language.subscribe(lang => (this.lang = lang));
-  }
+  constructor(public settings: SettingsService) {}
 }

@@ -15,19 +15,11 @@ export class SeasonComponent {
   onlyInList?: boolean;
   title = 'Season';
 
-  lang = 'en';
-  layout = 'list';
-
   constructor(
     private animeService: AnimeService,
-    private settings: SettingsService,
+    public settings: SettingsService,
     private glob: GlobalService,
   ) {
-    this.settings.language.subscribe(lang => (this.lang = lang));
-    this.initSubscriptions();
-  }
-
-  initSubscriptions() {
     const { Observable, switchMap } = require('rxjs') as typeof import('rxjs');
     this.settings.season
       .pipe(
@@ -51,7 +43,6 @@ export class SeasonComponent {
           this.animes = animes;
         }
       });
-    this.settings.layout.subscribe(layout => (this.layout = layout));
     this.settings.inList
       .pipe(
         switchMap(inList => {

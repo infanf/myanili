@@ -1,7 +1,13 @@
 <myanili-header [header]="title"></myanili-header>
 <section>
-  <myanili-manga-list *ngIf="layout === 'list'" [mangas]="mangas"></myanili-manga-list>
-  <myanili-manga-grid *ngIf="layout !== 'list'" [mangas]="mangas"></myanili-manga-grid>
+  <myanili-manga-list
+    *ngIf="(settings.layout$ | async) === 'list'"
+    [mangas]="mangas"
+  ></myanili-manga-list>
+  <myanili-manga-grid
+    *ngIf="(settings.layout$ | async) !== 'list'"
+    [mangas]="mangas"
+  ></myanili-manga-grid>
   <div
     *ngIf="mangas.length && !loadedAll"
     style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"

@@ -26,9 +26,9 @@
           <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
             {{
               anime.my_extension?.displayName ||
-                (lang === 'en'
+                ((settings.language$ | async) === 'en'
                   ? anime.node.alternative_titles?.en
-                  : lang === 'jp'
+                  : (settings.language$ | async) === 'jp'
                   ? anime.node.alternative_titles?.ja
                   : anime.node.title) ||
                 anime.node.title
