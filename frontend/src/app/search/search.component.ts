@@ -62,7 +62,7 @@ export class SearchComponent implements AfterViewInit {
       this.glob.setTitle(`Search ${this.type}`);
       this.results = [];
     });
-    this.settings.nsfw.subscribe(nsfw => (this._nsfw = nsfw));
+    this.settings.nsfw$.asObservable().subscribe(nsfw => (this._nsfw = nsfw));
     this.glob.notbusy();
   }
 

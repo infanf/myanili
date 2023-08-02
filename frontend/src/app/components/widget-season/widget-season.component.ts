@@ -27,7 +27,7 @@ export class WidgetSeasonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.settings.season.subscribe(season => {
+    this.settings.season$.asObservable().subscribe(season => {
       this.season = season;
     });
   }
@@ -35,7 +35,7 @@ export class WidgetSeasonComponent implements OnInit {
   changeSeason(offset: number) {
     const season = ((this.season.season + offset + 4) % 4) as SeasonNumber;
     const year = this.season.year + Math.floor((this.season.season + offset) / 4);
-    this.settings.setSeason(year, season);
+    this.settings.season = { year, season };
   }
 
   setCurrentSeason() {

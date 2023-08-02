@@ -38,7 +38,7 @@ export class WatchlistComponent implements OnInit {
   ) {
     this.glob.setTitle('Watchlist – Today');
     this.glob.busy();
-    this.settings.autoFilter.subscribe(autoFilter => {
+    this.settings.autoFilter$.asObservable().subscribe(autoFilter => {
       this.autoFilter = autoFilter;
     });
   }

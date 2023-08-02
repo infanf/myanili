@@ -42,7 +42,7 @@ export class AnimeService {
     private settings: SettingsService,
     private dialogue: DialogueService,
   ) {
-    this.settings.nsfw.subscribe(nsfw => {
+    this.settings.nsfw$.asObservable().subscribe(nsfw => {
       this.nsfw = nsfw;
     });
   }

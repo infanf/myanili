@@ -23,7 +23,8 @@ export class ScheduleComponent {
     const { DateTime } = require('luxon') as typeof import('luxon');
     this.today = DateTime.now().weekday as Weekday;
     const { Observable, switchMap } = require('rxjs') as typeof import('rxjs');
-    this.settings.season
+    this.settings.season$
+      .asObservable()
       .pipe(
         switchMap(season => {
           this.year = season.year;

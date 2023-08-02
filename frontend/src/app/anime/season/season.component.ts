@@ -21,7 +21,8 @@ export class SeasonComponent {
     private glob: GlobalService,
   ) {
     const { Observable, switchMap } = require('rxjs') as typeof import('rxjs');
-    this.settings.season
+    this.settings.season$
+      .asObservable()
       .pipe(
         switchMap(season => {
           this.year = season.year;
@@ -43,7 +44,8 @@ export class SeasonComponent {
           this.animes = animes;
         }
       });
-    this.settings.inList
+    this.settings.inList$
+      .asObservable()
       .pipe(
         switchMap(inList => {
           return new Observable<Array<Partial<Anime>> | undefined>(observer => {

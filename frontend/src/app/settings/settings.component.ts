@@ -52,7 +52,7 @@ export class SettingsComponent implements OnInit {
     public modal: NgbActiveModal,
     private dialogue: DialogueService,
   ) {
-    this.settings.language.subscribe(lang => {
+    this.settings.language$.asObservable().subscribe(lang => {
       this._lang = lang;
     });
     this.mal.user.subscribe(user => {
@@ -79,16 +79,16 @@ export class SettingsComponent implements OnInit {
     this.livechart.user.subscribe(user => {
       this.livechartLoggedIn = user;
     });
-    this.settings.inList.subscribe(inList => {
+    this.settings.inList$.asObservable().subscribe(inList => {
       this._inlist = JSON.stringify(inList) as BooleanString;
     });
-    this.settings.layout.subscribe(layout => {
+    this.settings.layout$.asObservable().subscribe(layout => {
       this._layout = layout || 'list';
     });
-    this.settings.nsfw.subscribe(nsfw => {
+    this.settings.nsfw$.asObservable().subscribe(nsfw => {
       this._nsfw = JSON.stringify(nsfw) as BooleanString;
     });
-    this.settings.autoFilter.subscribe(autoFilter => {
+    this.settings.autoFilter$.asObservable().subscribe(autoFilter => {
       this._autoFilter = JSON.stringify(autoFilter) as BooleanString;
     });
     this.version = this.glob.version;
@@ -103,7 +103,7 @@ export class SettingsComponent implements OnInit {
   }
 
   set lang(value: Language) {
-    this.settings.setLanguage(value);
+    this.settings.language = value;
   }
 
   get inlist() {
@@ -111,7 +111,7 @@ export class SettingsComponent implements OnInit {
   }
 
   set inlist(value: string) {
-    this.settings.setInList(Boolean(JSON.parse(value)));
+    this.settings.inList = Boolean(JSON.parse(value));
   }
 
   get nsfw() {
@@ -119,7 +119,7 @@ export class SettingsComponent implements OnInit {
   }
 
   set nsfw(value: BooleanString) {
-    this.settings.setNsfw(Boolean(JSON.parse(value)));
+    this.settings.nsfw = Boolean(JSON.parse(value));
   }
 
   get layout() {
@@ -127,7 +127,7 @@ export class SettingsComponent implements OnInit {
   }
 
   set layout(value: string) {
-    this.settings.setLayout(value);
+    this.settings.layout = value;
   }
 
   get autoFilter() {
@@ -135,7 +135,7 @@ export class SettingsComponent implements OnInit {
   }
 
   set autoFilter(value: BooleanString) {
-    this.settings.setAutoFilter(Boolean(JSON.parse(value)));
+    this.settings.autoFilter = Boolean(JSON.parse(value));
   }
 
   malConnect() {
