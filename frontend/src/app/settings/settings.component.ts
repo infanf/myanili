@@ -21,7 +21,7 @@ import { Language, SettingsService } from '@services/settings.service';
   templateUrl: './settings.component.html',
 })
 export class SettingsComponent implements OnInit {
-  lang: Language = 'default';
+  private _lang: Language = 'default';
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
   annictLoggedIn?: string;
@@ -33,9 +33,10 @@ export class SettingsComponent implements OnInit {
   bakaData?: { username: string; password: string; saveLogin: boolean };
   livechartLoggedIn?: string;
   livechartData?: { username: string; password: string; saveLogin: boolean };
-  inlist = 'false';
-  layout = 'list';
-  nsfw = 'true';
+  private _inlist: BooleanString = 'false';
+  private _autoFilter: BooleanString = 'false';
+  private _layout = 'list';
+  private _nsfw: BooleanString = 'true';
   version = '0.0.0';
   constructor(
     private settings: SettingsService,
@@ -52,7 +53,7 @@ export class SettingsComponent implements OnInit {
     private dialogue: DialogueService,
   ) {
     this.settings.language.subscribe(lang => {
-      this.lang = lang;
+      this._lang = lang;
     });
     this.mal.user.subscribe(user => {
       this.malLoggedIn = user;
@@ -79,13 +80,16 @@ export class SettingsComponent implements OnInit {
       this.livechartLoggedIn = user;
     });
     this.settings.inList.subscribe(inList => {
-      this.inlist = JSON.stringify(inList);
+      this._inlist = JSON.stringify(inList) as BooleanString;
     });
     this.settings.layout.subscribe(layout => {
-      this.layout = layout || 'list';
+      this._layout = layout || 'list';
     });
     this.settings.nsfw.subscribe(nsfw => {
-      this.nsfw = JSON.stringify(nsfw);
+      this._nsfw = JSON.stringify(nsfw) as BooleanString;
+    });
+    this.settings.autoFilter.subscribe(autoFilter => {
+      this._autoFilter = JSON.stringify(autoFilter) as BooleanString;
     });
     this.version = this.glob.version;
   }
@@ -94,20 +98,44 @@ export class SettingsComponent implements OnInit {
     setTimeout(() => this.glob.notbusy(), 100);
   }
 
-  changeLang() {
-    this.settings.setLanguage(this.lang);
+  get lang() {
+    return this._lang;
   }
 
-  changeInList() {
-    this.settings.setInList(Boolean(JSON.parse(this.inlist)));
+  set lang(value: Language) {
+    this.settings.setLanguage(value);
   }
 
-  changeNsfw() {
-    this.settings.setNsfw(Boolean(JSON.parse(this.nsfw)));
+  get inlist() {
+    return this._inlist;
   }
 
-  changeLayout() {
-    this.settings.setLayout(this.layout);
+  set inlist(value: string) {
+    this.settings.setInList(Boolean(JSON.parse(value)));
+  }
+
+  get nsfw() {
+    return this._nsfw;
+  }
+
+  set nsfw(value: BooleanString) {
+    this.settings.setNsfw(Boolean(JSON.parse(value)));
+  }
+
+  get layout() {
+    return this._layout;
+  }
+
+  set layout(value: string) {
+    this.settings.setLayout(value);
+  }
+
+  get autoFilter() {
+    return this._autoFilter;
+  }
+
+  set autoFilter(value: BooleanString) {
+    this.settings.setAutoFilter(Boolean(JSON.parse(value)));
   }
 
   malConnect() {
@@ -232,3 +260,5 @@ export class SettingsComponent implements OnInit {
     this.livechart.logoff();
   }
 }
+
+type BooleanString = 'true' | 'false';

@@ -17,7 +17,7 @@
       <div class="row">
         <div class="col-5">Language</div>
         <div class="col-7">
-          <select class="form-control" (change)="changeLang()" [(ngModel)]="lang">
+          <select class="form-control" [(ngModel)]="lang">
             <option value="default">Rōmaji</option>
             <option value="en">English</option>
             <option value="jp">Native</option>
@@ -25,9 +25,18 @@
         </div>
       </div>
       <div class="row mt-3">
+        <div class="col-5">Watchlist</div>
+        <div class="col-7">
+          <select class="form-control" [(ngModel)]="autoFilter">
+            <option value="false">Don't hide pausing shows</option>
+            <option value="true">Hide pausing shows</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-3">
         <div class="col-5">Seasonal</div>
         <div class="col-7">
-          <select class="form-control" (change)="changeInList()" [(ngModel)]="inlist">
+          <select class="form-control" [(ngModel)]="inlist">
             <option value="false">Show all Airing</option>
             <option value="true">Show only in my list</option>
           </select>
@@ -36,7 +45,7 @@
       <div class="row mt-3">
         <div class="col-5">Lists</div>
         <div class="col-7">
-          <select class="form-control" (change)="changeNsfw()" [(ngModel)]="nsfw">
+          <select class="form-control" [(ngModel)]="nsfw">
             <option value="false">Hide Hentai in Search/Season</option>
             <option value="true">Show Hentai in Search/Season</option>
           </select>
@@ -45,7 +54,7 @@
       <div class="row mt-3">
         <div class="col-5">Layout</div>
         <div class="col-7">
-          <select class="form-control" (change)="changeLayout()" [(ngModel)]="layout">
+          <select class="form-control" [(ngModel)]="layout">
             <option value="list">List</option>
             <option value="grid">Grid</option>
           </select>

@@ -9,15 +9,15 @@ import { GlobalService } from './global.service';
   providedIn: 'root',
 })
 export class SettingsService {
-  private season$ = new BehaviorSubject<Season>({
+  season$ = new BehaviorSubject<Season>({
     year: new Date().getFullYear(),
     season: Math.floor(new Date().getMonth() / 3) as SeasonNumber,
   });
-  private language$ = new BehaviorSubject<Language>('default');
-  private inList$ = new BehaviorSubject<boolean>(false);
-  private layout$ = new BehaviorSubject<string>('list');
-  private nsfw$ = new BehaviorSubject<boolean>(false);
-  private autoFilter$ = new BehaviorSubject<boolean>(false);
+  language$ = new BehaviorSubject<Language>('default');
+  inList$ = new BehaviorSubject<boolean>(false);
+  layout$ = new BehaviorSubject<string>('list');
+  nsfw$ = new BehaviorSubject<boolean>(false);
+  autoFilter$ = new BehaviorSubject<boolean>(false);
 
   constructor(private glob: GlobalService, private modalService: NgbModal) {
     try {
