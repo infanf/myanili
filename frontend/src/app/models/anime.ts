@@ -138,6 +138,7 @@ export interface AnimeNode {
   genres?: Genre[];
   popularity?: number;
   num_list_users?: number;
+  status?: AnimeStatus;
 }
 
 export interface RelatedAnime {

@@ -163,6 +163,10 @@ export class AnilistService {
     return this.anilistMedia.getLang(id);
   }
 
+  async getAirDates(id: number | number[]) {
+    return this.anilistMedia.getAirDates(id);
+  }
+
   statusFromMal(
     malStatus?: WatchStatus | ReadStatus,
     repeating = false,

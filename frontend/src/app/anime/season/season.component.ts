@@ -52,7 +52,7 @@ export class SeasonComponent {
         }
       });
     this.settings.layout.subscribe(layout => (this.layout = layout));
-    this.settings.onlyInList
+    this.settings.inList
       .pipe(
         switchMap(inList => {
           return new Observable<Array<Partial<Anime>> | undefined>(observer => {

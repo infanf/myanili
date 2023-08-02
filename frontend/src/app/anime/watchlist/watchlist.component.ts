@@ -8,6 +8,8 @@ import {
   MyAnimeUpdate,
   WatchStatus,
 } from '@models/anime';
+import { AnilistService } from '@services/anilist.service';
+import { AirDate } from '@services/anilist/media.service';
 import { AnimeService } from '@services/anime/anime.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
@@ -21,11 +23,14 @@ import { Language, SettingsService } from '@services/settings.service';
   styleUrls: ['./watchlist.component.scss'],
 })
 export class WatchlistComponent implements OnInit {
-  animes: ListAnime[] = [];
+  private _animes: ListAnime[] = [];
   lang: Language = 'default';
+  autoFilter = false;
+  private _airDates: AirDate[] = [];
 
   constructor(
     private animeService: AnimeService,
+    private anilist: AnilistService,
     private settings: SettingsService,
     private glob: GlobalService,
     private trakt: TraktService,
@@ -37,12 +42,15 @@ export class WatchlistComponent implements OnInit {
     this.settings.language.subscribe(lang => {
       this.lang = lang;
     });
+    this.settings.autoFilter.subscribe(autoFilter => {
+      this.autoFilter = autoFilter;
+    });
   }
 
   async ngOnInit() {
     const animes = await this.getAnimes();
     const { DateTimeFrom } = await import('@components/luxon-helper');
-    this.animes = animes
+    this._animes = animes
       .filter(anime => {
         const lastWatched = DateTimeFrom(anime.my_extension?.lastWatchedAt || 'yesterday');
         if (['completed', 'dropped'].includes(anime.list_status.status || '')) {
@@ -73,7 +81,26 @@ export class WatchlistComponent implements OnInit {
         return false;
       })
       .sort((a, b) => this.toSortIndex(a) - this.toSortIndex(b));
+    this._airDates = await this.anilist.getAirDates(this._animes.map(a => a.node.id));
     this.glob.notbusy();
+  }
+
+  get animes() {
+    if (!this.autoFilter) return this._animes;
+    const filtered = this._animes.filter(a => {
+      if (a.node.status === 'finished_airing') return true;
+      const nextEpisode = a.list_status.num_episodes_watched + 1;
+      const airDates = this._airDates.find(d => d.idMal === a.node.id);
+      if (!airDates) return true;
+      const nextAirDate = airDates.airDates?.find(e => e.episode === nextEpisode)?.date;
+      if (!nextAirDate) return true;
+      const eightAmTomorrow = this.getLast8am().plus({ day: 1 }).toJSDate();
+      const { DateTimeFrom } =
+        require('@components/luxon-helper') as typeof import('@components/luxon-helper');
+      const lastWatched = DateTimeFrom(a.my_extension?.lastWatchedAt || 'yesterday');
+      return nextAirDate < eightAmTomorrow || lastWatched > this.getLast8am();
+    });
+    return filtered;
   }
 
   async getAnimes() {

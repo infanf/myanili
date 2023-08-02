@@ -9,14 +9,15 @@ import { GlobalService } from './global.service';
   providedIn: 'root',
 })
 export class SettingsService {
-  private seasonSubject = new BehaviorSubject<Season>({
+  private season$ = new BehaviorSubject<Season>({
     year: new Date().getFullYear(),
     season: Math.floor(new Date().getMonth() / 3) as SeasonNumber,
   });
-  private languageSubject = new BehaviorSubject<Language>('default');
-  private inList = new BehaviorSubject<boolean>(false);
-  private layoutSubject = new BehaviorSubject<string>('list');
-  private nsfwSubject = new BehaviorSubject<boolean>(false);
+  private language$ = new BehaviorSubject<Language>('default');
+  private inList$ = new BehaviorSubject<boolean>(false);
+  private layout$ = new BehaviorSubject<string>('list');
+  private nsfw$ = new BehaviorSubject<boolean>(false);
+  private autoFilter$ = new BehaviorSubject<boolean>(false);
 
   constructor(private glob: GlobalService, private modalService: NgbModal) {
     try {
@@ -30,6 +31,8 @@ export class SettingsService {
       if (savedSeason) {
         this.setSeason(savedSeason.year as number, savedSeason.season as SeasonNumber);
       }
+      const autoFilter = Boolean(JSON.parse(localStorage.getItem('autoFilter') || 'false'));
+      this.setAutoFilter(autoFilter);
       const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
       this.setNsfw(nsfw);
       const knownVersion = String(localStorage.getItem('myaniliVersion')) || '0.0.0';
@@ -54,17 +57,17 @@ export class SettingsService {
   }
 
   get season() {
-    return this.seasonSubject.asObservable();
+    return this.season$.asObservable();
   }
 
   setSeason(year: number, season: SeasonNumber) {
     const newSeason = { year, season };
-    this.seasonSubject.next(newSeason);
+    this.season$.next(newSeason);
     localStorage.setItem('season', JSON.stringify(newSeason));
   }
 
   resetSeason() {
-    this.seasonSubject.next({
+    this.season$.next({
       year: new Date().getFullYear(),
       season: Math.floor(new Date().getMonth() / 3) as SeasonNumber,
     });
@@ -72,38 +75,47 @@ export class SettingsService {
   }
 
   get language() {
-    return this.languageSubject.asObservable();
+    return this.language$.asObservable();
   }
 
   setLanguage(lang: Language) {
-    this.languageSubject.next(lang);
+    this.language$.next(lang);
     localStorage.setItem('lang', lang);
   }
 
-  get onlyInList() {
-    return this.inList.asObservable();
+  get inList() {
+    return this.inList$.asObservable();
   }
 
   setInList(list: boolean) {
-    this.inList.next(list);
+    this.inList$.next(list);
     localStorage.setItem('inList', JSON.stringify(list));
   }
 
+  get autoFilter() {
+    return this.autoFilter$.asObservable();
+  }
+
+  setAutoFilter(autoFilter: boolean) {
+    this.autoFilter$.next(autoFilter);
+    localStorage.setItem('autoFilter', JSON.stringify(autoFilter));
+  }
+
   get layout() {
-    return this.layoutSubject.asObservable();
+    return this.layout$.asObservable();
   }
 
   setLayout(layout: string) {
-    this.layoutSubject.next(layout);
+    this.layout$.next(layout);
     localStorage.setItem('layout', layout);
   }
 
   get nsfw() {
-    return this.nsfwSubject.asObservable();
+    return this.nsfw$.asObservable();
   }
 
   setNsfw(nsfw: boolean) {
-    this.nsfwSubject.next(nsfw);
+    this.nsfw$.next(nsfw);
     localStorage.setItem('nsfw', JSON.stringify(nsfw));
   }
 }

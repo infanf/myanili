@@ -78,7 +78,7 @@ export class SettingsComponent implements OnInit {
     this.livechart.user.subscribe(user => {
       this.livechartLoggedIn = user;
     });
-    this.settings.onlyInList.subscribe(inList => {
+    this.settings.inList.subscribe(inList => {
       this.inlist = JSON.stringify(inList);
     });
     this.settings.layout.subscribe(layout => {
