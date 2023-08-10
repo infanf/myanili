@@ -223,11 +223,11 @@ export type AnimeStaff = Staff;
 
 export type AnimeRecommendations = Array<{ node: AnimeNode; num_recommendations: number }>;
 
-export enum AnimeEpisodeRule {
-  DROP = 0,
-  CONTINUE = 1,
-  ASK_AGAIN = 2,
-}
+export const AnimeEpisodeRule = {
+  DROP: 0,
+  CONTINUE: 1,
+  ASK_AGAIN: 2,
+} as const;
 
 export function migrateSimulcasts(extension: Partial<AnimeExtension>): AnimeExtension {
   if (!extension.simulcast) {
