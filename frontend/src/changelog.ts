@@ -4,8 +4,11 @@ export const changelog: Changelog = {
       version: '2.27.0',
       features: [
         'Watchlist: show shows that were dropped today',
+        "Watchlist: add option to hide shows that don't air this week",
         'Bookshelf: add simulpub/today section to bookshelf',
+        'Manga details: add link to manga passion (German speaking only)',
       ],
+      other: ['Clean up code'],
     },
     {
       version: '2.26.3',
