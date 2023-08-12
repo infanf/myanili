@@ -20,6 +20,7 @@ import {
 import { ExtRating } from '@models/components';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
+import { AnimePlanetService } from '@services/anime-planet.service';
 import { AnidbService } from '@services/anime/anidb.service';
 import { AnimeService } from '@services/anime/anime.service';
 import { AnnictService } from '@services/anime/annict.service';
@@ -72,6 +73,7 @@ export class AnimeDetailsComponent implements OnInit {
     private livechart: LivechartService,
     private ann: AnnService,
     private anidb: AnidbService,
+    private ap: AnimePlanetService,
     private cache: CacheService,
     private dialogue: DialogueService,
   ) {
@@ -257,6 +259,12 @@ export class AnimeDetailsComponent implements OnInit {
       });
       if (anidbId && this?.anime?.my_extension) {
         this.anime.my_extension.anidbId = anidbId;
+      }
+    }
+    if (!this.anime.my_extension.apSlug) {
+      const apSlug = await this.ap.getSlug(this.anime.my_extension.livechartId);
+      if (apSlug && this?.anime?.my_extension) {
+        this.anime.my_extension.apSlug = apSlug;
       }
     }
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
