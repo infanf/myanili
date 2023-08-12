@@ -55,6 +55,7 @@ export class AnimeDetailsComponent implements OnInit {
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   @Input() inModal = false;
   streams: LegacyStream[] = [];
+  originalLanguage = 'Japanese';
 
   constructor(
     private animeService: AnimeService,
@@ -150,6 +151,17 @@ export class AnimeDetailsComponent implements OnInit {
     await this.getRatings();
   }
 
+  async getOriginalLanguage() {
+    const anilistId = this.anime?.my_extension?.anilistId;
+    if (!anilistId) {
+      this.originalLanguage = 'Japanese';
+      return;
+    }
+    this.anilist.getLang(anilistId).then(lang => {
+      this.originalLanguage = lang || 'Japanese';
+    });
+  }
+
   async checkExternalIds(anime: Anime) {
     if (!this.anime || !this.anime.my_extension) return;
     const promises = [];
@@ -169,9 +181,12 @@ export class AnimeDetailsComponent implements OnInit {
         this.anilist.getId(this.id, 'ANIME').then(anilistId => {
           if (anilistId && this?.anime?.my_extension) {
             this.anime.my_extension.anilistId = anilistId;
+            this.getOriginalLanguage();
           }
         }),
       );
+    } else {
+      this.getOriginalLanguage();
     }
     if (!this.anime.my_extension.simklId) {
       promises.push(
@@ -225,13 +240,12 @@ export class AnimeDetailsComponent implements OnInit {
         });
       promises.push(annPromise);
     }
-    if (!this.anime.my_extension.trakt || !this.anime.my_extension.series) {
+    if (!this.anime.my_extension.trakt) {
       promises.push(
         this.animeService.getTraktData(this.id).then(traktData => {
           if (!traktData || !this?.anime?.my_extension) return;
           this.anime.my_extension.trakt ||= String(traktData.id);
           this.anime.my_extension.seasonNumber ||= traktData.season;
-          this.anime.my_extension.series ||= traktData.title;
         }),
       );
     }
@@ -246,6 +260,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
+      if ('series' in anime.my_extension) delete anime.my_extension.series;
       const { Base64 } = await import('js-base64');
       await this.animeService.updateAnime(
         {
@@ -651,7 +666,7 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(TraktComponent);
     modal.componentInstance.isMovie = this.anime.media_type === 'movie';
-    modal.componentInstance.title = this.anime.my_extension?.series || this.anime.title;
+    modal.componentInstance.title = this.anime.title;
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.trakt = String(value);
     });
@@ -660,7 +675,7 @@ export class AnimeDetailsComponent implements OnInit {
   async findKitsu() {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(KitsuComponent);
-    modal.componentInstance.title = this.anime.my_extension?.series || this.anime.title;
+    modal.componentInstance.title = this.anime.title;
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.kitsuId = { kitsuId: Number(value) };
     });

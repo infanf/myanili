@@ -111,7 +111,7 @@ class MalServiceProvider extends ServiceProvider
         return $response;
     }
 
-    public static function getMyList($status = null, $limit = 50, $offset = 0)
+    public static function getMyList($status = null, $limit = 50, $offset = 0, $sort = "anime_start_date")
     {
         $fields = [
             "num_episodes",
@@ -128,7 +128,7 @@ class MalServiceProvider extends ServiceProvider
 
         $params = [
             "fields" => implode(',', $fields),
-            "sort" => "anime_start_date",
+            "sort" => $sort,
             "limit" => min(intval($limit), 1000) ?: 1000,
             "offset" => $offset,
             "nsfw" => 1,

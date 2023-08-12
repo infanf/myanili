@@ -159,6 +159,14 @@ export class AnilistService {
     return this.anilistNotifications.markAsRead();
   }
 
+  async getLang(id: number): Promise<string | undefined> {
+    return this.anilistMedia.getLang(id);
+  }
+
+  async getAirDates(id: number | number[]) {
+    return this.anilistMedia.getAirDates(id);
+  }
+
   statusFromMal(
     malStatus?: WatchStatus | ReadStatus,
     repeating = false,

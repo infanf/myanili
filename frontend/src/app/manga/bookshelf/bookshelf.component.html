@@ -2,9 +2,9 @@
   <td routerLink="/manga/details/{{ manga.node.id }}" class="cursor-pointer">
     {{
       manga.my_extension?.displayName ||
-        (lang === 'en'
+        ((settings.language$ | async) === 'en'
           ? manga.node.alternative_titles?.en
-          : lang === 'jp'
+          : (settings.language$ | async) === 'jp'
           ? manga.node.alternative_titles?.ja
           : manga.node.title) ||
         manga.node.title

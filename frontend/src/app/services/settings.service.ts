@@ -9,29 +9,32 @@ import { GlobalService } from './global.service';
   providedIn: 'root',
 })
 export class SettingsService {
-  private seasonSubject = new BehaviorSubject<Season>({
+  season$ = new BehaviorSubject<Season>({
     year: new Date().getFullYear(),
     season: Math.floor(new Date().getMonth() / 3) as SeasonNumber,
   });
-  private languageSubject = new BehaviorSubject<Language>('default');
-  private inList = new BehaviorSubject<boolean>(false);
-  private layoutSubject = new BehaviorSubject<string>('list');
-  private nsfwSubject = new BehaviorSubject<boolean>(false);
+  language$ = new BehaviorSubject<Language>('default');
+  inList$ = new BehaviorSubject<boolean>(false);
+  layout$ = new BehaviorSubject<string>('list');
+  nsfw$ = new BehaviorSubject<boolean>(false);
+  autoFilter$ = new BehaviorSubject<boolean>(false);
 
   constructor(private glob: GlobalService, private modalService: NgbModal) {
     try {
       const list = Boolean(JSON.parse(localStorage.getItem('inList') || 'false'));
-      this.setInList(list);
+      this.inList = list;
       const layout = String(localStorage.getItem('layout') || 'list');
-      this.setLayout(layout);
+      this.layout = layout;
       const lang = String(localStorage.getItem('lang'));
-      this.setLanguage(['default', 'en', 'jp'].includes(lang) ? (lang as Language) : 'default');
+      this.language = ['default', 'en', 'jp'].includes(lang) ? (lang as Language) : 'default';
       const savedSeason = JSON.parse(String(localStorage.getItem('season')));
       if (savedSeason) {
-        this.setSeason(savedSeason.year as number, savedSeason.season as SeasonNumber);
+        this.season = savedSeason as Season;
       }
+      const autoFilter = Boolean(JSON.parse(localStorage.getItem('autoFilter') || 'false'));
+      this.autoFilter = autoFilter;
       const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
-      this.setNsfw(nsfw);
+      this.nsfw = nsfw;
       const knownVersion = String(localStorage.getItem('myaniliVersion')) || '0.0.0';
       if (this.glob.version !== knownVersion) {
         const changeNotes = this.glob.changelog.changes.filter(c =>
@@ -53,57 +56,41 @@ export class SettingsService {
     } catch (e) {}
   }
 
-  get season() {
-    return this.seasonSubject.asObservable();
-  }
-
-  setSeason(year: number, season: SeasonNumber) {
-    const newSeason = { year, season };
-    this.seasonSubject.next(newSeason);
+  set season(newSeason: { year: number; season: SeasonNumber }) {
+    this.season$.next(newSeason);
     localStorage.setItem('season', JSON.stringify(newSeason));
   }
 
   resetSeason() {
-    this.seasonSubject.next({
+    this.season$.next({
       year: new Date().getFullYear(),
       season: Math.floor(new Date().getMonth() / 3) as SeasonNumber,
     });
     localStorage.removeItem('season');
   }
 
-  get language() {
-    return this.languageSubject.asObservable();
-  }
-
-  setLanguage(lang: Language) {
-    this.languageSubject.next(lang);
+  set language(lang: Language) {
+    this.language$.next(lang);
     localStorage.setItem('lang', lang);
   }
 
-  get onlyInList() {
-    return this.inList.asObservable();
-  }
-
-  setInList(list: boolean) {
-    this.inList.next(list);
+  set inList(list: boolean) {
+    this.inList$.next(list);
     localStorage.setItem('inList', JSON.stringify(list));
   }
 
-  get layout() {
-    return this.layoutSubject.asObservable();
+  set autoFilter(autoFilter: boolean) {
+    this.autoFilter$.next(autoFilter);
+    localStorage.setItem('autoFilter', JSON.stringify(autoFilter));
   }
 
-  setLayout(layout: string) {
-    this.layoutSubject.next(layout);
+  set layout(layout: string) {
+    this.layout$.next(layout);
     localStorage.setItem('layout', layout);
   }
 
-  get nsfw() {
-    return this.nsfwSubject.asObservable();
-  }
-
-  setNsfw(nsfw: boolean) {
-    this.nsfwSubject.next(nsfw);
+  set nsfw(nsfw: boolean) {
+    this.nsfw$.next(nsfw);
     localStorage.setItem('nsfw', JSON.stringify(nsfw));
   }
 }

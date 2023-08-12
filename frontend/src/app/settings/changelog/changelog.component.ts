@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Changelog, GlobalService } from '@services/global.service';
+import { GlobalService } from '@services/global.service';
 
 @Component({
   selector: 'myanili-changelog',
@@ -7,15 +7,16 @@ import { Changelog, GlobalService } from '@services/global.service';
   styleUrls: ['./changelog.component.scss'],
 })
 export class ChangelogComponent {
-  changelog!: Changelog;
   showall = false;
   limit = 5;
 
-  constructor(private glob: GlobalService) {
-    this.changelog = this.glob.changelog;
-  }
+  constructor(private glob: GlobalService) {}
 
   get changes() {
     return this.showall ? this.changelog.changes : this.changelog.changes.slice(0, this.limit);
+  }
+
+  get changelog() {
+    return this.glob.changelog;
   }
 }

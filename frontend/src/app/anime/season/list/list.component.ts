@@ -10,6 +10,5 @@ import { SeasonComponent } from '../season.component';
 export class SeasonListComponent extends SeasonComponent {
   @Input() animes: Array<Partial<Anime>> = [];
 
-  initSubscriptions() {}
   ngOnInit(): void {}
 }

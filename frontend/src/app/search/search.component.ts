@@ -14,7 +14,7 @@ import { AnilistService } from '@services/anilist.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
-import { Language, SettingsService } from '@services/settings.service';
+import { SettingsService } from '@services/settings.service';
 
 import { AnimeDetailsComponent } from '../anime/details/details.component';
 import { MangaDetailsComponent } from '../manga/details/details.component';
@@ -26,7 +26,6 @@ import { MangaDetailsComponent } from '../manga/details/details.component';
 })
 export class SearchComponent implements AfterViewInit {
   @Input() type: 'anime' | 'manga' = 'anime';
-  lang: Language = 'default';
   results: Array<Anime | Manga> = [];
   nextResults: Array<Anime | Manga> = [];
   resultsFiltered: Array<Anime | Manga> = [];
@@ -46,7 +45,7 @@ export class SearchComponent implements AfterViewInit {
     genre: [],
   } as { [key: string]: string[] };
   showFilters = false;
-  nsfw = true;
+  private _nsfw = true;
 
   constructor(
     private _router: Router,
@@ -54,7 +53,7 @@ export class SearchComponent implements AfterViewInit {
     private kitsu: KitsuService,
     private anilist: AnilistService,
     private route: ActivatedRoute,
-    private settings: SettingsService,
+    public settings: SettingsService,
     private glob: GlobalService,
     private modal: NgbModal,
   ) {
@@ -63,8 +62,7 @@ export class SearchComponent implements AfterViewInit {
       this.glob.setTitle(`Search ${this.type}`);
       this.results = [];
     });
-    this.settings.language.subscribe(lang => (this.lang = lang));
-    this.settings.nsfw.subscribe(nsfw => (this.nsfw = nsfw));
+    this.settings.nsfw$.asObservable().subscribe(nsfw => (this._nsfw = nsfw));
     this.glob.notbusy();
   }
 
@@ -155,7 +153,7 @@ export class SearchComponent implements AfterViewInit {
           }
         }
       }
-      return this.nsfw ? true : !result.genres?.map(g => g.name).includes('Hentai');
+      return this._nsfw ? true : !result.genres?.map(g => g.name).includes('Hentai');
     });
     if (this.resultsFiltered.length < 20) this.loadMore();
   }

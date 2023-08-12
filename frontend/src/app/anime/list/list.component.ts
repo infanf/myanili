@@ -13,7 +13,6 @@ export class AnimeListComponent {
   @Input() status?: WatchStatus;
   animes: ListAnime[] = [];
   nextAnimes: ListAnime[] = [];
-  layout = 'list';
   loadedAll = false;
   loading = false;
   title = 'Watchlist';
@@ -21,7 +20,7 @@ export class AnimeListComponent {
   constructor(
     private animeService: AnimeService,
     private route: ActivatedRoute,
-    private settings: SettingsService,
+    public settings: SettingsService,
     private glob: GlobalService,
   ) {
     this.route.paramMap.subscribe(params => {
@@ -44,7 +43,6 @@ export class AnimeListComponent {
       limit: 50,
     });
     this.loadMore();
-    this.settings.layout.subscribe(layout => (this.layout = layout));
     this.glob.notbusy();
   }
 

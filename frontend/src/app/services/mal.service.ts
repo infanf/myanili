@@ -89,10 +89,11 @@ export class MalService {
     }
   }
 
-  async myList(status?: WatchStatus, options?: { limit?: number; offset?: number }) {
+  async myList(status?: WatchStatus, options?: { limit?: number; offset?: number; sort?: string }) {
     const params = new URLSearchParams([
       ['limit', String(options?.limit || 50)],
       ['offset', String(options?.offset || 0)],
+      ['sort', options?.sort || 'anime_start_date'],
     ]);
     if (status) return this.get<ListAnime[]>(`list/${status}`, params);
     return this.get<ListAnime[]>('list');

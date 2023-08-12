@@ -5,9 +5,9 @@
     [poster]="manga.node.main_picture?.medium || manga.node.main_picture?.large"
     [title]="
       manga.my_extension?.displayName ||
-      (lang === 'en'
+      ((settings.language$ | async) === 'en'
         ? manga.node.alternative_titles?.en
-        : lang === 'jp'
+        : (settings.language$ | async) === 'jp'
         ? manga.node.alternative_titles?.ja
         : manga.node.title) ||
       manga.node.title

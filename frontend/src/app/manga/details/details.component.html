@@ -92,7 +92,7 @@
         <div class="col-8">{{ manga?.alternative_titles?.en }}</div>
       </div>
       <div class="row" *ngIf="manga?.alternative_titles?.ja">
-        <div class="col-4 fw-bold text-end">Japanese</div>
+        <div class="col-4 fw-bold text-end">{{ originalLanguage }}</div>
         <div class="col-8">{{ manga?.alternative_titles?.ja }}</div>
       </div>
       <div class="row" *ngIf="manga?.alternative_titles?.synonyms?.length">
@@ -229,6 +229,28 @@
           />
         </div>
       </div>
+      <myanili-value-pair
+        *ngIf="!edit && manga && manga.my_extension && manga.my_extension?.simulpub?.length"
+        name="Simulpub"
+      >
+        {{ getDay(manga.my_extension.simulpub) }}
+      </myanili-value-pair>
+      <myanili-value-pair *ngIf="edit && editExtension" name="Simulpub">
+        <select
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.simulpub"
+          [disabled]="busy"
+          multiple
+        >
+          <option [value]="1">Monday</option>
+          <option [value]="2">Tuesday</option>
+          <option [value]="3">Wednesday</option>
+          <option [value]="4">Thursday</option>
+          <option [value]="5">Friday</option>
+          <option [value]="6">Saturday</option>
+          <option [value]="0">Sunday</option>
+        </select>
+      </myanili-value-pair>
       <div class="row" *ngIf="!edit && manga && manga.my_extension && manga.my_extension.platform">
         <div class="col-4 fw-bold text-end">Platform</div>
         <div class="col-8">
@@ -567,6 +589,18 @@
                   "
                   target="_blank"
                   >ANN</a
+                >
+              </div>
+            </div>
+            <div class="row" *ngIf="manga.my_extension?.mpasId">
+              <div class="col-4"></div>
+              <div class="col-8">
+                <myanili-icon-manga-passion></myanili-icon-manga-passion>
+                <a
+                  class="ms-1"
+                  [href]="'https://www.manga-passion.de/editions/' + manga.my_extension!.mpasId"
+                  target="_blank"
+                  >Manga Passion</a
                 >
               </div>
             </div>

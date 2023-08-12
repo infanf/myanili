@@ -9,11 +9,7 @@ import { SettingsService } from '@services/settings.service';
 export class MangaListGridComponent {
   @Input() mangas: ListManga[] = [];
 
-  lang = 'en';
-
-  constructor(private settings: SettingsService) {
-    this.settings.language.subscribe(lang => (this.lang = lang));
-  }
+  constructor(public settings: SettingsService) {}
 
   getAuthor(manga: MangaNode): string[] {
     return (

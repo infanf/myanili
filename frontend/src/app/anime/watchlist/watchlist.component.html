@@ -26,9 +26,9 @@
           <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
             {{
               anime.my_extension?.displayName ||
-                (lang === 'en'
+                ((settings.language$ | async) === 'en'
                   ? anime.node.alternative_titles?.en
-                  : lang === 'jp'
+                  : (settings.language$ | async) === 'jp'
                   ? anime.node.alternative_titles?.ja
                   : anime.node.title) ||
                 anime.node.title
@@ -77,7 +77,15 @@
               *ngIf="anime.my_extension?.simulcast?.day && isInSeason(anime); else plusIcon"
               [class]="{ 'cursor-pointer': !isSeen(anime) }"
               class="mx-2"
-              [name]="anime.busy ? 'loading-circle' : isSeen(anime) ? 'check-circle' : 'circle'"
+              [name]="
+                anime.busy
+                  ? 'loading-circle'
+                  : anime.list_status.status === 'dropped'
+                  ? 'trash'
+                  : isSeen(anime)
+                  ? 'check-circle'
+                  : 'circle'
+              "
               (click)="markSeen(anime)"
             ></myanili-icon>
             <ng-template #plusIcon>

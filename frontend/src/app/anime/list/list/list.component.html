@@ -4,12 +4,19 @@
       <th></th>
       <th
         class="d-lg-table-cell"
-        [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
+        [class]="{
+          'd-none': (settings.language$ | async) !== 'default',
+          'd-md-table-cell': (settings.language$ | async) === 'en'
+        }"
       >
         Name
       </th>
-      <th class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">English Name</th>
-      <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Japanese Name</th>
+      <th class="d-md-table-cell" [class]="{ 'd-none': (settings.language$ | async) !== 'en' }">
+        English Name
+      </th>
+      <th class="d-lg-table-cell" [class]="{ 'd-none': (settings.language$ | async) !== 'jp' }">
+        Native Name
+      </th>
       <th class="d-none d-sm-table-cell">Series</th>
       <th>Season</th>
       <th class="d-none d-md-table-cell">Streaming</th>
@@ -31,18 +38,21 @@
         </td>
         <td
           class="d-lg-table-cell"
-          [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
+          [class]="{
+            'd-none': (settings.language$ | async) !== 'default',
+            'd-md-table-cell': (settings.language$ | async) === 'en'
+          }"
         >
           {{ anime.my_extension?.displayName || anime.node.title }}
         </td>
-        <td class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">
+        <td class="d-md-table-cell" [class]="{ 'd-none': (settings.language$ | async) !== 'en' }">
           {{ anime.node.alternative_titles?.en || anime.node.title }}
         </td>
-        <td class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">
+        <td class="d-lg-table-cell" [class]="{ 'd-none': (settings.language$ | async) !== 'jp' }">
           {{ anime.node.alternative_titles?.ja }}
         </td>
         <td class="d-none d-sm-table-cell">
-          {{ anime.my_extension?.series || anime.node.title }}
+          {{ anime.node.title }}
           <span
             class="text-muted"
             *ngIf="anime.my_extension?.seasonNumber && anime.my_extension?.seasonNumber != 1"

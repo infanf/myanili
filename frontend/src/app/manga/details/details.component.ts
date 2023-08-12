@@ -5,7 +5,7 @@ import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnComponent } from '@external/ann/ann.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
-import { ExtRating } from '@models/components';
+import { ExtRating, Weekday } from '@models/components';
 import { Manga, MangaExtension, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
@@ -17,6 +17,7 @@ import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MangaService } from '@services/manga/manga.service';
 import { MangadexService } from '@services/manga/mangadex.service';
+import { MangapassionService } from '@services/manga/mangapassion.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 
 @Component({
@@ -37,6 +38,8 @@ export class MangaDetailsComponent implements OnInit {
   editExtension?: MangaExtension;
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   activeTab = 1;
+  originalLanguage = 'Japanese';
+
   constructor(
     private mangaService: MangaService,
     private route: ActivatedRoute,
@@ -46,6 +49,7 @@ export class MangaDetailsComponent implements OnInit {
     private kitsu: KitsuService,
     private baka: MangaupdatesService,
     private mangadex: MangadexService,
+    private mangapassion: MangapassionService,
     private anisearch: AnisearchService,
     private ann: AnnService,
     private modalService: NgbModal,
@@ -109,6 +113,17 @@ export class MangaDetailsComponent implements OnInit {
     await this.getRatings();
   }
 
+  async getOriginalLanguage() {
+    const anilistId = this.manga?.my_extension?.anilistId;
+    if (!anilistId) {
+      this.originalLanguage = 'Japanese';
+      return;
+    }
+    this.anilist.getLang(anilistId).then(lang => {
+      this.originalLanguage = lang || 'Japanese';
+    });
+  }
+
   async checkExternalIds(manga: Manga) {
     if (!this.manga?.my_extension) return;
     const promises = [];
@@ -137,9 +152,12 @@ export class MangaDetailsComponent implements OnInit {
         this.anilist.getId(this.id, 'MANGA').then(anilistId => {
           if (anilistId && this?.manga?.my_extension) {
             this.manga.my_extension.anilistId = anilistId;
+            this.getOriginalLanguage();
           }
         }),
       );
+    } else {
+      this.getOriginalLanguage();
     }
     if (!this.manga.my_extension.anisearchId) {
       promises.push(
@@ -188,6 +206,22 @@ export class MangaDetailsComponent implements OnInit {
         }),
       );
     }
+    if (!this.manga.my_extension.mpasId) {
+      const titles = [this.manga.title];
+      if (this.manga.alternative_titles?.en) {
+        titles.push(this.manga.alternative_titles.en);
+      }
+      if (this.manga.alternative_titles?.ja) {
+        titles.push(this.manga.alternative_titles.ja);
+      }
+      promises.push(
+        this.mangapassion.getIdFromTitle(titles).then(mpasId => {
+          if (mpasId && this?.manga?.my_extension) {
+            this.manga.my_extension.mpasId = mpasId;
+          }
+        }),
+      );
+    }
     await Promise.all(promises);
     if (promises.length && manga.my_extension && manga.my_list_status) {
       const { Base64 } = await import('js-base64');
@@ -207,6 +241,7 @@ export class MangaDetailsComponent implements OnInit {
               bakaId: this.manga.my_extension.bakaId,
               annId: this.manga.my_extension.annId,
               mdId: this.manga.my_extension.mdId,
+              mpasId: this.manga.my_extension.mpasId,
             }),
           ),
         },
@@ -684,5 +719,16 @@ export class MangaDetailsComponent implements OnInit {
       return `https://mangadex.org/search?q=${this.manga?.title}`;
     }
     return `https://mangadex.org/title/${this.manga.my_extension.mdId}`;
+  }
+
+  getDay(simulpub?: Weekday[]): string {
+    if (!simulpub) return '';
+    return simulpub
+      .map(day => {
+        const { DateTime } = require('luxon') as typeof import('luxon');
+        const date = DateTime.local().set({ weekday: day });
+        return date.weekdayLong;
+      })
+      .join(', ');
   }
 }

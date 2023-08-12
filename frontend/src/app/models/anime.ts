@@ -138,6 +138,7 @@ export interface AnimeNode {
   genres?: Genre[];
   popularity?: number;
   num_list_users?: number;
+  status?: AnimeStatus;
 }
 
 export interface RelatedAnime {
@@ -154,6 +155,9 @@ interface SimulcastData {
 }
 
 export interface AnimeExtension {
+  /**
+   * @deprecated
+   */
   series?: string;
   seasonNumber?: number;
   episodeCorOffset?: number;
@@ -219,11 +223,11 @@ export type AnimeStaff = Staff;
 
 export type AnimeRecommendations = Array<{ node: AnimeNode; num_recommendations: number }>;
 
-export enum AnimeEpisodeRule {
-  DROP = 0,
-  CONTINUE = 1,
-  ASK_AGAIN = 2,
-}
+export const AnimeEpisodeRule = {
+  DROP: 0,
+  CONTINUE: 1,
+  ASK_AGAIN: 2,
+} as const;
 
 export function migrateSimulcasts(extension: Partial<AnimeExtension>): AnimeExtension {
   if (!extension.simulcast) {

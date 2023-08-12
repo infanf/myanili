@@ -6,12 +6,19 @@
       </th>
       <th
         class="d-lg-table-cell"
-        [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
+        [class]="{
+          'd-none': (settings.language$ | async) !== 'default',
+          'd-md-table-cell': (settings.language$ | async) === 'en'
+        }"
       >
         Name
       </th>
-      <th class="d-md-table-cell" [class]="{ 'd-none': lang !== 'en' }">English Name</th>
-      <th class="d-lg-table-cell" [class]="{ 'd-none': lang !== 'jp' }">Japanese Name</th>
+      <th class="d-md-table-cell" [class]="{ 'd-none': (settings.language$ | async) !== 'en' }">
+        English Name
+      </th>
+      <th class="d-lg-table-cell" [class]="{ 'd-none': (settings.language$ | async) !== 'jp' }">
+        Native Name
+      </th>
       <th class="d-none d-sm-table-cell">Genres</th>
       <th>Type</th>
       <th class="d-none d-md-table-cell">Streaming</th>
@@ -38,20 +45,23 @@
         <td
           routerLink="/anime/details/{{ anime.id }}"
           class="d-lg-table-cell"
-          [class]="{ 'd-none': lang !== 'default', 'd-md-table-cell': lang === 'en' }"
+          [class]="{
+            'd-none': (settings.language$ | async) !== 'default',
+            'd-md-table-cell': (settings.language$ | async) === 'en'
+          }"
         >
           {{ anime.title }}
         </td>
         <td
           class="d-md-table-cell"
-          [class]="{ 'd-none': lang !== 'en' }"
+          [class]="{ 'd-none': (settings.language$ | async) !== 'en' }"
           routerLink="/anime/details/{{ anime.id }}"
         >
           {{ anime.alternative_titles?.en || anime.title }}
         </td>
         <td
           class="d-lg-table-cell"
-          [class]="{ 'd-none': lang !== 'jp' }"
+          [class]="{ 'd-none': (settings.language$ | async) !== 'jp' }"
           routerLink="/anime/details/{{ anime.id }}"
         >
           {{ anime.alternative_titles?.ja }}

@@ -8,12 +8,14 @@ import {
   MyAnimeUpdate,
   WatchStatus,
 } from '@models/anime';
+import { AnilistService } from '@services/anilist.service';
+import { AirDate } from '@services/anilist/media.service';
 import { AnimeService } from '@services/anime/anime.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
-import { Language, SettingsService } from '@services/settings.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-watchlist',
@@ -21,12 +23,14 @@ import { Language, SettingsService } from '@services/settings.service';
   styleUrls: ['./watchlist.component.scss'],
 })
 export class WatchlistComponent implements OnInit {
-  animes: ListAnime[] = [];
-  lang: Language = 'default';
+  private _animes: ListAnime[] = [];
+  autoFilter = false;
+  private _airDates: AirDate[] = [];
 
   constructor(
     private animeService: AnimeService,
-    private settings: SettingsService,
+    private anilist: AnilistService,
+    public settings: SettingsService,
     private glob: GlobalService,
     private trakt: TraktService,
     private simkl: SimklService,
@@ -34,50 +38,40 @@ export class WatchlistComponent implements OnInit {
   ) {
     this.glob.setTitle('Watchlist – Today');
     this.glob.busy();
-    this.settings.language.subscribe(lang => {
-      this.lang = lang;
+    this.settings.autoFilter$.asObservable().subscribe(autoFilter => {
+      this.autoFilter = autoFilter;
     });
   }
 
   async ngOnInit() {
     const animes = await this.getAnimes();
-    const { DateTimeFrom } = await import('@components/luxon-helper');
-    this.animes = animes
-      .filter(anime => {
-        const lastWatched = DateTimeFrom(anime.my_extension?.lastWatchedAt || 'yesterday');
-        if (anime.list_status.status === 'completed') {
-          return lastWatched > this.getLast8am();
-        }
-        if (!anime.my_extension) return true;
-        if (!anime.my_extension.simulcast.day?.length) return true;
-        const simulDay = daysToLocal(anime.my_extension.simulcast);
-        const lastAiredWeekday = this.animeService.getLastDay(simulDay);
-        const last8amWeekday = this.getLast8am().weekday % 7;
-        if (lastAiredWeekday === last8amWeekday) {
-          return true;
-        }
-        if (lastWatched > this.getLast8am()) return true;
-        const lastAiredDaysAgo = (last8amWeekday - lastAiredWeekday + 14) % 7;
-        if (lastAiredDaysAgo === 0) return true;
-        if (lastAiredDaysAgo <= 4) {
-          const inFuture = DateTimeFrom(anime.node.start_date) > DateTimeFrom();
-          const newShow = anime.list_status.num_episodes_watched === 0;
-          const lastWatchedOrUpdated = DateTimeFrom(
-            anime.my_extension.lastWatchedAt || new Date(0),
-          );
-          return (
-            lastWatchedOrUpdated < DateTimeFrom().minus({ day: lastAiredDaysAgo + 1 }) ||
-            (!inFuture && newShow)
-          );
-        }
-        return false;
-      })
+    this._animes = animes
+      .filter(anime => this.filterAnime(anime))
       .sort((a, b) => this.toSortIndex(a) - this.toSortIndex(b));
+    this._airDates = await this.anilist.getAirDates(this._animes.map(a => a.node.id));
     this.glob.notbusy();
   }
 
+  get animes() {
+    if (!this.autoFilter) return this._animes;
+    const filtered = this._animes.filter(a => {
+      if (a.node.status === 'finished_airing') return true;
+      const nextEpisode = a.list_status.num_episodes_watched + 1;
+      const airDates = this._airDates.find(d => d.idMal === a.node.id);
+      if (!airDates) return true;
+      const nextAirDate = airDates.airDates?.find(e => e.episode === nextEpisode)?.date;
+      if (!nextAirDate) return true;
+      const eightAmTomorrow = this.getLast8am().plus({ day: 1 }).toJSDate();
+      const { DateTimeFrom } =
+        require('@components/luxon-helper') as typeof import('@components/luxon-helper');
+      const lastWatched = DateTimeFrom(a.my_extension?.lastWatchedAt || 'yesterday');
+      return nextAirDate < eightAmTomorrow || lastWatched > this.getLast8am();
+    });
+    return filtered;
+  }
+
   async getAnimes() {
-    return this.animeService.list(['watching', 'completed'], {
+    return this.animeService.list(['watching', 'completed', 'dropped'], {
       limit: 100,
       sort: 'list_updated_at',
     });
@@ -296,5 +290,35 @@ export class WatchlistComponent implements OnInit {
     return this.animes.filter(a => {
       return this.isSeen(a);
     }).length;
+  }
+
+  filterAnime(anime: ListAnime): boolean {
+    const { DateTimeFrom } =
+      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
+    const lastWatched = DateTimeFrom(anime.my_extension?.lastWatchedAt || 'yesterday');
+    if (['completed', 'dropped'].includes(anime.list_status.status || '')) {
+      if (!anime.list_status.is_rewatching) return lastWatched > this.getLast8am();
+    }
+    if (!anime.my_extension) return true;
+    if (!anime.my_extension.simulcast.day?.length) return true;
+    const simulDay = daysToLocal(anime.my_extension.simulcast);
+    const lastAiredWeekday = this.animeService.getLastDay(simulDay);
+    const last8amWeekday = this.getLast8am().weekday % 7;
+    if (lastAiredWeekday === last8amWeekday) {
+      return true;
+    }
+    if (lastWatched > this.getLast8am()) return true;
+    const lastAiredDaysAgo = (last8amWeekday - lastAiredWeekday + 14) % 7;
+    if (lastAiredDaysAgo === 0) return true;
+    if (lastAiredDaysAgo <= 4) {
+      const inFuture = DateTimeFrom(anime.node.start_date) > DateTimeFrom();
+      const newShow = anime.list_status.num_episodes_watched === 0;
+      const lastWatchedOrUpdated = DateTimeFrom(anime.my_extension.lastWatchedAt || new Date(0));
+      return (
+        lastWatchedOrUpdated < DateTimeFrom().minus({ day: lastAiredDaysAgo + 1 }) ||
+        (!inFuture && newShow)
+      );
+    }
+    return false;
   }
 }

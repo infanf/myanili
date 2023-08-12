@@ -17,18 +17,12 @@ export class MangaListComponent implements OnInit {
   loading = false;
   title = 'Mangalist';
 
-  layout = 'list';
-  lang = 'en';
-
   constructor(
     private mangaService: MangaService,
     private route: ActivatedRoute,
-    private settings: SettingsService,
+    public settings: SettingsService,
     private glob: GlobalService,
-  ) {
-    this.settings.language.subscribe(lang => (this.lang = lang));
-    this.settings.layout.subscribe(layout => (this.layout = layout));
-  }
+  ) {}
 
   async ngOnInit() {
     this.route.paramMap.subscribe(async params => {

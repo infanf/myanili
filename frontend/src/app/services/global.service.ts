@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 
 import packageJson from '../../../package.json';
-import * as changelog from '../../changelog.json';
+import { changelog } from '../../changelog';
 
 @Injectable({
   providedIn: 'root',
@@ -93,21 +93,10 @@ export class GlobalService {
   }
 
   get changelog() {
-    return changelog as unknown as Changelog;
+    return changelog;
   }
 
   async sleep(t: number) {
     return new Promise(resolve => setTimeout(resolve, t));
   }
-}
-
-export interface Changelog {
-  changes: [
-    {
-      version: string;
-      features?: string[];
-      fixes?: string[];
-      other?: string[];
-    },
-  ];
 }
