@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.27.1',
+      features: ['Anime details: add link to Anime=Planet entry'],
+      fixes: ['Mangadex: request error', 'AniSearch: live action links'],
+    },
+    {
       version: '2.27.0',
       features: [
         'Watchlist: show shows that were dropped today',
