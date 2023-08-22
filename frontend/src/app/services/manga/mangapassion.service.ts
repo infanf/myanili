@@ -13,8 +13,9 @@ export class MangapassionService {
     if (!query) return [];
     const { getCountryCode } = await import('@zma-lab/user-geolocation');
     const countryCode = await getCountryCode();
-    if (!countryCode || !['DE', 'AT', 'CH', 'LI', 'NL', 'BE', 'LU'].includes(countryCode))
+    if (!countryCode || !['DE', 'AT', 'CH', 'LI', 'NL', 'BE', 'LU'].includes(countryCode)) {
       return [];
+    }
     const mangas = await this.cache.fetch<PassionManga[]>(
       `${this.baseUrl}/editions?search[title]=${query}`,
     );
@@ -44,32 +45,9 @@ interface PassionManga {
   }>;
 
   sources: Array<{
-    id: 1712;
-    romaji: 'Dandadan';
-    title: 'ダンダダン';
-    visible: true;
-    type: 0;
-    origin: 0;
-    contributors: [
-      {
-        id: 3589;
-        contributor: {
-          id: 1633;
-          name: 'Yukinobu Tatsu';
-          visible: true;
-        };
-        role: 0;
-      },
-      {
-        id: 3590;
-        contributor: {
-          id: 1633;
-          name: 'Yukinobu Tatsu';
-          visible: true;
-        };
-        role: 1;
-      },
-    ];
+    id: number;
+    romaji: string;
+    title: string;
   }>;
 
   cover: string;
