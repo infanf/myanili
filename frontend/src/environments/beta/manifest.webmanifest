@@ -3,6 +3,8 @@
   "short_name": "MyAniLi β",
   "theme_color": "#204a82",
   "background_color": "#ffffff",
+  "lang": "en",
+  "description": "MyAniLi is a mobile client for MyAnimeList.net. It allows you to manage your anime and manga watchlist and syncs them to other sites like Anilist.co and Kitsu.io.",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
@@ -44,6 +46,52 @@
       "purpose": "any maskable"
     }
   ],
+  "screenshots": [
+    {
+      "src": "assets/screenshots/watchlist.png",
+      "sizes": "840x1560",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Watchlist"
+    },
+    {
+      "src": "assets/screenshots/planning.png",
+      "sizes": "840x1560",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Plan to watch overview"
+    },
+    {
+      "src": "assets/screenshots/anime-details.png",
+      "sizes": "840x1560",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Detailed view of single show"
+    },
+    {
+      "src": "assets/screenshots/anime-details2.png",
+      "sizes": "840x1560",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Detailed view of single show"
+    },
+    {
+      "src": "assets/screenshots/Bookshelf.png",
+      "sizes": "840x1560",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Bookshelf"
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
   "shortcuts": [
     {
       "name": "Anime",

@@ -11,3 +11,16 @@ if (environment.production) {
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch(err => console.error(err));
+
+if (window.location.search) {
+  const params = new URLSearchParams(window.location.search);
+  for (const key of ['url', 'text', 'title']) {
+    if (params.has(key)) {
+      const query = params.get(key);
+      if (query) {
+        window.location.hash = `/search/anime/${encodeURIComponent(query)}`;
+        break;
+      }
+    }
+  }
+}

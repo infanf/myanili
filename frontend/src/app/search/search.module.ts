@@ -28,6 +28,10 @@ import { SearchComponent } from './search.component';
         path: ':type',
         component: SearchComponent,
       },
+      {
+        path: ':type/:query',
+        component: SearchComponent,
+      },
     ]),
   ],
   exports: [SearchComponent],
