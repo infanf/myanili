@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.27.1',
+      fixes: ['Anime: deleted are now also sent to trakt and livechart'],
+    },
+    {
       version: '2.27.0',
       features: [
         'Watchlist: show shows that were dropped today',

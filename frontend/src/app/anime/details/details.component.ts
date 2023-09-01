@@ -654,6 +654,8 @@ export class AnimeDetailsComponent implements OnInit {
       kitsuId: this.anime.my_extension?.kitsuId,
       simklId: this.anime.my_extension?.simklId,
       annictId: this.anime.my_extension?.annictId,
+      traktId: this.anime.my_extension?.trakt,
+      livechartId: this.anime.my_extension?.livechartId,
     });
     this.edit = false;
     await this.ngOnInit();
