@@ -177,10 +177,16 @@ export class TraktService {
         },
       ],
     });
-    const [resultCalendar, resultWatchlist] = await Promise.all([
-      fetch(`${this.baseUrl}users/hidden/calendar`, { headers, method, body }),
-      fetch(`${this.baseUrl}users/hidden/progress_watched`, { headers, method, body }),
-    ]);
+    const resultCalendar = await fetch(`${this.baseUrl}users/hidden/calendar`, {
+      headers,
+      method,
+      body,
+    });
+    const resultWatchlist = await fetch(`${this.baseUrl}users/hidden/progress_watched`, {
+      headers,
+      method,
+      body,
+    });
     return resultCalendar.ok && resultWatchlist.ok;
   }
 

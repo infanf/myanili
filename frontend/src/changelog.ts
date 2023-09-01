@@ -1,9 +1,13 @@
 export const changelog: Changelog = {
   changes: [
     {
-      version: '2.27.1',
+      version: '2.27.2',
       features: ['Anime details: add link to Anime-Planet entry'],
       fixes: ['Mangadex: request error', 'AniSearch: live action links'],
+    },
+    {
+      version: '2.27.1',
+      fixes: ['Anime: deleted are now also sent to trakt and livechart'],
     },
     {
       version: '2.27.0',
