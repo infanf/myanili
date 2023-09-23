@@ -24,7 +24,12 @@
       />
     </div>
     <div>
-      <div style="text-decoration: underline">{{ stream.displayName }}</div>
+      <div>
+        <u>{{ stream.displayName }}</u>
+        <span class="badge text-bg-secondary ms-1" *ngIf="stream.expiresAt">
+          Expires {{ stream.expiresAt | date : 'MMM d' }}
+        </span>
+      </div>
       <small class="text-muted" style="text-decoration: none">{{ stream.comment }}</small>
     </div>
   </a>

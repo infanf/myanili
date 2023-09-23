@@ -384,6 +384,7 @@ export class LivechartService {
         displayName
         updatedAt
         createdAt
+        expiresAt
         streamingService {
           databaseId
           name
@@ -590,6 +591,7 @@ export interface LegacyStream {
   displayName: string;
   updatedAt: string;
   createdAt: string;
+  expiresAt?: string;
   streamingService: {
     databaseId: number;
     name: string;
