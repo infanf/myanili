@@ -649,6 +649,22 @@
                 >
               </div>
             </div>
+            <div *ngIf="anime.my_extension?.apSlug" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <myanili-external-rating [rating]="getRating('ap')"></myanili-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <myanili-icon-ap></myanili-icon-ap>
+                <a
+                  class="ms-1"
+                  [href]="'https://www.anime-planet.com/anime/' + anime.my_extension!.apSlug"
+                  target="_blank"
+                  >Anime-Planet</a
+                >
+              </div>
+            </div>
             <div *ngIf="anime && anime.my_extension && anime.my_extension.trakt" class="row">
               <div class="col-4">
                 <td class="text-nowrap">

@@ -80,15 +80,18 @@ class BakaServiceProvider extends ServiceProvider
         $nodes = $finder->query("//*[@id='main_content']//div[contains(@class, 'col-12 col-lg-6 p-3 text')]");
         foreach ($nodes as $node) {
             $manga = [];
+            /** @var DOMElement|null $link */
             $link = $finder->query(".//div[contains(@class, 'col text p-1 pl-3')]//a[contains(@alt, 'Series Info')]", $node)->item(0);
             $manga['title'] = $link->nodeValue ?? '';
             $manga['link'] = $link->getAttribute('href');
+            /** @var DOMElement|null $img */
             $img = $finder->query(".//img", $node)->item(0);
             $manga['image'] = str_replace('/thumb', '', $img ? $img->getAttribute('src') : '');
             $manga['id'] = \intval(preg_replace('/^.+id=(\d+)$/', '$1', $manga['link']));
             if (!$manga['id']) {
                 $manga['id'] = (preg_replace('/^.+\/series\/(\w+)\/\w.+$/', '$1', $manga['link']));
             }
+            /** @var DOMElement|null $genres */
             $genres = $finder->query(".//div[contains(@class, 'textsmall')]/a", $node)->item(0);
             $manga['genres'] = explode(', ', $genres ? $genres->getAttribute('title') : '');
             $manga['description'] = mb_convert_encoding($finder->query(".//div[contains(@class, 'text flex-grow-1')]", $node)->item(0)->nodeValue ?? '', 'UTF-8', 'UTF-8');

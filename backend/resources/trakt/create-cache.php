@@ -12,6 +12,7 @@ $showsTr = $showsXpath->query("//tbody/tr");
 $shows = [];
 foreach ($showsTr as $show) {
     $showTd = $showsXpath->query("td", $show);
+    /** @var DOMElement|null $traktLink */
     $traktLink = $showsXpath->query("a", $showTd->item(0))?->item(0);
     $traktTitle = $traktLink?->nodeValue;
     $traktId = preg_match("/\/shows\/([0-9]+)/", $traktLink?->getAttribute("href"), $matches) ? $matches[1] : null;
@@ -49,6 +50,7 @@ $moviesTr = $moviesXpath->query("//tbody/tr");
 $movies = [];
 foreach ($moviesTr as $movie) {
     $movieTd = $moviesXpath->query("td", $movie);
+    /** @var DOMElement|null $traktLink */
     $traktLink = $moviesXpath->query("a", $movieTd->item(0))?->item(0);
     $traktTitle = $traktLink?->nodeValue;
     $traktId = preg_match("/\/movies\/([0-9]+)/", $traktLink?->getAttribute("href"), $matches) ? $matches[1] : null;

@@ -186,6 +186,7 @@ export interface AnimeExtension {
   anisearchId?: number;
   annId?: number;
   anidbId?: number;
+  apSlug?: string;
   fandomSlug?: string;
   displayName?: string;
   episodeRule?: number;

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use DOMElement;
 use Illuminate\Support\ServiceProvider;
 
 class AnisearchServiceProvider extends ServiceProvider
@@ -46,6 +47,7 @@ class AnisearchServiceProvider extends ServiceProvider
             $anime['studio'] = $finder->query("{$node->getNodePath()}//span[contains(@class, 'company')]")->item(0)->nodeValue ?? '';
             $anime['genre'] = $finder->query("{$node->getNodePath()}//div[contains(@class, 'genre')]")->item(0)->nodeValue ?? '';
             $anime['description'] = $finder->query("{$node->getNodePath()}//div[contains(@class, 'text scrollbox')]")->item(0)->nodeValue ?? '';
+            /** @var DOMElement|null $link */
             $link = $finder->query("{$node->getNodePath()}/a")->item(0);
             $anime['link'] = $link ? static::$baseUrl . $link->getAttribute('href') : '';
             $anime['id'] = intval($link ? explode(',', explode('/', $link->getAttribute('href'))[1])[0] : '');
@@ -57,6 +59,7 @@ class AnisearchServiceProvider extends ServiceProvider
             $anime['type'] = $matches['type'] ?? '';
             $anime['episodes'] = strpos($matches['episodes'], '+') ? 0 : intval($matches['episodes'] ?? 0);
             $anime['year'] = $matches['year'] ?? '';
+            /** @var DOMElement|null $rating */
             $rating = $finder->query("{$node->getNodePath()}//*[@class='rating']/*[@class='star0']")->item(0);
             $anime['rating'] = floatval($rating ? $rating->getAttribute('title') : '');
             $animes['nodes'][] = $anime;
@@ -92,6 +95,7 @@ class AnisearchServiceProvider extends ServiceProvider
             $manga['publisher'] = $finder->query("{$node->getNodePath()}//span[contains(@class, 'company')]")->item(0)->nodeValue ?? '';
             $manga['genre'] = $finder->query("{$node->getNodePath()}//div[contains(@class, 'genre')]")->item(0)->nodeValue ?? '';
             $manga['description'] = $finder->query("{$node->getNodePath()}//div[contains(@class, 'text scrollbox')]")->item(0)->nodeValue ?? '';
+            /** @var DOMElement|null $link */
             $link = $finder->query("{$node->getNodePath()}/a")->item(0);
             $manga['link'] = $link ? static::$baseUrl . $link->getAttribute('href') : '';
             $manga['id'] = intval($link ? explode(',', explode('/', $link->getAttribute('href'))[1])[0] : '');
@@ -103,6 +107,7 @@ class AnisearchServiceProvider extends ServiceProvider
             $manga['chapters'] = strpos($matches['chapters'], '+') ? 0 : intval($matches['chapters']) ?? 0;
             $manga['volumes'] = strpos($matches['volumes'], '+') ? 0 : intval($matches['volumes']) ?? 0;
             $manga['year'] = $matches['year'] ?? '';
+            /** @var DOMElement|null $rating */
             $rating = $finder->query("{$node->getNodePath()}//*[@class='rating']/*[@class='star0']")->item(0);
             $manga['rating'] = floatval($rating ? $rating->getAttribute('title') : '');
             $mangas['nodes'][] = $manga;
@@ -146,7 +151,7 @@ class AnisearchServiceProvider extends ServiceProvider
 
     public static function getRelations(int $id, string $type = "anime")
     {
-        $url = static::$baseUrl . "{$type}/{$id}/relations";
+        $url = static::$baseUrl . "{$type}/{$id}";
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
@@ -157,38 +162,32 @@ class AnisearchServiceProvider extends ServiceProvider
         @$doc->loadHTML($response);
         $finder = new \DOMXPath($doc);
         $relations = [];
-        $types = ['anime', 'manga', 'movie'];
-        foreach ($types as $type) {
-            $relationRows = $finder->query("//*[@id=\"relations_{$type}\"]//tbody/tr") ?? [];
-            foreach ($relationRows as $row) {
-                $relation = [];
-                $relation['type'] = $type;
-                $titleCol = $finder->query("{$row->getNodePath()}/th[@class=\"showpop\"]")->item(0);
-                $titleLink = $finder->query("{$titleCol->getNodePath()}/a")->item(0);
-                $relation['title'] = $titleLink->nodeValue ?? '';
-                $link = $titleLink->getAttribute('href');
-                $relation['link'] = $link ? static::$baseUrl . $link : '';
-                $linkArray = explode('/', $link);
-                $relation['id'] = intval(array_pop($linkArray));
-                $tooltip = $titleCol->getAttribute('data-tooltip');
-                preg_match('/<img src="(?P<poster>[^"]+)"/', $tooltip, $matches);
-                $relation['poster'] = $matches['poster'] ?? '';
-                $relation['relation'] = $finder->query("{$titleCol->getNodePath()}/span")->item(0)->nodeValue ?? '';
-                if ($relation['relation'] === '?') {
-                    $relation['relation'] = "Adaption";
-                }
-                $mediaTypeYear = $finder->query("{$row->getNodePath()}/td[@title=\"Type / Episodes / Year\"]")->item(0)->nodeValue ?? '';
-                preg_match('/(?P<type>[^,]+),\s*(?P<episodes>[\d\?\+]*)(\/(?P<chapters>[\d\?\+]*))?\s*(\((?P<year>\d+)\))?/', $mediaTypeYear, $matches);
-                $relation['media_type'] = $matches['type'] ?? '';
-                $relation['episodes'] = strpos($matches['episodes'], '+') ? 0 : intval($matches['episodes']) ?? 0;
-                $relation['volumes'] = isset($matches['chapters']) ? strpos($matches['chapters'], '+') ? 0 : intval($matches['chapters']) ?? 0 : 0;
-                $relation['year'] = $matches['year'] ?? '';
-                $mainGenres = $finder->query("{$row->getNodePath()}/td[@title=\"Main genres\"]") ?? [];
-                $relation['genres'] = array_map(function ($node) {
-                    return $node->nodeValue;
-                }, iterator_to_array($mainGenres));
-                $relations[] = $relation;
-            }
+        $relationRows = $finder->query("//*[@id=\"relations\"]//div[@class=\"swiper\"]/ul/li") ?? [];
+        foreach ($relationRows as $row) {
+            /** @var DOMElement|null $link */
+            $link = $finder->query("{$row->getNodePath()}/a")->item(0);
+            if (!$link) continue;
+            $path = $link->getAttribute('href');
+            $matches = [];
+            preg_match('/(?P<type>[^\/]+)\/(?P<id>\d+)/', $path, $matches);
+            $relation = [];
+            $relation['type'] = $matches['type'] ?? '';
+            $relation['id'] = intval($matches['id'] ?? 0);
+            $relation['title'] = preg_replace('/^\w+: /', '', $link->getAttribute('data-title'));
+            $relation['link'] = static::$baseUrl . $path;
+            $bg = $link->getAttribute('data-bg');
+            $relation['poster'] = $bg ? "https://cdn.anisearch.com/images/" . $bg : '';
+            $relation['relation'] = $finder->query("span[@class='header']", $link)->item(0)?->nodeValue ?? '';
+            $date = $finder->query("{$link->getNodePath()}//span[@class='date']")->item(0)?->nodeValue ?? '';
+            $matches = [];
+            preg_match('/^(?P<media_type>[\w\-\ ]+), (?P<episodes>\d+|\?)(\/(?P<volumes>\d+|\?))? (\((?P<year>\d+|\?)\))?/', $date, $matches);
+            $relation['media_type'] = $matches['media_type'] ?? $relation['type'];
+            $relation['episodes'] = intval($matches['episodes'] ?? 0);
+            $relation['volumes'] = intval($matches['volumes'] ?? 0);
+            $relation['year'] = intval($matches['year'] ?? 0);
+            $genre = $finder->query("div[@class='genre']", $row)->item(0)?->nodeValue;
+            $relation['genres'] = $genre && $genre !== "?" ? [$genre] : [];
+            $relations[] = $relation;
         }
         return $relations;
     }

@@ -1,6 +1,6 @@
 {
   "name": "myanili",
-  "version": "2.27.1",
+  "version": "2.28.0",
   "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,7 +13,7 @@
     "shell:root": "npm run start && docker exec -ti -w /frontend -u root myanili_app bash",
     "prepare": "husky install",
     "precommit": "lint-staged",
-    "postinstall": "npm run start && docker exec -w /frontend -u application myanili_app npm i && docker exec -w /app -u application myanili_app composer install"
+    "postinstall": "npm run start && docker exec -w /frontend -u application myanili_app npm i && docker exec -w /app -u application myanili_app composer update"
   },
   "author": "Christopher Schreiner",
   "license": "MIT",

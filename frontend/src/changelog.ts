@@ -1,6 +1,15 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.28.0',
+      features: [
+        'Anime details: add link to Anime-Planet entry',
+        'Anime details: add expiration date to streaming tab (if available)',
+        'Share links and text to MyAniLi (may need to reinstall the app)',
+      ],
+      fixes: ['Mangadex: request error', 'AniSearch: live action links'],
+    },
+    {
       version: '2.27.1',
       fixes: ['Anime: deleted are now also sent to trakt and livechart'],
     },

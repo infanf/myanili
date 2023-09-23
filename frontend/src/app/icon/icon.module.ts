@@ -8,6 +8,7 @@ import { AnilistIconComponent } from './anilist/anilist.component';
 import { AnisearchIconComponent } from './anisearch/anisearch.component';
 import { AnnComponent } from './ann/ann.component';
 import { AnnictIconComponent } from './annict/annict.component';
+import { ApComponent } from './ap/ap.component';
 import { BakamangaIconComponent } from './bakamanga/bakamanga.component';
 import { FandomIconComponent } from './fandom/fandom.component';
 import { IconComponent } from './icon.component';
@@ -44,6 +45,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     ProgressIconComponent,
     LoadingIconComponent,
     MangaPassionComponent,
+    ApComponent,
   ],
   imports: [
     CommonModule,
@@ -70,6 +72,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     AnilistIconComponent,
     AnnComponent,
     AnnictIconComponent,
+    ApComponent,
     BakamangaIconComponent,
     FandomIconComponent,
     KitsuIconComponent,
