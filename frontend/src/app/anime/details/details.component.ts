@@ -672,6 +672,12 @@ export class AnimeDetailsComponent implements OnInit {
     return true;
   }
 
+  changeWatchlist() {
+    const hideWatchlist = !this.editExtension?.hideWatchlist;
+    if (!this.editExtension) this.editExtension = { hideWatchlist, simulcast: {} };
+    this.editExtension.hideWatchlist = hideWatchlist;
+  }
+
   async findTrakt() {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(TraktComponent);

@@ -191,6 +191,7 @@ export interface AnimeExtension {
   displayName?: string;
   episodeRule?: number;
   lastWatchedAt?: Date;
+  hideWatchlist?: boolean;
 }
 
 interface Character {

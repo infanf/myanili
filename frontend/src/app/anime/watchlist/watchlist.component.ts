@@ -300,6 +300,7 @@ export class WatchlistComponent implements OnInit {
       if (!anime.list_status.is_rewatching) return lastWatched > this.getLast8am();
     }
     if (!anime.my_extension) return true;
+    if (anime.my_extension.hideWatchlist) return false;
     if (!anime.my_extension.simulcast.day?.length) return true;
     const simulDay = daysToLocal(anime.my_extension.simulcast);
     const lastAiredWeekday = this.animeService.getLastDay(simulDay);
