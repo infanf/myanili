@@ -84,12 +84,11 @@
     }
   ],
   "share_target": {
-    "action": "/",
+    "action": "/#/anime/search",
     "method": "GET",
     "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
+      "title": "name",
+      "url": "link"
     }
   },
   "shortcuts": [
