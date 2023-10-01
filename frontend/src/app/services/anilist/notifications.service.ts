@@ -71,6 +71,7 @@ export class AnilistNotificationsService {
       alNotification.text = `<span class="text-primary">${notification.media.title.userPreferred}</span>${notification.context}`;
       alNotification.media = {
         id: notification.media.id,
+        idMal: notification.media.idMal,
         type: notification.media.type,
       };
       alNotification.url = `https://anilist.co/${notification.media.type.toLowerCase()}/${
@@ -103,6 +104,7 @@ export class AnilistNotificationsService {
               contexts
               media {
                 id
+                idMal
                 type
                 bannerImage
                 title {
@@ -117,6 +119,7 @@ export class AnilistNotificationsService {
               context
               media {
                 id
+                idMal
                 type
                 bannerImage
                 title {
@@ -320,6 +323,7 @@ export class AnilistNotificationsService {
               context
               media {
                 id
+                idMal
                 type
                 bannerImage
                 title {
@@ -338,6 +342,7 @@ export class AnilistNotificationsService {
               context
               media {
                 id
+                idMal
                 type
                 bannerImage
                 title {
@@ -393,6 +398,7 @@ interface Notification {
   };
   media?: {
     id: number;
+    idMal?: number;
     type: 'ANIME' | 'MANGA';
     title: {
       userPreferred: string;

@@ -44,7 +44,10 @@ class MalServiceProvider extends ServiceProvider
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Authorization: Bearer {$_COOKIE['MAL_ACCESS_TOKEN']}"]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer {$_COOKIE['MAL_ACCESS_TOKEN']}",
+            "X-Mal-Client-Id: " . env('MAL_CLIENT_ID'),
+        ]);
         return curl_exec($ch);
     }
 

@@ -583,6 +583,21 @@
             />
           </div>
         </div>
+        <div class="row my-2" *ngIf="edit && editBackup">
+          <div class="col-4 fw-bold text-end">Watchlist</div>
+          <div class="col-8">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="shelf"
+                [checked]="editExtension?.hideWatchlist"
+                (change)="changeWatchlist()"
+              />
+              <label class="form-check-label" for="shelf"> Hide on Watchlist </label>
+            </div>
+          </div>
+        </div>
         <div class="row" *ngIf="!edit">
           <div class="col-4 fw-bold text-end">Links</div>
           <div class="col-8">

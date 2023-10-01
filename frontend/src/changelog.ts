@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.28.1',
+      features: ['Watchlist: add option to hide shows', 'Watchlist: add date'],
+      fixes: ['Notifications: optimize for Anilist rate limit problems'],
+    },
+    {
       version: '2.28.0',
       features: [
         'Anime details: add link to Anime-Planet entry',
