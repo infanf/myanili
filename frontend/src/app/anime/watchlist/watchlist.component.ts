@@ -25,6 +25,7 @@ import { SettingsService } from '@services/settings.service';
 export class WatchlistComponent implements OnInit {
   private _animes: ListAnime[] = [];
   autoFilter = false;
+  showDate = false;
   private _airDates: AirDate[] = [];
 
   constructor(

@@ -1,4 +1,7 @@
-<myanili-header header="{{ getLast8am().toJSDate() | date : 'EEE, MMM d' }}"></myanili-header>
+<myanili-header
+  header="{{ !showDate ? 'Watchlist' : (getLast8am().toJSDate() | date : 'EEE, MMM d') }}"
+  (click)="showDate = !showDate"
+></myanili-header>
 <section>
   <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
     <thead class="sticky">
