@@ -50,6 +50,7 @@ export interface AnilistNotification {
   createdAt: Date;
   media?: {
     id: number;
+    idMal?: number;
     type: 'ANIME' | 'MANGA';
   };
 }

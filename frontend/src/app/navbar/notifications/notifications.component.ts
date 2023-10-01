@@ -57,17 +57,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             window.open(alNotification.url, '_blank');
           },
         } as Notification;
-        if (alNotification.media) {
+        if (alNotification.media?.idMal) {
           const type = alNotification.media.type.toLocaleLowerCase();
-          const malId = await this.anilist.getMalId(
-            alNotification.media.id,
-            alNotification.media.type,
-          );
-          if (malId) {
-            notification.callback = () => {
-              this._router.navigate([type, 'details', malId]);
-            };
-          }
+          const malId = alNotification.media.idMal;
+          notification.callback = () => {
+            this._router.navigate([type, 'details', malId]);
+          };
         }
         notificationsAl.push(notification);
       });
