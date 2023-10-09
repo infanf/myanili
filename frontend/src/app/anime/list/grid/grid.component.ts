@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ListAnime } from '@models/anime';
+import { ListAnime, WatchStatus } from '@models/anime';
 import { SettingsService } from '@services/settings.service';
 
 @Component({
@@ -10,4 +10,8 @@ export class AnimeListGridComponent {
   @Input() animes: ListAnime[] = [];
 
   constructor(public settings: SettingsService) {}
+
+  getStatus(anime: ListAnime): WatchStatus | undefined {
+    return anime.list_status.is_rewatching ? 'watching' : anime.list_status.status;
+  }
 }
