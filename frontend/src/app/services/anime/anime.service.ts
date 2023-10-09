@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { statusFromMal } from '@models/anilist';
 import {
   Anime,
   AnimeNode,
@@ -192,7 +193,7 @@ export class AnimeService {
           return this.anilist.updateEntry(ids.anilistId, {
             progress: data.num_watched_episodes,
             scoreRaw: data.score ? data.score * 10 : undefined,
-            status: this.anilist.statusFromMal(data.status, data.is_rewatching),
+            status: statusFromMal(data.status, data.is_rewatching),
             notes: data.comments,
             repeat: data.num_times_rewatched,
             startedAt: startDate

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { statusFromMal } from '@models/anilist';
 import { RelatedAnime } from '@models/anime';
 import { Jikan4MangaCharacter, Jikan4WorkRelation } from '@models/jikan';
 import {
@@ -112,7 +113,7 @@ export class MangaService {
             progress: data.num_chapters_read,
             progressVolumes: data.num_volumes_read,
             scoreRaw: data.score ? data.score * 10 : undefined,
-            status: this.anilist.statusFromMal(data.status, data.is_rereading),
+            status: statusFromMal(data.status, data.is_rereading),
             notes: data.comments,
             repeat: data.num_times_reread,
             startedAt: startDate
