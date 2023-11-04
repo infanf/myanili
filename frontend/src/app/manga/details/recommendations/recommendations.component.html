@@ -3,6 +3,7 @@
     *ngFor="let manga of recommendations"
     [poster]="manga.node.main_picture?.medium || manga.node.main_picture?.large"
     [title]="manga.node.title"
+    [status]="manga.node.my_list_status?.status"
     [recommendations]="manga.num_recommendations"
     routerLink="/manga/details/{{ manga.node.id }}"
   ></myanili-media-card>

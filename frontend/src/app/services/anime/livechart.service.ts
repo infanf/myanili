@@ -97,6 +97,7 @@ export class LivechartService {
         singleAnime(id: $id) {
           anidbUrl
           animePlanetUrl
+          anisearchUrl
         }
       }
     `;
@@ -105,6 +106,7 @@ export class LivechartService {
         singleAnime: {
           anidbUrl?: string;
           animePlanetUrl?: string;
+          anisearchUrl?: string;
         };
       }>(QUERY, { id })
       .toPromise();
@@ -114,9 +116,11 @@ export class LivechartService {
     }
     const anidbUrl = data.singleAnime.anidbUrl;
     const animePlanetUrl = data.singleAnime.animePlanetUrl;
+    const anisearchUrl = data.singleAnime.anisearchUrl;
     return {
       anidbUrl,
       animePlanetUrl,
+      anisearchUrl,
     };
   }
 
@@ -131,13 +135,23 @@ export class LivechartService {
   }
 
   async getAnimePlanetId(id?: number): Promise<string | undefined> {
-    if (!id) return undefined;
+    if (!id) return;
     const { animePlanetUrl } = await this.getExternalUrls(id);
     if (!animePlanetUrl) return;
     const regex = /anime\/(.+)$/;
     const match = regex.exec(animePlanetUrl);
     if (!match) return;
     return match[1];
+  }
+
+  async getAnisearchId(id?: number): Promise<number | undefined> {
+    if (!id) return;
+    const { anisearchUrl } = await this.getExternalUrls(id);
+    if (!anisearchUrl) return;
+    const regex = /anime\/(\d+)$/;
+    const match = regex.exec(anisearchUrl);
+    if (!match?.[1]) return;
+    return Number(match[1]);
   }
 
   async getAnimes(term: string) {

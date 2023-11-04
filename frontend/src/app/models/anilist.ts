@@ -1,3 +1,6 @@
+import { WatchStatus } from './anime';
+import { ReadStatus } from './manga';
+
 export interface User {
   id: number;
   name: string;
@@ -73,3 +76,52 @@ export type AnilistNotificationType =
   | 'MEDIA_DATA_CHANGE'
   | 'MEDIA_MERGE'
   | 'MEDIA_DELETION';
+
+export function statusFromMal(
+  malStatus?: WatchStatus | ReadStatus,
+  repeating = false,
+): AnilistMediaListStatus | undefined {
+  switch (malStatus) {
+    case 'plan_to_read':
+    case 'plan_to_watch':
+      return 'PLANNING';
+    case 'completed':
+      return repeating ? 'REPEATING' : 'COMPLETED';
+    case 'dropped':
+      return 'DROPPED';
+    case 'on_hold':
+      return 'PAUSED';
+    case 'reading':
+    case 'watching':
+      return 'CURRENT';
+    default:
+      return undefined;
+  }
+}
+
+export function statusToMal(alStatus?: AnilistMediaListStatus, type: 'ANIME' | 'MANGA' = 'ANIME') {
+  let status;
+  switch (alStatus) {
+    case 'PLANNING':
+      status = type === 'MANGA' ? 'plan_to_read' : 'plan_to_watch';
+      break;
+    case 'CURRENT':
+      status = type === 'MANGA' ? 'reading' : 'watching';
+      break;
+    case 'REPEATING':
+    case 'COMPLETED':
+      status = 'completed';
+      break;
+    case 'PAUSED':
+      status = 'on_hold';
+      break;
+    case 'DROPPED':
+      status = 'dropped';
+      break;
+    default:
+      status = undefined;
+  }
+  if (!status) return undefined;
+  if (type === 'MANGA') return status as ReadStatus;
+  return status as WatchStatus;
+}

@@ -32,7 +32,7 @@
     </ng-container>
     <ng-template #statusicon>
       <myanili-icon-status
-        class="badge rounded-pill bg-primary"
+        class="badge rounded-pill {{ bgClass }}"
         style="position: absolute; top: 0.5rem; right: 0.5rem; height: 2rem; padding-top: 0.5rem"
         [status]="status"
       ></myanili-icon-status>
@@ -41,7 +41,7 @@
   <ng-template #recommendationbadge>
     <div
       *ngIf="recommendations"
-      class="badge rounded-pill bg-primary"
+      class="badge rounded-pill {{ bgClass }}"
       style="position: absolute; top: 0.5rem; right: 0.5rem"
     >
       {{ recommendations }}

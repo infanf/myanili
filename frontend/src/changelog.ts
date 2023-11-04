@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.28.2',
+      fixes: ['Anisearch: remove search while it is not working'],
+    },
+    {
       version: '2.28.1',
       features: ['Watchlist: add option to hide shows', 'Watchlist: add date'],
       fixes: ['Notifications: optimize for Anilist rate limit problems'],

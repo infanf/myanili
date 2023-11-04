@@ -12,4 +12,16 @@ export class StatusBadgeComponent {
   @Input() parts?: number;
   @Input() recommendations?: number;
   @Input() icon?: string;
+  get bgClass() {
+    switch (this.status) {
+      case 'dropped':
+        return 'bg-danger';
+      case 'completed':
+        return 'bg-success';
+      case 'on_hold':
+        return 'bg-warning';
+      default:
+        return 'bg-primary';
+    }
+  }
 }

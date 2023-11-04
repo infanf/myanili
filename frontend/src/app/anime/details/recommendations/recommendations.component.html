@@ -4,6 +4,7 @@
     [poster]="anime.node.main_picture?.medium || anime.node.main_picture?.large"
     [title]="anime.node.title"
     [recommendations]="anime.num_recommendations"
+    [status]="anime.node.my_list_status?.status"
     routerLink="/anime/details/{{ anime.node.id }}"
   ></myanili-media-card>
 </div>
