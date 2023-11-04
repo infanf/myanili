@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformPipe } from '@components/platform.pipe';
-import { AnisearchComponent } from '@external/anisearch/anisearch.component';
 import { AnnComponent } from '@external/ann/ann.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
@@ -673,14 +672,16 @@ export class MangaDetailsComponent implements OnInit {
     });
   }
 
+  /** @deprecated doesn't work anymore */
   async findAnisearch() {
-    if (!this.manga || !this.editExtension) return;
-    const modal = this.modalService.open(AnisearchComponent);
-    modal.componentInstance.title = this.manga.title;
-    modal.componentInstance.type = 'manga';
-    modal.closed.subscribe((value: number) => {
-      if (this.editExtension) this.editExtension.anisearchId = Number(value);
-    });
+    return;
+    // if (!this.manga || !this.editExtension) return;
+    // const modal = this.modalService.open(AnisearchComponent);
+    // modal.componentInstance.title = this.manga.title;
+    // modal.componentInstance.type = 'manga';
+    // modal.closed.subscribe((value: number) => {
+    //   if (this.editExtension) this.editExtension.anisearchId = Number(value);
+    // });
   }
 
   async findBaka() {

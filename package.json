@@ -4,10 +4,10 @@
   "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "docker-compose build --pull --no-cache",
+    "build": "docker compose build --pull --no-cache",
     "dev:build": "npm run build && npm run dev",
-    "start": "docker-compose up -d",
-    "stop": "docker-compose down",
+    "start": "docker compose up -d",
+    "stop": "docker compose down",
     "dev": "npm run start && docker exec -ti -w /frontend -u application myanili_app npm i && docker exec -ti -w /frontend -u application myanili_app npm run dev",
     "shell": "npm run start && docker exec -ti -w /frontend -u application myanili_app bash",
     "shell:root": "npm run start && docker exec -ti -w /frontend -u root myanili_app bash",
