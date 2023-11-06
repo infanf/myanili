@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.28.3',
+      fixes: ["Bookshelf: progress sometime doesn't sync to Anilist and Baka-Manga"],
+    },
+    {
       version: '2.28.2',
       fixes: ['Anisearch: remove search while it is not working'],
     },

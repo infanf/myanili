@@ -48,19 +48,43 @@ export class MangadexService {
     return volumes;
   }
 
-  async getVolume(mangaId: UUID, chapter: number) {
+  async getChapterVolumeMapping(mangaId: UUID) {
     const volumes = await this.getMangaVolumes(mangaId);
-    const data = { volume: 0, last: false };
+    const mapping: number[] = [];
     for (const volumeNo in volumes) {
       if (!volumes.hasOwnProperty(volumeNo)) continue;
       const volume = volumes[volumeNo];
-      if (!(String(chapter) in volume.chapters)) continue;
-      data.volume = Number(volumeNo);
-      const chapterNos = Object.keys(volume.chapters).map(Number);
-      data.last = Math.max(...chapterNos) === chapter;
-      return data;
+      for (const chapterNo in volume.chapters) {
+        if (!volume.chapters.hasOwnProperty(chapterNo)) continue;
+        if (Number(chapterNo) % 1) continue;
+        mapping[Number(chapterNo)] = Math.max(
+          Number(volumeNo) || 0,
+          mapping[Number(chapterNo)] || 0,
+        );
+      }
     }
-    return;
+    return mapping;
+  }
+
+  async getVolume(mangaId: UUID, chapter: number) {
+    const mapping = await this.getChapterVolumeMapping(mangaId);
+    if (mapping[chapter]) {
+      const volumeChapters = mapping.filter(v => v === mapping[chapter]);
+      const chapters = Object.keys(volumeChapters).map(Number);
+      return {
+        volume: mapping[chapter],
+        last: Math.max(...chapters) === chapter,
+      };
+    }
+    const data = { volume: 0, last: true };
+    for (const chapterNo in mapping) {
+      if (!mapping.hasOwnProperty(chapterNo)) continue;
+      if (Number(chapterNo) > chapter) {
+        break;
+      }
+      data.volume = Math.max(mapping[chapterNo] || 0, data.volume || 0);
+    }
+    return data;
   }
 
   async getChapter(mangaId: UUID, volume: number) {
