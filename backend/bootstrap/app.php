@@ -112,6 +112,7 @@ $app->router->group([
     $routesDir = __DIR__.'/../routes';
     require "{$routesDir}/anidb.php";
     require "{$routesDir}/anilist.php";
+    require "{$routesDir}/animeplanet.php";
     require "{$routesDir}/anisearch.php";
     require "{$routesDir}/annict.php";
     require "{$routesDir}/baka.php";
