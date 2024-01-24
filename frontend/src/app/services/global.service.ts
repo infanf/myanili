@@ -1,5 +1,6 @@
 import { ApplicationRef, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { WeekdayNumbers } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 
 import packageJson from '../../../package.json';
@@ -98,5 +99,10 @@ export class GlobalService {
 
   async sleep(t: number) {
     return new Promise(resolve => setTimeout(resolve, t));
+  }
+
+  toWeekday(day: number): WeekdayNumbers {
+    const rounded = Math.round(day);
+    return (rounded % 7 || 7) as WeekdayNumbers;
   }
 }

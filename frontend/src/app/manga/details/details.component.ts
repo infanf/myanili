@@ -727,7 +727,7 @@ export class MangaDetailsComponent implements OnInit {
     return simulpub
       .map(day => {
         const { DateTime } = require('luxon') as typeof import('luxon');
-        const date = DateTime.local().set({ weekday: day });
+        const date = DateTime.local().set({ weekday: this.glob.toWeekday(day) });
         return date.weekdayLong;
       })
       .join(', ');

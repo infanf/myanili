@@ -23,6 +23,8 @@ class AnidbController extends Controller
 
     public function redirect(Request $request)
     {
+        // doesn't work on production due to rate limiting
+        return [];
         $url = preg_replace('/^anidb\//', self::$baseUrl, $request->path());
         $auth = $request->header('Authorization');
         $body = $request->getContent();

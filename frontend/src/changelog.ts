@@ -1,6 +1,14 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.28.4',
+      fixes: [
+        'AniDB: disable proxy doe to rate limits',
+        'MangaDex: handle maintenance and other downtime errors',
+      ],
+      other: ['Optimize dark mode', 'Update dependencies'],
+    },
+    {
       version: '2.28.3',
       fixes: ["Bookshelf: progress sometime doesn't sync to Anilist and Baka-Manga"],
     },

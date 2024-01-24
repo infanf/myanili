@@ -18,9 +18,11 @@ import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
+import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { SettingsService } from '@services/settings.service';
+import { WeekdayNumbers } from 'luxon';
 import { environment } from 'src/environments/environment';
 
 import { LivechartService } from './livechart.service';
@@ -42,6 +44,7 @@ export class AnimeService {
     private cache: CacheService,
     private settings: SettingsService,
     private dialogue: DialogueService,
+    private glob: GlobalService,
   ) {
     this.settings.nsfw$.asObservable().subscribe(nsfw => {
       this.nsfw = nsfw;
@@ -324,7 +327,9 @@ export class AnimeService {
       day = this.getLastDay(day);
     }
     const { DateTime } = require('luxon') as typeof import('luxon');
-    return DateTime.now().set({ weekday: day }).toFormat('cccc');
+    return DateTime.now()
+      .set({ weekday: this.glob.toWeekday(day) })
+      .toFormat('cccc');
   }
 
   async getPoster(id: number): Promise<string | undefined> {
@@ -343,7 +348,7 @@ export class AnimeService {
     if (anime.broadcast?.day_of_the_week && anime.broadcast?.start_time) {
       const { DateTime } = require('luxon') as typeof import('luxon');
       let date = DateTime.now().setZone('Asia/Tokyo');
-      let weekday;
+      let weekday: WeekdayNumbers | undefined;
       switch (anime.broadcast.day_of_the_week) {
         case 'monday':
           weekday = 1;

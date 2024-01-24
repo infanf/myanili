@@ -119,4 +119,12 @@
   .table-striped > tbody > tr:nth-of-type(odd):not(.text-green) {
     color: $text-color !important;
   }
+
+  input, textarea, select, button {
+    color-scheme: dark;
+  }
+
+  option {
+    background-color: $background-color;
+  }
 }

@@ -94,9 +94,8 @@ export class ScheduleComponent {
 
   getDay(day: number): string {
     const { DateTime } = require('luxon') as typeof import('luxon');
-    return DateTime.now()
-      .set({ weekday: this.today + day })
-      .toFormat('cccc');
+    const weekday = this.glob.toWeekday(this.today + day);
+    return DateTime.now().set({ weekday }).toFormat('cccc');
   }
 
   length(input?: Date | string): number {
