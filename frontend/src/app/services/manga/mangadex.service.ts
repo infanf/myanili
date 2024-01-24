@@ -12,9 +12,9 @@ export class MangadexService {
 
   async searchManga(query: string) {
     if (!query) return [];
-    const { data: mangas } = await this.cache.fetch<{ data: Manga[] }>(
-      `${this.baseUrl}/manga?title=${query}`,
-    );
+    const { data: mangas } = await this.cache
+      .fetch<{ data: Manga[] }>(`${this.baseUrl}/manga?title=${query}`)
+      .catch(() => ({ data: [] } as { data: Manga[] }));
     return mangas;
   }
 
@@ -26,25 +26,28 @@ export class MangadexService {
 
   async getManga(mangaId?: string) {
     if (!mangaId) return;
-    const { data: manga } = await this.cache.fetch<{ data?: Manga }>(
-      `${this.baseUrl}/manga/${mangaId}`,
-    );
+    const { data: manga } = await this.cache
+      .fetch<{ data?: Manga }>(`${this.baseUrl}/manga/${mangaId}`)
+      .catch(() => ({ data: undefined } as { data?: Manga }));
     return manga;
   }
 
   async getMangaRating(mangaId?: UUID) {
     if (!mangaId) return;
-    const { statistics } = await this.cache.fetch<{ statistics: Statistics }>(
-      `${this.baseUrl}/statistics/manga/${mangaId}`,
-    );
+    const { statistics } = await this.cache
+      .fetch<{ statistics: Statistics }>(`${this.baseUrl}/statistics/manga/${mangaId}`)
+      .catch(() => ({ statistics: {} } as { statistics: Statistics }));
     return statistics;
   }
 
   async getMangaVolumes(mangaId?: UUID) {
     if (!mangaId) return;
-    const { volumes } = await this.cache.fetch<{ volumes: { [volume: string]: Volume } }>(
-      `${this.baseUrl}/manga/${mangaId}/aggregate`,
-    );
+    interface Volumes {
+      volumes: { [volume: string]: Volume };
+    }
+    const { volumes } = await this.cache
+      .fetch<Volumes>(`${this.baseUrl}/manga/${mangaId}/aggregate`)
+      .catch(() => ({ volumes: {} } as Volumes));
     return volumes;
   }
 
