@@ -1,3 +1,4 @@
+import { WeekdayNumbers } from 'luxon';
 import Timezone from 'timezone-enum';
 
 import { Genre, Nsfw, Picture, Studio } from './components';
@@ -280,7 +281,7 @@ export function daysToLocal(simulcast?: SimulcastData): number[] {
           .set({
             hour,
             minute,
-            weekday,
+            weekday: weekday as WeekdayNumbers,
           })
           .toLocal().weekday,
     ) || []
