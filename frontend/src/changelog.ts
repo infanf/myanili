@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.29.0',
+      features: ['Add support for Shikimori'],
+    },
+    {
       version: '2.28.4',
       fixes: [
         'AniDB: disable proxy doe to rate limits',
