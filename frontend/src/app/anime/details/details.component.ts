@@ -32,6 +32,7 @@ import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
+import { ShikimoriService } from '@services/shikimori.service';
 import Timezone from 'timezone-enum';
 
 @Component({
@@ -66,6 +67,7 @@ export class AnimeDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private shikimori: ShikimoriService,
     private simkl: SimklService,
     private annict: AnnictService,
     private anisearch: AnisearchService,
@@ -768,6 +770,12 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('kitsu')) {
       this.kitsu.getRating(Number(this.anime?.my_extension?.kitsuId?.kitsuId)).then(rating => {
         this.setRating('kitsu', rating);
+      });
+    }
+    if (!this.getRating('shikimori')) {
+      this.shikimori.getRating(this.id, 'anime').then(rating => {
+        console.log(rating);
+        this.setRating('shikimori', rating);
       });
     }
     if (!this.getRating('simkl')) {

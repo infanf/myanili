@@ -19,6 +19,7 @@ import { MalIconComponent } from './mal/mal.component';
 import { MangaPassionComponent } from './manga-passion/manga-passion.component';
 import { MangadexIconComponent } from './mangadex/mangadex.component';
 import { ProgressIconComponent } from './progress/progress.component';
+import { ShikimoriIconComponent } from './shikimori/shikimori.component';
 import { SimklIconComponent } from './simkl/simkl.component';
 import { SpotifyIconComponent } from './spotify/spotify.component';
 import { IconStatusComponent } from './status/icon-status.component';
@@ -46,6 +47,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     LoadingIconComponent,
     MangaPassionComponent,
     ApComponent,
+    ShikimoriIconComponent,
   ],
   imports: [
     CommonModule,
@@ -80,6 +82,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     MalIconComponent,
     MangadexIconComponent,
     MangaPassionComponent,
+    ShikimoriIconComponent,
     SimklIconComponent,
     SpotifyIconComponent,
     IconStatusComponent,

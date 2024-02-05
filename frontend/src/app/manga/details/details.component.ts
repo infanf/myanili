@@ -18,6 +18,7 @@ import { MangaService } from '@services/manga/manga.service';
 import { MangadexService } from '@services/manga/mangadex.service';
 import { MangapassionService } from '@services/manga/mangapassion.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
+import { ShikimoriService } from '@services/shikimori.service';
 
 @Component({
   selector: 'myanili-manga-details',
@@ -46,6 +47,7 @@ export class MangaDetailsComponent implements OnInit {
     public platformPipe: PlatformPipe,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private shikimori: ShikimoriService,
     private baka: MangaupdatesService,
     private mangadex: MangadexService,
     private mangapassion: MangapassionService,
@@ -572,6 +574,11 @@ export class MangaDetailsComponent implements OnInit {
         .then(rating => {
           this.setRating('kitsu', rating);
         });
+    }
+    if (!this.getRating('shikimori')) {
+      this.shikimori.getRating(this.id, 'manga').then(rating => {
+        this.setRating('shikimori', rating);
+      });
     }
     if (!this.getRating('bu')) {
       this.mangaService.getBakaManga(this.manga?.my_extension?.bakaId).then(bakaManga => {

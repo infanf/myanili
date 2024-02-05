@@ -12,6 +12,7 @@ import {
   MyMangaUpdate,
   ReadStatus,
 } from '@models/manga';
+import { ShikimoriService } from '@services/shikimori.service';
 import { environment } from 'src/environments/environment';
 
 import { AnilistService } from '../anilist.service';
@@ -29,6 +30,7 @@ export class MangaService {
     private malService: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private shikimori: ShikimoriService,
     private baka: MangaupdatesService,
     private cache: CacheService,
   ) {}
@@ -150,6 +152,15 @@ export class MangaService {
           reconsumeCount: data.num_times_reread,
         });
       })(),
+      this.shikimori.updateMedia({
+        target_id: ids.malId,
+        target_type: 'Anime',
+        score: data.score,
+        status: data.is_rereading ? 'rereading' : data.status,
+        chapters: data.num_chapters_read,
+        volumes: data.num_volumes_read,
+        rewatches: data.num_times_reread,
+      }),
       (async () => {
         if (!ids.bakaId) return;
         const cleanId = await this.baka.getId(ids.bakaId);
@@ -174,6 +185,7 @@ export class MangaService {
       this.malService.delete<boolean>('manga/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
       this.kitsu.deleteEntry(ids.kitsuId, 'manga'),
+      this.shikimori.deleteMedia(ids.malId, 'Manga'),
     ]);
     return true;
   }
