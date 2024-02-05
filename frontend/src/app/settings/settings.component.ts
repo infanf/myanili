@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AnilistUser } from '@models/anilist';
 import { BakaUser } from '@models/baka';
 import { KitsuUser } from '@models/kitsu';
+import { ShikimoriUser } from '@models/shikimori';
 import { MalUser } from '@models/user';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
@@ -15,6 +16,7 @@ import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 import { Language, SettingsService } from '@services/settings.service';
+import { ShikimoriService } from '@services/shikimori.service';
 
 @Component({
   selector: 'myanili-settings',
@@ -25,6 +27,7 @@ export class SettingsComponent implements OnInit {
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
   annictLoggedIn?: string;
+  shikimoriLoggedIn?: ShikimoriUser;
   simklLoggedIn?: SimklUser;
   anilistLoggedIn?: AnilistUser;
   kitsuLoggedIn?: KitsuUser;
@@ -45,6 +48,7 @@ export class SettingsComponent implements OnInit {
     private trakt: TraktService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private shikimori: ShikimoriService,
     private simkl: SimklService,
     private annict: AnnictService,
     private baka: MangaupdatesService,
@@ -69,6 +73,9 @@ export class SettingsComponent implements OnInit {
     });
     this.kitsu.user.subscribe(user => {
       this.kitsuLoggedIn = user;
+    });
+    this.shikimori.user.subscribe(user => {
+      this.shikimoriLoggedIn = user;
     });
     this.annict.user.subscribe(user => {
       this.annictLoggedIn = user;
@@ -169,6 +176,16 @@ export class SettingsComponent implements OnInit {
 
   async traktLogoff() {
     this.trakt.logoff();
+  }
+
+  async shikimoriConnect() {
+    this.glob.busy();
+    await this.shikimori.login();
+    this.glob.notbusy();
+  }
+
+  async shikimoriLogoff() {
+    this.shikimori.logoff();
   }
 
   async simklConnect() {
