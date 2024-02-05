@@ -117,6 +117,7 @@ $app->router->group([
     require "{$routesDir}/baka.php";
     require "{$routesDir}/mal.php";
     require "{$routesDir}/mangadex.php";
+    require "{$routesDir}/shikimori.php";
     require "{$routesDir}/simkl.php";
     require "{$routesDir}/tmdb.php";
     require "{$routesDir}/trakt.php";
