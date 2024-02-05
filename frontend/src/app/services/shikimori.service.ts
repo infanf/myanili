@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ShikimoriUser } from '@models/shikimori';
+import { ShikimoriRate, ShikimoriUser } from '@models/shikimori';
 import { Client } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -10,6 +10,7 @@ import { DialogueService } from './dialogue.service';
   providedIn: 'root',
 })
 export class ShikimoriService {
+  private readonly baseUrl = 'https://shikimori.one/api';
   private clientId = '';
   private accessToken = '';
   private refreshToken = '';
@@ -147,8 +148,55 @@ export class ShikimoriService {
     };
   }
 
-  /** @deprecated only here to satisfy the linter */
-  get loggedInUser() {
-    return this.loggedIn;
+  async updateMedia(data: Partial<ShikimoriRate>) {
+    const user = this.userSubject.getValue();
+    if (!user || !this.loggedIn) return;
+    if (!data.target_id) return;
+    if (!data.target_type) return;
+    data.user_id = user.id;
+    const url = `${this.baseUrl}/v2/user_rates`;
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', `Bearer ${this.accessToken}`);
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      console.log(response);
+      return;
+    }
+    const result = await response.json();
+    return result;
+  }
+
+  async deleteMedia(id: number, type: 'Anime' | 'Manga') {
+    const user = this.userSubject.getValue();
+    if (!user) return;
+    const getUrl = new URL(`${this.baseUrl}/v2/user_rates`);
+    getUrl.searchParams.append('user_id', String(user.id));
+    getUrl.searchParams.append('target_id', String(id));
+    getUrl.searchParams.append('target_type', type);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', `Bearer ${this.accessToken}`);
+    const response = await fetch(getUrl, { headers });
+    if (!response.ok) {
+      console.log(response);
+      return;
+    }
+    const result = await response.json();
+    if (!result[0]) return;
+    const deleteUrl = `${this.baseUrl}/v2/user_rates/${result[0].id}`;
+    const deleteResponse = await fetch(deleteUrl, {
+      method: 'DELETE',
+      headers,
+    });
+    if (!deleteResponse.ok) {
+      console.log(deleteResponse);
+      return;
+    }
+    return deleteResponse.json();
   }
 }
