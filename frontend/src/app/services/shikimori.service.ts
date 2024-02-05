@@ -109,6 +109,44 @@ export class ShikimoriService {
     return this.userSubject.asObservable();
   }
 
+  async getRating(id: number, type: 'anime' | 'manga') {
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query Media($id: String) {
+        ${type}s(ids: $id) {
+          id
+          score
+          scoresStats { score count }
+        }
+      }
+    `;
+    const result = await this.client
+      .query<{
+        animes?: Array<{
+          id: number;
+          score: number;
+          scoresStats: Array<{ score: number; count: number }>;
+        }>;
+        mangas?: Array<{
+          id: number;
+          score: number;
+          scoresStats: Array<{ score: number; count: number }>;
+        }>;
+      }>(QUERY, { id: String(id) })
+      .toPromise()
+      .catch(error => {
+        console.log({ error });
+        return undefined;
+      });
+    const data = result?.data?.animes?.[0] || result?.data?.mangas?.[0];
+    if (!data?.scoresStats) return undefined;
+    return {
+      nom: data?.score,
+      norm: data?.score * 10,
+      ratings: data.scoresStats.map(a => a.count).reduce((a, b) => a + b),
+    };
+  }
+
   /** @deprecated only here to satisfy the linter */
   get loggedInUser() {
     return this.loggedIn;
