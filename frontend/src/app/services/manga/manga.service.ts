@@ -154,7 +154,7 @@ export class MangaService {
       })(),
       this.shikimori.updateMedia({
         target_id: ids.malId,
-        target_type: 'Anime',
+        target_type: 'Manga',
         score: data.score,
         status: data.is_rereading ? 'rereading' : data.status,
         chapters: data.num_chapters_read,
