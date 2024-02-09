@@ -48,4 +48,23 @@ $router->group(['prefix' => 'shikimori'], function () use ($router) {
             }
         }
     });
+
+    $router->get('token', function () {
+        $provider = ShikimoriServiceProvider::getOauthProvider();
+        $refreshToken = $_GET['refresh_token'];
+        try {
+            $accessToken = $provider->getAccessToken('refresh_token', [
+                'refresh_token' => $refreshToken,
+            ]);
+            return response()->json([
+                'access_token' => $accessToken->getToken(),
+                'refresh_token' => $accessToken->getRefreshToken(),
+                'expires' => $accessToken->getExpires(),
+            ], 201);
+        } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 401);
+        }
+    });
 });

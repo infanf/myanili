@@ -11,7 +11,6 @@ import { DialogueService } from './dialogue.service';
 })
 export class ShikimoriService {
   private readonly baseUrl = 'https://shikimori.one/api';
-  private clientId = '';
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<ShikimoriUser | undefined>(undefined);
@@ -19,7 +18,6 @@ export class ShikimoriService {
   private client!: Client;
 
   constructor(private dialogue: DialogueService) {
-    this.clientId = String(localStorage.getItem('shikimoriClientId'));
     this.accessToken = String(localStorage.getItem('shikimoriAccessToken'));
     this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken'));
 
@@ -52,8 +50,9 @@ export class ShikimoriService {
   }
 
   async login() {
+    if (await this.refreshTokens()) return true;
     return new Promise(r => {
-      const loginWindow = window.open(environment.backend + 'shikimori/auth');
+      const loginWindow = window.open(`${environment.backend}shikimori/auth`);
       window.addEventListener('message', async event => {
         if (event.data && event.data.shikimori) {
           const data = event.data as { at: string; rt: string; ex: number; ci: string };
@@ -61,28 +60,40 @@ export class ShikimoriService {
           localStorage.setItem('shikimoriAccessToken', this.accessToken);
           this.refreshToken = data.rt;
           localStorage.setItem('shikimoriRefreshToken', this.refreshToken);
-          this.clientId = data.ci;
-          localStorage.setItem('shikimoriClientId', this.clientId);
           this.userSubject.next(await this.checkLogin());
         }
         loginWindow?.close();
-        r(undefined);
+        r(true);
       });
     });
   }
 
+  private async refreshTokens() {
+    if (!this.refreshToken) return false;
+    const url = new URL(`${environment.backend}shikimori/token`);
+    url.searchParams.append('refresh_token', this.refreshToken);
+    const response = await fetch(url);
+    if (!response.ok) {
+      return false;
+    }
+    const data = (await response.json()) as { access_token: string; refresh_token: string };
+    this.accessToken = data.access_token;
+    localStorage.setItem('shikimoriAccessToken', this.accessToken);
+    this.refreshToken = data.refresh_token;
+    localStorage.setItem('shikimoriRefreshToken', this.refreshToken);
+    return true;
+  }
+
   logoff() {
-    this.clientId = '';
     this.accessToken = '';
     this.refreshToken = '';
     this.userSubject.next(undefined);
     this.loggedIn = false;
     localStorage.removeItem('shikimoriAccessToken');
     localStorage.removeItem('shikimoriRefreshToken');
-    localStorage.removeItem('shikimoriClientId');
   }
 
-  async checkLogin(): Promise<ShikimoriUser | undefined> {
+  async checkLogin(refresh = true): Promise<ShikimoriUser | undefined> {
     const { gql } = await import('@urql/core');
     const QUERY = gql`
       {
@@ -101,6 +112,13 @@ export class ShikimoriService {
         console.log({ error });
         return undefined;
       });
+    if (result?.error?.response.status === 401) {
+      if (refresh && (await this.login())) {
+        return this.checkLogin(false);
+      }
+      this.logoff();
+      return;
+    }
     const requestResult = result?.data?.currentUser;
     this.loggedIn = !!requestResult;
     return requestResult;
