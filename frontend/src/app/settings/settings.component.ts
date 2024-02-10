@@ -13,6 +13,7 @@ import { TraktService } from '@services/anime/trakt.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
+import { KurozoraService } from '@services/kurozora.service';
 import { MalService } from '@services/mal.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 import { Language, SettingsService } from '@services/settings.service';
@@ -53,10 +54,11 @@ export class SettingsComponent implements OnInit {
     private annict: AnnictService,
     private baka: MangaupdatesService,
     private livechart: LivechartService,
+    private kurozora: KurozoraService,
     public modal: NgbActiveModal,
     private dialogue: DialogueService,
   ) {
-    kurozora.login('kurozora@infanf.de', 'sbkxw$62xe$EUieNYWJyXDA3@');
+    this.kurozora.login('kurozora@infanf.de', 'sbkxw$62xe$EUieNYWJyXDA3@');
     this.settings.language$.asObservable().subscribe(lang => {
       this._lang = lang;
     });
