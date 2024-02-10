@@ -1,0 +1,11 @@
+{
+  "name": "@api/kurozora",
+  "version": "1.4.0",
+  "main": "./index.ts",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "api": "^6.1.1",
+    "json-schema-to-ts": "^2.8.0-beta.0",
+    "oas": "^24.1.0"
+  }
+}

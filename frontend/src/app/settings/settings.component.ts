@@ -56,6 +56,7 @@ export class SettingsComponent implements OnInit {
     public modal: NgbActiveModal,
     private dialogue: DialogueService,
   ) {
+    kurozora.login('kurozora@infanf.de', 'sbkxw$62xe$EUieNYWJyXDA3@');
     this.settings.language$.asObservable().subscribe(lang => {
       this._lang = lang;
     });

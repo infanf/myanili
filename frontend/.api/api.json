@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "kurozora",
+      "source": "https://api.kurozora.app/openapi.json",
+      "integrity": "sha512-H7JYZhjqxM8x9zjov4BPV4K57Rl2sT1bh/FXarzkaZgi1QIN4tTJgBvnRZ1+6uvZapI2ImmxmyPlV2GDiSb83g==",
+      "installerVersion": "6.1.1"
+    }
+  ]
+}
