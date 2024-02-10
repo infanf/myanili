@@ -287,7 +287,7 @@ export class AnimeDetailsComponent implements OnInit {
           annictId: this.anime.my_extension.annictId,
         },
         {
-          comments: Base64.encode(
+          extension: Base64.encode(
             JSON.stringify({
               ...anime.my_extension,
               kitsuId: this.anime.my_extension.kitsuId,
@@ -369,7 +369,8 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     const { Base64 } = await import('js-base64');
     const updateData = {
-      comments: Base64.encode(JSON.stringify(this.editExtension)),
+      comments: this.editExtension?.comment || '',
+      extension: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyAnimeUpdate>;
     if (this.editBackup.status !== this.anime.my_list_status.status) {
       updateData.status = this.editBackup?.status;
@@ -528,7 +529,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     const { Base64 } = await import('js-base64');
-    data.comments = Base64.encode(JSON.stringify(this.anime.my_extension));
+    data.extension = Base64.encode(JSON.stringify(this.anime.my_extension));
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
         {
@@ -615,7 +616,7 @@ export class AnimeDetailsComponent implements OnInit {
     this.anime.my_extension.lastWatchedAt = new Date();
     const { Base64 } = await import('js-base64');
     const data = {
-      comments: Base64.encode(JSON.stringify(this.anime.my_extension)),
+      extension: Base64.encode(JSON.stringify(this.anime.my_extension)),
     };
     await this.animeService.updateAnime(
       {

@@ -116,7 +116,7 @@ export class AnimeService {
 
   async getAnime(id: number) {
     const anime = await this.malService.get<Anime>('anime/' + id);
-    const comments = `${anime.my_list_status?.comments}`;
+    const extension = `${anime.my_list_status?.comments}`;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
     if (!anime.website) anime.website_promise = this.getWebsite(id);
     this.fixBroadcast(anime);
@@ -124,8 +124,8 @@ export class AnimeService {
     delete animeToSave.my_list_status;
     delete animeToSave.website_promise;
     delete animeToSave.related_manga_promise;
-    if (comments) {
-      animeToSave.my_extension = parseExtension(comments);
+    if (extension) {
+      animeToSave.my_extension = parseExtension(extension);
       anime.my_extension = animeToSave.my_extension;
     }
     this.cache.saveValues(anime.id, 'anime', animeToSave, true);
@@ -156,7 +156,7 @@ export class AnimeService {
       );
       if (episodeRule) {
         const { Base64 } = await import('js-base64');
-        data.comments = Base64.encode(JSON.stringify({ episodeRule }));
+        data.extension = Base64.encode(JSON.stringify({ episodeRule }));
       }
     }
     return await this.updateAnime(
@@ -242,6 +242,7 @@ export class AnimeService {
         status: data.is_rewatching ? 'rewatching' : data.status,
         episodes: data.num_watched_episodes,
         rewatches: data.num_times_rewatched,
+        text: data.comments,
       }),
       this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
       this.annict.updateEntry(ids.annictId, data),

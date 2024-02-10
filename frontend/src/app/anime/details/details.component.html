@@ -850,6 +850,23 @@
     </div>
   </div>
 
+  <div *ngIf="!edit && anime?.my_extension?.comment" class="my-3">
+    <blockquote
+      class="quotes border-start ps-3 fst-italic quotes"
+      [innerHTML]="anime!.my_extension!.comment! | nl2br"
+    ></blockquote>
+  </div>
+
+  <div *ngIf="edit && editExtension" class="my-3">
+    <div class="fw-bold">Comment</div>
+    <textarea
+      class="form-control"
+      [(ngModel)]="editExtension.comment"
+      [disabled]="busy"
+      enterkeyhint="done"
+    ></textarea>
+  </div>
+
   <div class="mb-3" *ngIf="!edit && anime">
     <span *ngFor="let genre of anime!.genres" class="badge rounded-pill bg-primary me-1">
       {{ genre.name }}

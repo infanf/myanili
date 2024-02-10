@@ -181,4 +181,13 @@ overlay.overlay-shown {
   hyphens: auto;
 }
 
+.quotes {
+  &::before {
+    content: open-quote;
+  }
+  &::after {
+    content: close-quote;
+  }
+}
+
 @import 'styles/dark-theme.scss';
