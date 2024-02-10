@@ -233,7 +233,7 @@ export class MangaDetailsComponent implements OnInit {
           anilistId: this.manga.my_extension.anilistId,
         },
         {
-          comments: Base64.encode(
+          extension: Base64.encode(
             JSON.stringify({
               ...manga.my_extension,
               kitsuId: this.manga.my_extension.kitsuId,
@@ -306,7 +306,8 @@ export class MangaDetailsComponent implements OnInit {
     this.busy = true;
     const { Base64 } = await import('js-base64');
     const updateData = {
-      comments: Base64.encode(JSON.stringify(this.editExtension)),
+      comments: this.editExtension?.comment || '',
+      extension: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyMangaUpdate>;
     if (this.editBackup.status !== this.manga.my_list_status.status) {
       updateData.status = this.editBackup?.status;

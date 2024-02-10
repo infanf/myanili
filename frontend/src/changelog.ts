@@ -2,7 +2,10 @@ export const changelog: Changelog = {
   changes: [
     {
       version: '2.29.0',
-      features: ['Add support for Shikimori'],
+      features: [
+        'Add support for Shikimori',
+        'add support for comments - comments are now only used for additional information on MAL',
+      ],
     },
     {
       version: '2.28.4',

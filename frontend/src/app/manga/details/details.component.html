@@ -750,6 +750,23 @@
     </div>
   </div>
 
+  <div *ngIf="!edit && manga?.my_extension?.comment" class="my-3">
+    <blockquote
+      class="quotes border-start ps-3 fst-italic quotes"
+      [innerHTML]="manga!.my_extension!.comment! | nl2br"
+    ></blockquote>
+  </div>
+
+  <div *ngIf="edit && editExtension" class="my-3">
+    <div class="fw-bold">Comment</div>
+    <textarea
+      class="form-control"
+      [(ngModel)]="editExtension.comment"
+      [disabled]="busy"
+      enterkeyhint="done"
+    ></textarea>
+  </div>
+
   <ng-container *ngIf="!edit && manga">
     <div class="mb-3">
       <span *ngFor="let genre of manga!.genres" class="badge rounded-pill bg-primary me-1">
