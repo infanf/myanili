@@ -86,6 +86,7 @@ interface MyUpdate {
   finish_date: string;
   tags: string;
   comments: string;
+  extension: string;
 }
 
 export type MyMangaUpdate = MyUpdate;

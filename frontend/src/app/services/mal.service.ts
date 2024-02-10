@@ -38,6 +38,7 @@ export class MalService {
   // tslint:disable-next-line:no-any
   async post<T>(path: string, data: any, method = 'POST'): Promise<T> {
     if ('extension' in data) {
+      data = { ...data };
       data.comments = data.extension;
       delete data.extension;
     }

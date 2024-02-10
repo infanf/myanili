@@ -73,15 +73,15 @@ export class MangaService {
 
   async getManga(id: number, extend = true) {
     const manga = await this.malService.get<Manga>('manga/' + id);
-    const comments = manga.my_list_status?.comments;
+    const extension = manga.my_list_status?.comments;
     if (!manga.related_anime.length && extend) manga.related_anime_promise = this.getAnimes(id);
     const mangaToSave = { ...manga } as Partial<Manga>;
     delete mangaToSave.my_list_status;
     delete mangaToSave.related_anime_promise;
-    if (comments) {
+    if (extension) {
       try {
         const { Base64 } = await import('js-base64');
-        const json = Base64.decode(comments);
+        const json = Base64.decode(extension);
         const my_extension = JSON.parse(json) as MangaExtension;
         manga.my_extension = my_extension;
         mangaToSave.my_extension = my_extension;
