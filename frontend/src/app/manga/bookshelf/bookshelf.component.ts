@@ -77,7 +77,7 @@ export class BookshelfComponent {
     if (mdId) {
       const chapters = await this.mangadex.getChapter(mdId, currentVolume + 1);
       if (chapters?.last) {
-        data.num_chapters_read = Math.max(chapters.last, currentChapter);
+        data.num_chapters_read = Math.floor(Math.max(chapters.last, currentChapter));
       }
     }
     if (manga.node.num_chapters && manga.node.num_volumes && !data.num_chapters_read) {

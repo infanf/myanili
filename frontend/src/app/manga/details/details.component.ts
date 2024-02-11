@@ -444,7 +444,7 @@ export class MangaDetailsComponent implements OnInit {
       if (mdId) {
         const chapters = await this.mangadex.getChapter(mdId, currentVolume + 1);
         if (chapters?.last) {
-          data.num_chapters_read = Math.max(chapters.last, currentChapter);
+          data.num_chapters_read = Math.floor(Math.max(chapters.last, currentChapter));
         }
       }
     } else {

@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.28.5',
+      fixes: ['Manga: plus one volume sometimes not working'],
+    },
+    {
       version: '2.28.4',
       fixes: [
         'AniDB: disable proxy doe to rate limits',
