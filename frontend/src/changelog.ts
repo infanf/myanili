@@ -6,6 +6,7 @@ export const changelog: Changelog = {
         'Add support for Shikimori',
         'add support for comments - comments are now only used for additional information on MAL',
       ],
+      fixes: ['Anisearch: re-add ID mapping for mangas'],
     },
     {
       version: '2.28.5',

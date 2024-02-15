@@ -209,21 +209,15 @@ export class AnimeDetailsComponent implements OnInit {
         }),
       );
     }
-    /** @deprecated currently not working */
-    // if (!this.anime.my_extension.anisearchId) {
-    //   promises.push(
-    //     this.anisearch
-    //       .getId(this.anime.title, 'anime', {
-    //         parts: this.anime.num_episodes,
-    //         year: this.anime.start_season?.year,
-    //       })
-    //       .then(anisearchId => {
-    //         if (anisearchId && this?.anime?.my_extension) {
-    //           this.anime.my_extension.anisearchId = anisearchId;
-    //         }
-    //       }),
-    //   );
-    // }
+    if (!this.anime.my_extension.anisearchId) {
+      promises.push(
+        this.anisearch.getId(this.id, 'anime').then(anisearchId => {
+          if (anisearchId && this?.anime?.my_extension) {
+            this.anime.my_extension.anisearchId = anisearchId;
+          }
+        }),
+      );
+    }
     if (!this.anime.my_extension.livechartId) {
       const livechartPromise = new Promise(async resolve => {
         const livechartId = await this.livechart.getId(this.id, anime.title);
@@ -267,12 +261,6 @@ export class AnimeDetailsComponent implements OnInit {
       const apSlug = await this.ap.getSlug(this.anime.my_extension.livechartId);
       if (apSlug && this?.anime?.my_extension) {
         this.anime.my_extension.apSlug = apSlug;
-      }
-    }
-    if (!this.anime.my_extension.anisearchId) {
-      const anisearchId = await this.livechart.getAnisearchId(this.anime.my_extension.livechartId);
-      if (anisearchId && this?.anime?.my_extension) {
-        this.anime.my_extension.anisearchId = anisearchId;
       }
     }
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {

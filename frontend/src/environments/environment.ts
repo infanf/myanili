@@ -7,6 +7,7 @@ export const environment = {
   backend: 'http://localhost:4280/',
   jikanUrl: 'https://api.jikan.moe/v4/',
   jikanFallbackUrl: 'http://localhost:9001/v4/',
+  anisearchUrl: 'https://anisearch.myani.li/',
 };
 
 /*

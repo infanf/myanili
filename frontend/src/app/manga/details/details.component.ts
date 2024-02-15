@@ -162,17 +162,11 @@ export class MangaDetailsComponent implements OnInit {
     }
     if (!this.manga.my_extension.anisearchId) {
       promises.push(
-        this.anisearch
-          .getId(this.manga.title, 'manga', {
-            parts: this.manga.num_chapters,
-            volumes: this.manga.num_volumes,
-            year: this.manga.start_date ? new Date(this.manga.start_date).getFullYear() : undefined,
-          })
-          .then(anisearchId => {
-            if (anisearchId && this?.manga?.my_extension) {
-              this.manga.my_extension.anisearchId = anisearchId;
-            }
-          }),
+        this.anisearch.getId(this.id, 'manga').then(anisearchId => {
+          if (anisearchId && this?.manga?.my_extension) {
+            this.manga.my_extension.anisearchId = anisearchId;
+          }
+        }),
       );
     }
     if (!this.manga.my_extension.bakaId || /[a-z]/.test(String(this.manga.my_extension.bakaId))) {
