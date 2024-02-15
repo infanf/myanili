@@ -5,4 +5,5 @@ export const environment = {
   jikan3FallbackUrl: 'https://jikan.myani.li/v3/',
   jikanUrl: 'https://api.jikan.moe/v4/',
   jikanFallbackUrl: 'https://api.jikan.moe/v4/',
+  anisearchUrl: 'https://anisearch.myani.li/',
 };
