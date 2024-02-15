@@ -515,6 +515,21 @@
                 >
               </div>
             </div>
+            <div *ngIf="manga.id" class="row">
+              <div class="col-4">
+                <td class="text-nowrap">
+                  <myanili-external-rating
+                    [rating]="getRating('shikimori')"
+                  ></myanili-external-rating>
+                </td>
+              </div>
+              <div class="col-8">
+                <myanili-icon-shikimori></myanili-icon-shikimori>
+                <a class="ms-1" [href]="'https://shikimori.one/mangas/' + manga.id" target="_blank"
+                  >Shikimori</a
+                >
+              </div>
+            </div>
             <div class="row">
               <div class="col-4">
                 <td class="text-nowrap">
@@ -733,6 +748,23 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="!edit && manga?.my_extension?.comment" class="my-3">
+    <blockquote
+      class="quotes border-start ps-3 fst-italic quotes"
+      [innerHTML]="manga!.my_extension!.comment! | nl2br"
+    ></blockquote>
+  </div>
+
+  <div *ngIf="edit && editExtension" class="my-3">
+    <div class="fw-bold">Comment</div>
+    <textarea
+      class="form-control"
+      [(ngModel)]="editExtension.comment"
+      [disabled]="busy"
+      enterkeyhint="done"
+    ></textarea>
   </div>
 
   <ng-container *ngIf="!edit && manga">

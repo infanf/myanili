@@ -1,6 +1,18 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.29.0',
+      features: [
+        'Add support for Shikimori',
+        'add support for comments - comments are now only used for additional information on MAL',
+      ],
+      fixes: ['Anisearch: re-add ID mapping for mangas'],
+    },
+    {
+      version: '2.28.5',
+      fixes: ['Manga: plus one volume sometimes not working'],
+    },
+    {
       version: '2.28.4',
       fixes: [
         'AniDB: disable proxy doe to rate limits',

@@ -101,6 +101,7 @@ export interface MyAnimeUpdate {
   finish_date: string;
   tags: string;
   comments: string;
+  extension: string;
 }
 
 export interface MalSeason {
@@ -160,6 +161,7 @@ export interface AnimeExtension {
    * @deprecated
    */
   series?: string;
+  comment?: string;
   seasonNumber?: number;
   episodeCorOffset?: number;
   externalStreaming?: string;

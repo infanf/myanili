@@ -63,7 +63,14 @@ export class AnisearchService {
     return this.cache.fetch<ExtRating>(url);
   }
 
-  async getId(
+  async getId(malId: number, type: 'anime' | 'manga'): Promise<number | undefined> {
+    const url = `${environment.anisearchUrl}${type}/${malId}`;
+    const ids = await this.cache.fetch<number[]>(url);
+    return ids?.[0];
+  }
+
+  /** @deprecated */
+  async getIdByTitle(
     title: string,
     type: 'anime' | 'manga',
     meta: { parts?: number; volumes?: number; year?: number },

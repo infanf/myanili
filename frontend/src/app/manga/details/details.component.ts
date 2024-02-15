@@ -18,6 +18,7 @@ import { MangaService } from '@services/manga/manga.service';
 import { MangadexService } from '@services/manga/mangadex.service';
 import { MangapassionService } from '@services/manga/mangapassion.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
+import { ShikimoriService } from '@services/shikimori.service';
 
 @Component({
   selector: 'myanili-manga-details',
@@ -46,6 +47,7 @@ export class MangaDetailsComponent implements OnInit {
     public platformPipe: PlatformPipe,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private shikimori: ShikimoriService,
     private baka: MangaupdatesService,
     private mangadex: MangadexService,
     private mangapassion: MangapassionService,
@@ -160,17 +162,11 @@ export class MangaDetailsComponent implements OnInit {
     }
     if (!this.manga.my_extension.anisearchId) {
       promises.push(
-        this.anisearch
-          .getId(this.manga.title, 'manga', {
-            parts: this.manga.num_chapters,
-            volumes: this.manga.num_volumes,
-            year: this.manga.start_date ? new Date(this.manga.start_date).getFullYear() : undefined,
-          })
-          .then(anisearchId => {
-            if (anisearchId && this?.manga?.my_extension) {
-              this.manga.my_extension.anisearchId = anisearchId;
-            }
-          }),
+        this.anisearch.getId(this.id, 'manga').then(anisearchId => {
+          if (anisearchId && this?.manga?.my_extension) {
+            this.manga.my_extension.anisearchId = anisearchId;
+          }
+        }),
       );
     }
     if (!this.manga.my_extension.bakaId || /[a-z]/.test(String(this.manga.my_extension.bakaId))) {
@@ -231,7 +227,7 @@ export class MangaDetailsComponent implements OnInit {
           anilistId: this.manga.my_extension.anilistId,
         },
         {
-          comments: Base64.encode(
+          extension: Base64.encode(
             JSON.stringify({
               ...manga.my_extension,
               kitsuId: this.manga.my_extension.kitsuId,
@@ -304,7 +300,8 @@ export class MangaDetailsComponent implements OnInit {
     this.busy = true;
     const { Base64 } = await import('js-base64');
     const updateData = {
-      comments: Base64.encode(JSON.stringify(this.editExtension)),
+      comments: this.editExtension?.comment || '',
+      extension: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyMangaUpdate>;
     if (this.editBackup.status !== this.manga.my_list_status.status) {
       updateData.status = this.editBackup?.status;
@@ -444,7 +441,7 @@ export class MangaDetailsComponent implements OnInit {
       if (mdId) {
         const chapters = await this.mangadex.getChapter(mdId, currentVolume + 1);
         if (chapters?.last) {
-          data.num_chapters_read = Math.max(chapters.last, currentChapter);
+          data.num_chapters_read = Math.floor(Math.max(chapters.last, currentChapter));
         }
       }
     } else {
@@ -572,6 +569,11 @@ export class MangaDetailsComponent implements OnInit {
         .then(rating => {
           this.setRating('kitsu', rating);
         });
+    }
+    if (!this.getRating('shikimori')) {
+      this.shikimori.getRating(this.id, 'manga').then(rating => {
+        this.setRating('shikimori', rating);
+      });
     }
     if (!this.getRating('bu')) {
       this.mangaService.getBakaManga(this.manga?.my_extension?.bakaId).then(bakaManga => {

@@ -86,6 +86,7 @@ interface MyUpdate {
   finish_date: string;
   tags: string;
   comments: string;
+  extension: string;
 }
 
 export type MyMangaUpdate = MyUpdate;
@@ -135,6 +136,7 @@ interface RelatedMangaInterface {
 export type RelatedManga = RelatedMangaInterface;
 
 interface MangaExtensionInterface {
+  comment?: string;
   platform?: string;
   platformId?: string;
   ongoing?: boolean;

@@ -22,6 +22,7 @@ import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { SettingsService } from '@services/settings.service';
+import { ShikimoriService } from '@services/shikimori.service';
 import { WeekdayNumbers } from 'luxon';
 import { environment } from 'src/environments/environment';
 
@@ -37,6 +38,7 @@ export class AnimeService {
     private malService: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private shikimori: ShikimoriService,
     private simkl: SimklService,
     private annict: AnnictService,
     private trakt: TraktService,
@@ -114,7 +116,7 @@ export class AnimeService {
 
   async getAnime(id: number) {
     const anime = await this.malService.get<Anime>('anime/' + id);
-    const comments = `${anime.my_list_status?.comments}`;
+    const extension = `${anime.my_list_status?.comments}`;
     if (!anime.related_manga.length) anime.related_manga_promise = this.getManga(id);
     if (!anime.website) anime.website_promise = this.getWebsite(id);
     this.fixBroadcast(anime);
@@ -122,8 +124,8 @@ export class AnimeService {
     delete animeToSave.my_list_status;
     delete animeToSave.website_promise;
     delete animeToSave.related_manga_promise;
-    if (comments) {
-      animeToSave.my_extension = parseExtension(comments);
+    if (extension) {
+      animeToSave.my_extension = parseExtension(extension);
       anime.my_extension = animeToSave.my_extension;
     }
     this.cache.saveValues(anime.id, 'anime', animeToSave, true);
@@ -154,7 +156,7 @@ export class AnimeService {
       );
       if (episodeRule) {
         const { Base64 } = await import('js-base64');
-        data.comments = Base64.encode(JSON.stringify({ episodeRule }));
+        data.extension = Base64.encode(JSON.stringify({ episodeRule }));
       }
     }
     return await this.updateAnime(
@@ -233,6 +235,15 @@ export class AnimeService {
           reconsumeCount: data.num_times_rewatched,
         });
       })(),
+      this.shikimori.updateMedia({
+        target_id: ids.malId,
+        target_type: 'Anime',
+        score: data.score,
+        status: data.is_rewatching ? 'rewatching' : data.status,
+        episodes: data.num_watched_episodes,
+        rewatches: data.num_times_rewatched,
+        text: data.comments,
+      }),
       this.simkl.updateEntry({ simkl: ids.simklId, mal: ids.malId }, data),
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
@@ -254,6 +265,7 @@ export class AnimeService {
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
       this.kitsu.deleteEntry(ids.kitsuId, 'anime'),
+      this.shikimori.deleteMedia(ids.malId, 'Anime'),
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
       this.trakt.ignore(ids.traktId),

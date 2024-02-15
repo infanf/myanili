@@ -32,6 +32,7 @@ import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
+import { ShikimoriService } from '@services/shikimori.service';
 import Timezone from 'timezone-enum';
 
 @Component({
@@ -66,6 +67,7 @@ export class AnimeDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private shikimori: ShikimoriService,
     private simkl: SimklService,
     private annict: AnnictService,
     private anisearch: AnisearchService,
@@ -207,21 +209,15 @@ export class AnimeDetailsComponent implements OnInit {
         }),
       );
     }
-    /** @deprecated currently not working */
-    // if (!this.anime.my_extension.anisearchId) {
-    //   promises.push(
-    //     this.anisearch
-    //       .getId(this.anime.title, 'anime', {
-    //         parts: this.anime.num_episodes,
-    //         year: this.anime.start_season?.year,
-    //       })
-    //       .then(anisearchId => {
-    //         if (anisearchId && this?.anime?.my_extension) {
-    //           this.anime.my_extension.anisearchId = anisearchId;
-    //         }
-    //       }),
-    //   );
-    // }
+    if (!this.anime.my_extension.anisearchId) {
+      promises.push(
+        this.anisearch.getId(this.id, 'anime').then(anisearchId => {
+          if (anisearchId && this?.anime?.my_extension) {
+            this.anime.my_extension.anisearchId = anisearchId;
+          }
+        }),
+      );
+    }
     if (!this.anime.my_extension.livechartId) {
       const livechartPromise = new Promise(async resolve => {
         const livechartId = await this.livechart.getId(this.id, anime.title);
@@ -267,12 +263,6 @@ export class AnimeDetailsComponent implements OnInit {
         this.anime.my_extension.apSlug = apSlug;
       }
     }
-    if (!this.anime.my_extension.anisearchId) {
-      const anisearchId = await this.livechart.getAnisearchId(this.anime.my_extension.livechartId);
-      if (anisearchId && this?.anime?.my_extension) {
-        this.anime.my_extension.anisearchId = anisearchId;
-      }
-    }
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
       if ('series' in anime.my_extension) delete anime.my_extension.series;
       const { Base64 } = await import('js-base64');
@@ -285,7 +275,7 @@ export class AnimeDetailsComponent implements OnInit {
           annictId: this.anime.my_extension.annictId,
         },
         {
-          comments: Base64.encode(
+          extension: Base64.encode(
             JSON.stringify({
               ...anime.my_extension,
               kitsuId: this.anime.my_extension.kitsuId,
@@ -367,7 +357,8 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     const { Base64 } = await import('js-base64');
     const updateData = {
-      comments: Base64.encode(JSON.stringify(this.editExtension)),
+      comments: this.editExtension?.comment || '',
+      extension: Base64.encode(JSON.stringify(this.editExtension)),
     } as Partial<MyAnimeUpdate>;
     if (this.editBackup.status !== this.anime.my_list_status.status) {
       updateData.status = this.editBackup?.status;
@@ -526,7 +517,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     const { Base64 } = await import('js-base64');
-    data.comments = Base64.encode(JSON.stringify(this.anime.my_extension));
+    data.extension = Base64.encode(JSON.stringify(this.anime.my_extension));
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
         {
@@ -613,7 +604,7 @@ export class AnimeDetailsComponent implements OnInit {
     this.anime.my_extension.lastWatchedAt = new Date();
     const { Base64 } = await import('js-base64');
     const data = {
-      comments: Base64.encode(JSON.stringify(this.anime.my_extension)),
+      extension: Base64.encode(JSON.stringify(this.anime.my_extension)),
     };
     await this.animeService.updateAnime(
       {
@@ -768,6 +759,12 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('kitsu')) {
       this.kitsu.getRating(Number(this.anime?.my_extension?.kitsuId?.kitsuId)).then(rating => {
         this.setRating('kitsu', rating);
+      });
+    }
+    if (!this.getRating('shikimori')) {
+      this.shikimori.getRating(this.id, 'anime').then(rating => {
+        console.log(rating);
+        this.setRating('shikimori', rating);
       });
     }
     if (!this.getRating('simkl')) {

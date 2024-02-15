@@ -261,6 +261,7 @@ export class LivechartService {
       startedAt: updateData.start_date,
       finishedAt: updateData.finish_date,
       rewatches: updateData.num_times_rewatched,
+      notes: updateData.comments,
     } as Partial<Attributes>;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
