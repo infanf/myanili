@@ -68,6 +68,11 @@
               "moment",
               "string-similarity",
               "@components/luxon-helper",
+              "@services/anilist.service",
+              "@services/manga/manga.service",
+              "@services/anime/annict.service",
+              "@services/anime/livechart.service",
+              "@services/shikimori.service",
               "timestamp-enum"
             ]
           },
