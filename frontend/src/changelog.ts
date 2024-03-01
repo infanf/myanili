@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.29.1',
+      fixes: ['Shikimori: Show actual Shikimori score instead of what they copy from MAL'],
+    },
+    {
       version: '2.29.0',
       features: [
         'Add support for Shikimori',
