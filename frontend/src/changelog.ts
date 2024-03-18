@@ -2,7 +2,10 @@ export const changelog: Changelog = {
   changes: [
     {
       version: '2.29.2',
-      fixes: ["Don't update finish date if there is already a date set"],
+      fixes: [
+        'Trakt: add rating for movies from details page, handle too many requests error',
+        "Don't update finish date if there is already a date set",
+      ],
       other: [
         'Manga: add logos for publishers comikey and panini',
         'Anime: deprecate funimation and wakanim',

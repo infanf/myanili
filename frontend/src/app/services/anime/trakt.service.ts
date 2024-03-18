@@ -3,6 +3,7 @@ import { ToasterService } from '@components/toaster/toaster.service';
 import { MyAnimeUpdate } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
+import { GlobalService } from '@services/global.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -15,7 +16,11 @@ export class TraktService {
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
-  constructor(private dialogue: DialogueService, private toaster: ToasterService) {
+  constructor(
+    private dialogue: DialogueService,
+    private toaster: ToasterService,
+    private glob: GlobalService,
+  ) {
     this.clientId = String(localStorage.getItem('traktClientId'));
     this.accessToken = String(localStorage.getItem('traktAccessToken'));
     this.refreshToken = String(localStorage.getItem('traktRefreshToken'));
@@ -38,7 +43,7 @@ export class TraktService {
     if (this.refreshToken) {
       try {
         const body = `refresh_token=${this.refreshToken}`;
-        const response = await fetch(`${environment.backend}trakt/auth`, {
+        const response = await this.fetch(`${environment.backend}trakt/auth`, {
           method: 'POST',
           headers: new Headers({
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -104,7 +109,7 @@ export class TraktService {
       'trakt-api-version': '2',
       'trakt-api-key': this.clientId,
     };
-    const result = await fetch(`${this.baseUrl}users/settings`, { headers });
+    const result = await this.fetch(`${this.baseUrl}users/settings`, { headers });
     if (result.ok) {
       const response = (await result.json()) as { user?: { username?: string } };
       if (response.user) return response.user.username;
@@ -117,7 +122,9 @@ export class TraktService {
       'trakt-api-version': '2',
       'trakt-api-key': this.clientId,
     });
-    const result = await fetch(`${this.baseUrl}search/show?query=${q}&extended=full`, { headers });
+    const result = await this.fetch(`${this.baseUrl}search/show?query=${q}&extended=full`, {
+      headers,
+    });
     if (result.ok) {
       return result.json() as Promise<Show[]>;
     }
@@ -131,14 +138,14 @@ export class TraktService {
       'trakt-api-key': this.clientId,
       'Content-Type': 'application/json',
     };
-    const result = await fetch(
+    const result = await this.fetch(
       `${this.baseUrl}shows/${show}/seasons/${season}/episodes/${episodeno}`,
       { headers },
     );
     if (result.ok) {
       const episode = (await result.json()) as Episode;
       if (episode.ids.trakt) {
-        const scrobbleResult = await fetch(`${this.baseUrl}scrobble/stop`, {
+        const scrobbleResult = await this.fetch(`${this.baseUrl}scrobble/stop`, {
           method: 'POST',
           headers,
           body: JSON.stringify({
@@ -177,12 +184,12 @@ export class TraktService {
         },
       ],
     });
-    const resultCalendar = await fetch(`${this.baseUrl}users/hidden/calendar`, {
+    const resultCalendar = await this.fetch(`${this.baseUrl}users/hidden/calendar`, {
       headers,
       method,
       body,
     });
-    const resultWatchlist = await fetch(`${this.baseUrl}users/hidden/progress_watched`, {
+    const resultWatchlist = await this.fetch(`${this.baseUrl}users/hidden/progress_watched`, {
       headers,
       method,
       body,
@@ -195,7 +202,9 @@ export class TraktService {
       'trakt-api-version': '2',
       'trakt-api-key': this.clientId,
     });
-    const result = await fetch(`${this.baseUrl}search/movie?query=${q}&extended=full`, { headers });
+    const result = await this.fetch(`${this.baseUrl}search/movie?query=${q}&extended=full`, {
+      headers,
+    });
     if (result.ok) {
       const response = result.json() as Promise<Movie[]>;
       return (await response).map(movie => ({
@@ -214,11 +223,11 @@ export class TraktService {
       'trakt-api-key': this.clientId,
       'Content-Type': 'application/json',
     };
-    const result = await fetch(`${this.baseUrl}movies/${movieId}`, { headers });
+    const result = await this.fetch(`${this.baseUrl}movies/${movieId}`, { headers });
     if (result.ok) {
       const movie = (await result.json()) as Movie['movie'];
       if (movie.ids.trakt) {
-        const scrobbleResult = await fetch(`${this.baseUrl}scrobble/stop`, {
+        const scrobbleResult = await this.fetch(`${this.baseUrl}scrobble/stop`, {
           method: 'POST',
           headers,
           body: JSON.stringify({
@@ -249,7 +258,7 @@ export class TraktService {
         : season === 1
         ? `${this.baseUrl}shows/${show}/ratings`
         : `${this.baseUrl}shows/${show}/seasons/${season}/ratings`;
-    const result = await fetch(url, {
+    const result = await this.fetch(url, {
       headers: new Headers({
         'trakt-api-version': '2',
         'trakt-api-key': this.clientId,
@@ -312,7 +321,7 @@ export class TraktService {
       data.shows = [];
       data.movies.push({ rating, ids: { slug } });
     }
-    fetch(`${this.baseUrl}sync/ratings`, {
+    this.fetch(`${this.baseUrl}sync/ratings`, {
       method: 'POST',
       headers,
       body: JSON.stringify(data),
@@ -327,6 +336,19 @@ export class TraktService {
     localStorage.removeItem('traktAccessToken');
     localStorage.removeItem('traktRefreshToken');
     localStorage.removeItem('traktClientId');
+  }
+
+  private async fetch(
+    input: string | URL | globalThis.Request,
+    init?: RequestInit,
+    retries = 2,
+  ): Promise<Response> {
+    const response = await fetch(input, init);
+    if (response.status === 429 && retries > 0) {
+      await this.glob.sleep(1000);
+      return this.fetch(input, init, --retries);
+    }
+    return response;
   }
 }
 
