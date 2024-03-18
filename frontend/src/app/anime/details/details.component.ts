@@ -488,7 +488,8 @@ export class AnimeDetailsComponent implements OnInit {
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
       const { DateTime } = await import('luxon');
-      data.finish_date = DateTime.local().toISODate() || undefined;
+      data.finish_date =
+        this.anime.my_list_status.finish_date || DateTime.local().toISODate() || undefined;
       data.is_rewatching = false;
       if (this.anime.my_list_status.is_rewatching) {
         data.num_times_rewatched = this.anime.my_list_status.num_times_rewatched + 1 || 1;
