@@ -69,6 +69,7 @@
               "string-similarity",
               "@components/luxon-helper",
               "@services/anilist.service",
+              "@services/ann.service",
               "@services/manga/manga.service",
               "@services/anime/annict.service",
               "@services/anime/livechart.service",

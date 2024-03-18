@@ -19,6 +19,7 @@ export class StreamPipe implements PipeTransform {
       id: 'aone',
       name: 'Ani-One Asia',
       urlprefix: 'https://youtube.com/',
+      deprecated: true,
     },
     {
       id: 'aod',
@@ -71,6 +72,7 @@ export class StreamPipe implements PipeTransform {
       id: 'muse',
       name: 'Muse Asia',
       urlprefix: 'https://youtube.com/',
+      deprecated: true,
     },
     {
       id: 'nf',
@@ -85,7 +87,7 @@ export class StreamPipe implements PipeTransform {
     {
       id: 'azn',
       name: 'Prime Video',
-      urlprefix: 'https://amazon.de/dp/',
+      urlprefix: 'https://primevideo.com/dp/',
     },
     {
       id: 'tubi',
@@ -96,6 +98,7 @@ export class StreamPipe implements PipeTransform {
       id: 'wak',
       name: 'Wakanim',
       urlprefix: 'https://www.wakanim.tv/sc/v2/catalogue/show/',
+      deprecated: true,
     },
     {
       id: 'yt',
