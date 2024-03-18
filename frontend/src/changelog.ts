@@ -1,6 +1,13 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.29.2',
+      other: [
+        'Manga: add logos for publishers comikey and panini',
+        'Anime: deprecate funimation and wakanim',
+      ],
+    },
+    {
       version: '2.29.1',
       fixes: ['Shikimori: Show actual Shikimori score instead of what they copy from MAL'],
     },
