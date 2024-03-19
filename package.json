@@ -1,6 +1,6 @@
 {
   "name": "myanili",
-  "version": "2.29.1",
+  "version": "2.29.2",
   "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

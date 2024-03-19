@@ -18,8 +18,8 @@ export class ShikimoriService {
   private client!: Client;
 
   constructor(private dialogue: DialogueService) {
-    this.accessToken = String(localStorage.getItem('shikimoriAccessToken'));
-    this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken'));
+    this.accessToken = String(localStorage.getItem('shikimoriAccessToken') || '');
+    this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken') || '');
 
     const { createClient, cacheExchange, fetchExchange } =
       require('@urql/core') as typeof import('@urql/core');

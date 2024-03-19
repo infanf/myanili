@@ -16,7 +16,10 @@ export class PlatformComponent implements OnInit {
     if (!this.publisher) {
       return;
     }
-    this.publisher = this.publisher.toLowerCase().replace(/\s/g, '');
+    this.publisher = this.publisher
+      .toLowerCase()
+      .replace(/manga\s*$/, '')
+      .replace(/\s/g, '');
     const src = `/assets/publisher/${this.publisher}.svg`;
     fetch(src)
       .then(res => {
