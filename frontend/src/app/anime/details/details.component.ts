@@ -488,7 +488,8 @@ export class AnimeDetailsComponent implements OnInit {
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
       const { DateTime } = await import('luxon');
-      data.finish_date = DateTime.local().toISODate() || undefined;
+      data.finish_date =
+        this.anime.my_list_status.finish_date || DateTime.local().toISODate() || undefined;
       data.is_rewatching = false;
       if (this.anime.my_list_status.is_rewatching) {
         data.num_times_rewatched = this.anime.my_list_status.num_times_rewatched + 1 || 1;
@@ -527,10 +528,14 @@ export class AnimeDetailsComponent implements OnInit {
           simklId: this.anime.my_extension?.simklId,
           annictId: this.anime.my_extension?.annictId,
           livechartId: this.anime.my_extension?.livechartId,
+          trakt: {
+            id: this.anime.my_extension?.trakt,
+            season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
+          },
         },
         data,
       ),
-      this.scrobbleTrakt(),
+      this.scrobbleTrakt(data),
       this.simkl.scrobble(
         { simkl: this.anime.my_extension?.simklId, mal: this.anime.id },
         currentEpisode + 1,
@@ -614,13 +619,17 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
+        trakt: {
+          id: this.anime.my_extension?.trakt,
+          season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
+        },
       },
       data,
     );
     this.glob.notbusy();
   }
 
-  async scrobbleTrakt(): Promise<boolean> {
+  async scrobbleTrakt(data: Partial<MyAnimeUpdate> = {}): Promise<boolean> {
     if (!this.anime) return false;
     return new Promise(async r => {
       if (!this.anime) return r(false);

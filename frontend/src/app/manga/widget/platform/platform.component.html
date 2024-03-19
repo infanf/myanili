@@ -5,7 +5,7 @@
     [src]="
       publisherFinal
         ? '/assets/publisher/' + publisherFinal + '.svg'
-        : '/assets/platform/' + (provider || 'plex') + '.svg'
+        : '/assets/platform/' + provider + '.svg'
     "
   >
   </svg-icon>
@@ -14,8 +14,8 @@
     [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
     [src]="
       publisherFinal
-        ? '/assets/publisher/icon-' + publisherFinal + '.svg'
-        : '/assets/platform/icon-' + (provider || 'plex') + '.svg'
+        ? '/assets/publisher/' + publisherFinal + '.icon.svg'
+        : '/assets/platform/' + provider + '.icon.svg'
     "
   ></svg-icon>
 </span>

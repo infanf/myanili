@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { MangaService } from '@app/services/manga/manga.service';
 import { MangaExtension } from '@models/manga';
 import { MalService } from '@services/mal.service';
+import { MangaService } from '@services/manga/manga.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 
 @Component({

@@ -18,8 +18,8 @@ export class ShikimoriService {
   private client!: Client;
 
   constructor(private dialogue: DialogueService) {
-    this.accessToken = String(localStorage.getItem('shikimoriAccessToken'));
-    this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken'));
+    this.accessToken = String(localStorage.getItem('shikimoriAccessToken') || '');
+    this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken') || '');
 
     const { createClient, cacheExchange, fetchExchange } =
       require('@urql/core') as typeof import('@urql/core');
@@ -159,10 +159,12 @@ export class ShikimoriService {
       });
     const data = result?.data?.animes?.[0] || result?.data?.mangas?.[0];
     if (!data?.scoresStats) return undefined;
+    const ratings = data.scoresStats.map(a => a.count).reduce((a, b) => a + b);
+    const nom = ratings ? data.scoresStats.reduce((a, b) => a + b.score * b.count, 0) / ratings : 0;
     return {
-      nom: data?.score,
-      norm: data?.score * 10,
-      ratings: data.scoresStats.map(a => a.count).reduce((a, b) => a + b),
+      nom,
+      norm: nom * 10,
+      ratings,
     };
   }
 

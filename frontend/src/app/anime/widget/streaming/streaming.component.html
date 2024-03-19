@@ -6,7 +6,7 @@
         'd-none': variant !== 'full'
       }"
       [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
-      src="/assets/stream/{{ provider || 'plex' }}.svg"
+      src="/assets/stream/{{ provider }}.svg"
     ></svg-icon>
     <svg-icon
       [ngClass]="{
@@ -14,7 +14,7 @@
         'd-md-none': !variant
       }"
       [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
-      src="/assets/stream/icon-{{ provider || 'plex' }}.svg"
+      src="/assets/stream/{{ provider }}.icon.svg"
     ></svg-icon>
     <span class="flag">{{ country | flag : true }}</span>
   </ng-container>

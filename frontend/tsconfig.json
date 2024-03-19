@@ -17,35 +17,17 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2022",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "paths": {
-      "@models/*": [
-        "src/app/models/*"
-      ],
-      "@icon/*": [
-        "src/app/icon/*"
-      ],
-      "@external/*": [
-        "src/app/external/*"
-      ],
-      "@anime/*": [
-        "src/app/anime/*"
-      ],
-      "@manga/*": [
-        "src/app/manga/*"
-      ],
-      "@components/*": [
-        "src/app/components/*"
-      ],
-      "@services/*": [
-        "src/app/services/*"
-      ],
-      "@app/*": [
-        "src/app/*"
-      ],
+      "@models/*": ["src/app/models/*"],
+      "@icon/*": ["src/app/icon/*"],
+      "@external/*": ["src/app/external/*"],
+      "@anime/*": ["src/app/anime/*"],
+      "@manga/*": ["src/app/manga/*"],
+      "@components/*": ["src/app/components/*"],
+      "@services/*": ["src/app/services/*"],
+      "@app/*": ["src/app/*"],
+      "stream": ["./node_modules/stream-browserify"]
     },
     "resolveJsonModule": true,
     "useDefineForClassFields": false

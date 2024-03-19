@@ -470,7 +470,8 @@ export class MangaDetailsComponent implements OnInit {
     ) {
       data.status = 'completed';
       const { DateTime } = require('luxon') as typeof import('luxon');
-      data.finish_date = DateTime.local().toISODate() || undefined;
+      data.finish_date =
+        this.manga.my_list_status.finish_date || DateTime.local().toISODate() || undefined;
       data.is_rereading = false;
       if (this.manga.my_list_status.is_rereading) {
         data.num_times_reread = this.manga.my_list_status.num_times_reread + 1 || 1;

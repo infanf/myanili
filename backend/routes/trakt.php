@@ -97,7 +97,7 @@ $router->group(['prefix' => 'trakt'], function () use ($router) {
             return response()->json([
                 'id' => $traktMovie['trakt'],
                 'type' => 'movie',
-                'title' => $traktShow['title'],
+                'title' => $traktMovie['title'],
             ]);
         }
         return response()->json([

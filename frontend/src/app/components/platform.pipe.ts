@@ -6,19 +6,17 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PlatformPipe implements PipeTransform {
   readonly platforms: PlatformingProvider[] = [
     {
+      id: 'book',
+      name: 'Print',
+    },
+    {
       id: 'kin',
-      name: 'Amazon Kindle',
-      urlprefix: 'https://amazon.de/dp/',
+      name: 'Kindle',
     },
     {
       id: 'azuki',
       name: 'azuki',
       urlprefix: 'https://azuki.co/series/',
-    },
-    {
-      id: 'kinun',
-      name: 'Kindle Unlimited',
-      urlprefix: 'https://amazon.de/dp/',
     },
     {
       id: 'kobo',
@@ -52,14 +50,8 @@ export class PlatformPipe implements PipeTransform {
     },
     {
       id: 'twit',
-      name: 'Twitter',
-      urlprefix: 'https://twitter.com/',
-    },
-    {
-      id: 'cr',
-      name: 'Crunchyroll',
-      urlprefix: 'https://www.crunchyroll.com/comics/manga/',
-      urlpostfix: '/volumes',
+      name: 'X',
+      urlprefix: 'https://x.com/',
     },
     {
       id: 'webtoon',
@@ -97,9 +89,9 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://www.ebookrenta.com/renta/sc/frm/item/',
     },
     {
-      id: 'book',
-      name: 'Print',
-      urlprefix: 'https://amazon.de/gp/bookseries/',
+      id: 'comikey',
+      name: 'Comikey',
+      urlprefix: 'https://comikey.com/comics/title/',
     },
     {
       id: '',
