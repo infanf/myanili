@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.29.3',
+      other: ['Manga: add platform J-Novel Club'],
+    },
+    {
       version: '2.29.2',
       fixes: [
         'Trakt: add rating for movies from details page, handle too many requests error',
