@@ -29,6 +29,11 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://play.google.com/store/books/details?id=',
     },
     {
+      id: 'jnc',
+      name: 'J-Novel Club',
+      urlprefix: 'https://j-novel.club/series/',
+    },
+    {
       id: 'mplus',
       name: 'MANGA Plus',
       urlprefix: 'https://mangaplus.shueisha.co.jp/titles/',
