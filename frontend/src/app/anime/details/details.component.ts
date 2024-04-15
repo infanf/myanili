@@ -672,7 +672,7 @@ export class AnimeDetailsComponent implements OnInit {
       livechartId: this.anime.my_extension?.livechartId,
     });
     this.edit = false;
-    await this.ngOnInit();
+    this.ngOnInit();
     this.glob.notbusy();
     this.busy = false;
     return true;
