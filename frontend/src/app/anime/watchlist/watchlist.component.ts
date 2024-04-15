@@ -169,7 +169,7 @@ export class WatchlistComponent implements OnInit {
       }
     }
     const { Base64 } = await import('js-base64');
-    data.comments = Base64.encode(JSON.stringify(anime.my_extension));
+    data.extension = Base64.encode(JSON.stringify(anime.my_extension));
     const fullAnime = await this.animeService.getAnime(anime.node.id);
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
