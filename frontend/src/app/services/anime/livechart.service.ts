@@ -261,7 +261,7 @@ export class LivechartService {
       startedAt: updateData.start_date,
       finishedAt: updateData.finish_date,
       rewatches: updateData.num_times_rewatched,
-      notes: updateData.comments,
+      notes: updateData.comments?.substring(0, 500),
     } as Partial<Attributes>;
     const { gql } = await import('@urql/core');
     const MUTATION = gql`
@@ -531,7 +531,7 @@ export class LivechartService {
     return this.userSubject.asObservable();
   }
 
-  statusFromMal(status?: WatchStatus, rewatching = false): LivechartStatus | undefined {
+  statusFromMal(status?: WatchStatus, rewatching = false): LivechartStatus {
     switch (status) {
       case 'watching':
         return rewatching ? 'REWATCHING' : 'WATCHING';
@@ -544,7 +544,7 @@ export class LivechartService {
       case 'dropped':
         return 'DROPPED';
       default:
-        return undefined;
+        return 'WATCHING';
     }
   }
 

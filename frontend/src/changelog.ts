@@ -1,6 +1,15 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.29.4',
+      fixes: [
+        'App stuck after deleting entry',
+        'Livechart: sync not correctly working',
+        'Comments: cryptic comments coming when using Watchlist',
+      ],
+      other: ['update angular to 17'],
+    },
+    {
       version: '2.29.3',
       other: ['Manga: add platform J-Novel Club'],
     },

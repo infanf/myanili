@@ -63,7 +63,7 @@ export class MangaService {
         try {
           const { Base64 } = await import('js-base64');
           const json = Base64.decode(comments);
-          const my_extension = JSON.parse(json) as MangaExtension;
+          const my_extension = JSON.parse(json || '{}') as MangaExtension;
           return { ...manga, my_extension } as ListManga;
         } catch (e) {}
         return manga;
@@ -82,7 +82,7 @@ export class MangaService {
       try {
         const { Base64 } = await import('js-base64');
         const json = Base64.decode(extension);
-        const my_extension = JSON.parse(json) as MangaExtension;
+        const my_extension = JSON.parse(json || '{}') as MangaExtension;
         manga.my_extension = my_extension;
         mangaToSave.my_extension = my_extension;
       } catch (e) {}

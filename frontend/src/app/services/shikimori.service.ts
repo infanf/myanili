@@ -217,6 +217,6 @@ export class ShikimoriService {
       console.log(deleteResponse);
       return;
     }
-    return deleteResponse.json();
+    return true;
   }
 }
