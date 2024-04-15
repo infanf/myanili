@@ -27,7 +27,7 @@ export class SettingsService {
       this.layout = layout;
       const lang = String(localStorage.getItem('lang'));
       this.language = ['default', 'en', 'jp'].includes(lang) ? (lang as Language) : 'default';
-      const savedSeason = JSON.parse(String(localStorage.getItem('season')));
+      const savedSeason = JSON.parse(String(localStorage.getItem('season')) || '{}');
       if (savedSeason) {
         this.season = savedSeason as Season;
       }

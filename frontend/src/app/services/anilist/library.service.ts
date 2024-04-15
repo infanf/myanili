@@ -95,7 +95,7 @@ export class AnilistLibraryService {
       }
     `;
     data.mediaId = id;
-    const variables = JSON.parse(JSON.stringify(data));
+    const variables = JSON.parse(JSON.stringify(data) || '{}');
     return this.client
       .mutation(QUERY, variables)
       .toPromise()
