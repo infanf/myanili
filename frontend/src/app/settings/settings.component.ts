@@ -118,7 +118,7 @@ export class SettingsComponent implements OnInit {
   }
 
   set inlist(value: string) {
-    this.settings.inList = Boolean(JSON.parse(value) || 'false');
+    this.settings.inList = Boolean(JSON.parse(value));
   }
 
   get nsfw() {
@@ -126,7 +126,7 @@ export class SettingsComponent implements OnInit {
   }
 
   set nsfw(value: BooleanString) {
-    this.settings.nsfw = Boolean(JSON.parse(value) || 'false');
+    this.settings.nsfw = Boolean(JSON.parse(value));
   }
 
   get layout() {
@@ -142,7 +142,7 @@ export class SettingsComponent implements OnInit {
   }
 
   set autoFilter(value: BooleanString) {
-    this.settings.autoFilter = Boolean(JSON.parse(value) || 'false');
+    this.settings.autoFilter = Boolean(JSON.parse(value));
   }
 
   malConnect() {

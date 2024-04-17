@@ -10,7 +10,7 @@ export interface ShikimoriRate {
   target_id: number;
   target_type: string;
   score: number;
-  status: string;
+  status: ShikimoriRateStatus;
   rewatches: number;
   episodes: number;
   volumes: number;
@@ -20,3 +20,11 @@ export interface ShikimoriRate {
   created_at: Date;
   updated_at: Date;
 }
+
+export type ShikimoriRateStatus =
+  | 'planned'
+  | 'watching'
+  | 'rewatching'
+  | 'completed'
+  | 'on_hold'
+  | 'dropped';

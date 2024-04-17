@@ -156,7 +156,7 @@ export class MangaService {
         target_id: ids.malId,
         target_type: 'Manga',
         score: data.score,
-        status: data.is_rereading ? 'rereading' : data.status,
+        status: data.is_rereading ? 'rewatching' : this.shikimori.statusFromMal(data.status),
         chapters: data.num_chapters_read,
         volumes: data.num_volumes_read,
         rewatches: data.num_times_reread,

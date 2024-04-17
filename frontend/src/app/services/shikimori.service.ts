@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ShikimoriRate, ShikimoriUser } from '@models/shikimori';
+import { WatchStatus } from '@models/anime';
+import { ReadStatus } from '@models/manga';
+import { ShikimoriRate, ShikimoriRateStatus, ShikimoriUser } from '@models/shikimori';
 import { Client } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -218,5 +220,40 @@ export class ShikimoriService {
       return;
     }
     return true;
+  }
+
+  statusFromMal(malStatus?: WatchStatus | ReadStatus): ShikimoriRateStatus | undefined {
+    switch (malStatus) {
+      case 'plan_to_read':
+      case 'plan_to_watch':
+        return 'planned';
+      case 'reading':
+      case 'watching':
+        return 'watching';
+      case 'completed':
+      case 'dropped':
+      case 'on_hold':
+        return malStatus;
+      default:
+        return undefined;
+    }
+  }
+
+  statusToMal(
+    shikimoriStatus?: ShikimoriRateStatus,
+    type: 'anime' | 'manga' = 'anime',
+  ): WatchStatus | ReadStatus | undefined {
+    switch (shikimoriStatus) {
+      case 'planned':
+        return type === 'manga' ? 'plan_to_read' : 'plan_to_watch';
+      case 'watching':
+        return type === 'manga' ? 'reading' : 'watching';
+      case 'completed':
+      case 'dropped':
+      case 'on_hold':
+        return shikimoriStatus;
+      default:
+        return undefined;
+    }
   }
 }
