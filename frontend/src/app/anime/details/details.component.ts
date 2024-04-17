@@ -772,7 +772,6 @@ export class AnimeDetailsComponent implements OnInit {
     }
     if (!this.getRating('shikimori')) {
       this.shikimori.getRating(this.id, 'anime').then(rating => {
-        console.log(rating);
         this.setRating('shikimori', rating);
       });
     }
