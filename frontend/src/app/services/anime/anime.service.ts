@@ -239,7 +239,7 @@ export class AnimeService {
         target_id: ids.malId,
         target_type: 'Anime',
         score: data.score,
-        status: data.is_rewatching ? 'rewatching' : data.status,
+        status: data.is_rewatching ? 'rewatching' : this.shikimori.statusFromMal(data.status),
         episodes: data.num_watched_episodes,
         rewatches: data.num_times_rewatched,
         text: data.comments,
