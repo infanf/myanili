@@ -5,6 +5,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { AnidbComponent } from './anidb/anidb.component';
 import { AnilistIconComponent } from './anilist/anilist.component';
+import { AniplaylistIconComponent } from './aniplaylist/aniplaylist.component';
 import { AnisearchIconComponent } from './anisearch/anisearch.component';
 import { AnnComponent } from './ann/ann.component';
 import { AnnictIconComponent } from './annict/annict.component';
@@ -30,6 +31,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     IconComponent,
     AnidbComponent,
     AnilistIconComponent,
+    AniplaylistIconComponent,
     AnnComponent,
     AnnictIconComponent,
     BakamangaIconComponent,
@@ -72,6 +74,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     IconComponent,
     AnidbComponent,
     AnilistIconComponent,
+    AniplaylistIconComponent,
     AnnComponent,
     AnnictIconComponent,
     ApComponent,
