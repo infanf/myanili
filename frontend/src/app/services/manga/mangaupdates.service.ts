@@ -92,10 +92,22 @@ export class MangaupdatesService {
 
   async getIdFromManga(manga: Manga): Promise<number | undefined> {
     if (!manga) return;
-    return this.getIdFromTitle(manga.title, manga.start_date);
+    const author = manga.authors?.[0]?.node;
+    return this.getIdFromTitle(
+      manga.title,
+      manga.start_date,
+      manga.media_type.includes('novel'),
+      `${author?.last_name} ${author?.first_name}`,
+    );
   }
 
-  async getIdFromTitle(title: string, startDate?: Date): Promise<number | undefined> {
+  async getIdFromTitle(
+    title: string,
+    startDate?: Date,
+    novel?: boolean,
+    author?: string,
+  ): Promise<number | undefined> {
+    if (novel) title += ' (Novel)';
     const mangas = await this.findSeries(title);
     if (!mangas) return;
     const bakaMangas = mangas.filter(m => {
@@ -106,7 +118,11 @@ export class MangaupdatesService {
     const { compareTwoStrings } = await import('string-similarity');
     const bakaMangasByTitle = bakaMangas.filter(m => compareTwoStrings(m.title, title) > 0.9);
     if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].series_id;
-    return bakaMangas.find(m => m.title.toLowerCase() === title.toLowerCase())?.series_id;
+    return bakaMangas.find(
+      m =>
+        m.title.toLowerCase() === title.toLowerCase() ||
+        m.title.toLowerCase() === `${title} (${author})`.toLowerCase(),
+    )?.series_id;
   }
 
   async findSeries(title: string): Promise<BakaSeries[] | undefined> {
