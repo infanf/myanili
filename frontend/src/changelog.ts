@@ -1,6 +1,12 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.29.6',
+      features: ['Anime: add link to Aniplaylist'],
+      fixes: ['Baka-Manga: optimize automatch'],
+      other: ['Minor layout optimizations'],
+    },
+    {
       version: '2.29.5',
       fixes: ['Settings: cannot change some switches', 'Shikimori: Not adding to list'],
     },
