@@ -113,7 +113,6 @@ export interface AnimeTheme {
   id: number;
   anime_id: number;
   text: string;
-  spotify?: string;
 }
 
 export interface AnimeNode {
