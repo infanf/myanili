@@ -2,7 +2,10 @@ export const changelog: Changelog = {
   changes: [
     {
       version: '2.30.0',
-      features: ['Anime: remove defunct Spotify Links'],
+      features: [
+        'Scores: let user select how the score should be displayed',
+        'Anime: remove defunct Spotify Links',
+      ],
     },
     {
       version: '2.29.6',

@@ -15,7 +15,7 @@ import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
-import { Language, SettingsService } from '@services/settings.service';
+import { Language, ScoreDisplay, SettingsService } from '@services/settings.service';
 import { ShikimoriService } from '@services/shikimori.service';
 
 @Component({
@@ -40,6 +40,7 @@ export class SettingsComponent implements OnInit {
   private _autoFilter: BooleanString = 'false';
   private _layout = 'list';
   private _nsfw: BooleanString = 'true';
+  private _scoreDisplay: ScoreDisplay = 'default';
   version = '0.0.0';
   constructor(
     private settings: SettingsService,
@@ -98,6 +99,9 @@ export class SettingsComponent implements OnInit {
     this.settings.autoFilter$.asObservable().subscribe(autoFilter => {
       this._autoFilter = JSON.stringify(autoFilter) as BooleanString;
     });
+    this.settings.scoreDisplay$.asObservable().subscribe(scoreDisplay => {
+      this._scoreDisplay = scoreDisplay;
+    });
     this.version = this.glob.version;
   }
 
@@ -143,6 +147,14 @@ export class SettingsComponent implements OnInit {
 
   set autoFilter(value: BooleanString) {
     this.settings.autoFilter = Boolean(JSON.parse(value));
+  }
+
+  get scoreDisplay() {
+    return this._scoreDisplay;
+  }
+
+  set scoreDisplay(value: ScoreDisplay) {
+    this.settings.scoreDisplay = value;
   }
 
   malConnect() {
