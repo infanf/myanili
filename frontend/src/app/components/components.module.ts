@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -87,6 +87,6 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     Nl2brPipe,
     DateAgoPipe,
   ],
-  providers: [TimePipe, StreamPipe, PlatformPipe, DayPipe],
+  providers: [TimePipe, StreamPipe, PlatformPipe, DayPipe, DecimalPipe],
 })
 export class ComponentsModule {}
