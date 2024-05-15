@@ -24,7 +24,7 @@ export class ExternalRatingComponent {
         return `${this.numberPipe.transform(this.rating?.rating.norm || 0, '1.0-1')} %`;
       default:
         return `${this.numberPipe.transform(this.rating?.rating.nom, '1.0-2')} ${
-          this.rating?.rating.unit
+          this.rating?.rating.unit || ''
         }`.trim();
     }
   }
