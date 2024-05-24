@@ -18,6 +18,7 @@ export class SettingsService {
   layout$ = new BehaviorSubject<string>('list');
   nsfw$ = new BehaviorSubject<boolean>(false);
   autoFilter$ = new BehaviorSubject<boolean>(false);
+  scoreDisplay$ = new BehaviorSubject<ScoreDisplay>('default');
 
   constructor(private glob: GlobalService, private modalService: NgbModal) {
     try {
@@ -33,6 +34,8 @@ export class SettingsService {
       }
       const autoFilter = Boolean(JSON.parse(localStorage.getItem('autoFilter') || 'false'));
       this.autoFilter = autoFilter;
+      const scoreDisplay = String(localStorage.getItem('scoreDisplay') || 'default');
+      this.scoreDisplay$.next(scoreDisplay as ScoreDisplay);
       const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
       this.nsfw = nsfw;
       const knownVersion = String(localStorage.getItem('myaniliVersion')) || '0.0.0';
@@ -93,6 +96,12 @@ export class SettingsService {
     this.nsfw$.next(nsfw);
     localStorage.setItem('nsfw', JSON.stringify(nsfw));
   }
+
+  set scoreDisplay(scoreDisplay: ScoreDisplay) {
+    this.scoreDisplay$.next(scoreDisplay);
+    localStorage.setItem('scoreDisplay', scoreDisplay);
+  }
 }
 
 export type Language = 'default' | 'en' | 'jp';
+export type ScoreDisplay = 'default' | '10' | '5' | '100';
