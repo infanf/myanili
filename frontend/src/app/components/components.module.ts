@@ -14,6 +14,7 @@ import { RatingDialogueComponent } from './dialogue/rating/rating.component';
 import { DoubleCardComponent } from './double-card/double-card.component';
 import { ExternalRatingComponent } from './external-rating/external-rating.component';
 import { FlagPipe } from './flag.pipe';
+import { GenresBadgesComponent } from './genres-badges/genres-badges.component';
 import { HeaderComponent } from './header/header.component';
 import { MalPipe } from './mal.pipe';
 import { MediaCardComponent } from './media-card/media-card.component';
@@ -37,6 +38,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     MediaCardComponent,
     MalPipe,
     StatusBadgeComponent,
+    GenresBadgesComponent,
     FlagPipe,
     TimePipe,
     DayPipe,
@@ -69,6 +71,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     ValuePairComponent,
     ValuePairArrayComponent,
     MediaCardComponent,
+    GenresBadgesComponent,
     DoubleCardComponent,
     StatusBadgeComponent,
     ExternalRatingComponent,

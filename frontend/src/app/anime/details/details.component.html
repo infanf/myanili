@@ -867,11 +867,11 @@
     ></textarea>
   </div>
 
-  <div class="mb-3" *ngIf="!edit && anime">
-    <span *ngFor="let genre of anime!.genres" class="badge rounded-pill bg-primary me-1">
-      {{ genre.name }}
-    </span>
-  </div>
+  <myanili-genres-badges
+    class="mb-3 d-block"
+    *ngIf="!edit && anime"
+    [genres]="anime.genres"
+  ></myanili-genres-badges>
 
   <ng-container *ngIf="!edit && anime">
     <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
