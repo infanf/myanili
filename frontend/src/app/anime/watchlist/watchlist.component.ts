@@ -111,16 +111,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   getLast8am() {
-    const { DateTimeFrom } =
-      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
-    const now = DateTimeFrom();
-    const eightAm = DateTimeFrom().set({
-      hour: 8,
-      minute: 0,
-      second: 0,
-      millisecond: 0,
-    });
-    return now.diff(eightAm).milliseconds > 0 ? eightAm : eightAm.minus({ days: 1 });
+    return require('@services/global.service').getLastXoClock() as import('luxon').DateTime;
   }
 
   async markSeen(anime: ListAnime) {

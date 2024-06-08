@@ -106,3 +106,16 @@ export class GlobalService {
     return (rounded % 7 || 7) as WeekdayNumbers;
   }
 }
+
+export function getLastXoClock(hour = 8) {
+  const { DateTimeFrom } =
+    require('@components/luxon-helper') as typeof import('@components/luxon-helper');
+  const now = DateTimeFrom();
+  const eightAm = DateTimeFrom().set({
+    hour,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+  });
+  return now.diff(eightAm).milliseconds > 0 ? eightAm : eightAm.minus({ days: 1 });
+}
