@@ -8,7 +8,7 @@ export class StreamPipe implements PipeTransform {
     {
       id: 'akibapass',
       name: 'AKIBA PASS TV',
-      urlprefix: 'https://akibapasstv.vhx.tv/products/',
+      urlprefix: 'https://akibapass.tv/products/',
     },
     {
       id: 'adn',
@@ -28,6 +28,11 @@ export class StreamPipe implements PipeTransform {
       deprecated: true,
     },
     {
+      id: 'animeonegai',
+      name: 'Anime Onegai',
+      urlprefix: 'https://animeonegai.com/es/details/',
+    },
+    {
       id: 'al',
       name: 'animelab',
       urlprefix: 'https://www.animelab.com/shows/',
@@ -37,6 +42,7 @@ export class StreamPipe implements PipeTransform {
       id: 'aniverse',
       name: 'aniverse',
       urlprefix: 'https://amazon.de/dp/',
+      deprecated: true,
     },
     {
       id: 'bili',
@@ -57,6 +63,7 @@ export class StreamPipe implements PipeTransform {
       id: 'fun',
       name: 'Funimation',
       urlprefix: 'https://www.funimation.com/shows/',
+      deprecated: true,
     },
     {
       id: 'hid',

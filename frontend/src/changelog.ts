@@ -2,7 +2,7 @@ export const changelog: Changelog = {
   changes: [
     {
       version: '2.30.2',
-      features: ['Manga: add platform JNC Nina'],
+      features: ['Manga: add platform JNC Nina', 'Anime: add platform Anime Onegai'],
     },
     {
       version: '2.30.1',
