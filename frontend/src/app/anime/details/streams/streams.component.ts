@@ -4,11 +4,14 @@ import { LegacyStream } from '@services/anime/livechart.service';
 @Component({
   selector: 'myanili-anime-streams',
   templateUrl: './streams.component.html',
-  // styles: [`
-  //   .streams {
-  //     display: grid;
-  //   }
-  // `],
+  styles: [
+    `
+      .streams > a:hover {
+        background-color: rgba(var(--bs-secondary-rgb), 0.1);
+        outline: 0.75rem solid rgba(var(--bs-secondary-rgb), 0.1);
+      }
+    `,
+  ],
 })
 export class StreamsComponent implements OnInit {
   @Input() streams: LegacyStream[] = [];

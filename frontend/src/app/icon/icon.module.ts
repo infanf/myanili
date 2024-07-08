@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
@@ -51,25 +51,6 @@ import { TraktIconComponent } from './trakt/trakt.component';
     ApComponent,
     ShikimoriIconComponent,
   ],
-  imports: [
-    CommonModule,
-    NgCircleProgressModule.forRoot({
-      radius: 7,
-      outerStrokeWidth: 1,
-      innerStrokeWidth: 1,
-      space: -1,
-      showBackground: false,
-      showTitle: false,
-      showUnits: false,
-      showSubtitle: false,
-      outerStrokeColor: 'currentColor',
-      innerStrokeColor: '#88888818',
-      animation: false,
-      backgroundPadding: 0,
-      outerStrokeLinecap: 'butt',
-    }),
-    HttpClientModule,
-  ],
   exports: [
     IconComponent,
     AnidbComponent,
@@ -95,5 +76,24 @@ import { TraktIconComponent } from './trakt/trakt.component';
     LoadingIconComponent,
     NgCircleProgressModule,
   ],
+  imports: [
+    CommonModule,
+    NgCircleProgressModule.forRoot({
+      radius: 7,
+      outerStrokeWidth: 1,
+      innerStrokeWidth: 1,
+      space: -1,
+      showBackground: false,
+      showTitle: false,
+      showUnits: false,
+      showSubtitle: false,
+      outerStrokeColor: 'currentColor',
+      innerStrokeColor: '#88888818',
+      animation: false,
+      backgroundPadding: 0,
+      outerStrokeLinecap: 'butt',
+    }),
+  ],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class IconModule {}

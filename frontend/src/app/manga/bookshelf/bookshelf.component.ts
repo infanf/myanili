@@ -36,7 +36,8 @@ export class BookshelfWrapperComponent implements OnInit {
   }
 
   get simulpub(): ListManga[] {
-    const weekday = new Date().getDay() as Weekday;
+    const now = new Date();
+    const weekday = (now.getHours() < 8 ? (now.getDay() + 6) % 7 : now.getDay()) as Weekday;
     return this.mangas
       .filter(manga => manga.my_extension?.simulpub?.includes(weekday))
       .sort(defaultSort);
