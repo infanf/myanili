@@ -3,6 +3,7 @@ export const changelog: Changelog = {
     {
       version: '2.30.2',
       features: ['Manga: add platform JNC Nina', 'Anime: add platform Anime Onegai'],
+      other: ['Update dependencies', 'Update Logos for Crunchyroll and BiliBili'],
     },
     {
       version: '2.30.1',
