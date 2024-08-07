@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.30.3',
+      other: ['Update dependencies', 'Update Logos for HIDIVE and Prime Video'],
+    },
+    {
       version: '2.30.2',
       features: ['Manga: add platform JNC Nina', 'Anime: add platform Anime Onegai'],
       other: ['Update dependencies', 'Update Logos for Crunchyroll and BiliBili'],
