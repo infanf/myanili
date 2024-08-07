@@ -1,3 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342.3 83.7">
-  <path d="M151.7 0h-44.4v83.7h44.4a16.1 16.1 0 0 0 16.1-16.2V16.2A16.1 16.1 0 0 0 151.7 0m1.6 61.7a7.4 7.4 0 0 1-7.4 7.4h-22.2V14.6h22.2a7.4 7.4 0 0 1 7.4 7.4ZM75.8 0h16.3v83.7H75.8zM44.1 0v34.4H16.3V0h-.2A16.1 16.1 0 0 0 0 16.1v67.5h16.3V49h27.8v34.7h16.4V0Zm298.2 49V34.4H303V14.6h39A16.1 16.1 0 0 0 326 0h-39.3v83.7h55.5V69H303V49ZM271 0a16.2 16.2 0 0 0-15 11.1l-12.9 39.2-12.9-39.2a16.2 16.2 0 0 0-15-11.1h-5.8L237 83.7h12.5L276.9 0Zm-87.9 0h16.3v83.7h-16.3z" fill="currentColor"/>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 462.2 143.6">
+  <defs>
+    <linearGradient xlink:href="#prefix__a" id="prefix__b" x1="83.3" y1="35.9" x2="92.2" y2="35.9"
+      gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 16.1269 12.12754 0 -33.5 -1279)" />
+    <linearGradient id="prefix__a">
+      <stop offset="0" stop-color="#6ceffe" />
+      <stop offset="1" stop-color="#08b2f0" />
+    </linearGradient>
+  </defs>
+  <path
+    d="M226.8 64c-31 0-56 25-56 56v87.7h406.1c31 0 56-25 56-56V64zm19.9 30.2h.2v34.4h27.8V94.2H291v83.7h-16.4v-34.7h-27.8v34.6h-16.3v-67.5a16.1 16.1 0 0116-16.1zm59.7 0h16.3v83.7h-16.3zm31.5 0h44.4a16.1 16.1 0 0116 16.2v51.3a16.1 16.1 0 01-16 16.2h-44.4zm75.8 0H430v83.7h-16.3zm26.3 0h5.8a16.2 16.2 0 0115 11l12.9 39.3 12.9-39.2a16.2 16.2 0 0115-11.1h5.9L480 177.9h-12.5zm77.3 0h39.3a16.1 16.1 0 0116 14.6h-39v19.8h39.3v14.6h-39.3v20h39.2v14.7h-55.5zm-163 14.6v54.5h22.2a7.4 7.4 0 007.4-7.4v-39.7a7.4 7.4 0 00-7.4-7.4z"
+    transform="matrix(.99999 0 0 .99999 -170.7 -64)" fill="url(#prefix__b)" paint-order="stroke fill markers" />
 </svg>
