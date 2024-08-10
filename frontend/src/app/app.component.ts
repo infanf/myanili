@@ -22,7 +22,7 @@ export class AppComponent {
     this.malService.maintenace().then(isMaintenance => {
       if (isMaintenance) {
         this.dialogue.open(
-          'MyAnimeList is currently under maintenance. Please check back later.',
+          'MyAnimeList is currently under maintenance (or not available due to other reasons). Please check back later.',
           'MAL Maintenance',
         );
       }

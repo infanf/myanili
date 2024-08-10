@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.30.4',
+      fixes: ['Handle MAL backend failures'],
+    },
+    {
       version: '2.30.3',
       other: ['Update dependencies', 'Update Logos for HIDIVE and Prime Video'],
     },

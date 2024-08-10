@@ -136,7 +136,9 @@ export class MalService {
   }
 
   async maintenace(): Promise<boolean> {
-    const maint = await this.get<{ maintenance?: boolean }>('maintenance');
+    const maint = await this.get<{ maintenance?: boolean }>('maintenance').catch(() => ({
+      maintenance: true,
+    }));
     return Boolean(maint.maintenance);
   }
 }
