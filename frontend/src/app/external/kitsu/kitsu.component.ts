@@ -22,7 +22,7 @@ export class KitsuComponent extends ExternalComponent {
       this.nodes = data.map(entry => ({
         id: entry.id,
         title: entry.attributes.canonicalTitle,
-        url: `https://kitsu.io/${this.type}/${entry.id}`,
+        url: `https://kitsu.app/${this.type}/${entry.id}`,
         poster: entry.attributes.posterImage?.original,
         description: entry.attributes.synopsis,
         year: new Date(entry.attributes.startDate).getFullYear(),

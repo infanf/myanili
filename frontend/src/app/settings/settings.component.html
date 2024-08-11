@@ -127,7 +127,7 @@
           <ng-container *ngIf="kitsuLoggedIn; else kitsuConnectTemplate">
             <myanili-icon-kitsu style="color: #e75e45" class="me-1"></myanili-icon-kitsu>
             <a
-              href="https://kitsu.io/users/{{ kitsuLoggedIn.attributes.name || kitsuLoggedIn.id }}"
+              href="https://kitsu.app/users/{{ kitsuLoggedIn.attributes.name || kitsuLoggedIn.id }}"
               target="_blank"
               >{{ kitsuLoggedIn.attributes.name || kitsuLoggedIn.id }}</a
             >
