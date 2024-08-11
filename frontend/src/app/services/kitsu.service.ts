@@ -19,7 +19,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class KitsuService {
-  private readonly baseUrl = 'https://kitsu.io/api/edge/';
+  private readonly baseUrl = 'https://kitsu.app/api/edge/';
   private accessToken = '';
   private refreshToken = '';
   // not app specific, see https://kitsu.docs.apiary.io/#introduction/authentication/app-registration
@@ -197,7 +197,7 @@ export class KitsuService {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     const body = formBody.join('&');
-    const result = await fetch('https://kitsu.io/api/oauth/token', {
+    const result = await fetch('https://kitsu.app/api/oauth/token', {
       method: 'POST',
       headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded',

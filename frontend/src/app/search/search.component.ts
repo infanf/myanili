@@ -89,7 +89,7 @@ export class SearchComponent implements AfterViewInit {
       this.glob.notbusy();
       return this.addFromAnilist(this.query);
     }
-    if (this.query.match(/kitsu.io/)) {
+    if (this.query.match(/kitsu.(io|app)/)) {
       this.glob.notbusy();
       return this.addFromKitsu(this.query);
     }
@@ -204,10 +204,13 @@ export class SearchComponent implements AfterViewInit {
   }
 
   async addFromKitsu(url: string) {
-    const regex = /kitsu.io\/([a-z]+)\/(\d+|[\w\-]+)/;
+    const regex = /kitsu.(io|app)\/([a-z]+)\/(\d+|[\w\-]+)/;
     const result = regex.exec(url);
-    if (result?.length !== 3) return;
-    const [all, type, idStr] = result;
+    if (result?.length !== 4) return;
+    const [all, tld, type, idStr] = result;
+    if (tld === 'io') {
+      console.warn('Kitsu.io is deprecated, please use Kitsu.app instead');
+    }
     if (!all || !idStr || (type !== 'anime' && type !== 'manga')) return;
     let id;
     if (!idStr.match(/^\d+$/)) {

@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class KitsuNotificationsService {
-  private readonly baseUrl = 'https://kitsu.io/api/edge/';
+  private readonly baseUrl = 'https://kitsu.app/api/edge/';
   private notificationsSubject = new BehaviorSubject<KitsuNotification[]>([]);
 
   private accessToken = '';
@@ -80,14 +80,14 @@ export class KitsuNotificationsService {
         if (!actor) return false;
         if (activity.attributes.verb === 'follow') {
           notification.text = `<span class="text-secondary">${actor.attributes.name}</span> followed you`;
-          notification.url = `https://kitsu.io${actor.links.self}`;
+          notification.url = `https://kitsu.app${actor.links.self}`;
         }
         if (activity.attributes.verb === 'post') {
           const postId = activity.relationships.subject.data.id;
           const post = notifications.included?.find(included => included.id === postId);
           if (!post) return false;
           notification.text = `<span class="text-secondary">${actor.attributes.name}</span> mentioned you in a post`;
-          notification.url = `https://kitsu.io${post.links.self}`;
+          notification.url = `https://kitsu.app${post.links.self}`;
         }
         return notification;
       })
