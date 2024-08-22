@@ -56,3 +56,21 @@ jobs:
           tags: ${{ steps.meta-frontend.outputs.tags }}
           build-args: |
             BUILD_ENV=${{ fromJSON(steps.meta-frontend.outputs.json).labels['org.opencontainers.image.version'] == 'beta' && 'beta' || 'production' }}
+
+  deploy-beta:
+    if: github.ref == 'refs/heads/beta'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          service_account: ${{ secrets.GCP_SA_NAME }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Deploy to Google Cloud Run
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          service: myanili-frontend-beta
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}:beta
+          region: europe-west1
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
