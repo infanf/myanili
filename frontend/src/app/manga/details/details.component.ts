@@ -227,6 +227,7 @@ export class MangaDetailsComponent implements OnInit {
           anilistId: this.manga.my_extension.anilistId,
         },
         {
+          status: manga.my_list_status.status,
           extension: Base64.encode(
             JSON.stringify({
               ...manga.my_extension,

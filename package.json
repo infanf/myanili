@@ -1,6 +1,6 @@
 {
   "name": "myanili",
-  "version": "2.30.5",
+  "version": "2.30.6",
   "description": "MyAniLi",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,19 +11,20 @@
     "dev": "npm run start && docker exec -ti -w /frontend -u application myanili_app npm i && docker exec -ti -w /frontend -u application myanili_app npm run dev",
     "shell": "npm run start && docker exec -ti -w /frontend -u application myanili_app bash",
     "shell:root": "npm run start && docker exec -ti -w /frontend -u root myanili_app bash",
-    "prepare": "husky install",
+    "prepare": "husky",
     "precommit": "lint-staged",
     "postinstall": "npm run start && docker exec -w /frontend -u application myanili_app npm i && docker exec -w /app -u application myanili_app composer update"
   },
   "author": "Christopher Schreiner",
   "license": "MIT",
   "devDependencies": {
-    "@commitlint/cli": "^17.0.0",
-    "@commitlint/config-conventional": "^17.0.0",
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.0",
     "@elunic/ecs": "^0.3.3",
-    "commitlint": "^17.0.0",
-    "husky": "^8.0.0",
-    "lint-staged": "^13.0.0",
-    "prettier": "^2.8.0"
+    "commitlint": "^19.4.0",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.9",
+    "prettier": "^3.3.3",
+    "typescript": "^5.4.2"
   }
 }

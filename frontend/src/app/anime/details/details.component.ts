@@ -275,6 +275,7 @@ export class AnimeDetailsComponent implements OnInit {
           annictId: this.anime.my_extension.annictId,
         },
         {
+          status: anime.my_list_status.status,
           extension: Base64.encode(
             JSON.stringify({
               ...anime.my_extension,
