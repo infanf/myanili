@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.30.6',
+      fixes: ['AniList: add new entries with correct status'],
+    },
+    {
       version: '2.30.5',
       other: ['Kitsu: domain changed from .io to .app'],
     },
