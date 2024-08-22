@@ -96,7 +96,7 @@ jobs:
       - name: Deploy to Google Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: myanili-frontend-beta
+          service: myanili
           image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
