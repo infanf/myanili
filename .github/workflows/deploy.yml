@@ -10,10 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: 'actions/checkout@v3'
+      - uses: 'actions/checkout@v4'
       - name: Docker meta frontend
         id: meta-frontend
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}
@@ -24,7 +24,7 @@ jobs:
             type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/2.') }}
       - name: Docker meta backend
         id: meta-backend
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_BACKEND }}
@@ -34,22 +34,22 @@ jobs:
             type=raw,value=release,enable=${{ startsWith(github.ref, 'refs/tags/2.') }}
             type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/2.') }}
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Login to DockerHub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Deploy Backend
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: '{{defaultContext}}:backend'
           push: true
           tags: ${{ steps.meta-backend.outputs.tags }}
       - name: Deploy Frontend
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: '{{defaultContext}}:frontend'
           push: true
@@ -67,10 +67,36 @@ jobs:
           service_account: ${{ secrets.GCP_SA_NAME }}
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Deploy to Google Cloud Run
-        uses: google-github-actions/deploy-cloudrun@main
+      - name: Deploy Frontend to Google Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: myanili-frontend-beta
           image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}:beta
+          region: europe-west1
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy Backend to Google Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: myanili-backend-release
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_BACKEND }}:beta
+          region: europe-west1
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+  deploy-production:
+    if: github.ref == 'refs/tags/2.*'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          service_account: ${{ secrets.GCP_SA_NAME }}
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Deploy to Google Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: myanili-frontend-beta
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
