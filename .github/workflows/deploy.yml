@@ -84,7 +84,7 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
   deploy-production:
-    if: github.ref == 'refs/tags/2.*'
+    if: startsWith(github.ref, 'refs/tags/2.')
     needs: build
     runs-on: ubuntu-latest
     steps:
