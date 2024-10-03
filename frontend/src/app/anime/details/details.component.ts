@@ -276,6 +276,7 @@ export class AnimeDetailsComponent implements OnInit {
         },
         {
           status: anime.my_list_status.status,
+          is_rewatching: anime.my_list_status.is_rewatching,
           extension: Base64.encode(
             JSON.stringify({
               ...anime.my_extension,

@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.30.7',
+      fixes: ['AniList: correctly handle repeating after recent changes'],
+    },
+    {
       version: '2.30.6',
       fixes: ['AniList: add new entries with correct status'],
     },

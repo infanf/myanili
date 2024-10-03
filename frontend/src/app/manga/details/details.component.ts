@@ -228,6 +228,7 @@ export class MangaDetailsComponent implements OnInit {
         },
         {
           status: manga.my_list_status.status,
+          is_rereading: manga.my_list_status.is_rereading,
           extension: Base64.encode(
             JSON.stringify({
               ...manga.my_extension,
