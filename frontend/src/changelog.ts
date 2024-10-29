@@ -1,6 +1,10 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.30.8',
+      other: ['Update icons for trakt and Renta'],
+    },
+    {
       version: '2.30.7',
       fixes: ['AniList: correctly handle repeating after recent changes'],
     },
