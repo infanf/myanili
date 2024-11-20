@@ -1,41 +1,56 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.31.0',
+      date: new Date('2024-11-20'),
+      features: ['Changelog: add dates to versions'],
+      other: ['Update dependencies'],
+    },
+    {
       version: '2.30.8',
+      date: new Date('2024-10-29'),
       other: ['Update icons for trakt and Renta'],
     },
     {
       version: '2.30.7',
+      date: new Date('2024-10-03'),
       fixes: ['AniList: correctly handle repeating after recent changes'],
     },
     {
       version: '2.30.6',
+      date: new Date('2024-08-22'),
       fixes: ['AniList: add new entries with correct status'],
     },
     {
       version: '2.30.5',
+      date: new Date('2024-08-11'),
       other: ['Kitsu: domain changed from .io to .app'],
     },
     {
       version: '2.30.4',
+      date: new Date('2024-08-11'),
       fixes: ['Handle MAL backend failures'],
     },
     {
       version: '2.30.3',
+      date: new Date('2024-07-30'),
       other: ['Update dependencies', 'Update Logos for HIDIVE and Prime Video'],
     },
     {
       version: '2.30.2',
+      date: new Date('2024-07-08'),
       features: ['Manga: add platform JNC Nina', 'Anime: add platform Anime Onegai'],
       other: ['Update dependencies', 'Update Logos for Crunchyroll and BiliBili'],
     },
     {
       version: '2.30.1',
+      date: new Date('2024-07-08'),
       features: ['Bookshelf: keep todays simulpubs until 8am the next day'],
       other: ['Optimize CSS', 'Update dependencies'],
     },
     {
       version: '2.30.0',
+      date: new Date('2024-05-11'),
       features: [
         'Scores: let user select how the score should be displayed',
         'Anime: remove defunct Spotify Links',
@@ -429,6 +444,7 @@ export const changelog: Changelog = {
 export interface Changelog {
   changes: Array<{
     version: Version;
+    date?: Date;
     features?: string[];
     fixes?: string[];
     other?: string[];
