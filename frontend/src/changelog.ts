@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.31.1',
+      date: new Date('2025-01-01'),
+      other: ['Update dependencies', 'Update icons for tubi and Prime Video'],
+    },
+    {
       version: '2.31.0',
       date: new Date('2024-11-20'),
       features: ['Changelog: add dates to versions'],
