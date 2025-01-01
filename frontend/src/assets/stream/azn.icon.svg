@@ -1,14 +1,6 @@
 <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient xlink:href="#amazon__a" id="amazon__b" x1="10" y1="54" x2="54" y2="10"
-      gradientUnits="userSpaceOnUse" />
-    <linearGradient id="amazon__a">
-      <stop offset="0" stop-color="#06447b" />
-      <stop offset="1" stop-color="#1eaddd" />
-    </linearGradient>
-  </defs>
   <g paint-order="stroke fill markers">
-    <circle cx="32" cy="32" r="32" fill="url(#amazon__b)" />
+    <circle cx="32" cy="32" r="32" fill="#0779ff" />
     <path
       d="M25.908 21.049c-.748-.432-1.545.028-1.545.89v20.122c0 .824.83 1.303 1.545.89l17.211-9.937a1.167 1.167 0 000-2.028z"
       fill="#fff" />
