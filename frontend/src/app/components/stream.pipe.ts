@@ -97,6 +97,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://primevideo.com/dp/',
     },
     {
+      id: 'shahid',
+      name: 'SHAHID',
+      urlprefix: 'https://shahid.mbc.net/en/series/',
+    },
+    {
       id: 'tubi',
       name: 'Tubi',
       urlprefix: 'https://tubitv.com/series/',
