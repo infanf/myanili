@@ -3,7 +3,7 @@ export const changelog: Changelog = {
     {
       version: '2.31.2',
       date: new Date('2025-01-05'),
-      features: ['Add streaming platforms Laftel and SHAHID'],
+      features: ['Add streaming platforms Laftel and SHAHID (@nattadasu)'],
     },
     {
       version: '2.31.1',
