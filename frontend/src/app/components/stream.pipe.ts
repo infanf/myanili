@@ -76,6 +76,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www.hulu.com/series/',
     },
     {
+      id: 'laftel',
+      name: 'Laftel',
+      urlprefix: 'https://laftel.tv/series/',
+    },
+    {
       id: 'muse',
       name: 'Muse Asia',
       urlprefix: 'https://youtube.com/',
@@ -95,6 +100,11 @@ export class StreamPipe implements PipeTransform {
       id: 'azn',
       name: 'Prime Video',
       urlprefix: 'https://primevideo.com/dp/',
+    },
+    {
+      id: 'shahid',
+      name: 'SHAHID',
+      urlprefix: 'https://shahid.mbc.net/en/series/',
     },
     {
       id: 'tubi',
