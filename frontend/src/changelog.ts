@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.31.3',
+      date: new Date('2025-01-18'),
+      features: ['Add streaming platform Plex'],
+    },
+    {
       version: '2.31.2',
       date: new Date('2025-01-05'),
       features: ['Add streaming platforms Laftel and SHAHID (@nattadasu)'],
