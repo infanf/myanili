@@ -97,6 +97,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www3.nhk.or.jp/nhkworld/',
     },
     {
+      id: 'plex',
+      name: 'Plex',
+      urlprefix: 'https://watch.plex.tv/de/show/',
+    },
+    {
       id: 'azn',
       name: 'Prime Video',
       urlprefix: 'https://primevideo.com/dp/',
