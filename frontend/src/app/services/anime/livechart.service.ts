@@ -438,6 +438,38 @@ export class LivechartService {
     return data.legacyStreams.nodes;
   }
 
+  async getVideos(animeId: number): Promise<LiveChartVideo[]> {
+    const { gql } = await import('@urql/core');
+    const QUERY = gql`
+      query GetVideos($animeId: ID!) {
+        animeVideos(animeId: $animeId, category: PROMOS) {
+          nodes {
+            embedUrl
+            title
+            video {
+              tracks {
+                type
+                languageCode
+              }
+            }
+          }
+        }
+      }
+    `;
+    const { data, error } = await this.client
+      .query<{
+        animeVideos: {
+          nodes: LiveChartVideo[];
+        };
+      }>(QUERY, { animeId })
+      .toPromise();
+    if (error || !data) {
+      console.log(error);
+      return [];
+    }
+    return data.animeVideos.nodes;
+  }
+
   async login(username?: string, password?: string): Promise<string | undefined> {
     if (!username || !password) {
       if (!this.refreshToken) {
@@ -619,4 +651,15 @@ export interface LegacyStream {
 interface OnTheFlyImage {
   url: string;
   cacheNamespace: string;
+}
+
+export interface LiveChartVideo {
+  embedUrl: string;
+  title: string;
+  video: {
+    tracks: Array<{
+      type: 'SUBTITLES' | 'AUDIO' | 'VIDEO';
+      languageCode: string;
+    }>;
+  };
 }

@@ -23,6 +23,7 @@ import { Nl2brPipe } from './nl2br.pipe';
 import { PlatformPipe } from './platform.pipe';
 import { PosterRatingComponent } from './poster-rating/poster-rating.component';
 import { RatingComponent } from './rating/rating.component';
+import { SafePipe } from './safe.pipe';
 import { StreamPipe } from './stream.pipe';
 import { MySvgIconComponent } from './svg-icon/svg-icon.component';
 import { TimePipe } from './time.pipe';
@@ -57,6 +58,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     ToasterComponent,
     DateAgoPipe,
     AnnNewsComponent,
+    SafePipe,
   ],
   imports: [
     CommonModule,
@@ -89,6 +91,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     PlatformPipe,
     Nl2brPipe,
     DateAgoPipe,
+    SafePipe,
   ],
   providers: [TimePipe, StreamPipe, PlatformPipe, DayPipe, DecimalPipe],
 })

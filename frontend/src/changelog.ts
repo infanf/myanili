@@ -4,6 +4,7 @@ export const changelog: Changelog = {
       version: '2.32.0',
       date: new Date('2025-03-21'),
       fixes: ['Kitsu: fix auto logoff'],
+      features: ['Anime: add promo videos'],
     },
     {
       version: '2.31.3',

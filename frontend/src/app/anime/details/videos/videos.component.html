@@ -1,0 +1,25 @@
+<div>
+  <div *ngIf="loading" class="d-flex justify-content-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">Failed to load videos</div>
+
+  <div *ngIf="!loading && !error && videos.length === 0" class="alert alert-info" role="alert">
+    No videos available
+  </div>
+
+  <div *ngIf="!loading && videos.length > 0" class="row mt-3">
+    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let video of videos">
+      <div class="ratio ratio-16x9">
+        <iframe
+          class="w-100 border rounded"
+          [src]="video.embedUrl | safe: 'resourceUrl'"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
