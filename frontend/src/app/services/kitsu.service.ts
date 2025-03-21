@@ -50,7 +50,7 @@ export class KitsuService {
             'Could not connect to Kitsu, please check your account settings.',
             'Kitsu Connection Error',
           );
-          this.logoff();
+          // this.logoff();
         });
     }
   }
@@ -180,7 +180,7 @@ export class KitsuService {
 
     if (!username || !password) {
       if (!this.refreshToken) {
-        this.logoff();
+        // this.logoff();
         return;
       }
       details.grant_type = 'refresh_token';

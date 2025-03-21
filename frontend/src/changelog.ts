@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.32.0',
+      date: new Date('2025-03-21'),
+      fixes: ['Kitsu: fix auto logoff'],
+    },
+    {
       version: '2.31.3',
       date: new Date('2025-01-18'),
       features: ['Add streaming platform Plex'],
