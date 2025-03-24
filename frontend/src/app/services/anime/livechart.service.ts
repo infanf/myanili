@@ -431,8 +431,8 @@ export class LivechartService {
         };
       }>(QUERY, { animeId, availableInViewerRegion: false })
       .toPromise();
+    console.log({ data, error });
     if (error || !data) {
-      console.log(error);
       return [];
     }
     return data.legacyStreams.nodes;

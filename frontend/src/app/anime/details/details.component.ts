@@ -297,6 +297,7 @@ export class AnimeDetailsComponent implements OnInit {
 
   async initStreams() {
     if (!this.anime?.my_extension?.livechartId) return;
+    console.log(this.anime.my_extension.livechartId);
     this.streams = await this.livechart.getStreams(this.anime.my_extension.livechartId);
   }
 
