@@ -81,7 +81,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: myanili-frontend-beta
-          image: ${{ needs.build.outputs.frontend_digest }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}@${{ needs.build.outputs.frontend_digest }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
@@ -89,7 +89,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: myanili-backend-release
-          image: ${{ needs.build.outputs.backend_digest }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_BACKEND }}@${{ needs.build.outputs.backend_digest }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
@@ -107,6 +107,6 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: myanili
-          image: ${{ needs.build.outputs.frontend_digest }}
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}@${{ needs.build.outputs.frontend_digest }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
