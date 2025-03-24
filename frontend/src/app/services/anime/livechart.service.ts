@@ -344,40 +344,12 @@ export class LivechartService {
 
   async getStreams(animeId: number): Promise<LegacyStream[]> {
     const QUERY = gql`
-      query GetLegacyStreams(
-        $beforeCursor: String
-        $afterCursor: String
-        $first: Int
-        $last: Int
-        $availableInViewerRegion: Boolean
-        $animeId: ID!
-      ) {
-        legacyStreams(
-          before: $beforeCursor
-          after: $afterCursor
-          first: $first
-          last: $last
-          availableInViewerRegion: $availableInViewerRegion
-          animeId: $animeId
-        ) {
+      query GetLegacyStreams($availableInViewerRegion: Boolean, $animeId: ID!) {
+        legacyStreams(availableInViewerRegion: $availableInViewerRegion, animeId: $animeId) {
           nodes {
             __typename
             ...legacyStreamFragment
           }
-          pageInfo {
-            __typename
-            ...pageInfoFragment
-          }
-        }
-      }
-      fragment onTheFlyImageFields on OnTheFlyImage {
-        url
-        cacheNamespace
-        styles {
-          name
-          formats
-          width
-          height
         }
       }
       fragment legacyStreamFragment on LegacyStream {
@@ -395,34 +367,27 @@ export class LivechartService {
           databaseId
           name
           logo {
-            __typename
-            ...onTheFlyImageFields
+            url
+            cacheNamespace
+            styles {
+              name
+              formats
+              width
+              height
+            }
           }
           updatedAt
           createdAt
         }
-      }
-      fragment pageInfoFragment on PageInfo {
-        hasPreviousPage
-        hasNextPage
-        startCursor
-        endCursor
       }
     `;
     const { data, error } = await this.client
       .query<{
         legacyStreams: {
           nodes: LegacyStream[];
-          pageInfo: {
-            hasPreviousPage: boolean;
-            hasNextPage: boolean;
-            startCursor: string;
-            endCursor: string;
-          };
         };
       }>(QUERY, { animeId, availableInViewerRegion: false })
       .toPromise();
-    console.log({ data, error });
     if (error || !data) {
       return [];
     }
