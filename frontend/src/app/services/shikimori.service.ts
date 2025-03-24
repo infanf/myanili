@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WatchStatus } from '@models/anime';
 import { ReadStatus } from '@models/manga';
 import { ShikimoriRate, ShikimoriRateStatus, ShikimoriUser } from '@models/shikimori';
-import { Client } from '@urql/core';
+import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -23,8 +23,6 @@ export class ShikimoriService {
     this.accessToken = String(localStorage.getItem('shikimoriAccessToken') || '');
     this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken') || '');
 
-    const { createClient, cacheExchange, fetchExchange } =
-      require('@urql/core') as typeof import('@urql/core');
     this.client = createClient({
       url: 'https://shikimori.one/api/graphql',
       fetchOptions: () => {
@@ -96,7 +94,6 @@ export class ShikimoriService {
   }
 
   async checkLogin(refresh = true): Promise<ShikimoriUser | undefined> {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       {
         currentUser {
@@ -131,7 +128,6 @@ export class ShikimoriService {
   }
 
   async getRating(id: number, type: 'anime' | 'manga') {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query Media($id: String) {
         ${type}s(ids: $id) {

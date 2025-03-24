@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
-import { Client } from '@urql/core';
+import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -19,8 +19,6 @@ export class AnnictService {
   constructor(private dialogue: DialogueService) {
     this.accessToken = String(localStorage.getItem('annictAccessToken'));
     if (this.accessToken === 'null') this.accessToken = undefined;
-    const { createClient, cacheExchange, fetchExchange } =
-      require('@urql/core') as typeof import('@urql/core');
     this.client = createClient({
       url: this.graphqlUrl,
       fetchOptions: () => {
@@ -91,7 +89,6 @@ export class AnnictService {
   async getId(malId: number, title: string): Promise<number | undefined> {
     if (!malId || !title || !this.accessToken) return;
     title = title.replace('!', '！').replace('?', '');
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query AnimeSearch($titles: [String!]!) {
         searchWorks(titles: $titles) {
@@ -129,7 +126,6 @@ export class AnnictService {
 
   async getRating(id?: number): Promise<ExtRating | undefined> {
     if (!id || !this.accessToken) return;
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query AnimeSearch($ids: [Int!]!) {
         searchWorks(annictIds: $ids) {
@@ -175,7 +171,6 @@ export class AnnictService {
   > {
     if (!title || !this.accessToken) return;
     const titleReplaced = title.replace('!', '').replace('?', '');
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query AnimeSearch($titles: [String!]!) {
         searchWorks(titles: $titles) {
@@ -207,7 +202,7 @@ export class AnnictService {
           }>;
         };
       }>(QUERY, {
-        titles: [...new Set([title, titleReplaced, title.replace(/\s/g, '')])], // ["${titleReplaced}","${title}","${title.replace(/\s/g, '')}"]
+        titles: [...new Set([title, titleReplaced, title.replace(/\s/g, '')])],
       })
       .toPromise();
     if (error || !data) return;

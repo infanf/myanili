@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ExtRating } from '@models/components';
+import { compareTwoStrings } from 'string-similarity';
+import { xml2json } from 'xml-js';
 
 import { CacheService } from './cache.service';
 
@@ -31,7 +33,6 @@ export class AnnService {
     const entries = data.ann[type];
     if (!entries) return;
     if (entries.length === 1) return entries[0]._attributes.id;
-    const { compareTwoStrings } = await import('string-similarity');
     const entriesByTitle = entries.filter(
       e => compareTwoStrings(e._attributes.name.toLowerCase(), title.toLowerCase()) > 0.9,
     );
@@ -55,7 +56,6 @@ export class AnnService {
   }
 
   static xmlJson<T>(xml: string): T {
-    const { xml2json } = require('xml-js') as typeof import('xml-js');
     return JSON.parse(
       xml2json(xml, { alwaysArray: ['anime', 'manga'], nativeType: true, compact: true }),
     ) as T;

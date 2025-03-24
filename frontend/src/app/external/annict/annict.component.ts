@@ -6,9 +6,13 @@ import { AnnictService } from '@services/anime/annict.service';
 @Component({
   selector: 'myanili-annict',
   templateUrl: '../external.component.html',
+  standalone: false,
 })
 export class AnnictComponent extends ExternalComponent {
-  constructor(public modal: NgbActiveModal, private annict: AnnictService) {
+  constructor(
+    public modal: NgbActiveModal,
+    private annict: AnnictService,
+  ) {
     super(modal);
   }
 

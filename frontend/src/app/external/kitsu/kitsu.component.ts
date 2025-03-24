@@ -6,11 +6,15 @@ import { KitsuService } from '@services/kitsu.service';
 @Component({
   selector: 'myanili-kitsu',
   templateUrl: '../external.component.html',
+  standalone: false,
 })
 export class KitsuComponent extends ExternalComponent {
   type: 'anime' | 'manga' = 'anime';
 
-  constructor(public modal: NgbActiveModal, private kitsu: KitsuService) {
+  constructor(
+    public modal: NgbActiveModal,
+    private kitsu: KitsuService,
+  ) {
     super(modal);
   }
 

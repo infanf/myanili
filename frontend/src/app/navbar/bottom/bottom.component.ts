@@ -6,13 +6,17 @@ import { NavbarService } from '@services/navbar.service';
   selector: 'myanili-navbar-bottom',
   templateUrl: './bottom.component.html',
   styleUrls: ['./bottom.component.scss'],
+  standalone: false,
 })
 export class NavbarBottomComponent {
   module?: 'anime' | 'manga';
   lastPosition = 0;
   hide = false;
 
-  constructor(private navbarService: NavbarService, private glob: GlobalService) {
+  constructor(
+    private navbarService: NavbarService,
+    private glob: GlobalService,
+  ) {
     this.navbarService.module.subscribe(module => {
       this.module = module;
     });

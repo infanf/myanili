@@ -33,12 +33,15 @@ import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { ShikimoriService } from '@services/shikimori.service';
+import { Base64 } from 'js-base64';
+import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
 
 @Component({
   selector: 'myanili-anime-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
+  standalone: false,
 })
 export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
@@ -265,7 +268,6 @@ export class AnimeDetailsComponent implements OnInit {
     }
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
       if ('series' in anime.my_extension) delete anime.my_extension.series;
-      const { Base64 } = await import('js-base64');
       await this.animeService.updateAnime(
         {
           malId: anime.id,
@@ -358,7 +360,6 @@ export class AnimeDetailsComponent implements OnInit {
       return;
     }
     this.busy = true;
-    const { Base64 } = await import('js-base64');
     const updateData = {
       comments: this.editExtension?.comment || '',
       extension: Base64.encode(JSON.stringify(this.editExtension)),
@@ -438,7 +439,6 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     const data = { status } as Partial<MyAnimeUpdate>;
     if (status === 'watching' && !this.anime.my_list_status?.start_date) {
-      const { DateTime } = await import('luxon');
       data.start_date = DateTime.local().toISODate() || undefined;
     }
     await this.animeService.updateAnime(
@@ -490,7 +490,6 @@ export class AnimeDetailsComponent implements OnInit {
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
-      const { DateTime } = await import('luxon');
       data.finish_date =
         this.anime.my_list_status.finish_date || DateTime.local().toISODate() || undefined;
       data.is_rewatching = false;
@@ -520,7 +519,6 @@ export class AnimeDetailsComponent implements OnInit {
         this.anime.my_extension.episodeRule++;
       }
     }
-    const { Base64 } = await import('js-base64');
     data.extension = Base64.encode(JSON.stringify(this.anime.my_extension));
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
@@ -580,7 +578,6 @@ export class AnimeDetailsComponent implements OnInit {
           if (status) {
             const sequelData = { status } as Partial<MyAnimeUpdate>;
             if (status === 'watching') {
-              const { DateTime } = await import('luxon');
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
             await this.animeService.updateAnime({ malId: sequel.id }, sequelData);
@@ -610,7 +607,6 @@ export class AnimeDetailsComponent implements OnInit {
       };
     }
     this.anime.my_extension.lastWatchedAt = new Date();
-    const { Base64 } = await import('js-base64');
     const data = {
       extension: Base64.encode(JSON.stringify(this.anime.my_extension)),
     };

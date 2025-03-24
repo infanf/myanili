@@ -5,6 +5,7 @@ import { AnilistService } from '@services/anilist.service';
 @Component({
   selector: 'myanili-manga-recommendations',
   templateUrl: './recommendations.component.html',
+  standalone: false,
 })
 export class MangaRecommendationsComponent implements OnInit {
   @Input() recommendations: MangaRecommendations = [];

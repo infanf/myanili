@@ -5,6 +5,7 @@ import { Changelog } from 'src/changelog';
 @Component({
   selector: 'myanili-new-version',
   templateUrl: './new-version.component.html',
+  standalone: false,
 })
 export class NewVersionComponent {
   version = '';

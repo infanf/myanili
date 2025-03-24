@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'myanili-double-card',
   templateUrl: './double-card.component.html',
   styleUrls: ['./double-card.component.scss'],
+  standalone: false,
 })
 export class DoubleCardComponent {
   @Input() left: DoubleCardData = {};

@@ -8,6 +8,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-status',
   templateUrl: './icon-status.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class IconStatusComponent extends IconComponent implements OnInit {
   @Input() status?: WatchStatus | ReadStatus;

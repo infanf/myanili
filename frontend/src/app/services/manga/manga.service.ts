@@ -13,7 +13,10 @@ import {
   ReadStatus,
 } from '@models/manga';
 import { ShikimoriService } from '@services/shikimori.service';
+import { Base64 } from 'js-base64';
+import { DateTime } from 'luxon';
 import { environment } from 'src/environments/environment';
+import { compareTwoStrings } from 'string-similarity';
 
 import { AnilistService } from '../anilist.service';
 import { CacheService } from '../cache.service';
@@ -61,7 +64,6 @@ export class MangaService {
         const comments = manga.list_status.comments;
         if (!comments) return manga;
         try {
-          const { Base64 } = await import('js-base64');
           const json = Base64.decode(comments);
           const my_extension = JSON.parse(json || '{}') as MangaExtension;
           return { ...manga, my_extension } as ListManga;
@@ -80,7 +82,6 @@ export class MangaService {
     delete mangaToSave.related_anime_promise;
     if (extension) {
       try {
-        const { Base64 } = await import('js-base64');
         const json = Base64.decode(extension);
         const my_extension = JSON.parse(json || '{}') as MangaExtension;
         manga.my_extension = my_extension;
@@ -108,7 +109,6 @@ export class MangaService {
             ids.anilistId = await this.anilist.getId(ids.malId, 'MANGA');
           }
           if (!ids.anilistId) return;
-          const { DateTime } = require('luxon') as typeof import('luxon');
           const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
           const finishDate = data.finish_date ? DateTime.fromISO(data.finish_date) : undefined;
           return this.anilist.updateEntry(ids.anilistId, {
@@ -243,7 +243,6 @@ export class MangaService {
       return Math.abs(m.year - mangaStart) <= 1;
     });
     if (bakaMangas.length === 1) return bakaMangas[0].id;
-    const { compareTwoStrings } = await import('string-similarity');
     const bakaMangasByTitle = bakaMangas.filter(m => compareTwoStrings(m.title, manga.title) > 0.9);
     if (bakaMangasByTitle.length === 1) return bakaMangasByTitle[0].id;
     return bakaMangas.find(m => m.title.toLowerCase() === manga.title.toLowerCase())?.id;

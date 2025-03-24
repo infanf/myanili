@@ -3,6 +3,7 @@ import flag from 'country-code-emoji';
 
 @Pipe({
   name: 'flag',
+  standalone: false,
 })
 export class FlagPipe implements PipeTransform {
   transform(value?: string, hideUnknown = false): string {

@@ -6,6 +6,7 @@ import { ReadStatus } from '@models/manga';
   selector: 'myanili-media-card',
   templateUrl: './media-card.component.html',
   styleUrls: ['./media-card.component.scss'],
+  standalone: false,
 })
 export class MediaCardComponent {
   @Input() poster?: string;

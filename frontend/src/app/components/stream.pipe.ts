@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'stream',
+  standalone: false,
 })
 export class StreamPipe implements PipeTransform {
   readonly streamingProviders: StreamingProvider[] = [

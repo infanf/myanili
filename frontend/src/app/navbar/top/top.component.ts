@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SettingsComponent } from '@app/settings/settings.component';
 import { MalUser } from '@models/user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MalService } from '@services/mal.service';
@@ -8,6 +9,7 @@ import { NavbarService } from '@services/navbar.service';
   selector: 'myanili-navbar-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
+  standalone: false,
 })
 export class NavbarTopComponent {
   constructor(
@@ -30,7 +32,6 @@ export class NavbarTopComponent {
   module?: 'anime' | 'manga';
 
   async showSettings() {
-    const { SettingsComponent } = await import('../../settings/settings.component');
     this.modal.open(SettingsComponent);
   }
 }

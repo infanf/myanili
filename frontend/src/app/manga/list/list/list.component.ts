@@ -5,6 +5,7 @@ import { SettingsService } from '@services/settings.service';
 @Component({
   selector: 'myanili-manga-list',
   templateUrl: './list.component.html',
+  standalone: false,
 })
 export class MangaListListComponent {
   @Input() mangas: ListManga[] = [];

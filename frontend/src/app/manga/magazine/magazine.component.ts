@@ -8,12 +8,17 @@ import { MalService } from '@services/mal.service';
   selector: 'myanili-magazine',
   templateUrl: './magazine.component.html',
   styleUrls: ['./magazine.component.scss'],
+  standalone: false,
 })
 export class MagazineComponent {
   id = 0;
   magazine?: JikanMagazine;
 
-  constructor(private route: ActivatedRoute, private glob: GlobalService, private mal: MalService) {
+  constructor(
+    private route: ActivatedRoute,
+    private glob: GlobalService,
+    private mal: MalService,
+  ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
