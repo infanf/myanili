@@ -17,6 +17,7 @@ import { TraktService } from '@services/anime/trakt.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { SettingsService } from '@services/settings.service';
+import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 
 @Component({
@@ -156,7 +157,6 @@ export class WatchlistComponent implements OnInit {
         anime.my_extension.episodeRule++;
       }
     }
-    const { Base64 } = await import('js-base64');
     data.extension = Base64.encode(JSON.stringify(anime.my_extension));
     const fullAnime = await this.animeService.getAnime(anime.node.id);
     const [animeStatus] = await Promise.all([

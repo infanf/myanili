@@ -13,7 +13,9 @@ import {
 import { ReadStatus } from '@models/manga';
 import { DialogueService } from '@services/dialogue.service';
 import { KitsuNotificationsService } from '@services/kitsu/notifications.service';
+import CryptoJS from 'crypto-js';
 import { BehaviorSubject } from 'rxjs';
+import { compareTwoStrings } from 'string-similarity';
 
 @Injectable({
   providedIn: 'root',
@@ -90,7 +92,6 @@ export class KitsuService {
       const title = search.title;
       const results = await this.getDataFromName(search.title, type);
       if (results.length) {
-        const { compareTwoStrings } = await import('string-similarity');
         const foundResult = results.find(result => {
           const titleSimilarity = compareTwoStrings(title, result.attributes.canonicalTitle);
           if (search.year) {
@@ -151,7 +152,6 @@ export class KitsuService {
     password?: string,
     saveLogin = false,
   ): Promise<KitsuUser | undefined> {
-    const CryptoJS = await import('crypto-js');
     if (saveLogin && username && password) {
       const usernameEncrypted = CryptoJS.AES.encrypt(username, this.clientId).toString();
       const passwordEncrypted = CryptoJS.AES.encrypt(password, this.clientId).toString();

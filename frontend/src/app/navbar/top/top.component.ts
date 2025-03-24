@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SettingsComponent } from '@app/settings/settings.component';
 import { MalUser } from '@models/user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MalService } from '@services/mal.service';
@@ -31,7 +32,6 @@ export class NavbarTopComponent {
   module?: 'anime' | 'manga';
 
   async showSettings() {
-    const { SettingsComponent } = await import('../../settings/settings.component');
     this.modal.open(SettingsComponent);
   }
 }

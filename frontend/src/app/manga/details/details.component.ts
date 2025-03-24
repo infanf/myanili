@@ -19,6 +19,7 @@ import { MangadexService } from '@services/manga/mangadex.service';
 import { MangapassionService } from '@services/manga/mangapassion.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 import { ShikimoriService } from '@services/shikimori.service';
+import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 
 @Component({
@@ -221,7 +222,6 @@ export class MangaDetailsComponent implements OnInit {
     }
     await Promise.all(promises);
     if (promises.length && manga.my_extension && manga.my_list_status) {
-      const { Base64 } = await import('js-base64');
       await this.mangaService.updateManga(
         {
           malId: manga.id,
@@ -274,7 +274,6 @@ export class MangaDetailsComponent implements OnInit {
       tags: this.manga.my_list_status.tags,
     };
     try {
-      const { Base64 } = await import('js-base64');
       const extension = JSON.parse(
         Base64.decode(this.manga.my_list_status.comments),
       ) as unknown as Partial<MangaExtension>;
@@ -302,7 +301,6 @@ export class MangaDetailsComponent implements OnInit {
       return;
     }
     this.busy = true;
-    const { Base64 } = await import('js-base64');
     const updateData = {
       comments: this.editExtension?.comment || '',
       extension: Base64.encode(JSON.stringify(this.editExtension)),

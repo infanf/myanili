@@ -1,6 +1,7 @@
 import { AnilistNotification, AnilistNotificationType } from '@models/anilist';
 import { Client, gql } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { pipe, subscribe } from 'wonka';
 
 export class AnilistNotificationsService {
   private notificationsSubject = new BehaviorSubject<AnilistNotification[]>([]);
@@ -10,7 +11,6 @@ export class AnilistNotificationsService {
   }
 
   private async loadNotifications(perPage = 10, page = 1, types?: AnilistNotificationType[]) {
-    const { pipe, subscribe } = await import('wonka');
     const QUERY = AnilistNotificationsService.getNotificationQuery();
 
     pipe(

@@ -33,6 +33,7 @@ import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { ShikimoriService } from '@services/shikimori.service';
+import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
 
@@ -267,7 +268,6 @@ export class AnimeDetailsComponent implements OnInit {
     }
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
       if ('series' in anime.my_extension) delete anime.my_extension.series;
-      const { Base64 } = await import('js-base64');
       await this.animeService.updateAnime(
         {
           malId: anime.id,
@@ -359,7 +359,6 @@ export class AnimeDetailsComponent implements OnInit {
       return;
     }
     this.busy = true;
-    const { Base64 } = await import('js-base64');
     const updateData = {
       comments: this.editExtension?.comment || '',
       extension: Base64.encode(JSON.stringify(this.editExtension)),
@@ -519,7 +518,6 @@ export class AnimeDetailsComponent implements OnInit {
         this.anime.my_extension.episodeRule++;
       }
     }
-    const { Base64 } = await import('js-base64');
     data.extension = Base64.encode(JSON.stringify(this.anime.my_extension));
     const [animeStatus] = await Promise.all([
       this.animeService.updateAnime(
@@ -608,7 +606,6 @@ export class AnimeDetailsComponent implements OnInit {
       };
     }
     this.anime.my_extension.lastWatchedAt = new Date();
-    const { Base64 } = await import('js-base64');
     const data = {
       extension: Base64.encode(JSON.stringify(this.anime.my_extension)),
     };

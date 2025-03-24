@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @media (prefers-color-scheme: dark) {
   $background-color: $dark;
   $text-color: #fff;
@@ -54,7 +56,7 @@
   $border-color: #1a1e22;
   $nav-tabs-link-active-border-color: $border-color;
 
-  @each $breakpoint in map-keys($grid-breakpoints) {
+  @each $breakpoint in map.keys($grid-breakpoints) {
     @include media-breakpoint-up($breakpoint) {
       $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 

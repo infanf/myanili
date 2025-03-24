@@ -1,3 +1,4 @@
+@use "sass:map";
 /* You can add global styles to this file, and also import other style files */
 
 $primary: hsl(214, 60%, 32%);
@@ -87,7 +88,7 @@ overlay.overlay-shown {
   direction: rtl;
 }
 
-@each $breakpoint in map-keys($grid-breakpoints) {
+@each $breakpoint in map.keys($grid-breakpoints) {
   @include media-breakpoint-up($breakpoint) {
     $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 

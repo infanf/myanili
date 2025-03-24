@@ -3,6 +3,7 @@ import { MangaExtension } from '@models/manga';
 import { MalService } from '@services/mal.service';
 import { MangaService } from '@services/manga/manga.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
+import { Base64 } from 'js-base64';
 
 @Component({
   selector: 'myanili-migrate-baka',
@@ -48,7 +49,6 @@ export class MigrateBakaComponent {
       }
       let extension = {} as Partial<MangaExtension>;
       try {
-        const { Base64 } = await import('js-base64');
         extension = JSON.parse(
           Base64.decode(manga.list_status.comments) || '{}',
         ) as Partial<MangaExtension>;
@@ -69,7 +69,6 @@ export class MigrateBakaComponent {
       if (bakaId !== extension.bakaId || !extension.bakaMigrated) {
         extension.bakaId = bakaId;
         extension.bakaMigrated = true;
-        const { Base64 } = await import('js-base64');
         const comments = Base64.encode(JSON.stringify(extension));
         await this.manga.updateManga({ malId: manga.node.id }, { comments });
       }
