@@ -11,6 +11,7 @@ export class VideosComponent implements OnInit {
   videos: LiveChartVideo[] = [];
   loading = true;
   error = false;
+  activeVideoIds: Set<number> = new Set();
 
   constructor(private livechart: LivechartService) {}
 
@@ -32,5 +33,17 @@ export class VideosComponent implements OnInit {
     } finally {
       this.loading = false;
     }
+  }
+
+  toggleVideo(index: number): void {
+    if (this.activeVideoIds.has(index)) {
+      this.activeVideoIds.delete(index);
+    } else {
+      this.activeVideoIds.add(index);
+    }
+  }
+
+  isVideoActive(index: number): boolean {
+    return this.activeVideoIds.has(index);
   }
 }

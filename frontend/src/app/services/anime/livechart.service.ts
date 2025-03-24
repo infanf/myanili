@@ -406,6 +406,7 @@ export class LivechartService {
                 type
                 languageCode
               }
+              thumbnailUrl
             }
           }
         }
@@ -615,5 +616,6 @@ export interface LiveChartVideo {
       type: 'SUBTITLES' | 'AUDIO' | 'VIDEO';
       languageCode: string;
     }>;
+    thumbnailUrl: string;
   };
 }
