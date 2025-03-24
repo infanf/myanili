@@ -6,6 +6,7 @@ import { AnimeService } from '@services/anime/anime.service';
 import { GlobalService } from '@services/global.service';
 import { SettingsService } from '@services/settings.service';
 import { DateTime } from 'luxon';
+import { Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'myanili-schedule',
@@ -24,7 +25,6 @@ export class ScheduleComponent {
     private glob: GlobalService,
   ) {
     this.today = DateTime.now().weekday as Weekday;
-    const { Observable, switchMap } = require('rxjs') as typeof import('rxjs');
     this.settings.season$
       .asObservable()
       .pipe(
