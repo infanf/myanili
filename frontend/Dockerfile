@@ -5,4 +5,4 @@ WORKDIR /app
 RUN npm run build:${BUILD_ENV}
 
 FROM httpd
-COPY --from=builder /app/dist/frontend /usr/local/apache2/htdocs/
+COPY --from=builder /app/dist/frontend/browser /usr/local/apache2/htdocs/
