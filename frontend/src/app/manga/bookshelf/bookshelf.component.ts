@@ -6,16 +6,21 @@ import { GlobalService } from '@services/global.service';
 import { MangaService } from '@services/manga/manga.service';
 import { MangadexService } from '@services/manga/mangadex.service';
 import { SettingsService } from '@services/settings.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'myanili-bookshelf-wrapper',
   templateUrl: './bookshelf-wrapper.component.html',
   styles: [],
+  standalone: false,
 })
 export class BookshelfWrapperComponent implements OnInit {
   mangas: ListManga[] = [];
 
-  constructor(private mangaservice: MangaService, private glob: GlobalService) {
+  constructor(
+    private mangaservice: MangaService,
+    private glob: GlobalService,
+  ) {
     this.glob.setTitle('Bookshelf');
   }
 
@@ -53,6 +58,7 @@ function defaultSort(a: ListManga, b: ListManga) {
 @Component({
   selector: '[myanili-bookshelf]',
   templateUrl: './bookshelf.component.html',
+  standalone: false,
 })
 export class BookshelfComponent {
   @Input() mangas: ListManga[] = [];
@@ -90,7 +96,6 @@ export class BookshelfComponent {
     if (currentVolume + 1 === manga.node.num_volumes) {
       this.glob.busy();
       data.status = 'completed';
-      const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date = manga.list_status.finish_date || DateTime.local().toISODate() || undefined;
       if (manga.node.num_chapters) data.num_chapters_read = manga.node.num_chapters;
       if (!manga.list_status?.score) {
@@ -135,7 +140,6 @@ export class BookshelfComponent {
     if (currentChapter + 1 === manga.node.num_chapters) {
       this.glob.busy();
       data.status = 'completed';
-      const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date = manga.list_status.finish_date || DateTime.local().toISODate() || undefined;
       if (manga.node.num_volumes) data.num_volumes_read = manga.node.num_volumes;
       if (!manga.list_status?.score) {

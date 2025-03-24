@@ -1,14 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { GlobalService } from '@services/global.service';
+import { DateTime } from 'luxon';
 
 @Pipe({
   name: 'day',
+  standalone: false,
 })
 export class DayPipe implements PipeTransform {
   constructor(private glob: GlobalService) {}
   transform(value?: number | number[], format: 'ccc' | 'cccc' | 'ccccc' = 'ccc'): string {
     if (!value && value !== 0) return '';
-    const { DateTime } = require('luxon') as typeof import('luxon');
     if (typeof value === 'object') {
       return value
         .map(d =>

@@ -6,11 +6,15 @@ import { ScoreDisplay, SettingsService } from '@services/settings.service';
 @Component({
   selector: 'myanili-external-rating',
   templateUrl: './external-rating.component.html',
+  standalone: false,
 })
 export class ExternalRatingComponent {
   @Input() rating?: { provider: string; rating: ExtRating };
   scoreDisplay: ScoreDisplay = 'default';
-  constructor(private settings: SettingsService, private numberPipe: DecimalPipe) {
+  constructor(
+    private settings: SettingsService,
+    private numberPipe: DecimalPipe,
+  ) {
     this.settings.scoreDisplay$.asObservable().subscribe(scoreDisplay => {
       this.scoreDisplay = scoreDisplay;
     });

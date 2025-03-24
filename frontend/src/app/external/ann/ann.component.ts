@@ -7,10 +7,14 @@ import { ExternalComponent, Node } from '../external.component';
 @Component({
   selector: 'myanili-ann',
   templateUrl: '../external.component.html',
+  standalone: false,
 })
 export class AnnComponent extends ExternalComponent {
   type: 'anime' | 'manga' = 'anime';
-  constructor(public modal: NgbActiveModal, private ann: AnnService) {
+  constructor(
+    public modal: NgbActiveModal,
+    private ann: AnnService,
+  ) {
     super(modal);
   }
 

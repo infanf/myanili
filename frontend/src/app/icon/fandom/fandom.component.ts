@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-fandom',
   templateUrl: './fandom.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class FandomIconComponent extends IconComponent implements OnInit {
   name = 'fandom';

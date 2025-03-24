@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Button } from '@components/dialogue/dialogue.component';
+import { DateTimeFrom } from '@components/luxon-helper';
 import {
   Anime,
   AnimeEpisodeRule,
@@ -16,11 +17,14 @@ import { TraktService } from '@services/anime/trakt.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { SettingsService } from '@services/settings.service';
+import { Base64 } from 'js-base64';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'myanili-watchlist',
   templateUrl: './watchlist.component.html',
   styleUrls: ['./watchlist.component.scss'],
+  standalone: false,
 })
 export class WatchlistComponent implements OnInit {
   private _animes: ListAnime[] = [];
@@ -63,8 +67,6 @@ export class WatchlistComponent implements OnInit {
       const nextAirDate = airDates.airDates?.find(e => e.episode === nextEpisode)?.date;
       if (!nextAirDate) return true;
       const eightAmTomorrow = this.getLast8am().plus({ day: 1 }).toJSDate();
-      const { DateTimeFrom } =
-        require('@components/luxon-helper') as typeof import('@components/luxon-helper');
       const lastWatched = DateTimeFrom(a.my_extension?.lastWatchedAt || 'yesterday');
       return nextAirDate < eightAmTomorrow || lastWatched > this.getLast8am();
     });
@@ -86,7 +88,6 @@ export class WatchlistComponent implements OnInit {
       const zone = anime.my_extension.simulcast.tz || 'UTC';
       const time = anime.my_extension.simulcast.time || '00:00';
       const [hour, minute] = time.split(':').map(Number);
-      const { DateTime } = require('luxon') as typeof import('luxon');
       const localTime = DateTime.fromObject({ hour, minute }, { zone }).setZone('local');
       return localTime.hour * 100 + localTime.minute;
     }
@@ -101,8 +102,6 @@ export class WatchlistComponent implements OnInit {
 
   isSeen(anime: ListAnime): boolean {
     if (anime.busy) return false;
-    const { DateTimeFrom } =
-      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
     if (anime.list_status.num_episodes_watched === 0) return false;
     const updateDate = DateTimeFrom(
       anime.my_extension?.lastWatchedAt || anime.list_status.updated_at,
@@ -111,7 +110,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   getLast8am() {
-    return require('@services/global.service').getLastXoClock() as import('luxon').DateTime;
+    return require('@services/global.service').getLastXoClock() as DateTime;
   }
 
   async markSeen(anime: ListAnime) {
@@ -128,7 +127,6 @@ export class WatchlistComponent implements OnInit {
     } as Partial<MyAnimeUpdate>;
     if (anime.my_extension) anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
-    const { DateTime } = await import('luxon');
     if (currentEpisode + 1 === anime.node.num_episodes) {
       data.status = 'completed';
       data.finish_date = anime.list_status.finish_date || DateTime.local().toISODate() || undefined;
@@ -159,7 +157,6 @@ export class WatchlistComponent implements OnInit {
         anime.my_extension.episodeRule++;
       }
     }
-    const { Base64 } = await import('js-base64');
     data.extension = Base64.encode(JSON.stringify(anime.my_extension));
     const fullAnime = await this.animeService.getAnime(anime.node.id);
     const [animeStatus] = await Promise.all([
@@ -252,8 +249,6 @@ export class WatchlistComponent implements OnInit {
   }
 
   isInSeason(anime: ListAnime): boolean {
-    const { DateTimeFrom } =
-      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
     if (anime.node.start_date) {
       if (DateTimeFrom(anime.node.start_date).minus({ days: 6 }) < DateTimeFrom()) {
         if (
@@ -285,8 +280,6 @@ export class WatchlistComponent implements OnInit {
   }
 
   filterAnime(anime: ListAnime): boolean {
-    const { DateTimeFrom } =
-      require('@components/luxon-helper') as typeof import('@components/luxon-helper');
     const lastWatched = DateTimeFrom(anime.my_extension?.lastWatchedAt || 'yesterday');
     if (['completed', 'dropped'].includes(anime.list_status.status || '')) {
       if (!anime.list_status.is_rewatching) return lastWatched > this.getLast8am();

@@ -8,6 +8,7 @@ import { SettingsService } from '@services/settings.service';
 @Component({
   selector: 'myanili-list',
   templateUrl: './list.component.html',
+  standalone: false,
 })
 export class AnimeListComponent {
   @Input() status?: WatchStatus;

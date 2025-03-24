@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AnilistNotification, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
-import { Client } from '@urql/core';
+import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -28,8 +28,7 @@ export class AnilistService {
     this.clientId = String(localStorage.getItem('anilistClientId'));
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
-    const { createClient, cacheExchange, fetchExchange } =
-      require('@urql/core') as typeof import('@urql/core');
+
     this.client = createClient({
       url: 'https://graphql.anilist.co',
       fetchOptions: () => {
@@ -84,7 +83,6 @@ export class AnilistService {
   }
 
   async checkLogin(): Promise<AnilistUser | undefined> {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       {
         Viewer {

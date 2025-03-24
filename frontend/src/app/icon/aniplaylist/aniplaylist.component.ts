@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-aniplaylist',
   templateUrl: './aniplaylist.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class AniplaylistIconComponent extends IconComponent {
   name = 'aniplaylist';

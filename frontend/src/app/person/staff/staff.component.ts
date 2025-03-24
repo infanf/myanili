@@ -5,6 +5,7 @@ import { MalService } from '@services/mal.service';
 @Component({
   selector: 'myanili-person-staff',
   templateUrl: './staff.component.html',
+  standalone: false,
 })
 export class PersonStaffComponent implements OnInit {
   @Input() malId!: number;

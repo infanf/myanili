@@ -1,5 +1,6 @@
 import { ApplicationRef, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { DateTimeFrom } from '@components/luxon-helper';
 import { WeekdayNumbers } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
 
@@ -20,7 +21,10 @@ export class GlobalService {
   scrollTimeout = false;
   private hideNavbarSubject = new BehaviorSubject<boolean>(false);
 
-  constructor(private titleService: Title, private ref: ApplicationRef) {
+  constructor(
+    private titleService: Title,
+    private ref: ApplicationRef,
+  ) {
     if (window.matchMedia) {
       const darkModeOn = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (darkModeOn) {
@@ -108,8 +112,6 @@ export class GlobalService {
 }
 
 export function getLastXoClock(hour = 8) {
-  const { DateTimeFrom } =
-    require('@components/luxon-helper') as typeof import('@components/luxon-helper');
   const now = DateTimeFrom();
   const eightAm = DateTimeFrom().set({
     hour,

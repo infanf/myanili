@@ -7,6 +7,7 @@ import { AnimeService } from '@services/anime/anime.service';
   selector: 'myanili-anime-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss'],
+  standalone: false,
 })
 export class AnimeCharactersComponent implements OnInit {
   @Input() id!: number;

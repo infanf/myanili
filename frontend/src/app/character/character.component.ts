@@ -8,13 +8,18 @@ import { MalService } from '@services/mal.service';
   selector: 'myanili-character',
   templateUrl: './character.component.html',
   styleUrls: ['./character.component.scss'],
+  standalone: false,
 })
 export class CharacterComponent {
   id = 0;
   character?: Jikan4Character;
   activeTab = 1;
 
-  constructor(private route: ActivatedRoute, private glob: GlobalService, private mal: MalService) {
+  constructor(
+    private route: ActivatedRoute,
+    private glob: GlobalService,
+    private mal: MalService,
+  ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {

@@ -5,6 +5,7 @@ import { AnimeService } from '@services/anime/anime.service';
 @Component({
   selector: 'myanili-anime-related',
   templateUrl: './anime.component.html',
+  standalone: false,
 })
 export class AnimeRelatedComponent {
   @Input() related_anime: RelatedAnime[] = [];

@@ -5,6 +5,7 @@ import { GlobalService } from '@services/global.service';
   selector: 'myanili-changelog',
   templateUrl: './changelog.component.html',
   styleUrls: ['./changelog.component.scss'],
+  standalone: false,
 })
 export class ChangelogComponent {
   showall = false;
