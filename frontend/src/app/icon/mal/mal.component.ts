@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-mal',
   templateUrl: './mal.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class MalIconComponent extends IconComponent {
   name = 'mal';

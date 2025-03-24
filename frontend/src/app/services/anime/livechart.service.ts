@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
-import { Client } from '@urql/core';
+import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -17,8 +17,6 @@ export class LivechartService {
   loggedIn = false;
 
   constructor(private dialogue: DialogueService) {
-    const { createClient, cacheExchange, fetchExchange } =
-      require('@urql/core') as typeof import('@urql/core');
     this.client = createClient({
       url: 'https://www.livechart.me/graphql',
       fetchOptions: () => {
@@ -57,7 +55,6 @@ export class LivechartService {
 
   async getId(malId: number, title: string): Promise<number | undefined> {
     if (!malId || !title) return undefined;
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query AnimeSearch($term: String) {
         anime(term: $term) {
@@ -91,7 +88,6 @@ export class LivechartService {
 
   private async getExternalUrls(id: number): Promise<{ [key: string]: string | undefined }> {
     if (!id) return {};
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query GetFullSingleAnime($id: ID!) {
         singleAnime(id: $id) {
@@ -155,7 +151,6 @@ export class LivechartService {
   }
 
   async getAnimes(term: string) {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query AnimeSearch($term: String) {
         anime(term: $term) {
@@ -223,7 +218,6 @@ export class LivechartService {
 
   async getRating(id?: number): Promise<ExtRating | undefined> {
     if (!id) return undefined;
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query GetFullSingleAnime($id: ID!) {
         singleAnime(id: $id) {
@@ -263,7 +257,6 @@ export class LivechartService {
       rewatches: updateData.num_times_rewatched,
       notes: updateData.comments?.substring(0, 500),
     } as Partial<Attributes>;
-    const { gql } = await import('@urql/core');
     const MUTATION = gql`
       mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
         upsertLibraryEntry(animeId: $animeId, attributes: $attributes, ratingScale: RATING_10) {
@@ -309,7 +302,6 @@ export class LivechartService {
     const attributes = {
       status: 'SKIPPING',
     } as Partial<Attributes>;
-    const { gql } = await import('@urql/core');
     const MUTATION = gql`
       mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
         upsertLibraryEntry(animeId: $animeId, attributes: $attributes, ratingScale: RATING_10) {
@@ -351,7 +343,6 @@ export class LivechartService {
   }
 
   async getStreams(animeId: number): Promise<LegacyStream[]> {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query GetLegacyStreams(
         $beforeCursor: String
@@ -439,7 +430,6 @@ export class LivechartService {
   }
 
   async getVideos(animeId: number): Promise<LiveChartVideo[]> {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query GetVideos($animeId: ID!) {
         animeVideos(animeId: $animeId, category: PROMOS) {
@@ -523,7 +513,6 @@ export class LivechartService {
       this.logoff();
       return;
     }
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query Viewer {
         viewer {

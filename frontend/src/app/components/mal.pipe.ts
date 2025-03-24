@@ -4,6 +4,7 @@ import { ReadStatus } from '@models/manga';
 
 @Pipe({
   name: 'mal',
+  standalone: false,
 })
 export class MalPipe implements PipeTransform {
   transform(

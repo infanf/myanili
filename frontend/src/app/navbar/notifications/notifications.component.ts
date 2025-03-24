@@ -18,6 +18,7 @@ import { KitsuService } from '@services/kitsu.service';
       }
     `,
   ],
+  standalone: false,
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
   refresher = 0;

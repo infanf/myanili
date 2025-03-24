@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-simkl',
   templateUrl: './simkl.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class SimklIconComponent extends IconComponent {
   name = 'simkl';

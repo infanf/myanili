@@ -8,6 +8,7 @@ import { NavbarService } from '@services/navbar.service';
   selector: 'myanili-navbar-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
+  standalone: false,
 })
 export class NavbarTopComponent {
   constructor(

@@ -21,6 +21,7 @@ import { ShikimoriService } from '@services/shikimori.service';
 @Component({
   selector: 'myanili-settings',
   templateUrl: './settings.component.html',
+  standalone: false,
 })
 export class SettingsComponent implements OnInit {
   private _lang: Language = 'default';

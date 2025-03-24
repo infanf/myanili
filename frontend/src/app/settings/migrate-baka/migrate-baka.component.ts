@@ -7,6 +7,7 @@ import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 @Component({
   selector: 'myanili-migrate-baka',
   templateUrl: './migrate-baka.component.html',
+  standalone: false,
 })
 export class MigrateBakaComponent {
   icon = 'repeat';

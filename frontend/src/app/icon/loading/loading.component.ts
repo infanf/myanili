@@ -5,5 +5,6 @@ import { IconComponent } from '@icon/icon.component';
   selector: 'myanili-icon-loading, [myanili-icon-loading]',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.scss'],
+  standalone: false,
 })
 export class LoadingIconComponent extends IconComponent {}

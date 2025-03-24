@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-trakt',
   templateUrl: './trakt.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class TraktIconComponent extends IconComponent {
   name = 'trakt';

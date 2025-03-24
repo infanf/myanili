@@ -7,6 +7,7 @@ import { SettingsService } from '@services/settings.service';
   selector: 'myanili-widget-season',
   templateUrl: './widget-season.component.html',
   styleUrls: ['./widget-season.component.scss'],
+  standalone: false,
 })
 export class WidgetSeasonComponent implements OnInit {
   season: Season;
@@ -15,7 +16,10 @@ export class WidgetSeasonComponent implements OnInit {
   lastPosition = 0;
   hide = false;
 
-  constructor(private settings: SettingsService, private glob: GlobalService) {
+  constructor(
+    private settings: SettingsService,
+    private glob: GlobalService,
+  ) {
     this.currentSeason = {
       year: new Date().getFullYear(),
       season: Math.floor(new Date().getMonth() / 3) as unknown as 0 | 1 | 2 | 3,

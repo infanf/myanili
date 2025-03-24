@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-annict',
   templateUrl: './annict.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class AnnictIconComponent extends IconComponent {
   name = 'annict';

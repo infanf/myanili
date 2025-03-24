@@ -1,5 +1,5 @@
 import { AnilistNotification, AnilistNotificationType } from '@models/anilist';
-import { Client } from '@urql/core';
+import { Client, gql } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export class AnilistNotificationsService {
@@ -34,7 +34,6 @@ export class AnilistNotificationsService {
   }
 
   async markAsRead(): Promise<boolean> {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       {
         Page(page: 1, perPage: 1) {
@@ -82,7 +81,6 @@ export class AnilistNotificationsService {
   }
 
   private static getNotificationQuery() {
-    const { gql } = require('@urql/core') as typeof import('@urql/core');
     return gql`
       query ($page: Int, $perPage: Int, $types: [NotificationType]) {
         Viewer {

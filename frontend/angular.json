@@ -38,12 +38,12 @@
       "prefix": "myanili",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "commonChunk": true,
-            "outputPath": "dist/frontend",
+            "outputPath": {
+              "base": "dist/frontend"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -81,7 +81,8 @@
               "@services/anime/livechart.service",
               "@services/shikimori.service",
               "timestamp-enum"
-            ]
+            ],
+            "browser": "src/main.ts"
           },
           "configurations": {
             "deployment": {
@@ -90,8 +91,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -104,8 +103,7 @@
                   "maximumError": "4kb"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "serviceWorker": "ngsw-config.json"
             },
             "production": {
               "fileReplacements": [

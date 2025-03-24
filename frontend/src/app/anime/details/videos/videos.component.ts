@@ -4,6 +4,7 @@ import { LivechartService, LiveChartVideo } from '@services/anime/livechart.serv
 @Component({
   selector: 'myanili-videos',
   templateUrl: './videos.component.html',
+  standalone: false,
 })
 export class VideosComponent implements OnInit {
   @Input() id!: number;

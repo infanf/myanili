@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'platform',
+  standalone: false,
 })
 export class PlatformPipe implements PipeTransform {
   readonly platforms: PlatformingProvider[] = [

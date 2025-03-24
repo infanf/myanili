@@ -7,6 +7,7 @@ import { SettingsService } from '@services/settings.service';
 @Component({
   selector: 'myanili-season',
   templateUrl: './season.component.html',
+  standalone: false,
 })
 export class SeasonComponent {
   animes: Array<Partial<Anime>> = [];

@@ -6,6 +6,7 @@ import { AnimeService } from '@services/anime/anime.service';
   selector: 'myanili-anime-staff',
   templateUrl: './staff.component.html',
   styleUrls: ['./staff.component.scss'],
+  standalone: false,
 })
 export class StaffComponent implements OnInit {
   @Input() id!: number;

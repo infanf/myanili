@@ -6,9 +6,13 @@ import { LivechartService } from '@services/anime/livechart.service';
 @Component({
   selector: 'myanili-livechart',
   templateUrl: '../external.component.html',
+  standalone: false,
 })
 export class LivechartComponent extends ExternalComponent {
-  constructor(public modal: NgbActiveModal, private livechart: LivechartService) {
+  constructor(
+    public modal: NgbActiveModal,
+    private livechart: LivechartService,
+  ) {
     super(modal);
   }
 

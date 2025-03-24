@@ -12,6 +12,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'myanili-dialogue',
   templateUrl: './dialogue.component.html',
+  standalone: false,
 })
 export class DialogueComponent implements OnInit, AfterViewInit {
   @Input() title?: string;

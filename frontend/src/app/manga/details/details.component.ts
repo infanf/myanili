@@ -19,11 +19,13 @@ import { MangadexService } from '@services/manga/mangadex.service';
 import { MangapassionService } from '@services/manga/mangapassion.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 import { ShikimoriService } from '@services/shikimori.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'myanili-manga-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
+  standalone: false,
 })
 export class MangaDetailsComponent implements OnInit {
   @Input() id = 0;
@@ -361,7 +363,6 @@ export class MangaDetailsComponent implements OnInit {
     this.busy = true;
     const data = { status } as Partial<MyMangaUpdate>;
     if (status === 'reading' && !this.manga.my_list_status?.start_date) {
-      const { DateTime } = require('luxon') as typeof import('luxon');
       data.start_date = DateTime.local().toISODate() || undefined;
     }
     await this.mangaService.updateManga(
@@ -412,7 +413,6 @@ export class MangaDetailsComponent implements OnInit {
       this.glob.notbusy();
       return;
     }
-    const { DateTime } = require('luxon') as typeof import('luxon');
     await this.mangaService.updateManga(
       {
         malId: this.manga.id,
@@ -471,7 +471,6 @@ export class MangaDetailsComponent implements OnInit {
       data.num_chapters_read === this.manga.num_chapters
     ) {
       data.status = 'completed';
-      const { DateTime } = require('luxon') as typeof import('luxon');
       data.finish_date =
         this.manga.my_list_status.finish_date || DateTime.local().toISODate() || undefined;
       data.is_rereading = false;
@@ -731,7 +730,6 @@ export class MangaDetailsComponent implements OnInit {
     if (!simulpub) return '';
     return simulpub
       .map(day => {
-        const { DateTime } = require('luxon') as typeof import('luxon');
         const date = DateTime.local().set({ weekday: this.glob.toWeekday(day) });
         return date.weekdayLong;
       })

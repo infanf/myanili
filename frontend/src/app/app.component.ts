@@ -8,6 +8,7 @@ import { MalService } from '@services/mal.service';
   selector: 'myanili-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
 export class AppComponent {
   today = new Date();

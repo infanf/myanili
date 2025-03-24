@@ -6,6 +6,7 @@ import { MalService } from '@services/mal.service';
   selector: 'myanili-person-anime',
   styleUrls: ['./anime.component.scss'],
   templateUrl: './anime.component.html',
+  standalone: false,
 })
 export class PersonAnimeComponent implements OnInit {
   @Input() malId!: number;

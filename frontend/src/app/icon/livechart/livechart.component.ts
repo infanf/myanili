@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-livechart',
   templateUrl: './livechart.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class LivechartIconComponent extends IconComponent {
   name = 'annict';
