@@ -43,12 +43,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Deploy Backend
+        id: deploy-backend
         uses: docker/build-push-action@v6
         with:
           context: '{{defaultContext}}:backend'
           push: true
           tags: ${{ steps.meta-backend.outputs.tags }}
       - name: Deploy Frontend
+        id: deploy-frontend
         uses: docker/build-push-action@v6
         with:
           context: '{{defaultContext}}:frontend'
@@ -56,6 +58,14 @@ jobs:
           tags: ${{ steps.meta-frontend.outputs.tags }}
           build-args: |
             BUILD_ENV=${{ fromJSON(steps.meta-frontend.outputs.json).labels['org.opencontainers.image.version'] == 'beta' && 'beta' || 'production' }}
+      - name: Set output
+        id: set-output
+        run: |
+          echo "frontend_digest=${{ steps.deploy-frontend.outputs.digest }}" >> $GITHUB_OUTPUT
+          echo "backend_digest=${{ steps.deploy-backend.outputs.digest }}" >> $GITHUB_OUTPUT
+    outputs:
+      frontend_digest: ${{ steps.set-output.outputs.frontend_digest }}
+      backend_digest: ${{ steps.set-output.outputs.backend_digest }}
 
   deploy-beta:
     if: github.ref == 'refs/heads/beta'
@@ -71,7 +81,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: myanili-frontend-beta
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}:beta
+          image: ${{ needs.build.outputs.frontend_digest }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
@@ -79,7 +89,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: myanili-backend-release
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_BACKEND }}:beta
+          image: ${{ needs.build.outputs.backend_digest }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
@@ -97,6 +107,6 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: myanili
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}
+          image: ${{ needs.build.outputs.frontend_digest }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
