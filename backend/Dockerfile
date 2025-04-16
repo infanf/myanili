@@ -1,4 +1,4 @@
-FROM webdevops/php-apache:8.3-alpine
+FROM webdevops/php-apache:8.4
 ADD . /app
 WORKDIR /app
 VOLUME [ "/app/users.csv" ]

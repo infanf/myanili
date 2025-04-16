@@ -5,6 +5,7 @@ import { SettingsService } from '@services/settings.service';
 @Component({
   selector: 'myanili-manga-grid',
   templateUrl: './grid.component.html',
+  standalone: false,
 })
 export class MangaListGridComponent {
   @Input() mangas: ListManga[] = [];

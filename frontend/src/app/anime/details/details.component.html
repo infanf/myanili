@@ -111,8 +111,8 @@
         </div>
       </myanili-value-pair>
       <myanili-value-pair *ngIf="anime" name="Type">
-        <myanili-icon name="{{ anime.media_type | mal : 'mediaicon' }}" class="me-1"></myanili-icon>
-        {{ anime!.media_type | mal : 'mediatype' }}
+        <myanili-icon name="{{ anime.media_type | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
+        {{ anime!.media_type | mal: 'mediatype' }}
       </myanili-value-pair>
       <myanili-value-pair *ngIf="anime && anime.start_date" name="Aired">
         <span class="text-nowrap">{{
@@ -124,10 +124,10 @@
         }}</span>
       </myanili-value-pair>
       <myanili-value-pair *ngIf="anime" name="Source">
-        {{ anime!.source | mal : 'mediatype' }}
+        {{ anime!.source | mal: 'mediatype' }}
       </myanili-value-pair>
       <myanili-value-pair *ngIf="anime?.rating" name="Rating">
-        {{ anime!.rating | mal : 'rating' }}
+        {{ anime!.rating | mal: 'rating' }}
       </myanili-value-pair>
       <div class="row" *ngIf="anime?.my_list_status" [class]="{ 'my-2': edit }">
         <div class="col-4 fw-bold text-end">My&nbsp;List</div>
@@ -137,7 +137,7 @@
             {{
               anime!.my_list_status!.is_rewatching
                 ? 'Rewatching'
-                : (anime!.my_list_status!.status | mal : 'mystatus')
+                : (anime!.my_list_status!.status | mal: 'mystatus')
             }}
             <myanili-icon
               *ngIf="
@@ -176,7 +176,7 @@
                 "
                 [value]="status"
               >
-                {{ status | mal : 'mystatus' }}
+                {{ status | mal: 'mystatus' }}
               </option>
             </select>
           </ng-template>
@@ -243,7 +243,7 @@
         {{ getDay(anime.my_extension.simulcast) }}
         <span *ngIf="anime.my_extension.simulcast.time">
           <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
-          {{ anime.my_extension.simulcast.time | time : anime.my_extension.simulcast.tz }}</span
+          {{ anime.my_extension.simulcast.time | time: anime.my_extension.simulcast.tz }}</span
         >
         <myanili-icon
           *ngIf="
@@ -320,7 +320,7 @@
         <div class="col-8">
           <a
             *ngIf="anime.my_extension.externalStreamingId"
-            href="{{ anime.my_extension.externalStreaming | stream : 'urlprefix' }}{{
+            href="{{ anime.my_extension.externalStreaming | stream: 'urlprefix' }}{{
               anime.my_extension.externalStreamingId
             }}"
             target="_blank"
@@ -512,7 +512,7 @@
           ></myanili-icon>
           {{ anime.num_episodes || '?' }}
           <span *ngIf="anime?.average_episode_duration">
-            &times; {{ (anime!.average_episode_duration || 0) / 60 | number : '1.0-0' }} min
+            &times; {{ (anime!.average_episode_duration || 0) / 60 | number: '1.0-0' }} min
           </span>
         </div>
       </div>
@@ -529,14 +529,14 @@
                   'bg-success':
                     anime!.my_list_status?.num_episodes_watched == anime!.num_episodes &&
                     anime!.num_episodes,
-                  'bg-gradient': !anime!.num_episodes
+                  'bg-gradient': !anime!.num_episodes,
                 }"
                 [ngStyle]="{
                   'min-width.%':
                     anime!.num_episodes || anime!.my_list_status?.num_episodes_watched == 0
                       ? ((anime!.my_list_status?.num_episodes_watched || 0) / anime!.num_episodes) *
                         100
-                      : 30
+                      : 30,
                 }"
               >
                 {{ anime!.my_list_status?.num_episodes_watched }}/{{ anime!.num_episodes || '?' }}
@@ -916,6 +916,12 @@
         </a>
         <ng-template ngbNavContent>
           <myanili-anime-streams [streams]="streams"></myanili-anime-streams>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="9" *ngIf="anime?.my_extension?.livechartId">
+        <a ngbNavLink>Videos</a>
+        <ng-template ngbNavContent>
+          <myanili-videos [id]="anime.my_extension!.livechartId!"></myanili-videos>
         </ng-template>
       </li>
       <li [ngbNavItem]="7" *ngIf="anime?.my_extension?.annId">

@@ -5,6 +5,7 @@ import { ReadStatus } from '@models/manga';
 @Component({
   selector: 'myanili-status-badge',
   templateUrl: './status-badge.component.html',
+  standalone: false,
 })
 export class StatusBadgeComponent {
   @Input() status?: ReadStatus | WatchStatus;

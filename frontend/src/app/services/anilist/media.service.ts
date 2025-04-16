@@ -1,5 +1,5 @@
 import { ExtRating } from '@models/components';
-import { Client } from '@urql/core';
+import { Client, gql } from '@urql/core';
 
 export class AnilistMediaService {
   loggedIn = false;
@@ -7,7 +7,6 @@ export class AnilistMediaService {
   constructor(private client: Client) {}
 
   async getId(idMal: number, type: 'ANIME' | 'MANGA'): Promise<number | undefined> {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query Media($idMal: Int, $type: MediaType) {
         Media(idMal: $idMal, type: $type) {
@@ -26,7 +25,6 @@ export class AnilistMediaService {
   }
 
   async getMalId(id: number, type: 'ANIME' | 'MANGA'): Promise<number | undefined> {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query Media($id: Int, $type: MediaType) {
         Media(id: $id, type: $type) {
@@ -47,7 +45,6 @@ export class AnilistMediaService {
 
   async getRating(id?: number, type: 'ANIME' | 'MANGA' = 'ANIME'): Promise<ExtRating | undefined> {
     if (!id) return;
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query Media($id: Int, $type: MediaType) {
         Media(id: $id, type: $type) {
@@ -80,7 +77,6 @@ export class AnilistMediaService {
   }
 
   async getLang(id: number): Promise<string | undefined> {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query Media($id: Int) {
         Media(id: $id) {
@@ -121,7 +117,6 @@ export class AnilistMediaService {
   async getAirDates(id: number | number[]) {
     if (!id) return [];
     if (typeof id === 'number') id = [id];
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query media($idMal: [Int]) {
         Page {
@@ -162,7 +157,7 @@ export class AnilistMediaService {
               date: new Date(b.airingAt * 1000),
               episode: b.episode,
             })),
-          } as AirDate),
+          }) as AirDate,
       );
     return airDates;
   }

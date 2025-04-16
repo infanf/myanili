@@ -8,11 +8,15 @@ import { ExternalComponent } from '../external.component';
 @Component({
   selector: 'myanili-trakt',
   templateUrl: '../external.component.html',
+  standalone: false,
 })
 export class TraktComponent extends ExternalComponent {
   @Input() isMovie = false;
 
-  constructor(public modal: NgbActiveModal, private trakt: TraktService) {
+  constructor(
+    public modal: NgbActiveModal,
+    private trakt: TraktService,
+  ) {
     super(modal);
   }
 

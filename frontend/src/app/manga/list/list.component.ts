@@ -8,6 +8,7 @@ import { SettingsService } from '@services/settings.service';
 @Component({
   selector: 'myanili-list',
   templateUrl: './list.component.html',
+  standalone: false,
 })
 export class MangaListComponent implements OnInit {
   @Input() status?: ReadStatus;

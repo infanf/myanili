@@ -1,14 +1,16 @@
 import { AnilistSaveMedialistEntry, AnilistUser, statusToMal, User } from '@models/anilist';
 import { WatchStatus } from '@models/anime';
 import { ReadStatus } from '@models/manga';
-import { Client } from '@urql/core';
+import { Client, gql } from '@urql/core';
 import { Observable } from 'rxjs';
 
 export class AnilistLibraryService {
-  constructor(private client: Client, private user: Observable<User | undefined>) {}
+  constructor(
+    private client: Client,
+    private user: Observable<User | undefined>,
+  ) {}
 
   async updateEntry(id: number, data: Partial<AnilistSaveMedialistEntry>) {
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       mutation (
         $id: Int
@@ -110,7 +112,6 @@ export class AnilistLibraryService {
     if (!user) {
       return undefined;
     }
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query MediaList($id: Int, $userId: Int) {
         MediaList(mediaId: $id, userId: $userId) {
@@ -136,7 +137,6 @@ export class AnilistLibraryService {
     if (!id) {
       return { deleted: false };
     }
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       mutation ($id: Int) {
         DeleteMediaListEntry(id: $id) {
@@ -159,7 +159,6 @@ export class AnilistLibraryService {
     if (!user) {
       return undefined;
     }
-    const { gql } = await import('@urql/core');
     const QUERY = gql`
       query Media($idsMal: [Int]) {
         Page {

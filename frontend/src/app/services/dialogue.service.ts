@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Button, InputType } from '../components/dialogue/dialogue.component';
+import { Button, DialogueComponent, InputType } from '../components/dialogue/dialogue.component';
+import { RatingDialogueComponent } from '../components/dialogue/rating/rating.component';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,6 @@ export class DialogueService {
   }
 
   async confirm(message: string, title?: string): Promise<boolean> {
-    const { DialogueComponent } = await import('../components/dialogue/dialogue.component');
     const modal = this.modalService.open(DialogueComponent);
     modal.componentInstance.title = title;
     modal.componentInstance.message = message;
@@ -28,7 +28,6 @@ export class DialogueService {
     type: InputType = 'text',
     placeholder?: string,
   ): Promise<string> {
-    const { DialogueComponent } = await import('../components/dialogue/dialogue.component');
     const modal = this.modalService.open(DialogueComponent);
     modal.componentInstance.title = title;
     modal.componentInstance.message = message;
@@ -46,7 +45,6 @@ export class DialogueService {
     buttons?: Array<Button<T>>,
     fallback?: T,
   ): Promise<T> {
-    const { DialogueComponent } = await import('../components/dialogue/dialogue.component');
     const modal = this.modalService.open(DialogueComponent);
     modal.componentInstance.title = title;
     modal.componentInstance.message = message;
@@ -55,9 +53,6 @@ export class DialogueService {
   }
 
   async rating(title: string): Promise<number> {
-    const { RatingDialogueComponent } = await import(
-      '../components/dialogue/rating/rating.component'
-    );
     const modal = this.modalService.open(RatingDialogueComponent);
     modal.componentInstance.title = title;
     return modal.result.catch(() => 0);

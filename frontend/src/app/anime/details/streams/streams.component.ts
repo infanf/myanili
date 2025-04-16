@@ -12,6 +12,7 @@ import { LegacyStream } from '@services/anime/livechart.service';
       }
     `,
   ],
+  standalone: false,
 })
 export class StreamsComponent implements OnInit {
   @Input() streams: LegacyStream[] = [];

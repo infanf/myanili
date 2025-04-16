@@ -1,8 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
 
 @Pipe({
   name: 'time',
+  standalone: false,
 })
 export class TimePipe implements PipeTransform {
   transform(value?: string, tz: Timezone = Timezone.UTC): string {
@@ -12,7 +14,6 @@ export class TimePipe implements PipeTransform {
       hour: Number(value.replace(/:.+/, '')),
       minute: Number(value.replace(/.+:/, '')),
     };
-    const { DateTime } = require('luxon') as typeof import('luxon');
     return DateTime.local().setZone(tz).set({ hour, minute }).toLocal().toFormat('HH:mm');
   }
 }

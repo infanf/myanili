@@ -6,6 +6,7 @@ import { SeasonComponent } from '../season.component';
 @Component({
   selector: 'myanili-anime-season-list',
   templateUrl: './list.component.html',
+  standalone: false,
 })
 export class SeasonListComponent extends SeasonComponent {
   @Input() animes: Array<Partial<Anime>> = [];

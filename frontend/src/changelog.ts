@@ -1,6 +1,13 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.32.0',
+      date: new Date('2025-04-16'),
+      fixes: ['Kitsu: fix auto logoff'],
+      features: ['Anime: add promo videos'],
+      other: ['Update Angular to 19'],
+    },
+    {
       version: '2.31.3',
       date: new Date('2025-01-18'),
       features: ['Add streaming platform Plex'],
@@ -88,7 +95,7 @@ export const changelog: Changelog = {
         'Livechart: sync not correctly working',
         'Comments: cryptic comments coming when using Watchlist',
       ],
-      other: ['update angular to 17'],
+      other: ['Update Angular to 17'],
     },
     {
       version: '2.29.3',

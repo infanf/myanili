@@ -7,11 +7,15 @@ import { ExternalComponent } from '../external.component';
 @Component({
   selector: 'myanili-anisearch',
   templateUrl: '../external.component.html',
+  standalone: false,
 })
 export class AnisearchComponent extends ExternalComponent {
   @Input() type: 'anime' | 'manga' = 'anime';
 
-  constructor(public modal: NgbActiveModal, private anisearch: AnisearchService) {
+  constructor(
+    public modal: NgbActiveModal,
+    private anisearch: AnisearchService,
+  ) {
     super(modal);
   }
 

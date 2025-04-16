@@ -4,6 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
   selector: 'myanili-streaming',
   templateUrl: './streaming.component.html',
   styleUrls: ['./streaming.component.scss'],
+  standalone: false,
 })
 export class StreamingComponent implements OnInit {
   @Input() provider?: string;

@@ -8,6 +8,7 @@ import { MalService } from '@services/mal.service';
   selector: 'myanili-producer',
   templateUrl: './producer.component.html',
   styleUrls: ['./producer.component.scss'],
+  standalone: false,
 })
 export class ProducerComponent {
   id = 0;
@@ -15,7 +16,11 @@ export class ProducerComponent {
   animes: Jikan4Anime[] = [];
   title = 'Loading...';
 
-  constructor(private route: ActivatedRoute, private glob: GlobalService, private mal: MalService) {
+  constructor(
+    private route: ActivatedRoute,
+    private glob: GlobalService,
+    private mal: MalService,
+  ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {

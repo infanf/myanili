@@ -4,6 +4,7 @@ import { AnnNews, AnnService } from '@services/ann.service';
 @Component({
   selector: 'myanili-ann-news',
   templateUrl: './ann-news.component.html',
+  standalone: false,
 })
 export class AnnNewsComponent implements OnInit {
   @Input() annId!: number;

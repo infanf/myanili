@@ -6,6 +6,7 @@ import { MangaService } from '@services/manga/manga.service';
   selector: 'myanili-manga-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss'],
+  standalone: false,
 })
 export class MangaCharactersComponent implements OnInit {
   @Input() id!: number;

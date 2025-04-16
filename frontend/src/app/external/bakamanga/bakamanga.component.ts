@@ -6,9 +6,13 @@ import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 @Component({
   selector: 'myanili-bakamanga',
   templateUrl: '../external.component.html',
+  standalone: false,
 })
 export class BakamangaComponent extends ExternalComponent {
-  constructor(public modal: NgbActiveModal, private baka: MangaupdatesService) {
+  constructor(
+    public modal: NgbActiveModal,
+    private baka: MangaupdatesService,
+  ) {
     super(modal);
   }
 

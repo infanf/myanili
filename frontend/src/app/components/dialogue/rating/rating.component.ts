@@ -5,6 +5,7 @@ import { DialogueComponent } from '../dialogue.component';
 @Component({
   selector: 'myanili-dialogue-rating',
   templateUrl: './rating.component.html',
+  standalone: false,
 })
 export class RatingDialogueComponent extends DialogueComponent {
   rating = 0;

@@ -3,10 +3,12 @@ import { Anime } from '@models/anime';
 import { AnimeService } from '@services/anime/anime.service';
 import { GlobalService } from '@services/global.service';
 import { SettingsService } from '@services/settings.service';
+import { Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'myanili-season',
   templateUrl: './season.component.html',
+  standalone: false,
 })
 export class SeasonComponent {
   animes: Array<Partial<Anime>> = [];
@@ -20,7 +22,6 @@ export class SeasonComponent {
     public settings: SettingsService,
     private glob: GlobalService,
   ) {
-    const { Observable, switchMap } = require('rxjs') as typeof import('rxjs');
     this.settings.season$
       .asObservable()
       .pipe(

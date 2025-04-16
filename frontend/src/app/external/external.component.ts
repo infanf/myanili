@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'myanili-external',
   templateUrl: './external.component.html',
+  standalone: false,
 })
 export class ExternalComponent implements OnInit {
   @Input() title?: string;

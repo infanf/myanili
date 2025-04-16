@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-anidb',
   templateUrl: './anidb.component.html',
   styleUrls: ['../icon.component.scss'],
+  standalone: false,
 })
 export class AnidbComponent extends IconComponent {
   name = 'anidb';

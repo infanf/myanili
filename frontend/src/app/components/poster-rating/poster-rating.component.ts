@@ -5,6 +5,7 @@ import { SettingsService } from '@services/settings.service';
   selector: 'myanili-poster-rating',
   templateUrl: './poster-rating.component.html',
   styleUrls: ['./poster-rating.component.scss'],
+  standalone: false,
 })
 export class PosterRatingComponent {
   @Input() poster?: string;

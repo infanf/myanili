@@ -5,6 +5,7 @@ import { IconComponent } from '@icon/icon.component';
   selector: 'myanili-icon-progress',
   templateUrl: './progress.component.html',
   styleUrls: ['./progress.component.scss'],
+  standalone: false,
 })
 export class ProgressIconComponent extends IconComponent {
   @Input() percent = 0;
