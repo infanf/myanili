@@ -5,6 +5,7 @@ import { ComponentsModule } from '@components/components.module';
 import { IconModule } from '@icon/icon.module';
 
 import { AnilistLoginComponent } from './anilist-login/anilist-login.component';
+import { AnisearchLoginComponent } from './anisearch-login/anisearch-login.component';
 import { AnnictLoginComponent } from './annict-login/annict-login.component';
 import { BakaLoginComponent } from './baka-login/baka-login.component';
 import { KitsuLoginComponent } from './kitsu-login/kitsu-login.component';
@@ -21,6 +22,7 @@ import { TraktLoginComponent } from './trakt-login/trakt-login.component';
     LoginsComponent,
     MalLoginComponent,
     AnilistLoginComponent,
+    AnisearchLoginComponent,
     KitsuLoginComponent,
     ShikimoriLoginComponent,
     TraktLoginComponent,

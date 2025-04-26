@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-5">AniSearch</div>
+  <div class="col-7">
+    <ng-container *ngIf="anisearchLoggedIn; else anisearchConnectTemplate">
+      <myanili-icon-anisearch class="me-1"></myanili-icon-anisearch>
+      <a href="https://anisearch.com/member/{{ anisearchLoggedIn.id }}" target="_blank">{{
+        anisearchLoggedIn.username
+      }}</a>
+      <myanili-icon
+        class="cursor-pointer"
+        name="x"
+        size="20"
+        (click)="anisearchLogoff()"
+      ></myanili-icon>
+    </ng-container>
+    <ng-template #anisearchConnectTemplate>
+      <button class="btn btn-sm btn-primary" (click)="anisearchConnect()">
+        <myanili-icon-anisearch></myanili-icon-anisearch> Connect
+      </button>
+    </ng-template>
+  </div>
+</div>

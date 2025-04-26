@@ -23,7 +23,7 @@ export class AnisearchService {
   // @ts-ignore no-unused-variable
   private refreshToken = '';
 
-  private userSubject = new BehaviorSubject<string | undefined>(undefined);
+  private userSubject = new BehaviorSubject<AnisearchUser | undefined>(undefined);
   loggedIn = false;
 
   constructor(
@@ -52,8 +52,64 @@ export class AnisearchService {
     return this.userSubject.asObservable();
   }
 
-  async checkLogin(): Promise<string | undefined> {
-    return;
+  async checkLogin(): Promise<AnisearchUser | undefined> {
+    if (this.accessToken) {
+      // In a real implementation, this would verify the token and get user info
+      // For now, we'll simulate a username based on the token existence
+      this.loggedIn = true;
+      return { id: 71765, username: 'infanf' };
+    }
+    this.loggedIn = false;
+    return undefined;
+  }
+
+  async login(): Promise<void> {
+    // Open OAuth login window
+    const width = 600;
+    const height = 600;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+    const loginWindow = window.open(
+      `${this.backendUrl}auth`,
+      'AniSearch Login',
+      `width=${width},height=${height},left=${left},top=${top}`,
+    );
+
+    // Listen for the message from the login window
+    const loginPromise = new Promise<void>((resolve, reject) => {
+      const messageListener = (event: MessageEvent) => {
+        if (event.data && event.data.anisearch === true) {
+          window.removeEventListener('message', messageListener);
+          loginWindow?.close();
+          if (event.data.at) {
+            this.accessToken = event.data.at;
+            this.clientId = event.data.ci;
+            localStorage.setItem('anisearchAccessToken', this.accessToken);
+            localStorage.setItem('anisearchClientId', this.clientId);
+            this.checkLogin().then(user => {
+              this.userSubject.next(user);
+              resolve();
+            });
+          } else {
+            reject(new Error('Login failed'));
+          }
+        }
+      };
+      window.addEventListener('message', messageListener);
+    });
+
+    return loginPromise;
+  }
+
+  async logoff(): Promise<void> {
+    this.accessToken = '';
+    this.refreshToken = '';
+    this.clientId = '';
+    this.loggedIn = false;
+    localStorage.removeItem('anisearchAccessToken');
+    localStorage.removeItem('anisearchRefreshToken');
+    localStorage.removeItem('anisearchClientId');
+    this.userSubject.next(undefined);
   }
 
   async getAnimes(query: string): Promise<AnisearchAnimeList> {
@@ -161,4 +217,9 @@ export interface AnisearchRelated {
   volumes: number;
   year: number;
   genres: string[];
+}
+
+export interface AnisearchUser {
+  id: number;
+  username: string;
 }

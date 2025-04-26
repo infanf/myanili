@@ -29,7 +29,7 @@ class AnisearchServiceProvider extends ServiceProvider
         $config = [
             'clientId' => env('ANISEARCH_CLIENT_ID'),
             'clientSecret' => env('ANISEARCH_CLIENT_SECRET'),
-            'redirectUri' => env('APP_URL') . '/anisearchauth',
+            'redirectUri' => env('APP_URL') . '/anisearch/auth',
             'urlAuthorize' => 'https://www.anisearch.com/oauth/authorize',
             'urlAccessToken' => 'https://www.anisearch.com/oauth/token',
             'urlResourceOwnerDetails' => 'https://www.anisearch.com/',
