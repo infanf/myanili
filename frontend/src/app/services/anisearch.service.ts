@@ -1,17 +1,60 @@
 import { Injectable } from '@angular/core';
 import { AnisearchAnimeList, AnisearchMangaList } from '@models/anisearch';
 import { ExtRating } from '@models/components';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { CacheService } from './cache.service';
+import { DialogueService } from './dialogue.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnisearchService {
   private backendUrl = `${environment.backend}anisearch/`;
+  // @ts-ignore no-unused-variable
+  private baseUrl = 'https://api.anisearch.com/';
+  // @ts-ignore no-unused-variable
+  private tokenUrl = 'https://www.anisearch.com/oauth/token';
+  // @ts-ignore no-unused-variable
+  private clientId = '';
+  // @ts-ignore no-unused-variable
+  private accessToken = '';
+  // @ts-ignore no-unused-variable
+  private refreshToken = '';
 
-  constructor(private cache: CacheService) {}
+  private userSubject = new BehaviorSubject<string | undefined>(undefined);
+  loggedIn = false;
+
+  constructor(
+    private cache: CacheService,
+    private dialogue: DialogueService,
+  ) {
+    this.clientId = String(localStorage.getItem('anisearchClientId'));
+    this.accessToken = String(localStorage.getItem('anisearchAccessToken'));
+    this.refreshToken = String(localStorage.getItem('anisearchRefreshToken'));
+    if (this.accessToken) {
+      this.checkLogin()
+        .then(user => {
+          this.userSubject.next(user);
+        })
+        .catch(e => {
+          this.dialogue.alert(
+            'Could not connect to AniSearch, please check your account settings.',
+            'AniSearch Connection Error',
+          );
+          localStorage.removeItem('anisearchAccessToken');
+        });
+    }
+  }
+
+  get user() {
+    return this.userSubject.asObservable();
+  }
+
+  async checkLogin(): Promise<string | undefined> {
+    return;
+  }
 
   async getAnimes(query: string): Promise<AnisearchAnimeList> {
     if (query) {

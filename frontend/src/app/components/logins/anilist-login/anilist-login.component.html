@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-5">AniList</div>
+  <div class="col-7">
+    <ng-container *ngIf="anilistLoggedIn; else anilistConnectTemplate">
+      <myanili-icon-anilist class="me-1"></myanili-icon-anilist>
+      <a href="https://anilist.co/user/{{ anilistLoggedIn.name }}" target="_blank">{{
+        anilistLoggedIn.name
+      }}</a>
+      <myanili-icon
+        class="cursor-pointer"
+        name="x"
+        size="20"
+        (click)="anilistLogoff()"
+      ></myanili-icon>
+    </ng-container>
+    <ng-template #anilistConnectTemplate>
+      <button class="btn btn-sm btn-primary" (click)="anilistConnect()">
+        <myanili-icon-anilist></myanili-icon-anilist>
+        Connect
+      </button>
+    </ng-template>
+  </div>
+</div>

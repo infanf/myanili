@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-5">Shikimori</div>
+  <div class="col-7">
+    <ng-container *ngIf="shikimoriLoggedIn; else shikimoriConnectTemplate">
+      <myanili-icon-shikimori class="me-1"></myanili-icon-shikimori>
+      <a href="https://shikimori.one/{{ shikimoriLoggedIn.nickname }}" target="_blank">{{
+        shikimoriLoggedIn.nickname
+      }}</a>
+      <myanili-icon
+        class="cursor-pointer"
+        name="x"
+        size="20"
+        (click)="shikimoriLogoff()"
+      ></myanili-icon>
+    </ng-container>
+    <ng-template #shikimoriConnectTemplate>
+      <button class="btn btn-sm btn-primary" (click)="shikimoriConnect()">
+        <myanili-icon-shikimori></myanili-icon-shikimori>
+        Connect
+      </button>
+    </ng-template>
+  </div>
+</div>

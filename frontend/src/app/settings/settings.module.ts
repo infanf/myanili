@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DirectivesModule } from '@app/directives/directives.module';
 import { ComponentsModule } from '@components/components.module';
+import { LoginsModule } from '@components/logins/logins.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,6 +28,7 @@ import { SettingsComponent } from './settings.component';
     NgbModalModule,
     DirectivesModule,
     ComponentsModule,
+    LoginsModule,
   ],
   exports: [
     AboutComponent,

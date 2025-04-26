@@ -19,6 +19,24 @@ class AnisearchServiceProvider extends ServiceProvider
 
     static $baseUrl = "https://www.anisearch.com/";
 
+    public static function getOauthProvider()
+    {
+        return new \League\OAuth2\Client\Provider\GenericProvider(self::getConfig());
+    }
+
+    public static function getConfig()
+    {
+        $config = [
+            'clientId' => env('ANISEARCH_CLIENT_ID'),
+            'clientSecret' => env('ANISEARCH_CLIENT_SECRET'),
+            'redirectUri' => env('APP_URL') . '/anisearchauth',
+            'urlAuthorize' => 'https://www.anisearch.com/oauth/authorize',
+            'urlAccessToken' => 'https://www.anisearch.com/oauth/token',
+            'urlResourceOwnerDetails' => 'https://www.anisearch.com/',
+        ];
+        return $config;
+    }
+
     public static function searchAnime(string $title, int $page = 1)
     {
         $url = static::$baseUrl . "anime/index/page-{$page}?char=all&text={$title}&smode=2&sort=title&order=asc&view=1&title=en,fr,de,it,pl,ru,es,tr&titlex=1,2";
