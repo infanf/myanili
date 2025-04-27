@@ -30,9 +30,9 @@ export class AnisearchService {
     private cache: CacheService,
     private dialogue: DialogueService,
   ) {
-    this.clientId = String(localStorage.getItem('anisearchClientId'));
-    this.accessToken = String(localStorage.getItem('anisearchAccessToken'));
-    this.refreshToken = String(localStorage.getItem('anisearchRefreshToken'));
+    this.clientId = String(localStorage.getItem('anisearchClientId') || '');
+    this.accessToken = String(localStorage.getItem('anisearchAccessToken') || '');
+    this.refreshToken = String(localStorage.getItem('anisearchRefreshToken') || '');
     if (this.accessToken) {
       this.checkLogin()
         .then(user => {
@@ -40,8 +40,8 @@ export class AnisearchService {
         })
         .catch(e => {
           this.dialogue.alert(
-            'Could not connect to AniSearch, please check your account settings.',
-            'AniSearch Connection Error',
+            'Could not connect to aniSearch, please check your account settings.',
+            'aniSearch Connection Error',
           );
           localStorage.removeItem('anisearchAccessToken');
         });
@@ -53,27 +53,25 @@ export class AnisearchService {
   }
 
   async checkLogin(): Promise<AnisearchUser | undefined> {
-    if (this.accessToken) {
-      // In a real implementation, this would verify the token and get user info
-      // For now, we'll simulate a username based on the token existence
+    if (!this.accessToken || !this.clientId) return;
+    const result = await fetch(`${this.baseUrl}v1/user/profile`, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (result.ok) {
+      const { id, name: username } = (await result.json()) as { id: number; name: string };
       this.loggedIn = true;
-      return { id: 71765, username: 'infanf' };
+      return { id, username };
     }
     this.loggedIn = false;
-    return undefined;
+    return;
   }
 
   async login(): Promise<void> {
+    if (await this.refreshTokens()) return;
     // Open OAuth login window
-    const width = 600;
-    const height = 600;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
-    const loginWindow = window.open(
-      `${this.backendUrl}auth`,
-      'AniSearch Login',
-      `width=${width},height=${height},left=${left},top=${top}`,
-    );
+    const loginWindow = window.open(`${this.backendUrl}auth`, 'aniSearch Login');
 
     // Listen for the message from the login window
     const loginPromise = new Promise<void>((resolve, reject) => {
@@ -83,8 +81,10 @@ export class AnisearchService {
           loginWindow?.close();
           if (event.data.at) {
             this.accessToken = event.data.at;
-            this.clientId = event.data.ci;
+            this.refreshToken = event.data.rt;
+            this.clientId = event.data.ci || '';
             localStorage.setItem('anisearchAccessToken', this.accessToken);
+            localStorage.setItem('anisearchRefreshToken', this.refreshToken);
             localStorage.setItem('anisearchClientId', this.clientId);
             this.checkLogin().then(user => {
               this.userSubject.next(user);
@@ -99,6 +99,32 @@ export class AnisearchService {
     });
 
     return loginPromise;
+  }
+
+  private async refreshTokens() {
+    if (!this.refreshToken || !this.clientId) return false;
+    const url = new URL(this.tokenUrl);
+    const formData = new FormData();
+    formData.append('grant_type', 'refresh_token');
+    formData.append('refresh_token', this.refreshToken);
+    formData.append('client_id', this.clientId);
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData,
+    });
+    if (!response.ok) {
+      return false;
+    }
+    const data = (await response.json()) as { access_token: string; refresh_token: string };
+    this.accessToken = data.access_token;
+    localStorage.setItem('anisearchAccessToken', this.accessToken);
+    this.refreshToken = data.refresh_token;
+    localStorage.setItem('anisearchRefreshToken', this.refreshToken);
+    return true;
   }
 
   async logoff(): Promise<void> {

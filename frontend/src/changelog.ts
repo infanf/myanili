@@ -156,7 +156,7 @@ export const changelog: Changelog = {
         'Anime details: add expiration date to streaming tab (if available)',
         'Share links and text to MyAniLi (may need to reinstall the app)',
       ],
-      fixes: ['Mangadex: request error', 'AniSearch: live action links'],
+      fixes: ['Mangadex: request error', 'aniSearch: live action links'],
     },
     {
       version: '2.27.1',
