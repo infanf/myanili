@@ -109,6 +109,11 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://video.unext.jp/book/title/',
     },
     {
+      id: 'cmic',
+      name: 'Coolmic',
+      urlprefix: 'https://www.coolmic.me/titles/',
+    },
+    {
       id: '',
       name: 'Other',
     },
