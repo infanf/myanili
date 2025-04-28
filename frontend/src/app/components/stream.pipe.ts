@@ -132,6 +132,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://tubitv.com/series/',
     },
     {
+      id: 'tver',
+      name: 'TVer',
+      urlprefix: 'https://tver.jp/series/',
+    },
+    {
       id: 'wak',
       name: 'Wakanim',
       urlprefix: 'https://www.wakanim.tv/sc/v2/catalogue/show/',
