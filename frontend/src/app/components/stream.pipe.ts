@@ -137,6 +137,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://tver.jp/series/',
     },
     {
+      id: 'unext',
+      name: 'U-NEXT',
+      urlprefix: 'https://video.unext.jp/',
+    },
+    {
       id: 'wak',
       name: 'Wakanim',
       urlprefix: 'https://www.wakanim.tv/sc/v2/catalogue/show/',
