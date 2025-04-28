@@ -104,6 +104,11 @@ export class PlatformPipe implements PipeTransform {
       urlprefix: 'https://comikey.com/comics/title/',
     },
     {
+      id: 'unx',
+      name: 'U-NEXT',
+      urlprefix: 'https://video.unext.jp/book/title/',
+    },
+    {
       id: '',
       name: 'Other',
     },
