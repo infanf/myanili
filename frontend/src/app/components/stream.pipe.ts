@@ -107,6 +107,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www3.nhk.or.jp/nhkworld/',
     },
     {
+      id: 'ov',
+      name: 'OceanVeil',
+      urlprefix: 'https://oceanveil.net/anime_titles/',
+    },
+    {
       id: 'plex',
       name: 'Plex',
       urlprefix: 'https://watch.plex.tv/de/show/',
