@@ -55,6 +55,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www.bilibili.tv/play/',
     },
     {
+      id: 'coolmic',
+      name: 'Coolmic',
+      urlprefix: 'https://coolmic.me/anime/video_titles/',
+    },
+    {
       id: 'cr',
       name: 'Crunchyroll',
       urlprefix: 'https://crunchyroll.com/',
