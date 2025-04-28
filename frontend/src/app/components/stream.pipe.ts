@@ -6,6 +6,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StreamPipe implements PipeTransform {
   readonly streamingProviders: StreamingProvider[] = [
     {
+      id: 'abema',
+      name: 'ABEMA',
+      urlprefix: 'https://abema.tv/video/title/',
+    },
+    {
       id: 'akibapass',
       name: 'AKIBA PASS TV',
       urlprefix: 'https://akibapass.tv/products/',
