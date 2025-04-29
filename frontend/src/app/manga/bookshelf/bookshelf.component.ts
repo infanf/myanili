@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Weekday } from '@models/components';
-import { ListManga, MyMangaUpdate } from '@models/manga';
+import { ListManga, MyMangaUpdate, ReadStatus } from '@models/manga';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MangaService } from '@services/manga/manga.service';
@@ -78,7 +78,8 @@ export class BookshelfComponent {
     const currentChapter = manga.list_status?.num_chapters_read || 0;
     const data = {
       num_volumes_read: currentVolume + 1,
-    } as Partial<MyMangaUpdate>;
+      status: manga.list_status.status,
+    } as Partial<MyMangaUpdate> & { status: ReadStatus };
     const mdId = manga.my_extension?.mdId;
     data.num_volumes_read = currentVolume + 1;
     if (mdId) {
@@ -108,6 +109,7 @@ export class BookshelfComponent {
         malId: manga.node.id,
         anilistId: manga.my_extension?.anilistId,
         kitsuId: manga.my_extension?.kitsuId,
+        anisearchId: manga.my_extension?.anisearchId,
         bakaId: manga.my_extension?.bakaId,
       },
       data,
@@ -128,7 +130,8 @@ export class BookshelfComponent {
     const currentVolume = manga.list_status?.num_volumes_read || 0;
     const data = {
       num_chapters_read: currentChapter + 1,
-    } as Partial<MyMangaUpdate>;
+      status: manga.list_status.status,
+    } as Partial<MyMangaUpdate> & { status: ReadStatus };
     const mdId = manga.my_extension?.mdId;
     data.num_chapters_read = currentChapter + 1;
     if (mdId) {
@@ -152,6 +155,7 @@ export class BookshelfComponent {
         malId: manga.node.id,
         anilistId: manga.my_extension?.anilistId,
         kitsuId: manga.my_extension?.kitsuId,
+        anisearchId: manga.my_extension?.anisearchId,
         bakaId: manga.my_extension?.bakaId,
       },
       data,

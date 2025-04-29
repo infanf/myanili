@@ -237,7 +237,13 @@ export class AnimeService {
           reconsumeCount: data.num_times_rewatched,
         });
       })(),
-      this.anisearch.updateEntry(ids.anisearchId, data, 'anime'),
+      (async () => {
+        if (!ids.anisearchId) {
+          ids.anisearchId = await this.anisearch.getId(ids.malId, 'anime');
+        }
+        if (!ids.anisearchId) return;
+        return this.anisearch.updateEntry(ids.anisearchId, data, 'anime');
+      })(),
       this.shikimori.updateMedia({
         target_id: ids.malId,
         target_type: 'Anime',
