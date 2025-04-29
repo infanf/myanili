@@ -124,7 +124,8 @@ export class WatchlistComponent implements OnInit {
     const currentEpisode = anime.list_status.num_episodes_watched;
     const data = {
       num_watched_episodes: currentEpisode + 1,
-    } as Partial<MyAnimeUpdate>;
+      status: anime.list_status.status,
+    } as Partial<MyAnimeUpdate> & { status: WatchStatus };
     if (anime.my_extension) anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
     if (currentEpisode + 1 === anime.node.num_episodes) {
@@ -165,6 +166,7 @@ export class WatchlistComponent implements OnInit {
           malId: anime.node.id,
           anilistId: anime.my_extension?.anilistId,
           kitsuId: anime.my_extension?.kitsuId,
+          anisearchId: anime.my_extension?.anisearchId,
           simklId: anime.my_extension?.simklId,
           annictId: anime.my_extension?.annictId,
           trakt: {
@@ -214,7 +216,7 @@ export class WatchlistComponent implements OnInit {
             false,
           );
           if (status) {
-            const sequelData = { status } as Partial<MyAnimeUpdate>;
+            const sequelData = { status } as Partial<MyAnimeUpdate> & { status: WatchStatus };
             if (status === 'watching') {
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }

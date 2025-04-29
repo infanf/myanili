@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { AnisearchAnimeList, AnisearchMangaList } from '@models/anisearch';
 import { ExtRating } from '@models/components';
+import { MyMangaUpdate, ReadStatus } from '@models/manga';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -12,15 +14,9 @@ import { DialogueService } from './dialogue.service';
 })
 export class AnisearchService {
   private backendUrl = `${environment.backend}anisearch/`;
-  // @ts-ignore no-unused-variable
   private baseUrl = 'https://api.anisearch.com/';
-  // @ts-ignore no-unused-variable
-  private tokenUrl = 'https://www.anisearch.com/oauth/token';
-  // @ts-ignore no-unused-variable
   private clientId = '';
-  // @ts-ignore no-unused-variable
   private accessToken = '';
-  // @ts-ignore no-unused-variable
   private refreshToken = '';
 
   private userSubject = new BehaviorSubject<AnisearchUser | undefined>(undefined);
@@ -140,6 +136,38 @@ export class AnisearchService {
     this.userSubject.next(undefined);
   }
 
+  async deleteEntry(id?: number, type: 'anime' | 'manga' = 'anime'): Promise<void> {
+    if (!id) return;
+    await this.refreshTokens();
+    const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+    });
+    if (!response.ok) {
+      console.error('Failed to delete entry');
+    }
+  }
+
+  async updateEntry(
+    id?: number,
+    data?: Partial<MyAnimeUpdate | MyMangaUpdate> & { status: WatchStatus | ReadStatus },
+    type: 'anime' | 'manga' = 'anime',
+  ): Promise<void> {
+    if (!id || !data) return;
+    await this.refreshTokens();
+    const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
+    const anisearchData = convertToAnisearchRating(data);
+    const response = await fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(anisearchData),
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${this.accessToken}` },
+    });
+    if (!response.ok) {
+      console.error('Failed to update entry');
+    }
+  }
+
   async getAnimes(query: string): Promise<AnisearchAnimeList> {
     if (query) {
       const url = `${this.backendUrl}anime/search/${encodeURI(
@@ -250,4 +278,79 @@ export interface AnisearchRelated {
 export interface AnisearchUser {
   id: number;
   username: string;
+}
+
+function convertToAnisearchRating(data: Partial<MyAnimeUpdate | MyMangaUpdate>): AnisearchUpdate {
+  return {
+    status: mapStatus(data.status) || 'not_interested',
+    personal_rating: data.score || 0,
+    episodes_watched: Number('num_watched_episodes' in data ? data.num_watched_episodes : 0),
+    chapters_read: Number('num_read_chapters' in data ? data.num_read_chapters : 0),
+    volumes_read: Number('num_read_volumes' in data ? data.num_read_volumes : 0),
+    start_date: data.start_date || '',
+    end_date: data.finish_date || '',
+    is_rewatching: 'is_rewatching' in data ? data.is_rewatching : false,
+    is_rereading: 'is_rereading' in data ? data.is_rereading : false,
+    times_rewatched: Number('times_rewatched' in data ? data.times_rewatched : 0),
+    times_reread: Number('times_reread' in data ? data.times_reread : 0),
+    rewatch_desire: Number('rewatch_desire' in data ? data.rewatch_desire : 0),
+    reread_desire: Number('reread_desire' in data ? data.reread_desire : 0),
+    notes: data.comments || '',
+    priority: data.priority || 0,
+    touch: true,
+  };
+}
+
+function mapStatus(status?: WatchStatus | ReadStatus): AnisearchStatus | undefined {
+  if (!status) return undefined;
+  switch (status) {
+    case 'watching':
+    case 'reading':
+      return 'ongoing';
+    case 'plan_to_read':
+    case 'plan_to_watch':
+      return 'bookmark';
+    case 'completed':
+      return 'completed';
+    case 'on_hold':
+      return 'on_hold';
+    case 'dropped':
+      return 'dropped';
+    default:
+      return 'not_interested';
+  }
+}
+
+type AnisearchStatus =
+  | 'ongoing'
+  | 'completed'
+  | 'on_hold'
+  | 'dropped'
+  | 'not_interested'
+  | 'bookmark';
+
+type AnisearchUpdate = Partial<AnisearchRating> & {
+  status: AnisearchStatus;
+};
+
+interface AnisearchRating {
+  status: AnisearchStatus;
+  is_visible: boolean;
+  public_rating: number;
+  public_fraction: number;
+  personal_rating: number;
+  episodes_watched: number;
+  chapters_read: number;
+  volumes_read: number;
+  start_date: string;
+  end_date: string;
+  is_rewatching: boolean;
+  is_rereading: boolean;
+  times_rewatched: number;
+  times_reread: number;
+  rewatch_desire: number;
+  reread_desire: number;
+  notes: string;
+  priority: number;
+  touch: boolean;
 }

@@ -63,7 +63,7 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
                 $clientId = env('ANISEARCH_CLIENT_ID');
                 foreach (explode(',', env('APP_CLIENT')) as $opener) {
                     $javascript .= <<<JAVASCRIPT
-                        window.opener.postMessage({at:"{$accessToken->getToken()}",ci:"{$clientId}",anisearch:true}, "$opener");
+                        window.opener.postMessage({at:"{$accessToken->getToken()}",rt:"{$accessToken->getRefreshToken()}",ci:"{$clientId}",anisearch:true}, "$opener");
     JAVASCRIPT;
                 }
                 return "<script>$javascript</script>";

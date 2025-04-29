@@ -272,6 +272,7 @@ export class AnimeDetailsComponent implements OnInit {
         {
           malId: anime.id,
           kitsuId: this.anime.my_extension.kitsuId,
+          anisearchId: this.anime.my_extension.anisearchId,
           anilistId: this.anime.my_extension.anilistId,
           simklId: this.anime.my_extension.simklId,
           annictId: this.anime.my_extension.annictId,
@@ -362,10 +363,11 @@ export class AnimeDetailsComponent implements OnInit {
     this.busy = true;
     const updateData = {
       comments: this.editExtension?.comment || '',
+      status: this.editBackup?.status || this.anime.my_list_status.status,
       extension: Base64.encode(JSON.stringify(this.editExtension)),
-    } as Partial<MyAnimeUpdate>;
-    if (this.editBackup.status !== this.anime.my_list_status.status) {
-      updateData.status = this.editBackup?.status;
+    } as Partial<MyAnimeUpdate> & { status: WatchStatus };
+    if (this.editBackup.status && this.editBackup.status !== this.anime.my_list_status.status) {
+      updateData.status = this.editBackup.status;
     }
     if (this.editBackup.is_rewatching !== this.anime.my_list_status.is_rewatching) {
       updateData.is_rewatching = this.editBackup?.is_rewatching;
@@ -396,6 +398,7 @@ export class AnimeDetailsComponent implements OnInit {
         malId: this.anime.id,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
+        anisearchId: this.anime.my_extension?.anisearchId,
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         trakt: {
@@ -437,7 +440,7 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
-    const data = { status } as Partial<MyAnimeUpdate>;
+    const data = { status } as Partial<MyAnimeUpdate> & { status: WatchStatus };
     if (status === 'watching' && !this.anime.my_list_status?.start_date) {
       data.start_date = DateTime.local().toISODate() || undefined;
     }
@@ -446,6 +449,7 @@ export class AnimeDetailsComponent implements OnInit {
         malId: this.anime.id,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
+        anisearchId: this.anime.my_extension?.anisearchId,
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
@@ -465,6 +469,7 @@ export class AnimeDetailsComponent implements OnInit {
         malId: this.anime.id,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
+        anisearchId: this.anime.my_extension?.anisearchId,
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
@@ -485,7 +490,8 @@ export class AnimeDetailsComponent implements OnInit {
     const currentEpisode = this.anime.my_list_status?.num_episodes_watched || 0;
     const data = {
       num_watched_episodes: currentEpisode + 1,
-    } as Partial<MyAnimeUpdate>;
+      status: this.anime.my_list_status.status,
+    } as Partial<MyAnimeUpdate> & { status: WatchStatus };
     if (this.anime.my_extension) this.anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
@@ -526,6 +532,7 @@ export class AnimeDetailsComponent implements OnInit {
           malId: this.anime.id,
           anilistId: this.anime.my_extension?.anilistId,
           kitsuId: this.anime.my_extension?.kitsuId,
+          anisearchId: this.anime.my_extension?.anisearchId,
           simklId: this.anime.my_extension?.simklId,
           annictId: this.anime.my_extension?.annictId,
           livechartId: this.anime.my_extension?.livechartId,
@@ -576,7 +583,7 @@ export class AnimeDetailsComponent implements OnInit {
             false,
           );
           if (status) {
-            const sequelData = { status } as Partial<MyAnimeUpdate>;
+            const sequelData = { status } as Partial<MyAnimeUpdate> & { status: WatchStatus };
             if (status === 'watching') {
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
@@ -609,12 +616,14 @@ export class AnimeDetailsComponent implements OnInit {
     this.anime.my_extension.lastWatchedAt = new Date();
     const data = {
       extension: Base64.encode(JSON.stringify(this.anime.my_extension)),
-    };
+      status: this.anime.my_list_status.status,
+    } as Partial<MyAnimeUpdate> & { status: WatchStatus };
     await this.animeService.updateAnime(
       {
         malId: this.anime.id,
         anilistId: this.anime.my_extension?.anilistId,
         kitsuId: this.anime.my_extension?.kitsuId,
+        anisearchId: this.anime.my_extension?.anisearchId,
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
@@ -665,6 +674,7 @@ export class AnimeDetailsComponent implements OnInit {
       malId: this.anime.id,
       anilistId: this.anime.my_extension?.anilistId,
       kitsuId: this.anime.my_extension?.kitsuId,
+      anisearchId: this.anime.my_extension?.anisearchId,
       simklId: this.anime.my_extension?.simklId,
       annictId: this.anime.my_extension?.annictId,
       traktId: this.anime.my_extension?.trakt,

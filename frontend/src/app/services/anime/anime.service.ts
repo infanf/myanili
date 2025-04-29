@@ -16,6 +16,7 @@ import { AnilistService } from '@services/anilist.service';
 import { AnnictService } from '@services/anime/annict.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
+import { AnisearchService } from '@services/anisearch.service';
 import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
@@ -39,6 +40,7 @@ export class AnimeService {
     private malService: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private anisearch: AnisearchService,
     private shikimori: ShikimoriService,
     private simkl: SimklService,
     private annict: AnnictService,
@@ -135,9 +137,8 @@ export class AnimeService {
 
   async addAnime(
     anime: Partial<Anime>,
-    data: Partial<MyAnimeUpdate> = {},
+    data: Partial<MyAnimeUpdate> & { status: WatchStatus } = { status: 'plan_to_watch' },
   ): Promise<MyAnimeStatus | undefined> {
-    data.status = 'plan_to_watch';
     if (!anime.id) return;
     if (
       anime.media_type !== 'movie' &&
@@ -164,6 +165,7 @@ export class AnimeService {
         malId: anime.id,
         anilistId: anime.my_extension?.anilistId,
         kitsuId: anime.my_extension?.kitsuId,
+        anisearchId: anime.my_extension?.anisearchId,
         simklId: anime.my_extension?.simklId,
         annictId: anime.my_extension?.annictId,
         livechartId: anime.my_extension?.livechartId,
@@ -177,12 +179,13 @@ export class AnimeService {
       malId: number;
       anilistId?: number;
       kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+      anisearchId?: number;
       simklId?: number;
       annictId?: number;
       trakt?: { id?: string; season?: number };
       livechartId?: number;
     },
-    data: Partial<MyAnimeUpdate>,
+    data: Partial<MyAnimeUpdate> & { status: WatchStatus },
   ): Promise<MyAnimeStatus> {
     const [malResponse] = await Promise.all([
       this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),
@@ -234,6 +237,7 @@ export class AnimeService {
           reconsumeCount: data.num_times_rewatched,
         });
       })(),
+      this.anisearch.updateEntry(ids.anisearchId, data, 'anime'),
       this.shikimori.updateMedia({
         target_id: ids.malId,
         target_type: 'Anime',
@@ -255,6 +259,7 @@ export class AnimeService {
     malId: number;
     anilistId?: number;
     kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+    anisearchId?: number;
     simklId?: number;
     annictId?: number;
     traktId?: string;
@@ -264,6 +269,7 @@ export class AnimeService {
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
       this.kitsu.deleteEntry(ids.kitsuId, 'anime'),
+      this.anisearch.deleteEntry(ids.anisearchId),
       this.shikimori.deleteMedia(ids.malId, 'Anime'),
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
