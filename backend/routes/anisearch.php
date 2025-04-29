@@ -35,7 +35,7 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
         if (!isset($_GET['code'])) {
             $authorizationUrl = $provider->getAuthorizationUrl([
                 "response_type" => 'code',
-                'scope' => 'ratings.anime ratings.manga',
+                'scope' => 'ratings.anime ratings.manga', // add user.profile later
             ]);
             $_SESSION['oauth2state'] = $provider->getState();
             header('Location: ' . $authorizationUrl);
@@ -73,5 +73,48 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
                 return ($e->getMessage());
             }
         }
+    });
+
+    $router->post('token', function (Request $request) {
+        $refreshToken = $request->input('refresh_token');
+        $token = AnisearchServiceProvider::getOauthProvider()->getAccessToken('refresh_token', [
+            'refresh_token' => $refreshToken,
+            'grant_type' => 'refresh_token',
+        ]);
+        return response()->json([
+            'access_token' => $token->getToken(),
+            'refresh_token' => $token->getRefreshToken(),
+            'expires' => $token->getExpires(),
+        ], 201);
+    });
+
+    $router->post('logoff', function (Request $request) {
+        $refreshToken = $request->input('refresh_token');
+        $revokeUrl = "https://www.anisearch.com/oauth/revoke";
+        $clientId = env('ANISEARCH_CLIENT_ID');
+        $clientSecret = env('ANISEARCH_CLIENT_SECRET');
+        $authHeader = base64_encode($clientId . ':' . $clientSecret);
+
+        $ch = curl_init($revokeUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'token' => $refreshToken,
+            'token_type_hint' => 'refresh_token'
+        ]));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Authorization: Basic ' . $authHeader,
+            'Content-Type: application/x-www-form-urlencoded'
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode !== 200) {
+            return response()->json(['error' => 'Failed to revoke token'], $httpCode);
+        }
+
+        return response()->json([], 204);
     });
 });

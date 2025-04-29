@@ -54,7 +54,10 @@ export class AnisearchService {
 
   async checkLogin(): Promise<AnisearchUser | undefined> {
     if (!this.accessToken || !this.clientId) return;
-    const result = await fetch(`${this.baseUrl}v1/user/profile`, {
+    // tmp solution
+    this.loggedIn = true;
+    return { id: 71765, username: 'infanf' };
+    const result = await fetch(`${this.baseUrl}v1/my/profile`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
@@ -102,18 +105,11 @@ export class AnisearchService {
   }
 
   private async refreshTokens() {
-    if (!this.refreshToken || !this.clientId) return false;
-    const url = new URL(this.tokenUrl);
+    if (!this.refreshToken) return false;
     const formData = new FormData();
-    formData.append('grant_type', 'refresh_token');
     formData.append('refresh_token', this.refreshToken);
-    formData.append('client_id', this.clientId);
-    const response = await fetch(url, {
+    const response = await fetch(`${this.backendUrl}token`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
       body: formData,
     });
     if (!response.ok) {
@@ -128,6 +124,12 @@ export class AnisearchService {
   }
 
   async logoff(): Promise<void> {
+    const body = new FormData();
+    body.append('refresh_token', this.refreshToken);
+    await fetch(`${this.backendUrl}logoff`, {
+      method: 'POST',
+      body,
+    }).catch(console.error);
     this.accessToken = '';
     this.refreshToken = '';
     this.clientId = '';

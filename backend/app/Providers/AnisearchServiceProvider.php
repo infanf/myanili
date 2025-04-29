@@ -32,6 +32,7 @@ class AnisearchServiceProvider extends ServiceProvider
             'redirectUri' => env('APP_URL') . '/anisearch/auth',
             'urlAuthorize' => 'https://www.anisearch.com/oauth/authorize',
             'urlAccessToken' => 'https://www.anisearch.com/oauth/token',
+            'urlRevocation' => 'https://www.anisearch.com/oauth/revoke',
             'urlResourceOwnerDetails' => 'https://www.anisearch.com/',
         ];
         return $config;
