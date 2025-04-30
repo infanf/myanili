@@ -1,6 +1,15 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.0',
+      date: new Date('2025-04-30'),
+      features: [
+        'Add support for aniSearch Accounts',
+        'Add additional streaming and manga platforms (@nattadasu)',
+      ],
+      other: ['Update dependencies'],
+    },
+    {
       version: '2.32.0',
       date: new Date('2025-04-16'),
       fixes: ['Kitsu: fix auto logoff'],
