@@ -35,7 +35,7 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
         if (!isset($_GET['code'])) {
             $authorizationUrl = $provider->getAuthorizationUrl([
                 "response_type" => 'code',
-                // 'scope' => 'ratings.anime ratings.manga user.profile',
+                'scope' => 'ratings.anime ratings.manga user.profile',
             ]);
             $_SESSION['oauth2state'] = $provider->getState();
             header('Location: ' . $authorizationUrl);
