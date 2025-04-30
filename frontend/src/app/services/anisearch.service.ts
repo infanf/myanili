@@ -51,8 +51,8 @@ export class AnisearchService {
   async checkLogin(): Promise<AnisearchUser | undefined> {
     if (!this.accessToken || !this.clientId) return;
     // tmp solution
-    this.loggedIn = true;
-    return { id: 71765, username: 'infanf' };
+    // this.loggedIn = true;
+    // return { id: 71765, username: 'infanf' };
     const result = await fetch(`${this.baseUrl}v1/my/profile`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
@@ -138,7 +138,6 @@ export class AnisearchService {
 
   async deleteEntry(id?: number, type: 'anime' | 'manga' = 'anime'): Promise<void> {
     if (!id) return;
-    await this.refreshTokens();
     const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
     const response = await fetch(url, {
       method: 'DELETE',
@@ -155,7 +154,6 @@ export class AnisearchService {
     type: 'anime' | 'manga' = 'anime',
   ): Promise<void> {
     if (!id || !data) return;
-    await this.refreshTokens();
     const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
     const anisearchData = convertToAnisearchRating(data);
     const response = await fetch(url, {
