@@ -48,7 +48,7 @@ export class AnisearchService {
     return this.userSubject.asObservable();
   }
 
-  async checkLogin(): Promise<AnisearchUser | undefined> {
+  async checkLogin(secondTry = false): Promise<AnisearchUser | undefined> {
     if (!this.accessToken || !this.clientId) return;
     // tmp solution
     // this.loggedIn = true;
@@ -62,6 +62,8 @@ export class AnisearchService {
       const { id, name: username } = (await result.json()) as { id: number; name: string };
       this.loggedIn = true;
       return { id, username };
+    } else if (result.status === 401 && !secondTry && (await this.refreshTokens())) {
+      return this.checkLogin(true);
     }
     this.loggedIn = false;
     return;
@@ -136,7 +138,11 @@ export class AnisearchService {
     this.userSubject.next(undefined);
   }
 
-  async deleteEntry(id?: number, type: 'anime' | 'manga' = 'anime'): Promise<void> {
+  async deleteEntry(
+    id?: number,
+    type: 'anime' | 'manga' = 'anime',
+    secondTry = false,
+  ): Promise<void> {
     if (!id) return;
     const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
     const response = await fetch(url, {
@@ -144,6 +150,9 @@ export class AnisearchService {
       headers: { Authorization: `Bearer ${this.accessToken}` },
     });
     if (!response.ok) {
+      if (!secondTry && response.status === 401 && (await this.refreshTokens())) {
+        return this.deleteEntry(id, type, true);
+      }
       console.error('Failed to delete entry');
     }
   }
@@ -152,6 +161,7 @@ export class AnisearchService {
     id?: number,
     data?: Partial<MyAnimeUpdate | MyMangaUpdate> & { status: WatchStatus | ReadStatus },
     type: 'anime' | 'manga' = 'anime',
+    secondTry = false,
   ): Promise<void> {
     if (!id || !data) return;
     const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
@@ -162,6 +172,9 @@ export class AnisearchService {
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${this.accessToken}` },
     });
     if (!response.ok) {
+      if (!secondTry && response.status === 401 && (await this.refreshTokens())) {
+        return this.updateEntry(id, data, type, true);
+      }
       console.error('Failed to update entry');
     }
   }
