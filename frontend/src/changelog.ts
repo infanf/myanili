@@ -1,6 +1,15 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.0',
+      date: new Date('2025-05-01'),
+      features: [
+        'Add support for aniSearch Accounts',
+        'Add additional streaming and manga platforms (@nattadasu)',
+      ],
+      other: ['Update dependencies'],
+    },
+    {
       version: '2.32.0',
       date: new Date('2025-04-16'),
       fixes: ['Kitsu: fix auto logoff'],
@@ -156,7 +165,7 @@ export const changelog: Changelog = {
         'Anime details: add expiration date to streaming tab (if available)',
         'Share links and text to MyAniLi (may need to reinstall the app)',
       ],
-      fixes: ['Mangadex: request error', 'AniSearch: live action links'],
+      fixes: ['Mangadex: request error', 'aniSearch: live action links'],
     },
     {
       version: '2.27.1',

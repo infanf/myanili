@@ -70,7 +70,10 @@ export class MigrateBakaComponent {
         extension.bakaId = bakaId;
         extension.bakaMigrated = true;
         const comments = Base64.encode(JSON.stringify(extension));
-        await this.manga.updateManga({ malId: manga.node.id }, { comments });
+        await this.manga.updateManga(
+          { malId: manga.node.id },
+          { comments, status: manga.list_status.status || 'plan_to_read' },
+        );
       }
     }
     this.migrating = false;

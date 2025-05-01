@@ -227,9 +227,10 @@ export class MangaDetailsComponent implements OnInit {
           malId: manga.id,
           kitsuId: this.manga.my_extension.kitsuId,
           anilistId: this.manga.my_extension.anilistId,
+          anisearchId: this.manga.my_extension.anisearchId,
         },
         {
-          status: manga.my_list_status.status,
+          status: manga.my_list_status.status || 'plan_to_read',
           is_rereading: manga.my_list_status.is_rereading,
           extension: Base64.encode(
             JSON.stringify({
@@ -304,8 +305,9 @@ export class MangaDetailsComponent implements OnInit {
     const updateData = {
       comments: this.editExtension?.comment || '',
       extension: Base64.encode(JSON.stringify(this.editExtension)),
-    } as Partial<MyMangaUpdate>;
-    if (this.editBackup.status !== this.manga.my_list_status.status) {
+      status: this.editBackup?.status || this.manga.my_list_status.status,
+    } as Partial<MyMangaUpdate> & { status: ReadStatus };
+    if (this.editBackup.status && this.editBackup.status !== this.manga.my_list_status.status) {
       updateData.status = this.editBackup?.status;
     }
     if (this.editBackup.is_rereading !== this.manga.my_list_status.is_rereading) {
@@ -340,6 +342,7 @@ export class MangaDetailsComponent implements OnInit {
         malId: this.manga.id,
         anilistId: this.manga.my_extension?.anilistId,
         kitsuId: this.manga.my_extension?.kitsuId,
+        anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
       },
       updateData,
@@ -359,7 +362,7 @@ export class MangaDetailsComponent implements OnInit {
     if (!this.manga) return;
     this.glob.busy();
     this.busy = true;
-    const data = { status } as Partial<MyMangaUpdate>;
+    const data = { status } as Partial<MyMangaUpdate> & { status: ReadStatus };
     if (status === 'reading' && !this.manga.my_list_status?.start_date) {
       data.start_date = DateTime.local().toISODate() || undefined;
     }
@@ -368,6 +371,7 @@ export class MangaDetailsComponent implements OnInit {
         malId: this.manga.id,
         anilistId: this.manga.my_extension?.anilistId,
         kitsuId: this.manga.my_extension?.kitsuId,
+        anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
       },
       data,
@@ -385,6 +389,8 @@ export class MangaDetailsComponent implements OnInit {
         malId: this.manga.id,
         anilistId: this.manga.my_extension?.anilistId,
         kitsuId: this.manga.my_extension?.kitsuId,
+        anisearchId: this.manga.my_extension?.anisearchId,
+        bakaId: this.manga.my_extension?.bakaId,
       },
       {
         status: 'completed',
@@ -416,6 +422,7 @@ export class MangaDetailsComponent implements OnInit {
         malId: this.manga.id,
         anilistId: this.manga.my_extension?.anilistId,
         kitsuId: this.manga.my_extension?.kitsuId,
+        anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
       },
       {
@@ -434,7 +441,9 @@ export class MangaDetailsComponent implements OnInit {
     this.glob.busy();
     const currentChapter = this.manga.my_list_status?.num_chapters_read || 0;
     const currentVolume = this.manga.my_list_status?.num_volumes_read || 0;
-    const data = {} as Partial<MyMangaUpdate>;
+    const data = { status: this.manga.my_list_status.status } as Partial<MyMangaUpdate> & {
+      status: ReadStatus;
+    };
     const mdId = this.manga.my_extension?.mdId;
     if (type === 'volume') {
       data.num_volumes_read = currentVolume + 1;
@@ -487,6 +496,7 @@ export class MangaDetailsComponent implements OnInit {
         malId: this.manga.id,
         anilistId: this.manga.my_extension?.anilistId,
         kitsuId: this.manga.my_extension?.kitsuId,
+        anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
       },
       data,
@@ -519,6 +529,7 @@ export class MangaDetailsComponent implements OnInit {
       malId: this.manga.id,
       anilistId: this.manga.my_extension?.anilistId,
       kitsuId: this.manga.my_extension?.kitsuId,
+      anisearchId: this.manga.my_extension?.anisearchId,
     });
     this.edit = false;
     await this.ngOnInit();

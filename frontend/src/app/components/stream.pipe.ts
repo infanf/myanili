@@ -7,6 +7,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StreamPipe implements PipeTransform {
   readonly streamingProviders: StreamingProvider[] = [
     {
+      id: 'abema',
+      name: 'ABEMA',
+      urlprefix: 'https://abema.tv/video/title/',
+    },
+    {
       id: 'akibapass',
       name: 'AKIBA PASS TV',
       urlprefix: 'https://akibapass.tv/products/',
@@ -51,6 +56,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www.bilibili.tv/play/',
     },
     {
+      id: 'coolmic',
+      name: 'Coolmic',
+      urlprefix: 'https://coolmic.me/anime/video_titles/',
+    },
+    {
       id: 'cr',
       name: 'Crunchyroll',
       urlprefix: 'https://crunchyroll.com/',
@@ -77,6 +87,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www.hulu.com/series/',
     },
     {
+      id: 'iqiyi',
+      name: 'iQIYI',
+      urlprefix: 'https://www.iq.com/series/',
+    },
+    {
       id: 'laftel',
       name: 'Laftel',
       urlprefix: 'https://laftel.tv/series/',
@@ -98,6 +113,11 @@ export class StreamPipe implements PipeTransform {
       urlprefix: 'https://www3.nhk.or.jp/nhkworld/',
     },
     {
+      id: 'ov',
+      name: 'OceanVeil',
+      urlprefix: 'https://oceanveil.net/anime_titles/',
+    },
+    {
       id: 'plex',
       name: 'Plex',
       urlprefix: 'https://watch.plex.tv/de/show/',
@@ -116,6 +136,16 @@ export class StreamPipe implements PipeTransform {
       id: 'tubi',
       name: 'Tubi',
       urlprefix: 'https://tubitv.com/series/',
+    },
+    {
+      id: 'tver',
+      name: 'TVer',
+      urlprefix: 'https://tver.jp/series/',
+    },
+    {
+      id: 'unext',
+      name: 'U-NEXT',
+      urlprefix: 'https://video.unext.jp/',
     },
     {
       id: 'wak',

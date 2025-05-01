@@ -117,10 +117,10 @@
         <div class="col-4 fw-bold text-end">Type</div>
         <div class="col-8">
           <myanili-icon
-            name="{{ manga.media_type | mal : 'mediaicon' }}"
+            name="{{ manga.media_type | mal: 'mediaicon' }}"
             class="me-1"
           ></myanili-icon>
-          {{ manga!.media_type | mal : 'mediatype' }}
+          {{ manga!.media_type | mal: 'mediatype' }}
         </div>
       </div>
       <div class="row" *ngIf="manga?.serialization?.length">
@@ -153,7 +153,7 @@
             >{{
               manga!.my_list_status!.is_rereading
                 ? 'Rewatching'
-                : (manga!.my_list_status!.status | mal : 'mystatus')
+                : (manga!.my_list_status!.status | mal: 'mystatus')
             }}
             <myanili-icon
               *ngIf="
@@ -199,7 +199,7 @@
                 "
                 [value]="status"
               >
-                {{ status | mal : 'mystatus' }}
+                {{ status | mal: 'mystatus' }}
               </option>
             </select>
           </ng-template>
@@ -256,9 +256,9 @@
         <div class="col-8">
           <a
             *ngIf="manga.my_extension.platformId"
-            href="{{ manga.my_extension.platform | platform : 'urlprefix' }}{{
+            href="{{ manga.my_extension.platform | platform: 'urlprefix' }}{{
               manga.my_extension.platformId
-            }}{{ manga.my_extension.platform | platform : 'urlpostfix' }}"
+            }}{{ manga.my_extension.platform | platform: 'urlpostfix' }}"
             target="_blank"
           >
             <svg-icon
@@ -385,7 +385,7 @@
                   'bg-success':
                     manga!.my_list_status?.num_chapters_read == manga!.num_chapters &&
                     manga!.num_chapters,
-                  'bg-gradient': !manga!.num_chapters
+                  'bg-gradient': !manga!.num_chapters,
                 }"
                 [ngStyle]="{
                   'min-width.%':
@@ -393,7 +393,7 @@
                       ? ((manga!.my_list_status?.num_chapters_read || 0) /
                           (manga!.num_chapters || 1)) *
                         100
-                      : 30
+                      : 30,
                 }"
               >
                 {{ manga!.my_list_status?.num_chapters_read }}/{{ manga!.num_chapters || '?' }}
@@ -584,7 +584,7 @@
                   class="ms-1"
                   [href]="'https://anisearch.com/manga/' + manga.my_extension!.anisearchId"
                   target="_blank"
-                  >AniSearch</a
+                  >aniSearch</a
                 >
               </div>
             </div>
@@ -699,7 +699,7 @@
           </div>
         </div>
         <div class="row my-2" *ngIf="edit && editExtension">
-          <div class="col-4 fw-bold text-end">AniSearch</div>
+          <div class="col-4 fw-bold text-end">aniSearch</div>
           <div class="col-8">
             <div class="input-group input-group-sm">
               <input

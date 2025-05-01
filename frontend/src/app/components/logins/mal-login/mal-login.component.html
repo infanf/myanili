@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-5">MyAnimeList</div>
+  <div class="col-7">
+    <ng-container *ngIf="malLoggedIn; else malConnectTemplate">
+      <myanili-icon-mal class="me-1 text-primary"></myanili-icon-mal>
+      <a href="https://myanimelist.net/profile/{{ malLoggedIn.name }}" target="_blank">{{
+        malLoggedIn.name
+      }}</a>
+      <myanili-icon class="cursor-pointer" name="x" size="20" (click)="malLogoff()"></myanili-icon>
+    </ng-container>
+    <ng-template #malConnectTemplate>
+      <button class="btn btn-sm btn-primary" (click)="malConnect()">
+        <myanili-icon-mal style="color: transparent"></myanili-icon-mal>
+        Login
+      </button>
+    </ng-template>
+  </div>
+</div>

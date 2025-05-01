@@ -19,6 +19,7 @@ import { environment } from 'src/environments/environment';
 import { compareTwoStrings } from 'string-similarity';
 
 import { AnilistService } from '../anilist.service';
+import { AnisearchService } from '../anisearch.service';
 import { CacheService } from '../cache.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
@@ -33,6 +34,7 @@ export class MangaService {
     private malService: MalService,
     private anilist: AnilistService,
     private kitsu: KitsuService,
+    private anisearch: AnisearchService,
     private shikimori: ShikimoriService,
     private baka: MangaupdatesService,
     private cache: CacheService,
@@ -97,9 +99,10 @@ export class MangaService {
       malId: number;
       anilistId?: number;
       kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+      anisearchId?: number;
       bakaId?: number | string;
     },
-    data: Partial<MyMangaUpdate>,
+    data: Partial<MyMangaUpdate> & { status: ReadStatus },
   ): Promise<MyMangaStatus> {
     const [malResponse] = await Promise.all([
       this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
@@ -152,6 +155,13 @@ export class MangaService {
           reconsumeCount: data.num_times_reread,
         });
       })(),
+      (async () => {
+        if (!ids.anisearchId) {
+          ids.anisearchId = await this.anisearch.getId(ids.malId, 'manga');
+        }
+        if (!ids.anisearchId) return;
+        return this.anisearch.updateEntry(ids.anisearchId, data, 'manga');
+      })(),
       this.shikimori.updateMedia({
         target_id: ids.malId,
         target_type: 'Manga',
@@ -180,11 +190,13 @@ export class MangaService {
     malId: number;
     anilistId?: number;
     kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
+    anisearchId?: number;
   }) {
     await Promise.all([
       this.malService.delete<boolean>('manga/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
       this.kitsu.deleteEntry(ids.kitsuId, 'manga'),
+      this.anisearch.deleteEntry(ids.anisearchId, 'manga'),
       this.shikimori.deleteMedia(ids.malId, 'Manga'),
     ]);
     return true;

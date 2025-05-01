@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-5">Annict</div>
+  <div class="col-7">
+    <ng-container *ngIf="annictLoggedIn; else annictConnectTemplate">
+      <myanili-icon-annict class="me-1"></myanili-icon-annict>
+      <a href="https://annict.com/@{{ annictLoggedIn }}" target="_blank">{{ annictLoggedIn }}</a>
+      <myanili-icon
+        class="cursor-pointer"
+        name="x"
+        size="20"
+        (click)="annictLogoff()"
+      ></myanili-icon>
+    </ng-container>
+    <ng-template #annictConnectTemplate>
+      <button class="btn btn-sm btn-primary" (click)="annictConnect()">
+        <myanili-icon-annict></myanili-icon-annict>
+        Connect
+      </button>
+    </ng-template>
+  </div>
+</div>

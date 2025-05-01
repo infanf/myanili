@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-5">Baka-Updates Manga</div>
+  <div class="col-7">
+    <ng-container *ngIf="bakaLoggedIn; else bakaConnectTemplate">
+      <myanili-icon-bakamanga style="color: #e75e45" class="me-1"></myanili-icon-bakamanga>
+      <a href="{{ bakaLoggedIn.url }}" target="_blank">{{ bakaLoggedIn.username }}</a>
+      <myanili-icon class="cursor-pointer" name="x" size="20" (click)="bakaLogoff()"></myanili-icon>
+      <myanili-migrate-baka></myanili-migrate-baka>
+    </ng-container>
+    <ng-template #bakaConnectTemplate>
+      <ng-container *ngIf="bakaData">
+        <input class="form-control mb-1" placeholder="Username" [(ngModel)]="bakaData.username" />
+        <input
+          class="form-control mb-1"
+          placeholder="Password"
+          type="password"
+          [(ngModel)]="bakaData.password"
+        />
+      </ng-container>
+      <button
+        class="btn btn-sm btn-primary"
+        (click)="bakaConnect()"
+        [disabled]="bakaData && (!bakaData.username || !bakaData.password)"
+      >
+        <myanili-icon-bakamanga style="color: #e75e45"></myanili-icon-bakamanga>
+        Connect
+      </button>
+    </ng-template>
+  </div>
+</div>
