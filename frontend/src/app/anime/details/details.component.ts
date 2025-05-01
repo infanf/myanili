@@ -267,6 +267,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
+      // tslint:disable-next-line deprecation
       if ('series' in anime.my_extension) delete anime.my_extension.series;
       await this.animeService.updateAnime(
         {
@@ -300,7 +301,6 @@ export class AnimeDetailsComponent implements OnInit {
 
   async initStreams() {
     if (!this.anime?.my_extension?.livechartId) return;
-    console.log(this.anime.my_extension.livechartId);
     this.streams = await this.livechart.getStreams(this.anime.my_extension.livechartId);
   }
 

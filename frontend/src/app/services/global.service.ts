@@ -121,3 +121,14 @@ export function getLastXoClock(hour = 8) {
   });
   return now.diff(eightAm).milliseconds > 0 ? eightAm : eightAm.minus({ days: 1 });
 }
+
+export function cleanupObject<T extends object>(obj: T): Partial<T> {
+  for (const key of Object.keys(obj)) {
+    // tslint:disable-next-line no-any
+    if ((obj as any)[key] === undefined) {
+      // tslint:disable-next-line no-any
+      delete (obj as any)[key];
+    }
+  }
+  return obj as Partial<T>;
+}
