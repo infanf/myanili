@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 
 import { CacheService } from './cache.service';
 import { DialogueService } from './dialogue.service';
+import { cleanupObject } from './global.service';
 
 @Injectable({
   providedIn: 'root',
@@ -160,12 +161,31 @@ export class AnisearchService {
     type: 'anime' | 'manga' = 'anime',
     secondTry = false,
   ): Promise<void> {
-    if (!id || !data) return;
+    if (!id || !data || !this.accessToken) return;
     const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
+    const getResponse = await fetch(url, {
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+    });
+    if (!getResponse.ok) {
+      if (!secondTry && getResponse.status === 401 && (await this.refreshTokens())) {
+        return this.updateEntry(id, data, type, true);
+      }
+      console.error('Failed to update entry');
+      return;
+    }
+    const existingData = (await getResponse.json().catch(() => [])) as Array<
+      Partial<AnisearchRating & { 'id-anisearch': number; 'id-myanimelist': number }>
+    >;
     const anisearchData = convertToAnisearchRating(data);
+    const body = {
+      ...(existingData[0] || {}),
+      ...anisearchData,
+    };
+    delete body['id-anisearch'];
+    delete body['id-myanimelist'];
     const response = await fetch(url, {
       method: 'PUT',
-      body: JSON.stringify(anisearchData),
+      body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${this.accessToken}` },
     });
     if (!response.ok) {
@@ -288,8 +308,10 @@ export interface AnisearchUser {
   username: string;
 }
 
-function convertToAnisearchRating(data: Partial<MyAnimeUpdate | MyMangaUpdate>): AnisearchUpdate {
-  return {
+function convertToAnisearchRating(
+  data: Partial<MyAnimeUpdate | MyMangaUpdate>,
+): Partial<AnisearchUpdate> {
+  return cleanupObject({
     status: mapStatus(data.status) || 'not_interested',
     public_rating: data.score,
     episodes_watched: 'num_watched_episodes' in data ? data.num_watched_episodes || 0 : undefined,
@@ -304,7 +326,7 @@ function convertToAnisearchRating(data: Partial<MyAnimeUpdate | MyMangaUpdate>):
     notes: data.comments,
     priority: data.priority,
     touch: true,
-  };
+  });
 }
 
 function mapStatus(status?: WatchStatus | ReadStatus): AnisearchStatus | undefined {
