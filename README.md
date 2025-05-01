@@ -1,6 +1,6 @@
 # MyAniLi
 
-MyAniLi is a web client and PWA for MyAnimeList. It provides integration of other databases, namely AniList, Kitsu, SIMKL, trakt.tv and Annict.
+MyAniLi is a web client and PWA for MyAnimeList. It provides integration of other databases, namely AniList, Kitsu, aniSearch, Shikinori, SIMKL, trakt.tv and Annict.
 
 ## Installation
 

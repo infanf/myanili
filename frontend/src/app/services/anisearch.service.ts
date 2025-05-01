@@ -50,9 +50,6 @@ export class AnisearchService {
 
   async checkLogin(secondTry = false): Promise<AnisearchUser | undefined> {
     if (!this.accessToken || !this.clientId) return;
-    // tmp solution
-    // this.loggedIn = true;
-    // return { id: 71765, username: 'infanf' };
     const result = await fetch(`${this.baseUrl}v1/my/profile`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
