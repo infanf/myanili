@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.2',
+      date: new Date('2025-05-03'),
+      fixes: ['aniSearch: Fix entry updates to not change visibility'],
+    },
+    {
       version: '2.33.1',
       date: new Date('2025-05-01'),
       fixes: ['aniSearch: Fix entry updates to not remove data'],

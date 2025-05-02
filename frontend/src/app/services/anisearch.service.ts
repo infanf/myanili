@@ -163,29 +163,10 @@ export class AnisearchService {
   ): Promise<void> {
     if (!id || !data || !this.accessToken) return;
     const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
-    const getResponse = await fetch(url, {
-      headers: { Authorization: `Bearer ${this.accessToken}` },
-    });
-    if (!getResponse.ok) {
-      if (!secondTry && getResponse.status === 401 && (await this.refreshTokens())) {
-        return this.updateEntry(id, data, type, true);
-      }
-      console.error('Failed to update entry');
-      return;
-    }
-    const existingData = (await getResponse.json().catch(() => [])) as Array<
-      Partial<AnisearchRating & { 'id-anisearch': number; 'id-myanimelist': number }>
-    >;
     const anisearchData = convertToAnisearchRating(data);
-    const body = {
-      ...(existingData[0] || {}),
-      ...anisearchData,
-    };
-    delete body['id-anisearch'];
-    delete body['id-myanimelist'];
     const response = await fetch(url, {
       method: 'PUT',
-      body: JSON.stringify(body),
+      body: JSON.stringify(anisearchData),
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${this.accessToken}` },
     });
     if (!response.ok) {
@@ -320,7 +301,7 @@ function convertToAnisearchRating(
     start_date: data.start_date,
     end_date: data.finish_date,
     is_rewatching: 'is_rewatching' in data ? data.is_rewatching : undefined,
-    is_rereading: 'is_rereading' in data ? data.is_rereading : undefined,
+    is_reread: 'is_rereading' in data ? data.is_rereading : undefined,
     times_rewatched: 'num_times_rewatched' in data ? data.num_times_rewatched || 0 : undefined,
     times_reread: 'num_times_reread' in data ? data.num_times_reread || 0 : undefined,
     notes: data.comments,
@@ -373,7 +354,7 @@ interface AnisearchRating {
   start_date: string;
   end_date: string;
   is_rewatching: boolean;
-  is_rereading: boolean;
+  is_reread: boolean;
   times_rewatched: number;
   times_reread: number;
   rewatch_desire: number;
