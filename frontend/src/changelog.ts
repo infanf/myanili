@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.3',
+      date: new Date('2025-05-05'),
+      fixes: ['Anilist: rewatching media are set to completed'],
+    },
+    {
       version: '2.33.2',
       date: new Date('2025-05-03'),
       fixes: ['aniSearch: Fix entry updates to not change visibility'],

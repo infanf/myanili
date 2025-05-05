@@ -6,7 +6,7 @@ import {
   AnimeEpisodeRule,
   daysToLocal,
   ListAnime,
-  MyAnimeUpdate,
+  MyAnimeUpdateExtended,
   WatchStatus,
 } from '@models/anime';
 import { AnilistService } from '@services/anilist.service';
@@ -125,7 +125,8 @@ export class WatchlistComponent implements OnInit {
     const data = {
       num_watched_episodes: currentEpisode + 1,
       status: anime.list_status.status,
-    } as Partial<MyAnimeUpdate> & { status: WatchStatus };
+      is_rewatching: anime.list_status.is_rewatching,
+    } as MyAnimeUpdateExtended;
     if (anime.my_extension) anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
     if (currentEpisode + 1 === anime.node.num_episodes) {
@@ -216,7 +217,7 @@ export class WatchlistComponent implements OnInit {
             false,
           );
           if (status) {
-            const sequelData = { status } as Partial<MyAnimeUpdate> & { status: WatchStatus };
+            const sequelData = { status, is_rewatching: false } as MyAnimeUpdateExtended;
             if (status === 'watching') {
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }

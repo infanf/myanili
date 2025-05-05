@@ -5,7 +5,7 @@ import {
   AnimeNode,
   ListAnime,
   MyAnimeStatus,
-  MyAnimeUpdate,
+  MyAnimeUpdateExtended,
   parseExtension,
   WatchStatus,
 } from '@models/anime';
@@ -137,7 +137,7 @@ export class AnimeService {
 
   async addAnime(
     anime: Partial<Anime>,
-    data: Partial<MyAnimeUpdate> & { status: WatchStatus } = { status: 'plan_to_watch' },
+    data: MyAnimeUpdateExtended = { status: 'plan_to_watch', is_rewatching: false },
   ): Promise<MyAnimeStatus | undefined> {
     if (!anime.id) return;
     if (
@@ -185,7 +185,7 @@ export class AnimeService {
       trakt?: { id?: string; season?: number };
       livechartId?: number;
     },
-    data: Partial<MyAnimeUpdate> & { status: WatchStatus },
+    data: MyAnimeUpdateExtended,
   ): Promise<MyAnimeStatus> {
     const [malResponse] = await Promise.all([
       this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),

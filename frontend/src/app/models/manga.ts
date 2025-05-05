@@ -73,7 +73,7 @@ export type MangaType =
 
 export type MangaStatus = 'finished' | 'currently_publishing' | 'not_yet_published';
 
-interface MyUpdate {
+export interface MyMangaUpdate {
   status: ReadStatus;
   is_rereading: boolean;
   score: number; // range: 0-10
@@ -89,7 +89,10 @@ interface MyUpdate {
   extension: string;
 }
 
-export type MyMangaUpdate = MyUpdate;
+export interface MyMangaUpdateExtended extends Partial<MyMangaUpdate> {
+  status: ReadStatus;
+  is_rereading: boolean;
+}
 
 export interface MangaNode {
   id: number;
@@ -109,7 +112,7 @@ export interface MangaNode {
   };
 }
 
-interface MyStatus {
+export interface MyMangaStatus {
   status?: ReadStatus;
   is_rereading: boolean;
   score: number;
@@ -124,8 +127,6 @@ interface MyStatus {
   comments: string;
   updated_at: Date;
 }
-
-export type MyMangaStatus = MyStatus;
 
 interface RelatedMangaInterface {
   node: MangaNode;

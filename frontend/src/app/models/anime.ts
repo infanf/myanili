@@ -105,6 +105,11 @@ export interface MyAnimeUpdate {
   extension: string;
 }
 
+export interface MyAnimeUpdateExtended extends Partial<MyAnimeUpdate> {
+  status: WatchStatus;
+  is_rewatching: boolean;
+}
+
 export interface MalSeason {
   year: number;
   season: 'winter' | 'spring' | 'summer' | 'fall';
