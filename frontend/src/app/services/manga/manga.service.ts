@@ -9,7 +9,7 @@ import {
   Manga,
   MangaExtension,
   MyMangaStatus,
-  MyMangaUpdate,
+  MyMangaUpdateExtended,
   ReadStatus,
 } from '@models/manga';
 import { ShikimoriService } from '@services/shikimori.service';
@@ -102,7 +102,7 @@ export class MangaService {
       anisearchId?: number;
       bakaId?: number | string;
     },
-    data: Partial<MyMangaUpdate> & { status: ReadStatus },
+    data: MyMangaUpdateExtended,
   ): Promise<MyMangaStatus> {
     const [malResponse] = await Promise.all([
       this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),

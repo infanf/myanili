@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Weekday } from '@models/components';
-import { ListManga, MyMangaUpdate, ReadStatus } from '@models/manga';
+import { ListManga, MyMangaUpdateExtended } from '@models/manga';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MangaService } from '@services/manga/manga.service';
@@ -79,7 +79,8 @@ export class BookshelfComponent {
     const data = {
       num_volumes_read: currentVolume + 1,
       status: manga.list_status.status,
-    } as Partial<MyMangaUpdate> & { status: ReadStatus };
+      is_rereading: manga.list_status.is_rereading,
+    } as MyMangaUpdateExtended;
     const mdId = manga.my_extension?.mdId;
     data.num_volumes_read = currentVolume + 1;
     if (mdId) {
@@ -131,7 +132,8 @@ export class BookshelfComponent {
     const data = {
       num_chapters_read: currentChapter + 1,
       status: manga.list_status.status,
-    } as Partial<MyMangaUpdate> & { status: ReadStatus };
+      is_rereading: manga.list_status.is_rereading,
+    } as MyMangaUpdateExtended;
     const mdId = manga.my_extension?.mdId;
     data.num_chapters_read = currentChapter + 1;
     if (mdId) {

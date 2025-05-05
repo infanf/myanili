@@ -13,6 +13,7 @@ import {
   AnimeExtension,
   daysToLocal,
   MyAnimeUpdate,
+  MyAnimeUpdateExtended,
   parseExtension,
   WatchStatus,
 } from '@models/anime';
@@ -364,12 +365,16 @@ export class AnimeDetailsComponent implements OnInit {
     const updateData = {
       comments: this.editExtension?.comment || '',
       status: this.editBackup?.status || this.anime.my_list_status.status,
+      is_rewatching: this.editBackup?.is_rewatching || this.anime.my_list_status.is_rewatching,
       extension: Base64.encode(JSON.stringify(this.editExtension)),
-    } as Partial<MyAnimeUpdate> & { status: WatchStatus };
+    } as MyAnimeUpdateExtended;
     if (this.editBackup.status && this.editBackup.status !== this.anime.my_list_status.status) {
       updateData.status = this.editBackup.status;
     }
-    if (this.editBackup.is_rewatching !== this.anime.my_list_status.is_rewatching) {
+    if (
+      this.editBackup.is_rewatching !== undefined &&
+      this.editBackup.is_rewatching !== this.anime.my_list_status.is_rewatching
+    ) {
       updateData.is_rewatching = this.editBackup?.is_rewatching;
     }
     if (this.editBackup.score !== this.anime.my_list_status.score) {
@@ -440,7 +445,10 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
-    const data = { status } as Partial<MyAnimeUpdate> & { status: WatchStatus };
+    const data = {
+      status,
+      is_rewatching: this.anime.my_list_status?.is_rewatching,
+    } as MyAnimeUpdateExtended;
     if (status === 'watching' && !this.anime.my_list_status?.start_date) {
       data.start_date = DateTime.local().toISODate() || undefined;
     }
@@ -491,7 +499,8 @@ export class AnimeDetailsComponent implements OnInit {
     const data = {
       num_watched_episodes: currentEpisode + 1,
       status: this.anime.my_list_status.status,
-    } as Partial<MyAnimeUpdate> & { status: WatchStatus };
+      is_rewatching: this.anime.my_list_status.is_rewatching,
+    } as MyAnimeUpdateExtended;
     if (this.anime.my_extension) this.anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
@@ -583,7 +592,10 @@ export class AnimeDetailsComponent implements OnInit {
             false,
           );
           if (status) {
-            const sequelData = { status } as Partial<MyAnimeUpdate> & { status: WatchStatus };
+            const sequelData = {
+              status,
+              is_rewatching: this.anime.my_list_status?.is_rewatching,
+            } as MyAnimeUpdateExtended;
             if (status === 'watching') {
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
@@ -617,7 +629,8 @@ export class AnimeDetailsComponent implements OnInit {
     const data = {
       extension: Base64.encode(JSON.stringify(this.anime.my_extension)),
       status: this.anime.my_list_status.status,
-    } as Partial<MyAnimeUpdate> & { status: WatchStatus };
+      is_rewatching: this.anime.my_list_status.is_rewatching,
+    } as MyAnimeUpdateExtended;
     await this.animeService.updateAnime(
       {
         malId: this.anime.id,
