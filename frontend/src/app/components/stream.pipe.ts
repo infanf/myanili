@@ -154,6 +154,11 @@ export class StreamPipe implements PipeTransform {
       deprecated: true,
     },
     {
+      id: 'wetv',
+      name: 'WeTV',
+      urlprefix: 'https://wetv.vip/en/play',
+    },
+    {
       id: 'yt',
       name: 'YouTube',
       urlprefix: 'https://youtube.com/',
