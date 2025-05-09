@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.4',
+      date: new Date('2025-05-09'),
+      fixes: ['Shikimori: disable login if token refresh fails'],
+    },
+    {
       version: '2.33.3',
       date: new Date('2025-05-05'),
       fixes: ['Anilist: rewatching media are set to completed'],

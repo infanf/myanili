@@ -74,6 +74,7 @@ export class ShikimoriService {
     url.searchParams.append('refresh_token', this.refreshToken);
     const response = await fetch(url);
     if (!response.ok) {
+      this.logoff();
       return false;
     }
     const data = (await response.json()) as { access_token: string; refresh_token: string };
