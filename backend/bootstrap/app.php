@@ -61,6 +61,13 @@ $app->singleton(
 
 $app->configure('app');
 
+// Configure logging to stdout
+$app->singleton('Psr\Log\LoggerInterface', function ($app) {
+    $logger = new Monolog\Logger($app->environment());
+    $logger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout'));
+    return $logger;
+});
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
