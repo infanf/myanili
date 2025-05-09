@@ -58,9 +58,9 @@ $router->group(['prefix' => 'shikimori'], function () use ($router) {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
-        $provider = ShikimoriServiceProvider::getOauthProvider();
-        $refreshToken = $_GET['refresh_token'];
         try {
+            $provider = ShikimoriServiceProvider::getOauthProvider();
+            $refreshToken = $_GET['refresh_token'];
             $accessToken = $provider->getAccessToken('refresh_token', [
                 'refresh_token' => $refreshToken,
             ]);
