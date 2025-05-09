@@ -29,6 +29,9 @@ $router->group(['prefix' => 'shikimori'], function () use ($router) {
                 $accessToken = $provider->getAccessToken('authorization_code', [
                     'code' => $_GET['code'],
                     'grant_type' => 'authorization_code',
+                    'headers' => [
+                        'User-Agent' => 'MyAniLi',
+                    ],
                 ]);
 
                 setcookie('SHIKIMORI_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
@@ -50,11 +53,14 @@ $router->group(['prefix' => 'shikimori'], function () use ($router) {
     });
 
     $router->get('token', function () {
-        $provider = ShikimoriServiceProvider::getOauthProvider();
-        $refreshToken = $_GET['refresh_token'];
         try {
+            $provider = ShikimoriServiceProvider::getOauthProvider();
+            $refreshToken = $_GET['refresh_token'];
             $accessToken = $provider->getAccessToken('refresh_token', [
                 'refresh_token' => $refreshToken,
+                'headers' => [
+                    'User-Agent' => 'MyAniLi',
+                ],
             ]);
             return response()->json([
                 'access_token' => $accessToken->getToken(),

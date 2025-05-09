@@ -23,7 +23,7 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
 // $app->withEloquent();
 
@@ -60,6 +60,13 @@ $app->singleton(
 */
 
 $app->configure('app');
+
+// Configure logging to stdout
+$app->singleton('Psr\Log\LoggerInterface', function ($app) {
+    $logger = new Monolog\Logger($app->environment());
+    $logger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout'));
+    return $logger;
+});
 
 /*
 |--------------------------------------------------------------------------
