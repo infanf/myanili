@@ -25,6 +25,12 @@ class ShikimoriServiceProvider extends ServiceProvider
             'urlAuthorize' => 'https://shikimori.one/oauth/authorize',
             'urlAccessToken' => 'https://shikimori.one/oauth/token',
             'urlResourceOwnerDetails' => 'https://shikimori.one/api/users/whoami',
+            // Add HTTP client options with custom User-Agent
+            'httpClient' => [
+                'headers' => [
+                    'User-Agent' => 'MyAniLi'
+                ]
+            ]
         ];
         return new \League\OAuth2\Client\Provider\GenericProvider($config);
     }
