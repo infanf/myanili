@@ -279,7 +279,7 @@ export class AnimeService {
       this.shikimori.deleteMedia(ids.malId, 'Anime'),
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
-      this.trakt.ignore(ids.traktId),
+      this.trakt.drop(ids.traktId),
       this.livechart.deleteAnime(ids.livechartId),
     ]);
     return true;
