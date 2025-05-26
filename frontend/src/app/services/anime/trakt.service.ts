@@ -168,7 +168,7 @@ export class TraktService {
     return false;
   }
 
-  async ignore(slug?: string): Promise<boolean> {
+  async drop(slug?: string): Promise<boolean> {
     if (!slug) return false;
     const headers = {
       Authorization: `Bearer ${this.accessToken}`,
@@ -184,17 +184,12 @@ export class TraktService {
         },
       ],
     });
-    const resultCalendar = await this.fetch(`${this.baseUrl}users/hidden/calendar`, {
+    const result = await this.fetch(`${this.baseUrl}users/hidden/dropped`, {
       headers,
       method,
       body,
     });
-    const resultWatchlist = await this.fetch(`${this.baseUrl}users/hidden/progress_watched`, {
-      headers,
-      method,
-      body,
-    });
-    return resultCalendar.ok && resultWatchlist.ok;
+    return result.ok;
   }
 
   async searchMovie(q: string): Promise<Show[]> {
@@ -256,8 +251,8 @@ export class TraktService {
       season < 0
         ? `${this.baseUrl}movies/${show}/ratings`
         : season === 1
-        ? `${this.baseUrl}shows/${show}/ratings`
-        : `${this.baseUrl}shows/${show}/seasons/${season}/ratings`;
+          ? `${this.baseUrl}shows/${show}/ratings`
+          : `${this.baseUrl}shows/${show}/seasons/${season}/ratings`;
     const result = await this.fetch(url, {
       headers: new Headers({
         'trakt-api-version': '2',
@@ -285,7 +280,7 @@ export class TraktService {
   async updateEntry(trakt?: { id?: string; season?: number }, data?: Partial<MyAnimeUpdate>) {
     if (!trakt || !trakt.id || !this.accessToken) return;
     if (data?.status === 'dropped') {
-      this.ignore(trakt.id);
+      this.drop(trakt.id);
     }
     if (data?.score) {
       this.addRating(data.score, trakt.id, trakt.season);

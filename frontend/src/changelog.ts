@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.5',
+      date: new Date('2025-05-26'),
+      features: ['Trakt: add newly introduced drop functionality'],
+    },
+    {
       version: '2.33.4',
       date: new Date('2025-05-09'),
       fixes: ['Shikimori: disable login if token refresh fails'],
