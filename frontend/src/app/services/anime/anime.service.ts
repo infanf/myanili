@@ -26,7 +26,6 @@ import { SettingsService } from '@services/settings.service';
 import { ShikimoriService } from '@services/shikimori.service';
 import { Base64 } from 'js-base64';
 import { DateTime, WeekdayNumbers } from 'luxon';
-import { environment } from 'src/environments/environment';
 
 import { LivechartService } from './livechart.service';
 
@@ -34,7 +33,6 @@ import { LivechartService } from './livechart.service';
   providedIn: 'root',
 })
 export class AnimeService {
-  private backendUrl = `${environment.backend}`;
   nsfw = true;
   constructor(
     private malService: MalService,
@@ -408,7 +406,11 @@ export class AnimeService {
     }
   }
 
-  async getTraktData(malId?: number): Promise<
+  async getTraktData(
+    malId?: number,
+    simklId?: number,
+    season?: number,
+  ): Promise<
     | {
         id: number;
         type: 'show' | 'movie';
@@ -417,14 +419,40 @@ export class AnimeService {
       }
     | undefined
   > {
-    if (!malId) return undefined;
-    return this.cache
-      .fetch<{
-        id: number;
-        type: 'show' | 'movie';
-        title: string;
-        season?: number;
-      }>(`${this.backendUrl}trakt/${malId}`)
-      .catch(() => undefined);
+    if (!malId && !simklId) return undefined;
+    if (!simklId && malId) {
+      simklId = await this.simkl.getId(malId);
+    }
+    if (!simklId) return undefined;
+    const simklData = await this.simkl.getEntry(simklId);
+    const imdbId = simklData?.ids.imdb;
+    if (!imdbId) {
+      if (simklData?.relations?.length && !season) {
+        season = simklData?.season;
+        for (const relation of simklData.relations) {
+          const result = await this.getTraktData(undefined, relation.ids.simkl, season);
+          if (result) return result;
+        }
+      }
+      return undefined;
+    }
+    const traktData = await this.trakt.searchByImdb(imdbId);
+    console.log(traktData);
+    const data = traktData.map(entry => {
+      if (entry.type === 'movie') {
+        return {
+          id: entry.movie.ids.trakt,
+          type: 'movie' as const,
+          title: entry.movie.title,
+        };
+      }
+      return {
+        id: entry.show.ids.trakt,
+        type: 'show' as const,
+        title: entry.show.title,
+        season,
+      };
+    });
+    return data[0];
   }
 }

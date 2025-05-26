@@ -211,6 +211,20 @@ export class TraktService {
     return [];
   }
 
+  async searchByImdb(imdbId: string): Promise<Array<Show | Movie>> {
+    const headers = new Headers({
+      'trakt-api-version': '2',
+      'trakt-api-key': this.clientId,
+    });
+    const result = await this.fetch(`${this.baseUrl}search/imdb/${imdbId}?extended=full`, {
+      headers,
+    });
+    if (result.ok) {
+      return result.json() as Promise<Array<Movie | Show>>;
+    }
+    return [];
+  }
+
   async scrobbleMovie(movieId: string): Promise<boolean> {
     const headers = {
       Authorization: `Bearer ${this.accessToken}`,

@@ -95,6 +95,18 @@ export class SimklService {
     return;
   }
 
+  async getEntry(id: number): Promise<SimklEntry | undefined> {
+    if (!this.clientId || !id) return;
+    const result = await fetch(
+      `${this.baseUrl}anime/${id}?extended=full&client_id=${this.clientId}`,
+    );
+    if (result.ok) {
+      const response = (await result.json()) as SimklEntry;
+      return response;
+    }
+    return;
+  }
+
   async scrobble(ids: { simkl?: number; mal?: number }, number?: number) {
     if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal) || !number) return;
     const scrobbleData = { shows: [{ ids, seasons: [{ number: 1, episodes: [{ number }] }] }] };
@@ -232,3 +244,13 @@ export interface SimklUser {
 }
 
 export type SimklList = 'plantowatch' | 'completed' | 'watching' | 'hold' | 'notinteresting';
+
+export interface SimklEntry {
+  title: string;
+  ids: { mal: number; imdb?: string };
+  relations?: Array<{
+    ids: { simkl: number };
+    year?: number;
+  }>;
+  season?: number;
+}
