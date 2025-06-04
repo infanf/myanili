@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.6',
+      date: new Date('2025-06-04'),
+      features: ['Trakt: auto map via simkl and imdb'],
+    },
+    {
       version: '2.33.5',
       date: new Date('2025-05-26'),
       features: ['Trakt: add newly introduced drop functionality'],

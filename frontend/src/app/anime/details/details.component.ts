@@ -244,7 +244,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     if (!this.anime.my_extension.trakt) {
       promises.push(
-        this.animeService.getTraktData(this.id).then(traktData => {
+        this.animeService.getTraktData(this.id, this.anime.my_extension.simklId).then(traktData => {
           if (!traktData || !this?.anime?.my_extension) return;
           this.anime.my_extension.trakt ||= String(traktData.id);
           this.anime.my_extension.seasonNumber ||= traktData.season;
