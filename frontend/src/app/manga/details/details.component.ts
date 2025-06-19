@@ -486,8 +486,8 @@ export class MangaDetailsComponent implements OnInit {
       );
     }
     if (
-      data.num_volumes_read === this.manga.num_volumes ||
-      data.num_chapters_read === this.manga.num_chapters
+      ((data.num_volumes_read || 0) > 0 && data.num_volumes_read === this.manga.num_volumes) ||
+      ((data.num_chapters_read || 0) > 0 && data.num_chapters_read === this.manga.num_chapters)
     ) {
       data.status = 'completed';
       data.finish_date =
