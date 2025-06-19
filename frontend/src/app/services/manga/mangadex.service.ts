@@ -14,7 +14,7 @@ export class MangadexService {
     if (!query) return [];
     const { data: mangas } = await this.cache
       .fetch<{ data: Manga[] }>(`${this.baseUrl}/manga?title=${query}`)
-      .catch(() => ({ data: [] } as { data: Manga[] }));
+      .catch(() => ({ data: [] }) as { data: Manga[] });
     return mangas;
   }
 
@@ -28,7 +28,7 @@ export class MangadexService {
     if (!mangaId) return;
     const { data: manga } = await this.cache
       .fetch<{ data?: Manga }>(`${this.baseUrl}/manga/${mangaId}`)
-      .catch(() => ({ data: undefined } as { data?: Manga }));
+      .catch(() => ({ data: undefined }) as { data?: Manga });
     return manga;
   }
 
@@ -36,7 +36,7 @@ export class MangadexService {
     if (!mangaId) return;
     const { statistics } = await this.cache
       .fetch<{ statistics: Statistics }>(`${this.baseUrl}/statistics/manga/${mangaId}`)
-      .catch(() => ({ statistics: {} } as { statistics: Statistics }));
+      .catch(() => ({ statistics: {} }) as { statistics: Statistics });
     return statistics;
   }
 
@@ -46,8 +46,8 @@ export class MangadexService {
       volumes: { [volume: string]: Volume };
     }
     const { volumes } = await this.cache
-      .fetch<Volumes>(`${this.baseUrl}/manga/${mangaId}/aggregate`)
-      .catch(() => ({ volumes: {} } as Volumes));
+      .fetch<Volumes>(`${this.baseUrl}/manga/${mangaId}/aggregate?includeUnavailable=1`)
+      .catch(() => ({ volumes: {} }) as Volumes);
     return volumes;
   }
 

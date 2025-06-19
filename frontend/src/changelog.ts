@@ -1,6 +1,14 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.7',
+      date: new Date('2025-06-19'),
+      fixes: [
+        "Manga: don't set completed status after first read chapter",
+        'Manga: include unavailable chapters from MangaDex for volume/chapter mapping',
+      ],
+    },
+    {
       version: '2.33.6',
       date: new Date('2025-06-04'),
       features: ['Trakt: auto map via simkl and imdb'],
