@@ -33,9 +33,18 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
     $router->get('auth', function () {
         $provider = AnisearchServiceProvider::getOauthProvider();
         if (!isset($_GET['code'])) {
+            // Generate PKCE code verifier and challenge
+            $code_verifier = isset($_SESSION['anisearch_verifier']) ? $_SESSION['anisearch_verifier'] : rtrim(strtr(base64_encode(random_bytes(64)), "+/", "-_"), "=");
+            $_SESSION['anisearch_verifier'] = $code_verifier;
+            // Generate SHA256 code challenge for S256 method
+            $challenge_bytes = hash("sha256", $code_verifier, true);
+            $code_challenge = rtrim(strtr(base64_encode($challenge_bytes), "+/", "-_"), "=");
+            
             $authorizationUrl = $provider->getAuthorizationUrl([
                 "response_type" => 'code',
                 'scope' => 'ratings.anime ratings.manga user.profile',
+                'code_challenge' => $code_challenge,
+                'code_challenge_method' => 'S256',
             ]);
             $_SESSION['oauth2state'] = $provider->getState();
             header('Location: ' . $authorizationUrl);
@@ -55,7 +64,13 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
                 $accessToken = $provider->getAccessToken('authorization_code', [
                     'code' => $_GET['code'],
                     'grant_type' => 'authorization_code',
+                    'code_verifier' => $_SESSION['anisearch_verifier'],
                 ]);
+
+                // Clean up session variables after successful token exchange
+                if (isset($_SESSION['anisearch_verifier'])) {
+                    unset($_SESSION['anisearch_verifier']);
+                }
 
                 setcookie('ANISEARCH_ACCESS_TOKEN', $accessToken->getToken(), $accessToken->getExpires());
                 setcookie('ANISEARCH_REFRESH_TOKEN', $accessToken->getRefreshToken(), $accessToken->getExpires() + (30 * 24 * 60 * 60));
