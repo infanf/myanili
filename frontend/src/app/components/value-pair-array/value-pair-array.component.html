@@ -1,6 +1,10 @@
-<div class="row" *ngIf="value?.length">
-  <div class="col-{{ cols }} fw-bold text-end">{{ name }}</div>
-  <div class="col-{{ 12 - cols }}">
-    <div *ngFor="let title of value" [innerHtml]="title"></div>
+@if (value?.length) {
+  <div class="row">
+    <div class="col-{{ cols }} fw-bold text-end">{{ name }}</div>
+    <div class="col-{{ 12 - cols }}">
+      @for (title of value; track title) {
+        <div [innerHtml]="title"></div>
+      }
+    </div>
   </div>
-</div>
+}

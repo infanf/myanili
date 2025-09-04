@@ -1,36 +1,45 @@
 <div>
-  <div *ngIf="loading" class="d-flex justify-content-center">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </div>
-
-  <div *ngIf="error" class="alert alert-danger" role="alert">Failed to load videos</div>
-
-  <div *ngIf="!loading && !error && videos.length === 0" class="alert alert-info" role="alert">
-    No videos available
-  </div>
-
-  <div *ngIf="!loading && videos.length > 0" class="row mt-3">
-    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let video of videos; let i = index">
-      <div class="ratio ratio-16x9">
-        <!-- Show iframe when video is active -->
-        <iframe
-          *ngIf="isVideoActive(i)"
-          class="w-100 border rounded"
-          [src]="video.embedUrl | safe: 'resourceUrl'"
-          allowfullscreen
-        ></iframe>
-
-        <!-- Show thumbnail when video is not active -->
-        <img
-          *ngIf="!isVideoActive(i)"
-          [src]="video.video.thumbnailUrl"
-          alt="Video thumbnail"
-          class="w-100 h-100 border rounded cursor-pointer"
-          (click)="toggleVideo(i)"
-        />
+  @if (loading) {
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
     </div>
-  </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-danger" role="alert">Failed to load videos</div>
+  }
+
+  @if (!loading && !error && videos.length === 0) {
+    <div class="alert alert-info" role="alert">No videos available</div>
+  }
+
+  @if (!loading && videos.length > 0) {
+    <div class="row mt-3">
+      @for (video of videos; track video; let i = $index) {
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="ratio ratio-16x9">
+            <!-- Show iframe when video is active -->
+            @if (isVideoActive(i)) {
+              <iframe
+                class="w-100 border rounded"
+                [src]="video.embedUrl | safe: 'resourceUrl'"
+                allowfullscreen
+              ></iframe>
+            }
+            <!-- Show thumbnail when video is not active -->
+            @if (!isVideoActive(i)) {
+              <img
+                [src]="video.video.thumbnailUrl"
+                alt="Video thumbnail"
+                class="w-100 h-100 border rounded cursor-pointer"
+                (click)="toggleVideo(i)"
+              />
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>

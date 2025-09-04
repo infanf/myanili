@@ -1,23 +1,24 @@
 <myanili-header [header]="title"></myanili-header>
 <section>
-  <myanili-anime-list
-    *ngIf="(settings.layout$ | async) === 'list'"
-    [animes]="animes"
-  ></myanili-anime-list>
-  <myanili-anime-grid
-    *ngIf="(settings.layout$ | async) !== 'list'"
-    [animes]="animes"
-  ></myanili-anime-grid>
-  <div
-    *ngIf="animes.length && !loadedAll"
-    style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
-    inViewport
-    (inViewportAction)="handleScroll($event)"
-  >
-    &nbsp;
-  </div>
-  <div *ngIf="loading" class="text-center">
-    <myanili-icon name="loading"></myanili-icon>
-    Loading more...
-  </div>
+  @if ((settings.layout$ | async) === 'list') {
+    <myanili-anime-list [animes]="animes"></myanili-anime-list>
+  }
+  @if ((settings.layout$ | async) !== 'list') {
+    <myanili-anime-grid [animes]="animes"></myanili-anime-grid>
+  }
+  @if (animes.length && !loadedAll) {
+    <div
+      style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
+      inViewport
+      (inViewportAction)="handleScroll($event)"
+    >
+      &nbsp;
+    </div>
+  }
+  @if (loading) {
+    <div class="text-center">
+      <myanili-icon name="loading"></myanili-icon>
+      Loading more...
+    </div>
+  }
 </section>

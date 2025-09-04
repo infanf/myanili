@@ -11,32 +11,39 @@
     </h2>
   </header>
 
-  <div class="grid grid-2x" *ngIf="magazine">
-    <div
-      *ngFor="let manga of magazine.manga"
-      class="d-flex border rounded justify-content-between cursor-pointer"
-      [routerLink]="'/manga/details/' + manga.mal_id"
-    >
-      <img
-        loading="lazy"
-        [src]="manga.image_url || '/assets/blank-poster.svg'"
-        class="poster rounded-start cursor-pointer"
-      />
-      <div class="d-flex flex-fill justify-content-between flex-column p-3">
-        <div>
-          <div class="fw-bold">{{ manga.title }}</div>
-          <div><span class="text-muted">Type:</span> {{ manga.type }}</div>
-          <div><span class="text-muted">Year:</span> {{ manga.publishing_start | date : 'Y' }}</div>
-          <div class="d-flex">
-            <span class="text-muted me-1">Authors: </span>
-            <span class="d-inline-block">
-              <div *ngFor="let author of manga.authors">
-                {{ author.name }}
+  @if (magazine) {
+    <div class="grid grid-2x">
+      @for (manga of magazine.manga; track manga) {
+        <div
+          class="d-flex border rounded justify-content-between cursor-pointer"
+          [routerLink]="'/manga/details/' + manga.mal_id"
+        >
+          <img
+            loading="lazy"
+            [src]="manga.image_url || '/assets/blank-poster.svg'"
+            class="poster rounded-start cursor-pointer"
+          />
+          <div class="d-flex flex-fill justify-content-between flex-column p-3">
+            <div>
+              <div class="fw-bold">{{ manga.title }}</div>
+              <div><span class="text-muted">Type:</span> {{ manga.type }}</div>
+              <div>
+                <span class="text-muted">Year:</span> {{ manga.publishing_start | date: 'Y' }}
               </div>
-            </span>
+              <div class="d-flex">
+                <span class="text-muted me-1">Authors: </span>
+                <span class="d-inline-block">
+                  @for (author of manga.authors; track author) {
+                    <div>
+                      {{ author.name }}
+                    </div>
+                  }
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      }
     </div>
-  </div>
+  }
 </div>

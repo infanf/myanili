@@ -1,31 +1,34 @@
 <div class="grid grid-2x">
-  <div *ngFor="let character of characters" class="d-flex border rounded justify-content-between">
-    <img
-      loading="lazy"
-      [src]="character.character.images.jpg.image_url || '/assets/blank-poster.svg'"
-      [routerLink]="'/character/' + character.character.mal_id"
-      class="poster rounded-start cursor-pointer"
-    />
-    <div class="d-flex flex-fill justify-content-between flex-column p-3">
-      <div [routerLink]="'/character/' + character.character.mal_id" class="cursor-pointer">
-        {{ character.character.name }}
-        <div class="text-muted">{{ character.role }}</div>
-      </div>
-      <ng-container *ngIf="character.voice_actors[0]; let voiceActor">
-        <div class="text-end cursor-pointer" [routerLink]="'/person/' + voiceActor.person.mal_id">
-          {{ voiceActor.person.name }}
-        </div>
-      </ng-container>
-    </div>
-    <ng-container *ngIf="character.voice_actors[0]; let voiceActor">
+  @for (character of characters; track character) {
+    <div class="d-flex border rounded justify-content-between">
       <img
         loading="lazy"
-        [src]="
-          voiceActor.person.images?.jpg?.image_url?.replace('/r/42x62/', '/') ||
-          '/assets/blank-poster.svg'
-        "
-        [routerLink]="'/person/' + voiceActor.person.mal_id"
-        class="poster rounded-end cursor-pointer"
-    /></ng-container>
-  </div>
+        [src]="character.character.images.jpg.image_url || '/assets/blank-poster.svg'"
+        [routerLink]="'/character/' + character.character.mal_id"
+        class="poster rounded-start cursor-pointer"
+      />
+      <div class="d-flex flex-fill justify-content-between flex-column p-3">
+        <div [routerLink]="'/character/' + character.character.mal_id" class="cursor-pointer">
+          {{ character.character.name }}
+          <div class="text-muted">{{ character.role }}</div>
+        </div>
+        @if (character.voice_actors[0]; as voiceActor) {
+          <div class="text-end cursor-pointer" [routerLink]="'/person/' + voiceActor.person.mal_id">
+            {{ voiceActor.person.name }}
+          </div>
+        }
+      </div>
+      @if (character.voice_actors[0]; as voiceActor) {
+        <img
+          loading="lazy"
+          [src]="
+            voiceActor.person.images?.jpg?.image_url?.replace('/r/42x62/', '/') ||
+            '/assets/blank-poster.svg'
+          "
+          [routerLink]="'/person/' + voiceActor.person.mal_id"
+          class="poster rounded-end cursor-pointer"
+        />
+      }
+    </div>
+  }
 </div>

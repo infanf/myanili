@@ -1,14 +1,18 @@
-<div class="mb-2" *ngFor="let newsItem of newsItems">
-  <a
-    href="{{ newsItem._attributes.href }}"
-    target="_blank"
-    class="link"
-    [innerHTML]="newsItem._text"
-  ></a>
-  <span class="ms-1 small text-muted"
-    >({{ newsItem._attributes.datetime | date : 'longDate' }})</span
-  >
-</div>
-<div *ngIf="!newsItems.length">
-  <div class="text-muted">No news found.</div>
-</div>
+@for (newsItem of newsItems; track newsItem) {
+  <div class="mb-2">
+    <a
+      href="{{ newsItem._attributes.href }}"
+      target="_blank"
+      class="link"
+      [innerHTML]="newsItem._text"
+    ></a>
+    <span class="ms-1 small text-muted"
+      >({{ newsItem._attributes.datetime | date: 'longDate' }})</span
+    >
+  </div>
+}
+@if (!newsItems.length) {
+  <div>
+    <div class="text-muted">No news found.</div>
+  </div>
+}

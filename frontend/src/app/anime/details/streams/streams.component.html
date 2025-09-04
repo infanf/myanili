@@ -1,36 +1,39 @@
 <div class="streams d-flex flex-column gap-3 m-3">
-  <a
-    href="{{ stream.url }}"
-    class="align-items-center d-flex rounded"
-    target="_blank"
-    style="gap: 1rem; text-decoration: none"
-    *ngFor="let stream of streams"
-    [ngStyle]="{ opacity: stream.availableInViewerRegion ? 1 : 0.5 }"
-  >
-    <div>
-      <img
-        [src]="stream.streamingService.logo.url + '?style=small&format=png'"
-        srcset="
-          {{stream.streamingService.logo.url}}?style=small&format=png   1x,
-          {{stream.streamingService.logo.url}}?style=small&format=webp  1x,
-          {{stream.streamingService.logo.url}}?style=medium&format=png  2x,
-          {{stream.streamingService.logo.url}}?style=medium&format=webp 2x
-        "
-        alt="{{ stream.displayName }}"
-        width="40"
-        height="40"
-        loading="lazy"
-        decoding="async"
-      />
-    </div>
-    <div>
+  @for (stream of streams; track stream) {
+    <a
+      href="{{ stream.url }}"
+      class="align-items-center d-flex rounded"
+      target="_blank"
+      style="gap: 1rem; text-decoration: none"
+      [ngStyle]="{ opacity: stream.availableInViewerRegion ? 1 : 0.5 }"
+    >
       <div>
-        <u>{{ stream.displayName }}</u>
-        <span class="badge text-bg-secondary ms-1" *ngIf="stream.expiresAt">
-          Expires {{ stream.expiresAt | date : 'MMM d' }}
-        </span>
+        <img
+          [src]="stream.streamingService.logo.url + '?style=small&format=png'"
+          srcset="
+            {{stream.streamingService.logo.url}}?style=small&format=png   1x,
+            {{stream.streamingService.logo.url}}?style=small&format=webp  1x,
+            {{stream.streamingService.logo.url}}?style=medium&format=png  2x,
+            {{stream.streamingService.logo.url}}?style=medium&format=webp 2x
+          "
+          alt="{{ stream.displayName }}"
+          width="40"
+          height="40"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
-      <small class="text-muted" style="text-decoration: none">{{ stream.comment }}</small>
-    </div>
-  </a>
+      <div>
+        <div>
+          <u>{{ stream.displayName }}</u>
+          @if (stream.expiresAt) {
+            <span class="badge text-bg-secondary ms-1">
+              Expires {{ stream.expiresAt | date: 'MMM d' }}
+            </span>
+          }
+        </div>
+        <small class="text-muted" style="text-decoration: none">{{ stream.comment }}</small>
+      </div>
+    </a>
+  }
 </div>

@@ -6,7 +6,7 @@
         class="d-lg-table-cell"
         [class]="{
           'd-none': (settings.language$ | async) !== 'default',
-          'd-md-table-cell': (settings.language$ | async) === 'en'
+          'd-md-table-cell': (settings.language$ | async) === 'en',
         }"
       >
         Name
@@ -25,22 +25,22 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let anime of animes">
+    @for (anime of animes; track anime) {
       <tr
         class="cursor-pointer"
         [class]="{
-          'fw-bold': anime.list_status.status === 'watching'
+          'fw-bold': anime.list_status.status === 'watching',
         }"
         routerLink="/anime/details/{{ anime.node.id }}"
       >
         <td>
-          <myanili-icon name="{{ anime.node.media_type | mal : 'mediaicon' }}"></myanili-icon>
+          <myanili-icon name="{{ anime.node.media_type | mal: 'mediaicon' }}"></myanili-icon>
         </td>
         <td
           class="d-lg-table-cell"
           [class]="{
             'd-none': (settings.language$ | async) !== 'default',
-            'd-md-table-cell': (settings.language$ | async) === 'en'
+            'd-md-table-cell': (settings.language$ | async) === 'en',
           }"
         >
           {{ anime.my_extension?.displayName || anime.node.title }}
@@ -53,17 +53,15 @@
         </td>
         <td class="d-none d-sm-table-cell">
           {{ anime.node.title }}
-          <span
-            class="text-muted"
-            *ngIf="anime.my_extension?.seasonNumber && anime.my_extension?.seasonNumber != 1"
-            >S{{ anime.my_extension?.seasonNumber }}</span
-          >
+          @if (anime.my_extension?.seasonNumber && anime.my_extension?.seasonNumber != 1) {
+            <span class="text-muted">S{{ anime.my_extension?.seasonNumber }}</span>
+          }
         </td>
         <td style="white-space: nowrap">
           {{ anime.node.start_season?.year || anime.node.start_date }}
           <myanili-icon
             class="d-sm-none"
-            name="{{ anime.node.start_season?.season | mal : 'seasonicon' }}"
+            name="{{ anime.node.start_season?.season | mal: 'seasonicon' }}"
           ></myanili-icon>
           <span class="d-none d-sm-inline">{{ anime.node.start_season?.season | titlecase }}</span>
         </td>
@@ -74,17 +72,18 @@
           ></myanili-streaming>
         </td>
         <td style="white-space: nowrap">
-          <myanili-icon-progress
-            *ngIf="anime.list_status.status === 'watching'"
-            [percent]="
-              anime.node.num_episodes
-                ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
-                : 0
-            "
-          ></myanili-icon-progress>
+          @if (anime.list_status.status === 'watching') {
+            <myanili-icon-progress
+              [percent]="
+                anime.node.num_episodes
+                  ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
+                  : 0
+              "
+            ></myanili-icon-progress>
+          }
           {{ anime.list_status.num_episodes_watched }}/{{ anime.node.num_episodes || '?' }}
         </td>
       </tr>
-    </ng-container>
+    }
   </tbody>
 </table>

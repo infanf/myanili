@@ -8,18 +8,25 @@
   <div class="d-flex flex-fill justify-content-between flex-column p-3">
     <div [routerLink]="left.link" class="cursor-pointer">
       {{ left.title }}
-      <div class="text-muted" *ngIf="left.subtitle">{{ left.subtitle }}</div>
+      @if (left.subtitle) {
+        <div class="text-muted">{{ left.subtitle }}</div>
+      }
     </div>
-    <div *ngIf="right" class="text-end cursor-pointer" [routerLink]="right.link">
-      {{ right.title }}
-      <div class="text-muted" *ngIf="right.subtitle">{{ right.subtitle }}</div>
-    </div>
+    @if (right) {
+      <div class="text-end cursor-pointer" [routerLink]="right.link">
+        {{ right.title }}
+        @if (right.subtitle) {
+          <div class="text-muted">{{ right.subtitle }}</div>
+        }
+      </div>
+    }
   </div>
-  <img
-    *ngIf="right && right.title"
-    loading="lazy"
-    [src]="right.poster || '/assets/blank-poster.svg'"
-    [routerLink]="right.link"
-    class="poster rounded-end cursor-pointer"
-  />
+  @if (right && right.title) {
+    <img
+      loading="lazy"
+      [src]="right.poster || '/assets/blank-poster.svg'"
+      [routerLink]="right.link"
+      class="poster rounded-end cursor-pointer"
+    />
+  }
 </div>

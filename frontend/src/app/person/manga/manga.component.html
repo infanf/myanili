@@ -1,13 +1,14 @@
-<ng-container *ngIf="mangas?.length">
+@if (mangas?.length) {
   <div class="grid grid-2x">
-    <myanili-double-card
-      *ngFor="let manga of mangas"
-      [left]="{
-        poster: manga.manga.images.webp?.image_url || manga.manga.images.jpg.image_url,
-        title: manga.manga.title,
-        subtitle: manga.position,
-        link: '/manga/details/' + manga.manga.mal_id
-      }"
-    ></myanili-double-card>
+    @for (manga of mangas; track manga) {
+      <myanili-double-card
+        [left]="{
+          poster: manga.manga.images.webp?.image_url || manga.manga.images.jpg.image_url,
+          title: manga.manga.title,
+          subtitle: manga.position,
+          link: '/manga/details/' + manga.manga.mal_id,
+        }"
+      ></myanili-double-card>
+    }
   </div>
-</ng-container>
+}

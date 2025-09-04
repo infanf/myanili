@@ -1,20 +1,21 @@
 <div class="grid m-2">
-  <myanili-media-card
-    *ngFor="let anime of animes"
-    [status]="getStatus(anime)"
-    [poster]="anime.node.main_picture?.medium || anime.node.main_picture?.large"
-    [title]="
-      anime.my_extension?.displayName ||
-      ((settings.language$ | async) === 'en'
-        ? anime.node.alternative_titles?.en
-        : (settings.language$ | async) === 'jp'
-        ? anime.node.alternative_titles?.ja
-        : anime.node.title) ||
-      anime.node.title
-    "
-    [progress]="anime.list_status.num_episodes_watched"
-    [parts]="anime.node.num_episodes"
-    [mediaType]="anime.node.media_type"
-    routerLink="/anime/details/{{ anime.node.id }}"
-  ></myanili-media-card>
+  @for (anime of animes; track anime) {
+    <myanili-media-card
+      [status]="getStatus(anime)"
+      [poster]="anime.node.main_picture?.medium || anime.node.main_picture?.large"
+      [title]="
+        anime.my_extension?.displayName ||
+        ((settings.language$ | async) === 'en'
+          ? anime.node.alternative_titles?.en
+          : (settings.language$ | async) === 'jp'
+            ? anime.node.alternative_titles?.ja
+            : anime.node.title) ||
+        anime.node.title
+      "
+      [progress]="anime.list_status.num_episodes_watched"
+      [parts]="anime.node.num_episodes"
+      [mediaType]="anime.node.media_type"
+      routerLink="/anime/details/{{ anime.node.id }}"
+    ></myanili-media-card>
+  }
 </div>

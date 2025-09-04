@@ -1,40 +1,42 @@
-<tr *ngFor="let manga of mangas">
-  <td routerLink="/manga/details/{{ manga.node.id }}" class="cursor-pointer">
-    {{
-      manga.my_extension?.displayName ||
-        ((settings.language$ | async) === 'en'
-          ? manga.node.alternative_titles?.en
-          : (settings.language$ | async) === 'jp'
-          ? manga.node.alternative_titles?.ja
-          : manga.node.title) ||
-        manga.node.title
-    }}
-  </td>
-  <td>
-    <myanili-platform
-      [provider]="manga.my_extension?.platform"
-      [publisher]="manga.my_extension?.publisher"
-    ></myanili-platform>
-  </td>
-  <td class="text-nowrap">
-    <myanili-icon-progress
-      (click)="plusOneChapter(manga)"
-      [name]="manga.busy ? 'loading' : 'plus'"
-      class="cursor-pointer mx-1"
-      [percent]="
-        manga.node.num_chapters
-          ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
-          : 0
-      "
-    ></myanili-icon-progress>
-    {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
-  </td>
-  <td class="text-nowrap">
-    <myanili-icon
-      (click)="plusOneVolume(manga)"
-      [name]="manga.busy ? 'loading-circle' : 'plus-circle'"
-      class="cursor-pointer me-1"
-    ></myanili-icon>
-    {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}
-  </td>
-</tr>
+@for (manga of mangas; track manga) {
+  <tr>
+    <td routerLink="/manga/details/{{ manga.node.id }}" class="cursor-pointer">
+      {{
+        manga.my_extension?.displayName ||
+          ((settings.language$ | async) === 'en'
+            ? manga.node.alternative_titles?.en
+            : (settings.language$ | async) === 'jp'
+              ? manga.node.alternative_titles?.ja
+              : manga.node.title) ||
+          manga.node.title
+      }}
+    </td>
+    <td>
+      <myanili-platform
+        [provider]="manga.my_extension?.platform"
+        [publisher]="manga.my_extension?.publisher"
+      ></myanili-platform>
+    </td>
+    <td class="text-nowrap">
+      <myanili-icon-progress
+        (click)="plusOneChapter(manga)"
+        [name]="manga.busy ? 'loading' : 'plus'"
+        class="cursor-pointer mx-1"
+        [percent]="
+          manga.node.num_chapters
+            ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
+            : 0
+        "
+      ></myanili-icon-progress>
+      {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
+    </td>
+    <td class="text-nowrap">
+      <myanili-icon
+        (click)="plusOneVolume(manga)"
+        [name]="manga.busy ? 'loading-circle' : 'plus-circle'"
+        class="cursor-pointer me-1"
+      ></myanili-icon>
+      {{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}
+    </td>
+  </tr>
+}

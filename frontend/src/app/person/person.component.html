@@ -13,35 +13,46 @@
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <picture>
-        <source
-          *ngIf="person?.images?.jpg?.image_url"
-          srcset="{{ person?.images?.jpg?.image_url }}"
-        />
+        @if (person?.images?.jpg?.image_url) {
+          <source srcset="{{ person?.images?.jpg?.image_url }}" />
+        }
         <source srcset="/assets/blank-poster.svg" />
         <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
       </picture>
     </div>
-    <div class="col-sm-7 col-md-8 mb-3" *ngIf="person">
-      <myanili-value-pair *ngIf="person.given_name || person.family_name" name="Name">
-        {{ person.family_name }} {{ person.given_name }}
-      </myanili-value-pair>
-      <myanili-value-pair *ngIf="person.birthday" name="Birthday">
-        {{ person.birthday | date }}
-      </myanili-value-pair>
-      <myanili-value-pair *ngIf="person.alternate_names.length" name="Alias">
-        <div *ngFor="let name of person.alternate_names">{{ name }}</div>
-      </myanili-value-pair>
-      <myanili-value-pair *ngIf="person.website_url" name="Website">
-        <a [href]="person.website_url" target="_blank">{{ person.website_url }}</a>
-      </myanili-value-pair>
-      <div class="row">
-        <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
-        <div class="col-12 col-md-8" [innerHTML]="person.about || '' | nl2br"></div>
+    @if (person) {
+      <div class="col-sm-7 col-md-8 mb-3">
+        @if (person.given_name || person.family_name) {
+          <myanili-value-pair name="Name">
+            {{ person.family_name }} {{ person.given_name }}
+          </myanili-value-pair>
+        }
+        @if (person.birthday) {
+          <myanili-value-pair name="Birthday">
+            {{ person.birthday | date }}
+          </myanili-value-pair>
+        }
+        @if (person.alternate_names.length) {
+          <myanili-value-pair name="Alias">
+            @for (name of person.alternate_names; track name) {
+              <div>{{ name }}</div>
+            }
+          </myanili-value-pair>
+        }
+        @if (person.website_url) {
+          <myanili-value-pair name="Website">
+            <a [href]="person.website_url" target="_blank">{{ person.website_url }}</a>
+          </myanili-value-pair>
+        }
+        <div class="row">
+          <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
+          <div class="col-12 col-md-8" [innerHTML]="person.about || '' | nl2br"></div>
+        </div>
       </div>
-    </div>
+    }
   </div>
 
-  <ng-container *ngIf="person">
+  @if (person) {
     <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
       <li [ngbNavItem]="1">
         <a ngbNavLink>Anime</a>
@@ -62,7 +73,6 @@
         </ng-template>
       </li>
     </ul>
-
     <div [ngbNavOutlet]="nav" class="mt-2 mb-3"></div>
-  </ng-container>
+  }
 </div>

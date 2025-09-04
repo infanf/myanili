@@ -1,23 +1,26 @@
 <picture>
-  <source *ngIf="poster" srcset="{{ poster }}" />
+  @if (poster) {
+    <source srcset="{{ poster }}" />
+  }
   <source srcset="/assets/blank-poster.svg" />
   <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded-top" />
 </picture>
 <div class="progress">
-  <div
-    *ngIf="meanRating"
-    class="progress-bar"
-    role="progressbar"
-    [ngClass]="{
-      'bg-success': meanRating >= 80,
-      'bg-warning': meanRating < 70 && meanRating >= 50,
-      'bg-danger': meanRating < 50,
-      'progress-bar-striped': !rating
-    }"
-    [ngStyle]="{ 'width.%': meanRating }"
-    aria-valuemin="0"
-    aria-valuemax="10"
-  >
-    {{ meanScore | number : '1.0-2' }}{{ unit }}
-  </div>
+  @if (meanRating) {
+    <div
+      class="progress-bar"
+      role="progressbar"
+      [ngClass]="{
+        'bg-success': meanRating >= 80,
+        'bg-warning': meanRating < 70 && meanRating >= 50,
+        'bg-danger': meanRating < 50,
+        'progress-bar-striped': !rating,
+      }"
+      [ngStyle]="{ 'width.%': meanRating }"
+      aria-valuemin="0"
+      aria-valuemax="10"
+    >
+      {{ meanScore | number: '1.0-2' }}{{ unit }}
+    </div>
+  }
 </div>

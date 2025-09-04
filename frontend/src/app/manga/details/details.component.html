@@ -3,33 +3,26 @@
     <h2>
       {{ manga?.title || title || 'Loading…' }}
     </h2>
-    <div
-      class="ms-auto ps-3 cursor-pointer"
-      *ngIf="manga?.title && !fromCache"
-      style="white-space: nowrap"
-    >
-      <ng-container *ngIf="manga?.my_list_status; else add">
-        <myanili-icon
-          [name]="busy ? 'loading' : edit ? 'check2' : 'pencil'"
-          size="24"
-          (click)="editSave()"
-        ></myanili-icon>
-        <myanili-icon
-          *ngIf="edit && !busy"
-          name="x"
-          size="24"
-          class="ms-3"
-          (click)="stopEdit()"
-        ></myanili-icon>
-      </ng-container>
-      <ng-template #add>
-        <myanili-icon
-          [name]="busy ? 'loading' : 'plus'"
-          size="24"
-          (click)="editSave()"
-        ></myanili-icon>
-      </ng-template>
-    </div>
+    @if (manga?.title && !fromCache) {
+      <div class="ms-auto ps-3 cursor-pointer" style="white-space: nowrap">
+        @if (manga?.my_list_status) {
+          <myanili-icon
+            [name]="busy ? 'loading' : edit ? 'check2' : 'pencil'"
+            size="24"
+            (click)="editSave()"
+          ></myanili-icon>
+          @if (edit && !busy) {
+            <myanili-icon name="x" size="24" class="ms-3" (click)="stopEdit()"></myanili-icon>
+          }
+        } @else {
+          <myanili-icon
+            [name]="busy ? 'loading' : 'plus'"
+            size="24"
+            (click)="editSave()"
+          ></myanili-icon>
+        }
+      </div>
+    }
   </header>
 
   <!-- poster -->
@@ -42,797 +35,918 @@
         [rating]="manga?.my_list_status?.score"
       ></myanili-poster-rating>
       <div class="my-3">
-        <myanili-value-pair
-          *ngIf="manga?.rank"
-          [cols]="6"
-          name="Ranking"
-          value="#{{ manga!.rank | number }}"
-        ></myanili-value-pair>
-        <myanili-value-pair
-          *ngIf="manga?.popularity"
-          [cols]="6"
-          name="Popularity"
-          value="#{{ manga!.popularity | number }}"
-        ></myanili-value-pair>
-        <myanili-value-pair
-          *ngIf="manga?.num_list_users"
-          [cols]="6"
-          name="Members"
-          value="{{ manga!.num_list_users | number }}"
-        ></myanili-value-pair>
+        @if (manga?.rank) {
+          <myanili-value-pair
+            [cols]="6"
+            name="Ranking"
+            value="#{{ manga!.rank | number }}"
+          ></myanili-value-pair>
+        }
+        @if (manga?.popularity) {
+          <myanili-value-pair
+            [cols]="6"
+            name="Popularity"
+            value="#{{ manga!.popularity | number }}"
+          ></myanili-value-pair>
+        }
+        @if (manga?.num_list_users) {
+          <myanili-value-pair
+            [cols]="6"
+            name="Members"
+            value="{{ manga!.num_list_users | number }}"
+          ></myanili-value-pair>
+        }
       </div>
     </div>
 
     <!-- right column -->
 
     <div class="col-sm-7 col-md-8 mb-3">
-      <div class="row mb-2" *ngIf="edit && editBackup">
-        <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
-        <div class="col-8">
-          <myanili-rating [(rating)]="editBackup.score" [size]="16"></myanili-rating>
-        </div>
-      </div>
-      <div class="row" *ngIf="manga?.my_extension?.displayName && !edit">
-        <div class="col-4 fw-bold text-end">Display</div>
-        <div class="col-8">{{ manga?.my_extension?.displayName }}</div>
-      </div>
-      <div class="row my-2" *ngIf="edit && manga && editExtension">
-        <div class="col-4 fw-bold text-end">Display</div>
-        <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.displayName"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
-        </div>
-      </div>
-      <div class="row" *ngIf="manga?.alternative_titles?.en">
-        <div class="col-4 fw-bold text-end">English</div>
-        <div class="col-8">{{ manga?.alternative_titles?.en }}</div>
-      </div>
-      <div class="row" *ngIf="manga?.alternative_titles?.ja">
-        <div class="col-4 fw-bold text-end">{{ originalLanguage }}</div>
-        <div class="col-8">{{ manga?.alternative_titles?.ja }}</div>
-      </div>
-      <div class="row" *ngIf="manga?.alternative_titles?.synonyms?.length">
-        <div class="col-4 fw-bold text-end">Synonyms</div>
-        <div class="col-8">
-          <div *ngFor="let title of manga?.alternative_titles?.synonyms" [innerHtml]="title"></div>
-        </div>
-      </div>
-      <div class="row" *ngIf="manga?.authors && manga?.authors?.length">
-        <div class="col-4 fw-bold text-end">Author</div>
-        <div class="col-8">
-          <div
-            *ngFor="let author of manga!.authors"
-            class="cursor-pointer link-primary"
-            [routerLink]="'/person/' + author.node.id"
-          >
-            {{ author.node.last_name }} {{ author.node.first_name }} ({{ author.role }})
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="manga">
-        <div class="col-4 fw-bold text-end">Type</div>
-        <div class="col-8">
-          <myanili-icon
-            name="{{ manga.media_type | mal: 'mediaicon' }}"
-            class="me-1"
-          ></myanili-icon>
-          {{ manga!.media_type | mal: 'mediatype' }}
-        </div>
-      </div>
-      <div class="row" *ngIf="manga?.serialization?.length">
-        <div class="col-4 fw-bold text-end">Serialization</div>
-        <div class="col-8">
-          <div
-            class="link-primary cursor-pointer"
-            *ngFor="let magazine of manga!.serialization!"
-            [routerLink]="'/manga/magazine/' + magazine.node.id"
-          >
-            {{ magazine.node.name }}
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="manga && manga.start_date">
-        <div class="col-4 fw-bold text-end">Published</div>
-        <div class="col-8">
-          <span class="text-nowrap">{{ manga.start_date | date }}</span>
-          <span *ngIf="manga.start_date !== manga.end_date"> &ndash; </span>
-          <span class="text-nowrap" *ngIf="manga.end_date && manga.start_date !== manga.end_date">{{
-            manga!.end_date | date
-          }}</span>
-        </div>
-      </div>
-      <div class="row" *ngIf="manga?.my_list_status" [class]="{ 'my-2': edit }">
-        <div class="col-4 fw-bold text-end">My&nbsp;List</div>
-        <div class="col-8">
-          <ng-container *ngIf="edit && editBackup; then mylistedit; else mylist"></ng-container>
-          <ng-template #mylist
-            >{{
-              manga!.my_list_status!.is_rereading
-                ? 'Rewatching'
-                : (manga!.my_list_status!.status | mal: 'mystatus')
-            }}
-            <myanili-icon
-              *ngIf="
-                manga!.my_list_status?.status === 'plan_to_read' ||
-                manga!.my_list_status?.status === 'on_hold'
-              "
-              name="play-circle"
-              class="cursor-pointer me-1"
-              (click)="setStatus('reading')"
-            ></myanili-icon>
-            <myanili-icon
-              *ngIf="manga!.my_list_status?.status === 'reading'"
-              name="pause-circle"
-              class="cursor-pointer me-1"
-              (click)="setStatus('on_hold')"
-            ></myanili-icon>
-
-            <myanili-icon
-              *ngIf="
-                manga!.my_list_status?.status === 'completed' &&
-                !manga!.my_list_status?.is_rereading
-              "
-              name="arrow-counterclockwise"
-              class="cursor-pointer me-1"
-              (click)="reread()"
-            ></myanili-icon>
-            <myanili-icon
-              *ngIf="manga!.my_list_status?.status === 'on_hold'"
-              name="arrow-counterclockwise"
-              class="cursor-pointer me-1"
-              (click)="startOver()"
-            ></myanili-icon>
-          </ng-template>
-          <ng-template #mylistedit>
-            <select
-              class="form-control form-control-sm"
-              [(ngModel)]="editBackup!.status"
-              [disabled]="busy"
-            >
-              <option
-                *ngFor="
-                  let status of ['reading', 'completed', 'on_hold', 'dropped', 'plan_to_read']
-                "
-                [value]="status"
-              >
-                {{ status | mal: 'mystatus' }}
-              </option>
-            </select>
-          </ng-template>
-        </div>
-      </div>
-      <div class="row my-2" *ngIf="edit && editBackup">
-        <div class="col-4 fw-bold text-end">Started</div>
-        <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editBackup!.start_date"
-            [disabled]="busy"
-            type="date"
-            enterkeyhint="done"
-          />
-        </div>
-      </div>
-      <div class="row my-2" *ngIf="edit && editBackup">
-        <div class="col-4 fw-bold text-end">Finished</div>
-        <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editBackup!.finish_date"
-            [disabled]="busy"
-            type="date"
-            enterkeyhint="done"
-          />
-        </div>
-      </div>
-      <myanili-value-pair
-        *ngIf="!edit && manga && manga.my_extension && manga.my_extension?.simulpub?.length"
-        name="Simulpub"
-      >
-        {{ getDay(manga.my_extension.simulpub) }}
-      </myanili-value-pair>
-      <myanili-value-pair *ngIf="edit && editExtension" name="Simulpub">
-        <select
-          class="form-control form-control-sm"
-          [(ngModel)]="editExtension!.simulpub"
-          [disabled]="busy"
-          multiple
-        >
-          <option [value]="1">Monday</option>
-          <option [value]="2">Tuesday</option>
-          <option [value]="3">Wednesday</option>
-          <option [value]="4">Thursday</option>
-          <option [value]="5">Friday</option>
-          <option [value]="6">Saturday</option>
-          <option [value]="0">Sunday</option>
-        </select>
-      </myanili-value-pair>
-      <div class="row" *ngIf="!edit && manga && manga.my_extension && manga.my_extension.platform">
-        <div class="col-4 fw-bold text-end">Platform</div>
-        <div class="col-8">
-          <a
-            *ngIf="manga.my_extension.platformId"
-            href="{{ manga.my_extension.platform | platform: 'urlprefix' }}{{
-              manga.my_extension.platformId
-            }}{{ manga.my_extension.platform | platform: 'urlpostfix' }}"
-            target="_blank"
-          >
-            <svg-icon
-              [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-              class="ml-1"
-              src="/assets/platform/{{ manga.my_extension.platform }}.svg"
-            ></svg-icon>
-          </a>
-          <svg-icon
-            *ngIf="!manga.my_extension.platformId"
-            [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-            class="ml-1"
-            src="/assets/platform/{{ manga.my_extension.platform }}.svg"
-          ></svg-icon>
-        </div>
-      </div>
-      <div class="row my-2" *ngIf="edit && manga && editExtension">
-        <div class="col-4 fw-bold text-end">Platform</div>
-        <div class="col-8">
-          <select
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.platform"
-            [disabled]="busy"
-          >
-            <option *ngFor="let provider of platformPipe.platforms" [value]="provider.id">
-              {{ provider.name }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="row my-2" *ngIf="edit && manga && editExtension">
-        <div class="col-4 fw-bold text-end">ID</div>
-        <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.platformId"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
-        </div>
-      </div>
-      <div class="row" *ngIf="!edit && manga && manga.my_extension?.publisher">
-        <div class="col-4 fw-bold text-end">Publisher</div>
-        <div class="col-8">
-          <a
-            *ngIf="manga.my_extension?.publisherWebsite; else pubnolink"
-            [href]="manga.my_extension?.publisherWebsite"
-            target="_blank"
-            class="link-primary"
-          >
-            <myanili-svg-icon
-              [alt]="manga.my_extension?.publisher"
-              [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-              src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
-            ></myanili-svg-icon>
-          </a>
-          <ng-template #pubnolink>
-            <myanili-svg-icon
-              [alt]="manga.my_extension?.publisher"
-              [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-              src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
-            ></myanili-svg-icon>
-          </ng-template>
-        </div>
-      </div>
-      <div class="row my-2" *ngIf="edit && manga && editExtension">
-        <div class="col-4 fw-bold text-end">Publisher</div>
-        <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.publisher"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
-        </div>
-      </div>
-      <div class="row my-2" *ngIf="edit && manga && editExtension">
-        <div class="col-4 fw-bold text-end">Website</div>
-        <div class="col-8">
-          <input
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.publisherWebsite"
-            [disabled]="busy"
-            enterkeyhint="done"
-          />
-        </div>
-      </div>
-      <div class="row" *ngIf="manga && !edit">
-        <div class="col-4 fw-bold text-end">Progress</div>
-        <div class="col-8">
-          <myanili-icon
-            *ngIf="
-              (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) &&
-              !edit
-            "
-            name="plus-circle"
-            class="cursor-pointer me-1"
-            (click)="plusOne('chapter')"
-          ></myanili-icon>
-          {{ manga!.my_list_status?.num_chapters_read || 0 }}/{{ manga!.num_chapters || '?' }}
-          &middot;
-          <myanili-icon
-            *ngIf="
-              (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) &&
-              !edit
-            "
-            name="plus-circle"
-            class="cursor-pointer me-1"
-            (click)="plusOne('volume')"
-          ></myanili-icon>
-          {{ manga!.my_list_status?.num_volumes_read || 0 }}/{{ manga!.num_volumes || '?' }}
-        </div>
-      </div>
-
-      <div *ngIf="manga">
-        <div class="row" *ngIf="!edit">
-          <div class="col-4 fw-bold text-end">Chapters</div>
+      @if (edit && editBackup) {
+        <div class="row mb-2">
+          <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
           <div class="col-8">
-            <div class="progress rounded-pill my-1">
-              <div
-                *ngIf="manga?.my_list_status?.num_chapters_read"
-                class="progress-bar px-1"
-                [ngClass]="{
-                  'bg-success':
-                    manga!.my_list_status?.num_chapters_read == manga!.num_chapters &&
-                    manga!.num_chapters,
-                  'bg-gradient': !manga!.num_chapters,
-                }"
-                [ngStyle]="{
-                  'min-width.%':
-                    manga!.num_chapters || manga!.my_list_status?.num_chapters_read == 0
-                      ? ((manga!.my_list_status?.num_chapters_read || 0) /
-                          (manga!.num_chapters || 1)) *
-                        100
-                      : 30,
-                }"
-              >
-                {{ manga!.my_list_status?.num_chapters_read }}/{{ manga!.num_chapters || '?' }}
-              </div>
-            </div>
+            <myanili-rating [(rating)]="editBackup.score" [size]="16"></myanili-rating>
           </div>
         </div>
-        <div class="row my-2" *ngIf="edit && editBackup">
-          <div class="col-4 fw-bold text-end">Chapters</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control"
-                type="number"
-                min="0"
-                [max]="manga!.num_chapters || 9999"
-                [(ngModel)]="editBackup!.num_chapters_read"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <span class="input-group-text">/ {{ manga!.num_chapters || '?' }}</span>
-            </div>
-          </div>
+      }
+      @if (manga?.my_extension?.displayName && !edit) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Display</div>
+          <div class="col-8">{{ manga?.my_extension?.displayName }}</div>
         </div>
-        <div class="row my-2" *ngIf="edit && editBackup">
-          <div class="col-4 fw-bold text-end">Volumes</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control"
-                type="number"
-                min="0"
-                [max]="manga!.num_chapters || 9999"
-                [(ngModel)]="editBackup!.num_volumes_read"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <span class="input-group-text">/ {{ manga!.num_volumes || '?' }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="row my-2" *ngIf="edit && editBackup">
-          <div class="col-4 fw-bold text-end">Ongoing</div>
-          <div class="col-8">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="ongoing"
-                [checked]="editExtension?.ongoing"
-                (change)="changeOngoing()"
-              />
-              <label class="form-check-label" for="ongoing"> Regular updates </label>
-            </div>
-          </div>
-        </div>
-        <div class="row my-2" *ngIf="edit && editBackup">
-          <div class="col-4 fw-bold text-end">Bookshelf</div>
-          <div class="col-8">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="shelf"
-                [checked]="editExtension?.hideShelf"
-                (change)="changeShelf()"
-              />
-              <label class="form-check-label" for="shelf"> Hide on Bookshelf </label>
-            </div>
-          </div>
-        </div>
-        <div class="row" *ngIf="!edit">
-          <div class="col-4 fw-bold text-end">Links</div>
-          <div class="col-8">
-            <div class="row">
-              <div class="col-4">
-                <td class="text-nowrap">
-                  <myanili-external-rating [rating]="getRating('mal')"></myanili-external-rating>
-                </td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-mal class="text-primary"></myanili-icon-mal>
-                <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
-                  >MyAnimeList</a
-                >
-              </div>
-            </div>
-            <div *ngIf="manga.my_extension?.anilistId" class="row">
-              <div class="col-4">
-                <td class="text-nowrap">
-                  <myanili-external-rating
-                    [rating]="getRating('anilist')"
-                  ></myanili-external-rating>
-                </td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-anilist></myanili-icon-anilist>
-                <a
-                  class="ms-1"
-                  [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
-                  target="_blank"
-                  >AniList</a
-                >
-              </div>
-            </div>
-            <div *ngIf="manga.my_extension?.kitsuId?.kitsuId" class="row">
-              <div class="col-4">
-                <td class="text-nowrap">
-                  <myanili-external-rating [rating]="getRating('kitsu')"></myanili-external-rating>
-                </td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
-                <a
-                  class="ms-1"
-                  [href]="'https://kitsu.app/manga/' + manga.my_extension!.kitsuId!.kitsuId"
-                  target="_blank"
-                  >Kitsu</a
-                >
-              </div>
-            </div>
-            <div *ngIf="manga.id" class="row">
-              <div class="col-4">
-                <td class="text-nowrap">
-                  <myanili-external-rating
-                    [rating]="getRating('shikimori')"
-                  ></myanili-external-rating>
-                </td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-shikimori></myanili-icon-shikimori>
-                <a class="ms-1" [href]="'https://shikimori.one/mangas/' + manga.id" target="_blank"
-                  >Shikimori</a
-                >
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4">
-                <td class="text-nowrap">
-                  <myanili-external-rating
-                    *ngIf="manga.my_extension?.bakaId"
-                    [rating]="getRating('bu')"
-                  ></myanili-external-rating>
-                </td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-bakamanga></myanili-icon-bakamanga>
-                <a
-                  class="ms-1"
-                  [ngClass]="{ 'link-secondary': !manga.my_extension?.bakaId }"
-                  [href]="getBakaUrl()"
-                  target="_blank"
-                  >Baka-Updates</a
-                >
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4">
-                <td class="text-nowrap">
-                  <myanili-external-rating
-                    *ngIf="manga.my_extension?.mdId"
-                    [rating]="getRating('md')"
-                  ></myanili-external-rating>
-                </td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-mangadex></myanili-icon-mangadex>
-                <a
-                  class="ms-1"
-                  [ngClass]="{ 'link-secondary': !manga.my_extension?.mdId }"
-                  [href]="getMdUrl()"
-                  target="_blank"
-                  >MangaDex</a
-                >
-              </div>
-            </div>
-            <div *ngIf="manga.my_extension?.anisearchId" class="row">
-              <div class="col-4">
-                <td class="text-nowrap">
-                  <myanili-external-rating
-                    [rating]="getRating('anisearch')"
-                  ></myanili-external-rating>
-                </td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-anisearch></myanili-icon-anisearch>
-                <a
-                  class="ms-1"
-                  [href]="'https://anisearch.com/manga/' + manga.my_extension!.anisearchId"
-                  target="_blank"
-                  >aniSearch</a
-                >
-              </div>
-            </div>
-            <div class="row" *ngIf="manga.my_extension?.annId">
-              <div class="col-4">
-                <td class="text-nowrap">
-                  <myanili-external-rating [rating]="getRating('ann')"></myanili-external-rating>
-                </td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-ann></myanili-icon-ann>
-                <a
-                  class="ms-1"
-                  [href]="
-                    'https://www.animenewsnetwork.com/encyclopedia/manga.php?id=' +
-                    manga.my_extension!.annId
-                  "
-                  target="_blank"
-                  >ANN</a
-                >
-              </div>
-            </div>
-            <div class="row" *ngIf="manga.my_extension?.mpasId">
-              <div class="col-4"></div>
-              <div class="col-8">
-                <myanili-icon-manga-passion></myanili-icon-manga-passion>
-                <a
-                  class="ms-1"
-                  [href]="'https://www.manga-passion.de/editions/' + manga.my_extension!.mpasId"
-                  target="_blank"
-                  >Manga Passion</a
-                >
-              </div>
-            </div>
-            <div *ngIf="manga.my_extension?.fandomSlug" class="row">
-              <div class="col-4">
-                <td class="text-nowrap"></td>
-              </div>
-              <div class="col-8">
-                <myanili-icon-fandom></myanili-icon-fandom>
-                <a
-                  class="ms-1"
-                  [href]="
-                    manga.my_extension?.fandomSlug?.includes('.')
-                      ? 'https://' + manga.my_extension!.fandomSlug
-                      : 'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
-                  "
-                  target="_blank"
-                  >Fandom</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row my-2" *ngIf="edit && manga && editExtension">
-          <div class="col-4 fw-bold text-end">Anilist</div>
+      }
+      @if (edit && manga && editExtension) {
+        <div class="row my-2">
+          <div class="col-4 fw-bold text-end">Display</div>
           <div class="col-8">
             <input
               class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.anilistId"
+              [(ngModel)]="editExtension!.displayName"
               [disabled]="busy"
               enterkeyhint="done"
             />
           </div>
         </div>
-        <div class="row my-2" *ngIf="edit && manga && editExtension && enableKitsu()">
-          <div class="col-4 fw-bold text-end">Kitsu</div>
+      }
+      @if (manga?.alternative_titles?.en) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">English</div>
+          <div class="col-8">{{ manga?.alternative_titles?.en }}</div>
+        </div>
+      }
+      @if (manga?.alternative_titles?.ja) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">{{ originalLanguage }}</div>
+          <div class="col-8">{{ manga?.alternative_titles?.ja }}</div>
+        </div>
+      }
+      @if (manga?.alternative_titles?.synonyms?.length) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Synonyms</div>
           <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control form-control-sm"
-                [(ngModel)]="editExtension!.kitsuId!.kitsuId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <button class="btn btn-primary" (click)="findKitsu()">
-                <myanili-icon-kitsu></myanili-icon-kitsu>
-              </button>
-            </div>
+            @for (title of manga?.alternative_titles?.synonyms; track title) {
+              <div [innerHtml]="title"></div>
+            }
           </div>
         </div>
-        <div class="row my-2" *ngIf="edit && manga && editExtension">
-          <div class="col-4 fw-bold text-end">Baka-Updates</div>
+      }
+      @if (manga?.authors && manga?.authors?.length) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Author</div>
           <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control form-control-sm"
-                [(ngModel)]="editExtension!.bakaId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <button class="btn btn-primary" (click)="findBaka()">
-                <myanili-icon-bakamanga></myanili-icon-bakamanga>
-              </button>
-            </div>
+            @for (author of manga!.authors; track author) {
+              <div class="cursor-pointer link-primary" [routerLink]="'/person/' + author.node.id">
+                {{ author.node.last_name }} {{ author.node.first_name }} ({{ author.role }})
+              </div>
+            }
           </div>
         </div>
-        <div class="row my-2" *ngIf="edit && manga && editExtension">
-          <div class="col-4 fw-bold text-end">MangaDex</div>
+      }
+      @if (manga) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Type</div>
           <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control form-control-sm"
-                [(ngModel)]="editExtension!.mdId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <!-- <button class="btn btn-primary" (click)="findMd()">
-                <myanili-icon-mangadex></myanili-icon-mangadex>
-              </button> -->
-            </div>
+            <myanili-icon
+              name="{{ manga.media_type | mal: 'mediaicon' }}"
+              class="me-1"
+            ></myanili-icon>
+            {{ manga!.media_type | mal: 'mediatype' }}
           </div>
         </div>
-        <div class="row my-2" *ngIf="edit && editExtension">
-          <div class="col-4 fw-bold text-end">aniSearch</div>
+      }
+      @if (manga?.serialization?.length) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Serialization</div>
           <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control"
-                [(ngModel)]="editExtension!.anisearchId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <!-- <button class="btn btn-primary" (click)="findAnisearch()">
-                <myanili-icon-anisearch></myanili-icon-anisearch>
-              </button> -->
-            </div>
-          </div>
-        </div>
-        <div class="row my-2" *ngIf="edit && manga && editExtension">
-          <div class="col-4 fw-bold text-end">ANN</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control form-control-sm"
-                [(ngModel)]="editExtension!.annId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <button class="btn btn-primary" (click)="findANN()">
-                <myanili-icon-ann></myanili-icon-ann>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="row my-2" *ngIf="edit && manga && editExtension">
-          <div class="col-4 fw-bold text-end">Wiki</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control"
-                [(ngModel)]="editExtension!.fandomSlug"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <span class="input-group-text" *ngIf="!editExtension!.fandomSlug?.includes('.')"
-                >.fandom.com</span
+            @for (magazine of manga!.serialization!; track magazine) {
+              <div
+                class="link-primary cursor-pointer"
+                [routerLink]="'/manga/magazine/' + magazine.node.id"
               >
-            </div>
+                {{ magazine.node.name }}
+              </div>
+            }
           </div>
         </div>
-      </div>
+      }
+      @if (manga && manga.start_date) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Published</div>
+          <div class="col-8">
+            <span class="text-nowrap">{{ manga.start_date | date }}</span>
+            @if (manga.start_date !== manga.end_date) {
+              <span> &ndash; </span>
+            }
+            @if (manga.end_date && manga.start_date !== manga.end_date) {
+              <span class="text-nowrap">{{ manga!.end_date | date }}</span>
+            }
+          </div>
+        </div>
+      }
+      @if (manga?.my_list_status) {
+        <div class="row" [class]="{ 'my-2': edit }">
+          <div class="col-4 fw-bold text-end">My&nbsp;List</div>
+          <div class="col-8">
+            @if (edit && editBackup) {
+              <select
+                class="form-control form-control-sm"
+                [(ngModel)]="editBackup!.status"
+                [disabled]="busy"
+              >
+                @for (
+                  status of ['reading', 'completed', 'on_hold', 'dropped', 'plan_to_read'];
+                  track status
+                ) {
+                  <option [value]="status">
+                    {{ status | mal: 'mystatus' }}
+                  </option>
+                }
+              </select>
+            } @else {
+              {{
+                manga!.my_list_status!.is_rereading
+                  ? 'Rewatching'
+                  : (manga!.my_list_status!.status | mal: 'mystatus')
+              }}
+              @if (
+                manga!.my_list_status?.status === 'plan_to_read' ||
+                manga!.my_list_status?.status === 'on_hold'
+              ) {
+                <myanili-icon
+                  name="play-circle"
+                  class="cursor-pointer me-1"
+                  (click)="setStatus('reading')"
+                ></myanili-icon>
+              }
+              @if (manga!.my_list_status?.status === 'reading') {
+                <myanili-icon
+                  name="pause-circle"
+                  class="cursor-pointer me-1"
+                  (click)="setStatus('on_hold')"
+                ></myanili-icon>
+              }
+              @if (
+                manga!.my_list_status?.status === 'completed' &&
+                !manga!.my_list_status?.is_rereading
+              ) {
+                <myanili-icon
+                  name="arrow-counterclockwise"
+                  class="cursor-pointer me-1"
+                  (click)="reread()"
+                ></myanili-icon>
+              }
+              @if (manga!.my_list_status?.status === 'on_hold') {
+                <myanili-icon
+                  name="arrow-counterclockwise"
+                  class="cursor-pointer me-1"
+                  (click)="startOver()"
+                ></myanili-icon>
+              }
+            }
+          </div>
+        </div>
+      }
+      @if (edit && editBackup) {
+        <div class="row my-2">
+          <div class="col-4 fw-bold text-end">Started</div>
+          <div class="col-8">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editBackup!.start_date"
+              [disabled]="busy"
+              type="date"
+              enterkeyhint="done"
+            />
+          </div>
+        </div>
+      }
+      @if (edit && editBackup) {
+        <div class="row my-2">
+          <div class="col-4 fw-bold text-end">Finished</div>
+          <div class="col-8">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editBackup!.finish_date"
+              [disabled]="busy"
+              type="date"
+              enterkeyhint="done"
+            />
+          </div>
+        </div>
+      }
+      @if (!edit && manga && manga.my_extension && manga.my_extension?.simulpub?.length) {
+        <myanili-value-pair name="Simulpub">
+          {{ getDay(manga.my_extension.simulpub) }}
+        </myanili-value-pair>
+      }
+      @if (edit && editExtension) {
+        <myanili-value-pair name="Simulpub">
+          <select
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.simulpub"
+            [disabled]="busy"
+            multiple
+          >
+            <option [value]="1">Monday</option>
+            <option [value]="2">Tuesday</option>
+            <option [value]="3">Wednesday</option>
+            <option [value]="4">Thursday</option>
+            <option [value]="5">Friday</option>
+            <option [value]="6">Saturday</option>
+            <option [value]="0">Sunday</option>
+          </select>
+        </myanili-value-pair>
+      }
+      @if (!edit && manga && manga.my_extension && manga.my_extension.platform) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Platform</div>
+          <div class="col-8">
+            @if (manga.my_extension.platformId) {
+              <a
+                href="{{ manga.my_extension.platform | platform: 'urlprefix' }}{{
+                  manga.my_extension.platformId
+                }}{{ manga.my_extension.platform | platform: 'urlpostfix' }}"
+                target="_blank"
+              >
+                <svg-icon
+                  [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+                  class="ml-1"
+                  src="/assets/platform/{{ manga.my_extension.platform }}.svg"
+                ></svg-icon>
+              </a>
+            }
+            @if (!manga.my_extension.platformId) {
+              <svg-icon
+                [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+                class="ml-1"
+                src="/assets/platform/{{ manga.my_extension.platform }}.svg"
+              ></svg-icon>
+            }
+          </div>
+        </div>
+      }
+      @if (edit && manga && editExtension) {
+        <div class="row my-2">
+          <div class="col-4 fw-bold text-end">Platform</div>
+          <div class="col-8">
+            <select
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.platform"
+              [disabled]="busy"
+            >
+              @for (provider of platformPipe.platforms; track provider) {
+                <option [value]="provider.id">
+                  {{ provider.name }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+      }
+      @if (edit && manga && editExtension) {
+        <div class="row my-2">
+          <div class="col-4 fw-bold text-end">ID</div>
+          <div class="col-8">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.platformId"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+          </div>
+        </div>
+      }
+      @if (!edit && manga && manga.my_extension?.publisher) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Publisher</div>
+          <div class="col-8">
+            @if (manga.my_extension?.publisherWebsite) {
+              <a [href]="manga.my_extension?.publisherWebsite" target="_blank" class="link-primary">
+                <myanili-svg-icon
+                  [alt]="manga.my_extension?.publisher"
+                  [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+                  src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
+                ></myanili-svg-icon>
+              </a>
+            } @else {
+              <myanili-svg-icon
+                [alt]="manga.my_extension?.publisher"
+                [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+                src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
+              ></myanili-svg-icon>
+            }
+          </div>
+        </div>
+      }
+      @if (edit && manga && editExtension) {
+        <div class="row my-2">
+          <div class="col-4 fw-bold text-end">Publisher</div>
+          <div class="col-8">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.publisher"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+          </div>
+        </div>
+      }
+      @if (edit && manga && editExtension) {
+        <div class="row my-2">
+          <div class="col-4 fw-bold text-end">Website</div>
+          <div class="col-8">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.publisherWebsite"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+          </div>
+        </div>
+      }
+      @if (manga && !edit) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Progress</div>
+          <div class="col-8">
+            @if (
+              (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) &&
+              !edit
+            ) {
+              <myanili-icon
+                name="plus-circle"
+                class="cursor-pointer me-1"
+                (click)="plusOne('chapter')"
+              ></myanili-icon>
+            }
+            {{ manga!.my_list_status?.num_chapters_read || 0 }}/{{ manga!.num_chapters || '?' }}
+            &middot;
+            @if (
+              (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) &&
+              !edit
+            ) {
+              <myanili-icon
+                name="plus-circle"
+                class="cursor-pointer me-1"
+                (click)="plusOne('volume')"
+              ></myanili-icon>
+            }
+            {{ manga!.my_list_status?.num_volumes_read || 0 }}/{{ manga!.num_volumes || '?' }}
+          </div>
+        </div>
+      }
+
+      @if (manga) {
+        <div>
+          @if (!edit) {
+            <div class="row">
+              <div class="col-4 fw-bold text-end">Chapters</div>
+              <div class="col-8">
+                <div class="progress rounded-pill my-1">
+                  @if (manga?.my_list_status?.num_chapters_read) {
+                    <div
+                      class="progress-bar px-1"
+                      [ngClass]="{
+                        'bg-success':
+                          manga!.my_list_status?.num_chapters_read == manga!.num_chapters &&
+                          manga!.num_chapters,
+                        'bg-gradient': !manga!.num_chapters,
+                      }"
+                      [ngStyle]="{
+                        'min-width.%':
+                          manga!.num_chapters || manga!.my_list_status?.num_chapters_read == 0
+                            ? ((manga!.my_list_status?.num_chapters_read || 0) /
+                                (manga!.num_chapters || 1)) *
+                              100
+                            : 30,
+                      }"
+                    >
+                      {{ manga!.my_list_status?.num_chapters_read }}/{{
+                        manga!.num_chapters || '?'
+                      }}
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && editBackup) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">Chapters</div>
+              <div class="col-8">
+                <div class="input-group input-group-sm">
+                  <input
+                    class="form-control"
+                    type="number"
+                    min="0"
+                    [max]="manga!.num_chapters || 9999"
+                    [(ngModel)]="editBackup!.num_chapters_read"
+                    [disabled]="busy"
+                    enterkeyhint="done"
+                  />
+                  <span class="input-group-text">/ {{ manga!.num_chapters || '?' }}</span>
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && editBackup) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">Volumes</div>
+              <div class="col-8">
+                <div class="input-group input-group-sm">
+                  <input
+                    class="form-control"
+                    type="number"
+                    min="0"
+                    [max]="manga!.num_chapters || 9999"
+                    [(ngModel)]="editBackup!.num_volumes_read"
+                    [disabled]="busy"
+                    enterkeyhint="done"
+                  />
+                  <span class="input-group-text">/ {{ manga!.num_volumes || '?' }}</span>
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && editBackup) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">Ongoing</div>
+              <div class="col-8">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="ongoing"
+                    [checked]="editExtension?.ongoing"
+                    (change)="changeOngoing()"
+                  />
+                  <label class="form-check-label" for="ongoing"> Regular updates </label>
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && editBackup) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">Bookshelf</div>
+              <div class="col-8">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="shelf"
+                    [checked]="editExtension?.hideShelf"
+                    (change)="changeShelf()"
+                  />
+                  <label class="form-check-label" for="shelf"> Hide on Bookshelf </label>
+                </div>
+              </div>
+            </div>
+          }
+          @if (!edit) {
+            <div class="row">
+              <div class="col-4 fw-bold text-end">Links</div>
+              <div class="col-8">
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('mal')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-mal class="text-primary"></myanili-icon-mal>
+                    <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
+                      >MyAnimeList</a
+                    >
+                  </div>
+                </div>
+                @if (manga.my_extension?.anilistId) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap">
+                        <myanili-external-rating
+                          [rating]="getRating('anilist')"
+                        ></myanili-external-rating>
+                      </td>
+                    </div>
+                    <div class="col-8">
+                      <myanili-icon-anilist></myanili-icon-anilist>
+                      <a
+                        class="ms-1"
+                        [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
+                        target="_blank"
+                        >AniList</a
+                      >
+                    </div>
+                  </div>
+                }
+                @if (manga.my_extension?.kitsuId?.kitsuId) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap">
+                        <myanili-external-rating
+                          [rating]="getRating('kitsu')"
+                        ></myanili-external-rating>
+                      </td>
+                    </div>
+                    <div class="col-8">
+                      <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
+                      <a
+                        class="ms-1"
+                        [href]="'https://kitsu.app/manga/' + manga.my_extension!.kitsuId!.kitsuId"
+                        target="_blank"
+                        >Kitsu</a
+                      >
+                    </div>
+                  </div>
+                }
+                @if (manga.id) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap">
+                        <myanili-external-rating
+                          [rating]="getRating('shikimori')"
+                        ></myanili-external-rating>
+                      </td>
+                    </div>
+                    <div class="col-8">
+                      <myanili-icon-shikimori></myanili-icon-shikimori>
+                      <a
+                        class="ms-1"
+                        [href]="'https://shikimori.one/mangas/' + manga.id"
+                        target="_blank"
+                        >Shikimori</a
+                      >
+                    </div>
+                  </div>
+                }
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      @if (manga.my_extension?.bakaId) {
+                        <myanili-external-rating
+                          [rating]="getRating('bu')"
+                        ></myanili-external-rating>
+                      }
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-bakamanga></myanili-icon-bakamanga>
+                    <a
+                      class="ms-1"
+                      [ngClass]="{ 'link-secondary': !manga.my_extension?.bakaId }"
+                      [href]="getBakaUrl()"
+                      target="_blank"
+                      >Baka-Updates</a
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      @if (manga.my_extension?.mdId) {
+                        <myanili-external-rating
+                          [rating]="getRating('md')"
+                        ></myanili-external-rating>
+                      }
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-mangadex></myanili-icon-mangadex>
+                    <a
+                      class="ms-1"
+                      [ngClass]="{ 'link-secondary': !manga.my_extension?.mdId }"
+                      [href]="getMdUrl()"
+                      target="_blank"
+                      >MangaDex</a
+                    >
+                  </div>
+                </div>
+                @if (manga.my_extension?.anisearchId) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap">
+                        <myanili-external-rating
+                          [rating]="getRating('anisearch')"
+                        ></myanili-external-rating>
+                      </td>
+                    </div>
+                    <div class="col-8">
+                      <myanili-icon-anisearch></myanili-icon-anisearch>
+                      <a
+                        class="ms-1"
+                        [href]="'https://anisearch.com/manga/' + manga.my_extension!.anisearchId"
+                        target="_blank"
+                        >aniSearch</a
+                      >
+                    </div>
+                  </div>
+                }
+                @if (manga.my_extension?.annId) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap">
+                        <myanili-external-rating
+                          [rating]="getRating('ann')"
+                        ></myanili-external-rating>
+                      </td>
+                    </div>
+                    <div class="col-8">
+                      <myanili-icon-ann></myanili-icon-ann>
+                      <a
+                        class="ms-1"
+                        [href]="
+                          'https://www.animenewsnetwork.com/encyclopedia/manga.php?id=' +
+                          manga.my_extension!.annId
+                        "
+                        target="_blank"
+                        >ANN</a
+                      >
+                    </div>
+                  </div>
+                }
+                @if (manga.my_extension?.mpasId) {
+                  <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-8">
+                      <myanili-icon-manga-passion></myanili-icon-manga-passion>
+                      <a
+                        class="ms-1"
+                        [href]="
+                          'https://www.manga-passion.de/editions/' + manga.my_extension!.mpasId
+                        "
+                        target="_blank"
+                        >Manga Passion</a
+                      >
+                    </div>
+                  </div>
+                }
+                @if (manga.my_extension?.fandomSlug) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap"></td>
+                    </div>
+                    <div class="col-8">
+                      <myanili-icon-fandom></myanili-icon-fandom>
+                      <a
+                        class="ms-1"
+                        [href]="
+                          manga.my_extension?.fandomSlug?.includes('.')
+                            ? 'https://' + manga.my_extension!.fandomSlug
+                            : 'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
+                        "
+                        target="_blank"
+                        >Fandom</a
+                      >
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+          @if (edit && manga && editExtension) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">Anilist</div>
+              <div class="col-8">
+                <input
+                  class="form-control form-control-sm"
+                  [(ngModel)]="editExtension!.anilistId"
+                  [disabled]="busy"
+                  enterkeyhint="done"
+                />
+              </div>
+            </div>
+          }
+          @if (edit && manga && editExtension && enableKitsu()) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">Kitsu</div>
+              <div class="col-8">
+                <div class="input-group input-group-sm">
+                  <input
+                    class="form-control form-control-sm"
+                    [(ngModel)]="editExtension!.kitsuId!.kitsuId"
+                    [disabled]="busy"
+                    enterkeyhint="done"
+                  />
+                  <button class="btn btn-primary" (click)="findKitsu()">
+                    <myanili-icon-kitsu></myanili-icon-kitsu>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && manga && editExtension) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">Baka-Updates</div>
+              <div class="col-8">
+                <div class="input-group input-group-sm">
+                  <input
+                    class="form-control form-control-sm"
+                    [(ngModel)]="editExtension!.bakaId"
+                    [disabled]="busy"
+                    enterkeyhint="done"
+                  />
+                  <button class="btn btn-primary" (click)="findBaka()">
+                    <myanili-icon-bakamanga></myanili-icon-bakamanga>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && manga && editExtension) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">MangaDex</div>
+              <div class="col-8">
+                <div class="input-group input-group-sm">
+                  <input
+                    class="form-control form-control-sm"
+                    [(ngModel)]="editExtension!.mdId"
+                    [disabled]="busy"
+                    enterkeyhint="done"
+                  />
+                  <!-- <button class="btn btn-primary" (click)="findMd()">
+                                      <myanili-icon-mangadex></myanili-icon-mangadex>
+                                    </button> -->
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && editExtension) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">aniSearch</div>
+              <div class="col-8">
+                <div class="input-group input-group-sm">
+                  <input
+                    class="form-control"
+                    [(ngModel)]="editExtension!.anisearchId"
+                    [disabled]="busy"
+                    enterkeyhint="done"
+                  />
+                  <!-- <button class="btn btn-primary" (click)="findAnisearch()">
+                                    <myanili-icon-anisearch></myanili-icon-anisearch>
+                                  </button> -->
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && manga && editExtension) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">ANN</div>
+              <div class="col-8">
+                <div class="input-group input-group-sm">
+                  <input
+                    class="form-control form-control-sm"
+                    [(ngModel)]="editExtension!.annId"
+                    [disabled]="busy"
+                    enterkeyhint="done"
+                  />
+                  <button class="btn btn-primary" (click)="findANN()">
+                    <myanili-icon-ann></myanili-icon-ann>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+          @if (edit && manga && editExtension) {
+            <div class="row my-2">
+              <div class="col-4 fw-bold text-end">Wiki</div>
+              <div class="col-8">
+                <div class="input-group input-group-sm">
+                  <input
+                    class="form-control"
+                    [(ngModel)]="editExtension!.fandomSlug"
+                    [disabled]="busy"
+                    enterkeyhint="done"
+                  />
+                  @if (!editExtension!.fandomSlug?.includes('.')) {
+                    <span class="input-group-text">.fandom.com</span>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
     </div>
   </div>
 
-  <div *ngIf="!edit && manga?.my_extension?.comment" class="my-3">
-    <blockquote
-      class="quotes border-start ps-3 fst-italic quotes"
-      [innerHTML]="manga!.my_extension!.comment! | nl2br"
-    ></blockquote>
-  </div>
+  @if (!edit && manga?.my_extension?.comment) {
+    <div class="my-3">
+      <blockquote
+        class="quotes border-start ps-3 fst-italic quotes"
+        [innerHTML]="manga!.my_extension!.comment! | nl2br"
+      ></blockquote>
+    </div>
+  }
 
-  <div *ngIf="edit && editExtension" class="my-3">
-    <div class="fw-bold">Comment</div>
-    <textarea
-      class="form-control"
-      [(ngModel)]="editExtension.comment"
-      [disabled]="busy"
-      enterkeyhint="done"
-    ></textarea>
-  </div>
+  @if (edit && editExtension) {
+    <div class="my-3">
+      <div class="fw-bold">Comment</div>
+      <textarea
+        class="form-control"
+        [(ngModel)]="editExtension.comment"
+        [disabled]="busy"
+        enterkeyhint="done"
+      ></textarea>
+    </div>
+  }
 
-  <myanili-genres-badges
-    class="mb-3 d-block"
-    *ngIf="!edit && manga"
-    [genres]="manga.genres"
-  ></myanili-genres-badges>
+  @if (!edit && manga) {
+    <myanili-genres-badges class="mb-3 d-block" [genres]="manga.genres"></myanili-genres-badges>
+  }
 
-  <ng-container *ngIf="!edit && manga">
+  @if (!edit && manga) {
     <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
-      <li [ngbNavItem]="1" *ngIf="manga.synopsis || manga.background">
-        <a ngbNavLink>Synopsis</a>
-        <ng-template ngbNavContent>
-          <div class="mb-3" *ngIf="manga.synopsis" [innerHTML]="manga.synopsis || '' | nl2br"></div>
-          <div class="mb-3" *ngIf="manga.background">
-            <strong>Background</strong>
-            <div [innerHTML]="manga.background || '' | nl2br"></div>
-          </div>
-        </ng-template>
-      </li>
+      @if (manga.synopsis || manga.background) {
+        <li [ngbNavItem]="1">
+          <a ngbNavLink>Synopsis</a>
+          <ng-template ngbNavContent>
+            @if (manga.synopsis) {
+              <div class="mb-3" [innerHTML]="manga.synopsis || '' | nl2br"></div>
+            }
+            @if (manga.background) {
+              <div class="mb-3">
+                <strong>Background</strong>
+                <div [innerHTML]="manga.background || '' | nl2br"></div>
+              </div>
+            }
+          </ng-template>
+        </li>
+      }
       <li [ngbNavItem]="3">
         <a ngbNavLink>Characters</a>
         <ng-template ngbNavContent>
           <myanili-manga-characters [id]="id"></myanili-manga-characters>
         </ng-template>
       </li>
-      <li [ngbNavItem]="7" *ngIf="manga?.my_extension?.annId">
-        <a ngbNavLink>News</a>
-        <ng-template ngbNavContent>
-          <myanili-ann-news [annId]="manga.my_extension!.annId!" type="manga"></myanili-ann-news>
-        </ng-template>
-      </li>
-      <li
-        [ngbNavItem]="2"
-        *ngIf="!inModal && (manga?.related_anime?.length || manga?.related_manga?.length)"
-      >
-        <a ngbNavLink>Related</a>
-        <ng-template ngbNavContent>
-          <section *ngIf="!inModal">
-            <myanili-manga-related [related_manga]="manga.related_manga"></myanili-manga-related>
-            <myanili-anime-related
-              [related_anime]="manga.related_anime"
-              [has_covers]="false"
-            ></myanili-anime-related>
-            <myanili-liveaction-related
-              type="manga"
-              [anisearchId]="manga.my_extension?.anisearchId || 0"
-            ></myanili-liveaction-related>
-          </section>
-        </ng-template>
-      </li>
-      <li
-        [ngbNavItem]="4"
-        *ngIf="!inModal && manga.recommendations && manga.recommendations.length"
-      >
-        <a ngbNavLink>Recommendations</a>
-        <ng-template ngbNavContent>
-          <myanili-manga-recommendations
-            [recommendations]="manga.recommendations"
-          ></myanili-manga-recommendations>
-        </ng-template>
-      </li>
+      @if (manga?.my_extension?.annId) {
+        <li [ngbNavItem]="7">
+          <a ngbNavLink>News</a>
+          <ng-template ngbNavContent>
+            <myanili-ann-news [annId]="manga.my_extension!.annId!" type="manga"></myanili-ann-news>
+          </ng-template>
+        </li>
+      }
+      @if (!inModal && (manga?.related_anime?.length || manga?.related_manga?.length)) {
+        <li [ngbNavItem]="2">
+          <a ngbNavLink>Related</a>
+          <ng-template ngbNavContent>
+            @if (!inModal) {
+              <section>
+                <myanili-manga-related
+                  [related_manga]="manga.related_manga"
+                ></myanili-manga-related>
+                <myanili-anime-related
+                  [related_anime]="manga.related_anime"
+                  [has_covers]="false"
+                ></myanili-anime-related>
+                <myanili-liveaction-related
+                  type="manga"
+                  [anisearchId]="manga.my_extension?.anisearchId || 0"
+                ></myanili-liveaction-related>
+              </section>
+            }
+          </ng-template>
+        </li>
+      }
+      @if (!inModal && manga.recommendations && manga.recommendations.length) {
+        <li [ngbNavItem]="4">
+          <a ngbNavLink>Recommendations</a>
+          <ng-template ngbNavContent>
+            <myanili-manga-recommendations
+              [recommendations]="manga.recommendations"
+            ></myanili-manga-recommendations>
+          </ng-template>
+        </li>
+      }
     </ul>
-
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
-  </ng-container>
-  <button *ngIf="edit && !busy" class="btn btn-danger d-block my-3 mx-auto" (click)="deleteEntry()">
-    <myanili-icon name="trash"></myanili-icon>
-    Remove from list
-  </button>
+  }
+  @if (edit && !busy) {
+    <button class="btn btn-danger d-block my-3 mx-auto" (click)="deleteEntry()">
+      <myanili-icon name="trash"></myanili-icon>
+      Remove from list
+    </button>
+  }
 </div>

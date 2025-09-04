@@ -1,103 +1,115 @@
 <myanili-header header="Schedule"></myanili-header>
 <div class="container-fluid mb-3">
-  <div *ngFor="let day of [0, 1, 2, 3, 4, 5, 6]" class="card mt-3">
-    <div class="card-header">
-      {{ getDay(day) }}
+  @for (day of [0, 1, 2, 3, 4, 5, 6]; track day) {
+    <div class="card mt-3">
+      <div class="card-header">
+        {{ getDay(day) }}
+      </div>
+      @if (getAnimes((day + today) % 7).length) {
+        <div class="card-body">
+          <table class="table table-sm mb-0" darkTable>
+            @for (anime of getAnimes((day + today) % 7); track anime) {
+              <tr
+                [ngStyle]="{
+                  opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1,
+                }"
+              >
+                <td>
+                  <div
+                    [class]="{
+                      twolines:
+                        anime.my_list_status?.status === 'plan_to_watch' &&
+                        anime.my_extension!.simulcast.time,
+                    }"
+                  >
+                    @if (anime.my_list_status?.status === 'plan_to_watch') {
+                      <div class="fst-italic">
+                        {{ anime.start_date | date: 'dd.MM.' }}
+                      </div>
+                    }
+                    @if (anime.my_extension?.simulcast?.time) {
+                      <div>
+                        {{
+                          anime.my_extension!.simulcast.time!.substr(0, 5)
+                            | time: anime.my_extension!.simulcast.tz
+                        }}
+                      </div>
+                    }
+                  </div>
+                </td>
+                <td>
+                  <myanili-streaming
+                    [provider]="anime.my_extension?.externalStreaming"
+                    [country]="anime.my_extension?.simulcast?.country"
+                  ></myanili-streaming>
+                  <span
+                    [routerLink]="'/anime/details/' + anime.id!"
+                    class="cursor-pointer entry"
+                    [ngClass]="{
+                      'fst-italic': anime.my_list_status?.status === 'plan_to_watch',
+                    }"
+                  >
+                    {{
+                      ((settings.language$ | async) === 'en'
+                        ? anime.alternative_titles?.en
+                        : (settings.language$ | async) === 'jp'
+                          ? anime.alternative_titles?.ja
+                          : anime.title) || anime.title
+                    }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </table>
+        </div>
+      }
     </div>
+  }
 
-    <div class="card-body" *ngIf="getAnimes((day + today) % 7).length">
-      <table class="table table-sm mb-0" darkTable>
-        <tr
-          *ngFor="let anime of getAnimes((day + today) % 7)"
-          [ngStyle]="{
-            opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1
-          }"
-        >
-          <td>
-            <div
-              [class]="{
-                twolines:
-                  anime.my_list_status?.status === 'plan_to_watch' &&
-                  anime.my_extension!.simulcast.time
+  @if (getOtherAnimes().length) {
+    <div class="card mt-3">
+      <div class="card-header">Unassigned</div>
+      <div class="card-body">
+        <table class="table table-sm mb-0" darkTable>
+          @for (anime of getOtherAnimes(); track anime) {
+            <tr
+              [ngStyle]="{
+                opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1,
               }"
             >
-              <div class="fst-italic" *ngIf="anime.my_list_status?.status === 'plan_to_watch'">
-                {{ anime.start_date | date : 'dd.MM.' }}
-              </div>
-              <div *ngIf="anime.my_extension?.simulcast?.time">
-                {{
-                  anime.my_extension!.simulcast.time!.substr(0, 5)
-                    | time : anime.my_extension!.simulcast.tz
-                }}
-              </div>
-            </div>
-          </td>
-          <td>
-            <myanili-streaming
-              [provider]="anime.my_extension?.externalStreaming"
-              [country]="anime.my_extension?.simulcast?.country"
-            ></myanili-streaming>
-            <span
-              [routerLink]="'/anime/details/' + anime.id!"
-              class="cursor-pointer entry"
-              [ngClass]="{
-                'fst-italic': anime.my_list_status?.status === 'plan_to_watch'
-              }"
-            >
-              {{
-                ((settings.language$ | async) === 'en'
-                  ? anime.alternative_titles?.en
-                  : (settings.language$ | async) === 'jp'
-                  ? anime.alternative_titles?.ja
-                  : anime.title) || anime.title
-              }}
-            </span>
-          </td>
-        </tr>
-      </table>
+              <td class="fst-italic">
+                @if (length(anime.start_date) === 10) {
+                  {{ anime.start_date | date: 'dd.MM.' }}
+                } @else {
+                  {{ anime.start_date | date: 'MMM' }}.
+                }
+              </td>
+              <td>
+                <myanili-streaming
+                  [provider]="anime.my_extension?.externalStreaming"
+                  [country]="anime.my_extension?.simulcast?.country"
+                ></myanili-streaming>
+                <span
+                  [routerLink]="'/anime/details/' + anime.id!"
+                  class="cursor-pointer entry"
+                  [ngClass]="{
+                    'fst-italic': anime.my_list_status?.status === 'plan_to_watch',
+                  }"
+                >
+                  {{
+                    ((settings.language$ | async) === 'en'
+                      ? anime.alternative_titles?.en
+                      : (settings.language$ | async) === 'jp'
+                        ? anime.alternative_titles?.ja
+                        : anime.title) || anime.title
+                  }}
+                </span>
+              </td>
+            </tr>
+          }
+        </table>
+      </div>
     </div>
-  </div>
-
-  <div class="card mt-3" *ngIf="getOtherAnimes().length">
-    <div class="card-header">Unassigned</div>
-    <div class="card-body">
-      <table class="table table-sm mb-0" darkTable>
-        <tr
-          *ngFor="let anime of getOtherAnimes()"
-          [ngStyle]="{
-            opacity: anime.my_list_status?.status === 'completed' ? 0.3 : 1
-          }"
-        >
-          <td class="fst-italic">
-            <ng-container *ngIf="length(anime.start_date) === 10; else monthOnly">{{
-              anime.start_date | date : 'dd.MM.'
-            }}</ng-container>
-            <ng-template #monthOnly>{{ anime.start_date | date : 'MMM' }}.</ng-template>
-          </td>
-          <td>
-            <myanili-streaming
-              [provider]="anime.my_extension?.externalStreaming"
-              [country]="anime.my_extension?.simulcast?.country"
-            ></myanili-streaming>
-            <span
-              [routerLink]="'/anime/details/' + anime.id!"
-              class="cursor-pointer entry"
-              [ngClass]="{
-                'fst-italic': anime.my_list_status?.status === 'plan_to_watch'
-              }"
-            >
-              {{
-                ((settings.language$ | async) === 'en'
-                  ? anime.alternative_titles?.en
-                  : (settings.language$ | async) === 'jp'
-                  ? anime.alternative_titles?.ja
-                  : anime.title) || anime.title
-              }}
-            </span>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
+  }
 </div>
 <myanili-widget-season></myanili-widget-season>

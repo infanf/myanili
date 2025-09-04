@@ -1,21 +1,23 @@
-<span class="d-inline-block me-2" style="position: relative" *ngIf="provider">
-  <svg-icon
-    class="d-md-inline d-none"
-    [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
-    [src]="
-      publisherFinal
-        ? '/assets/publisher/' + publisherFinal + '.svg'
-        : '/assets/platform/' + provider + '.svg'
-    "
-  >
-  </svg-icon>
-  <svg-icon
-    class="d-md-none"
-    [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
-    [src]="
-      publisherFinal
-        ? '/assets/publisher/' + publisherFinal + '.icon.svg'
-        : '/assets/platform/' + provider + '.icon.svg'
-    "
-  ></svg-icon>
-</span>
+@if (provider) {
+  <span class="d-inline-block me-2" style="position: relative">
+    <svg-icon
+      class="d-md-inline d-none"
+      [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
+      [src]="
+        publisherFinal
+          ? '/assets/publisher/' + publisherFinal + '.svg'
+          : '/assets/platform/' + provider + '.svg'
+      "
+    >
+    </svg-icon>
+    <svg-icon
+      class="d-md-none"
+      [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
+      [src]="
+        publisherFinal
+          ? '/assets/publisher/' + publisherFinal + '.icon.svg'
+          : '/assets/platform/' + provider + '.icon.svg'
+      "
+    ></svg-icon>
+  </span>
+}

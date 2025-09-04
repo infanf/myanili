@@ -1,7 +1,8 @@
-<myanili-icon
-  *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-  (click)="rating = i; ratingChange.emit(i)"
-  [name]="i <= (rating || 0) ? 'star-fill' : 'star'"
-  [size]="size"
-  class="cursor-pointer"
-></myanili-icon>
+@for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
+  <myanili-icon
+    (click)="rating = i; ratingChange.emit(i)"
+    [name]="i <= (rating || 0) ? 'star-fill' : 'star'"
+    [size]="size"
+    class="cursor-pointer"
+  ></myanili-icon>
+}

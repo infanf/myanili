@@ -1,9 +1,8 @@
 <nav class="navbar navbar-dark navbar-expand bg-blue sticky-top">
   <div class="container-fluid">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ng-container *ngIf="loggedIn; then app; else login"></ng-container>
-      <ng-template #app>
-        <ng-container *ngIf="loggedIn && loggedIn != '***loading***'">
+      @if (loggedIn) {
+        @if (loggedIn && loggedIn != '***loading***') {
           <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link" routerLink="/anime" routerLinkActive="active">
@@ -33,20 +32,21 @@
             <span class="d-none d-sm-inline">MyAniLi</span>
           </span>
           <div class="d-flex align-items-center ms-auto">
-            <div class="d-flex cursor-pointer" *ngIf="user">
-              <span class="my-auto me-3 text-white">{{ user!.name }}</span>
-              <myanili-notifications></myanili-notifications>
-              <img
-                [src]="user!.picture"
-                style="height: 32px; border-radius: 50%"
-                alt="{{ user!.name }}"
-                (click)="showSettings()"
-              />
-            </div>
+            @if (user) {
+              <div class="d-flex cursor-pointer">
+                <span class="my-auto me-3 text-white">{{ user!.name }}</span>
+                <myanili-notifications></myanili-notifications>
+                <img
+                  [src]="user!.picture"
+                  style="height: 32px; border-radius: 50%"
+                  alt="{{ user!.name }}"
+                  (click)="showSettings()"
+                />
+              </div>
+            }
           </div>
-        </ng-container>
-      </ng-template>
-      <ng-template #login>
+        }
+      } @else {
         <div></div>
         <span class="navbar-brand me-0">
           <svg
@@ -68,7 +68,7 @@
             Login
           </button>
         </div>
-      </ng-template>
+      }
     </div>
   </div>
 </nav>
