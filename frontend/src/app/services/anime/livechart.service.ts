@@ -446,7 +446,9 @@ export class LivechartService {
         localStorage.setItem('livechartRefreshToken', this.refreshToken);
         this.expires = Math.floor(Date.now() / 1000 + response.expires_in);
         localStorage.setItem('livechartExpires', this.expires.toString());
-        return this.checkLogin(false);
+        const user = await this.checkLogin(false);
+        if (user) this.userSubject.next(user);
+        return user;
       }
       return;
     }
@@ -469,7 +471,9 @@ export class LivechartService {
       localStorage.setItem('livechartRefreshToken', this.refreshToken);
       this.expires = Math.floor(Date.now() / 1000 + response.expires_in);
       localStorage.setItem('livechartExpires', this.expires.toString());
-      return this.checkLogin(false);
+      const user = await this.checkLogin(false);
+      if (user) this.userSubject.next(user);
+      return user;
     }
     return;
   }
