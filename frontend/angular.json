@@ -68,7 +68,9 @@
                 "./node_modules"
               ]
             },
-            "scripts": [],
+            "scripts": [
+              "node_modules/buffer/index.js"
+            ],
             "allowedCommonJsDependencies": [
               "crypto-js",
               "moment",
@@ -175,7 +177,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/buffer/index.js"
+            ]
           }
         },
         "e2e": {

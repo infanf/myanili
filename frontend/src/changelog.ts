@@ -2,7 +2,7 @@ export const changelog: Changelog = {
   changes: [
     {
       version: '2.33.9',
-      date: new Date('2025-09-04'),
+      date: new Date('2025-09-08'),
       fixes: ['Login: need reload to show user for MAL and Livechart'],
       other: ['Update dependencies'],
     },

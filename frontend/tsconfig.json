@@ -47,6 +47,9 @@
       ],
       "stream": [
         "./node_modules/stream-browserify"
+      ],
+      "buffer": [
+        "./node_modules/buffer/index.js"
       ]
     },
     "resolveJsonModule": true,
