@@ -1,6 +1,16 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.9',
+      date: new Date('2025-09-04'),
+      fixes: ['Login: need reload to show user for MAL and Livechart'],
+    },
+    {
+      version: '2.33.8',
+      date: new Date('2025-06-26'),
+      fixes: ['Anisearch: fix OAuth authentication by implementing PKCE support'],
+    },
+    {
       version: '2.33.7',
       date: new Date('2025-06-19'),
       fixes: [
