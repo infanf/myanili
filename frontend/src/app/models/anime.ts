@@ -269,6 +269,7 @@ export function parseExtension(comments: string): AnimeExtension {
     const extension = JSON.parse(Base64.decode(comments)) as unknown as Partial<AnimeExtension>;
     return migrateSimulcasts(extension);
   } catch (e) {
+    console.error(e);
     return {
       simulcast: {},
     } as AnimeExtension;

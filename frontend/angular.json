@@ -45,6 +45,7 @@
             },
             "index": "src/index.html",
             "polyfills": [
+              "src/polyfills.ts",
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
@@ -68,9 +69,7 @@
                 "./node_modules"
               ]
             },
-            "scripts": [
-              "node_modules/buffer/index.js"
-            ],
+            "scripts": [],
             "allowedCommonJsDependencies": [
               "crypto-js",
               "moment",
@@ -165,6 +164,7 @@
           "options": {
             "main": "src/test.ts",
             "polyfills": [
+              "src/polyfills.ts",
               "zone.js"
             ],
             "tsConfig": "tsconfig.spec.json",
@@ -177,9 +177,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/buffer/index.js"
-            ]
+            "scripts": []
           }
         },
         "e2e": {
