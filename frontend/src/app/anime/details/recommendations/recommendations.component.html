@@ -1,10 +1,11 @@
 <div class="grid my-2">
-  <myanili-media-card
-    *ngFor="let anime of recommendations"
-    [poster]="anime.node.main_picture?.medium || anime.node.main_picture?.large"
-    [title]="anime.node.title"
-    [recommendations]="anime.num_recommendations"
-    [status]="anime.node.my_list_status?.status"
-    routerLink="/anime/details/{{ anime.node.id }}"
-  ></myanili-media-card>
+  @for (anime of recommendations; track anime) {
+    <myanili-media-card
+      [poster]="anime.node.main_picture?.medium || anime.node.main_picture?.large"
+      [title]="anime.node.title"
+      [recommendations]="anime.num_recommendations"
+      [status]="anime.node.my_list_status?.status"
+      routerLink="/anime/details/{{ anime.node.id }}"
+    ></myanili-media-card>
+  }
 </div>

@@ -1,5 +1,5 @@
 <myanili-header
-  header="{{ !showDate ? 'Watchlist' : (getLast8am().toJSDate() | date : 'EEE, MMM d') }}"
+  header="{{ !showDate ? 'Watchlist' : (getLast8am().toJSDate() | date: 'EEE, MMM d') }}"
   (click)="showDate = !showDate"
 ></myanili-header>
 <section>
@@ -19,11 +19,11 @@
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let anime of animes">
+      @for (anime of animes; track anime) {
         <tr
           [class]="{
             seen: isSeen(anime),
-            'text-green': anime.list_status.num_episodes_watched === 0
+            'text-green': anime.list_status.num_episodes_watched === 0,
           }"
         >
           <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
@@ -32,8 +32,8 @@
                 ((settings.language$ | async) === 'en'
                   ? anime.node.alternative_titles?.en
                   : (settings.language$ | async) === 'jp'
-                  ? anime.node.alternative_titles?.ja
-                  : anime.node.title) ||
+                    ? anime.node.alternative_titles?.ja
+                    : anime.node.title) ||
                 anime.node.title
             }}
           </td>
@@ -47,7 +47,7 @@
             ></myanili-icon-progress>
           </td>
           <td style="white-space: nowrap">
-            <ng-container *ngIf="anime.node.media_type !== 'movie'">
+            @if (anime.node.media_type !== 'movie') {
               {{
                 anime.my_extension?.seasonNumber === 0
                   ? anime.my_extension?.seasonNumber
@@ -57,7 +57,7 @@
                   (anime.my_extension?.episodeCorOffset || 0) +
                   (isSeen(anime) ? 0 : 1)
               }}
-            </ng-container>
+            }
           </td>
           <td>
             <myanili-streaming
@@ -70,43 +70,43 @@
               anime.my_extension?.simulcast?.time
                 ? anime.my_extension?.simulcast?.day?.includes(getLast8am().weekday % 7)
                   ? (anime.my_extension!.simulcast.time!.substr(0, 5)
-                    | time : anime.my_extension!.simulcast.tz)
+                    | time: anime.my_extension!.simulcast.tz)
                   : (getLastDay(anime.my_extension?.simulcast?.day) | day)
                 : ''
             }}
           </td>
           <td>
-            <myanili-icon
-              *ngIf="anime.my_extension?.simulcast?.day && isInSeason(anime); else plusIcon"
-              [class]="{ 'cursor-pointer': !isSeen(anime) }"
-              class="mx-2"
-              [name]="
-                anime.busy
-                  ? 'loading-circle'
-                  : anime.list_status.status === 'dropped'
-                  ? 'trash'
-                  : isSeen(anime)
-                  ? 'check-circle'
-                  : 'circle'
-              "
-              (click)="markSeen(anime)"
-            ></myanili-icon>
-            <ng-template #plusIcon>
+            @if (anime.my_extension?.simulcast?.day && isInSeason(anime)) {
+              <myanili-icon
+                [class]="{ 'cursor-pointer': !isSeen(anime) }"
+                class="mx-2"
+                [name]="
+                  anime.busy
+                    ? 'loading-circle'
+                    : anime.list_status.status === 'dropped'
+                      ? 'trash'
+                      : isSeen(anime)
+                        ? 'check-circle'
+                        : 'circle'
+                "
+                (click)="markSeen(anime)"
+              ></myanili-icon>
+            } @else {
               <myanili-icon
                 class="cursor-pointer mx-2"
                 [name]="
                   anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
                     ? 'check-circle'
                     : anime.busy
-                    ? 'loading-circle'
-                    : 'plus-circle'
+                      ? 'loading-circle'
+                      : 'plus-circle'
                 "
                 (click)="markSeen(anime)"
               ></myanili-icon>
-            </ng-template>
+            }
           </td>
         </tr>
-      </ng-container>
+      }
     </tbody>
   </table>
 </section>

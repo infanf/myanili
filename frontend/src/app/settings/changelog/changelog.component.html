@@ -1,36 +1,46 @@
 <div class="card mt-3">
   <div class="card-header">Changelog</div>
-  <div class="card-body border-bottom pb-0" *ngFor="let change of changes">
-    <h6>
-      v{{ change.version }}
-      <small class="text-muted" *ngIf="change.date">
-        ({{ change.date | date: 'mediumDate' }})
-      </small>
-    </h6>
-    <div *ngIf="change.features?.length">
-      Features:
-      <ul>
-        <li *ngFor="let feature of change.features">{{ feature }}</li>
-      </ul>
+  @for (change of changes; track change) {
+    <div class="card-body border-bottom pb-0">
+      <h6>
+        v{{ change.version }}
+        @if (change.date) {
+          <small class="text-muted"> ({{ change.date | date: 'mediumDate' }}) </small>
+        }
+      </h6>
+      @if (change.features?.length) {
+        <div>
+          Features:
+          <ul>
+            @for (feature of change.features; track feature) {
+              <li>{{ feature }}</li>
+            }
+          </ul>
+        </div>
+      }
+      @if (change.fixes?.length) {
+        <div>
+          Fixes:
+          <ul>
+            @for (fix of change.fixes; track fix) {
+              <li>{{ fix }}</li>
+            }
+          </ul>
+        </div>
+      }
+      @if (change.other?.length) {
+        <div>
+          Other:
+          <ul>
+            @for (other of change.other; track other) {
+              <li>{{ other }}</li>
+            }
+          </ul>
+        </div>
+      }
     </div>
-    <div *ngIf="change.fixes?.length">
-      Fixes:
-      <ul>
-        <li *ngFor="let fix of change.fixes">{{ fix }}</li>
-      </ul>
-    </div>
-    <div *ngIf="change.other?.length">
-      Other:
-      <ul>
-        <li *ngFor="let other of change.other">{{ other }}</li>
-      </ul>
-    </div>
-  </div>
-  <div
-    class="card-footer cursor-pointer"
-    *ngIf="!showall && changelog.changes.length > limit"
-    (click)="showall = true"
-  >
-    Show all
-  </div>
+  }
+  @if (!showall && changelog.changes.length > limit) {
+    <div class="card-footer cursor-pointer" (click)="showall = true">Show all</div>
+  }
 </div>

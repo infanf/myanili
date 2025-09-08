@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-5">Kitsu</div>
   <div class="col-7">
-    <ng-container *ngIf="kitsuLoggedIn; else kitsuConnectTemplate">
+    @if (kitsuLoggedIn) {
       <myanili-icon-kitsu style="color: #e75e45" class="me-1"></myanili-icon-kitsu>
       <a
         href="https://kitsu.app/users/{{ kitsuLoggedIn.attributes.name || kitsuLoggedIn.id }}"
@@ -14,9 +14,8 @@
         size="20"
         (click)="kitsuLogoff()"
       ></myanili-icon>
-    </ng-container>
-    <ng-template #kitsuConnectTemplate>
-      <ng-container *ngIf="kitsuData">
+    } @else {
+      @if (kitsuData) {
         <input
           class="form-control mb-1"
           placeholder="Email / Username"
@@ -43,7 +42,7 @@
             >
           </label>
         </div>
-      </ng-container>
+      }
       <button
         class="btn btn-sm btn-primary"
         (click)="kitsuConnect()"
@@ -52,6 +51,6 @@
         <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
         Connect
       </button>
-    </ng-template>
+    }
   </div>
 </div>

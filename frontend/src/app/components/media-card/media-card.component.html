@@ -1,16 +1,16 @@
 <div class="card cursor-pointer overflow-hidden">
   <picture>
-    <source *ngIf="poster" [srcset]="poster" />
+    @if (poster) {
+      <source [srcset]="poster" />
+    }
     <source srcset="/assets/blank-poster.svg" />
     <img loading="lazy" src="/assets/blank-poster.svg" alt="poster" class="card-img" />
   </picture>
   <div class="card-overlay">
     <span class="line-clamp">
-      <myanili-icon
-        *ngIf="mediaType"
-        name="{{ mediaType | mal : 'mediaicon' }}"
-        class="me-1"
-      ></myanili-icon>
+      @if (mediaType) {
+        <myanili-icon name="{{ mediaType | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
+      }
       {{ title }}
     </span>
   </div>

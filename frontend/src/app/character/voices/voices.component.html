@@ -1,13 +1,14 @@
-<ng-container *ngIf="actors.length">
+@if (actors.length) {
   <div class="grid grid-2x">
-    <myanili-double-card
-      *ngFor="let actor of actors"
-      [left]="{
-        poster: actor.person.images.webp?.image_url || actor.person.images.jpg.image_url,
-        title: actor.person.name,
-        subtitle: actor.language,
-        link: '/person/' + actor.person.mal_id
-      }"
-    ></myanili-double-card>
+    @for (actor of actors; track actor) {
+      <myanili-double-card
+        [left]="{
+          poster: actor.person.images.webp?.image_url || actor.person.images.jpg.image_url,
+          title: actor.person.name,
+          subtitle: actor.language,
+          link: '/person/' + actor.person.mal_id,
+        }"
+      ></myanili-double-card>
+    }
   </div>
-</ng-container>
+}

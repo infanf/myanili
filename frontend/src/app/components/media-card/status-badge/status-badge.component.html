@@ -1,13 +1,12 @@
-<ng-container *ngIf="icon; else magic">
+@if (icon) {
   <myanili-icon
     class="badge rounded-pill bg-primary"
     style="position: absolute; top: 0.5rem; right: 0.5rem; height: 2rem; padding-top: 0.5rem"
     [name]="icon"
   ></myanili-icon>
-</ng-container>
-<ng-template #magic>
-  <ng-container *ngIf="status; else recommendationbadge">
-    <ng-container *ngIf="status === 'watching' || status === 'reading'; else statusicon">
+} @else {
+  @if (status) {
+    @if (status === 'watching' || status === 'reading') {
       <div
         style="
           position: absolute;
@@ -29,22 +28,21 @@
           class="text-white bg-primary"
         ></circle-progress>
       </div>
-    </ng-container>
-    <ng-template #statusicon>
+    } @else {
       <myanili-icon-status
         class="badge rounded-pill {{ bgClass }}"
         style="position: absolute; top: 0.5rem; right: 0.5rem; height: 2rem; padding-top: 0.5rem"
         [status]="status"
       ></myanili-icon-status>
-    </ng-template>
-  </ng-container>
-  <ng-template #recommendationbadge>
-    <div
-      *ngIf="recommendations"
-      class="badge rounded-pill {{ bgClass }}"
-      style="position: absolute; top: 0.5rem; right: 0.5rem"
-    >
-      {{ recommendations }}
-    </div>
-  </ng-template>
-</ng-template>
+    }
+  } @else {
+    @if (recommendations) {
+      <div
+        class="badge rounded-pill {{ bgClass }}"
+        style="position: absolute; top: 0.5rem; right: 0.5rem"
+      >
+        {{ recommendations }}
+      </div>
+    }
+  }
+}

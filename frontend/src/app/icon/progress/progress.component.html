@@ -1,11 +1,17 @@
-<span style="position: relative" *ngIf="percent !== 100">
-  <circle-progress
-    [radius]="(7.5 / 16) * size"
-    [outerStrokeWidth]="(1 / 16) * size"
-    [innerStrokeWidth]="(1 / 16) * size"
-    [space]="(-1 / 16) * size"
-    [percent]="percent"
-  ></circle-progress>
-  <myanili-icon class="overlay-icon" *ngIf="name" [size]="size" [name]="name"></myanili-icon>
-</span>
-<myanili-icon *ngIf="percent === 100" [size]="size" name="check-circle"></myanili-icon>
+@if (percent !== 100) {
+  <span style="position: relative">
+    <circle-progress
+      [radius]="(7.5 / 16) * size"
+      [outerStrokeWidth]="(1 / 16) * size"
+      [innerStrokeWidth]="(1 / 16) * size"
+      [space]="(-1 / 16) * size"
+      [percent]="percent"
+    ></circle-progress>
+    @if (name) {
+      <myanili-icon class="overlay-icon" [size]="size" [name]="name"></myanili-icon>
+    }
+  </span>
+}
+@if (percent === 100) {
+  <myanili-icon [size]="size" name="check-circle"></myanili-icon>
+}

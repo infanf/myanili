@@ -65,7 +65,7 @@ $router->get('/auth', function () {
             $javascript = "";
             foreach (explode(',', env('APP_CLIENT')) as $opener) {
                 $javascript .= <<<JAVASCRIPT
-                    window.opener.postMessage(true, "$opener");
+                    window.opener.postMessage({mal: true}, "$opener");
 JAVASCRIPT;
             }
 

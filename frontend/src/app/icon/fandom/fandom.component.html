@@ -1,9 +1,10 @@
-<picture *ngIf="favicon; else fandom">
-  <source [srcset]="favicon">
-  <source srcset="/favicon.ico">
-  <img src="/favicon.ico" [attr.width]="size" (error)="setDefault()" />
-</picture>
-<ng-template #fandom>
+@if (favicon) {
+  <picture>
+    <source [srcset]="favicon" />
+    <source srcset="/favicon.ico" />
+    <img src="/favicon.ico" [attr.width]="size" (error)="setDefault()" />
+  </picture>
+} @else {
   <svg [attr.width]="size" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148 148">
     <path
       d="M122.705 72.64L51.525 1.48a2.634 2.634 0 00-2.862-.572 2.633 2.633 0 00-1.628 2.422v59.84l-21.56-21.54a2.635 2.635 0 00-2.867-.57 2.634 2.634 0 00-1.623 2.43v61.79a14.678 14.678 0 004.31 10.42l28.05 28a14.77 14.77 0 0010.4 4.3h20.53a14.72 14.72 0 0010.39-4.3l28.05-28a14.669 14.669 0 004.3-10.39V83.04a14.66 14.66 0 00-4.31-10.4z"
@@ -14,4 +15,4 @@
       fill="#ffc500"
     />
   </svg>
-</ng-template>
+}

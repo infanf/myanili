@@ -1,23 +1,24 @@
 <myanili-header [header]="title"></myanili-header>
 <section>
-  <myanili-manga-list
-    *ngIf="(settings.layout$ | async) === 'list'"
-    [mangas]="mangas"
-  ></myanili-manga-list>
-  <myanili-manga-grid
-    *ngIf="(settings.layout$ | async) !== 'list'"
-    [mangas]="mangas"
-  ></myanili-manga-grid>
-  <div
-    *ngIf="mangas.length && !loadedAll"
-    style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
-    inViewport
-    (inViewportAction)="handleScroll($event)"
-  >
-    &nbsp;
-  </div>
-  <div *ngIf="loading" class="text-center">
-    <myanili-icon name="loading"></myanili-icon>
-    Loading more...
-  </div>
+  @if ((settings.layout$ | async) === 'list') {
+    <myanili-manga-list [mangas]="mangas"></myanili-manga-list>
+  }
+  @if ((settings.layout$ | async) !== 'list') {
+    <myanili-manga-grid [mangas]="mangas"></myanili-manga-grid>
+  }
+  @if (mangas.length && !loadedAll) {
+    <div
+      style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
+      inViewport
+      (inViewportAction)="handleScroll($event)"
+    >
+      &nbsp;
+    </div>
+  }
+  @if (loading) {
+    <div class="text-center">
+      <myanili-icon name="loading"></myanili-icon>
+      Loading more...
+    </div>
+  }
 </section>

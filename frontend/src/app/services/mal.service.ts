@@ -117,13 +117,14 @@ export class MalService {
 
   async login() {
     return new Promise(r => {
-      const loginWindow = window.open(this.backendUrl + 'auth');
       window.addEventListener('message', async event => {
-        if (event.data) {
+        console.log(event);
+        if (event.data?.mal) {
           await this.checkLogin();
         }
         loginWindow?.close();
       });
+      const loginWindow = window.open(`${this.backendUrl}auth`);
     });
   }
 
