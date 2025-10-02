@@ -10,6 +10,7 @@ import { GlobalService } from '@services/global.service';
 })
 export class AnilistLoginComponent implements OnInit {
   anilistLoggedIn?: AnilistUser;
+  anilistLoading = false;
 
   constructor(
     private anilist: AnilistService,
@@ -28,9 +29,14 @@ export class AnilistLoginComponent implements OnInit {
   }
 
   async anilistConnect() {
-    this.glob.busy();
-    await this.anilist.login();
-    this.glob.notbusy();
+    this.anilistLoading = true;
+    try {
+      this.glob.busy();
+      await this.anilist.login();
+      this.glob.notbusy();
+    } finally {
+      this.anilistLoading = false;
+    }
   }
 
   async anilistLogoff() {

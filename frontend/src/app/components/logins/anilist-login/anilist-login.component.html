@@ -13,8 +13,12 @@
         (click)="anilistLogoff()"
       ></myanili-icon>
     } @else {
-      <button class="btn btn-sm btn-primary" (click)="anilistConnect()">
-        <myanili-icon-anilist></myanili-icon-anilist>
+      <button class="btn btn-sm btn-primary" (click)="anilistConnect()" [disabled]="anilistLoading">
+        @if (anilistLoading) {
+          <myanili-icon-loading></myanili-icon-loading>
+        } @else {
+          <myanili-icon-anilist></myanili-icon-anilist>
+        }
         Connect
       </button>
     }

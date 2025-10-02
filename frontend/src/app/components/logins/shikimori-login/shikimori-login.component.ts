@@ -10,6 +10,7 @@ import { ShikimoriService } from '@services/shikimori.service';
 })
 export class ShikimoriLoginComponent implements OnInit {
   shikimoriLoggedIn?: ShikimoriUser;
+  shikimoriLoading = false;
 
   constructor(
     private shikimori: ShikimoriService,
@@ -28,9 +29,14 @@ export class ShikimoriLoginComponent implements OnInit {
   }
 
   async shikimoriConnect() {
-    this.glob.busy();
-    await this.shikimori.login();
-    this.glob.notbusy();
+    this.shikimoriLoading = true;
+    try {
+      this.glob.busy();
+      await this.shikimori.login();
+      this.glob.notbusy();
+    } finally {
+      this.shikimoriLoading = false;
+    }
   }
 
   async shikimoriLogoff() {

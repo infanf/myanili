@@ -11,6 +11,7 @@ import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 export class BakaLoginComponent implements OnInit {
   bakaLoggedIn?: BakaUser;
   bakaData?: { username: string; password: string; saveLogin: boolean };
+  bakaLoading = false;
 
   constructor(
     private baka: MangaupdatesService,
@@ -37,9 +38,14 @@ export class BakaLoginComponent implements OnInit {
       };
       return;
     }
-    this.glob.busy();
-    await this.baka.login(this.bakaData?.username, this.bakaData?.password);
-    this.glob.notbusy();
+    this.bakaLoading = true;
+    try {
+      this.glob.busy();
+      await this.baka.login(this.bakaData?.username, this.bakaData?.password);
+      this.glob.notbusy();
+    } finally {
+      this.bakaLoading = false;
+    }
   }
 
   async bakaLogoff() {

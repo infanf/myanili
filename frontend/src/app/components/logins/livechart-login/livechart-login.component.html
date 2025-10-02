@@ -30,9 +30,16 @@
       <button
         class="btn btn-sm btn-primary"
         (click)="livechartConnect()"
-        [disabled]="livechartData && (!livechartData.username || !livechartData.password)"
+        [disabled]="
+          (livechartData && (!livechartData.username || !livechartData.password)) ||
+          livechartLoading
+        "
       >
-        <myanili-icon-livechart></myanili-icon-livechart>
+        @if (livechartLoading) {
+          <myanili-icon-loading></myanili-icon-loading>
+        } @else {
+          <myanili-icon-livechart></myanili-icon-livechart>
+        }
         Connect
       </button>
     }

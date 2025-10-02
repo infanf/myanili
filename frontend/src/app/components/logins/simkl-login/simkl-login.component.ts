@@ -9,6 +9,7 @@ import { GlobalService } from '@services/global.service';
 })
 export class SimklLoginComponent implements OnInit {
   simklLoggedIn?: SimklUser;
+  simklLoading = false;
 
   constructor(
     private simkl: SimklService,
@@ -27,9 +28,14 @@ export class SimklLoginComponent implements OnInit {
   }
 
   async simklConnect() {
-    this.glob.busy();
-    await this.simkl.login();
-    this.glob.notbusy();
+    this.simklLoading = true;
+    try {
+      this.glob.busy();
+      await this.simkl.login();
+      this.glob.notbusy();
+    } finally {
+      this.simklLoading = false;
+    }
   }
 
   async simklLogoff() {

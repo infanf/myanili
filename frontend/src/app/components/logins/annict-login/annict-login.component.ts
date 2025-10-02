@@ -9,6 +9,7 @@ import { GlobalService } from '@services/global.service';
 })
 export class AnnictLoginComponent implements OnInit {
   annictLoggedIn?: string;
+  annictLoading = false;
 
   constructor(
     private annict: AnnictService,
@@ -27,9 +28,14 @@ export class AnnictLoginComponent implements OnInit {
   }
 
   async annictConnect() {
-    this.glob.busy();
-    await this.annict.login();
-    this.glob.notbusy();
+    this.annictLoading = true;
+    try {
+      this.glob.busy();
+      await this.annict.login();
+      this.glob.notbusy();
+    } finally {
+      this.annictLoading = false;
+    }
   }
 
   async annictLogoff() {

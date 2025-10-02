@@ -1,6 +1,6 @@
 {
   "name": "myanili-frontend",
-  "version": "2.33.9",
+  "version": "2.33.10",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --host=0.0.0.0",

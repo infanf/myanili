@@ -46,9 +46,13 @@
       <button
         class="btn btn-sm btn-primary"
         (click)="kitsuConnect()"
-        [disabled]="kitsuData && (!kitsuData.username || !kitsuData.password)"
+        [disabled]="(kitsuData && (!kitsuData.username || !kitsuData.password)) || kitsuLoading"
       >
-        <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
+        @if (kitsuLoading) {
+          <myanili-icon-loading></myanili-icon-loading>
+        } @else {
+          <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
+        }
         Connect
       </button>
     }

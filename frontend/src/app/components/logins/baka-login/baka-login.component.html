@@ -19,9 +19,13 @@
       <button
         class="btn btn-sm btn-primary"
         (click)="bakaConnect()"
-        [disabled]="bakaData && (!bakaData.username || !bakaData.password)"
+        [disabled]="(bakaData && (!bakaData.username || !bakaData.password)) || bakaLoading"
       >
-        <myanili-icon-bakamanga style="color: #e75e45"></myanili-icon-bakamanga>
+        @if (bakaLoading) {
+          <myanili-icon-loading></myanili-icon-loading>
+        } @else {
+          <myanili-icon-bakamanga style="color: #e75e45"></myanili-icon-bakamanga>
+        }
         Connect
       </button>
     }

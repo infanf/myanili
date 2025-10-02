@@ -9,6 +9,7 @@ import { GlobalService } from '@services/global.service';
 })
 export class TraktLoginComponent implements OnInit {
   traktLoggedIn?: string;
+  traktLoading = false;
 
   constructor(
     private trakt: TraktService,
@@ -27,9 +28,14 @@ export class TraktLoginComponent implements OnInit {
   }
 
   async traktConnect() {
-    this.glob.busy();
-    await this.trakt.login();
-    this.glob.notbusy();
+    this.traktLoading = true;
+    try {
+      this.glob.busy();
+      await this.trakt.login();
+      this.glob.notbusy();
+    } finally {
+      this.traktLoading = false;
+    }
   }
 
   async traktLogoff() {
