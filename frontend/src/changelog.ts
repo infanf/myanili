@@ -1,6 +1,12 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.33.10',
+      date: new Date('2025-10-02'),
+      fixes: ['Login: add loading state to login button'],
+      other: ['Update dependencies'],
+    },
+    {
       version: '2.33.9',
       date: new Date('2025-09-08'),
       fixes: ['Login: need reload to show user for MAL and Livechart'],
