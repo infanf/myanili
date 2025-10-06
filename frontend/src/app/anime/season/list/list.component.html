@@ -8,7 +8,7 @@
         class="d-lg-table-cell"
         [class]="{
           'd-none': (settings.language$ | async) !== 'default',
-          'd-md-table-cell': (settings.language$ | async) === 'en'
+          'd-md-table-cell': (settings.language$ | async) === 'en',
         }"
       >
         Name
@@ -27,27 +27,28 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let anime of animes">
+    @for (anime of animes; track anime) {
       <tr
         class="cursor-pointer"
         [class]="{
           'fw-bold': anime.my_list_status?.status === 'watching',
-          'text-muted': anime.my_list_status?.status === 'dropped'
+          'text-muted': anime.my_list_status?.status === 'dropped',
         }"
       >
         <td>
-          <myanili-icon-status
-            class="mx-2"
-            *ngIf="anime.my_list_status"
-            [status]="anime.my_list_status!.status"
-          ></myanili-icon-status>
+          @if (anime.my_list_status) {
+            <myanili-icon-status
+              class="mx-2"
+              [status]="anime.my_list_status!.status"
+            ></myanili-icon-status>
+          }
         </td>
         <td
           routerLink="/anime/details/{{ anime.id }}"
           class="d-lg-table-cell"
           [class]="{
             'd-none': (settings.language$ | async) !== 'default',
-            'd-md-table-cell': (settings.language$ | async) === 'en'
+            'd-md-table-cell': (settings.language$ | async) === 'en',
           }"
         >
           {{ anime.title }}
@@ -67,13 +68,13 @@
           {{ anime.alternative_titles?.ja }}
         </td>
         <td class="d-none d-sm-table-cell" routerLink="/anime/details/{{ anime.id }}">
-          <span *ngFor="let genre of anime.genres" class="badge text-bg-primary rounded-pill me-1"
-            >{{ genre.name }}
-          </span>
+          @for (genre of anime.genres; track genre) {
+            <span class="badge text-bg-primary rounded-pill me-1">{{ genre.name }} </span>
+          }
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
-          <myanili-icon name="{{ anime.media_type | mal : 'mediaicon' }}"></myanili-icon>
-          <span class="d-none d-md-inline ms-1">{{ anime.media_type | mal : 'mediatype' }}</span>
+          <myanili-icon name="{{ anime.media_type | mal: 'mediaicon' }}"></myanili-icon>
+          <span class="d-none d-md-inline ms-1">{{ anime.media_type | mal: 'mediatype' }}</span>
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
           <myanili-streaming
@@ -82,7 +83,7 @@
           ></myanili-streaming>
         </td>
         <td style="white-space: nowrap">
-          <ng-container *ngIf="anime.my_list_status; else addanime">
+          @if (anime.my_list_status) {
             <myanili-icon-progress
               [percent]="
                 anime.num_episodes
@@ -91,17 +92,16 @@
               "
             ></myanili-icon-progress>
             {{ anime.my_list_status.num_episodes_watched }}/{{ anime.num_episodes || '?' }}
-          </ng-container>
-          <ng-template #addanime>
+          } @else {
             <myanili-icon
               [name]="anime.busy ? 'loading' : 'plus'"
               size="20"
               (click)="addToList(anime)"
             ></myanili-icon>
             {{ anime.num_episodes || '?' }}
-          </ng-template>
+          }
         </td>
       </tr>
-    </ng-container>
+    }
   </tbody>
 </table>

@@ -1,7 +1,9 @@
 <div class="modal-header">
-  <h5 class="modal-title" *ngIf="title">
-    {{ title }}
-  </h5>
+  @if (title) {
+    <h5 class="modal-title">
+      {{ title }}
+    </h5>
+  }
   <button
     type="button"
     class="btn-close"
@@ -10,26 +12,31 @@
   ></button>
 </div>
 <div class="modal-body">
-  <div *ngIf="message" style="white-space: pre-line">{{ message }}</div>
-  <form *ngIf="prompt" (submit)="submit(prompt.value)">
-    <input
-      [type]="prompt.type"
-      [(ngModel)]="prompt.value"
-      [placeholder]="prompt.placeholder || ''"
-      class="form-control mt-3"
-      name="value"
-      autocomplete="off"
-      #value
-    />
-  </form>
+  @if (message) {
+    <div style="white-space: pre-line">{{ message }}</div>
+  }
+  @if (prompt) {
+    <form (submit)="submit(prompt.value)">
+      <input
+        [type]="prompt.type"
+        [(ngModel)]="prompt.value"
+        [placeholder]="prompt.placeholder || ''"
+        class="form-control mt-3"
+        name="value"
+        autocomplete="off"
+        #value
+      />
+    </form>
+  }
 </div>
 <div class="modal-footer">
-  <button
-    *ngFor="let button of buttons"
-    type="button"
-    [attr.class]="button.class + ' btn btn-primary'"
-    (click)="submit(button.value)"
-  >
-    {{ button.label }}
-  </button>
+  @for (button of buttons; track button) {
+    <button
+      type="button"
+      [attr.class]="button.class + ' btn btn-primary'"
+      (click)="submit(button.value)"
+    >
+      {{ button.label }}
+    </button>
+  }
 </div>

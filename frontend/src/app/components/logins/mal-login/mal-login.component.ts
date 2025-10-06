@@ -11,6 +11,7 @@ import { MalService } from '@services/mal.service';
 })
 export class MalLoginComponent implements OnInit {
   malLoggedIn?: MalUser;
+  malLoading = false;
 
   constructor(
     private mal: MalService,
@@ -24,8 +25,13 @@ export class MalLoginComponent implements OnInit {
     });
   }
 
-  malConnect() {
-    this.mal.login();
+  async malConnect() {
+    this.malLoading = true;
+    try {
+      await this.mal.login();
+    } finally {
+      this.malLoading = false;
+    }
   }
 
   async malLogoff() {

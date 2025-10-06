@@ -10,6 +10,7 @@ import { GlobalService } from '@services/global.service';
 export class LivechartLoginComponent implements OnInit {
   livechartLoggedIn?: string;
   livechartData?: { username: string; password: string; saveLogin: boolean };
+  livechartLoading = false;
 
   constructor(
     private livechart: LivechartService,
@@ -36,9 +37,14 @@ export class LivechartLoginComponent implements OnInit {
       };
       return;
     }
-    this.glob.busy();
-    await this.livechart.login(this.livechartData?.username, this.livechartData?.password);
-    this.glob.notbusy();
+    this.livechartLoading = true;
+    try {
+      this.glob.busy();
+      await this.livechart.login(this.livechartData?.username, this.livechartData?.password);
+      this.glob.notbusy();
+    } finally {
+      this.livechartLoading = false;
+    }
   }
 
   async livechartLogoff() {

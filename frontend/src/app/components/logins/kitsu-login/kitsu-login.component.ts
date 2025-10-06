@@ -11,6 +11,7 @@ import { KitsuService } from '@services/kitsu.service';
 export class KitsuLoginComponent implements OnInit {
   kitsuLoggedIn?: KitsuUser;
   kitsuData?: { username: string; password: string; saveLogin: boolean };
+  kitsuLoading = false;
 
   constructor(
     private kitsu: KitsuService,
@@ -38,13 +39,18 @@ export class KitsuLoginComponent implements OnInit {
       return;
     }
     if (!this.kitsuData.username || !this.kitsuData.password) return;
-    this.glob.busy();
-    await this.kitsu.login(
-      this.kitsuData?.username,
-      this.kitsuData?.password,
-      this.kitsuData?.saveLogin,
-    );
-    this.glob.notbusy();
+    this.kitsuLoading = true;
+    try {
+      this.glob.busy();
+      await this.kitsu.login(
+        this.kitsuData?.username,
+        this.kitsuData?.password,
+        this.kitsuData?.saveLogin,
+      );
+      this.glob.notbusy();
+    } finally {
+      this.kitsuLoading = false;
+    }
   }
 
   async kitsuLogoff() {

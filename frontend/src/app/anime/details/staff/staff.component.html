@@ -1,11 +1,12 @@
 <div class="grid grid-2x">
-  <myanili-double-card
-    *ngFor="let person of persons"
-    [left]="{
-      poster: person.person.images?.jpg?.image_url || '/assets/blank-poster.svg',
-      title: person.person.name,
-      subtitle: person.positions.join(', '),
-      link: '/person/' + person.person.mal_id
-    }"
-  ></myanili-double-card>
+  @for (person of persons; track person) {
+    <myanili-double-card
+      [left]="{
+        poster: person.person.images?.jpg?.image_url || '/assets/blank-poster.svg',
+        title: person.person.name,
+        subtitle: person.positions.join(', '),
+        link: '/person/' + person.person.mal_id,
+      }"
+    ></myanili-double-card>
+  }
 </div>

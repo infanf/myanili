@@ -19,37 +19,45 @@
   </form>
 </section>
 
-<section class="pb-3" *ngIf="showFilters">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <select class="form-control" [(ngModel)]="filter.type" multiple>
-          <option *ngFor="let type of allFilters.type" [value]="type">
-            {{ type | mal : 'mediatype' }}
-          </option>
-        </select>
+@if (showFilters) {
+  <section class="pb-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <select class="form-control" [(ngModel)]="filter.type" multiple>
+            @for (type of allFilters.type; track type) {
+              <option [value]="type">
+                {{ type | mal: 'mediatype' }}
+              </option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <select class="form-control" [(ngModel)]="filter.genre" multiple>
+            @for (genre of allFilters.genre; track genre) {
+              <option [value]="genre">
+                {{ genre }}
+              </option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <select class="form-control" [(ngModel)]="filter.status" multiple>
+            @for (status of allFilters.status; track status) {
+              <option [value]="status">
+                {{ status | mal: 'mystatus' }}
+              </option>
+            }
+          </select>
+        </div>
       </div>
-      <div class="col-md-4 mb-3">
-        <select class="form-control" [(ngModel)]="filter.genre" multiple>
-          <option *ngFor="let genre of allFilters.genre" [value]="genre">
-            {{ genre }}
-          </option>
-        </select>
-      </div>
-      <div class="col-md-4 mb-3">
-        <select class="form-control" [(ngModel)]="filter.status" multiple>
-          <option *ngFor="let status of allFilters.status" [value]="status">
-            {{ status | mal : 'mystatus' }}
-          </option>
-        </select>
+      <div class="btn btn-primary d-block" (click)="filterResults()">
+        <myanili-icon name="funnel"></myanili-icon>
+        Filter
       </div>
     </div>
-    <div class="btn btn-primary d-block" (click)="filterResults()">
-      <myanili-icon name="funnel"></myanili-icon>
-      Filter
-    </div>
-  </div>
-</section>
+  </section>
+}
 
 <section>
   <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
@@ -70,7 +78,7 @@
           class="d-lg-table-cell"
           [class]="{
             'd-none': (settings.language$ | async) !== 'default',
-            'd-md-table-cell': (settings.language$ | async) === 'en'
+            'd-md-table-cell': (settings.language$ | async) === 'en',
           }"
         >
           Name
@@ -88,29 +96,30 @@
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let result of resultsFiltered">
+      @for (result of resultsFiltered; track result) {
         <tr
           class="cursor-pointer"
           [class]="{
             'fw-bold':
               result.my_list_status?.status === 'watching' ||
               result.my_list_status?.status === 'reading',
-            'text-muted': result.my_list_status?.status === 'dropped'
+            'text-muted': result.my_list_status?.status === 'dropped',
           }"
         >
           <td routerLink="/{{ type }}/details/{{ result.id }}">
-            <myanili-icon-status
-              class="mx-2"
-              *ngIf="result.my_list_status"
-              [status]="result.my_list_status!.status"
-            ></myanili-icon-status>
+            @if (result.my_list_status) {
+              <myanili-icon-status
+                class="mx-2"
+                [status]="result.my_list_status!.status"
+              ></myanili-icon-status>
+            }
           </td>
           <td
             routerLink="/{{ type }}/details/{{ result.id }}"
             class="d-lg-table-cell"
             [class]="{
               'd-none': (settings.language$ | async) !== 'default',
-              'd-md-table-cell': (settings.language$ | async) === 'en'
+              'd-md-table-cell': (settings.language$ | async) === 'en',
             }"
           >
             {{ result.title }}
@@ -130,17 +139,15 @@
             {{ result.alternative_titles?.ja }}
           </td>
           <td routerLink="/{{ type }}/details/{{ result.id }}" class="d-none d-md-table-cell">
-            <span
-              *ngFor="let genre of result.genres"
-              class="badge text-bg-primary rounded-pill me-1"
-            >
-              {{ genre.name }}
-            </span>
+            @for (genre of result.genres; track genre) {
+              <span class="badge text-bg-primary rounded-pill me-1">
+                {{ genre.name }}
+              </span>
+            }
           </td>
-
           <td routerLink="/{{ type }}/details/{{ result.id }}">
-            <myanili-icon name="{{ result.media_type | mal : 'mediaicon' }}"></myanili-icon>
-            <span class="d-none d-md-inline ms-1">{{ result.media_type | mal : 'mediatype' }}</span>
+            <myanili-icon name="{{ result.media_type | mal: 'mediaicon' }}"></myanili-icon>
+            <span class="d-none d-md-inline ms-1">{{ result.media_type | mal: 'mediatype' }}</span>
           </td>
           <td routerLink="/{{ type }}/details/{{ result.id }}" class="text-nowrap">
             <circle-progress
@@ -149,34 +156,37 @@
                 result!.mean >= 8
                   ? '#4a8220'
                   : result!.mean >= 7
-                  ? '#204a82'
-                  : result!.mean >= 5
-                  ? '#825820'
-                  : '#82204a'
+                    ? '#204a82'
+                    : result!.mean >= 5
+                      ? '#825820'
+                      : '#82204a'
               "
             ></circle-progress>
-            <span class="ms-1">{{ result.mean | number : '1.2-5' }}</span>
+            <span class="ms-1">{{ result.mean | number: '1.2-5' }}</span>
           </td>
           <td routerLink="/{{ type }}/details/{{ result.id }}">
-            {{ result.start_date | date : 'y' }}
+            {{ result.start_date | date: 'y' }}
           </td>
           <td (click)="open(result.id)">
             <myanili-icon [name]="'window-stack'"></myanili-icon>
           </td>
         </tr>
-      </ng-container>
+      }
     </tbody>
   </table>
-  <div
-    *ngIf="results.length && !loadedAll"
-    style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
-    inViewport
-    (inViewportAction)="handleScroll($event)"
-  >
-    &nbsp;
-  </div>
-  <div *ngIf="loading" class="text-center">
-    <myanili-icon name="loading"></myanili-icon>
-    Loading more...
-  </div>
+  @if (results.length && !loadedAll) {
+    <div
+      style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
+      inViewport
+      (inViewportAction)="handleScroll($event)"
+    >
+      &nbsp;
+    </div>
+  }
+  @if (loading) {
+    <div class="text-center">
+      <myanili-icon name="loading"></myanili-icon>
+      Loading more...
+    </div>
+  }
 </section>

@@ -14,44 +14,57 @@
 </div>
 <table class="table table-striped table-hover" darkTable>
   <tbody>
-    <tr *ngFor="let node of nodes">
-      <td [attr.colpan]="node.poster ? 1 : 2">
-        <img
-          *ngIf="node.poster"
-          [src]="node.poster"
-          class="float-start rounded me-2"
-          width="120px"
-          loading="lazy"
-        />
-        <b>{{ node.title }}</b>
-        <span *ngIf="node.year" class="ms-1">({{ node.year }})</span>
-        <a *ngIf="node.url" [href]="node.url" target="_blank">
-          <myanili-icon class="ms-1" name="box-arrow-up-right" size="16"></myanili-icon>
-        </a>
-        <div>
-          <span class="badge rounded-pill bg-primary me-1" *ngFor="let genre of node.genres">{{
-            genre
-          }}</span>
-        </div>
-        <div class="mt-1" [innerHTML]="node.description"></div>
-      </td>
-      <td>
-        <myanili-icon
-          class="cursor-pointer"
-          size="20"
-          name="link"
-          (click)="modal.close(node.id)"
-        ></myanili-icon>
-      </td>
-    </tr>
-    <tr *ngIf="!nodes.length">
-      <td colspan="2" class="text-center" *ngIf="!searching">
-        <myanili-icon name="search"></myanili-icon>
-        <span class="ms-1">No results</span>
-      </td>
-      <td colspan="2" class="text-center" *ngIf="searching">
-        <myanili-icon name="loading"></myanili-icon>
-      </td>
-    </tr>
+    @for (node of nodes; track node) {
+      <tr>
+        <td [attr.colpan]="node.poster ? 1 : 2">
+          @if (node.poster) {
+            <img
+              [src]="node.poster"
+              class="float-start rounded me-2"
+              width="120px"
+              loading="lazy"
+            />
+          }
+          <b>{{ node.title }}</b>
+          @if (node.year) {
+            <span class="ms-1">({{ node.year }})</span>
+          }
+          @if (node.url) {
+            <a [href]="node.url" target="_blank">
+              <myanili-icon class="ms-1" name="box-arrow-up-right" size="16"></myanili-icon>
+            </a>
+          }
+          <div>
+            @for (genre of node.genres; track genre) {
+              <span class="badge rounded-pill bg-primary me-1">{{ genre }}</span>
+            }
+          </div>
+          <div class="mt-1" [innerHTML]="node.description"></div>
+        </td>
+        <td>
+          <myanili-icon
+            class="cursor-pointer"
+            size="20"
+            name="link"
+            (click)="modal.close(node.id)"
+          ></myanili-icon>
+        </td>
+      </tr>
+    }
+    @if (!nodes.length) {
+      <tr>
+        @if (!searching) {
+          <td colspan="2" class="text-center">
+            <myanili-icon name="search"></myanili-icon>
+            <span class="ms-1">No results</span>
+          </td>
+        }
+        @if (searching) {
+          <td colspan="2" class="text-center">
+            <myanili-icon name="loading"></myanili-icon>
+          </td>
+        }
+      </tr>
+    }
   </tbody>
 </table>

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-5">Livechart</div>
   <div class="col-7">
-    <ng-container *ngIf="livechartLoggedIn; else livechartConnectTemplate">
+    @if (livechartLoggedIn) {
       <myanili-icon-livechart class="me-1"></myanili-icon-livechart>
       <a href="https://www.livechart.me/users/{{ livechartLoggedIn }}/library" target="_blank">{{
         livechartLoggedIn
@@ -12,9 +12,8 @@
         size="20"
         (click)="livechartLogoff()"
       ></myanili-icon>
-    </ng-container>
-    <ng-template #livechartConnectTemplate>
-      <ng-container *ngIf="livechartData">
+    } @else {
+      @if (livechartData) {
         <input
           class="form-control mb-1"
           placeholder="Email"
@@ -27,15 +26,22 @@
           type="password"
           [(ngModel)]="livechartData.password"
         />
-      </ng-container>
+      }
       <button
         class="btn btn-sm btn-primary"
         (click)="livechartConnect()"
-        [disabled]="livechartData && (!livechartData.username || !livechartData.password)"
+        [disabled]="
+          (livechartData && (!livechartData.username || !livechartData.password)) ||
+          livechartLoading
+        "
       >
-        <myanili-icon-livechart></myanili-icon-livechart>
+        @if (livechartLoading) {
+          <myanili-icon-loading></myanili-icon-loading>
+        } @else {
+          <myanili-icon-livechart></myanili-icon-livechart>
+        }
         Connect
       </button>
-    </ng-template>
+    }
   </div>
 </div>

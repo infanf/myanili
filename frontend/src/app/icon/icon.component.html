@@ -1,20 +1,17 @@
-<svg
-  *ngIf="name !== 'loading' && name !== 'loading-circle'"
-  class="bi"
-  [attr.width]="size"
-  [attr.height]="size"
-  fill="currentColor"
->
-  <use [attr.xlink:href]="'bootstrap-icons.svg#' + name" />
-  <use [attr.xlink:href]="'assets/other-icons.svg#' + name" />
-</svg>
-<svg
-  *ngIf="name === 'loading' || name === 'loading-circle'"
-  [name]="name"
-  class="bi"
-  [attr.width]="size"
-  [attr.height]="size"
-  fill="currentColor"
-  [size]="size"
-  myanili-icon-loading
-></svg>
+@if (name !== 'loading' && name !== 'loading-circle') {
+  <svg class="bi" [attr.width]="size" [attr.height]="size" fill="currentColor">
+    <use [attr.xlink:href]="'bootstrap-icons.svg#' + name" />
+    <use [attr.xlink:href]="'assets/other-icons.svg#' + name" />
+  </svg>
+}
+@if (name === 'loading' || name === 'loading-circle') {
+  <svg
+    [name]="name"
+    class="bi"
+    [attr.width]="size"
+    [attr.height]="size"
+    fill="currentColor"
+    [size]="size"
+    myanili-icon-loading
+  ></svg>
+}

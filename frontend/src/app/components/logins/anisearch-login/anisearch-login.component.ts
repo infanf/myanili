@@ -9,6 +9,7 @@ import { GlobalService } from '@services/global.service';
 })
 export class AnisearchLoginComponent implements OnInit {
   anisearchLoggedIn?: AnisearchUser;
+  anisearchLoading = false;
 
   constructor(
     private anisearch: AnisearchService,
@@ -27,9 +28,14 @@ export class AnisearchLoginComponent implements OnInit {
   }
 
   async anisearchConnect() {
-    this.glob.busy();
-    await this.anisearch.login();
-    this.glob.notbusy();
+    this.anisearchLoading = true;
+    try {
+      this.glob.busy();
+      await this.anisearch.login();
+      this.glob.notbusy();
+    } finally {
+      this.anisearchLoading = false;
+    }
   }
 
   async anisearchLogoff() {

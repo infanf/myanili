@@ -12,21 +12,45 @@
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
     "module": "es2020",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "paths": {
-      "@models/*": ["src/app/models/*"],
-      "@icon/*": ["src/app/icon/*"],
-      "@external/*": ["src/app/external/*"],
-      "@anime/*": ["src/app/anime/*"],
-      "@manga/*": ["src/app/manga/*"],
-      "@components/*": ["src/app/components/*"],
-      "@services/*": ["src/app/services/*"],
-      "@app/*": ["src/app/*"],
-      "stream": ["./node_modules/stream-browserify"]
+      "@models/*": [
+        "src/app/models/*"
+      ],
+      "@icon/*": [
+        "src/app/icon/*"
+      ],
+      "@external/*": [
+        "src/app/external/*"
+      ],
+      "@anime/*": [
+        "src/app/anime/*"
+      ],
+      "@manga/*": [
+        "src/app/manga/*"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@services/*": [
+        "src/app/services/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "stream": [
+        "./node_modules/stream-browserify"
+      ],
+      "buffer": [
+        "./node_modules/buffer/index.js"
+      ]
     },
     "resolveJsonModule": true,
     "useDefineForClassFields": false

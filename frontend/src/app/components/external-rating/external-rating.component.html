@@ -4,10 +4,12 @@
     (rating?.rating?.norm || 0) >= 80
       ? '#4a8220'
       : (rating?.rating?.norm || 0) >= 70
-      ? '#204a82'
-      : (rating?.rating?.norm || 0) >= 50
-      ? 'hsl(34, 77%, 49%)'
-      : '#82204a'
+        ? '#204a82'
+        : (rating?.rating?.norm || 0) >= 50
+          ? 'hsl(34, 77%, 49%)'
+          : '#82204a'
   "
 ></circle-progress>
-<span class="ms-1" *ngIf="rating?.rating?.norm">{{ score }}</span>
+@if (rating?.rating?.norm) {
+  <span class="ms-1">{{ score }}</span>
+}

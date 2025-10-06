@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-5">Trakt.tv</div>
   <div class="col-7">
-    <ng-container *ngIf="traktLoggedIn; else traktConnectTemplate">
+    @if (traktLoggedIn) {
       <myanili-icon-trakt class="me-1 link-trakt"></myanili-icon-trakt>
       <a href="https://trakt.tv/users/{{ traktLoggedIn }}" target="_blank">{{ traktLoggedIn }}</a>
       <myanili-icon
@@ -10,12 +10,15 @@
         size="20"
         (click)="traktLogoff()"
       ></myanili-icon>
-    </ng-container>
-    <ng-template #traktConnectTemplate>
-      <button class="btn btn-sm btn-primary" (click)="traktConnect()">
-        <myanili-icon-trakt></myanili-icon-trakt>
+    } @else {
+      <button class="btn btn-sm btn-primary" (click)="traktConnect()" [disabled]="traktLoading">
+        @if (traktLoading) {
+          <myanili-icon-loading></myanili-icon-loading>
+        } @else {
+          <myanili-icon-trakt></myanili-icon-trakt>
+        }
         Connect
       </button>
-    </ng-template>
+    }
   </div>
 </div>

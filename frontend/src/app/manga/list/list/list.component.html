@@ -6,7 +6,7 @@
         class="d-lg-table-cell"
         [class]="{
           'd-none': (settings.language$ | async) !== 'default',
-          'd-md-table-cell': (settings.language$ | async) === 'en'
+          'd-md-table-cell': (settings.language$ | async) === 'en',
         }"
       >
         Name
@@ -24,22 +24,22 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngFor="let manga of mangas">
+    @for (manga of mangas; track manga) {
       <tr
         class="cursor-pointer"
         [class]="{
-          'fw-bold': manga.list_status.status === 'reading' && !manga.my_extension?.ongoing
+          'fw-bold': manga.list_status.status === 'reading' && !manga.my_extension?.ongoing,
         }"
         routerLink="/manga/details/{{ manga.node.id }}"
       >
         <td>
-          <myanili-icon name="{{ manga.node.media_type | mal : 'mediaicon' }}"></myanili-icon>
+          <myanili-icon name="{{ manga.node.media_type | mal: 'mediaicon' }}"></myanili-icon>
         </td>
         <td
           class="d-lg-table-cell"
           [class]="{
             'd-none': (settings.language$ | async) !== 'default',
-            'd-md-table-cell': (settings.language$ | async) === 'en'
+            'd-md-table-cell': (settings.language$ | async) === 'en',
           }"
         >
           {{ manga.my_extension?.displayName || manga.node.title }}
@@ -51,7 +51,9 @@
           {{ manga.node.alternative_titles?.ja }}
         </td>
         <td class="d-none d-sm-table-cell">
-          <div *ngFor="let author of getAuthor(manga.node)">{{ author }}</div>
+          @for (author of getAuthor(manga.node); track author) {
+            <div>{{ author }}</div>
+          }
         </td>
         <td>
           <myanili-platform
@@ -60,18 +62,19 @@
           ></myanili-platform>
         </td>
         <td style="white-space: nowrap">
-          <myanili-icon-progress
-            *ngIf="manga.list_status.status === 'reading'"
-            [percent]="
-              manga.node.num_chapters
-                ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
-                : 0
-            "
-          ></myanili-icon-progress>
+          @if (manga.list_status.status === 'reading') {
+            <myanili-icon-progress
+              [percent]="
+                manga.node.num_chapters
+                  ? (manga.list_status.num_chapters_read / (manga.node.num_chapters || 0)) * 100
+                  : 0
+              "
+            ></myanili-icon-progress>
+          }
           {{ manga.list_status.num_chapters_read }}/{{ manga.node.num_chapters || '?' }}
         </td>
         <td>{{ manga.list_status.num_volumes_read }}/{{ manga.node.num_volumes || '?' }}</td>
       </tr>
-    </ng-container>
+    }
   </tbody>
 </table>

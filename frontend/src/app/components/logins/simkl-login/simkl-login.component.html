@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-5">SIMKL</div>
   <div class="col-7">
-    <ng-container *ngIf="simklLoggedIn; else simklConnectTemplate">
+    @if (simklLoggedIn) {
       <myanili-icon-simkl class="me-1"></myanili-icon-simkl>
       <a href="https://simkl.com/{{ simklLoggedIn.id }}" target="_blank">{{
         simklLoggedIn.name || simklLoggedIn.id
@@ -12,12 +12,15 @@
         size="20"
         (click)="simklLogoff()"
       ></myanili-icon>
-    </ng-container>
-    <ng-template #simklConnectTemplate>
-      <button class="btn btn-sm btn-primary" (click)="simklConnect()">
-        <myanili-icon-simkl></myanili-icon-simkl>
+    } @else {
+      <button class="btn btn-sm btn-primary" (click)="simklConnect()" [disabled]="simklLoading">
+        @if (simklLoading) {
+          <myanili-icon-loading></myanili-icon-loading>
+        } @else {
+          <myanili-icon-simkl></myanili-icon-simkl>
+        }
         Connect
       </button>
-    </ng-template>
+    }
   </div>
 </div>

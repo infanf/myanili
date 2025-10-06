@@ -11,34 +11,40 @@
   >
     <table class="table table-striped table-sm table-hover my-0" darkTable>
       <thead>
-        <tr *ngIf="notificationsList.length && unreadNotificationsCount" (click)="markRead()">
-          <th>
-            <myanili-icon name="bell-slash"></myanili-icon>
-          </th>
-          <th colspan="2">Mark all as read</th>
-        </tr>
-        <tr *ngIf="!notificationsList.length">
-          <td colspan="3" class="text-center">No recent notifications</td>
-        </tr>
+        @if (notificationsList.length && unreadNotificationsCount) {
+          <tr (click)="markRead()">
+            <th>
+              <myanili-icon name="bell-slash"></myanili-icon>
+            </th>
+            <th colspan="2">Mark all as read</th>
+          </tr>
+        }
+        @if (!notificationsList.length) {
+          <tr>
+            <td colspan="3" class="text-center">No recent notifications</td>
+          </tr>
+        }
       </thead>
       <tbody>
-        <tr *ngFor="let notification of notificationsList" (click)="callback(notification)">
-          <td>
-            <myanili-icon-anilist *ngIf="notification.platform == 'al'"></myanili-icon-anilist>
-            <myanili-icon-mal
-              *ngIf="notification.platform == 'mal'"
-              class="text-primary"
-            ></myanili-icon-mal>
-            <myanili-icon-kitsu
-              *ngIf="notification.platform == 'kitsu'"
-              style="color: #e75e45"
-            ></myanili-icon-kitsu>
-          </td>
-          <td [class]="{ 'fw-bold': notification.unread }" [innerHTML]="notification.text"></td>
-          <td>
-            {{ notification.createdAt | dateAgo : refresher }}
-          </td>
-        </tr>
+        @for (notification of notificationsList; track notification) {
+          <tr (click)="callback(notification)">
+            <td>
+              @if (notification.platform == 'al') {
+                <myanili-icon-anilist></myanili-icon-anilist>
+              }
+              @if (notification.platform == 'mal') {
+                <myanili-icon-mal class="text-primary"></myanili-icon-mal>
+              }
+              @if (notification.platform == 'kitsu') {
+                <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
+              }
+            </td>
+            <td [class]="{ 'fw-bold': notification.unread }" [innerHTML]="notification.text"></td>
+            <td>
+              {{ notification.createdAt | dateAgo: refresher }}
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

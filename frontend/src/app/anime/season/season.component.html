@@ -1,12 +1,10 @@
 <myanili-header [header]="title"></myanili-header>
 <section>
-  <myanili-anime-season-list
-    *ngIf="(settings.layout$ | async) === 'list'"
-    [animes]="animes"
-  ></myanili-anime-season-list>
-  <myanili-anime-season-grid
-    *ngIf="(settings.layout$ | async) !== 'list'"
-    [animes]="animes"
-  ></myanili-anime-season-grid>
+  @if ((settings.layout$ | async) === 'list') {
+    <myanili-anime-season-list [animes]="animes"></myanili-anime-season-list>
+  }
+  @if ((settings.layout$ | async) !== 'list') {
+    <myanili-anime-season-grid [animes]="animes"></myanili-anime-season-grid>
+  }
 </section>
 <myanili-widget-season></myanili-widget-season>

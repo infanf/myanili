@@ -1,9 +1,10 @@
 <div class="grid my-2">
-  <myanili-media-card
-    *ngFor="let character of characters"
-    [poster]="(character.character.images.webp || character.character.images.jpg).image_url"
-    [title]="character.character.name"
-    [icon]="character.role === 'Main' ? 'star-fill' : undefined"
-    [routerLink]="'/character/' + character.character.mal_id"
-  ></myanili-media-card>
+  @for (character of characters; track character) {
+    <myanili-media-card
+      [poster]="(character.character.images.webp || character.character.images.jpg).image_url"
+      [title]="character.character.name"
+      [icon]="character.role === 'Main' ? 'star-fill' : undefined"
+      [routerLink]="'/character/' + character.character.mal_id"
+    ></myanili-media-card>
+  }
 </div>

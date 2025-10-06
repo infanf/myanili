@@ -1,9 +1,9 @@
 <span class="d-inline-block me-2" style="position: relative">
-  <ng-container *ngIf="provider">
+  @if (provider) {
     <svg-icon
       class="d-md-inline d-none"
       [ngClass]="{
-        'd-none': variant !== 'full'
+        'd-none': variant !== 'full',
       }"
       [svgStyle]="{ 'width.rem': '5', 'height.rem': '1', verticalAlign: 'text-bottom' }"
       src="/assets/stream/{{ provider }}.svg"
@@ -11,15 +11,15 @@
     <svg-icon
       [ngClass]="{
         'd-none': variant === 'full',
-        'd-md-none': !variant
+        'd-md-none': !variant,
       }"
       [svgStyle]="{ 'width.rem': '1', 'height.rem': '1', verticalAlign: 'text-bottom' }"
       src="/assets/stream/{{ provider }}.icon.svg"
     ></svg-icon>
-    <span class="flag">{{ country | flag : true }}</span>
-  </ng-container>
-  <ng-container *ngIf="!provider">
+    <span class="flag">{{ country | flag: true }}</span>
+  }
+  @if (!provider) {
     <svg class="d-md-inline d-none" style="width: 5rem; height: 1rem"></svg>
     <svg class="d-md-none" style="width: 1rem; height: 1rem"></svg>
-  </ng-container>
+  }
 </span>
