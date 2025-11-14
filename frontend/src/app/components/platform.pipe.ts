@@ -16,8 +16,8 @@ export class PlatformPipe implements PipeTransform {
     },
     {
       id: 'azuki',
-      name: 'azuki',
-      urlprefix: 'https://azuki.co/series/',
+      name: 'omoi',
+      urlprefix: 'https://omoi.com/series/',
     },
     {
       id: 'kobo',
