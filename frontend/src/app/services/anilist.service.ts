@@ -6,6 +6,7 @@ import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/c
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+import { AnilistFeedService } from './anilist/feed.service';
 import { AnilistLibraryService } from './anilist/library.service';
 import { AnilistMediaService } from './anilist/media.service';
 import { AnilistNotificationsService } from './anilist/notifications.service';
@@ -21,6 +22,7 @@ export class AnilistService {
   private anilistMedia: AnilistMediaService;
   private anilistNotifications: AnilistNotificationsService;
   private anilistLibrary: AnilistLibraryService;
+  private anilistFeed: AnilistFeedService;
   private client!: Client;
 
   loggedIn = false;
@@ -56,6 +58,7 @@ export class AnilistService {
     this.anilistMedia = new AnilistMediaService(this.client);
     this.anilistNotifications = new AnilistNotificationsService(this.client);
     this.anilistLibrary = new AnilistLibraryService(this.client, this.user);
+    this.anilistFeed = new AnilistFeedService(this.client);
   }
 
   async login() {
@@ -160,5 +163,33 @@ export class AnilistService {
 
   async getStatusMapping(malIds: number[], type: 'ANIME' | 'MANGA') {
     return this.anilistLibrary.getStatusMapping(malIds, type);
+  }
+
+  async loadUserFeed(userId?: number, perPage = 25, page = 1) {
+    return this.anilistFeed.loadUserFeed(userId, perPage, page);
+  }
+
+  async loadFollowingFeed(perPage = 25, page = 1) {
+    return this.anilistFeed.loadFollowingFeed(perPage, page);
+  }
+
+  async loadActivity(activityId: number) {
+    return this.anilistFeed.loadActivity(activityId);
+  }
+
+  async toggleActivityLike(activityId: number): Promise<boolean> {
+    return this.anilistFeed.toggleLike(activityId);
+  }
+
+  async postActivityReply(activityId: number, text: string): Promise<boolean> {
+    return this.anilistFeed.postReply(activityId, text);
+  }
+
+  get feed() {
+    return this.anilistFeed.feed;
+  }
+
+  get feedLoading() {
+    return this.anilistFeed.loading;
   }
 }

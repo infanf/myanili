@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.34.0',
+      date: new Date('2025-11-19'),
+      features: ['Anilist Activity Feed', 'Manga Platforms: Rename Azuki to Omoi'],
+    },
+    {
       version: '2.33.10',
       date: new Date('2025-10-06'),
       fixes: ['Login: add loading state to login button'],

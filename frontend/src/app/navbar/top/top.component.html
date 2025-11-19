@@ -16,6 +16,14 @@
                 <span class="d-none d-sm-inline">Read</span>
               </a>
             </li>
+            @if (alUser) {
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/feed" routerLinkActive="active">
+                  <myanili-icon class="me-2" name="activity"></myanili-icon>
+                  <span class="d-none d-sm-inline">Feed</span>
+                </a>
+              </li>
+            }
           </ul>
           <span class="navbar-brand me-0">
             <svg

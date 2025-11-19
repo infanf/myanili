@@ -77,6 +77,53 @@ export type AnilistNotificationType =
   | 'MEDIA_MERGE'
   | 'MEDIA_DELETION';
 
+export interface AnilistActivity {
+  id: number;
+  type: string;
+  createdAt: number;
+  user: {
+    id: number;
+    name: string;
+    avatar: {
+      large: string;
+    };
+  };
+  text?: string;
+  status?: string;
+  progress?: string;
+  media?: {
+    id: number;
+    idMal?: number;
+    type: 'ANIME' | 'MANGA';
+    title: {
+      userPreferred: string;
+    };
+    coverImage: {
+      large: string;
+    };
+  };
+  replies?: {
+    id: number;
+    text: string;
+    createdAt: number;
+    user: {
+      id: number;
+      name: string;
+      avatar: {
+        large: string;
+      };
+    };
+  }[];
+  likes?: {
+    id: number;
+    name: string;
+  }[];
+  replyCount: number;
+  likeCount: number;
+  isLiked: boolean;
+  siteUrl: string;
+}
+
 export function statusFromMal(
   malStatus?: WatchStatus | ReadStatus,
   repeating = false,
