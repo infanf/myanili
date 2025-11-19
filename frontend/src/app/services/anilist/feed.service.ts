@@ -72,6 +72,34 @@ export class AnilistFeedService {
   }
 
   /**
+   * Load a single activity
+   * @param activityId - The activity ID to load
+   */
+  async loadActivity(activityId: number) {
+    this.loadingSubject.next(true);
+    const QUERY = AnilistFeedService.getActivityQuery();
+
+    try {
+      const result = await this.client.query<ActivityResult>(QUERY, { id: activityId }).toPromise();
+
+      if (!result.data?.Activity) {
+        console.warn('No activity found:', result);
+        this.feedSubject.next([]);
+        this.loadingSubject.next(false);
+        return;
+      }
+
+      const activity = AnilistFeedService.mapActivity(result.data.Activity);
+      this.feedSubject.next([activity]);
+    } catch (error) {
+      console.error('Error loading activity:', error);
+      this.feedSubject.next([]);
+    } finally {
+      this.loadingSubject.next(false);
+    }
+  }
+
+  /**
    * Toggle like on an activity
    * @param activityId - The activity ID to like/unlike
    */
@@ -188,17 +216,18 @@ export class AnilistFeedService {
 
   private static mapActivity(activity: Activity): AnilistActivity {
     // For MessageActivity, use messenger as the user
-    const user = activity.user || activity.messenger || {
-      id: 0,
-      name: 'Unknown',
-      avatar: { large: '' }
-    };
+    const user = activity.user ||
+      activity.messenger || {
+        id: 0,
+        name: 'Unknown',
+        avatar: { large: '' },
+      };
 
     return {
       id: activity.id,
       type: activity.type,
       createdAt: activity.createdAt,
-      user: user,
+      user,
       text: activity.text || activity.message,
       status: activity.status,
       progress: activity.progress,
@@ -483,6 +512,137 @@ export class AnilistFeedService {
       }
     `;
   }
+
+  private static getActivityQuery() {
+    return gql`
+      query ($id: Int) {
+        Activity(id: $id) {
+          ... on ListActivity {
+            id
+            type
+            status
+            progress
+            createdAt
+            media {
+              id
+              idMal
+              type
+              title {
+                userPreferred
+              }
+              coverImage {
+                large
+              }
+            }
+            user {
+              id
+              name
+              avatar {
+                large
+              }
+            }
+            replies {
+              id
+              text
+              createdAt
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+            }
+            likes {
+              id
+              name
+            }
+            replyCount
+            likeCount
+            isLiked
+            siteUrl
+          }
+          ... on TextActivity {
+            id
+            type
+            text
+            createdAt
+            user {
+              id
+              name
+              avatar {
+                large
+              }
+            }
+            replies {
+              id
+              text
+              createdAt
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+            }
+            likes {
+              id
+              name
+            }
+            replyCount
+            likeCount
+            isLiked
+            siteUrl
+          }
+          ... on MessageActivity {
+            id
+            type
+            message
+            createdAt
+            messenger {
+              id
+              name
+              avatar {
+                large
+              }
+            }
+            recipient {
+              id
+              name
+              avatar {
+                large
+              }
+            }
+            replies {
+              id
+              text
+              createdAt
+              user {
+                id
+                name
+                avatar {
+                  large
+                }
+              }
+            }
+            likes {
+              id
+              name
+            }
+            replyCount
+            likeCount
+            isLiked
+            siteUrl
+          }
+        }
+      }
+    `;
+  }
+}
+
+interface ActivityResult {
+  Activity: Activity;
 }
 
 interface UserFeedResult {
@@ -547,7 +707,7 @@ interface Activity {
       large: string;
     };
   };
-  replies?: {
+  replies?: Array<{
     id: number;
     text: string;
     createdAt: number;
@@ -558,11 +718,11 @@ interface Activity {
         large: string;
       };
     };
-  }[];
-  likes?: {
+  }>;
+  likes?: Array<{
     id: number;
     name: string;
-  }[];
+  }>;
   replyCount: number;
   likeCount: number;
   isLiked?: boolean;

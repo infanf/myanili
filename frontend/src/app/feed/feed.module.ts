@@ -9,6 +9,7 @@ import { FeedComponent } from './feed.component';
 const routes: Routes = [
   { path: '', component: FeedComponent },
   { path: 'user/:userId', component: FeedComponent },
+  { path: 'activity/:activityId', component: FeedComponent },
 ];
 
 @NgModule({

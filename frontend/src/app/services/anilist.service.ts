@@ -173,6 +173,10 @@ export class AnilistService {
     return this.anilistFeed.loadFollowingFeed(perPage, page);
   }
 
+  async loadActivity(activityId: number) {
+    return this.anilistFeed.loadActivity(activityId);
+  }
+
   async toggleActivityLike(activityId: number): Promise<boolean> {
     return this.anilistFeed.toggleLike(activityId);
   }

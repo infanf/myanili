@@ -58,6 +58,14 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             window.open(alNotification.url, '_blank');
           },
         } as Notification;
+
+        const activityMatch = alNotification.url.match(/activity\/(\d+)/);
+        if (activityMatch) {
+          const activityId = Number(activityMatch[1]);
+          notification.callback = () => {
+            this._router.navigate(['feed', 'activity', activityId]);
+          };
+        }
         if (alNotification.media?.idMal) {
           const type = alNotification.media.type.toLocaleLowerCase();
           const malId = alNotification.media.idMal;

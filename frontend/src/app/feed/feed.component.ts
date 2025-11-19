@@ -16,6 +16,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   loading = false;
   feedType: 'user' | 'following' = 'user';
   userId?: number;
+  activityId?: number;
   currentUserId?: number;
   currentPage = 1;
   replyText: { [activityId: number]: string } = {};
@@ -38,7 +39,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         if (user) {
           this.currentUserId = user.id;
           // Only load feed after we have the user ID
-          if (!this.userId) {
+          if (!this.userId && !this.activityId) {
             this.loadFeed();
           }
         }
@@ -47,6 +48,9 @@ export class FeedComponent implements OnInit, OnDestroy {
         if (params['userId']) {
           this.userId = Number(params['userId']);
           this.feedType = 'user';
+          this.loadFeed();
+        } else if (params['activityId']) {
+          this.activityId = Number(params['activityId']);
           this.loadFeed();
         }
       }),
@@ -71,7 +75,9 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   loadFeed(page = 1) {
     this.currentPage = page;
-    if (this.feedType === 'following') {
+    if (this.activityId) {
+      this.anilistService.loadActivity(this.activityId);
+    } else if (this.feedType === 'following') {
       this.anilistService.loadFollowingFeed(25, page);
     } else {
       // Use the specific userId if provided, otherwise use current user's ID

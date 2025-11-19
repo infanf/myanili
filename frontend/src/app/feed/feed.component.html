@@ -7,7 +7,7 @@
           <span *ngIf="feedType === 'user' && !userId">My Activity</span>
           <span *ngIf="feedType === 'user' && userId">User Activity</span>
         </h2>
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2" *ngIf="!activityId">
           <div class="btn-group">
             <button
               class="btn btn-sm"
