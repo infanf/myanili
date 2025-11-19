@@ -1,0 +1,155 @@
+<div class="container-fluid mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mb-4">
+        <span *ngIf="feedType === 'following'">Following Feed</span>
+        <span *ngIf="feedType === 'user' && !userId">My Activity</span>
+        <span *ngIf="feedType === 'user' && userId">User Activity</span>
+      </h2>
+
+      <div class="feed-type-selector mb-3">
+        <button
+          class="btn btn-sm me-2"
+          [class.btn-primary]="feedType === 'user' && !userId"
+          [class.btn-outline-primary]="feedType !== 'user' || userId"
+          (click)="feedType = 'user'; userId = undefined; loadFeed()"
+        >
+          My Feed
+        </button>
+        <button
+          class="btn btn-sm"
+          [class.btn-primary]="feedType === 'following'"
+          [class.btn-outline-primary]="feedType !== 'following'"
+          (click)="feedType = 'following'; loadFeed()"
+        >
+          Following Feed
+        </button>
+      </div>
+
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && activities.length === 0" class="alert alert-info">
+        No activities found.
+      </div>
+
+      <div class="activities" *ngIf="!loading && activities.length > 0">
+        <div class="activity-card mb-3" *ngFor="let activity of activities">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <img
+                  [src]="activity.user.avatar.large"
+                  class="rounded-circle me-3"
+                  width="48"
+                  height="48"
+                  alt="{{ activity.user.name }}"
+                />
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <strong>{{ activity.user.name }}</strong>
+                      <small class="text-muted ms-2">{{ formatDate(activity.createdAt) }}</small>
+                    </div>
+                    <a [href]="activity.siteUrl" target="_blank" class="btn btn-sm btn-link">
+                      <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                  </div>
+
+                  <div class="activity-content mt-2" [innerHTML]="getActivityText(activity)"></div>
+
+                  <div *ngIf="activity.media" class="media-info mt-2 d-flex align-items-center">
+                    <img
+                      [src]="activity.media.coverImage.large"
+                      class="me-2"
+                      width="50"
+                      height="70"
+                      style="object-fit: cover"
+                      alt="{{ activity.media.title.userPreferred }}"
+                    />
+                    <div>
+                      <div class="fw-bold">{{ activity.media.title.userPreferred }}</div>
+                      <small class="text-muted">{{ activity.media.type }}</small>
+                    </div>
+                  </div>
+
+                  <div class="activity-actions mt-3">
+                    <button
+                      class="btn btn-sm me-2"
+                      [class.btn-primary]="activity.isLiked"
+                      [class.btn-outline-primary]="!activity.isLiked"
+                      (click)="toggleLike(activity.id)"
+                    >
+                      <i class="bi bi-heart-fill" *ngIf="activity.isLiked"></i>
+                      <i class="bi bi-heart" *ngIf="!activity.isLiked"></i>
+                      {{ activity.likeCount }}
+                    </button>
+                    <button
+                      class="btn btn-sm btn-outline-secondary"
+                      (click)="toggleReplies(activity.id)"
+                    >
+                      <i class="bi bi-chat"></i>
+                      {{ activity.replyCount }}
+                    </button>
+                  </div>
+
+                  <div class="replies mt-3" *ngIf="showReplies[activity.id]">
+                    <div class="reply mb-2" *ngFor="let reply of activity.replies">
+                      <div class="d-flex">
+                        <img
+                          [src]="reply.user.avatar.large"
+                          class="rounded-circle me-2"
+                          width="32"
+                          height="32"
+                          alt="{{ reply.user.name }}"
+                        />
+                        <div class="flex-grow-1">
+                          <div>
+                            <strong class="me-2">{{ reply.user.name }}</strong>
+                            <small class="text-muted">{{ formatDate(reply.createdAt) }}</small>
+                          </div>
+                          <div [innerHTML]="reply.text"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="reply-form mt-3">
+                      <textarea
+                        class="form-control mb-2"
+                        rows="2"
+                        placeholder="Write a reply..."
+                        [(ngModel)]="replyText[activity.id]"
+                      ></textarea>
+                      <button
+                        class="btn btn-sm btn-primary"
+                        (click)="postReply(activity.id)"
+                        [disabled]="!replyText[activity.id] || replyText[activity.id].trim().length === 0"
+                      >
+                        Post Reply
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4 mb-4">
+          <button
+            class="btn btn-outline-primary"
+            (click)="previousPage()"
+            [disabled]="currentPage === 1"
+          >
+            Previous
+          </button>
+          <span class="align-self-center">Page {{ currentPage }}</span>
+          <button class="btn btn-outline-primary" (click)="nextPage()">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

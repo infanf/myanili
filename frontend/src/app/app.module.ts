@@ -32,6 +32,10 @@ const routes: Routes = [
     path: 'person',
     loadChildren: () => import('./person/person.module').then(m => m.PersonModule),
   },
+  {
+    path: 'feed',
+    loadChildren: () => import('./feed/feed.module').then(m => m.FeedModule),
+  },
   { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
 ];
 
