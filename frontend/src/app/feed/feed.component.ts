@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnilistActivity } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
+import { GlobalService } from '@services/global.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -26,7 +27,10 @@ export class FeedComponent implements OnInit, OnDestroy {
     private anilistService: AnilistService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private glob: GlobalService,
+  ) {
+    this.glob.notbusy();
+  }
 
   ngOnInit() {
     this.subscriptions.push(
@@ -102,10 +106,10 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   navigateToMedia(media: AnilistActivity['media']) {
     if (!media) return;
-    
+
     const type = media.type.toLowerCase();
     const malId = media.idMal;
-    
+
     if (malId) {
       this.router.navigate([type, 'details', malId]);
     }
