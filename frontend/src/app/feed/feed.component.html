@@ -64,11 +64,18 @@
                   width="48"
                   height="48"
                   alt="{{ activity.user.name }}"
+                  [routerLink]="['/feed/user', activity.user.id]"
+                  style="cursor: pointer"
                 />
                 <div class="flex-grow-1">
                   <div class="d-flex justify-content-between align-items-start">
                     <div>
-                      <strong>{{ activity.user.name }}</strong>
+                      <strong
+                        [routerLink]="['/feed/user', activity.user.id]"
+                        style="cursor: pointer"
+                      >
+                        {{ activity.user.name }}
+                      </strong>
                       <small class="text-muted ms-2">{{ formatDate(activity.createdAt) }}</small>
                     </div>
                     <a [href]="activity.siteUrl" target="_blank" class="btn btn-sm btn-link">
@@ -134,10 +141,18 @@
                           width="32"
                           height="32"
                           alt="{{ reply.user.name }}"
+                          [routerLink]="['/feed', reply.user.id]"
+                          style="cursor: pointer"
                         />
                         <div class="flex-grow-1">
                           <div>
-                            <strong class="me-2">{{ reply.user.name }}</strong>
+                            <strong
+                              class="me-2"
+                              [routerLink]="['/feed', reply.user.id]"
+                              style="cursor: pointer"
+                            >
+                              {{ reply.user.name }}
+                            </strong>
                             <small class="text-muted">{{ formatDate(reply.createdAt) }}</small>
                           </div>
                           <div [innerHTML]="reply.text"></div>
