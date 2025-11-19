@@ -24,6 +24,8 @@ export class AnilistFeedService {
         .toPromise();
 
       if (!result.data?.Page?.activities) {
+        console.warn('No activities in user feed result:', result);
+        this.feedSubject.next([]);
         this.loadingSubject.next(false);
         return;
       }
@@ -32,6 +34,7 @@ export class AnilistFeedService {
       this.feedSubject.next(activities);
     } catch (error) {
       console.error('Error loading user feed:', error);
+      this.feedSubject.next([]);
     } finally {
       this.loadingSubject.next(false);
     }
@@ -52,6 +55,8 @@ export class AnilistFeedService {
         .toPromise();
 
       if (!result.data?.Page?.activities) {
+        console.warn('No activities in following feed result:', result);
+        this.feedSubject.next([]);
         this.loadingSubject.next(false);
         return;
       }
@@ -60,6 +65,7 @@ export class AnilistFeedService {
       this.feedSubject.next(activities);
     } catch (error) {
       console.error('Error loading following feed:', error);
+      this.feedSubject.next([]);
     } finally {
       this.loadingSubject.next(false);
     }
@@ -181,12 +187,19 @@ export class AnilistFeedService {
   }
 
   private static mapActivity(activity: Activity): AnilistActivity {
+    // For MessageActivity, use messenger as the user
+    const user = activity.user || activity.messenger || {
+      id: 0,
+      name: 'Unknown',
+      avatar: { large: '' }
+    };
+
     return {
       id: activity.id,
       type: activity.type,
       createdAt: activity.createdAt,
-      user: activity.user,
-      text: activity.text,
+      user: user,
+      text: activity.text || activity.message,
       status: activity.status,
       progress: activity.progress,
       media: activity.media,

@@ -15,6 +15,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   loading = false;
   feedType: 'user' | 'following' = 'user';
   userId?: number;
+  currentUserId?: number;
   currentPage = 1;
   replyText: { [activityId: number]: string } = {};
   showReplies: { [activityId: number]: boolean } = {};
@@ -28,15 +29,26 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(
+      this.anilistService.user.subscribe(user => {
+        if (user) {
+          this.currentUserId = user.id;
+          // Only load feed after we have the user ID
+          if (!this.userId) {
+            this.loadFeed();
+          }
+        }
+      }),
       this.route.params.subscribe(params => {
         if (params['userId']) {
           this.userId = Number(params['userId']);
           this.feedType = 'user';
+          this.loadFeed();
         }
       }),
       this.route.queryParams.subscribe(params => {
         if (params['following'] === 'true') {
           this.feedType = 'following';
+          this.loadFeed();
         }
       }),
       this.anilistService.feed.subscribe(activities => {
@@ -46,8 +58,6 @@ export class FeedComponent implements OnInit, OnDestroy {
         this.loading = loading;
       }),
     );
-
-    this.loadFeed();
   }
 
   ngOnDestroy() {
@@ -59,7 +69,9 @@ export class FeedComponent implements OnInit, OnDestroy {
     if (this.feedType === 'following') {
       this.anilistService.loadFollowingFeed(25, page);
     } else {
-      this.anilistService.loadUserFeed(this.userId, 25, page);
+      // Use the specific userId if provided, otherwise use current user's ID
+      const targetUserId = this.userId || this.currentUserId;
+      this.anilistService.loadUserFeed(targetUserId, 25, page);
     }
   }
 

@@ -37,8 +37,8 @@
       </div>
 
       <div class="activities" *ngIf="!loading && activities.length > 0">
-        <div class="activity-card mb-3" *ngFor="let activity of activities">
-          <div class="card">
+        <div class="mb-3" *ngFor="let activity of activities">
+          <div class="card shadow-sm">
             <div class="card-body">
               <div class="d-flex align-items-start">
                 <img
@@ -55,16 +55,16 @@
                       <small class="text-muted ms-2">{{ formatDate(activity.createdAt) }}</small>
                     </div>
                     <a [href]="activity.siteUrl" target="_blank" class="btn btn-sm btn-link">
-                      <i class="bi bi-box-arrow-up-right"></i>
+                      <myanili-icon name="box-arrow-up-right"></myanili-icon>
                     </a>
                   </div>
 
-                  <div class="activity-content mt-2" [innerHTML]="getActivityText(activity)"></div>
+                  <div class="mt-2 lh-base" [innerHTML]="getActivityText(activity)"></div>
 
-                  <div *ngIf="activity.media" class="media-info mt-2 d-flex align-items-center">
+                  <div *ngIf="activity.media" class="mt-2 p-2 bg-body-secondary rounded d-flex align-items-center">
                     <img
                       [src]="activity.media.coverImage.large"
-                      class="me-2"
+                      class="me-2 rounded"
                       width="50"
                       height="70"
                       style="object-fit: cover"
@@ -76,28 +76,27 @@
                     </div>
                   </div>
 
-                  <div class="activity-actions mt-3">
+                  <div class="mt-3 d-flex gap-2">
                     <button
-                      class="btn btn-sm me-2"
+                      class="btn btn-sm"
                       [class.btn-primary]="activity.isLiked"
                       [class.btn-outline-primary]="!activity.isLiked"
                       (click)="toggleLike(activity.id)"
                     >
-                      <i class="bi bi-heart-fill" *ngIf="activity.isLiked"></i>
-                      <i class="bi bi-heart" *ngIf="!activity.isLiked"></i>
-                      {{ activity.likeCount }}
+                      <myanili-icon [name]="activity.isLiked ? 'heart-fill' : 'heart'"></myanili-icon>
+                      <span class="badge text-bg-light ms-1">{{ activity.likeCount }}</span>
                     </button>
                     <button
                       class="btn btn-sm btn-outline-secondary"
                       (click)="toggleReplies(activity.id)"
                     >
-                      <i class="bi bi-chat"></i>
-                      {{ activity.replyCount }}
+                      <myanili-icon name="chat"></myanili-icon>
+                      <span class="badge text-bg-light ms-1">{{ activity.replyCount }}</span>
                     </button>
                   </div>
 
-                  <div class="replies mt-3" *ngIf="showReplies[activity.id]">
-                    <div class="reply mb-2" *ngFor="let reply of activity.replies">
+                  <div class="mt-3" *ngIf="showReplies[activity.id]">
+                    <div class="mb-2 p-2 bg-body-tertiary rounded border-start border-primary border-3" *ngFor="let reply of activity.replies">
                       <div class="d-flex">
                         <img
                           [src]="reply.user.avatar.large"
@@ -116,12 +115,13 @@
                       </div>
                     </div>
 
-                    <div class="reply-form mt-3">
+                    <div class="mt-3">
                       <textarea
                         class="form-control mb-2"
                         rows="2"
                         placeholder="Write a reply..."
                         [(ngModel)]="replyText[activity.id]"
+                        style="resize: vertical"
                       ></textarea>
                       <button
                         class="btn btn-sm btn-primary"
