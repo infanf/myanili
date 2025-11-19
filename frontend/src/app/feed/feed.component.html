@@ -1,13 +1,19 @@
 <div class="container-fluid mt-4">
   <div class="row">
     <div class="col-12">
-      <h2 class="mb-4">
-        <span *ngIf="feedType === 'following'">Following Feed</span>
-        <span *ngIf="feedType === 'user' && !userId">My Activity</span>
-        <span *ngIf="feedType === 'user' && userId">User Activity</span>
-      </h2>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+          <span *ngIf="feedType === 'following'">Following Feed</span>
+          <span *ngIf="feedType === 'user' && !userId">My Activity</span>
+          <span *ngIf="feedType === 'user' && userId">User Activity</span>
+        </h2>
+        <button class="btn btn-sm btn-outline-primary" (click)="reloadFeed()" [disabled]="loading">
+          <myanili-icon name="arrow-clockwise"></myanili-icon>
+          Reload
+        </button>
+      </div>
 
-      <div class="feed-type-selector mb-3">
+      <div class="mb-3">
         <button
           class="btn btn-sm me-2"
           [class.btn-primary]="feedType === 'user' && !userId"
@@ -61,7 +67,13 @@
 
                   <div class="mt-2 lh-base" [innerHTML]="getActivityText(activity)"></div>
 
-                  <div *ngIf="activity.media" class="mt-2 p-2 bg-body-secondary rounded d-flex align-items-center">
+                  <div 
+                    *ngIf="activity.media" 
+                    class="mt-2 p-2 bg-body-secondary rounded d-flex align-items-center"
+                    [class.cursor-pointer]="activity.media.idMal"
+                    (click)="navigateToMedia(activity.media)"
+                    style="cursor: pointer"
+                  >
                     <img
                       [src]="activity.media.coverImage.large"
                       class="me-2 rounded"

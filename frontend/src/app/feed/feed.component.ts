@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AnilistActivity } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 import { Subscription } from 'rxjs';
@@ -25,6 +25,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   constructor(
     private anilistService: AnilistService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -75,6 +76,10 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
   }
 
+  reloadFeed() {
+    this.loadFeed(this.currentPage);
+  }
+
   async toggleLike(activityId: number) {
     await this.anilistService.toggleActivityLike(activityId);
   }
@@ -93,6 +98,17 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   toggleReplies(activityId: number) {
     this.showReplies[activityId] = !this.showReplies[activityId];
+  }
+
+  navigateToMedia(media: AnilistActivity['media']) {
+    if (!media) return;
+    
+    const type = media.type.toLowerCase();
+    const malId = media.idMal;
+    
+    if (malId) {
+      this.router.navigate([type, 'details', malId]);
+    }
   }
 
   getActivityText(activity: AnilistActivity): string {
