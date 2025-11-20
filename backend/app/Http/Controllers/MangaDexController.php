@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -21,22 +20,22 @@ class MangaDexController extends Controller
 
     public function redirect(Request $request)
     {
-        $url = preg_replace('/^mangadex\//', self::$baseUrl, $request->path());
-        $auth = $request->header('Authorization');
-        $body = $request->getContent();
-        $params = $request->query();
-        $method = $request->getMethod();
+        $url     = preg_replace('/^mangadex\//', self::$baseUrl, $request->path());
+        $auth    = $request->header('Authorization');
+        $body    = $request->getContent();
+        $params  = $request->query();
+        $method  = $request->getMethod();
         $headers = [];
         if ($auth) {
             $headers[] = "Authorization: $auth";
         }
         $headers[] = "Content-Type: " . $request->header('Content-Type');
         $headers[] = "User-Agent: " . $request->header('User-Agent');
-        $ch = curl_init($url . ($params ? "?" . http_build_query($params) : ""));
+        $ch        = curl_init($url . ($params ? "?" . http_build_query($params) : ""));
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_HTTPHEADER     => $headers,
+            CURLOPT_CUSTOMREQUEST  => $method,
         ]);
         if ($method !== "GET" && $body) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $body);

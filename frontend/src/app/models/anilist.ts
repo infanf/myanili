@@ -95,6 +95,10 @@ export interface AnilistActivity {
     id: number;
     idMal?: number;
     type: 'ANIME' | 'MANGA';
+    startDate: {
+      year: number;
+    };
+    format: string;
     title: {
       userPreferred: string;
     };
@@ -102,7 +106,7 @@ export interface AnilistActivity {
       large: string;
     };
   };
-  replies?: {
+  replies?: Array<{
     id: number;
     text: string;
     createdAt: number;
@@ -113,11 +117,11 @@ export interface AnilistActivity {
         large: string;
       };
     };
-  }[];
-  likes?: {
+  }>;
+  likes?: Array<{
     id: number;
     name: string;
-  }[];
+  }>;
   replyCount: number;
   likeCount: number;
   isLiked: boolean;

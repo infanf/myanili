@@ -18,7 +18,7 @@
               <myanili-icon
                 [name]="feedType === 'user' && !userId ? 'person-fill' : 'person'"
               ></myanili-icon>
-              <span class="d-none d-md-inline">My Feed</span>
+              <span class="d-none d-md-inline ms-1">My Feed</span>
             </button>
             <button
               class="btn btn-sm"
@@ -29,7 +29,7 @@
               <myanili-icon
                 [name]="feedType === 'following' ? 'people-fill' : 'people'"
               ></myanili-icon>
-              <span class="d-none d-md-inline">Following Feed</span>
+              <span class="d-none d-md-inline ms-1">Following Feed</span>
             </button>
           </div>
           <button
@@ -38,7 +38,7 @@
             [disabled]="loading"
           >
             <myanili-icon name="arrow-clockwise"></myanili-icon>
-            <span class="d-none d-md-inline">Reload</span>
+            <span class="d-none d-md-inline ms-1">Reload</span>
           </button>
         </div>
       </div>
@@ -85,26 +85,28 @@
 
                   <div class="mt-2 lh-base" [innerHTML]="getActivityText(activity)"></div>
 
-                  <div
-                    *ngIf="activity.media"
-                    class="mt-2 p-2 bg-body-secondary rounded d-flex align-items-center"
-                    [class.cursor-pointer]="activity.media.idMal"
-                    (click)="navigateToMedia(activity.media)"
-                    style="cursor: pointer"
-                  >
-                    <img
-                      [src]="activity.media.coverImage.large"
-                      class="me-2 rounded"
-                      width="50"
-                      height="70"
-                      style="object-fit: cover"
-                      alt="{{ activity.media.title.userPreferred }}"
-                    />
-                    <div>
-                      <div class="fw-bold">{{ activity.media.title.userPreferred }}</div>
-                      <small class="text-muted">{{ activity.media.type }}</small>
+                  @if (activity.media) {
+                    <div
+                      class="mt-2 rounded d-flex align-items-center"
+                      [class.cursor-pointer]="activity.media.idMal"
+                      (click)="navigateToMedia(activity.media)"
+                      style="cursor: pointer"
+                    >
+                      <img
+                        [src]="activity.media.coverImage.large"
+                        class="me-2 rounded"
+                        width="50"
+                        height="70"
+                        style="object-fit: cover"
+                        alt="{{ activity.media.title.userPreferred }}"
+                      />
+                      <div>
+                        <div class="fw-bold">{{ activity.media.title.userPreferred }}</div>
+                        <div class="text-muted">{{ activity.media.format.replace('_', ' ') }}</div>
+                        <div class="text-muted">{{ activity.media.startDate.year }}</div>
+                      </div>
                     </div>
-                  </div>
+                  }
 
                   <div class="mt-3 d-flex gap-3">
                     <div

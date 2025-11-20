@@ -40,10 +40,21 @@
       "type": "image/png"
     },
     {
-      "src": "assets/beta/icon-maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
+      "src": "assets/beta/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "assets/beta/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
+    },
+    {
+      "src": "assets/beta/icon-mono.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
     }
   ],
   "screenshots": [

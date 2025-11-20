@@ -263,6 +263,17 @@ export class AnilistFeedService {
                 id
                 idMal
                 type
+                format
+                startDate {
+                  year
+                  month
+                  day
+                }
+                endDate {
+                  year
+                  month
+                  day
+                }
                 title {
                   userPreferred
                 }
@@ -700,6 +711,10 @@ interface Activity {
     id: number;
     idMal?: number;
     type: 'ANIME' | 'MANGA';
+    startDate: {
+      year: number;
+    };
+    format: string;
     title: {
       userPreferred: string;
     };

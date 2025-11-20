@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -25,11 +24,11 @@ class AnidbController extends Controller
     {
         // doesn't work on production due to rate limiting
         return [];
-        $url = preg_replace('/^anidb\//', self::$baseUrl, $request->path());
-        $auth = $request->header('Authorization');
-        $body = $request->getContent();
-        $params = $request->query();
-        $method = $request->getMethod();
+        $url     = preg_replace('/^anidb\//', self::$baseUrl, $request->path());
+        $auth    = $request->header('Authorization');
+        $body    = $request->getContent();
+        $params  = $request->query();
+        $method  = $request->getMethod();
         $headers = [];
         if ($auth) {
             $headers[] = "Authorization: $auth";
@@ -50,9 +49,9 @@ class AnidbController extends Controller
         $ch = curl_init($url);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_CUSTOMREQUEST => $method,
-            CURLOPT_ENCODING => "gzip",
+            CURLOPT_HTTPHEADER     => $headers,
+            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_ENCODING       => "gzip",
         ]);
         if ($method !== "GET" && $body) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
@@ -79,13 +78,13 @@ class AnidbController extends Controller
      */
     private function setCache($url, $data)
     {
-        if (!$this->cache) {
+        if (! $this->cache) {
             $this->initCache();
         }
-        $url = md5($url);
+        $url       = md5($url);
         $timestamp = time();
-        $data = base64_encode($data);
-        $stmt = $this->cache->prepare("INSERT OR REPLACE INTO cache (url, data, timestamp) VALUES (:url, :data, :timestamp)");
+        $data      = base64_encode($data);
+        $stmt      = $this->cache->prepare("INSERT OR REPLACE INTO cache (url, data, timestamp) VALUES (:url, :data, :timestamp)");
         $stmt->bindValue(':url', $url);
         $stmt->bindValue(':data', $data);
         $stmt->bindValue(':timestamp', $timestamp);
@@ -94,14 +93,14 @@ class AnidbController extends Controller
 
     private function getCache($url)
     {
-        if (!$this->cache) {
+        if (! $this->cache) {
             $this->initCache();
         }
-        $url = md5($url);
+        $url  = md5($url);
         $stmt = $this->cache->prepare("SELECT data, timestamp FROM cache WHERE url = :url");
         $stmt->bindValue(':url', $url);
         $result = $stmt->execute();
-        $row = $result->fetchArray(SQLITE3_ASSOC);
+        $row    = $result->fetchArray(SQLITE3_ASSOC);
         if ($row && $row['timestamp'] > time() - 60 * 60 * 24) {
             return base64_decode($row['data']);
         }
