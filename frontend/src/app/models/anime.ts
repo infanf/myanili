@@ -293,3 +293,44 @@ export function daysToLocal(simulcast?: SimulcastData): number[] {
     ) || []
   );
 }
+
+export function getSimulcastDays(anime: ListAnime) {
+  const simulcast = anime.my_extension?.simulcast || {};
+  if (!simulcast.day) {
+    const broadcast = anime.node.broadcast;
+    if (broadcast?.weekday) {
+      simulcast.day = [broadcast.weekday];
+    }
+  }
+}
+
+export class ListAnimeModel implements ListAnime {
+  node: AnimeNode;
+  list_status: MyAnimeStatus;
+  my_extension?: AnimeExtension;
+  busy?: boolean;
+  constructor(anime: ListAnime) {
+    this.node = anime.node;
+    this.list_status = anime.list_status;
+    this.my_extension = anime.my_extension;
+    this.busy = anime.busy;
+  }
+
+  get simulcastDays() {
+    const simulcast = this.my_extension?.simulcast || {};
+    if (!simulcast.day) {
+      const broadcast = this.node.broadcast;
+      if (broadcast?.weekday) {
+        simulcast.day = [broadcast.weekday];
+      }
+    }
+    if (!simulcast.time) {
+      const broadcast = this.node.broadcast;
+      if (broadcast?.start_time) {
+        simulcast.time = broadcast.start_time;
+      }
+    }
+
+    return daysToLocal(this.my_extension?.simulcast);
+  }
+}

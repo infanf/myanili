@@ -410,6 +410,17 @@ export class AnilistFeedService {
                 id
                 idMal
                 type
+                format
+                startDate {
+                  year
+                  month
+                  day
+                }
+                endDate {
+                  year
+                  month
+                  day
+                }
                 title {
                   userPreferred
                 }
@@ -538,6 +549,17 @@ export class AnilistFeedService {
               id
               idMal
               type
+              format
+              startDate {
+                year
+                month
+                day
+              }
+              endDate {
+                year
+                month
+                day
+              }
               title {
                 userPreferred
               }
