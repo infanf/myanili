@@ -55,11 +55,11 @@
 
       <div class="activities" *ngIf="!loading && activities.length > 0">
         <div class="mb-3" *ngFor="let activity of activities">
-          <div class="card shadow-sm">
+          <div class="card shadow-sm overflow-hidden">
             <div class="card-body">
               <div class="d-flex align-items-start">
                 <img
-                  [src]="activity.user.avatar.large"
+                  [src]="activity.user.avatar.medium"
                   class="rounded-circle me-3"
                   width="48"
                   height="48"
@@ -83,7 +83,10 @@
                     </a>
                   </div>
 
-                  <div class="mt-2 lh-base" [innerHTML]="getActivityText(activity)"></div>
+                  <div
+                    class="mt-2 lh-base activity-text clamped"
+                    [innerHTML]="getActivityText(activity)"
+                  ></div>
 
                   @if (activity.media) {
                     <div
@@ -138,7 +141,7 @@
                     >
                       <div class="d-flex">
                         <img
-                          [src]="reply.user.avatar.large"
+                          [src]="reply.user.avatar.medium"
                           class="rounded-circle me-2"
                           width="32"
                           height="32"
@@ -157,7 +160,10 @@
                             </strong>
                             <small class="text-muted">{{ formatDate(reply.createdAt) }}</small>
                           </div>
-                          <div [innerHTML]="parseMarkdown(reply.text)"></div>
+                          <div
+                            class="reply-text clamped"
+                            [innerHTML]="parseMarkdown(reply.text)"
+                          ></div>
                         </div>
                       </div>
                     </div>

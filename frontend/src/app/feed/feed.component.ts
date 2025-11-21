@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnilistActivity } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 import { GlobalService } from '@services/global.service';
-import { Subscription } from 'rxjs';
 import { marked } from 'marked';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-feed',
@@ -74,21 +74,21 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  loadFeed(page = 1) {
+  loadFeed(page = 1, forceRefresh = false) {
     this.currentPage = page;
     if (this.activityId) {
-      this.anilistService.loadActivity(this.activityId);
+      this.anilistService.loadActivity(this.activityId, forceRefresh);
     } else if (this.feedType === 'following') {
-      this.anilistService.loadFollowingFeed(25, page);
+      this.anilistService.loadFollowingFeed(25, page, forceRefresh);
     } else {
       // Use the specific userId if provided, otherwise use current user's ID
       const targetUserId = this.userId || this.currentUserId;
-      this.anilistService.loadUserFeed(targetUserId, 25, page);
+      this.anilistService.loadUserFeed(targetUserId, 25, page, forceRefresh);
     }
   }
 
   reloadFeed() {
-    this.loadFeed(this.currentPage);
+    this.loadFeed(this.currentPage, true); // Force refresh to bypass cache
   }
 
   async toggleLike(activityId: number) {
@@ -129,7 +129,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     } else if (activity.status && activity.media) {
       text = `${activity.status} ${activity.progress || ''} of ${activity.media.title.userPreferred}`;
     }
-    
+
     return this.parseMarkdown(text);
   }
 
@@ -137,7 +137,8 @@ export class FeedComponent implements OnInit, OnDestroy {
     // Parse markdown to HTML
     if (text) {
       try {
-        return marked.parse(text, { async: false, breaks: true }) as string;
+        const html = marked.parse(text, { async: false, breaks: true }) as string;
+        return html;
       } catch (error) {
         console.error('Error parsing markdown:', error);
         return text;
