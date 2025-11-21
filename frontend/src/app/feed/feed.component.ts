@@ -4,6 +4,7 @@ import { AnilistActivity } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 import { GlobalService } from '@services/global.service';
 import { Subscription } from 'rxjs';
+import { marked } from 'marked';
 
 @Component({
   selector: 'app-feed',
@@ -122,11 +123,25 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   getActivityText(activity: AnilistActivity): string {
+    let text = '';
     if (activity.text) {
-      return activity.text;
+      text = activity.text;
+    } else if (activity.status && activity.media) {
+      text = `${activity.status} ${activity.progress || ''} of ${activity.media.title.userPreferred}`;
     }
-    if (activity.status && activity.media) {
-      return `${activity.status} ${activity.progress || ''} of ${activity.media.title.userPreferred}`;
+    
+    return this.parseMarkdown(text);
+  }
+
+  parseMarkdown(text: string): string {
+    // Parse markdown to HTML
+    if (text) {
+      try {
+        return marked.parse(text, { async: false, breaks: true }) as string;
+      } catch (error) {
+        console.error('Error parsing markdown:', error);
+        return text;
+      }
     }
     return '';
   }

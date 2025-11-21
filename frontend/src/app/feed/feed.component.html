@@ -157,7 +157,7 @@
                             </strong>
                             <small class="text-muted">{{ formatDate(reply.createdAt) }}</small>
                           </div>
-                          <div [innerHTML]="reply.text"></div>
+                          <div [innerHTML]="parseMarkdown(reply.text)"></div>
                         </div>
                       </div>
                     </div>
