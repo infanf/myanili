@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 export class FeedComponent implements OnInit, OnDestroy {
   activities: AnilistActivity[] = [];
   loading = false;
-  feedType: 'user' | 'following' = 'user';
+  feedType: 'user' | 'following' = 'following';
   userId?: number;
   activityId?: number;
   currentUserId?: number;
