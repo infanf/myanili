@@ -181,6 +181,10 @@ export class AnilistService {
     return this.anilistFeed.toggleLike(activityId);
   }
 
+  async toggleReplyLike(replyId: number): Promise<boolean> {
+    return this.anilistFeed.toggleReplyLike(replyId);
+  }
+
   async postActivityReply(activityId: number, text: string): Promise<boolean> {
     return this.anilistFeed.postReply(activityId, text);
   }

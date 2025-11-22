@@ -176,6 +176,57 @@ export class AnilistFeedService {
   }
 
   /**
+   * Toggle like on an activity reply
+   * @param replyId - The reply ID to like/unlike
+   */
+  async toggleReplyLike(replyId: number): Promise<boolean> {
+    const MUTATION = gql`
+      mutation ($replyId: Int) {
+        ToggleLikeV2(id: $replyId, type: ACTIVITY_REPLY) {
+          ... on ActivityReply {
+            id
+            isLiked
+            likeCount
+          }
+        }
+      }
+    `;
+
+    try {
+      const result = await this.client.mutation(MUTATION, { replyId }).toPromise();
+      if (result.data) {
+        // Update the feed with the new like status for the reply
+        const currentFeed = this.feedSubject.value;
+        const updatedFeed = currentFeed.map(activity => {
+          const updatedReplies = activity.replies?.map(reply => {
+            if (reply.id === replyId) {
+              return {
+                ...reply,
+                isLiked: result.data.ToggleLikeV2.isLiked,
+                likeCount: result.data.ToggleLikeV2.likeCount,
+              };
+            }
+            return reply;
+          });
+          if (updatedReplies) {
+            return {
+              ...activity,
+              replies: updatedReplies,
+            };
+          }
+          return activity;
+        });
+        this.feedSubject.next(updatedFeed);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error toggling reply like:', error);
+      return false;
+    }
+  }
+
+  /**
    * Post a reply to an activity
    * @param activityId - The activity ID to reply to
    * @param text - The reply text
@@ -188,6 +239,15 @@ export class AnilistFeedService {
           text
           createdAt
           user {
+            id
+            name
+            avatar {
+              medium
+            }
+          }
+          likeCount
+          isLiked
+          likes {
             id
             name
             avatar {
@@ -210,6 +270,9 @@ export class AnilistFeedService {
               text: result.data.SaveActivityReply.text,
               createdAt: result.data.SaveActivityReply.createdAt,
               user: result.data.SaveActivityReply.user,
+              likeCount: result.data.SaveActivityReply.likeCount ?? 0,
+              isLiked: result.data.SaveActivityReply.isLiked ?? false,
+              likes: result.data.SaveActivityReply.likes ?? [],
             };
             return {
               ...activity,
@@ -255,7 +318,11 @@ export class AnilistFeedService {
       status: activity.status,
       progress: activity.progress,
       media: activity.media,
-      replies: activity.replies,
+      replies: activity.replies?.map(reply => ({
+        ...reply,
+        likeCount: reply.likeCount ?? 0,
+        isLiked: reply.isLiked ?? false,
+      })),
       likes: activity.likes,
       replyCount: activity.replyCount,
       likeCount: activity.likeCount,
@@ -322,10 +389,22 @@ export class AnilistFeedService {
                     medium
                   }
                 }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
+                  }
+                }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -355,10 +434,22 @@ export class AnilistFeedService {
                     medium
                   }
                 }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
+                  }
+                }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -395,10 +486,22 @@ export class AnilistFeedService {
                     medium
                   }
                 }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
+                  }
+                }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -469,10 +572,22 @@ export class AnilistFeedService {
                     medium
                   }
                 }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
+                  }
+                }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -502,10 +617,22 @@ export class AnilistFeedService {
                     medium
                   }
                 }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
+                  }
+                }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -542,10 +669,22 @@ export class AnilistFeedService {
                     medium
                   }
                 }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
+                  }
+                }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount

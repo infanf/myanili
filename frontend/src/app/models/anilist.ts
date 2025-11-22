@@ -135,10 +135,22 @@ export interface AnilistActivity {
         medium: string;
       };
     };
+    likeCount: number;
+    isLiked: boolean;
+    likes?: Array<{
+      id: number;
+      name: string;
+      avatar: {
+        medium: string;
+      };
+    }>;
   }>;
   likes?: Array<{
     id: number;
     name: string;
+    avatar: {
+      medium: string;
+    };
   }>;
   replyCount: number;
   likeCount: number;

@@ -22,6 +22,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   currentPage = 1;
   replyText: { [activityId: number]: string } = {};
   showReplies: { [activityId: number]: boolean } = {};
+  showLikers: { [key: string]: boolean } = {}; // Key format: "activity-{id}" or "reply-{id}"
 
   private subscriptions: Subscription[] = [];
 
@@ -93,6 +94,20 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   async toggleLike(activityId: number) {
     await this.anilistService.toggleActivityLike(activityId);
+  }
+
+  async toggleReplyLike(activityId: number, replyId: number) {
+    await this.anilistService.toggleReplyLike(replyId);
+  }
+
+  toggleLikers(type: 'activity' | 'reply', id: number) {
+    const key = `${type}-${id}`;
+    this.showLikers[key] = !this.showLikers[key];
+  }
+
+  isLikersExpanded(type: 'activity' | 'reply', id: number): boolean {
+    const key = `${type}-${id}`;
+    return this.showLikers[key] || false;
   }
 
   async postReply(activityId: number) {

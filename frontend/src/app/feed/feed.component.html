@@ -5,7 +5,12 @@
         <h2 class="mb-0">
           <span *ngIf="feedType === 'following'">Following Feed</span>
           <span *ngIf="feedType === 'user' && !userId">My Activity</span>
-          <span *ngIf="feedType === 'user' && userId">User Activity</span>
+          <span *ngIf="feedType === 'user' && userId">
+            User Activity
+            <a [href]="`https://anilist.co/user/${userId}`" target="_blank">
+              <myanili-icon name="box-arrow-up-right"></myanili-icon>
+            </a>
+          </span>
         </h2>
         <div class="d-flex gap-2" *ngIf="!activityId">
           <div class="btn-group">
@@ -114,17 +119,27 @@
                     }
 
                     <div class="mt-3 d-flex gap-3">
-                      <div
-                        class="d-flex align-items-center gap-1"
-                        style="cursor: pointer"
-                        [class.text-danger]="activity.isLiked"
-                        [class.text-secondary]="!activity.isLiked"
-                        (click)="toggleLike(activity.id)"
-                      >
-                        <myanili-icon
-                          [name]="activity.isLiked ? 'heart-fill' : 'heart'"
-                        ></myanili-icon>
-                        <span>{{ activity.likeCount }}</span>
+                      <div class="d-flex align-items-center gap-1">
+                        <div
+                          class="d-flex align-items-center gap-1"
+                          style="cursor: pointer"
+                          [class.text-danger]="activity.isLiked"
+                          [class.text-secondary]="!activity.isLiked"
+                          (click)="toggleLike(activity.id)"
+                        >
+                          <myanili-icon
+                            [name]="activity.isLiked ? 'heart-fill' : 'heart'"
+                          ></myanili-icon>
+                        </div>
+                        <span
+                          *ngIf="activity.likeCount > 0"
+                          style="cursor: pointer"
+                          (click)="toggleLikers('activity', activity.id)"
+                          class="user-select-none"
+                        >
+                          {{ activity.likeCount }}
+                        </span>
+                        <span *ngIf="activity.likeCount === 0">0</span>
                       </div>
                       <div
                         class="d-flex align-items-center gap-1 text-secondary"
@@ -135,6 +150,28 @@
                         <span>{{ activity.replyCount }}</span>
                       </div>
                     </div>
+
+                    @if (
+                      isLikersExpanded('activity', activity.id) &&
+                      activity.likes &&
+                      activity.likes.length > 0
+                    ) {
+                      <div class="mt-2 p-2 rounded bg-secondary" style="--bs-bg-opacity: 0.1">
+                        <div class="d-flex flex-wrap gap-2">
+                          <img
+                            *ngFor="let liker of activity.likes"
+                            [src]="liker.avatar.medium || ''"
+                            class="rounded-circle"
+                            width="32"
+                            height="32"
+                            alt="{{ liker.name }}"
+                            [routerLink]="['/feed/user', liker.id]"
+                            style="cursor: pointer"
+                            [title]="liker.name"
+                          />
+                        </div>
+                      </div>
+                    }
 
                     @if (showReplies[activity.id]) {
                       <div class="mt-3">
@@ -153,7 +190,7 @@
                               [routerLink]="['/feed', reply.user.id]"
                               style="cursor: pointer"
                             />
-                            <div class="flex-grow-1">
+                            <div class="flex-grow-1" style="min-width: 0">
                               <div>
                                 <strong
                                   class="me-2"
@@ -168,6 +205,52 @@
                                 class="reply-text clamped"
                                 [innerHTML]="parseMarkdown(reply.text)"
                               ></div>
+                              <div class="mt-2 d-flex align-items-center gap-1">
+                                <div
+                                  class="d-flex align-items-center gap-1"
+                                  style="cursor: pointer"
+                                  [class.text-danger]="reply.isLiked"
+                                  [class.text-secondary]="!reply.isLiked"
+                                  (click)="toggleReplyLike(activity.id, reply.id)"
+                                >
+                                  <myanili-icon
+                                    [name]="reply.isLiked ? 'heart-fill' : 'heart'"
+                                  ></myanili-icon>
+                                </div>
+                                <span
+                                  *ngIf="reply.likeCount > 0"
+                                  style="cursor: pointer"
+                                  (click)="toggleLikers('reply', reply.id)"
+                                  class="user-select-none"
+                                >
+                                  {{ reply.likeCount }}
+                                </span>
+                                <span *ngIf="reply.likeCount === 0">0</span>
+                              </div>
+                              @if (
+                                isLikersExpanded('reply', reply.id) &&
+                                reply.likes &&
+                                reply.likes.length > 0
+                              ) {
+                                <div
+                                  class="mt-2 p-2 rounded bg-secondary"
+                                  style="--bs-bg-opacity: 0.1"
+                                >
+                                  <div class="d-flex flex-wrap gap-2">
+                                    <img
+                                      *ngFor="let liker of reply.likes"
+                                      [src]="liker.avatar.medium || ''"
+                                      class="rounded-circle"
+                                      width="32"
+                                      height="32"
+                                      alt="{{ liker.name }}"
+                                      [routerLink]="['/feed/user', liker.id]"
+                                      style="cursor: pointer"
+                                      [title]="liker.name"
+                                    />
+                                  </div>
+                                </div>
+                              }
                             </div>
                           </div>
                         </div>
