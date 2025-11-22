@@ -1,6 +1,6 @@
 {
   "name": "myanili-frontend",
-  "version": "2.34.1",
+  "version": "2.34.2",
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --host=0.0.0.0",
@@ -30,6 +30,7 @@
     "@angular/service-worker": "^20.2.4",
     "@ng-bootstrap/ng-bootstrap": "^19.0.1",
     "@popperjs/core": "^2.11.7",
+    "@types/marked": "^5.0.2",
     "@urql/core": "^5.0.4",
     "@zma-lab/user-geolocation": "^1.1.32",
     "angular-svg-icon": "^19.1.1",
@@ -42,6 +43,7 @@
     "graphql": "^16.9.0",
     "js-base64": "^3.7.3",
     "luxon": "^3.4.0",
+    "marked": "^17.0.1",
     "ng-circle-progress": "^1.7.1",
     "ng-in-viewport": "^16.0.0",
     "ngx-device-detector": "^9.0.0",

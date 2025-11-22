@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AnilistActivity } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 import { GlobalService } from '@services/global.service';
+import { marked } from 'marked';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -14,13 +15,14 @@ import { Subscription } from 'rxjs';
 export class FeedComponent implements OnInit, OnDestroy {
   activities: AnilistActivity[] = [];
   loading = false;
-  feedType: 'user' | 'following' = 'user';
+  feedType: 'user' | 'following' = 'following';
   userId?: number;
   activityId?: number;
   currentUserId?: number;
   currentPage = 1;
   replyText: { [activityId: number]: string } = {};
   showReplies: { [activityId: number]: boolean } = {};
+  showLikers: { [key: string]: boolean } = {}; // Key format: "activity-{id}" or "reply-{id}"
 
   private subscriptions: Subscription[] = [];
 
@@ -73,25 +75,39 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  loadFeed(page = 1) {
+  loadFeed(page = 1, forceRefresh = false) {
     this.currentPage = page;
     if (this.activityId) {
-      this.anilistService.loadActivity(this.activityId);
+      this.anilistService.loadActivity(this.activityId, forceRefresh);
     } else if (this.feedType === 'following') {
-      this.anilistService.loadFollowingFeed(25, page);
+      this.anilistService.loadFollowingFeed(25, page, forceRefresh);
     } else {
       // Use the specific userId if provided, otherwise use current user's ID
       const targetUserId = this.userId || this.currentUserId;
-      this.anilistService.loadUserFeed(targetUserId, 25, page);
+      this.anilistService.loadUserFeed(targetUserId, 25, page, forceRefresh);
     }
   }
 
   reloadFeed() {
-    this.loadFeed(this.currentPage);
+    this.loadFeed(this.currentPage, true); // Force refresh to bypass cache
   }
 
   async toggleLike(activityId: number) {
     await this.anilistService.toggleActivityLike(activityId);
+  }
+
+  async toggleReplyLike(activityId: number, replyId: number) {
+    await this.anilistService.toggleReplyLike(replyId);
+  }
+
+  toggleLikers(type: 'activity' | 'reply', id: number) {
+    const key = `${type}-${id}`;
+    this.showLikers[key] = !this.showLikers[key];
+  }
+
+  isLikersExpanded(type: 'activity' | 'reply', id: number): boolean {
+    const key = `${type}-${id}`;
+    return this.showLikers[key] || false;
   }
 
   async postReply(activityId: number) {
@@ -122,11 +138,26 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   getActivityText(activity: AnilistActivity): string {
+    let text = '';
     if (activity.text) {
-      return activity.text;
+      text = activity.text;
+    } else if (activity.status && activity.media) {
+      text = `${activity.status} ${activity.progress || ''} of ${activity.media.title.userPreferred}`;
     }
-    if (activity.status && activity.media) {
-      return `${activity.status} ${activity.progress || ''} of ${activity.media.title.userPreferred}`;
+
+    return this.parseMarkdown(text);
+  }
+
+  parseMarkdown(text: string): string {
+    // Parse markdown to HTML
+    if (text) {
+      try {
+        const html = marked.parse(text, { async: false, breaks: true }) as string;
+        return html;
+      } catch (error) {
+        console.error('Error parsing markdown:', error);
+        return text;
+      }
     }
     return '';
   }

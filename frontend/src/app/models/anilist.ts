@@ -85,12 +85,30 @@ export interface AnilistActivity {
     id: number;
     name: string;
     avatar: {
-      large: string;
+      medium: string;
     };
   };
   text?: string;
   status?: string;
   progress?: string;
+
+  // MessageActivity support
+  message?: string;
+  messenger?: {
+    id: number;
+    name: string;
+    avatar: {
+      medium: string;
+    };
+  };
+  recipient?: {
+    id: number;
+    name: string;
+    avatar: {
+      medium: string;
+    };
+  };
+
   media?: {
     id: number;
     idMal?: number;
@@ -114,13 +132,25 @@ export interface AnilistActivity {
       id: number;
       name: string;
       avatar: {
-        large: string;
+        medium: string;
       };
     };
+    likeCount: number;
+    isLiked: boolean;
+    likes?: Array<{
+      id: number;
+      name: string;
+      avatar: {
+        medium: string;
+      };
+    }>;
   }>;
   likes?: Array<{
     id: number;
     name: string;
+    avatar: {
+      medium: string;
+    };
   }>;
   replyCount: number;
   likeCount: number;

@@ -165,20 +165,24 @@ export class AnilistService {
     return this.anilistLibrary.getStatusMapping(malIds, type);
   }
 
-  async loadUserFeed(userId?: number, perPage = 25, page = 1) {
-    return this.anilistFeed.loadUserFeed(userId, perPage, page);
+  async loadUserFeed(userId?: number, perPage = 25, page = 1, forceRefresh = false) {
+    return this.anilistFeed.loadUserFeed(userId, perPage, page, forceRefresh);
   }
 
-  async loadFollowingFeed(perPage = 25, page = 1) {
-    return this.anilistFeed.loadFollowingFeed(perPage, page);
+  async loadFollowingFeed(perPage = 25, page = 1, forceRefresh = false) {
+    return this.anilistFeed.loadFollowingFeed(perPage, page, forceRefresh);
   }
 
-  async loadActivity(activityId: number) {
-    return this.anilistFeed.loadActivity(activityId);
+  async loadActivity(activityId: number, forceRefresh = false) {
+    return this.anilistFeed.loadActivity(activityId, forceRefresh);
   }
 
   async toggleActivityLike(activityId: number): Promise<boolean> {
     return this.anilistFeed.toggleLike(activityId);
+  }
+
+  async toggleReplyLike(replyId: number): Promise<boolean> {
+    return this.anilistFeed.toggleReplyLike(replyId);
   }
 
   async postActivityReply(activityId: number, text: string): Promise<boolean> {

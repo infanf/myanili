@@ -13,14 +13,21 @@ export class AnilistFeedService {
    * @param userId - The user ID to load feed for (undefined for viewer's own feed)
    * @param perPage - Number of activities per page
    * @param page - Page number
+   * @param forceRefresh - If true, bypass cache and fetch fresh data
    */
-  async loadUserFeed(userId?: number, perPage = 25, page = 1) {
+  async loadUserFeed(userId?: number, perPage = 25, page = 1, forceRefresh = false) {
     this.loadingSubject.next(true);
     const QUERY = AnilistFeedService.getUserFeedQuery();
 
     try {
       const result = await this.client
-        .query<UserFeedResult>(QUERY, { userId, perPage, page })
+        .query<UserFeedResult>(
+          QUERY,
+          { userId, perPage, page },
+          {
+            requestPolicy: forceRefresh ? 'network-only' : 'cache-first',
+          },
+        )
         .toPromise();
 
       if (!result.data?.Page?.activities) {
@@ -44,14 +51,21 @@ export class AnilistFeedService {
    * Load following feed (activities from users the viewer is following)
    * @param perPage - Number of activities per page
    * @param page - Page number
+   * @param forceRefresh - If true, bypass cache and fetch fresh data
    */
-  async loadFollowingFeed(perPage = 25, page = 1) {
+  async loadFollowingFeed(perPage = 25, page = 1, forceRefresh = false) {
     this.loadingSubject.next(true);
     const QUERY = AnilistFeedService.getFollowingFeedQuery();
 
     try {
       const result = await this.client
-        .query<FollowingFeedResult>(QUERY, { perPage, page, isFollowing: true })
+        .query<FollowingFeedResult>(
+          QUERY,
+          { perPage, page, isFollowing: true },
+          {
+            requestPolicy: forceRefresh ? 'network-only' : 'cache-first',
+          },
+        )
         .toPromise();
 
       if (!result.data?.Page?.activities) {
@@ -74,13 +88,22 @@ export class AnilistFeedService {
   /**
    * Load a single activity
    * @param activityId - The activity ID to load
+   * @param forceRefresh - If true, bypass cache and fetch fresh data
    */
-  async loadActivity(activityId: number) {
+  async loadActivity(activityId: number, forceRefresh = false) {
     this.loadingSubject.next(true);
     const QUERY = AnilistFeedService.getActivityQuery();
 
     try {
-      const result = await this.client.query<ActivityResult>(QUERY, { id: activityId }).toPromise();
+      const result = await this.client
+        .query<ActivityResult>(
+          QUERY,
+          { id: activityId },
+          {
+            requestPolicy: forceRefresh ? 'network-only' : 'cache-first',
+          },
+        )
+        .toPromise();
 
       if (!result.data?.Activity) {
         console.warn('No activity found:', result);
@@ -153,6 +176,57 @@ export class AnilistFeedService {
   }
 
   /**
+   * Toggle like on an activity reply
+   * @param replyId - The reply ID to like/unlike
+   */
+  async toggleReplyLike(replyId: number): Promise<boolean> {
+    const MUTATION = gql`
+      mutation ($replyId: Int) {
+        ToggleLikeV2(id: $replyId, type: ACTIVITY_REPLY) {
+          ... on ActivityReply {
+            id
+            isLiked
+            likeCount
+          }
+        }
+      }
+    `;
+
+    try {
+      const result = await this.client.mutation(MUTATION, { replyId }).toPromise();
+      if (result.data) {
+        // Update the feed with the new like status for the reply
+        const currentFeed = this.feedSubject.value;
+        const updatedFeed = currentFeed.map(activity => {
+          const updatedReplies = activity.replies?.map(reply => {
+            if (reply.id === replyId) {
+              return {
+                ...reply,
+                isLiked: result.data.ToggleLikeV2.isLiked,
+                likeCount: result.data.ToggleLikeV2.likeCount,
+              };
+            }
+            return reply;
+          });
+          if (updatedReplies) {
+            return {
+              ...activity,
+              replies: updatedReplies,
+            };
+          }
+          return activity;
+        });
+        this.feedSubject.next(updatedFeed);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error toggling reply like:', error);
+      return false;
+    }
+  }
+
+  /**
    * Post a reply to an activity
    * @param activityId - The activity ID to reply to
    * @param text - The reply text
@@ -168,7 +242,16 @@ export class AnilistFeedService {
             id
             name
             avatar {
-              large
+              medium
+            }
+          }
+          likeCount
+          isLiked
+          likes {
+            id
+            name
+            avatar {
+              medium
             }
           }
         }
@@ -187,6 +270,9 @@ export class AnilistFeedService {
               text: result.data.SaveActivityReply.text,
               createdAt: result.data.SaveActivityReply.createdAt,
               user: result.data.SaveActivityReply.user,
+              likeCount: result.data.SaveActivityReply.likeCount ?? 0,
+              isLiked: result.data.SaveActivityReply.isLiked ?? false,
+              likes: result.data.SaveActivityReply.likes ?? [],
             };
             return {
               ...activity,
@@ -214,13 +300,13 @@ export class AnilistFeedService {
     return this.loadingSubject.asObservable();
   }
 
-  private static mapActivity(activity: Activity): AnilistActivity {
+  private static mapActivity(activity: AnilistActivity): AnilistActivity {
     // For MessageActivity, use messenger as the user
     const user = activity.user ||
       activity.messenger || {
         id: 0,
         name: 'Unknown',
-        avatar: { large: '' },
+        avatar: { medium: '' },
       };
 
     return {
@@ -232,7 +318,11 @@ export class AnilistFeedService {
       status: activity.status,
       progress: activity.progress,
       media: activity.media,
-      replies: activity.replies,
+      replies: activity.replies?.map(reply => ({
+        ...reply,
+        likeCount: reply.likeCount ?? 0,
+        isLiked: reply.isLiked ?? false,
+      })),
       likes: activity.likes,
       replyCount: activity.replyCount,
       likeCount: activity.likeCount,
@@ -285,7 +375,7 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
               replies {
@@ -296,13 +386,25 @@ export class AnilistFeedService {
                   id
                   name
                   avatar {
-                    large
+                    medium
+                  }
+                }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
                   }
                 }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -318,7 +420,7 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
               replies {
@@ -329,13 +431,25 @@ export class AnilistFeedService {
                   id
                   name
                   avatar {
-                    large
+                    medium
+                  }
+                }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
                   }
                 }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -351,14 +465,14 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
               recipient {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
               replies {
@@ -369,13 +483,25 @@ export class AnilistFeedService {
                   id
                   name
                   avatar {
-                    large
+                    medium
+                  }
+                }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
                   }
                 }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -410,6 +536,17 @@ export class AnilistFeedService {
                 id
                 idMal
                 type
+                format
+                startDate {
+                  year
+                  month
+                  day
+                }
+                endDate {
+                  year
+                  month
+                  day
+                }
                 title {
                   userPreferred
                 }
@@ -421,7 +558,7 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
               replies {
@@ -432,13 +569,25 @@ export class AnilistFeedService {
                   id
                   name
                   avatar {
-                    large
+                    medium
+                  }
+                }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
                   }
                 }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -454,7 +603,7 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
               replies {
@@ -465,13 +614,25 @@ export class AnilistFeedService {
                   id
                   name
                   avatar {
-                    large
+                    medium
+                  }
+                }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
                   }
                 }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -487,14 +648,14 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
               recipient {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
               replies {
@@ -505,13 +666,25 @@ export class AnilistFeedService {
                   id
                   name
                   avatar {
-                    large
+                    medium
+                  }
+                }
+                likeCount
+                isLiked
+                likes {
+                  id
+                  name
+                  avatar {
+                    medium
                   }
                 }
               }
               likes {
                 id
                 name
+                avatar {
+                  medium
+                }
               }
               replyCount
               likeCount
@@ -538,6 +711,17 @@ export class AnilistFeedService {
               id
               idMal
               type
+              format
+              startDate {
+                year
+                month
+                day
+              }
+              endDate {
+                year
+                month
+                day
+              }
               title {
                 userPreferred
               }
@@ -560,7 +744,7 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
             }
@@ -593,7 +777,7 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
             }
@@ -633,7 +817,7 @@ export class AnilistFeedService {
                 id
                 name
                 avatar {
-                  large
+                  medium
                 }
               }
             }
@@ -653,20 +837,20 @@ export class AnilistFeedService {
 }
 
 interface ActivityResult {
-  Activity: Activity;
+  Activity: AnilistActivity;
 }
 
 interface UserFeedResult {
   Page: {
     pageInfo: PageInfo;
-    activities: Activity[];
+    activities: AnilistActivity[];
   };
 }
 
 interface FollowingFeedResult {
   Page: {
     pageInfo: PageInfo;
-    activities: Activity[];
+    activities: AnilistActivity[];
   };
 }
 
@@ -676,70 +860,4 @@ interface PageInfo {
   currentPage: number;
   lastPage: number;
   hasNextPage: boolean;
-}
-
-interface Activity {
-  id: number;
-  type: string;
-  createdAt: number;
-  text?: string;
-  status?: string;
-  progress?: string;
-  message?: string;
-  user: {
-    id: number;
-    name: string;
-    avatar: {
-      large: string;
-    };
-  };
-  messenger?: {
-    id: number;
-    name: string;
-    avatar: {
-      large: string;
-    };
-  };
-  recipient?: {
-    id: number;
-    name: string;
-    avatar: {
-      large: string;
-    };
-  };
-  media?: {
-    id: number;
-    idMal?: number;
-    type: 'ANIME' | 'MANGA';
-    startDate: {
-      year: number;
-    };
-    format: string;
-    title: {
-      userPreferred: string;
-    };
-    coverImage: {
-      large: string;
-    };
-  };
-  replies?: Array<{
-    id: number;
-    text: string;
-    createdAt: number;
-    user: {
-      id: number;
-      name: string;
-      avatar: {
-        large: string;
-      };
-    };
-  }>;
-  likes?: Array<{
-    id: number;
-    name: string;
-  }>;
-  replyCount: number;
-  likeCount: number;
-  isLiked?: boolean;
-  siteUrl: string;
 }
