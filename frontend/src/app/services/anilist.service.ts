@@ -189,6 +189,18 @@ export class AnilistService {
     return this.anilistFeed.postReply(activityId, text);
   }
 
+  async loadActivityLikes(activityId: number): Promise<boolean> {
+    return this.anilistFeed.loadActivityLikes(activityId);
+  }
+
+  async loadActivityReplies(activityId: number): Promise<boolean> {
+    return this.anilistFeed.loadActivityReplies(activityId);
+  }
+
+  async loadReplyLikes(activityId: number, replyId: number): Promise<boolean> {
+    return this.anilistFeed.loadReplyLikes(activityId, replyId);
+  }
+
   get feed() {
     return this.anilistFeed.feed;
   }

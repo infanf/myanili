@@ -134,7 +134,7 @@
                         <span
                           *ngIf="activity.likeCount > 0"
                           style="cursor: pointer"
-                          (click)="toggleLikers('activity', activity.id)"
+                          (click)="toggleLikers('activity', activity.id, undefined)"
                           class="user-select-none"
                         >
                           {{ activity.likeCount }}
@@ -220,7 +220,7 @@
                                 <span
                                   *ngIf="reply.likeCount > 0"
                                   style="cursor: pointer"
-                                  (click)="toggleLikers('reply', reply.id)"
+                                  (click)="toggleLikers('reply', reply.id, activity.id)"
                                   class="user-select-none"
                                 >
                                   {{ reply.likeCount }}

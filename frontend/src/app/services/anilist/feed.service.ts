@@ -247,13 +247,6 @@ export class AnilistFeedService {
           }
           likeCount
           isLiked
-          likes {
-            id
-            name
-            avatar {
-              medium
-            }
-          }
         }
       }
     `;
@@ -272,7 +265,6 @@ export class AnilistFeedService {
               user: result.data.SaveActivityReply.user,
               likeCount: result.data.SaveActivityReply.likeCount ?? 0,
               isLiked: result.data.SaveActivityReply.isLiked ?? false,
-              likes: result.data.SaveActivityReply.likes ?? [],
             };
             return {
               ...activity,
@@ -288,6 +280,217 @@ export class AnilistFeedService {
       return false;
     } catch (error) {
       console.error('Error posting reply:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Load likes for an activity
+   * @param activityId - The activity ID to load likes for
+   */
+  async loadActivityLikes(activityId: number): Promise<boolean> {
+    const QUERY = gql`
+      query ($id: Int) {
+        Activity(id: $id) {
+          ... on ListActivity {
+            id
+            likes {
+              id
+              name
+              avatar {
+                medium
+              }
+            }
+          }
+          ... on TextActivity {
+            id
+            likes {
+              id
+              name
+              avatar {
+                medium
+              }
+            }
+          }
+          ... on MessageActivity {
+            id
+            likes {
+              id
+              name
+              avatar {
+                medium
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    try {
+      const result = await this.client.query(QUERY, { id: activityId }).toPromise();
+      if (result.data?.Activity) {
+        // Update the feed with the likes
+        const currentFeed = this.feedSubject.value;
+        const updatedFeed = currentFeed.map(activity => {
+          if (activity.id === activityId) {
+            return {
+              ...activity,
+              likes: result.data.Activity.likes ?? [],
+            };
+          }
+          return activity;
+        });
+        this.feedSubject.next(updatedFeed);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error loading activity likes:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Load replies for an activity
+   * @param activityId - The activity ID to load replies for
+   */
+  async loadActivityReplies(activityId: number): Promise<boolean> {
+    const QUERY = gql`
+      query ($id: Int) {
+        Activity(id: $id) {
+          ... on ListActivity {
+            id
+            replies {
+              id
+              text
+              createdAt
+              user {
+                id
+                name
+                avatar {
+                  medium
+                }
+              }
+              likeCount
+              isLiked
+            }
+          }
+          ... on TextActivity {
+            id
+            replies {
+              id
+              text
+              createdAt
+              user {
+                id
+                name
+                avatar {
+                  medium
+                }
+              }
+              likeCount
+              isLiked
+            }
+          }
+          ... on MessageActivity {
+            id
+            replies {
+              id
+              text
+              createdAt
+              user {
+                id
+                name
+                avatar {
+                  medium
+                }
+              }
+              likeCount
+              isLiked
+            }
+          }
+        }
+      }
+    `;
+
+    try {
+      const result = await this.client.query(QUERY, { id: activityId }).toPromise();
+      if (result.data?.Activity) {
+        // Update the feed with the replies
+        const currentFeed = this.feedSubject.value;
+        const updatedFeed = currentFeed.map(activity => {
+          if (activity.id === activityId) {
+            return {
+              ...activity,
+              replies: result.data.Activity.replies?.map((reply: any) => ({
+                ...reply,
+                likeCount: reply.likeCount ?? 0,
+                isLiked: reply.isLiked ?? false,
+              })) ?? [],
+            };
+          }
+          return activity;
+        });
+        this.feedSubject.next(updatedFeed);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error loading activity replies:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Load likes for a reply
+   * @param activityId - The activity ID containing the reply
+   * @param replyId - The reply ID to load likes for
+   */
+  async loadReplyLikes(activityId: number, replyId: number): Promise<boolean> {
+    const QUERY = gql`
+      query ($id: Int) {
+        ActivityReply(id: $id) {
+          id
+          likes {
+            id
+            name
+            avatar {
+              medium
+            }
+          }
+        }
+      }
+    `;
+
+    try {
+      const result = await this.client.query(QUERY, { id: replyId }).toPromise();
+      if (result.data?.ActivityReply) {
+        // Update the feed with the reply likes
+        const currentFeed = this.feedSubject.value;
+        const updatedFeed = currentFeed.map(activity => {
+          if (activity.id === activityId) {
+            const updatedReplies = activity.replies?.map(reply => {
+              if (reply.id === replyId) {
+                return {
+                  ...reply,
+                  likes: result.data.ActivityReply.likes ?? [],
+                };
+              }
+              return reply;
+            });
+            return {
+              ...activity,
+              replies: updatedReplies,
+            };
+          }
+          return activity;
+        });
+        this.feedSubject.next(updatedFeed);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error loading reply likes:', error);
       return false;
     }
   }
@@ -378,34 +581,6 @@ export class AnilistFeedService {
                   medium
                 }
               }
-              replies {
-                id
-                text
-                createdAt
-                user {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-                likeCount
-                isLiked
-                likes {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-              }
-              likes {
-                id
-                name
-                avatar {
-                  medium
-                }
-              }
               replyCount
               likeCount
               isLiked
@@ -417,34 +592,6 @@ export class AnilistFeedService {
               text
               createdAt
               user {
-                id
-                name
-                avatar {
-                  medium
-                }
-              }
-              replies {
-                id
-                text
-                createdAt
-                user {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-                likeCount
-                isLiked
-                likes {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-              }
-              likes {
                 id
                 name
                 avatar {
@@ -469,34 +616,6 @@ export class AnilistFeedService {
                 }
               }
               recipient {
-                id
-                name
-                avatar {
-                  medium
-                }
-              }
-              replies {
-                id
-                text
-                createdAt
-                user {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-                likeCount
-                isLiked
-                likes {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-              }
-              likes {
                 id
                 name
                 avatar {
@@ -561,34 +680,6 @@ export class AnilistFeedService {
                   medium
                 }
               }
-              replies {
-                id
-                text
-                createdAt
-                user {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-                likeCount
-                isLiked
-                likes {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-              }
-              likes {
-                id
-                name
-                avatar {
-                  medium
-                }
-              }
               replyCount
               likeCount
               isLiked
@@ -600,34 +691,6 @@ export class AnilistFeedService {
               text
               createdAt
               user {
-                id
-                name
-                avatar {
-                  medium
-                }
-              }
-              replies {
-                id
-                text
-                createdAt
-                user {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-                likeCount
-                isLiked
-                likes {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-              }
-              likes {
                 id
                 name
                 avatar {
@@ -652,34 +715,6 @@ export class AnilistFeedService {
                 }
               }
               recipient {
-                id
-                name
-                avatar {
-                  medium
-                }
-              }
-              replies {
-                id
-                text
-                createdAt
-                user {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-                likeCount
-                isLiked
-                likes {
-                  id
-                  name
-                  avatar {
-                    medium
-                  }
-                }
-              }
-              likes {
                 id
                 name
                 avatar {
