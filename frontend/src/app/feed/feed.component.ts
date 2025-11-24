@@ -100,9 +100,25 @@ export class FeedComponent implements OnInit, OnDestroy {
     await this.anilistService.toggleReplyLike(replyId);
   }
 
-  toggleLikers(type: 'activity' | 'reply', id: number) {
+  async toggleLikers(type: 'activity' | 'reply', id: number, activityId?: number) {
     const key = `${type}-${id}`;
-    this.showLikers[key] = !this.showLikers[key];
+    const wasExpanded = this.showLikers[key] || false;
+    this.showLikers[key] = !wasExpanded;
+
+    // If expanding and likes haven't been loaded yet, fetch them
+    if (!wasExpanded) {
+      const activity = this.activities.find(a => a.id === (type === 'activity' ? id : activityId));
+      if (activity) {
+        if (type === 'activity' && (!activity.likes || activity.likes.length === 0) && activity.likeCount > 0) {
+          await this.anilistService.loadActivityLikes(id);
+        } else if (type === 'reply' && activityId) {
+          const reply = activity.replies?.find(r => r.id === id);
+          if (reply && (!reply.likes || reply.likes.length === 0) && reply.likeCount > 0) {
+            await this.anilistService.loadReplyLikes(activityId, id);
+          }
+        }
+      }
+    }
   }
 
   isLikersExpanded(type: 'activity' | 'reply', id: number): boolean {
@@ -122,8 +138,17 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleReplies(activityId: number) {
-    this.showReplies[activityId] = !this.showReplies[activityId];
+  async toggleReplies(activityId: number) {
+    const wasExpanded = this.showReplies[activityId] || false;
+    this.showReplies[activityId] = !wasExpanded;
+
+    // If expanding and replies haven't been loaded yet, fetch them
+    if (!wasExpanded) {
+      const activity = this.activities.find(a => a.id === activityId);
+      if (activity && (!activity.replies || activity.replies.length === 0) && activity.replyCount > 0) {
+        await this.anilistService.loadActivityReplies(activityId);
+      }
+    }
   }
 
   navigateToMedia(media: AnilistActivity['media']) {
