@@ -1,132 +1,146 @@
-@use "sass:map";
+@use 'sass:map';
+@use './config' as *;
 
-@media (prefers-color-scheme: dark) {
-  $background-color: $dark;
-  $text-color: #fff;
-  $body-color: #fff;
+@use './mixins' as *;
 
-  :root {
-    --bs-main-color: $text-color;
-    --bs-body-color: $body-color;
-    --bs-body-bg: $background-color;
-    --bs-secondary-color: hwb(0 100% 0% / 0.75);
-    --bs-secondary-bg: hwb(0 100% 80%);
-    --bs-tertiary-color: hwb(0 100% 0% / 0.5);
-    --bs-tertiary-bg: hwb(0 100% 50%);
-    --bs-emphasis-color: hwb(0 100% 0%);
-  }
+@mixin styles {
+  @media (prefers-color-scheme: dark) {
+    $background-color: $dark;
+    $text-color: #fff;
+    $body-color: #fff;
 
-  body {
-    background-color: $background-color;
-    color: $text-color;
-  }
+    :root {
+      --bs-main-color: $text-color;
+      --bs-body-color: $body-color;
+      --bs-body-bg: $background-color;
+      --bs-secondary-color: hwb(0 100% 0% / 0.75);
+      --bs-secondary-bg: hwb(0 100% 80%);
+      --bs-tertiary-color: hwb(0 100% 0% / 0.5);
+      --bs-tertiary-bg: hwb(0 100% 50%);
+      --bs-emphasis-color: hwb(0 100% 0%);
+    }
 
-  .table {
-    --bs-table-active-color: $text-color;
-    --bs-table-striped-color: $text-color;
-    --bs-table-hover-color: $text-color;
-  }
+    body {
+      background-color: $background-color;
+      color: $text-color;
+    }
 
-  .btn-close {
-    filter: invert(100%);
-  }
+    .table {
+      --bs-table-active-color: $text-color;
+      --bs-table-striped-color: $text-color;
+      --bs-table-hover-color: $text-color;
+    }
 
-  .bg-white {
-    background-color: $background-color !important;
-  }
+    .btn-close {
+      filter: invert(100%);
+    }
 
-  .link-primary {
-    color: hwb(215 28% 0%) !important;
-  }
+    .bg-white {
+      background-color: $background-color !important;
+    }
 
-  a {
-    color: hwb(215 28% 0%);
-  }
+    .link-primary {
+      color: hwb(215 28% 0%) !important;
+    }
 
-  .link-primary:hover,
-  .link-primary:focus {
-    color: hwb(215 44% 0%) !important;
-  }
+    a {
+      color: hwb(215 28% 0%);
+    }
 
-  a:hover,
-  a:focus {
-    color: hwb(215 44% 0%);
-  }
+    .link-primary:hover,
+    .link-primary:focus {
+      color: hwb(215 44% 0%) !important;
+    }
 
-  $border-color: #1a1e22;
-  $nav-tabs-link-active-border-color: $border-color;
+    a:hover,
+    a:focus {
+      color: hwb(215 44% 0%);
+    }
 
-  @each $breakpoint in map.keys($grid-breakpoints) {
-    @include media-breakpoint-up($breakpoint) {
-      $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    $border-color: #1a1e22;
+    $nav-tabs-link-active-border-color: $border-color;
 
-      .border#{$infix}-top {
-        border-top: $border-width solid $border-color !important;
-      }
-      .border#{$infix}-end {
-        border-right: $border-width solid $border-color !important;
-      }
-      .border#{$infix}-bottom {
-        border-bottom: $border-width solid $border-color !important;
-      }
-      .border#{$infix}-start {
-        border-left: $border-width solid $border-color !important;
-      }
+    @each $breakpoint in map.keys($grid-breakpoints) {
+      @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
-      .border#{$infix}-top-0 {
-        border-top: 0 !important;
-      }
-      .border#{$infix}-end-0 {
-        border-right: 0 !important;
-      }
-      .border#{$infix}-bottom-0 {
-        border-bottom: 0 !important;
-      }
-      .border#{$infix}-start-0 {
-        border-left: 0 !important;
-      }
+        .border#{$infix}-top {
+          border-top: $border-width solid $border-color !important;
+        }
 
-      .border#{$infix}-x {
-        border-left: $border-width solid $border-color !important;
-        border-right: $border-width solid $border-color !important;
-      }
+        .border#{$infix}-end {
+          border-right: $border-width solid $border-color !important;
+        }
 
-      .border#{$infix}-y {
-        border-top: $border-width solid $border-color !important;
-        border-bottom: $border-width solid $border-color !important;
+        .border#{$infix}-bottom {
+          border-bottom: $border-width solid $border-color !important;
+        }
+
+        .border#{$infix}-start {
+          border-left: $border-width solid $border-color !important;
+        }
+
+        .border#{$infix}-top-0 {
+          border-top: 0 !important;
+        }
+
+        .border#{$infix}-end-0 {
+          border-right: 0 !important;
+        }
+
+        .border#{$infix}-bottom-0 {
+          border-bottom: 0 !important;
+        }
+
+        .border#{$infix}-start-0 {
+          border-left: 0 !important;
+        }
+
+        .border#{$infix}-x {
+          border-left: $border-width solid $border-color !important;
+          border-right: $border-width solid $border-color !important;
+        }
+
+        .border#{$infix}-y {
+          border-top: $border-width solid $border-color !important;
+          border-bottom: $border-width solid $border-color !important;
+        }
       }
     }
-  }
 
-  .border {
-    border-color: $border-color !important;
-  }
+    .border {
+      border-color: $border-color !important;
+    }
 
-  .card {
-    background-color: $background-color;
-    border-color: rgba(255, 255, 255, 0.125);
-  }
+    .card {
+      background-color: $background-color;
+      border-color: rgba(255, 255, 255, 0.125);
+    }
 
-  .progress {
-    background-color: #2a333c;
-  }
+    .progress {
+      background-color: #2a333c;
+    }
 
-  .modal-content {
-    background-color: $background-color;
-  }
+    .modal-content {
+      background-color: $background-color;
+    }
 
-  .text-dark,
-  .table,
-  .table-hover > tbody > tr:hover,
-  .table-striped > tbody > tr:nth-of-type(odd):not(.text-green) {
-    color: $text-color !important;
-  }
+    .text-dark,
+    .table,
+    .table-hover>tbody>tr:hover,
+    .table-striped>tbody>tr:nth-of-type(odd):not(.text-green) {
+      color: $text-color !important;
+    }
 
-  input, textarea, select, button {
-    color-scheme: dark;
-  }
+    input,
+    textarea,
+    select,
+    button {
+      color-scheme: dark;
+    }
 
-  option {
-    background-color: $background-color;
+    option {
+      background-color: $background-color;
+    }
   }
 }
