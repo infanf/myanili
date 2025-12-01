@@ -255,7 +255,7 @@
           </div>
         </div>
       }
-      @if (!edit && manga && manga.my_extension && manga.my_extension?.simulpub?.length) {
+      @if (!edit && manga && manga.my_extension && manga.my_extension.simulpub?.length) {
         <myanili-value-pair name="Simulpub">
           {{ getDay(manga.my_extension.simulpub) }}
         </myanili-value-pair>
@@ -423,14 +423,14 @@
               <div class="col-4 fw-bold text-end">Chapters</div>
               <div class="col-8">
                 <div class="progress rounded-pill my-1">
-                  @if (manga?.my_list_status?.num_chapters_read) {
+                  @if (manga.my_list_status?.num_chapters_read) {
                     <div
                       class="progress-bar px-1"
                       [ngClass]="{
                         'bg-success':
-                          manga!.my_list_status?.num_chapters_read == manga!.num_chapters &&
-                          manga!.num_chapters,
-                        'bg-gradient': !manga!.num_chapters,
+                          manga.my_list_status?.num_chapters_read == manga.num_chapters &&
+                          manga.num_chapters,
+                        'bg-gradient': !manga.num_chapters,
                       }"
                       [ngStyle]="{
                         'min-width.%':
@@ -900,7 +900,7 @@
           <myanili-manga-characters [id]="id"></myanili-manga-characters>
         </ng-template>
       </li>
-      @if (manga?.my_extension?.annId) {
+      @if (manga.my_extension?.annId) {
         <li [ngbNavItem]="7">
           <a ngbNavLink>News</a>
           <ng-template ngbNavContent>
@@ -908,7 +908,7 @@
           </ng-template>
         </li>
       }
-      @if (!inModal && (manga?.related_anime?.length || manga?.related_manga?.length)) {
+      @if (!inModal && (manga.related_anime.length || manga.related_manga.length)) {
         <li [ngbNavItem]="2">
           <a ngbNavLink>Related</a>
           <ng-template ngbNavContent>

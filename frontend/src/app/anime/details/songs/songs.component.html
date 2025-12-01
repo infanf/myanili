@@ -1,5 +1,5 @@
 <div class="row">
-  @if (anime!.opening_themes?.length) {
+  @if (anime!.opening_themes.length) {
     <div class="col-sm-6 mb-3">
       <strong class="text-dark">Opening{{ anime!.opening_themes.length > 1 ? 's' : '' }}</strong>
       @for (song of anime!.opening_themes; track song) {
@@ -9,7 +9,7 @@
       }
     </div>
   }
-  @if (anime!.ending_themes?.length) {
+  @if (anime!.ending_themes.length) {
     <div class="col-sm-6 mb-3">
       <strong class="text-dark">Ending{{ anime!.ending_themes.length > 1 ? 's' : '' }}</strong>
       @for (song of anime!.ending_themes; track song) {

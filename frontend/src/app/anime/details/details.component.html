@@ -257,7 +257,7 @@
           }
         </myanili-value-pair>
       }
-      @if (!edit && anime && anime.my_extension && anime.my_extension?.simulcast?.day?.length) {
+      @if (!edit && anime && anime.my_extension && anime.my_extension.simulcast.day?.length) {
         <myanili-value-pair name="Watch on">
           {{ getDay(anime.my_extension.simulcast) }}
           @if (anime.my_extension.simulcast.time) {
@@ -568,9 +568,9 @@
               ></myanili-icon>
             }
             {{ anime.num_episodes || '?' }}
-            @if (anime?.average_episode_duration) {
+            @if (anime.average_episode_duration) {
               <span>
-                &times; {{ (anime!.average_episode_duration || 0) / 60 | number: '1.0-0' }} min
+                &times; {{ (anime.average_episode_duration || 0) / 60 | number: '1.0-0' }} min
               </span>
             }
           </div>
@@ -584,14 +584,14 @@
               <div class="col-4 fw-bold text-end">Episodes</div>
               <div class="col-8">
                 <div class="progress rounded-pill my-1">
-                  @if (anime?.my_list_status?.num_episodes_watched) {
+                  @if (anime.my_list_status?.num_episodes_watched) {
                     <div
                       class="progress-bar px-1"
                       [ngClass]="{
                         'bg-success':
-                          anime!.my_list_status?.num_episodes_watched == anime!.num_episodes &&
-                          anime!.num_episodes,
-                        'bg-gradient': !anime!.num_episodes,
+                          anime.my_list_status?.num_episodes_watched == anime.num_episodes &&
+                          anime.num_episodes,
+                        'bg-gradient': !anime.num_episodes,
                       }"
                       [ngStyle]="{
                         'min-width.%':
@@ -1004,10 +1004,10 @@
           <ng-template ngbNavContent>
             @if (!edit) {
               <section>
-                @if (anime?.synopsis) {
+                @if (anime.synopsis) {
                   <div class="mb-3" [innerHTML]="anime!.synopsis || '' | nl2br"></div>
                 }
-                @if (anime?.background) {
+                @if (anime.background) {
                   <div class="mb-3">
                     <strong>Background</strong>
                     <div [innerHTML]="anime.background || '' | nl2br"></div>
@@ -1018,7 +1018,7 @@
           </ng-template>
         </li>
       }
-      @if (anime?.opening_themes || anime?.ending_themes) {
+      @if (anime.opening_themes || anime.ending_themes) {
         <li [ngbNavItem]="2">
           <a ngbNavLink>Songs</a>
           <ng-template ngbNavContent>
@@ -1051,7 +1051,7 @@
           </ng-template>
         </li>
       }
-      @if (anime?.my_extension?.livechartId) {
+      @if (anime.my_extension?.livechartId) {
         <li [ngbNavItem]="9">
           <a ngbNavLink>Videos</a>
           <ng-template ngbNavContent>
@@ -1059,7 +1059,7 @@
           </ng-template>
         </li>
       }
-      @if (anime?.my_extension?.annId) {
+      @if (anime.my_extension?.annId) {
         <li [ngbNavItem]="7">
           <a ngbNavLink>News</a>
           <ng-template ngbNavContent>
@@ -1067,7 +1067,7 @@
           </ng-template>
         </li>
       }
-      @if (!inModal && (anime?.related_anime?.length || anime?.related_manga?.length)) {
+      @if (!inModal && (anime.related_anime.length || anime.related_manga.length)) {
         <li [ngbNavItem]="4">
           <a ngbNavLink>Related</a>
           <ng-template ngbNavContent>
