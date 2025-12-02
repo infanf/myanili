@@ -116,7 +116,7 @@ export interface AnilistActivity {
     startDate: {
       year: number;
     };
-    format: string;
+    format?: string;
     title: {
       userPreferred: string;
     };

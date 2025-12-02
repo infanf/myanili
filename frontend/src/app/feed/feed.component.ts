@@ -109,7 +109,11 @@ export class FeedComponent implements OnInit, OnDestroy {
     if (!wasExpanded) {
       const activity = this.activities.find(a => a.id === (type === 'activity' ? id : activityId));
       if (activity) {
-        if (type === 'activity' && (!activity.likes || activity.likes.length === 0) && activity.likeCount > 0) {
+        if (
+          type === 'activity' &&
+          (!activity.likes || activity.likes.length === 0) &&
+          activity.likeCount > 0
+        ) {
           await this.anilistService.loadActivityLikes(id);
         } else if (type === 'reply' && activityId) {
           const reply = activity.replies?.find(r => r.id === id);
@@ -145,7 +149,11 @@ export class FeedComponent implements OnInit, OnDestroy {
     // If expanding and replies haven't been loaded yet, fetch them
     if (!wasExpanded) {
       const activity = this.activities.find(a => a.id === activityId);
-      if (activity && (!activity.replies || activity.replies.length === 0) && activity.replyCount > 0) {
+      if (
+        activity &&
+        (!activity.replies || activity.replies.length === 0) &&
+        activity.replyCount > 0
+      ) {
         await this.anilistService.loadActivityReplies(activityId);
       }
     }
@@ -159,6 +167,8 @@ export class FeedComponent implements OnInit, OnDestroy {
 
     if (malId) {
       this.router.navigate([type, 'details', malId]);
+    } else {
+      window.open(`https://anilist.co/${type}/${media.id}`, '_blank');
     }
   }
 
