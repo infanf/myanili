@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
-import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
+import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -17,8 +17,9 @@ export class LivechartService {
   loggedIn = false;
 
   constructor(private dialogue: DialogueService) {
-    this.client = createClient({
+    this.client = new Client({
       url: 'https://www.livechart.me/graphql',
+      preferGetMethod: false,
       fetchOptions: () => {
         const token = this.accessToken !== 'null' ? this.accessToken : undefined;
         return {

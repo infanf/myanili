@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AnilistNotification, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
-import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
+import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -31,8 +31,9 @@ export class AnilistService {
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
 
-    this.client = createClient({
+    this.client = new Client({
       url: 'https://graphql.anilist.co',
+      preferGetMethod: false,
       fetchOptions: () => {
         return {
           headers: {

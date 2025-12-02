@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WatchStatus } from '@models/anime';
 import { ReadStatus } from '@models/manga';
 import { ShikimoriRate, ShikimoriRateStatus, ShikimoriUser } from '@models/shikimori';
-import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
+import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -23,8 +23,9 @@ export class ShikimoriService {
     this.accessToken = String(localStorage.getItem('shikimoriAccessToken') || '');
     this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken') || '');
 
-    this.client = createClient({
+    this.client = new Client({
       url: 'https://shikimori.one/api/graphql',
+      preferGetMethod: false,
       fetchOptions: () => {
         return {
           headers: {

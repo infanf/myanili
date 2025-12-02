@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
-import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
+import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -19,8 +19,9 @@ export class AnnictService {
   constructor(private dialogue: DialogueService) {
     this.accessToken = String(localStorage.getItem('annictAccessToken'));
     if (this.accessToken === 'null') this.accessToken = undefined;
-    this.client = createClient({
+    this.client = new Client({
       url: this.graphqlUrl,
+      preferGetMethod: false,
       fetchOptions: () => {
         return {
           headers: {
