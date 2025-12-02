@@ -1,6 +1,18 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.34.3',
+      date: new Date('2025-12-02'),
+      fixes: ['Feed: fix text parsing for some edge cases'],
+      other: ['Update dependencies'],
+    },
+    {
+      version: '2.34.2',
+      date: new Date('2025-11-22'),
+      features: ['Feed: Show users who liked an activity'],
+      other: ['Update dependencies'],
+    },
+    {
       version: '2.34.1',
       date: new Date('2025-11-21'),
       features: ['Feed: Optimizations'],

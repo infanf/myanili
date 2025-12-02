@@ -1,1 +1,33 @@
-// Minimal custom styles - using Bootstrap utilities instead
+// Activity and reply text overflow controls
+.activity-text,
+.reply-text {
+  // Prevent long words/URLs from breaking layout
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  // Ensure content doesn't overflow horizontally
+  max-width: 100%;
+
+  // Optional: Add line clamping (can be removed if not desired)
+  &.clamped {
+    display: -webkit-box;
+    // -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// .reply-text {
+//   &.clamped {
+//     -webkit-line-clamp: 3; // Fewer lines for replies
+//   }
+// }
+
+// Ensure cards don't overflow
+.card {
+  overflow: hidden;
+}
+
+code {
+  white-space: break-spaces;
+}

@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { DateTimeFrom } from '@components/luxon-helper';
 import { WeekdayNumbers } from 'luxon';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import packageJson from '../../../package.json';
 import { changelog } from '../../changelog';
@@ -108,6 +109,43 @@ export class GlobalService {
   toWeekday(day: number): WeekdayNumbers {
     const rounded = Math.round(day);
     return (rounded % 7 || 7) as WeekdayNumbers;
+  }
+
+  /**
+   * Checks if the backend is available with retry logic.
+   * Retries up to maxRetries times with delay between attempts.
+   * @param maxRetries Maximum number of retry attempts (default: 5)
+   * @param retryDelay Delay in milliseconds between retries (default: 1000)
+   * @returns Promise that resolves to true if backend is available, false otherwise
+   */
+  async checkBackendAvailability(maxRetries = 5, retryDelay = 1000): Promise<boolean> {
+    const backendUrl = environment.backend;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        // Try to fetch the backend root to check if it's available
+        // Using GET request with credentials and no-cache
+        const response = await fetch(backendUrl, {
+          method: 'GET',
+          credentials: 'include',
+          cache: 'no-cache',
+        });
+
+        // If we get any response (even error status), backend is reachable
+        if (response.status >= 200 && response.status < 600) {
+          return true;
+        }
+      } catch (error) {
+        // If fetch fails (network error, timeout, etc.), backend is not reachable
+        // Continue to retry unless this was the last attempt
+        if (attempt < maxRetries) {
+          await this.sleep(retryDelay);
+          continue;
+        }
+      }
+    }
+
+    return false;
   }
 }
 

@@ -20,6 +20,28 @@ export class AppComponent {
     private dialogue: DialogueService,
   ) {
     this.setupUpdates();
+    this.initializeApp();
+    this.malService.loggedIn.subscribe(loggedIn => {
+      this.loggedIn = loggedIn;
+    });
+    this.glob.isBusy.subscribe(busy => (this.busy = busy));
+    this.glob.loadingPercent.subscribe(perc => (this.loadingPercent = perc));
+    this.glob.hideNavbar.subscribe(hide => (this.hideNavbar = hide));
+  }
+
+  async initializeApp() {
+    // First check if backend is available with retries
+    const backendAvailable = await this.glob.checkBackendAvailability(5, 1000);
+
+    if (!backendAvailable) {
+      this.dialogue.open(
+        'The backend server is currently not available. Please check back in a moment.',
+        'Backend Unavailable',
+      );
+      return;
+    }
+
+    // Only check MAL maintenance if backend is available
     this.malService.maintenace().then(isMaintenance => {
       if (isMaintenance) {
         this.dialogue.open(
@@ -28,12 +50,6 @@ export class AppComponent {
         );
       }
     });
-    this.malService.loggedIn.subscribe(loggedIn => {
-      this.loggedIn = loggedIn;
-    });
-    this.glob.isBusy.subscribe(busy => (this.busy = busy));
-    this.glob.loadingPercent.subscribe(perc => (this.loadingPercent = perc));
-    this.glob.hideNavbar.subscribe(hide => (this.hideNavbar = hide));
   }
   loggedIn?: string | false = 'loading';
   busy = true;

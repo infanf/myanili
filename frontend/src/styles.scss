@@ -1,34 +1,22 @@
-@use "sass:map";
+@use 'sass:map';
+@use 'styles/config' as *;
+
+@use 'styles/mixins' as *;
+@use 'styles/dark-theme';
+
 /* You can add global styles to this file, and also import other style files */
 
-$primary: hsl(214, 60%, 32%);
-$secondary: hsl(208, 7%, 46%);
-$info: hsl(188, 78%, 41%);
-$success: hsl(94, 60%, 32%);
-$warning: hsl(34, 77%, 49%);
-$error: hsl(334, 60%, 32%);
-$light: hsl(210, 17%, 98%);
-$dark: hsl(210, 11%, 15%);
-$border-radius: 0.5rem;
-$border-radius-sm: 0.4rem;
-
-$theme-colors: (
-  'blue': $primary,
-  'primary': $primary,
-  'secondary': $secondary,
-  'red': $error,
-  'danger': $error,
-  'green': $success,
-  'success': $success,
-  'yellow': $warning,
-  'warning': $warning,
-  'spotify': hsl(141, 73%, 42%),
-  'trakt': hsl(358, 85%, 52%),
-  'light': $light,
-  'dark': $dark // "white": #eff7ff
-);
-
-@import 'bootstrap/scss/bootstrap';
+@use 'bootstrap/scss/bootstrap' with ($primary: $primary,
+  $secondary: $secondary,
+  $info: $info,
+  $success: $success,
+  $warning: $warning,
+  $danger: $error,
+  $light: $light,
+  $dark: $dark,
+  $border-radius: $border-radius,
+  $border-radius-sm: $border-radius-sm,
+  $theme-colors: $theme-colors);
 
 .cursor-pointer:not(.selectable) {
   cursor: pointer;
@@ -95,12 +83,15 @@ overlay.overlay-shown {
     .border#{$infix}-top {
       border-top: $border-width solid $border-color !important;
     }
+
     .border#{$infix}-end {
       border-right: $border-width solid $border-color !important;
     }
+
     .border#{$infix}-bottom {
       border-bottom: $border-width solid $border-color !important;
     }
+
     .border#{$infix}-start {
       border-left: $border-width solid $border-color !important;
     }
@@ -108,12 +99,15 @@ overlay.overlay-shown {
     .border#{$infix}-top-0 {
       border-top: 0 !important;
     }
+
     .border#{$infix}-end-0 {
       border-right: 0 !important;
     }
+
     .border#{$infix}-bottom-0 {
       border-bottom: 0 !important;
     }
+
     .border#{$infix}-start-0 {
       border-left: 0 !important;
     }
@@ -130,7 +124,7 @@ overlay.overlay-shown {
   }
 }
 
-.table > :not(:first-child) {
+.table> :not(:first-child) {
   border-top: unset;
 }
 
@@ -169,6 +163,7 @@ overlay.overlay-shown {
   --clamp-lines: 3;
   display: -webkit-box;
   -webkit-line-clamp: var(--clamp-lines);
+  line-clamp: var(--clamp-lines);
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -186,9 +181,10 @@ overlay.overlay-shown {
   &::before {
     content: open-quote;
   }
+
   &::after {
     content: close-quote;
   }
 }
 
-@import 'styles/dark-theme.scss';
+@include dark-theme.styles;

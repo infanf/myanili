@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AnilistNotification, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
-import { cacheExchange, Client, createClient, fetchExchange, gql } from '@urql/core';
+import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -31,8 +31,9 @@ export class AnilistService {
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
 
-    this.client = createClient({
+    this.client = new Client({
       url: 'https://graphql.anilist.co',
+      preferGetMethod: false,
       fetchOptions: () => {
         return {
           headers: {
@@ -165,24 +166,40 @@ export class AnilistService {
     return this.anilistLibrary.getStatusMapping(malIds, type);
   }
 
-  async loadUserFeed(userId?: number, perPage = 25, page = 1) {
-    return this.anilistFeed.loadUserFeed(userId, perPage, page);
+  async loadUserFeed(userId?: number, perPage = 25, page = 1, forceRefresh = false) {
+    return this.anilistFeed.loadUserFeed(userId, perPage, page, forceRefresh);
   }
 
-  async loadFollowingFeed(perPage = 25, page = 1) {
-    return this.anilistFeed.loadFollowingFeed(perPage, page);
+  async loadFollowingFeed(perPage = 25, page = 1, forceRefresh = false) {
+    return this.anilistFeed.loadFollowingFeed(perPage, page, forceRefresh);
   }
 
-  async loadActivity(activityId: number) {
-    return this.anilistFeed.loadActivity(activityId);
+  async loadActivity(activityId: number, forceRefresh = false) {
+    return this.anilistFeed.loadActivity(activityId, forceRefresh);
   }
 
   async toggleActivityLike(activityId: number): Promise<boolean> {
     return this.anilistFeed.toggleLike(activityId);
   }
 
+  async toggleReplyLike(replyId: number): Promise<boolean> {
+    return this.anilistFeed.toggleReplyLike(replyId);
+  }
+
   async postActivityReply(activityId: number, text: string): Promise<boolean> {
     return this.anilistFeed.postReply(activityId, text);
+  }
+
+  async loadActivityLikes(activityId: number): Promise<boolean> {
+    return this.anilistFeed.loadActivityLikes(activityId);
+  }
+
+  async loadActivityReplies(activityId: number): Promise<boolean> {
+    return this.anilistFeed.loadActivityReplies(activityId);
+  }
+
+  async loadReplyLikes(activityId: number, replyId: number): Promise<boolean> {
+    return this.anilistFeed.loadReplyLikes(activityId, replyId);
   }
 
   get feed() {

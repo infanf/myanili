@@ -11,11 +11,11 @@
     </h2>
   </header>
 
-  @if (producer && (producer.images?.jpg || producer.about)) {
+  @if (producer && (producer.images.jpg || producer.about)) {
     <div class="row">
       <div class="col-sm-5 col-md-4 mb-3">
         <picture>
-          @if (producer.images?.jpg?.image_url) {
+          @if (producer.images.jpg.image_url) {
             <source [attr.srcset]="producer.images.jpg.image_url" />
           }
           <source srcset="/assets/blank-poster.svg" />
