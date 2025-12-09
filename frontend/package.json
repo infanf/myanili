@@ -8,7 +8,7 @@
     "build": "npm run build:production",
     "build:production": "npm ci && ng build -c deployment,production",
     "build:beta": "npm ci && ng build -c deployment,beta",
-    "build:android": "ng build -c production && npx cap sync android && npx cap open android",
+    "build:android": "ng build -c mobile,production && npx cap sync android && npx cap open android",
     "sync:android": "npx cap sync android",
     "test": "ISTANBUL_ADD_REPORTERS=text-summary ng test",
     "test:ci": "ISTANBUL_ADD_REPORTERS=text,json-summary KARMA_ADD_REPORTERS=junit ng test --watch=false --progress=false && npm run check",

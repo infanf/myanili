@@ -3,6 +3,9 @@ import { SwUpdate, VersionEvent } from '@angular/service-worker';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MalService } from '@services/mal.service';
+import { PlatformService } from '@services/platform.service';
+import { AnilistService } from '@services/anilist.service';
+import { AnilistMobileOAuthService } from '@services/mobile/anilist-mobile-oauth.service';
 
 @Component({
   selector: 'myanili-root',
@@ -18,6 +21,9 @@ export class AppComponent {
     private swUpdate: SwUpdate,
     private glob: GlobalService,
     private dialogue: DialogueService,
+    private platformService: PlatformService,
+    private anilistService: AnilistService,
+    private anilistMobileOAuth: AnilistMobileOAuthService,
   ) {
     this.setupUpdates();
     this.initializeApp();
@@ -30,6 +36,16 @@ export class AppComponent {
   }
 
   async initializeApp() {
+    // Initialize mobile OAuth services if on mobile platform
+    if (this.platformService.isMobile) {
+      await this.anilistService.initializeMobile(this.anilistMobileOAuth);
+    }
+
+    // Skip backend checks on mobile platform
+    if (this.platformService.isMobile) {
+      return;
+    }
+
     // First check if backend is available with retries
     const backendAvailable = await this.glob.checkBackendAvailability(5, 1000);
 

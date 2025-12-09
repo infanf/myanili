@@ -10,6 +10,8 @@ import { AnilistFeedService } from './anilist/feed.service';
 import { AnilistLibraryService } from './anilist/library.service';
 import { AnilistMediaService } from './anilist/media.service';
 import { AnilistNotificationsService } from './anilist/notifications.service';
+import { PlatformService } from './platform.service';
+import { AnilistMobileOAuthService } from './mobile/anilist-mobile-oauth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +21,27 @@ export class AnilistService {
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<AnilistUser | undefined>(undefined);
-  private anilistMedia: AnilistMediaService;
-  private anilistNotifications: AnilistNotificationsService;
-  private anilistLibrary: AnilistLibraryService;
-  private anilistFeed: AnilistFeedService;
+  private anilistMedia!: AnilistMediaService;
+  private anilistNotifications!: AnilistNotificationsService;
+  private anilistLibrary!: AnilistLibraryService;
+  private anilistFeed!: AnilistFeedService;
   private client!: Client;
+  private mobileOAuth?: AnilistMobileOAuthService;
 
   loggedIn = false;
-  constructor(private dialogue: DialogueService) {
+  constructor(
+    private dialogue: DialogueService,
+    private platformService: PlatformService
+  ) {
+    if (this.platformService.isMobile) {
+      // Mobile initialization handled by app.component
+    } else {
+      // Web implementation (existing code)
+      this.initializeWeb();
+    }
+  }
+
+  private initializeWeb() {
     this.clientId = String(localStorage.getItem('anilistClientId'));
     this.accessToken = String(localStorage.getItem('anilistAccessToken'));
     this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
@@ -43,12 +58,13 @@ export class AnilistService {
       },
       exchanges: [cacheExchange, fetchExchange],
     });
+
     if (this.accessToken) {
       this.checkLogin()
         .then(user => {
           this.userSubject.next(user);
         })
-        .catch(e => {
+        .catch(() => {
           this.dialogue.alert(
             'Could not connect to AniList, please check your account settings.',
             'AniList Connection Error',
@@ -56,6 +72,23 @@ export class AnilistService {
           localStorage.removeItem('anilistAccessToken');
         });
     }
+
+    this.anilistMedia = new AnilistMediaService(this.client);
+    this.anilistNotifications = new AnilistNotificationsService(this.client);
+    this.anilistLibrary = new AnilistLibraryService(this.client, this.user);
+    this.anilistFeed = new AnilistFeedService(this.client);
+  }
+
+  async initializeMobile(mobileOAuth: AnilistMobileOAuthService) {
+    this.mobileOAuth = mobileOAuth;
+    this.client = mobileOAuth.getClient();
+
+    const user = await mobileOAuth.checkLogin();
+    if (user) {
+      this.userSubject.next(user);
+      this.loggedIn = true;
+    }
+
     this.anilistMedia = new AnilistMediaService(this.client);
     this.anilistNotifications = new AnilistNotificationsService(this.client);
     this.anilistLibrary = new AnilistLibraryService(this.client, this.user);
@@ -63,6 +96,16 @@ export class AnilistService {
   }
 
   async login() {
+    if (this.platformService.isMobile && this.mobileOAuth) {
+      const user = await this.mobileOAuth.login();
+      if (user) {
+        this.userSubject.next(user);
+        this.loggedIn = true;
+      }
+      return;
+    }
+
+    // Web implementation (existing)
     return new Promise(r => {
       const loginWindow = window.open(environment.backend + 'anilist/auth');
       window.addEventListener('message', async event => {
@@ -87,6 +130,11 @@ export class AnilistService {
   }
 
   async checkLogin(): Promise<AnilistUser | undefined> {
+    if (this.platformService.isMobile && this.mobileOAuth) {
+      return this.mobileOAuth.checkLogin();
+    }
+
+    // Web implementation (existing)
     const QUERY = gql`
       {
         Viewer {
@@ -113,6 +161,14 @@ export class AnilistService {
   }
 
   logoff() {
+    if (this.platformService.isMobile && this.mobileOAuth) {
+      this.mobileOAuth.logoff();
+      this.userSubject.next(undefined);
+      this.loggedIn = false;
+      return;
+    }
+
+    // Web implementation (existing)
     this.clientId = '';
     this.accessToken = '';
     this.refreshToken = '';
