@@ -1103,9 +1103,6 @@
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
   }
 
-  @if (edit) {
-    <myanili-anime-songs [anime]="anime" [edit]="edit"></myanili-anime-songs>
-  }
   @if (edit && !busy) {
     <button class="btn btn-danger d-block my-3 mx-auto" (click)="deleteEntry()">
       <myanili-icon name="trash"></myanili-icon>
