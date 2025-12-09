@@ -1,0 +1,79 @@
+name: Tag Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - beta
+
+jobs:
+  tag-release:
+    # Only run if PR was merged and has the 'release' label
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+
+      - name: Extract version from PR title
+        id: extract_version
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          echo "PR Title: $PR_TITLE"
+
+          # Extract version from title like "Release v2.35.0" or "Release 2.35.0"
+          if [[ "$PR_TITLE" =~ Release[[:space:]]+v?([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+            VERSION="${BASH_REMATCH[1]}"
+            echo "Extracted version: $VERSION"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "Error: Could not extract version from PR title '$PR_TITLE'"
+            echo "Expected format: 'Release v2.35.0' or 'Release 2.35.0'"
+            exit 1
+          fi
+
+      - name: Verify version in package.json matches
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$PACKAGE_VERSION" != "${{ steps.extract_version.outputs.version }}" ]; then
+            echo "Error: Version in package.json ($PACKAGE_VERSION) does not match PR title version (${{ steps.extract_version.outputs.version }})"
+            exit 1
+          fi
+          echo "Version verified: $PACKAGE_VERSION"
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create and push tag
+        run: |
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          TAG="v$VERSION"
+
+          echo "Creating tag: $TAG"
+          git tag -a "$TAG" -m "Release $VERSION"
+
+          echo "Pushing tag: $TAG"
+          git push origin "$TAG"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          TAG="v$VERSION"
+
+          # Extract PR body or use default release notes
+          PR_BODY="${{ github.event.pull_request.body }}"
+
+          gh release create "$TAG" \
+            --title "Release $VERSION" \
+            --notes "$PR_BODY" \
+            --target "${{ github.event.pull_request.merge_commit_sha }}"
