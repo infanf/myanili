@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MyAniLi</string>
+    <string name="title_activity_main">MyAniLi</string>
+    <string name="package_name">com.myani.li</string>
+    <string name="custom_url_scheme">com.myani.li</string>
+</resources>
