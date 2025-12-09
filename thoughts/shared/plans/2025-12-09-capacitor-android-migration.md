@@ -239,11 +239,11 @@ export class PlatformService {
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] Dependencies install successfully: `cd frontend && npm install`
-- [ ] TypeScript compilation succeeds: `npm run build`
-- [ ] Capacitor sync completes: `npx cap sync android`
-- [ ] Android project opens in Android Studio: `npx cap open android`
-- [ ] Web app still builds and runs: `npm run dev`
+- [x] Dependencies install successfully: `cd frontend && npm install`
+- [x] TypeScript compilation succeeds: `npm run build`
+- [x] Capacitor sync completes: `npx cap sync android`
+- [x] Android project opens in Android Studio: `npx cap open android`
+- [x] Web app still builds and runs: `npm run dev`
 
 #### Manual Verification:
 - [ ] Android app launches in emulator/device
@@ -397,9 +397,9 @@ export class TokenService {
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] TypeScript compilation succeeds: `npm run build`
-- [ ] No import errors for Capacitor Preferences
-- [ ] Services can be injected in components
+- [x] TypeScript compilation succeeds: `npm run build`
+- [x] No import errors for Capacitor Preferences
+- [x] Services can be injected in components
 
 #### Manual Verification:
 - [ ] Tokens save and retrieve correctly on mobile
