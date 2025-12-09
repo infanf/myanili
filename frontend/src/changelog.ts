@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.34.4',
+      date: new Date('2025-12-09'),
+      fixes: ['Anime: popups for external connections not working'],
+    },
+    {
       version: '2.34.3',
       date: new Date('2025-12-02'),
       fixes: ['Feed: fix text parsing for some edge cases'],
