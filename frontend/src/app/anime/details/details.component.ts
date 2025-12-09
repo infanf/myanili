@@ -2,11 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Button } from '@components/dialogue/dialogue.component';
 import { StreamPipe } from '@components/stream.pipe';
-import { AnnComponent } from '@external/ann/ann.component';
-import { AnnictComponent } from '@external/annict/annict.component';
-import { KitsuComponent } from '@external/kitsu/kitsu.component';
-import { LivechartComponent } from '@external/livechart/livechart.component';
-import { TraktComponent } from '@external/trakt/trakt.component';
 import {
   Anime,
   AnimeEpisodeRule,
@@ -14,7 +9,6 @@ import {
   daysToLocal,
   MyAnimeUpdate,
   MyAnimeUpdateExtended,
-  parseExtension,
   WatchStatus,
 } from '@models/anime';
 import { ExtRating } from '@models/components';
@@ -38,6 +32,8 @@ import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
 
+import { AnimeEditComponent } from './edit/anime-edit.component';
+
 @Component({
   selector: 'myanili-anime-details',
   templateUrl: './details.component.html',
@@ -49,11 +45,8 @@ export class AnimeDetailsComponent implements OnInit {
   anime?: Anime;
   title?: string;
   imageCache?: string;
-  edit = false;
   fromCache = false;
   busy = false;
-  editBackup?: Partial<MyAnimeUpdate>;
-  editExtension?: { simulcast: {} } & AnimeExtension;
   traktUser?: string;
   annictUser?: string;
   activeTab = 1;
@@ -91,7 +84,6 @@ export class AnimeDetailsComponent implements OnInit {
         delete this.title;
         delete this.anime;
         this.busy = false;
-        this.edit = false;
         this.glob.busy();
         await this.ngOnInit();
       }
@@ -312,125 +304,26 @@ export class AnimeDetailsComponent implements OnInit {
   async editSave() {
     if (this.busy) return;
     if (this.anime?.my_list_status) {
-      if (this.edit) return this.save();
-      this.startEdit();
+      this.openEditModal();
     } else {
       this.addAnime();
     }
   }
 
-  async startEdit() {
-    if (!this.anime?.my_list_status) return;
-    this.edit = true;
-    this.editBackup = {
-      status: this.anime.my_list_status.status || 'plan_to_watch',
-      is_rewatching: this.anime.my_list_status.is_rewatching,
-      score: this.anime.my_list_status.score,
-      num_watched_episodes: this.anime.my_list_status.num_episodes_watched,
-      priority: this.anime.my_list_status.priority,
-      rewatch_value: this.anime.my_list_status.rewatch_value,
-      start_date: this.anime.my_list_status.start_date,
-      finish_date: this.anime.my_list_status.finish_date,
-      tags: this.anime.my_list_status.tags?.join(','),
-    };
-    try {
-      const extension = parseExtension(this.anime.my_list_status.comments);
-      this.editExtension = {
-        series: '',
-        seasonNumber: 1,
-        episodeCorOffset: 0,
-        ...this.anime.my_extension,
-        ...extension,
-      };
-    } catch (e) {
-      this.editExtension = {
-        series: '',
-        seasonNumber: 1,
-        episodeCorOffset: 0,
-        externalStreaming: '',
-        externalStreamingId: '',
-        simulcast: {},
-        ...this.anime.my_extension,
-      };
-    }
-  }
+  async openEditModal() {
+    if (!this.anime) return;
 
-  async save() {
-    if (!this.anime?.my_list_status) return;
-    if (!this.editBackup) {
-      this.edit = false;
-      return;
-    }
-    this.busy = true;
-    const updateData = {
-      comments: this.editExtension?.comment || '',
-      status: this.editBackup?.status || this.anime.my_list_status.status,
-      is_rewatching: this.editBackup?.is_rewatching || this.anime.my_list_status.is_rewatching,
-      extension: Base64.encode(JSON.stringify(this.editExtension)),
-    } as MyAnimeUpdateExtended;
-    if (this.editBackup.status && this.editBackup.status !== this.anime.my_list_status.status) {
-      updateData.status = this.editBackup.status;
-    }
-    if (
-      this.editBackup.is_rewatching !== undefined &&
-      this.editBackup.is_rewatching !== this.anime.my_list_status.is_rewatching
-    ) {
-      updateData.is_rewatching = this.editBackup?.is_rewatching;
-    }
-    if (this.editBackup.score !== this.anime.my_list_status.score) {
-      updateData.score = this.editBackup?.score;
-    }
-    if (this.editBackup.num_watched_episodes !== this.anime.my_list_status.num_episodes_watched) {
-      updateData.num_watched_episodes = this.editBackup?.num_watched_episodes;
-    }
-    if (this.editBackup.priority !== this.anime.my_list_status.priority) {
-      updateData.priority = this.editBackup?.priority;
-    }
-    if (this.editBackup.rewatch_value !== this.anime.my_list_status.rewatch_value) {
-      updateData.rewatch_value = this.editBackup?.rewatch_value;
-    }
-    if (this.editBackup.tags !== this.anime.my_list_status.tags?.join(',')) {
-      updateData.tags = this.editBackup?.tags;
-    }
-    if (this.editBackup.start_date !== this.anime.my_list_status.start_date) {
-      updateData.start_date = this.editBackup?.start_date;
-    }
-    if (this.editBackup.finish_date !== this.anime.my_list_status.finish_date) {
-      updateData.finish_date = this.editBackup?.finish_date;
-    }
-    await this.animeService.updateAnime(
-      {
-        malId: this.anime.id,
-        anilistId: this.anime.my_extension?.anilistId,
-        kitsuId: this.anime.my_extension?.kitsuId,
-        anisearchId: this.anime.my_extension?.anisearchId,
-        simklId: this.anime.my_extension?.simklId,
-        annictId: this.anime.my_extension?.annictId,
-        trakt: {
-          id: this.anime.my_extension?.trakt,
-          season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
-        },
-        livechartId: this.anime.my_extension?.livechartId,
-      },
-      updateData,
-    );
-    this.stopEdit();
-    await this.ngOnInit();
-    this.busy = false;
-  }
+    const modal = this.modalService.open(AnimeEditComponent, { size: 'xl' });
+    modal.componentInstance.anime = this.anime;
+    modal.componentInstance.traktUser = this.traktUser;
+    modal.componentInstance.annictUser = this.annictUser;
 
-  stopEdit() {
-    this.edit = false;
-    delete this.editBackup;
-    delete this.editExtension;
-  }
-
-  enableKitsu() {
-    if (!this.editExtension) return false;
-    if (!this.editExtension.kitsuId) {
-      this.editExtension.kitsuId = { kitsuId: '' };
-    }
-    return true;
+    modal.closed.subscribe(async success => {
+      if (success) {
+        // Reload component data after successful save
+        await this.ngOnInit();
+      }
+    });
   }
 
   async addAnime() {
@@ -693,76 +586,10 @@ export class AnimeDetailsComponent implements OnInit {
       traktId: this.anime.my_extension?.trakt,
       livechartId: this.anime.my_extension?.livechartId,
     });
-    this.edit = false;
     this.ngOnInit();
     this.glob.notbusy();
     this.busy = false;
     return true;
-  }
-
-  changeWatchlist() {
-    const hideWatchlist = !this.editExtension?.hideWatchlist;
-    if (!this.editExtension) this.editExtension = { hideWatchlist, simulcast: {} };
-    this.editExtension.hideWatchlist = hideWatchlist;
-  }
-
-  async findTrakt() {
-    if (!this.anime || !this.editExtension) return;
-    const modal = this.modalService.open(TraktComponent);
-    modal.componentInstance.isMovie = this.anime.media_type === 'movie';
-    modal.componentInstance.title = this.anime.title;
-    modal.closed.subscribe(value => {
-      if (this.editExtension) this.editExtension.trakt = String(value);
-    });
-  }
-
-  async findKitsu() {
-    if (!this.anime || !this.editExtension) return;
-    const modal = this.modalService.open(KitsuComponent);
-    modal.componentInstance.title = this.anime.title;
-    modal.closed.subscribe(value => {
-      if (this.editExtension) this.editExtension.kitsuId = { kitsuId: Number(value) };
-    });
-  }
-
-  /** @deprecated doesn't work anymore */
-  async findAnisearch() {
-    return;
-    // if (!this.anime || !this.editExtension) return;
-    // const modal = this.modalService.open(AnisearchComponent);
-    // modal.componentInstance.title = this.anime.title;
-    // modal.closed.subscribe(value => {
-    //   if (this.editExtension) this.editExtension.anisearchId = Number(value);
-    // });
-  }
-
-  async findAnnict() {
-    if (!this.anime || !this.editExtension) return;
-    const modal = this.modalService.open(AnnictComponent);
-    modal.componentInstance.title = this.anime.alternative_titles?.ja || this.anime.title;
-    modal.closed.subscribe(value => {
-      if (this.editExtension) this.editExtension.annictId = Number(value);
-    });
-  }
-
-  async findLivechart() {
-    if (!this.anime || !this.editExtension) return;
-    const modal = this.modalService.open(LivechartComponent);
-    modal.componentInstance.title = this.anime.title;
-    modal.closed.subscribe(value => {
-      if (this.editExtension) this.editExtension.livechartId = Number(value);
-    });
-  }
-
-  async findANN() {
-    if (!this.anime || !this.editExtension) return;
-    const modal = this.modalService.open(AnnComponent);
-    modal.componentInstance.title =
-      this.anime.alternative_titles?.en?.replace(/^The /, '') || this.anime.title;
-    modal.componentInstance.type = 'anime';
-    modal.closed.subscribe(value => {
-      if (this.editExtension) this.editExtension.annId = Number(value);
-    });
   }
 
   getDay(simulcast: AnimeExtension['simulcast']): string {

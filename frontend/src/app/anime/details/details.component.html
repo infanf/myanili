@@ -7,13 +7,10 @@
       <div class="ms-auto ps-3 cursor-pointer" style="white-space: nowrap">
         @if (anime?.my_list_status) {
           <myanili-icon
-            [name]="busy ? 'loading' : edit ? 'check2' : 'pencil'"
+            [name]="busy ? 'loading' : 'pencil'"
             size="24"
             (click)="editSave()"
           ></myanili-icon>
-          @if (edit && !busy) {
-            <myanili-icon name="x" size="24" class="ms-3" (click)="stopEdit()"></myanili-icon>
-          }
         } @else {
           <myanili-icon
             [name]="busy ? 'loading' : 'plus'"
@@ -28,7 +25,7 @@
   <!-- poster -->
 
   <div class="row">
-    <div class="col-sm-5 col-md-4 mb-3" [class]="{ 'd-none': edit, 'd-sm-block': edit }">
+    <div class="col-sm-5 col-md-4 mb-3">
       <myanili-poster-rating
         [poster]="anime?.main_picture?.large || anime?.main_picture?.medium"
         [meanRating]="meanRating"
@@ -61,32 +58,11 @@
 
     <!-- right column -->
 
-    <div class="col-sm-7 col-md-8 mb-3" [class]="{ 'col-12': edit }">
-      @if (edit && editBackup) {
-        <div class="row">
-          <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
-          <div class="col-8">
-            <myanili-rating [(rating)]="editBackup.score" [size]="16"></myanili-rating>
-          </div>
-        </div>
-      }
+    <div class="col-sm-7 col-md-8 mb-3">
       @if (anime?.my_extension?.displayName) {
         <div class="row">
           <div class="col-4 fw-bold text-end">Display</div>
           <div class="col-8">{{ anime?.my_extension?.displayName }}</div>
-        </div>
-      }
-      @if (edit && anime && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Display</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.displayName"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
         </div>
       }
       @if (anime?.alternative_titles?.en) {
@@ -149,115 +125,57 @@
         </myanili-value-pair>
       }
       @if (anime?.my_list_status) {
-        <div class="row" [class]="{ 'my-2': edit }">
+        <div class="row">
           <div class="col-4 fw-bold text-end">My&nbsp;List</div>
           <div class="col-8">
-            @if (edit && editBackup) {
-              <select
-                class="form-control form-control-sm"
-                [(ngModel)]="editBackup!.status"
-                [disabled]="busy"
-              >
-                @for (
-                  status of ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'];
-                  track status
-                ) {
-                  <option [value]="status">
-                    {{ status | mal: 'mystatus' }}
-                  </option>
-                }
-              </select>
-            } @else {
-              {{
-                anime!.my_list_status!.is_rewatching
-                  ? 'Rewatching'
-                  : (anime!.my_list_status!.status | mal: 'mystatus')
-              }}
-              @if (
-                anime!.my_list_status?.status === 'plan_to_watch' ||
-                anime!.my_list_status?.status === 'on_hold'
-              ) {
-                <myanili-icon
-                  name="play-circle"
-                  class="cursor-pointer me-1"
-                  (click)="setStatus('watching')"
-                ></myanili-icon>
-              }
-              @if (anime!.my_list_status?.status === 'watching') {
-                <myanili-icon
-                  name="pause-circle"
-                  class="cursor-pointer me-1"
-                  (click)="setStatus('on_hold')"
-                ></myanili-icon>
-              }
-              @if (
-                anime!.my_list_status?.status === 'completed' &&
-                !anime!.my_list_status?.is_rewatching
-              ) {
-                <myanili-icon
-                  name="arrow-counterclockwise"
-                  class="cursor-pointer me-1"
-                  (click)="rewatch()"
-                ></myanili-icon>
-              }
+            {{
+              anime!.my_list_status!.is_rewatching
+                ? 'Rewatching'
+                : (anime!.my_list_status!.status | mal: 'mystatus')
+            }}
+            @if (
+              anime!.my_list_status?.status === 'plan_to_watch' ||
+              anime!.my_list_status?.status === 'on_hold'
+            ) {
+              <myanili-icon
+                name="play-circle"
+                class="cursor-pointer me-1"
+                (click)="setStatus('watching')"
+              ></myanili-icon>
             }
-          </div>
-        </div>
-      }
-      @if (edit && editBackup) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Started</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editBackup!.start_date"
-              [disabled]="busy"
-              type="date"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (edit && editBackup) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Finished</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editBackup!.finish_date"
-              [disabled]="busy"
-              type="date"
-              enterkeyhint="done"
-            />
+            @if (anime!.my_list_status?.status === 'watching') {
+              <myanili-icon
+                name="pause-circle"
+                class="cursor-pointer me-1"
+                (click)="setStatus('on_hold')"
+              ></myanili-icon>
+            }
+            @if (
+              anime!.my_list_status?.status === 'completed' && !anime!.my_list_status?.is_rewatching
+            ) {
+              <myanili-icon
+                name="arrow-counterclockwise"
+                class="cursor-pointer me-1"
+                (click)="rewatch()"
+              ></myanili-icon>
+            }
           </div>
         </div>
       }
       @if (
         anime &&
-        ((edit && editExtension) ||
-          (anime.my_extension?.episodeRule &&
-            anime.my_extension!.episodeRule! > (anime.my_list_status?.num_episodes_watched || 0)))
+        anime.my_extension?.episodeRule &&
+        anime.my_extension!.episodeRule! > (anime.my_list_status?.num_episodes_watched || 0)
       ) {
         <myanili-value-pair name="Ep. Rule">
-          @if (!edit) {
-            {{ anime.my_extension!.episodeRule || 0 }} Ep. ({{
-              (anime.my_extension!.episodeRule || 0) -
-                (anime.my_list_status?.num_episodes_watched || 0)
-            }}
-            left)
-          } @else {
-            <input
-              class="form-control form-control-sm"
-              type="number"
-              step="1"
-              min="0"
-              [max]="anime.num_episodes - 1"
-              [(ngModel)]="editExtension!.episodeRule"
-            />
-          }
+          {{ anime.my_extension!.episodeRule || 0 }} Ep. ({{
+            (anime.my_extension!.episodeRule || 0) -
+              (anime.my_list_status?.num_episodes_watched || 0)
+          }}
+          left)
         </myanili-value-pair>
       }
-      @if (!edit && anime && anime.my_extension && anime.my_extension.simulcast.day?.length) {
+      @if (anime && anime.my_extension && anime.my_extension.simulcast.day?.length) {
         <myanili-value-pair name="Watch on">
           {{ getDay(anime.my_extension.simulcast) }}
           @if (anime.my_extension.simulcast.time) {
@@ -266,10 +184,7 @@
               {{ anime.my_extension.simulcast.time | time: anime.my_extension.simulcast.tz }}</span
             >
           }
-          @if (
-            (anime.my_list_status?.status === 'watching' || anime.my_list_status?.is_rewatching) &&
-            !edit
-          ) {
+          @if (anime.my_list_status?.status === 'watching' || anime.my_list_status?.is_rewatching) {
             <myanili-icon
               name="skip-forward"
               class="cursor-pointer ms-2"
@@ -279,7 +194,7 @@
         </myanili-value-pair>
       } @else {
         @if (anime?.broadcast?.day_of_the_week) {
-          <myanili-value-pair [ngClass]="{ 'd-block my-2': edit }" name="Broadcast">
+          <myanili-value-pair name="Broadcast">
             {{ anime!.broadcast!.day_of_the_week }}
             @if (anime?.broadcast?.start_time) {
               <span>
@@ -290,57 +205,7 @@
           </myanili-value-pair>
         }
       }
-      @if (edit && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Watch on</div>
-          <div class="col-8">
-            <select
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.simulcast.day"
-              [disabled]="busy"
-              multiple
-            >
-              <option [value]="1">Monday</option>
-              <option [value]="2">Tuesday</option>
-              <option [value]="3">Wednesday</option>
-              <option [value]="4">Thursday</option>
-              <option [value]="5">Friday</option>
-              <option [value]="6">Saturday</option>
-              <option [value]="0">Sunday</option>
-            </select>
-          </div>
-        </div>
-      }
-      @if (edit && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Watch at</div>
-          <div class="col-4">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.simulcast.time"
-              type="time"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
-          <div class="col-4">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.simulcast.tz"
-              list="timezones"
-              placeholder="Timezone"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-            <datalist id="timezones">
-              @for (tz of timezones; track tz) {
-                <option [value]="tz"></option>
-              }
-            </datalist>
-          </div>
-        </div>
-      }
-      @if (!edit && anime && anime.my_extension && anime.my_extension.externalStreaming) {
+      @if (anime && anime.my_extension && anime.my_extension.externalStreaming) {
         <div class="row">
           <div class="col-4 fw-bold text-end">Streaming</div>
           <div class="col-8">
@@ -363,203 +228,12 @@
           </div>
         </div>
       }
-      @if (edit && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Streaming</div>
-          <div class="col-5">
-            <select
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.externalStreaming"
-              [disabled]="busy"
-            >
-              @for (provider of streamPipe.providers; track provider) {
-                <option [value]="provider.id">
-                  {{ provider.name }}
-                </option>
-              }
-            </select>
-          </div>
-          <div class="col-3">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.simulcast.country"
-              [disabled]="busy"
-              enterkeyhint="done"
-              placeholder="Region"
-            />
-          </div>
-        </div>
-      }
-      @if (edit && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Stream&nbsp;ID</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.externalStreamingId"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (edit && anime && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Anilist</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.anilistId"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (edit && anime && editExtension && enableKitsu()) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Kitsu</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control form-control-sm"
-                [(ngModel)]="editExtension!.kitsuId!.kitsuId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <button class="btn btn-primary" (click)="findKitsu()">
-                <myanili-icon-kitsu></myanili-icon-kitsu>
-              </button>
-            </div>
-          </div>
-        </div>
-      }
-      @if (edit && editExtension && traktUser) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Trakt</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" />
-              <button class="btn btn-primary" (click)="findTrakt()">
-                <myanili-icon-trakt></myanili-icon-trakt>
-              </button>
-            </div>
-          </div>
-        </div>
-      }
-      @if (edit && anime && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">SIMKL</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.simklId"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (edit && anime && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Annict</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control form-control-sm"
-                [(ngModel)]="editExtension!.annictId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              @if (annictUser) {
-                <button class="btn btn-primary" (click)="findAnnict()">
-                  <myanili-icon-annict></myanili-icon-annict>
-                </button>
-              }
-            </div>
-          </div>
-        </div>
-      }
-      @if (edit && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">aniSearch</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control"
-                [(ngModel)]="editExtension!.anisearchId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <!-- <button class="btn btn-primary" (click)="findAnisearch()">
-                  <myanili-icon-anisearch></myanili-icon-anisearch>
-                </button> -->
-            </div>
-          </div>
-        </div>
-      }
-      @if (edit && anime && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">LiveChart.me</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control form-control-sm"
-                [(ngModel)]="editExtension!.livechartId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <button class="btn btn-primary" (click)="findLivechart()">
-                <myanili-icon-livechart></myanili-icon-livechart>
-              </button>
-            </div>
-          </div>
-        </div>
-      }
-      @if (edit && anime && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">ANN</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control form-control-sm"
-                [(ngModel)]="editExtension!.annId"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              <button class="btn btn-primary" (click)="findANN()">
-                <myanili-icon-ann></myanili-icon-ann>
-              </button>
-            </div>
-          </div>
-        </div>
-      }
-      @if (edit && anime && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Wiki</div>
-          <div class="col-8">
-            <div class="input-group input-group-sm">
-              <input
-                class="form-control"
-                [(ngModel)]="editExtension!.fandomSlug"
-                [disabled]="busy"
-                enterkeyhint="done"
-              />
-              @if (!editExtension!.fandomSlug?.includes('.')) {
-                <span class="input-group-text">.fandom.com</span>
-              }
-            </div>
-          </div>
-        </div>
-      }
       @if (anime) {
         <div class="row">
           <div class="col-4 fw-bold text-end">Duration</div>
           <div class="col-8">
             @if (
-              (anime.my_list_status?.status === 'watching' ||
-                anime.my_list_status?.is_rewatching) &&
-              !edit
+              anime.my_list_status?.status === 'watching' || anime.my_list_status?.is_rewatching
             ) {
               <myanili-icon
                 name="plus-circle"
@@ -579,399 +253,331 @@
 
       @if (anime) {
         <div>
-          @if (!edit) {
-            <div class="row">
-              <div class="col-4 fw-bold text-end">Episodes</div>
-              <div class="col-8">
-                <div class="progress rounded-pill my-1">
-                  @if (anime.my_list_status?.num_episodes_watched) {
-                    <div
-                      class="progress-bar px-1"
-                      [ngClass]="{
-                        'bg-success':
-                          anime.my_list_status?.num_episodes_watched == anime.num_episodes &&
-                          anime.num_episodes,
-                        'bg-gradient': !anime.num_episodes,
-                      }"
-                      [ngStyle]="{
-                        'min-width.%':
-                          anime!.num_episodes || anime!.my_list_status?.num_episodes_watched == 0
-                            ? ((anime!.my_list_status?.num_episodes_watched || 0) /
-                                anime!.num_episodes) *
-                              100
-                            : 30,
-                      }"
-                    >
-                      {{ anime!.my_list_status?.num_episodes_watched }}/{{
-                        anime!.num_episodes || '?'
-                      }}
-                    </div>
-                  }
+          <div class="row">
+            <div class="col-4 fw-bold text-end">Episodes</div>
+            <div class="col-8">
+              <div class="progress rounded-pill my-1">
+                @if (anime.my_list_status?.num_episodes_watched) {
+                  <div
+                    class="progress-bar px-1"
+                    [ngClass]="{
+                      'bg-success':
+                        anime.my_list_status?.num_episodes_watched == anime.num_episodes &&
+                        anime.num_episodes,
+                      'bg-gradient': !anime.num_episodes,
+                    }"
+                    [ngStyle]="{
+                      'min-width.%':
+                        anime!.num_episodes || anime!.my_list_status?.num_episodes_watched == 0
+                          ? ((anime!.my_list_status?.num_episodes_watched || 0) /
+                              anime!.num_episodes) *
+                            100
+                          : 30,
+                    }"
+                  >
+                    {{ anime!.my_list_status?.num_episodes_watched }}/{{
+                      anime!.num_episodes || '?'
+                    }}
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 fw-bold text-end">Links</div>
+            <div class="col-8">
+              <div class="row">
+                <div class="col-4">
+                  <td class="text-nowrap">
+                    <myanili-external-rating [rating]="getRating('mal')"></myanili-external-rating>
+                  </td>
+                </div>
+                <div class="col-8">
+                  <myanili-icon-mal class="text-primary"></myanili-icon-mal>
+                  <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="ms-1"
+                    >MyAnimeList</a
+                  >
                 </div>
               </div>
-            </div>
-          }
-          @if (edit && editBackup) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Progress</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control"
-                    type="number"
-                    min="0"
-                    [max]="anime!.num_episodes || 9999"
-                    [(ngModel)]="editBackup!.num_watched_episodes"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  <span class="input-group-text">/ {{ anime!.num_episodes || '?' }}</span>
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && editExtension) {
-            <div class="row my-2">
-              <div class="col-3 fw-bold text-end">Seasonno</div>
-              <div class="col-3">
-                <input
-                  class="form-control form-control-sm"
-                  [(ngModel)]="editExtension.seasonNumber"
-                  type="number"
-                  [disabled]="busy"
-                  enterkeyhint="done"
-                />
-              </div>
-              <div class="col-3 fw-bold text-end">Offset</div>
-              <div class="col-3">
-                <input
-                  class="form-control form-control-sm"
-                  [(ngModel)]="editExtension.episodeCorOffset"
-                  type="number"
-                  [disabled]="busy"
-                  enterkeyhint="done"
-                />
-              </div>
-            </div>
-          }
-          @if (edit && editBackup) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Watchlist</div>
-              <div class="col-8">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="shelf"
-                    [checked]="editExtension?.hideWatchlist"
-                    (change)="changeWatchlist()"
-                  />
-                  <label class="form-check-label" for="shelf"> Hide on Watchlist </label>
-                </div>
-              </div>
-            </div>
-          }
-          @if (!edit) {
-            <div class="row">
-              <div class="col-4 fw-bold text-end">Links</div>
-              <div class="col-8">
+              @if (anime.my_extension?.anilistId) {
                 <div class="row">
                   <div class="col-4">
                     <td class="text-nowrap">
                       <myanili-external-rating
-                        [rating]="getRating('mal')"
+                        [rating]="getRating('anilist')"
                       ></myanili-external-rating>
                     </td>
                   </div>
                   <div class="col-8">
-                    <myanili-icon-mal class="text-primary"></myanili-icon-mal>
-                    <a [href]="'https://myanimelist.net/anime/' + id" target="_blank" class="ms-1"
-                      >MyAnimeList</a
-                    >
-                  </div>
-                </div>
-                @if (anime.my_extension?.anilistId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('anilist')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-anilist></myanili-icon-anilist>
-                      <a
-                        class="ms-1"
-                        [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId"
-                        target="_blank"
-                        >AniList</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (anime.my_extension?.kitsuId?.kitsuId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('kitsu')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
-                      <a
-                        class="ms-1"
-                        [href]="'https://kitsu.app/anime/' + anime.my_extension!.kitsuId!.kitsuId"
-                        target="_blank"
-                        >Kitsu</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (anime.id) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('shikimori')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-shikimori></myanili-icon-shikimori>
-                      <a
-                        class="ms-1"
-                        [href]="'https://shikimori.one/animes/' + anime.id"
-                        target="_blank"
-                        >Shikimori</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (anime.my_extension?.anidbId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('anidb')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-anidb></myanili-icon-anidb>
-                      <a
-                        class="ms-1"
-                        [href]="'https://anidb.net/anime/' + anime.my_extension!.anidbId"
-                        target="_blank"
-                        >aniDB</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (anime.my_extension?.apSlug) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('ap')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-ap></myanili-icon-ap>
-                      <a
-                        class="ms-1"
-                        [href]="'https://www.anime-planet.com/anime/' + anime.my_extension!.apSlug"
-                        target="_blank"
-                        >Anime-Planet</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (anime && anime.my_extension && anime.my_extension.trakt) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('trakt')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-trakt style="color: #ed1c24"></myanili-icon-trakt>
-                      <a
-                        class="ms-1"
-                        [href]="
-                          anime.media_type === 'movie'
-                            ? 'https://trakt.tv/movies/' + anime.my_extension.trakt
-                            : 'https://trakt.tv/shows/' +
-                              anime.my_extension.trakt +
-                              '/seasons/' +
-                              (anime.my_extension.seasonNumber === 0
-                                ? 0
-                                : anime.my_extension.seasonNumber || 1)
-                        "
-                        target="_blank"
-                        >Trakt</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (anime.my_extension?.simklId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('simkl')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-simkl></myanili-icon-simkl>
-                      <a
-                        class="ms-1"
-                        [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId"
-                        target="_blank"
-                        >SIMKL</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (anime.my_extension?.annictId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('annict')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-annict></myanili-icon-annict>
-                      <a
-                        class="ms-1"
-                        [href]="'https://annict.com/works/' + anime.my_extension!.annictId"
-                        target="_blank"
-                        >Annict</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (anime.my_extension?.anisearchId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('anisearch')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-anisearch></myanili-icon-anisearch>
-                      <a
-                        class="ms-1"
-                        [href]="'https://anisearch.com/anime/' + anime.my_extension!.anisearchId"
-                        target="_blank"
-                        >aniSearch</a
-                      >
-                    </div>
-                  </div>
-                }
-                <div class="row">
-                  <div class="col-4">
-                    <td class="text-nowrap">
-                      <myanili-external-rating
-                        [rating]="getRating('livechart')"
-                      ></myanili-external-rating>
-                    </td>
-                  </div>
-                  <div class="col-8">
-                    <myanili-icon-livechart></myanili-icon-livechart>
+                    <myanili-icon-anilist></myanili-icon-anilist>
                     <a
                       class="ms-1"
-                      [ngClass]="{ 'link-secondary': !anime.my_extension?.livechartId }"
-                      [href]="
-                        anime.my_extension?.livechartId
-                          ? 'https://www.livechart.me/anime/' + anime.my_extension?.livechartId
-                          : 'https://www.livechart.me/search?q=' + anime.title
-                      "
+                      [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId"
                       target="_blank"
-                      >LiveChart</a
+                      >AniList</a
                     >
                   </div>
                 </div>
-                @if (anime.my_extension?.annId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('ann')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-ann></myanili-icon-ann>
+              }
+              @if (anime.my_extension?.kitsuId?.kitsuId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('kitsu')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
+                    <a
+                      class="ms-1"
+                      [href]="'https://kitsu.app/anime/' + anime.my_extension!.kitsuId!.kitsuId"
+                      target="_blank"
+                      >Kitsu</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (anime.id) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('shikimori')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-shikimori></myanili-icon-shikimori>
+                    <a
+                      class="ms-1"
+                      [href]="'https://shikimori.one/animes/' + anime.id"
+                      target="_blank"
+                      >Shikimori</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (anime.my_extension?.anidbId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('anidb')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-anidb></myanili-icon-anidb>
+                    <a
+                      class="ms-1"
+                      [href]="'https://anidb.net/anime/' + anime.my_extension!.anidbId"
+                      target="_blank"
+                      >aniDB</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (anime.my_extension?.apSlug) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating [rating]="getRating('ap')"></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-ap></myanili-icon-ap>
+                    <a
+                      class="ms-1"
+                      [href]="'https://www.anime-planet.com/anime/' + anime.my_extension!.apSlug"
+                      target="_blank"
+                      >Anime-Planet</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (anime && anime.my_extension && anime.my_extension.trakt) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('trakt')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-trakt style="color: #ed1c24"></myanili-icon-trakt>
+                    <a
+                      class="ms-1"
+                      [href]="
+                        anime.media_type === 'movie'
+                          ? 'https://trakt.tv/movies/' + anime.my_extension.trakt
+                          : 'https://trakt.tv/shows/' +
+                            anime.my_extension.trakt +
+                            '/seasons/' +
+                            (anime.my_extension.seasonNumber === 0
+                              ? 0
+                              : anime.my_extension.seasonNumber || 1)
+                      "
+                      target="_blank"
+                      >Trakt</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (anime.my_extension?.simklId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('simkl')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-simkl></myanili-icon-simkl>
+                    <a
+                      class="ms-1"
+                      [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId"
+                      target="_blank"
+                      >SIMKL</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (anime.my_extension?.annictId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('annict')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-annict></myanili-icon-annict>
+                    <a
+                      class="ms-1"
+                      [href]="'https://annict.com/works/' + anime.my_extension!.annictId"
+                      target="_blank"
+                      >Annict</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (anime.my_extension?.anisearchId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('anisearch')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-anisearch></myanili-icon-anisearch>
+                    <a
+                      class="ms-1"
+                      [href]="'https://anisearch.com/anime/' + anime.my_extension!.anisearchId"
+                      target="_blank"
+                      >aniSearch</a
+                    >
+                  </div>
+                </div>
+              }
+              <div class="row">
+                <div class="col-4">
+                  <td class="text-nowrap">
+                    <myanili-external-rating
+                      [rating]="getRating('livechart')"
+                    ></myanili-external-rating>
+                  </td>
+                </div>
+                <div class="col-8">
+                  <myanili-icon-livechart></myanili-icon-livechart>
+                  <a
+                    class="ms-1"
+                    [ngClass]="{ 'link-secondary': !anime.my_extension?.livechartId }"
+                    [href]="
+                      anime.my_extension?.livechartId
+                        ? 'https://www.livechart.me/anime/' + anime.my_extension?.livechartId
+                        : 'https://www.livechart.me/search?q=' + anime.title
+                    "
+                    target="_blank"
+                    >LiveChart</a
+                  >
+                </div>
+              </div>
+              @if (anime.my_extension?.annId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('ann')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-ann></myanili-icon-ann>
+                    <a
+                      class="ms-1"
+                      [href]="
+                        'https://www.animenewsnetwork.com/encyclopedia/anime.php?id=' +
+                        anime.my_extension!.annId
+                      "
+                      target="_blank"
+                      >ANN</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (anime.my_extension?.fandomSlug) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap"></td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-fandom
+                      [url]="anime.my_extension!.fandomSlug!"
+                    ></myanili-icon-fandom>
+                    @if (anime.my_extension!.fandomSlug!.includes('.')) {
                       <a
                         class="ms-1"
-                        [href]="
-                          'https://www.animenewsnetwork.com/encyclopedia/anime.php?id=' +
-                          anime.my_extension!.annId
-                        "
+                        [href]="'https://' + anime.my_extension!.fandomSlug"
                         target="_blank"
-                        >ANN</a
+                        >{{ anime.my_extension!.fandomSlug!.replace('www.', '') }}</a
                       >
-                    </div>
+                    } @else {
+                      <a
+                        class="ms-1"
+                        [href]="'https://' + anime.my_extension!.fandomSlug + '.fandom.com/'"
+                        target="_blank"
+                        >Fandom</a
+                      >
+                    }
                   </div>
-                }
-                @if (anime.my_extension?.fandomSlug) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap"></td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-fandom
-                        [url]="anime.my_extension!.fandomSlug!"
-                      ></myanili-icon-fandom>
-                      @if (anime.my_extension!.fandomSlug!.includes('.')) {
-                        <a
-                          class="ms-1"
-                          [href]="'https://' + anime.my_extension!.fandomSlug"
-                          target="_blank"
-                          >{{ anime.my_extension!.fandomSlug!.replace('www.', '') }}</a
-                        >
-                      } @else {
-                        <a
-                          class="ms-1"
-                          [href]="'https://' + anime.my_extension!.fandomSlug + '.fandom.com/'"
-                          target="_blank"
-                          >Fandom</a
-                        >
-                      }
-                    </div>
+                </div>
+              }
+              @if (anime.website) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap"></td>
                   </div>
-                }
-                @if (anime.website) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap"></td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-fandom [url]="anime.website"></myanili-icon-fandom>
-                      <a class="ms-1" [href]="anime.website" target="_blank">Official Website</a>
-                    </div>
+                  <div class="col-8">
+                    <myanili-icon-fandom [url]="anime.website"></myanili-icon-fandom>
+                    <a class="ms-1" [href]="anime.website" target="_blank">Official Website</a>
                   </div>
-                }
-              </div>
+                </div>
+              }
             </div>
-          }
+          </div>
         </div>
       }
     </div>
   </div>
 
-  @if (!edit && anime?.my_extension?.comment) {
+  @if (anime?.my_extension?.comment) {
     <div class="my-3">
       <blockquote
         class="quotes border-start ps-3 fst-italic quotes"
@@ -980,41 +586,27 @@
     </div>
   }
 
-  @if (edit && editExtension) {
-    <div class="my-3">
-      <div class="fw-bold">Comment</div>
-      <textarea
-        class="form-control"
-        [(ngModel)]="editExtension.comment"
-        [disabled]="busy"
-        enterkeyhint="done"
-      ></textarea>
-    </div>
-  }
-
-  @if (!edit && anime) {
+  @if (anime) {
     <myanili-genres-badges class="mb-3 d-block" [genres]="anime.genres"></myanili-genres-badges>
   }
 
-  @if (!edit && anime) {
+  @if (anime) {
     <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
       @if (anime.synopsis || anime.background) {
         <li [ngbNavItem]="1">
           <a ngbNavLink>Synopsis</a>
           <ng-template ngbNavContent>
-            @if (!edit) {
-              <section>
-                @if (anime.synopsis) {
-                  <div class="mb-3" [innerHTML]="anime!.synopsis || '' | nl2br"></div>
-                }
-                @if (anime.background) {
-                  <div class="mb-3">
-                    <strong>Background</strong>
-                    <div [innerHTML]="anime.background || '' | nl2br"></div>
-                  </div>
-                }
-              </section>
-            }
+            <section>
+              @if (anime.synopsis) {
+                <div class="mb-3" [innerHTML]="anime!.synopsis || '' | nl2br"></div>
+              }
+              @if (anime.background) {
+                <div class="mb-3">
+                  <strong>Background</strong>
+                  <div [innerHTML]="anime.background || '' | nl2br"></div>
+                </div>
+              }
+            </section>
           </ng-template>
         </li>
       }
@@ -1101,12 +693,5 @@
       }
     </ul>
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
-  }
-
-  @if (edit && !busy) {
-    <button class="btn btn-danger d-block my-3 mx-auto" (click)="deleteEntry()">
-      <myanili-icon name="trash"></myanili-icon>
-      Remove from list
-    </button>
   }
 </div>
