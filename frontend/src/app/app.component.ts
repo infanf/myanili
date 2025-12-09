@@ -3,9 +3,10 @@ import { SwUpdate, VersionEvent } from '@angular/service-worker';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MalService } from '@services/mal.service';
-import { PlatformService } from '@services/platform.service';
 import { AnilistService } from '@services/anilist.service';
 import { AnilistMobileOAuthService } from '@services/mobile/anilist-mobile-oauth.service';
+import { MalMobileOAuthService } from '@services/mobile/mal-mobile-oauth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'myanili-root',
@@ -21,9 +22,9 @@ export class AppComponent {
     private swUpdate: SwUpdate,
     private glob: GlobalService,
     private dialogue: DialogueService,
-    private platformService: PlatformService,
     private anilistService: AnilistService,
     private anilistMobileOAuth: AnilistMobileOAuthService,
+    private malMobileOAuth: MalMobileOAuthService,
   ) {
     this.setupUpdates();
     this.initializeApp();
@@ -36,14 +37,14 @@ export class AppComponent {
   }
 
   async initializeApp() {
+    console.log('[AppComponent] initializeApp - platform:', environment.platform);
     // Initialize mobile OAuth services if on mobile platform
-    if (this.platformService.isMobile) {
+    if (environment.platform === 'mobile') {
+      console.log('[AppComponent] Initializing mobile OAuth services...');
       await this.anilistService.initializeMobile(this.anilistMobileOAuth);
-    }
-
-    // Skip backend checks on mobile platform
-    if (this.platformService.isMobile) {
-      return;
+      await this.malService.initializeMobile(this.malMobileOAuth);
+      console.log('[AppComponent] Mobile OAuth services initialized!');
+      return; // Skip backend checks on mobile platform
     }
 
     // First check if backend is available with retries

@@ -1166,17 +1166,17 @@ async myList(status?: WatchStatus, options?: { limit?: number; offset?: number; 
 ### Success Criteria
 
 #### Automated Verification:
-- [ ] TypeScript compilation succeeds: `npm run build`
-- [ ] Android build succeeds: `npm run build:android`
+- [x] TypeScript compilation succeeds: `npm run build`
+- [x] Android build succeeds: `npm run build:android`
 
 #### Manual Verification:
-- [ ] MAL login opens browser with PKCE flow on mobile
-- [ ] OAuth callback exchanges code for tokens
-- [ ] Tokens refresh automatically when expired
-- [ ] User list loads from MAL API on mobile
-- [ ] List updates sync to MAL on mobile
-- [ ] Web implementation unchanged (cookies still work)
-- [ ] App survives restart with valid MAL tokens
+- [x] MAL login opens browser with PKCE flow on mobile
+- [x] OAuth callback exchanges code for tokens
+- [ ] Tokens refresh automatically when expired (needs testing)
+- [ ] User list loads from MAL API on mobile (needs testing)
+- [ ] List updates sync to MAL on mobile (needs testing)
+- [ ] Web implementation unchanged (cookies still work) (needs testing)
+- [ ] App survives restart with valid MAL tokens (needs testing)
 
 ---
 

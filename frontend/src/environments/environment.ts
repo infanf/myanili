@@ -2,8 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+declare const PLATFORM_ENV: string | undefined;
+
 export const environment = {
   production: false,
+  platform: (typeof PLATFORM_ENV !== 'undefined' ? PLATFORM_ENV : 'web') as 'web' | 'mobile',
   backend: 'http://localhost:4280/',
   jikanUrl: 'https://api.jikan.moe/v4/',
   jikanFallbackUrl: 'http://localhost:9001/v4/',

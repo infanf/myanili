@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { CacheService } from './cache.service';
+import { MalMobileOAuthService } from './mobile/mal-mobile-oauth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,14 +16,47 @@ export class MalService {
   private backendUrl = `${environment.backend}mal/`;
   private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
+  private mobileOAuth?: MalMobileOAuthService;
 
-  constructor(private cache: CacheService) {
-    const malUser = JSON.parse(localStorage.getItem('malUser') || 'false') as MalUser | false;
-    if (malUser) {
-      this.isLoggedIn.next(malUser.name);
-      this.malUser.next(malUser);
+  constructor(
+    private cache: CacheService,
+    private injectedMobileOAuth?: MalMobileOAuthService,
+  ) {
+    console.log('[MALService] Constructor - Platform:', environment.platform);
+    if (environment.platform === 'mobile') {
+      // Mobile: use injected mobile OAuth service
+      console.log('[MALService] Mobile platform - initializing with mobile OAuth');
+      this.mobileOAuth = this.injectedMobileOAuth;
+      this.isLoggedIn.next(false);
+      // Check if already logged in
+      this.injectedMobileOAuth?.checkLogin().then(user => {
+        if (user) {
+          console.log('[MALService] Already logged in:', user.name);
+          this.isLoggedIn.next(user.name);
+          this.malUser.next(user);
+        }
+      });
+    } else {
+      // Web implementation
+      console.log('[MALService] Web platform detected, using web implementation');
+      const malUser = JSON.parse(localStorage.getItem('malUser') || 'false') as MalUser | false;
+      if (malUser) {
+        this.isLoggedIn.next(malUser.name);
+        this.malUser.next(malUser);
+      }
+      this.checkLogin();
     }
-    this.checkLogin();
+  }
+
+  async initializeMobile(mobileOAuth: MalMobileOAuthService) {
+    console.log('[MALService] initializeMobile() called');
+    this.mobileOAuth = mobileOAuth;
+    const user = await mobileOAuth.checkLogin();
+    console.log('[MALService] checkLogin result:', user);
+    if (user) {
+      this.isLoggedIn.next(user.name);
+      this.malUser.next(user);
+    }
   }
 
   async get<T>(path: string, params?: URLSearchParams): Promise<T> {
@@ -81,20 +115,32 @@ export class MalService {
     }
   }
 
-  async checkLogin() {
+  async checkLogin(): Promise<MalUser | undefined> {
+    if (environment.platform === 'mobile' && this.mobileOAuth) {
+      return this.mobileOAuth.checkLogin();
+    }
+
+    // Web implementation
     const response = await this.get<UserResponse>('me');
     if (response && 'name' in response) {
       this.isLoggedIn.next(response.name);
       localStorage.setItem('malUser', JSON.stringify(response));
       this.malUser.next(response);
+      return response;
     } else if (!(await this.maintenace())) {
       this.isLoggedIn.next(false);
       localStorage.removeItem('malUser');
       this.malUser.next(undefined);
     }
+    return undefined;
   }
 
   async myList(status?: WatchStatus, options?: { limit?: number; offset?: number; sort?: string }) {
+    if (environment.platform === 'mobile' && this.mobileOAuth) {
+      return this.mobileOAuth.myList(status, options);
+    }
+
+    // Web implementation
     const params = new URLSearchParams([
       ['limit', String(options?.limit || 50)],
       ['offset', String(options?.offset || 0)],
@@ -105,6 +151,11 @@ export class MalService {
   }
 
   async myMangaList(status?: ReadStatus, options?: { limit?: number; offset?: number }) {
+    if (environment.platform === 'mobile' && this.mobileOAuth) {
+      return this.mobileOAuth.myMangaList(status, options);
+    }
+
+    // Web implementation
     const params = new URLSearchParams([
       ['limit', String(options?.limit || 50)],
       ['offset', String(options?.offset || 0)],
@@ -116,6 +167,19 @@ export class MalService {
   async refreshTokens() {}
 
   async login() {
+    console.log('[MALService] login() called - platform:', environment.platform, 'mobileOAuth:', !!this.mobileOAuth);
+    if (environment.platform === 'mobile' && this.mobileOAuth) {
+      console.log('[MALService] Using mobile OAuth login');
+      const user = await this.mobileOAuth.login();
+      if (user) {
+        this.isLoggedIn.next(user.name);
+        this.malUser.next(user);
+      }
+      return;
+    }
+
+    // Web implementation
+    console.log('[MALService] Using web OAuth login, opening:', `${this.backendUrl}auth`);
     return new Promise(r => {
       window.addEventListener('message', async event => {
         console.log(event);

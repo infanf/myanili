@@ -10,7 +10,6 @@ import { AnilistFeedService } from './anilist/feed.service';
 import { AnilistLibraryService } from './anilist/library.service';
 import { AnilistMediaService } from './anilist/media.service';
 import { AnilistNotificationsService } from './anilist/notifications.service';
-import { PlatformService } from './platform.service';
 import { AnilistMobileOAuthService } from './mobile/anilist-mobile-oauth.service';
 
 @Injectable({
@@ -31,9 +30,8 @@ export class AnilistService {
   loggedIn = false;
   constructor(
     private dialogue: DialogueService,
-    private platformService: PlatformService
   ) {
-    if (this.platformService.isMobile) {
+    if (environment.platform === 'mobile') {
       // Mobile initialization handled by app.component
     } else {
       // Web implementation (existing code)
@@ -96,7 +94,7 @@ export class AnilistService {
   }
 
   async login() {
-    if (this.platformService.isMobile && this.mobileOAuth) {
+    if (environment.platform === 'mobile' && this.mobileOAuth) {
       const user = await this.mobileOAuth.login();
       if (user) {
         this.userSubject.next(user);
@@ -130,7 +128,7 @@ export class AnilistService {
   }
 
   async checkLogin(): Promise<AnilistUser | undefined> {
-    if (this.platformService.isMobile && this.mobileOAuth) {
+    if (environment.platform === 'mobile' && this.mobileOAuth) {
       return this.mobileOAuth.checkLogin();
     }
 
@@ -161,7 +159,7 @@ export class AnilistService {
   }
 
   logoff() {
-    if (this.platformService.isMobile && this.mobileOAuth) {
+    if (environment.platform === 'mobile' && this.mobileOAuth) {
       this.mobileOAuth.logoff();
       this.userSubject.next(undefined);
       this.loggedIn = false;

@@ -4,6 +4,7 @@ import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { TokenService } from '../token.service';
 import { AnilistUser } from '@models/anilist';
 import { Client, cacheExchange, fetchExchange, gql } from '@urql/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,10 @@ export class AnilistMobileOAuthService {
   private loginResolve?: (user: AnilistUser | undefined) => void;
 
   constructor(private tokenService: TokenService) {
-    this.setupUrlListener();
-    this.initializeClient();
+    if (environment.platform === 'mobile') {
+      this.setupUrlListener();
+      this.initializeClient();
+    }
   }
 
   private setupUrlListener() {
