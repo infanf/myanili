@@ -1,17 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformPipe } from '@components/platform.pipe';
-import { AnnComponent } from '@external/ann/ann.component';
-import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
-import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { ExtRating, Weekday } from '@models/components';
-import {
-  Manga,
-  MangaExtension,
-  MyMangaUpdate,
-  MyMangaUpdateExtended,
-  ReadStatus,
-} from '@models/manga';
+import { Manga, MyMangaUpdateExtended, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
 import { AnisearchService } from '@services/anisearch.service';
@@ -28,6 +19,8 @@ import { ShikimoriService } from '@services/shikimori.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 
+import { MangaEditComponent } from './edit/manga-edit.component';
+
 @Component({
   selector: 'myanili-manga-details',
   templateUrl: './details.component.html',
@@ -40,11 +33,8 @@ export class MangaDetailsComponent implements OnInit {
   manga?: Manga;
   title?: string;
   shortsyn = true;
-  edit = false;
   fromCache = false;
   busy = false;
-  editBackup?: Partial<MyMangaUpdate>;
-  editExtension?: MangaExtension;
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   activeTab = 1;
   originalLanguage = 'Japanese';
@@ -258,114 +248,24 @@ export class MangaDetailsComponent implements OnInit {
   async editSave() {
     if (this.busy) return;
     if (this.manga?.my_list_status) {
-      if (this.edit) return this.save();
-      this.startEdit();
+      this.openEditModal();
     } else {
       this.setStatus('plan_to_read');
     }
   }
 
-  async startEdit() {
-    if (!this.manga?.my_list_status) return;
-    this.edit = true;
-    this.editBackup = {
-      status: this.manga.my_list_status.status || 'plan_to_read',
-      is_rereading: this.manga.my_list_status.is_rereading,
-      score: this.manga.my_list_status.score,
-      num_chapters_read: this.manga.my_list_status.num_chapters_read,
-      num_volumes_read: this.manga.my_list_status.num_volumes_read,
-      priority: this.manga.my_list_status.priority,
-      reread_value: this.manga.my_list_status.reread_value,
-      start_date: this.manga.my_list_status.start_date,
-      finish_date: this.manga.my_list_status.finish_date,
-      tags: this.manga.my_list_status.tags,
-    };
-    try {
-      const extension = JSON.parse(
-        Base64.decode(this.manga.my_list_status.comments),
-      ) as unknown as Partial<MangaExtension>;
-      this.editExtension = {
-        ...this.manga.my_extension,
-        ...extension,
-      };
-    } catch (e) {
-      this.editExtension = { ...this.manga.my_extension };
-    }
-  }
+  async openEditModal() {
+    if (!this.manga) return;
 
-  enableKitsu() {
-    if (!this.editExtension) return false;
-    if (!this.editExtension.kitsuId) {
-      this.editExtension.kitsuId = { kitsuId: '' };
-    }
-    return true;
-  }
+    const modal = this.modalService.open(MangaEditComponent, { size: 'xl' });
+    modal.componentInstance.manga = this.manga;
 
-  async save() {
-    if (!this.manga?.my_list_status) return;
-    if (!this.editBackup) {
-      this.edit = false;
-      return;
-    }
-    this.busy = true;
-    const updateData = {
-      comments: this.editExtension?.comment || '',
-      extension: Base64.encode(JSON.stringify(this.editExtension)),
-      status: this.editBackup?.status || this.manga.my_list_status.status,
-      is_rereading: this.editBackup?.is_rereading || this.manga.my_list_status.is_rereading,
-    } as MyMangaUpdateExtended;
-    if (this.editBackup.status && this.editBackup.status !== this.manga.my_list_status.status) {
-      updateData.status = this.editBackup?.status;
-    }
-    if (
-      this.editBackup.is_rereading !== undefined &&
-      this.editBackup.is_rereading !== this.manga.my_list_status.is_rereading
-    ) {
-      updateData.is_rereading = this.editBackup?.is_rereading;
-    }
-    if (this.editBackup.score !== this.manga.my_list_status.score) {
-      updateData.score = this.editBackup?.score;
-    }
-    if (this.editBackup.num_chapters_read !== this.manga.my_list_status.num_chapters_read) {
-      updateData.num_chapters_read = this.editBackup?.num_chapters_read;
-    }
-    if (this.editBackup.num_volumes_read !== this.manga.my_list_status.num_volumes_read) {
-      updateData.num_volumes_read = this.editBackup?.num_volumes_read;
-    }
-    if (this.editBackup.priority !== this.manga.my_list_status.priority) {
-      updateData.priority = this.editBackup?.priority;
-    }
-    if (this.editBackup.reread_value !== this.manga.my_list_status.reread_value) {
-      updateData.reread_value = this.editBackup?.reread_value;
-    }
-    if (this.editBackup.tags !== this.manga.my_list_status.tags) {
-      updateData.tags = this.editBackup?.tags;
-    }
-    if (this.editBackup.start_date !== this.manga.my_list_status.start_date) {
-      updateData.start_date = this.editBackup?.start_date;
-    }
-    if (this.editBackup.finish_date !== this.manga.my_list_status.finish_date) {
-      updateData.finish_date = this.editBackup?.finish_date;
-    }
-    await this.mangaService.updateManga(
-      {
-        malId: this.manga.id,
-        anilistId: this.manga.my_extension?.anilistId,
-        kitsuId: this.manga.my_extension?.kitsuId,
-        anisearchId: this.manga.my_extension?.anisearchId,
-        bakaId: this.manga.my_extension?.bakaId,
-      },
-      updateData,
-    );
-    this.stopEdit();
-    await this.ngOnInit();
-    this.busy = false;
-  }
-
-  stopEdit() {
-    this.edit = false;
-    delete this.editBackup;
-    delete this.editExtension;
+    modal.closed.subscribe(async success => {
+      if (success) {
+        // Reload component data after successful save
+        await this.ngOnInit();
+      }
+    });
   }
 
   async setStatus(status: ReadStatus) {
@@ -543,7 +443,6 @@ export class MangaDetailsComponent implements OnInit {
       kitsuId: this.manga.my_extension?.kitsuId,
       anisearchId: this.manga.my_extension?.anisearchId,
     });
-    this.edit = false;
     await this.ngOnInit();
     this.glob.notbusy();
     this.busy = false;
@@ -673,61 +572,6 @@ export class MangaDetailsComponent implements OnInit {
       });
       if (!exists) this.ratings.push({ provider, rating });
     }
-  }
-
-  changeOngoing() {
-    const ongoing = !this.editExtension?.ongoing;
-    if (!this.editExtension) this.editExtension = { ongoing };
-    this.editExtension.ongoing = ongoing;
-  }
-
-  changeShelf() {
-    const hideShelf = !this.editExtension?.hideShelf;
-    if (!this.editExtension) this.editExtension = { hideShelf };
-    this.editExtension.hideShelf = hideShelf;
-  }
-
-  async findKitsu() {
-    if (!this.manga || !this.editExtension) return;
-    const modal = this.modalService.open(KitsuComponent);
-    modal.componentInstance.type = 'manga';
-    modal.componentInstance.title = this.manga.title;
-    modal.closed.subscribe((value: number) => {
-      if (this.editExtension) this.editExtension.kitsuId = { kitsuId: Number(value) };
-    });
-  }
-
-  /** @deprecated doesn't work anymore */
-  async findAnisearch() {
-    return;
-    // if (!this.manga || !this.editExtension) return;
-    // const modal = this.modalService.open(AnisearchComponent);
-    // modal.componentInstance.title = this.manga.title;
-    // modal.componentInstance.type = 'manga';
-    // modal.closed.subscribe((value: number) => {
-    //   if (this.editExtension) this.editExtension.anisearchId = Number(value);
-    // });
-  }
-
-  async findBaka() {
-    if (!this.manga || !this.editExtension) return;
-    const modal = this.modalService.open(BakamangaComponent);
-    modal.componentInstance.title = this.manga.title;
-    modal.closed.subscribe((value: string) => {
-      if (this.editExtension) this.editExtension.bakaId = value;
-    });
-  }
-
-  async findANN() {
-    if (!this.manga || !this.editExtension) return;
-    const modal = this.modalService.open(AnnComponent);
-    modal.componentInstance.title = this.manga.title;
-    modal.componentInstance.title =
-      this.manga.alternative_titles?.en?.replace(/^The /, '') || this.manga.title;
-    modal.componentInstance.type = 'manga';
-    modal.closed.subscribe((value: number) => {
-      if (this.editExtension) this.editExtension.annId = Number(value);
-    });
   }
 
   getBakaUrl() {
