@@ -174,19 +174,19 @@
                 class="cursor-pointer me-1"
                 (click)="reread()"
               ></myanili-icon>
-              @if (manga!.my_list_status?.start_date || manga!.my_list_status?.finish_date) {
-                <div class="small text-muted">
-                  @if (manga!.my_list_status?.start_date) {
-                    <span>{{ manga!.my_list_status?.start_date | date }}</span>
-                  }
-                  @if (manga!.my_list_status?.start_date && manga!.my_list_status?.finish_date) {
-                    <span> &ndash; </span>
-                  }
+            }
+            @if (manga!.my_list_status?.start_date || manga!.my_list_status?.finish_date) {
+              <div class="small text-muted">
+                @if (manga!.my_list_status?.start_date) {
+                  <span>{{ manga!.my_list_status?.start_date | date }}</span>
+                }
+                @if (manga!.my_list_status?.start_date !== manga!.my_list_status?.finish_date) {
+                  <span> &ndash; </span>
                   @if (manga!.my_list_status?.finish_date) {
                     <span>{{ manga!.my_list_status?.finish_date | date }}</span>
                   }
-                </div>
-              }
+                }
+              </div>
             }
             @if (manga!.my_list_status?.status === 'on_hold') {
               <myanili-icon

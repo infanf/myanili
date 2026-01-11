@@ -164,9 +164,11 @@
                 @if (anime!.my_list_status?.start_date) {
                   <span>{{ anime!.my_list_status?.start_date | date }}</span>
                 }
-                <span> &ndash; </span>
-                @if (anime!.my_list_status?.finish_date) {
-                  <span>{{ anime!.my_list_status?.finish_date | date }}</span>
+                @if (anime!.my_list_status?.start_date !== anime!.my_list_status?.finish_date) {
+                  <span> &ndash; </span>
+                  @if (anime!.my_list_status?.finish_date) {
+                    <span>{{ anime!.my_list_status?.finish_date | date }}</span>
+                  }
                 }
               </div>
             }
