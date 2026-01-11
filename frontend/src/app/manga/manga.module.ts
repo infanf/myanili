@@ -13,6 +13,7 @@ import { InViewportModule } from 'ng-in-viewport';
 import { BookshelfComponent, BookshelfWrapperComponent } from './bookshelf/bookshelf.component';
 import { MangaCharactersComponent } from './details/characters/characters.component';
 import { MangaDetailsComponent } from './details/details.component';
+import { MangaEditComponent } from './details/edit/manga-edit.component';
 import { MangaRecommendationsComponent } from './details/recommendations/recommendations.component';
 import { MangaListGridComponent } from './list/grid/grid.component';
 import { MangaListComponent } from './list/list.component';
@@ -27,6 +28,7 @@ import { PlatformComponent } from './widget/platform/platform.component';
     MagazineComponent,
     MangaCharactersComponent,
     MangaDetailsComponent,
+    MangaEditComponent,
     MangaListComponent,
     MangaListGridComponent,
     MangaListListComponent,

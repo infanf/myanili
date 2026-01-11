@@ -1,0 +1,426 @@
+<div class="modal-header">
+  <h5 class="modal-title">Edit {{ anime?.title }}</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="cancel()"
+  ></button>
+</div>
+
+<div class="modal-body">
+  @if (anime && editBackup && editExtension) {
+    <!-- My Score -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">My Score</div>
+      <div class="col-8">
+        <myanili-rating [(rating)]="editBackup.score" [size]="16"></myanili-rating>
+      </div>
+    </div>
+
+    <!-- Display Name -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Display</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.displayName"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">My Status</div>
+      <div class="col-8">
+        <select
+          class="form-select form-select-sm"
+          [(ngModel)]="editBackup!.status"
+          [disabled]="busy"
+        >
+          @for (
+            value of ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'];
+            track value
+          ) {
+            <option [value]="value">{{ value | mal: 'mystatus' }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Start Date -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Started</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editBackup!.start_date"
+          [disabled]="busy"
+          type="date"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Finish Date -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Finished</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editBackup!.finish_date"
+          [disabled]="busy"
+          type="date"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Episode Rule -->
+    @if (anime) {
+      <div class="row mb-2">
+        <div class="col-4 fw-bold text-end">Ep. Rule</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            type="number"
+            step="1"
+            min="0"
+            [max]="anime.num_episodes - 1"
+            [(ngModel)]="editExtension!.episodeRule"
+            [disabled]="busy"
+          />
+        </div>
+      </div>
+    }
+
+    <!-- Watch on (simulcast days) -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Watch on</div>
+      <div class="col-8">
+        <select
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.simulcast.day"
+          [disabled]="busy"
+          multiple
+        >
+          <option [value]="1">Monday</option>
+          <option [value]="2">Tuesday</option>
+          <option [value]="3">Wednesday</option>
+          <option [value]="4">Thursday</option>
+          <option [value]="5">Friday</option>
+          <option [value]="6">Saturday</option>
+          <option [value]="0">Sunday</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Watch at (time and timezone) -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Watch at</div>
+      <div class="col-4">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.simulcast.time"
+          type="time"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+      <div class="col-4">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.simulcast.tz"
+          list="timezones"
+          placeholder="Timezone"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+        <datalist id="timezones">
+          @for (tz of timezones; track tz) {
+            <option [value]="tz"></option>
+          }
+        </datalist>
+      </div>
+    </div>
+
+    <!-- Streaming Provider -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Streaming</div>
+      <div class="col-5">
+        <select
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.externalStreaming"
+          [disabled]="busy"
+        >
+          @for (provider of streamPipe.providers; track provider) {
+            <option [value]="provider.id">
+              {{ provider.name }}
+            </option>
+          }
+        </select>
+      </div>
+      <div class="col-3">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.simulcast.country"
+          [disabled]="busy"
+          enterkeyhint="done"
+          placeholder="Region"
+        />
+      </div>
+    </div>
+
+    <!-- Stream ID -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Stream ID</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.externalStreamingId"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- External IDs -->
+
+    <!-- Anilist -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Anilist</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.anilistId"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Kitsu -->
+    @if (enableKitsu()) {
+      <div class="row mb-2">
+        <div class="col-4 fw-bold text-end">Kitsu</div>
+        <div class="col-8">
+          <div class="input-group input-group-sm">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.kitsuId!.kitsuId"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+            <button class="btn btn-primary" (click)="findKitsu()" [disabled]="busy">
+              <myanili-icon-kitsu></myanili-icon-kitsu>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Trakt -->
+    @if (traktUser) {
+      <div class="row mb-2">
+        <div class="col-4 fw-bold text-end">Trakt</div>
+        <div class="col-8">
+          <div class="input-group input-group-sm">
+            <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" />
+            <button class="btn btn-primary" (click)="findTrakt()" [disabled]="busy">
+              <myanili-icon-trakt></myanili-icon-trakt>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- SIMKL -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">SIMKL</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.simklId"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Annict -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Annict</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.annictId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          @if (annictUser) {
+            <button class="btn btn-primary" (click)="findAnnict()" [disabled]="busy">
+              <myanili-icon-annict></myanili-icon-annict>
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- aniSearch -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">aniSearch</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control"
+            [(ngModel)]="editExtension!.anisearchId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- LiveChart.me -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">LiveChart.me</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.livechartId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <button class="btn btn-primary" (click)="findLivechart()" [disabled]="busy">
+            <myanili-icon-livechart></myanili-icon-livechart>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANN -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">ANN</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.annId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <button class="btn btn-primary" (click)="findANN()" [disabled]="busy">
+            <myanili-icon-ann></myanili-icon-ann>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wiki (Fandom) -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Wiki</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control"
+            [(ngModel)]="editExtension!.fandomSlug"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          @if (!editExtension!.fandomSlug?.includes('.')) {
+            <span class="input-group-text">.fandom.com</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress (episodes watched) -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Progress</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control"
+            type="number"
+            min="0"
+            [max]="anime!.num_episodes || 9999"
+            [(ngModel)]="editBackup!.num_watched_episodes"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <span class="input-group-text">/ {{ anime!.num_episodes || '?' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Season Number and Episode Offset -->
+    <div class="row mb-2">
+      <div class="col-3 fw-bold text-end">Seasonno</div>
+      <div class="col-3">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension.seasonNumber"
+          type="number"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+      <div class="col-3 fw-bold text-end">Offset</div>
+      <div class="col-3">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension.episodeCorOffset"
+          type="number"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Hide on Watchlist -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Watchlist</div>
+      <div class="col-8">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="shelf"
+            [checked]="editExtension.hideWatchlist"
+            (change)="changeWatchlist()"
+          />
+          <label class="form-check-label" for="shelf"> Hide on Watchlist </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment -->
+    <div class="mb-2">
+      <div class="fw-bold">Comment</div>
+      <textarea
+        class="form-control"
+        [(ngModel)]="editExtension.comment"
+        [disabled]="busy"
+        enterkeyhint="done"
+      ></textarea>
+    </div>
+  }
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="busy">
+    Cancel
+  </button>
+  <button type="button" class="btn btn-primary" (click)="save()" [disabled]="busy">
+    @if (busy) {
+      <myanili-icon name="loading" size="16"></myanili-icon>
+      Saving...
+    } @else {
+      Save Changes
+    }
+  </button>
+</div>

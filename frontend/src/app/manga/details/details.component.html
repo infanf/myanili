@@ -7,13 +7,10 @@
       <div class="ms-auto ps-3 cursor-pointer" style="white-space: nowrap">
         @if (manga?.my_list_status) {
           <myanili-icon
-            [name]="busy ? 'loading' : edit ? 'check2' : 'pencil'"
+            [name]="busy ? 'loading' : 'pencil'"
             size="24"
             (click)="editSave()"
           ></myanili-icon>
-          @if (edit && !busy) {
-            <myanili-icon name="x" size="24" class="ms-3" (click)="stopEdit()"></myanili-icon>
-          }
         } @else {
           <myanili-icon
             [name]="busy ? 'loading' : 'plus'"
@@ -62,31 +59,10 @@
     <!-- right column -->
 
     <div class="col-sm-7 col-md-8 mb-3">
-      @if (edit && editBackup) {
-        <div class="row mb-2">
-          <div class="col-4 fw-bold text-end">My&nbsp;Score</div>
-          <div class="col-8">
-            <myanili-rating [(rating)]="editBackup.score" [size]="16"></myanili-rating>
-          </div>
-        </div>
-      }
-      @if (manga?.my_extension?.displayName && !edit) {
+      @if (manga?.my_extension?.displayName) {
         <div class="row">
           <div class="col-4 fw-bold text-end">Display</div>
           <div class="col-8">{{ manga?.my_extension?.displayName }}</div>
-        </div>
-      }
-      @if (edit && manga && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Display</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.displayName"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
         </div>
       }
       @if (manga?.alternative_titles?.en) {
@@ -165,120 +141,69 @@
         </div>
       }
       @if (manga?.my_list_status) {
-        <div class="row" [class]="{ 'my-2': edit }">
+        <div class="row">
           <div class="col-4 fw-bold text-end">My&nbsp;List</div>
           <div class="col-8">
-            @if (edit && editBackup) {
-              <select
-                class="form-control form-control-sm"
-                [(ngModel)]="editBackup!.status"
-                [disabled]="busy"
-              >
-                @for (
-                  status of ['reading', 'completed', 'on_hold', 'dropped', 'plan_to_read'];
-                  track status
-                ) {
-                  <option [value]="status">
-                    {{ status | mal: 'mystatus' }}
-                  </option>
+            {{
+              manga!.my_list_status!.is_rereading
+                ? 'Rewatching'
+                : (manga!.my_list_status!.status | mal: 'mystatus')
+            }}
+            @if (
+              manga!.my_list_status?.status === 'plan_to_read' ||
+              manga!.my_list_status?.status === 'on_hold'
+            ) {
+              <myanili-icon
+                name="play-circle"
+                class="cursor-pointer me-1"
+                (click)="setStatus('reading')"
+              ></myanili-icon>
+            }
+            @if (manga!.my_list_status?.status === 'reading') {
+              <myanili-icon
+                name="pause-circle"
+                class="cursor-pointer me-1"
+                (click)="setStatus('on_hold')"
+              ></myanili-icon>
+            }
+            @if (
+              manga!.my_list_status?.status === 'completed' && !manga!.my_list_status?.is_rereading
+            ) {
+              <myanili-icon
+                name="arrow-counterclockwise"
+                class="cursor-pointer me-1"
+                (click)="reread()"
+              ></myanili-icon>
+            }
+            @if (manga!.my_list_status?.start_date || manga!.my_list_status?.finish_date) {
+              <div class="small text-muted">
+                @if (manga!.my_list_status?.start_date) {
+                  <span>{{ manga!.my_list_status?.start_date | date }}</span>
                 }
-              </select>
-            } @else {
-              {{
-                manga!.my_list_status!.is_rereading
-                  ? 'Rewatching'
-                  : (manga!.my_list_status!.status | mal: 'mystatus')
-              }}
-              @if (
-                manga!.my_list_status?.status === 'plan_to_read' ||
-                manga!.my_list_status?.status === 'on_hold'
-              ) {
-                <myanili-icon
-                  name="play-circle"
-                  class="cursor-pointer me-1"
-                  (click)="setStatus('reading')"
-                ></myanili-icon>
-              }
-              @if (manga!.my_list_status?.status === 'reading') {
-                <myanili-icon
-                  name="pause-circle"
-                  class="cursor-pointer me-1"
-                  (click)="setStatus('on_hold')"
-                ></myanili-icon>
-              }
-              @if (
-                manga!.my_list_status?.status === 'completed' &&
-                !manga!.my_list_status?.is_rereading
-              ) {
-                <myanili-icon
-                  name="arrow-counterclockwise"
-                  class="cursor-pointer me-1"
-                  (click)="reread()"
-                ></myanili-icon>
-              }
-              @if (manga!.my_list_status?.status === 'on_hold') {
-                <myanili-icon
-                  name="arrow-counterclockwise"
-                  class="cursor-pointer me-1"
-                  (click)="startOver()"
-                ></myanili-icon>
-              }
+                @if (manga!.my_list_status?.start_date !== manga!.my_list_status?.finish_date) {
+                  <span> &ndash; </span>
+                  @if (manga!.my_list_status?.finish_date) {
+                    <span>{{ manga!.my_list_status?.finish_date | date }}</span>
+                  }
+                }
+              </div>
+            }
+            @if (manga!.my_list_status?.status === 'on_hold') {
+              <myanili-icon
+                name="arrow-counterclockwise"
+                class="cursor-pointer me-1"
+                (click)="startOver()"
+              ></myanili-icon>
             }
           </div>
         </div>
       }
-      @if (edit && editBackup) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Started</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editBackup!.start_date"
-              [disabled]="busy"
-              type="date"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (edit && editBackup) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Finished</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editBackup!.finish_date"
-              [disabled]="busy"
-              type="date"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (!edit && manga && manga.my_extension && manga.my_extension.simulpub?.length) {
+      @if (manga && manga.my_extension && manga.my_extension.simulpub?.length) {
         <myanili-value-pair name="Simulpub">
           {{ getDay(manga.my_extension.simulpub) }}
         </myanili-value-pair>
       }
-      @if (edit && editExtension) {
-        <myanili-value-pair name="Simulpub">
-          <select
-            class="form-control form-control-sm"
-            [(ngModel)]="editExtension!.simulpub"
-            [disabled]="busy"
-            multiple
-          >
-            <option [value]="1">Monday</option>
-            <option [value]="2">Tuesday</option>
-            <option [value]="3">Wednesday</option>
-            <option [value]="4">Thursday</option>
-            <option [value]="5">Friday</option>
-            <option [value]="6">Saturday</option>
-            <option [value]="0">Sunday</option>
-          </select>
-        </myanili-value-pair>
-      }
-      @if (!edit && manga && manga.my_extension && manga.my_extension.platform) {
+      @if (manga && manga.my_extension && manga.my_extension.platform) {
         <div class="row">
           <div class="col-4 fw-bold text-end">Platform</div>
           <div class="col-8">
@@ -306,38 +231,7 @@
           </div>
         </div>
       }
-      @if (edit && manga && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Platform</div>
-          <div class="col-8">
-            <select
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.platform"
-              [disabled]="busy"
-            >
-              @for (provider of platformPipe.platforms; track provider) {
-                <option [value]="provider.id">
-                  {{ provider.name }}
-                </option>
-              }
-            </select>
-          </div>
-        </div>
-      }
-      @if (edit && manga && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">ID</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.platformId"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (!edit && manga && manga.my_extension?.publisher) {
+      @if (manga && manga.my_extension?.publisher) {
         <div class="row">
           <div class="col-4 fw-bold text-end">Publisher</div>
           <div class="col-8">
@@ -359,40 +253,11 @@
           </div>
         </div>
       }
-      @if (edit && manga && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Publisher</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.publisher"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (edit && manga && editExtension) {
-        <div class="row my-2">
-          <div class="col-4 fw-bold text-end">Website</div>
-          <div class="col-8">
-            <input
-              class="form-control form-control-sm"
-              [(ngModel)]="editExtension!.publisherWebsite"
-              [disabled]="busy"
-              enterkeyhint="done"
-            />
-          </div>
-        </div>
-      }
-      @if (manga && !edit) {
+      @if (manga) {
         <div class="row">
           <div class="col-4 fw-bold text-end">Progress</div>
           <div class="col-8">
-            @if (
-              (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) &&
-              !edit
-            ) {
+            @if (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) {
               <myanili-icon
                 name="plus-circle"
                 class="cursor-pointer me-1"
@@ -401,10 +266,7 @@
             }
             {{ manga!.my_list_status?.num_chapters_read || 0 }}/{{ manga!.num_chapters || '?' }}
             &middot;
-            @if (
-              (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) &&
-              !edit
-            ) {
+            @if (manga.my_list_status?.status === 'reading' || manga.my_list_status?.is_rereading) {
               <myanili-icon
                 name="plus-circle"
                 class="cursor-pointer me-1"
@@ -418,111 +280,35 @@
 
       @if (manga) {
         <div>
-          @if (!edit) {
-            <div class="row">
-              <div class="col-4 fw-bold text-end">Chapters</div>
-              <div class="col-8">
-                <div class="progress rounded-pill my-1">
-                  @if (manga.my_list_status?.num_chapters_read) {
-                    <div
-                      class="progress-bar px-1"
-                      [ngClass]="{
-                        'bg-success':
-                          manga.my_list_status?.num_chapters_read == manga.num_chapters &&
-                          manga.num_chapters,
-                        'bg-gradient': !manga.num_chapters,
-                      }"
-                      [ngStyle]="{
-                        'min-width.%':
-                          manga!.num_chapters || manga!.my_list_status?.num_chapters_read == 0
-                            ? ((manga!.my_list_status?.num_chapters_read || 0) /
-                                (manga!.num_chapters || 1)) *
-                              100
-                            : 30,
-                      }"
-                    >
-                      {{ manga!.my_list_status?.num_chapters_read }}/{{
-                        manga!.num_chapters || '?'
-                      }}
-                    </div>
-                  }
-                </div>
+          <div class="row">
+            <div class="col-4 fw-bold text-end">Chapters</div>
+            <div class="col-8">
+              <div class="progress rounded-pill my-1">
+                @if (manga.my_list_status?.num_chapters_read) {
+                  <div
+                    class="progress-bar px-1"
+                    [ngClass]="{
+                      'bg-success':
+                        manga.my_list_status?.num_chapters_read == manga.num_chapters &&
+                        manga.num_chapters,
+                      'bg-gradient': !manga.num_chapters,
+                    }"
+                    [ngStyle]="{
+                      'min-width.%':
+                        manga!.num_chapters || manga!.my_list_status?.num_chapters_read == 0
+                          ? ((manga!.my_list_status?.num_chapters_read || 0) /
+                              (manga!.num_chapters || 1)) *
+                            100
+                          : 30,
+                    }"
+                  >
+                    {{ manga!.my_list_status?.num_chapters_read }}/{{ manga!.num_chapters || '?' }}
+                  </div>
+                }
               </div>
             </div>
-          }
-          @if (edit && editBackup) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Chapters</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control"
-                    type="number"
-                    min="0"
-                    [max]="manga!.num_chapters || 9999"
-                    [(ngModel)]="editBackup!.num_chapters_read"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  <span class="input-group-text">/ {{ manga!.num_chapters || '?' }}</span>
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && editBackup) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Volumes</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control"
-                    type="number"
-                    min="0"
-                    [max]="manga!.num_chapters || 9999"
-                    [(ngModel)]="editBackup!.num_volumes_read"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  <span class="input-group-text">/ {{ manga!.num_volumes || '?' }}</span>
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && editBackup) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Ongoing</div>
-              <div class="col-8">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="ongoing"
-                    [checked]="editExtension?.ongoing"
-                    (change)="changeOngoing()"
-                  />
-                  <label class="form-check-label" for="ongoing"> Regular updates </label>
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && editBackup) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Bookshelf</div>
-              <div class="col-8">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="shelf"
-                    [checked]="editExtension?.hideShelf"
-                    (change)="changeShelf()"
-                  />
-                  <label class="form-check-label" for="shelf"> Hide on Bookshelf </label>
-                </div>
-              </div>
-            </div>
-          }
-          @if (!edit) {
+          </div>
+          <div>
             <div class="row">
               <div class="col-4 fw-bold text-end">Links</div>
               <div class="col-8">
@@ -724,134 +510,13 @@
                 }
               </div>
             </div>
-          }
-          @if (edit && manga && editExtension) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Anilist</div>
-              <div class="col-8">
-                <input
-                  class="form-control form-control-sm"
-                  [(ngModel)]="editExtension!.anilistId"
-                  [disabled]="busy"
-                  enterkeyhint="done"
-                />
-              </div>
-            </div>
-          }
-          @if (edit && manga && editExtension && enableKitsu()) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Kitsu</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control form-control-sm"
-                    [(ngModel)]="editExtension!.kitsuId!.kitsuId"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  <button class="btn btn-primary" (click)="findKitsu()">
-                    <myanili-icon-kitsu></myanili-icon-kitsu>
-                  </button>
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && manga && editExtension) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Baka-Updates</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control form-control-sm"
-                    [(ngModel)]="editExtension!.bakaId"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  <button class="btn btn-primary" (click)="findBaka()">
-                    <myanili-icon-bakamanga></myanili-icon-bakamanga>
-                  </button>
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && manga && editExtension) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">MangaDex</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control form-control-sm"
-                    [(ngModel)]="editExtension!.mdId"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  <!-- <button class="btn btn-primary" (click)="findMd()">
-                                      <myanili-icon-mangadex></myanili-icon-mangadex>
-                                    </button> -->
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && editExtension) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">aniSearch</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control"
-                    [(ngModel)]="editExtension!.anisearchId"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  <!-- <button class="btn btn-primary" (click)="findAnisearch()">
-                                    <myanili-icon-anisearch></myanili-icon-anisearch>
-                                  </button> -->
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && manga && editExtension) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">ANN</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control form-control-sm"
-                    [(ngModel)]="editExtension!.annId"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  <button class="btn btn-primary" (click)="findANN()">
-                    <myanili-icon-ann></myanili-icon-ann>
-                  </button>
-                </div>
-              </div>
-            </div>
-          }
-          @if (edit && manga && editExtension) {
-            <div class="row my-2">
-              <div class="col-4 fw-bold text-end">Wiki</div>
-              <div class="col-8">
-                <div class="input-group input-group-sm">
-                  <input
-                    class="form-control"
-                    [(ngModel)]="editExtension!.fandomSlug"
-                    [disabled]="busy"
-                    enterkeyhint="done"
-                  />
-                  @if (!editExtension!.fandomSlug?.includes('.')) {
-                    <span class="input-group-text">.fandom.com</span>
-                  }
-                </div>
-              </div>
-            </div>
-          }
+          </div>
         </div>
       }
     </div>
   </div>
 
-  @if (!edit && manga?.my_extension?.comment) {
+  @if (manga?.my_extension?.comment) {
     <div class="my-3">
       <blockquote
         class="quotes border-start ps-3 fst-italic quotes"
@@ -860,23 +525,11 @@
     </div>
   }
 
-  @if (edit && editExtension) {
-    <div class="my-3">
-      <div class="fw-bold">Comment</div>
-      <textarea
-        class="form-control"
-        [(ngModel)]="editExtension.comment"
-        [disabled]="busy"
-        enterkeyhint="done"
-      ></textarea>
-    </div>
-  }
-
-  @if (!edit && manga) {
+  @if (manga) {
     <myanili-genres-badges class="mb-3 d-block" [genres]="manga.genres"></myanili-genres-badges>
   }
 
-  @if (!edit && manga) {
+  @if (manga) {
     <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
       @if (manga.synopsis || manga.background) {
         <li [ngbNavItem]="1">
@@ -942,11 +595,5 @@
       }
     </ul>
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
-  }
-  @if (edit && !busy) {
-    <button class="btn btn-danger d-block my-3 mx-auto" (click)="deleteEntry()">
-      <myanili-icon name="trash"></myanili-icon>
-      Remove from list
-    </button>
   }
 </div>

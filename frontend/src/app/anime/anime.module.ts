@@ -12,6 +12,7 @@ import { InViewportModule } from 'ng-in-viewport';
 
 import { AnimeCharactersComponent } from './details/characters/characters.component';
 import { AnimeDetailsComponent } from './details/details.component';
+import { AnimeEditComponent } from './details/edit/anime-edit.component';
 import { AnimeRecommendationsComponent } from './details/recommendations/recommendations.component';
 import { AnimeSongsComponent } from './details/songs/songs.component';
 import { StaffComponent } from './details/staff/staff.component';
@@ -32,6 +33,7 @@ import { StreamingComponent } from './widget/streaming/streaming.component';
   declarations: [
     AnimeCharactersComponent,
     AnimeDetailsComponent,
+    AnimeEditComponent,
     AnimeListComponent,
     AnimeListGridComponent,
     AnimeListListComponent,

@@ -1,6 +1,12 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.35.0',
+      date: new Date('2026-01-12'),
+      features: ['Anime/Manga: show user start and end date', 'Anime/Manga: move edits into popup'],
+      other: ['Update dependencies'],
+    },
+    {
       version: '2.34.4',
       date: new Date('2025-12-09'),
       fixes: ['Anime: popups for external connections not working'],

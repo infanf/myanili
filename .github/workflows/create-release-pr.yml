@@ -1,0 +1,125 @@
+name: Create Release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 2.35.0)'
+        required: true
+        type: string
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate version format
+        run: |
+          if ! [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Error: Version must be in format X.Y.Z (e.g., 2.35.0)"
+            exit 1
+          fi
+
+      - name: Check if version tag already exists
+        run: |
+          if git rev-parse "v${{ inputs.version }}" >/dev/null 2>&1; then
+            echo "Error: Version tag v${{ inputs.version }} already exists"
+            exit 1
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer:v2
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create release branch
+        run: |
+          git checkout -b release/v${{ inputs.version }}
+
+      - name: Update version in root package.json
+        run: |
+          npm version ${{ inputs.version }} --no-git-tag-version
+
+      - name: Update version in frontend/package.json
+        working-directory: frontend
+        run: |
+          npm version ${{ inputs.version }} --no-git-tag-version
+
+      - name: Update version in backend/composer.json
+        working-directory: backend
+        run: |
+          composer config version ${{ inputs.version }}
+
+      - name: Install root dependencies and update lock file
+        run: |
+          npm install --package-lock-only
+
+      - name: Install frontend dependencies and update lock file
+        working-directory: frontend
+        run: |
+          npm install --package-lock-only
+
+      - name: Install backend dependencies and update lock file
+        working-directory: backend
+        run: |
+          composer install --no-interaction --prefer-dist
+
+      - name: Commit version updates
+        run: |
+          git add package.json package-lock.json
+          git add frontend/package.json frontend/package-lock.json
+          git add backend/composer.json backend/composer.lock
+          git commit -m "chore: bump version to ${{ inputs.version }}"
+
+      - name: Push release branch
+        run: |
+          git push origin release/v${{ inputs.version }}
+
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create \
+            --title "Release v${{ inputs.version }}" \
+            --body "$(cat <<'EOF'
+          ## Release v${{ inputs.version }}
+
+          This PR updates the version to ${{ inputs.version }} and updates all lock files.
+
+          ### Changes
+          - Updated version in root `package.json`
+          - Updated version in `frontend/package.json`
+          - Updated version in `backend/composer.json`
+          - Updated `package-lock.json` files
+          - Updated `composer.lock`
+
+          ### Checklist
+          - [ ] Version number is correct
+          - [ ] All lock files are updated
+          - [ ] CI checks pass
+
+          **Note:** After merging this PR, the merge commit will be automatically tagged with `v${{ inputs.version }}` and the deployment workflow will trigger.
+          EOF
+          )" \
+            --base beta \
+            --head release/v${{ inputs.version }} \
+            --label "release"

@@ -1,0 +1,373 @@
+<div class="modal-header">
+  <h5 class="modal-title">Edit {{ manga?.title }}</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="cancel()"
+  ></button>
+</div>
+
+<div class="modal-body">
+  @if (manga && editBackup && editExtension) {
+    <!-- My Score -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">My Score</div>
+      <div class="col-8">
+        <myanili-rating [(rating)]="editBackup.score" [size]="16"></myanili-rating>
+      </div>
+    </div>
+
+    <!-- Display Name -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Display</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.displayName"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">My Status</div>
+      <div class="col-8">
+        <select
+          class="form-select form-select-sm"
+          [(ngModel)]="editBackup!.status"
+          [disabled]="busy"
+        >
+          @for (
+            status of ['reading', 'completed', 'on_hold', 'dropped', 'plan_to_read'];
+            track status
+          ) {
+            <option [value]="status">
+              {{ status | mal: 'mystatus' }}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Start Date -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Started</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editBackup!.start_date"
+          [disabled]="busy"
+          type="date"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Finish Date -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Finished</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editBackup!.finish_date"
+          [disabled]="busy"
+          type="date"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Simulpub Days -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Simulpub</div>
+      <div class="col-8">
+        <select
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.simulpub"
+          [disabled]="busy"
+          multiple
+        >
+          <option [value]="1">Monday</option>
+          <option [value]="2">Tuesday</option>
+          <option [value]="3">Wednesday</option>
+          <option [value]="4">Thursday</option>
+          <option [value]="5">Friday</option>
+          <option [value]="6">Saturday</option>
+          <option [value]="0">Sunday</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Platform -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Platform</div>
+      <div class="col-8">
+        <select
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.platform"
+          [disabled]="busy"
+        >
+          @for (provider of platformPipe.platforms; track provider) {
+            <option [value]="provider.id">
+              {{ provider.name }}
+            </option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Platform ID -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Platform ID</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.platformId"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Publisher -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Publisher</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.publisher"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Publisher Website -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Website</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.publisherWebsite"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Chapters -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Chapters</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control"
+            type="number"
+            min="0"
+            [max]="manga!.num_chapters || 9999"
+            [(ngModel)]="editBackup!.num_chapters_read"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <span class="input-group-text">/ {{ manga!.num_chapters || '?' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volumes -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Volumes</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control"
+            type="number"
+            min="0"
+            [max]="manga!.num_volumes || 9999"
+            [(ngModel)]="editBackup!.num_volumes_read"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <span class="input-group-text">/ {{ manga!.num_volumes || '?' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ongoing Checkbox -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Ongoing</div>
+      <div class="col-8">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="ongoing"
+            [checked]="editExtension.ongoing"
+            (change)="changeOngoing()"
+          />
+          <label class="form-check-label" for="ongoing"> Regular updates </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hide on Bookshelf Checkbox -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Bookshelf</div>
+      <div class="col-8">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="shelf"
+            [checked]="editExtension.hideShelf"
+            (change)="changeShelf()"
+          />
+          <label class="form-check-label" for="shelf"> Hide on Bookshelf </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- External IDs -->
+
+    <!-- Anilist -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Anilist</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.anilistId"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- Kitsu -->
+    @if (enableKitsu()) {
+      <div class="row mb-2">
+        <div class="col-4 fw-bold text-end">Kitsu</div>
+        <div class="col-8">
+          <div class="input-group input-group-sm">
+            <input
+              class="form-control form-control-sm"
+              [(ngModel)]="editExtension!.kitsuId!.kitsuId"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+            <button class="btn btn-primary" (click)="findKitsu()" [disabled]="busy">
+              <myanili-icon-kitsu></myanili-icon-kitsu>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Baka-Updates -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Baka-Updates</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.bakaId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <button class="btn btn-primary" (click)="findBaka()" [disabled]="busy">
+            <myanili-icon-bakamanga></myanili-icon-bakamanga>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MangaDex -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">MangaDex</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.mdId"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- aniSearch -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">aniSearch</div>
+      <div class="col-8">
+        <input
+          class="form-control form-control-sm"
+          [(ngModel)]="editExtension!.anisearchId"
+          [disabled]="busy"
+          enterkeyhint="done"
+        />
+      </div>
+    </div>
+
+    <!-- ANN -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">ANN</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-sm"
+            [(ngModel)]="editExtension!.annId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <button class="btn btn-primary" (click)="findANN()" [disabled]="busy">
+            <myanili-icon-ann></myanili-icon-ann>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wiki (Fandom) -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Wiki</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control"
+            [(ngModel)]="editExtension!.fandomSlug"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          @if (!editExtension!.fandomSlug?.includes('.')) {
+            <span class="input-group-text">.fandom.com</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment -->
+    <div class="mb-2">
+      <div class="fw-bold">Comment</div>
+      <textarea
+        class="form-control"
+        [(ngModel)]="editExtension.comment"
+        [disabled]="busy"
+        enterkeyhint="done"
+      ></textarea>
+    </div>
+  }
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="busy">
+    Cancel
+  </button>
+  <button type="button" class="btn btn-primary" (click)="save()" [disabled]="busy">
+    @if (busy) {
+      <myanili-icon name="loading" size="16"></myanili-icon>
+      Saving...
+    } @else {
+      Save Changes
+    }
+  </button>
+</div>
