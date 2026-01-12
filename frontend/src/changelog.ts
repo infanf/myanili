@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.35.1',
+      date: new Date('2026-01-12'),
+      fixes: ['fix deployment'],
+    },
+    {
       version: '2.35.0',
       date: new Date('2026-01-12'),
       features: ['Anime/Manga: show user start and end date', 'Anime/Manga: move edits into popup'],
