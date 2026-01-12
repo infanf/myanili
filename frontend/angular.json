@@ -83,7 +83,8 @@
               "@services/shikimori.service",
               "timestamp-enum"
             ],
-            "browser": "src/main.ts"
+            "browser": "src/main.ts",
+            "preserveSymlinks": false
           },
           "configurations": {
             "deployment": {
