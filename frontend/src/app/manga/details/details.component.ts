@@ -227,10 +227,11 @@ export class MangaDetailsComponent implements OnInit {
           // Try AniList ID mapping first
           if (this.manga?.my_extension?.anilistId) {
             try {
-              mbSeries = await this.mangabaka.mapFromSource(
+              const mbSerieses = await this.mangabaka.mapFromSource(
                 'anilist',
                 this.manga.my_extension.anilistId,
               );
+              mbSeries = mbSerieses?.[0];
               if (mbSeries && this?.manga?.my_extension) {
                 this.manga.my_extension.mangabakaId = mbSeries.id;
               }
@@ -242,7 +243,8 @@ export class MangaDetailsComponent implements OnInit {
           // Fallback to MAL ID mapping
           if (!mbSeries && this.manga?.id) {
             try {
-              mbSeries = await this.mangabaka.mapFromSource('my-anime-list', this.manga.id);
+              const mbSerieses = await this.mangabaka.mapFromSource('my-anime-list', this.manga.id);
+              mbSeries = mbSerieses?.[0];
               if (mbSeries && this?.manga?.my_extension) {
                 this.manga.my_extension.mangabakaId = mbSeries.id;
               }

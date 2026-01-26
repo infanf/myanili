@@ -194,7 +194,8 @@ export class MangaService {
         if (!state) return;
 
         try {
-          return await this.mangabaka.updateLibraryEntry(ids.mangabakaId, {
+          // Build update object and filter out null/undefined values
+          const updates = {
             state,
             progress_chapter: data.num_chapters_read || null,
             progress_volume: data.num_volumes_read || null,
@@ -203,7 +204,12 @@ export class MangaService {
             finish_date: data.finish_date || null,
             number_of_rereads: data.num_times_reread || null,
             note: data.comments || null,
-          });
+          };
+          // Remove null/undefined values before sending PATCH request
+          const filteredUpdates = Object.fromEntries(
+            Object.entries(updates).filter(([_, value]) => value != null),
+          );
+          return await this.mangabaka.updateLibraryEntry(ids.mangabakaId, filteredUpdates);
         } catch (error) {
           console.error('MangaBaka updateLibraryEntry error:', error);
           return;

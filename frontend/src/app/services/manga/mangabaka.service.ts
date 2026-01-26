@@ -278,12 +278,13 @@ export class MangabakaService {
   async mapFromSource(
     source: 'anilist' | 'kitsu' | 'anime-planet' | 'manga-updates' | 'my-anime-list',
     sourceId: number,
-  ): Promise<MangaBakaSeries | null> {
+  ): Promise<MangaBakaSeries[] | null> {
     const url = `${this.baseUrl}/source/${source}/${sourceId}`;
 
     try {
-      const response = await this.cache.fetch<MangaBakaResponse<MangaBakaSeries>>(url);
-      return response.data;
+      const response =
+        await this.cache.fetch<MangaBakaResponse<{ series: MangaBakaSeries[] }>>(url);
+      return response.data.series;
     } catch (error) {
       console.error('MangaBaka mapFromSource error:', error);
       return null;
