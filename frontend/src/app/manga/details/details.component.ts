@@ -606,6 +606,20 @@ export class MangaDetailsComponent implements OnInit {
         this.setRating('ann', rating);
       });
     }
+    if (!this.getRating('mangabaka')) {
+      const mangabakaId = this.manga?.my_extension?.mangabakaId;
+      if (mangabakaId) {
+        this.mangabaka.getSeries(mangabakaId).then(series => {
+          if (series?.rating) {
+            this.setRating('mangabaka', {
+              nom: series.rating,
+              norm: series.rating,
+              unit: '%',
+            });
+          }
+        });
+      }
+    }
   }
 
   get meanRating(): number {

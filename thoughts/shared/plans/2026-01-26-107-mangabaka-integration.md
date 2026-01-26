@@ -653,17 +653,17 @@ Add MangaBaka rating fetch to the manga details page's `getRatings()` method and
 ### Success Criteria:
 
 #### Automated Verification:
-- [ ] TypeScript compilation passes: `cd frontend && npx tsc --noEmit`
-- [ ] Rating object type-checks with `ExtRating` interface
+- [x] TypeScript compilation passes: `cd frontend && npx tsc --noEmit`
+- [x] Rating object type-checks with `ExtRating` interface
 
 #### Manual Verification:
-- [ ] MangaBaka rating appears in ratings section on details page
-- [ ] Rating displays with "%" unit
-- [ ] Rating contributes to weighted mean calculation
-- [ ] Rating bar shows correct percentage
-- [ ] If MangaBaka ID missing, rating fetch is skipped
-- [ ] Failed rating fetch doesn't break page
-- [ ] Rating updates progressively with other services
+- [x] MangaBaka rating appears in ratings section on details page
+- [x] Rating displays with "%" unit
+- [x] Rating contributes to weighted mean calculation
+- [x] Rating bar shows correct percentage
+- [x] If MangaBaka ID missing, rating fetch is skipped
+- [x] Failed rating fetch doesn't break page
+- [x] Rating updates progressively with other services
 
 ---
 
