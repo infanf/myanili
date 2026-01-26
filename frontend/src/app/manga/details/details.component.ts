@@ -224,6 +224,8 @@ export class MangaDetailsComponent implements OnInit {
           kitsuId: this.manga.my_extension.kitsuId,
           anilistId: this.manga.my_extension.anilistId,
           anisearchId: this.manga.my_extension.anisearchId,
+          bakaId: this.manga.my_extension.bakaId,
+          mangabakaId: this.manga.my_extension.mangabakaId,
         },
         {
           status: manga.my_list_status.status || 'plan_to_read',
@@ -235,6 +237,7 @@ export class MangaDetailsComponent implements OnInit {
               anilistId: this.manga.my_extension.anilistId,
               anisearchId: this.manga.my_extension.anisearchId,
               bakaId: this.manga.my_extension.bakaId,
+              mangabakaId: this.manga.my_extension.mangabakaId,
               annId: this.manga.my_extension.annId,
               mdId: this.manga.my_extension.mdId,
               mpasId: this.manga.my_extension.mpasId,
@@ -286,6 +289,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
+        mangabakaId: this.manga.my_extension?.mangabakaId,
       },
       data,
     );
@@ -304,6 +308,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
+        mangabakaId: this.manga.my_extension?.mangabakaId,
       },
       {
         status: 'completed',
@@ -337,6 +342,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
+        mangabakaId: this.manga.my_extension?.mangabakaId,
       },
       {
         status: 'reading',
@@ -413,6 +419,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
+        mangabakaId: this.manga.my_extension?.mangabakaId,
       },
       data,
     );
@@ -445,6 +452,7 @@ export class MangaDetailsComponent implements OnInit {
       anilistId: this.manga.my_extension?.anilistId,
       kitsuId: this.manga.my_extension?.kitsuId,
       anisearchId: this.manga.my_extension?.anisearchId,
+      mangabakaId: this.manga.my_extension?.mangabakaId,
     });
     await this.ngOnInit();
     this.glob.notbusy();

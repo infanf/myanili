@@ -426,19 +426,19 @@ await this.mangaService.updateManga(
 ### Success Criteria:
 
 #### Automated Verification:
-- [ ] TypeScript compilation passes: `cd frontend && npx tsc --noEmit`
-- [ ] No linting errors: `cd frontend && npm run lint`
-- [ ] All call sites type-check with new `mangabakaId` parameter
+- [x] TypeScript compilation passes: `cd frontend && npx tsc --noEmit`
+- [x] No linting errors: `cd frontend && npm run lint`
+- [x] All call sites type-check with new `mangabakaId` parameter
 
 #### Manual Verification:
-- [ ] When logged into MangaBaka, updating manga in MyAniLi syncs to MangaBaka library
-- [ ] Check MangaBaka library at mangabaka.org - entry should appear/update
-- [ ] Status, progress, rating, dates sync correctly
-- [ ] Re-reading state syncs as `rereading` in MangaBaka
-- [ ] Score converts correctly (MAL 7/10 → MangaBaka 70/100)
-- [ ] Deleting manga removes from MangaBaka library
-- [ ] Sync works silently in background (no user-facing errors)
-- [ ] If MangaBaka ID missing, sync is skipped gracefully
+- [x] When logged into MangaBaka, updating manga in MyAniLi syncs to MangaBaka library
+- [x] Check MangaBaka library at mangabaka.org - entry should appear/update
+- [x] Status, progress, rating, dates sync correctly
+- [x] Re-reading state syncs as `rereading` in MangaBaka
+- [x] Score converts correctly (MAL 7/10 → MangaBaka 70/100)
+- [x] Deleting manga removes from MangaBaka library
+- [x] Sync works silently in background (no user-facing errors)
+- [x] If MangaBaka ID missing, sync is skipped gracefully
 
 ---
 
