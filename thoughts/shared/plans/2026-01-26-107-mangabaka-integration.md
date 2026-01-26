@@ -275,14 +275,14 @@ import {
 ### Success Criteria:
 
 #### Automated Verification:
-- [ ] TypeScript compilation passes: `cd frontend && npx tsc --noEmit`
-- [ ] Method is accessible on service: `this.mangabaka.statusFromMal('reading')` type-checks
-- [ ] Return type matches MangaBaka state union type
+- [x] TypeScript compilation passes: `cd frontend && npx tsc --noEmit`
+- [x] Method is accessible on service: `this.mangabaka.statusFromMal('reading')` type-checks
+- [x] Return type matches MangaBaka state union type
 
 #### Manual Verification:
-- [ ] Function returns correct mapping for each MAL status
-- [ ] Returns `undefined` for invalid status
-- [ ] `on_hold` → `paused` mapping works correctly
+- [x] Function returns correct mapping for each MAL status
+- [x] Returns `undefined` for invalid status
+- [x] `on_hold` → `paused` mapping works correctly
 
 ---
 

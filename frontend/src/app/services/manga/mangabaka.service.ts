@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { ReadStatus } from '../../models/manga';
 import {
   MangaBakaError,
   MangaBakaLibraryEntry,
@@ -286,6 +287,28 @@ export class MangabakaService {
     } catch (error) {
       console.error('MangaBaka mapFromSource error:', error);
       return null;
+    }
+  }
+
+  /**
+   * Map MAL reading status to MangaBaka library state
+   */
+  statusFromMal(
+    malStatus?: ReadStatus,
+  ): 'reading' | 'completed' | 'dropped' | 'paused' | 'plan_to_read' | 'rereading' | undefined {
+    switch (malStatus) {
+      case 'reading':
+        return 'reading';
+      case 'completed':
+        return 'completed';
+      case 'on_hold':
+        return 'paused';
+      case 'dropped':
+        return 'dropped';
+      case 'plan_to_read':
+        return 'plan_to_read';
+      default:
+        return undefined;
     }
   }
 }
