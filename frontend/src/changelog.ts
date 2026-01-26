@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.35.2',
+      date: new Date('2026-01-26'),
+      fixes: ['Anime/Manga: restore "Remove from List" button in edit modal'],
+    },
+    {
       version: '2.35.1',
       date: new Date('2026-01-12'),
       fixes: ['fix deployment'],

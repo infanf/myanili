@@ -175,6 +175,42 @@ export class MangaEditComponent implements OnInit {
     this.modal.dismiss();
   }
 
+  async deleteEntry() {
+    if (!this.manga) return;
+    const confirmed = await this.dialogue.confirm(
+      `Are you sure you want to delete "${this.manga.title}"?`,
+      'Remove Entry',
+    );
+    if (!confirmed) return;
+
+    this.busy = true;
+    try {
+      await this.mangaService.deleteManga({
+        malId: this.manga.id,
+        anilistId: this.manga.my_extension?.anilistId,
+        kitsuId: this.manga.my_extension?.kitsuId,
+        anisearchId: this.manga.my_extension?.anisearchId,
+      });
+      this.modal.close('deleted'); // Signal deletion to parent
+    } catch (error: unknown) {
+      this.busy = false;
+      const err = error as { status?: number; message?: string };
+      let errorMessage = 'Failed to delete entry. Please try again.';
+
+      if (err?.status === 0) {
+        errorMessage = 'Network error. Please check your internet connection and try again.';
+      } else if (err?.status === 401 || err?.status === 403) {
+        errorMessage = 'Authentication error. Please log in again.';
+      } else if (err?.status === 404) {
+        errorMessage = 'Entry not found. It may have been already deleted.';
+      } else if (err?.message) {
+        errorMessage = `Error: ${err.message}`;
+      }
+
+      await this.dialogue.confirm(errorMessage, 'Delete Failed');
+    }
+  }
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     // Ctrl+Enter or Cmd+Enter to save

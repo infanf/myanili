@@ -197,6 +197,46 @@ export class AnimeEditComponent implements OnInit {
     this.modal.dismiss();
   }
 
+  async deleteEntry() {
+    if (!this.anime) return;
+    const confirmed = await this.dialogue.confirm(
+      `Are you sure you want to delete "${this.anime.title}"?`,
+      'Remove Entry',
+    );
+    if (!confirmed) return;
+
+    this.busy = true;
+    try {
+      await this.animeService.deleteAnime({
+        malId: this.anime.id,
+        anilistId: this.anime.my_extension?.anilistId,
+        kitsuId: this.anime.my_extension?.kitsuId,
+        anisearchId: this.anime.my_extension?.anisearchId,
+        simklId: this.anime.my_extension?.simklId,
+        annictId: this.anime.my_extension?.annictId,
+        traktId: this.anime.my_extension?.trakt,
+        livechartId: this.anime.my_extension?.livechartId,
+      });
+      this.modal.close('deleted'); // Signal deletion to parent
+    } catch (error: unknown) {
+      this.busy = false;
+      const err = error as { status?: number; message?: string };
+      let errorMessage = 'Failed to delete entry. Please try again.';
+
+      if (err?.status === 0) {
+        errorMessage = 'Network error. Please check your internet connection and try again.';
+      } else if (err?.status === 401 || err?.status === 403) {
+        errorMessage = 'Authentication error. Please log in again.';
+      } else if (err?.status === 404) {
+        errorMessage = 'Entry not found. It may have been already deleted.';
+      } else if (err?.message) {
+        errorMessage = `Error: ${err.message}`;
+      }
+
+      await this.dialogue.confirm(errorMessage, 'Delete Failed');
+    }
+  }
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     // Ctrl+Enter or Cmd+Enter to save

@@ -318,8 +318,11 @@ export class AnimeDetailsComponent implements OnInit {
     modal.componentInstance.traktUser = this.traktUser;
     modal.componentInstance.annictUser = this.annictUser;
 
-    modal.closed.subscribe(async success => {
-      if (success) {
+    modal.closed.subscribe(async result => {
+      if (result === 'deleted') {
+        // Entry was deleted, reload component to handle missing data
+        await this.ngOnInit();
+      } else if (result) {
         // Reload component data after successful save
         await this.ngOnInit();
       }
