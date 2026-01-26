@@ -11,6 +11,19 @@ export interface MangaBakaSeries {
   cover_image: string | null;
   genres: string[];
   rating: number | null;
+  source?: {
+    anilist?: { id: number | null; rating: number | null; rating_normalized: number | null };
+    anime_planet?: { id: number | null; rating: number | null; rating_normalized: number | null };
+    anime_news_network?: {
+      id: number | null;
+      rating: number | null;
+      rating_normalized: number | null;
+    };
+    kitsu?: { id: number | null; rating: number | null; rating_normalized: number | null };
+    manga_updates?: { id: string | null; rating: number | null; rating_normalized: number | null };
+    my_anime_list?: { id: number | null; rating: number | null; rating_normalized: number | null };
+    shikimori?: { id: number | null; rating: number | null; rating_normalized: number | null };
+  };
 }
 
 export interface MangaBakaLibraryEntry {
