@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-5">MangaBaka</div>
+  <div class="col-7">
+    @if (mangabakaLoggedIn) {
+      <myanili-icon-mangabaka class="me-1"></myanili-icon-mangabaka>
+      <a [href]="getProfileUrl()" target="_blank">Connected</a>
+      <myanili-icon
+        class="cursor-pointer"
+        name="x"
+        size="20"
+        (click)="mangabakaLogoff()"
+      ></myanili-icon>
+    } @else {
+      @if (mangabakaData) {
+        <small class="text-muted d-block mb-1">
+          Generate token at
+          <a href="https://mangabaka.org/my/settings" target="_blank">mangabaka.org/my/settings</a>
+        </small>
+        <input
+          class="form-control form-control-sm mb-1"
+          placeholder="Personal Access Token (mb-...)"
+          [(ngModel)]="mangabakaData.token"
+        />
+      }
+      <button
+        class="btn btn-sm btn-primary"
+        (click)="mangabakaConnect()"
+        [disabled]="(mangabakaData && !mangabakaData.token) || mangabakaLoading"
+      >
+        @if (mangabakaLoading) {
+          <myanili-icon-loading></myanili-icon-loading>
+        } @else {
+          <myanili-icon-mangabaka></myanili-icon-mangabaka>
+        }
+        Connect
+      </button>
+    }
+  </div>
+</div>

@@ -24,6 +24,7 @@ import { CacheService } from '../cache.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 
+import { MangabakaService } from './mangabaka.service';
 import { MangaupdatesService } from './mangaupdates.service';
 
 @Injectable({
@@ -37,6 +38,8 @@ export class MangaService {
     private anisearch: AnisearchService,
     private shikimori: ShikimoriService,
     private baka: MangaupdatesService,
+    // @ts-ignore
+    private mangabaka: MangabakaService,
     private cache: CacheService,
   ) {}
 
