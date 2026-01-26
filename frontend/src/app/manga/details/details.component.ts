@@ -260,8 +260,11 @@ export class MangaDetailsComponent implements OnInit {
     const modal = this.modalService.open(MangaEditComponent, { size: 'xl' });
     modal.componentInstance.manga = this.manga;
 
-    modal.closed.subscribe(async success => {
-      if (success) {
+    modal.closed.subscribe(async result => {
+      if (result === 'deleted') {
+        // Entry was deleted, reload component to handle missing data
+        await this.ngOnInit();
+      } else if (result) {
         // Reload component data after successful save
         await this.ngOnInit();
       }

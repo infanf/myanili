@@ -359,15 +359,23 @@
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="busy">
-    Cancel
+  <button
+    type="button"
+    class="btn btn-danger me-auto"
+    (click)="deleteEntry()"
+    [disabled]="busy"
+    title="Remove from list"
+  >
+    <myanili-icon name="trash"></myanili-icon>
+    <span class="d-none d-sm-inline ms-1">Remove from list</span>
   </button>
   <button type="button" class="btn btn-primary" (click)="save()" [disabled]="busy">
     @if (busy) {
       <myanili-icon name="loading" size="16"></myanili-icon>
-      Saving...
+      <span class="ms-1">Saving...</span>
     } @else {
-      Save Changes
+      <myanili-icon name="check2" size="16"></myanili-icon>
+      <span class="ms-1">Save Changes</span>
     }
   </button>
 </div>
