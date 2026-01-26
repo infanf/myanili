@@ -740,21 +740,21 @@ First, locate the external links section in the template.
 ### Success Criteria:
 
 #### Automated Verification:
-- [ ] Angular template compilation passes: `cd frontend && npm run build`
-- [ ] No template syntax errors
+- [x] Angular template compilation passes: `cd frontend && npm run build`
+- [x] No template syntax errors
 
 #### Manual Verification:
-- [ ] MangaBaka link appears in external links section when ID exists
-- [ ] Link is hidden when `mangabakaId` is missing
-- [ ] Clicking link opens correct MangaBaka series page
-- [ ] MangaBaka icon displays correctly
-- [ ] Provider rating badge shows when rating is available
-- [ ] Anime-Planet link appears when MangaBaka has source data with Anime-Planet ID
-- [ ] Link is hidden when `animePlanetId` component property is not set
-- [ ] Clicking Anime-Planet link opens correct manga page
-- [ ] Anime-Planet icon displays correctly
-- [ ] Link styling matches other external service links
-- [ ] Both links open in new tab
+- [x] MangaBaka link appears in external links section when ID exists
+- [x] Link is hidden when `mangabakaId` is missing
+- [x] Clicking link opens correct MangaBaka series page
+- [x] MangaBaka icon displays correctly
+- [x] Provider rating badge shows when rating is available
+- [x] Anime-Planet link appears when MangaBaka has source data with Anime-Planet ID
+- [x] Link is hidden when `animePlanetId` component property is not set
+- [x] Clicking Anime-Planet link opens correct manga page
+- [x] Anime-Planet icon displays correctly
+- [x] Link styling matches other external service links
+- [x] Both links open in new tab
 
 ---
 

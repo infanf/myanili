@@ -472,6 +472,42 @@
                     </div>
                   </div>
                 }
+                @if (manga.my_extension?.mangabakaId) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap">
+                        <myanili-external-rating
+                          [rating]="getRating('mangabaka')"
+                        ></myanili-external-rating>
+                      </td>
+                    </div>
+                    <div class="col-8">
+                      <myanili-icon-mangabaka></myanili-icon-mangabaka>
+                      <a
+                        class="ms-1"
+                        [href]="'https://mangabaka.org/' + manga.my_extension!.mangabakaId"
+                        target="_blank"
+                        >MangaBaka</a
+                      >
+                    </div>
+                  </div>
+                }
+                @if (animePlanetId) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap"></td>
+                    </div>
+                    <div class="col-8">
+                      <myanili-icon-ap></myanili-icon-ap>
+                      <a
+                        class="ms-1"
+                        [href]="'https://www.anime-planet.com/manga/' + animePlanetId"
+                        target="_blank"
+                        >Anime-Planet</a
+                      >
+                    </div>
+                  </div>
+                }
                 @if (manga.my_extension?.mpasId) {
                   <div class="row">
                     <div class="col-4"></div>
