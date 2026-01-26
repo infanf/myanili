@@ -150,6 +150,7 @@ interface MangaExtensionInterface {
   kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
   bakaId?: number | string;
   bakaMigrated?: boolean;
+  mangabakaId?: number;
   mdId?: string;
   anisearchId?: number;
   annId?: number;

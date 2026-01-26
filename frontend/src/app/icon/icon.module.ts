@@ -18,6 +18,7 @@ import { LivechartIconComponent } from './livechart/livechart.component';
 import { LoadingIconComponent } from './loading/loading.component';
 import { MalIconComponent } from './mal/mal.component';
 import { MangaPassionComponent } from './manga-passion/manga-passion.component';
+import { MangabakaIconComponent } from './mangabaka/mangabaka.component';
 import { MangadexIconComponent } from './mangadex/mangadex.component';
 import { ProgressIconComponent } from './progress/progress.component';
 import { ShikimoriIconComponent } from './shikimori/shikimori.component';
@@ -39,6 +40,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     KitsuIconComponent,
     LivechartIconComponent,
     MalIconComponent,
+    MangabakaIconComponent,
     MangadexIconComponent,
     SimklIconComponent,
     SpotifyIconComponent,
@@ -64,6 +66,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     KitsuIconComponent,
     LivechartIconComponent,
     MalIconComponent,
+    MangabakaIconComponent,
     MangadexIconComponent,
     MangaPassionComponent,
     ShikimoriIconComponent,

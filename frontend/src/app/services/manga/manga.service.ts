@@ -24,6 +24,7 @@ import { CacheService } from '../cache.service';
 import { KitsuService } from '../kitsu.service';
 import { MalService } from '../mal.service';
 
+import { MangabakaService } from './mangabaka.service';
 import { MangaupdatesService } from './mangaupdates.service';
 
 @Injectable({
@@ -37,6 +38,8 @@ export class MangaService {
     private anisearch: AnisearchService,
     private shikimori: ShikimoriService,
     private baka: MangaupdatesService,
+    // @ts-ignore
+    private mangabaka: MangabakaService,
     private cache: CacheService,
   ) {}
 
@@ -101,6 +104,7 @@ export class MangaService {
       kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
       anisearchId?: number;
       bakaId?: number | string;
+      mangabakaId?: number;
     },
     data: MyMangaUpdateExtended,
   ): Promise<MyMangaStatus> {
@@ -182,6 +186,35 @@ export class MangaService {
           rating: data.score,
         });
       })(),
+      (async () => {
+        if (!this.mangabaka.isLoggedIn.value) return;
+        if (!ids.mangabakaId) return;
+
+        const state = data.is_rereading ? 'rereading' : this.mangabaka.statusFromMal(data.status);
+        if (!state) return;
+
+        try {
+          // Build update object and filter out null/undefined values
+          const updates = {
+            state,
+            progress_chapter: data.num_chapters_read || null,
+            progress_volume: data.num_volumes_read || null,
+            rating: data.score ? Math.round(data.score * 10) : null,
+            start_date: data.start_date || null,
+            finish_date: data.finish_date || null,
+            number_of_rereads: data.num_times_reread || null,
+            note: data.comments || null,
+          };
+          // Remove null/undefined values before sending PATCH request
+          const filteredUpdates = Object.fromEntries(
+            Object.entries(updates).filter(([_, value]) => value != null),
+          );
+          return await this.mangabaka.updateLibraryEntry(ids.mangabakaId, filteredUpdates);
+        } catch (error) {
+          console.error('MangaBaka updateLibraryEntry error:', error);
+          return;
+        }
+      })(),
     ]);
     return malResponse;
   }
@@ -191,6 +224,7 @@ export class MangaService {
     anilistId?: number;
     kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
     anisearchId?: number;
+    mangabakaId?: number;
   }) {
     await Promise.all([
       this.malService.delete<boolean>('manga/' + ids.malId),
@@ -198,6 +232,15 @@ export class MangaService {
       this.kitsu.deleteEntry(ids.kitsuId, 'manga'),
       this.anisearch.deleteEntry(ids.anisearchId, 'manga'),
       this.shikimori.deleteMedia(ids.malId, 'Manga'),
+      (async () => {
+        if (!ids.mangabakaId) return;
+        try {
+          return await this.mangabaka.removeFromLibrary(ids.mangabakaId);
+        } catch (error) {
+          console.error('MangaBaka removeFromLibrary error:', error);
+          return;
+        }
+      })(),
     ]);
     return true;
   }
