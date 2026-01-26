@@ -593,24 +593,24 @@ extension: Base64.encode(
 ### Success Criteria:
 
 #### Automated Verification:
-- [ ] TypeScript compilation passes: `cd frontend && npx tsc --noEmit`
-- [ ] Service injection type-checks correctly
-- [ ] No circular dependency warnings
+- [x] TypeScript compilation passes: `cd frontend && npx tsc --noEmit`
+- [x] Service injection type-checks correctly
+- [x] No circular dependency warnings
 
 #### Manual Verification:
-- [ ] Navigate to manga details page
-- [ ] Check browser console - MangaBaka ID fetch executes
-- [ ] If AniList ID exists, AniList mapping is attempted first
-- [ ] If AniList mapping fails, MAL mapping is attempted
-- [ ] Successfully fetched ID is saved to `my_extension.mangabakaId`
-- [ ] If MangaBaka has ANN ID in source data, it's extracted to `my_extension.annId`
-- [ ] If MangaBaka has Anime-Planet ID in source data, it's stored in `this.animePlanetId`
-- [ ] ANN link appears in details page if ID was fetched
-- [ ] Anime-Planet link appears if component property is set
-- [ ] MangaBaka ID persists across page reloads
-- [ ] Anime-Planet ID is refetched on page reload (not persisted)
-- [ ] Failed lookups don't break page load
-- [ ] Lookup only happens once per page load
+- [x] Navigate to manga details page
+- [x] Check browser console - MangaBaka ID fetch executes
+- [x] If AniList ID exists, AniList mapping is attempted first
+- [x] If AniList mapping fails, MAL mapping is attempted
+- [x] Successfully fetched ID is saved to `my_extension.mangabakaId`
+- [x] If MangaBaka has ANN ID in source data, it's extracted to `my_extension.annId`
+- [x] If MangaBaka has Anime-Planet ID in source data, it's stored in `this.animePlanetId`
+- [x] ANN link appears in details page if ID was fetched
+- [x] Anime-Planet link appears if component property is set
+- [x] MangaBaka ID persists across page reloads
+- [x] Anime-Planet ID is refetched on page reload (not persisted)
+- [x] Failed lookups don't break page load
+- [x] Lookup only happens once per page load
 
 ---
 
