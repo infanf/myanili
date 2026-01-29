@@ -12,6 +12,7 @@ import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MangaService } from '@services/manga/manga.service';
+import { MangabakaService } from '@services/manga/mangabaka.service';
 import { MangadexService } from '@services/manga/mangadex.service';
 import { MangapassionService } from '@services/manga/mangapassion.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
@@ -38,6 +39,7 @@ export class MangaDetailsComponent implements OnInit {
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   activeTab = 1;
   originalLanguage = 'Japanese';
+  animePlanetId?: number;
 
   constructor(
     private mangaService: MangaService,
@@ -50,6 +52,7 @@ export class MangaDetailsComponent implements OnInit {
     private baka: MangaupdatesService,
     private mangadex: MangadexService,
     private mangapassion: MangapassionService,
+    private mangabaka: MangabakaService,
     private anisearch: AnisearchService,
     private ann: AnnService,
     private modalService: NgbModal,
@@ -216,6 +219,56 @@ export class MangaDetailsComponent implements OnInit {
         }),
       );
     }
+    if (!this.manga.my_extension.mangabakaId) {
+      promises.push(
+        (async () => {
+          let mbSeries;
+
+          // Try AniList ID mapping first
+          if (this.manga?.my_extension?.anilistId) {
+            try {
+              const mbSerieses = await this.mangabaka.mapFromSource(
+                'anilist',
+                this.manga.my_extension.anilistId,
+              );
+              mbSeries = mbSerieses?.[0];
+              if (mbSeries && this?.manga?.my_extension) {
+                this.manga.my_extension.mangabakaId = mbSeries.id;
+              }
+            } catch (error) {
+              console.log('MangaBaka AniList mapping failed:', error);
+            }
+          }
+
+          // Fallback to MAL ID mapping
+          if (!mbSeries && this.manga?.id) {
+            try {
+              const mbSerieses = await this.mangabaka.mapFromSource('my-anime-list', this.manga.id);
+              mbSeries = mbSerieses?.[0];
+              if (mbSeries && this?.manga?.my_extension) {
+                this.manga.my_extension.mangabakaId = mbSeries.id;
+              }
+            } catch (error) {
+              console.log('MangaBaka MAL mapping failed:', error);
+            }
+          }
+
+          // Extract additional IDs from MangaBaka source data
+          if (mbSeries && this?.manga?.my_extension) {
+            // Anime News Network ID (provides fallback/enhancement to direct ANN lookup)
+            if (!this.manga.my_extension.annId && mbSeries.source?.anime_news_network?.id) {
+              this.manga.my_extension.annId = mbSeries.source.anime_news_network.id;
+            }
+
+            // Anime-Planet ID (temporary - not persisted, used for link display only)
+            if (mbSeries.source?.anime_planet?.id) {
+              // Store temporarily on component for link generation
+              this.animePlanetId = mbSeries.source.anime_planet.id;
+            }
+          }
+        })(),
+      );
+    }
     await Promise.all(promises);
     if (promises.length && manga.my_extension && manga.my_list_status) {
       await this.mangaService.updateManga(
@@ -224,6 +277,8 @@ export class MangaDetailsComponent implements OnInit {
           kitsuId: this.manga.my_extension.kitsuId,
           anilistId: this.manga.my_extension.anilistId,
           anisearchId: this.manga.my_extension.anisearchId,
+          bakaId: this.manga.my_extension.bakaId,
+          mangabakaId: this.manga.my_extension.mangabakaId,
         },
         {
           status: manga.my_list_status.status || 'plan_to_read',
@@ -235,6 +290,7 @@ export class MangaDetailsComponent implements OnInit {
               anilistId: this.manga.my_extension.anilistId,
               anisearchId: this.manga.my_extension.anisearchId,
               bakaId: this.manga.my_extension.bakaId,
+              mangabakaId: this.manga.my_extension.mangabakaId,
               annId: this.manga.my_extension.annId,
               mdId: this.manga.my_extension.mdId,
               mpasId: this.manga.my_extension.mpasId,
@@ -286,6 +342,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
+        mangabakaId: this.manga.my_extension?.mangabakaId,
       },
       data,
     );
@@ -304,6 +361,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
+        mangabakaId: this.manga.my_extension?.mangabakaId,
       },
       {
         status: 'completed',
@@ -337,6 +395,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
+        mangabakaId: this.manga.my_extension?.mangabakaId,
       },
       {
         status: 'reading',
@@ -413,6 +472,7 @@ export class MangaDetailsComponent implements OnInit {
         kitsuId: this.manga.my_extension?.kitsuId,
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
+        mangabakaId: this.manga.my_extension?.mangabakaId,
       },
       data,
     );
@@ -445,6 +505,7 @@ export class MangaDetailsComponent implements OnInit {
       anilistId: this.manga.my_extension?.anilistId,
       kitsuId: this.manga.my_extension?.kitsuId,
       anisearchId: this.manga.my_extension?.anisearchId,
+      mangabakaId: this.manga.my_extension?.mangabakaId,
     });
     await this.ngOnInit();
     this.glob.notbusy();
@@ -546,6 +607,20 @@ export class MangaDetailsComponent implements OnInit {
       this.ann.getRating(this.manga?.my_extension?.annId, 'manga').then(rating => {
         this.setRating('ann', rating);
       });
+    }
+    if (!this.getRating('mangabaka')) {
+      const mangabakaId = this.manga?.my_extension?.mangabakaId;
+      if (mangabakaId) {
+        this.mangabaka.getSeries(mangabakaId).then(series => {
+          if (series?.rating) {
+            this.setRating('mangabaka', {
+              nom: series.rating,
+              norm: series.rating,
+              unit: '%',
+            });
+          }
+        });
+      }
     }
   }
 

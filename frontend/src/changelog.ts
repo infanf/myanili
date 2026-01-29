@@ -1,6 +1,18 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.36.0',
+      date: new Date('2026-01-29'),
+      features: [
+        'Manga: MangaBaka integration - automatic library synchronization',
+        'Manga: MangaBaka ratings display on details page',
+        'Manga: Auto-fetch MangaBaka series IDs via AniList/MAL mapping',
+        'Manga: Extract Anime News Network and Anime-Planet IDs from MangaBaka',
+        'Manga: Links to MangaBaka and Anime-Planet on manga details page',
+      ],
+      other: ['Update dependencies'],
+    },
+    {
       version: '2.35.2',
       date: new Date('2026-01-26'),
       fixes: ['Anime/Manga: restore "Remove from List" button in edit modal'],

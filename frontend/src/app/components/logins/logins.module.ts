@@ -12,6 +12,7 @@ import { KitsuLoginComponent } from './kitsu-login/kitsu-login.component';
 import { LivechartLoginComponent } from './livechart-login/livechart-login.component';
 import { LoginsComponent } from './logins.component';
 import { MalLoginComponent } from './mal-login/mal-login.component';
+import { MangabakaLoginComponent } from './mangabaka-login/mangabaka-login.component';
 import { ShikimoriLoginComponent } from './shikimori-login/shikimori-login.component';
 import { SimklLoginComponent } from './simkl-login/simkl-login.component';
 import { TraktLoginComponent } from './trakt-login/trakt-login.component';
@@ -30,6 +31,7 @@ import { TraktLoginComponent } from './trakt-login/trakt-login.component';
     AnnictLoginComponent,
     BakaLoginComponent,
     LivechartLoginComponent,
+    MangabakaLoginComponent,
   ],
   imports: [CommonModule, FormsModule, IconModule, ComponentsModule],
   exports: [LoginsComponent],
