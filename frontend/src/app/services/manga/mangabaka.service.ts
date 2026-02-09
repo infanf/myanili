@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 import { ReadStatus } from '../../models/manga';
 import {
@@ -18,19 +19,27 @@ import { CacheService } from '../cache.service';
 })
 export class MangabakaService {
   private readonly baseUrl = 'https://api.mangabaka.dev/v1';
-  // private readonly authUrl = 'https://mangabaka.org/auth/oauth2';
-  private apiKey = '';
+  private readonly authUrl = `${environment.backend}mangabaka/auth`;
+  private accessToken = '';
+  private refreshToken = '';
 
   // Observable for user authentication state
   isLoggedIn = new BehaviorSubject<boolean>(false);
   user = new BehaviorSubject<MangaBakaUser | undefined>(undefined);
+  needsReauth = new BehaviorSubject<boolean>(false);
 
   constructor(private cache: CacheService) {
-    // Load saved API key
-    this.apiKey = String(localStorage.getItem('mangabakaApiKey') || '');
+    // Load saved tokens
+    this.accessToken = String(localStorage.getItem('mangabakaAccessToken') || '');
+    this.refreshToken = String(localStorage.getItem('mangabakaRefreshToken') || '');
+
+    // Check for legacy PAT
+    if (localStorage.getItem('mangabakaApiKey')) {
+      this.needsReauth.next(true);
+    }
 
     // Check if user is logged in
-    if (this.apiKey) {
+    if (this.accessToken) {
       this.checkLogin();
     }
   }
@@ -61,18 +70,26 @@ export class MangabakaService {
    * Note: PAT tokens don't have access to userinfo endpoint, so we extract user_id from library
    */
   async getCurrentUser(): Promise<MangaBakaUser | null> {
-    if (!this.apiKey) return null;
+    if (!this.accessToken) return null;
 
     try {
-      const library = await this.getLibrary({ limit: 1 });
-      if (library && library.length > 0 && library[0].user_id) {
-        // PAT authentication successful - we have a user_id but no username
-        return {
-          sub: library[0].user_id,
-          name: library[0].user_id, // Use user_id as name since username not available with PAT
-        };
+      const response = await fetch('https://mangabaka.org/auth/oauth2/userinfo', {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401 && this.refreshToken) {
+          // Token expired, should refresh here if implemented
+          // For now, just logout
+          this.logout();
+        }
+        return null;
       }
-      return null;
+
+      const userData = (await response.json()) as MangaBakaUser;
+      return userData;
     } catch (error) {
       console.error('MangaBaka getCurrentUser error:', error);
       return null;
@@ -80,20 +97,50 @@ export class MangabakaService {
   }
 
   /**
-   * Set Personal Access Token (PAT) and verify it
+   * Start OAuth login flow
+   */
+  async login(): Promise<void> {
+    return new Promise(resolve => {
+      const loginWindow = window.open(this.authUrl);
+      const listener = async (event: MessageEvent) => {
+        if (event.data && event.data.mangabaka) {
+          const data = event.data as { at: string; rt: string; ex: number; ci: string };
+          this.accessToken = data.at;
+          this.refreshToken = data.rt;
+
+          localStorage.setItem('mangabakaAccessToken', this.accessToken);
+          localStorage.setItem('mangabakaRefreshToken', this.refreshToken);
+
+          // Clear legacy PAT if it exists
+          localStorage.removeItem('mangabakaApiKey');
+          this.needsReauth.next(false);
+
+          await this.checkLogin();
+          window.removeEventListener('message', listener);
+          loginWindow?.close();
+          resolve();
+        }
+      };
+      window.addEventListener('message', listener);
+    });
+  }
+
+  /**
+   * @deprecated PAT is no longer supported
    */
   async setApiKey(apiKey: string): Promise<boolean> {
-    this.apiKey = apiKey;
-    localStorage.setItem('mangabakaApiKey', apiKey);
-    return await this.checkLogin();
+    console.warn('Mangabaka PAT is deprecated, use OAuth instead.');
+    return false;
   }
 
   /**
    * Logout - clear credentials
    */
   logout(): void {
-    this.apiKey = '';
-    localStorage.removeItem('mangabakaApiKey');
+    this.accessToken = '';
+    this.refreshToken = '';
+    localStorage.removeItem('mangabakaAccessToken');
+    localStorage.removeItem('mangabakaRefreshToken');
     this.user.next(undefined);
     this.isLoggedIn.next(false);
   }
@@ -106,8 +153,8 @@ export class MangabakaService {
       'Content-Type': 'application/json',
     };
 
-    if (this.apiKey) {
-      headers['x-api-key'] = this.apiKey;
+    if (this.accessToken) {
+      headers['Authorization'] = `Bearer ${this.accessToken}`;
     }
 
     return headers;

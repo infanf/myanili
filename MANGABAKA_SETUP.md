@@ -10,44 +10,33 @@ MangaBaka (https://mangabaka.org) is a manga aggregator and tracking service tha
 - View detailed manga information
 - Manage their manga library (reading status, progress, ratings)
 - Map series from other services (AniList, MAL, Kitsu, etc.) to MangaBaka
-- Authenticate via Personal Access Token (PAT)
+- Authenticate via OAuth 2.0
 
-## Files Created
+## Files Created/Updated
+
+### Backend
+- `backend/app/Providers/MangabakaServiceProvider.php` - OAuth provider configuration
+- `backend/routes/web.php` - OAuth authentication routes
 
 ### Frontend
-
-**Type Definitions:**
-- `frontend/src/app/models/mangabaka.ts` - TypeScript interfaces for MangaBaka API responses
-
-**Service:**
-- `frontend/src/app/services/manga/mangabaka.service.ts` - Main service for MangaBaka API integration
-- Updated: `frontend/src/app/services/manga/manga.service.ts` - Injected MangabakaService
-
-**Login Component:**
-- `frontend/src/app/components/logins/mangabaka-login/mangabaka-login.component.ts`
-- `frontend/src/app/components/logins/mangabaka-login/mangabaka-login.component.html`
-- Updated: `frontend/src/app/components/logins/logins.module.ts` - Registered component
-- Updated: `frontend/src/app/components/logins/logins.component.html` - Added to UI
-
-**Icon Component:**
-- `frontend/src/app/icon/mangabaka/mangabaka.component.ts` - MangaBaka logo icon
-- `frontend/src/app/icon/mangabaka/mangabaka.component.html`
-- Updated: `frontend/src/app/icon/icon.module.ts` - Registered icon component
+- Updated: `frontend/src/app/services/manga/mangabaka.service.ts` - Switched from PAT to OAuth 2.0
+- Updated: `frontend/src/app/components/logins/mangabaka-login/mangabaka-login.component.ts` - Updated login flow
+- Updated: `frontend/src/app/components/logins/mangabaka-login/mangabaka-login.component.html` - UI for OAuth login
 
 ## Setup Instructions
 
-### Personal Access Token Authentication
+### OAuth 2.0 Authentication
 
-MangaBaka uses Personal Access Token (PAT) authentication:
+MangaBaka integration now uses OAuth 2.0 for a more secure and seamless experience:
 
-1. Go to https://mangabaka.org/my/settings
-2. Find the "Personal Access Tokens (PAT) for API" section
-3. Generate a new Personal Access Token (starts with `mb-`)
-4. Use the token in the MyAniLi login UI
+1. Click the "Connect" button in the MangaBaka section on the Logins page.
+2. A popup window will open redirects you to https://mangabaka.org.
+3. Log in to your MangaBaka account and authorize MyAniLi.
+4. The window will close automatically, and you will be connected.
 
-**Note:** OAuth is not yet supported by MangaBaka. PAT authentication is the only available method.
+**Note:** Personal Access Tokens (PAT) are no longer supported. If you were previously using a PAT, you will see a notice to reconnect using OAuth.
 
-**Limitation:** PAT tokens only have access to the library API, not the OAuth userinfo endpoint. This means the UI shows "Connected" status instead of displaying your username. Username display requires OAuth authentication which is not yet available.
+**Improvement:** Unlike PAT authentication, OAuth provides access to your profile information, allowing MyAniLi to display your username and link directly to your profile.
 
 ## Usage
 

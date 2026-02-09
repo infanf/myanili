@@ -10,8 +10,8 @@ import { MangabakaService } from '@services/manga/mangabaka.service';
 })
 export class MangabakaLoginComponent implements OnInit {
   mangabakaLoggedIn?: MangaBakaUser;
-  mangabakaData?: { token: string };
   mangabakaLoading = false;
+  needsReauth = false;
 
   constructor(
     private mangabaka: MangabakaService,
@@ -27,24 +27,23 @@ export class MangabakaLoginComponent implements OnInit {
     this.mangabaka.user.subscribe(user => {
       this.mangabakaLoggedIn = user;
     });
+    this.mangabaka.needsReauth.subscribe(needsReauth => {
+      this.needsReauth = needsReauth;
+    });
   }
 
   getProfileUrl(): string {
-    // PAT authentication doesn't provide username, so link to settings page
+    if (this.mangabakaLoggedIn?.profile) {
+      return this.mangabakaLoggedIn.profile;
+    }
     return 'https://mangabaka.org/my/settings';
   }
 
   async mangabakaConnect() {
-    if (!this.mangabakaData) {
-      this.mangabakaData = {
-        token: '',
-      };
-      return;
-    }
     this.mangabakaLoading = true;
     try {
       this.glob.busy();
-      await this.mangabaka.setApiKey(this.mangabakaData.token);
+      await this.mangabaka.login();
       this.glob.notbusy();
     } finally {
       this.mangabakaLoading = false;
