@@ -31,6 +31,7 @@ export class AnidbService {
     return url;
   }
 
+  // @ts-ignore
   private async getXml(params: { [key: string]: string }) {
     const response = await fetch(this.getUrl(params));
     const xml = await response.text();
@@ -58,6 +59,7 @@ export class AnidbService {
   async getRating(id?: number): Promise<ExtRating | undefined> {
     /** Disable feature until we find the HTTP 500 issue */
     return undefined;
+    /*
     if (!id) return undefined;
     const xml = await this.getXml({
       request: 'anime',
@@ -74,5 +76,6 @@ export class AnidbService {
       norm: value * 10,
       ratings: count,
     };
+    */
   }
 }
