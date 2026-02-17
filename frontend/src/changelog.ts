@@ -4,10 +4,7 @@ export const changelog: Changelog = {
       version: '2.36.1',
       date: new Date('2026-02-17'),
       fixes: ['Manga: mangaupdates rating not showing up on details page'],
-      other: [
-        'Anime: reenable aniDB proxy with cache to handle rate limits',
-        'Update dependencies',
-      ],
+      other: ['Update dependencies'],
     },
     {
       version: '2.36.0',

@@ -14,7 +14,10 @@ export class AnidbService {
   private readonly clientver = 2;
   private readonly protover = 1;
 
-  constructor(private kitsu: KitsuService, private livechart: LivechartService) {}
+  constructor(
+    private kitsu: KitsuService,
+    private livechart: LivechartService,
+  ) {}
 
   private getUrl(params: { [key: string]: string }) {
     const url = new URL(this.baseUrl);
@@ -53,6 +56,8 @@ export class AnidbService {
   }
 
   async getRating(id?: number): Promise<ExtRating | undefined> {
+    /** Disable feature until we find the HTTP 500 issue */
+    return undefined;
     if (!id) return undefined;
     const xml = await this.getXml({
       request: 'anime',
