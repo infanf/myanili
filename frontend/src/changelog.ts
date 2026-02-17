@@ -1,6 +1,12 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.36.1',
+      date: new Date('2026-02-17'),
+      fixes: ['Manga: mangaupdates rating not showing up on details page'],
+      other: ['Update dependencies'],
+    },
+    {
       version: '2.36.0',
       date: new Date('2026-01-29'),
       features: [
