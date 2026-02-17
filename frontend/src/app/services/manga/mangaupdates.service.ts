@@ -79,7 +79,7 @@ export class MangaupdatesService {
     const request = await fetch(`${environment.backend}baka/manga/${idOrSlug}`);
     if (request.ok) {
       const response = (await request.json()) as BakaManga;
-      return response.id;
+      return response.series_id;
     }
     return;
   }

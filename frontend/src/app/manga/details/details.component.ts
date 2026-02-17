@@ -565,9 +565,9 @@ export class MangaDetailsComponent implements OnInit {
       this.mangaService.getBakaManga(this.manga?.my_extension?.bakaId).then(bakaManga => {
         if (bakaManga) {
           this.setRating('bu', {
-            nom: bakaManga.score || 0,
-            norm: (bakaManga.score || 0) * 10,
-            ratings: bakaManga.votes,
+            nom: bakaManga.bayesian_rating || 0,
+            norm: (bakaManga.bayesian_rating || 0) * 10,
+            ratings: bakaManga.rating_votes,
           });
         }
       });
