@@ -57,9 +57,6 @@ export class AnidbService {
   }
 
   async getRating(id?: number): Promise<ExtRating | undefined> {
-    /** Disable feature until we find the HTTP 500 issue */
-    return undefined;
-    /*
     if (!id) return undefined;
     const xml = await this.getXml({
       request: 'anime',
@@ -76,6 +73,5 @@ export class AnidbService {
       norm: value * 10,
       ratings: count,
     };
-    */
   }
 }
