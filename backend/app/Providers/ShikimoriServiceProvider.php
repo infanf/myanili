@@ -22,9 +22,9 @@ class ShikimoriServiceProvider extends ServiceProvider
             'clientId' => env('SHIKIMORI_CLIENT_ID'),
             'clientSecret' => env('SHIKIMORI_CLIENT_SECRET'),
             'redirectUri' => env('APP_URL') . '/shikimori/auth',
-            'urlAuthorize' => 'https://shikimori.one/oauth/authorize',
-            'urlAccessToken' => 'https://shikimori.one/oauth/token',
-            'urlResourceOwnerDetails' => 'https://shikimori.one/api/users/whoami',
+            'urlAuthorize' => 'https://shikimori.io/oauth/authorize',
+            'urlAccessToken' => 'https://shikimori.io/oauth/token',
+            'urlResourceOwnerDetails' => 'https://shikimori.io/api/users/whoami',
             // Add HTTP client options with custom User-Agent
             'httpClient' => [
                 'headers' => [
