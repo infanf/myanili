@@ -73,7 +73,7 @@ export class MangabakaService {
     if (!this.accessToken) return null;
 
     try {
-      const response = await fetch('https://mangabaka.org/auth/oauth2/userinfo', {
+      const response = await fetch(`${environment.backend}mangabaka/userinfo`, {
         headers: {
           Authorization: `Bearer ${this.accessToken}`,
         },

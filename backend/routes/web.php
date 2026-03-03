@@ -491,6 +491,20 @@ JAVASCRIPT;
     }
 });
 
+$router->get('/mangabaka/userinfo', function () {
+    $authHeader = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
+    if (empty($authHeader)) {
+        http_response_code(401);
+        header('Content-Type: application/json');
+        return json_encode(['error' => 'No authorization header']);
+    }
+
+    $result = MangabakaServiceProvider::getUserInfo($authHeader);
+    http_response_code($result['status']);
+    header('Content-Type: application/json');
+    return $result['body'];
+});
+
 /**
  *  ___       _        __  __
  * | _ ) __ _| |____ _|  \/  |__ _ _ _  __ _ __ _

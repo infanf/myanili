@@ -16,6 +16,23 @@ class MangabakaServiceProvider extends ServiceProvider
         //
     }
 
+    public static function getUserInfo(string $authHeader): array
+    {
+        $ch = curl_init('https://mangabaka.org/auth/oauth2/userinfo');
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'Authorization: ' . $authHeader,
+                'Accept: application/json',
+            ],
+        ]);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return ['body' => $response, 'status' => $httpCode];
+    }
+
     public static function getOauthProvider()
     {
         $config = [
