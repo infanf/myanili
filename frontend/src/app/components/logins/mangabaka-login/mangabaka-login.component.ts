@@ -33,8 +33,8 @@ export class MangabakaLoginComponent implements OnInit {
   }
 
   getProfileUrl(): string {
-    if (this.mangabakaLoggedIn?.profile) {
-      return this.mangabakaLoggedIn.profile;
+    if (this.mangabakaLoggedIn?.name) {
+      return `https://mangabaka.org/u/${this.mangabakaLoggedIn.name}`;
     }
     return 'https://mangabaka.org/my/settings';
   }

@@ -112,6 +112,7 @@ export class BookshelfComponent {
         kitsuId: manga.my_extension?.kitsuId,
         anisearchId: manga.my_extension?.anisearchId,
         bakaId: manga.my_extension?.bakaId,
+        mangabakaId: manga.my_extension?.mangabakaId,
       },
       data,
     );
@@ -159,6 +160,7 @@ export class BookshelfComponent {
         kitsuId: manga.my_extension?.kitsuId,
         anisearchId: manga.my_extension?.anisearchId,
         bakaId: manga.my_extension?.bakaId,
+        mangabakaId: manga.my_extension?.mangabakaId,
       },
       data,
     );
