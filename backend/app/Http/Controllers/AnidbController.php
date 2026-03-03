@@ -23,7 +23,7 @@ class AnidbController extends Controller
     public function redirect(Request $request)
     {
         // doesn't work on production due to rate limiting
-        return [];
+        // return [];
         $url     = preg_replace('/^anidb\//', self::$baseUrl, $request->path());
         $auth    = $request->header('Authorization');
         $body    = $request->getContent();
@@ -66,7 +66,7 @@ class AnidbController extends Controller
     private function initCache()
     {
         // create sqlite cache if not exists
-        $this->cache = new \SQLite3('anidb_cache.sqlite');
+        $this->cache = new \SQLite3('/dbs/anidb_cache.sqlite');
         $this->cache->exec("CREATE TABLE IF NOT EXISTS cache (url VARCHAR(32) PRIMARY KEY, data TEXT, timestamp INTEGER)");
     }
 

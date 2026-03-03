@@ -14,7 +14,10 @@ export class AnidbService {
   private readonly clientver = 2;
   private readonly protover = 1;
 
-  constructor(private kitsu: KitsuService, private livechart: LivechartService) {}
+  constructor(
+    private kitsu: KitsuService,
+    private livechart: LivechartService,
+  ) {}
 
   private getUrl(params: { [key: string]: string }) {
     const url = new URL(this.baseUrl);
@@ -28,6 +31,7 @@ export class AnidbService {
     return url;
   }
 
+  // @ts-ignore
   private async getXml(params: { [key: string]: string }) {
     const response = await fetch(this.getUrl(params));
     const xml = await response.text();

@@ -180,9 +180,9 @@ interface Character {
 export type MangaCharacter = Character;
 
 interface BakaMangaInterface {
-  id: number;
-  votes?: number;
-  score?: number;
+  series_id: number;
+  rating_votes?: number;
+  bayesian_rating?: number;
 }
 
 export type BakaManga = BakaMangaInterface;

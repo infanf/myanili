@@ -36,3 +36,9 @@ $grid-breakpoints: (
 
 $border-width: 1px;
 $border-color: #dee2e6;
+
+@mixin styles {
+    @media (prefers-color-scheme: light) {
+        --bs-lightmode-text: currentcolor;
+    }
+}
