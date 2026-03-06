@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '2.36.3',
+      date: new Date('2026-03-06'),
+      fixes: ['MangaBaka: implement OAuth login'],
+    },
+    {
       version: '2.36.2',
       date: new Date('2026-02-21'),
       fixes: ['aniDB: Bring back ratings', 'Optimize colours of some logos and icons'],
