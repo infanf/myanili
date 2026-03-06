@@ -12,7 +12,7 @@ import { DialogueService } from './dialogue.service';
   providedIn: 'root',
 })
 export class ShikimoriService {
-  private readonly baseUrl = 'https://shikimori.one/api';
+  private readonly baseUrl = 'https://shikimori.io/api';
   private accessToken = '';
   private refreshToken = '';
   private userSubject = new BehaviorSubject<ShikimoriUser | undefined>(undefined);
@@ -24,7 +24,7 @@ export class ShikimoriService {
     this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken') || '');
 
     this.client = new Client({
-      url: 'https://shikimori.one/api/graphql',
+      url: 'https://shikimori.io/api/graphql',
       preferGetMethod: false,
       fetchOptions: () => {
         return {
