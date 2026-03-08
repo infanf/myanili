@@ -2,9 +2,9 @@ export const changelog: Changelog = {
   changes: [
     {
       version: '3.3.1',
-      date: new Date('2026-03-09'),
+      date: new Date('2026-03-08'),
       other: [
-        'Change versioning schema: Even though we are now on version 3, nothing really changed. The first release was version 2 because it was on another app that I deemed v1.',
+        'Change versioning schema: Even though we are now on version 3, nothing really changed. The first release was named version 2 because it was based on another app that I deemed version 1.',
       ],
     },
     {
