@@ -1,24 +1,31 @@
 export const changelog: Changelog = {
   changes: [
     {
-      version: '2.36.3',
+      version: '3.3.1',
+      date: new Date('2026-03-09'),
+      other: [
+        'Change versioning schema: Even though we are now on version 3, nothing really changed. The first release was version 2 because it was on another app that I deemed v1.',
+      ],
+    },
+    {
+      version: '3.3.0',
       date: new Date('2026-03-06'),
       fixes: ['MangaBaka: implement OAuth login'],
     },
     {
-      version: '2.36.2',
+      version: '3.2.0',
       date: new Date('2026-02-21'),
       fixes: ['aniDB: Bring back ratings', 'Optimize colours of some logos and icons'],
       other: ['Update dependencies'],
     },
     {
-      version: '2.36.1',
+      version: '3.1.0',
       date: new Date('2026-02-17'),
       fixes: ['Manga: mangaupdates rating not showing up on details page'],
       other: ['Update dependencies'],
     },
     {
-      version: '2.36.0',
+      version: '3.0.0',
       date: new Date('2026-01-29'),
       features: [
         'Manga: MangaBaka integration - automatic library synchronization',
