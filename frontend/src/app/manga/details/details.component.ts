@@ -11,6 +11,7 @@ import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
+import { MalService } from '@services/mal.service';
 import { MangaService } from '@services/manga/manga.service';
 import { MangabakaService } from '@services/manga/mangabaka.service';
 import { MangadexService } from '@services/manga/mangadex.service';
@@ -40,6 +41,7 @@ export class MangaDetailsComponent implements OnInit {
   activeTab = 1;
   originalLanguage = 'Japanese';
   animePlanetId?: number;
+  loggedIn: string | false = false;
 
   constructor(
     private mangaService: MangaService,
@@ -58,6 +60,7 @@ export class MangaDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private cache: CacheService,
     private dialogue: DialogueService,
+    private malService: MalService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -69,6 +72,9 @@ export class MangaDetailsComponent implements OnInit {
         this.glob.busy();
         await this.ngOnInit();
       }
+    });
+    this.malService.loggedIn.subscribe(loggedIn => {
+      if (loggedIn !== '***loading***') this.loggedIn = loggedIn;
     });
   }
 

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DirectivesModule } from '@app/directives/directives.module';
+import { authGuard } from '@app/guards/auth.guard';
 import { RelatedModule } from '@app/related/related.module';
 import { ComponentsModule } from '@components/components.module';
 import { IconModule } from '@icon/icon.module';
@@ -46,9 +47,9 @@ import { PlatformComponent } from './widget/platform/platform.component';
     NgbModule,
     RelatedModule,
     RouterModule.forChild([
-      { path: 'list', component: MangaListComponent },
-      { path: 'list/:status', component: MangaListComponent },
-      { path: 'bookshelf', component: BookshelfWrapperComponent },
+      { path: 'list', canActivate: [authGuard], component: MangaListComponent },
+      { path: 'list/:status', canActivate: [authGuard], component: MangaListComponent },
+      { path: 'bookshelf', canActivate: [authGuard], component: BookshelfWrapperComponent },
       { path: 'details/:id', component: MangaDetailsComponent },
       { path: 'magazine/:id', component: MagazineComponent },
       { path: '', redirectTo: 'bookshelf', pathMatch: 'full' },

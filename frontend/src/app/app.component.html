@@ -1,5 +1,9 @@
 <myanili-navbar-top></myanili-navbar-top>
-@if (loggedIn && loggedIn != '***loading***') {
+@if (loggedIn === '***loading***') {
+  <div class="busy-overlay">
+    <myanili-icon name="loading" [size]="64"></myanili-icon>
+  </div>
+} @else {
   <router-outlet></router-outlet>
   @if (busy) {
     <div class="busy-overlay">
@@ -19,8 +23,6 @@
 @if (!hideNavbar) {
   <div class="buffer"></div>
 }
-@if (loggedIn && loggedIn != '***loading***') {
-  <myanili-navbar-bottom></myanili-navbar-bottom>
-}
+<myanili-navbar-bottom></myanili-navbar-bottom>
 
 <myanili-toaster></myanili-toaster>

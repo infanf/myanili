@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DirectivesModule } from '@app/directives/directives.module';
+import { authGuard } from '@app/guards/auth.guard';
 import { RelatedModule } from '@app/related/related.module';
 import { ComponentsModule } from '@components/components.module';
 import { IconModule } from '@icon/icon.module';
@@ -62,11 +63,10 @@ import { StreamingComponent } from './widget/streaming/streaming.component';
     NgbModule,
     RelatedModule,
     RouterModule.forChild([
-      { path: 'list', component: AnimeListComponent },
-      { path: 'list', component: AnimeListComponent },
-      { path: 'list/:status', component: AnimeListComponent },
-      { path: 'watchlist', component: WatchlistComponent },
-      { path: 'schedule', component: ScheduleComponent },
+      { path: 'list', canActivate: [authGuard], component: AnimeListComponent },
+      { path: 'list/:status', canActivate: [authGuard], component: AnimeListComponent },
+      { path: 'watchlist', canActivate: [authGuard], component: WatchlistComponent },
+      { path: 'schedule', canActivate: [authGuard], component: ScheduleComponent },
       { path: 'season', component: SeasonComponent },
       { path: 'details/:id', component: AnimeDetailsComponent },
       { path: 'producer/:id', component: ProducerComponent },

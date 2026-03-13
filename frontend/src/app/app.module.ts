@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 
 import { AppComponent } from './app.component';
 import { DirectivesModule } from './directives/directives.module';
+import { authGuard } from './guards/auth.guard';
 import { NavbarModule } from './navbar/navbar.module';
 import { SettingsModule } from './settings/settings.module';
 
@@ -34,9 +35,10 @@ const routes: Routes = [
   },
   {
     path: 'feed',
+    canActivate: [authGuard],
     loadChildren: () => import('./feed/feed.module').then(m => m.FeedModule),
   },
-  { path: '', redirectTo: '/anime/watchlist', pathMatch: 'full' },
+  { path: '', redirectTo: '/search/anime', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -27,6 +27,7 @@ import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
+import { MalService } from '@services/mal.service';
 import { ShikimoriService } from '@services/shikimori.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
@@ -54,6 +55,7 @@ export class AnimeDetailsComponent implements OnInit {
   @Input() inModal = false;
   streams: LegacyStream[] = [];
   originalLanguage = 'Japanese';
+  loggedIn: string | false = false;
 
   constructor(
     private animeService: AnimeService,
@@ -74,6 +76,7 @@ export class AnimeDetailsComponent implements OnInit {
     private ap: AnimePlanetService,
     private cache: CacheService,
     private dialogue: DialogueService,
+    private malService: MalService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -93,6 +96,9 @@ export class AnimeDetailsComponent implements OnInit {
     });
     this.annict.user.subscribe(user => {
       this.annictUser = user;
+    });
+    this.malService.loggedIn.subscribe(loggedIn => {
+      if (loggedIn !== '***loading***') this.loggedIn = loggedIn;
     });
   }
 
