@@ -54,7 +54,7 @@ const routes: Routes = [
     ExternalModule,
     ComponentsModule,
     NavbarModule,
-    RouterModule.forRoot(routes, { useHash: true }),
+    RouterModule.forRoot(routes),
     SettingsModule,
   ],
   providers: [Title],
