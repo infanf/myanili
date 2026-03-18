@@ -320,6 +320,30 @@
       </div>
     </div>
 
+    <!-- Bangumi -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">Bangumi</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-sm"
+            type="number"
+            [(ngModel)]="editExtension!.bangumiId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <a
+            class="btn btn-primary"
+            href="https://bgm.tv/subject/{{ editExtension!.bangumiId }}"
+            target="_blank"
+            [class.disabled]="!editExtension!.bangumiId"
+          >
+            <myanili-icon-bangumi></myanili-icon-bangumi>
+          </a>
+        </div>
+      </div>
+    </div>
+
     <!-- Wiki (Fandom) -->
     <div class="row mb-2">
       <div class="col-4 fw-bold text-end">Wiki</div>
