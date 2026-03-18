@@ -11,6 +11,7 @@ import { AnnComponent } from './ann/ann.component';
 import { AnnictIconComponent } from './annict/annict.component';
 import { ApComponent } from './ap/ap.component';
 import { BakamangaIconComponent } from './bakamanga/bakamanga.component';
+import { BangumiIconComponent } from './bangumi/bangumi.component';
 import { FandomIconComponent } from './fandom/fandom.component';
 import { IconComponent } from './icon.component';
 import { KitsuIconComponent } from './kitsu/kitsu.component';
@@ -36,6 +37,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     AnnComponent,
     AnnictIconComponent,
     BakamangaIconComponent,
+    BangumiIconComponent,
     FandomIconComponent,
     KitsuIconComponent,
     LivechartIconComponent,
@@ -62,6 +64,7 @@ import { TraktIconComponent } from './trakt/trakt.component';
     AnnictIconComponent,
     ApComponent,
     BakamangaIconComponent,
+    BangumiIconComponent,
     FandomIconComponent,
     KitsuIconComponent,
     LivechartIconComponent,

@@ -18,6 +18,7 @@ import { AnimePlanetService } from '@services/anime-planet.service';
 import { AnidbService } from '@services/anime/anidb.service';
 import { AnimeService } from '@services/anime/anime.service';
 import { AnnictService } from '@services/anime/annict.service';
+import { BangumiService } from '@services/anime/bangumi.service';
 import { LegacyStream, LivechartService } from '@services/anime/livechart.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
@@ -72,6 +73,7 @@ export class AnimeDetailsComponent implements OnInit {
     private ann: AnnService,
     private anidb: AnidbService,
     private ap: AnimePlanetService,
+    private bangumi: BangumiService,
     private cache: CacheService,
     private dialogue: DialogueService,
   ) {
@@ -655,6 +657,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('anidb')) {
       this.anidb.getRating(this.anime?.my_extension?.anidbId).then(rating => {
         this.setRating('anidb', rating);
+      });
+    }
+    if (!this.getRating('bangumi')) {
+      this.bangumi.getRating(this.anime?.my_extension?.bangumiId).then(rating => {
+        this.setRating('bangumi', rating);
       });
     }
   }

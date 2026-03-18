@@ -5,6 +5,7 @@ import { ExtRating, Weekday } from '@models/components';
 import { Manga, MyMangaUpdateExtended, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
+import { BangumiService } from '@services/anime/bangumi.service';
 import { AnisearchService } from '@services/anisearch.service';
 import { AnnService } from '@services/ann.service';
 import { CacheService } from '@services/cache.service';
@@ -52,6 +53,7 @@ export class MangaDetailsComponent implements OnInit {
     private baka: MangaupdatesService,
     private mangadex: MangadexService,
     private mangapassion: MangapassionService,
+    private bangumi: BangumiService,
     private mangabaka: MangabakaService,
     private anisearch: AnisearchService,
     private ann: AnnService,
@@ -621,6 +623,11 @@ export class MangaDetailsComponent implements OnInit {
           }
         });
       }
+    }
+    if (!this.getRating('bangumi')) {
+      this.bangumi.getRating(this.manga?.my_extension?.bangumiId).then(rating => {
+        this.setRating('bangumi', rating);
+      });
     }
   }
 

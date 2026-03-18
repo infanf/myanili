@@ -492,6 +492,26 @@
                     </div>
                   </div>
                 }
+                @if (manga.my_extension?.bangumiId) {
+                  <div class="row">
+                    <div class="col-4">
+                      <td class="text-nowrap">
+                        <myanili-external-rating
+                          [rating]="getRating('bangumi')"
+                        ></myanili-external-rating>
+                      </td>
+                    </div>
+                    <div class="col-8">
+                      <a
+                        href="https://bgm.tv/subject/{{ manga.my_extension?.bangumiId }}"
+                        target="_blank"
+                      >
+                        <myanili-icon-bangumi></myanili-icon-bangumi>
+                        Bangumi
+                      </a>
+                    </div>
+                  </div>
+                }
                 @if (animePlanetId) {
                   <div class="row">
                     <div class="col-4">
