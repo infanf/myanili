@@ -315,7 +315,7 @@ export class MangabakaService {
       return true;
     } catch (error) {
       console.error('MangaBaka removeFromLibrary error:', error);
-      return false;
+      throw error;
     }
   }
 

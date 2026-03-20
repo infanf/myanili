@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ToasterService } from '@components/toaster/toaster.service';
 import { statusFromMal } from '@models/anilist';
 import {
   Anime,
@@ -34,6 +35,31 @@ import { LivechartService } from './livechart.service';
 })
 export class AnimeService {
   nsfw = true;
+
+  private readonly updateServiceNames = [
+    null,
+    'AniList',
+    'Kitsu',
+    'aniSearch',
+    'Shikimori',
+    'SIMKL',
+    'Annict',
+    'Trakt',
+    'Livechart',
+  ] as const;
+
+  private readonly deleteServiceNames = [
+    null,
+    'AniList',
+    'Kitsu',
+    'aniSearch',
+    'Shikimori',
+    'SIMKL',
+    'Annict',
+    'Trakt',
+    'Livechart',
+  ] as const;
+
   constructor(
     private malService: MalService,
     private anilist: AnilistService,
@@ -48,6 +74,7 @@ export class AnimeService {
     private settings: SettingsService,
     private dialogue: DialogueService,
     private glob: GlobalService,
+    private toaster: ToasterService,
   ) {
     this.settings.nsfw$.asObservable().subscribe(nsfw => {
       this.nsfw = nsfw;
@@ -185,7 +212,7 @@ export class AnimeService {
     },
     data: MyAnimeUpdateExtended,
   ): Promise<MyAnimeStatus> {
-    const [malResponse] = await Promise.all([
+    const results = await Promise.allSettled([
       this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
@@ -256,7 +283,17 @@ export class AnimeService {
       this.trakt.updateEntry(ids.trakt, data),
       this.livechart.updateAnime(ids.livechartId, data),
     ]);
-    return malResponse;
+    const malResult = results[0];
+    if (malResult.status === 'rejected') throw malResult.reason;
+    for (let i = 1; i < results.length; i++) {
+      if (results[i].status === 'rejected') {
+        this.toaster.addError(
+          `${this.updateServiceNames[i]} update failed. Please try again later.`,
+          0,
+        );
+      }
+    }
+    return malResult.value;
   }
 
   async deleteAnime(ids: {
@@ -269,7 +306,7 @@ export class AnimeService {
     traktId?: string;
     livechartId?: number;
   }) {
-    await Promise.all([
+    const results = await Promise.allSettled([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
       this.kitsu.deleteEntry(ids.kitsuId, 'anime'),
@@ -280,6 +317,16 @@ export class AnimeService {
       this.trakt.drop(ids.traktId),
       this.livechart.deleteAnime(ids.livechartId),
     ]);
+    const malResult = results[0];
+    if (malResult.status === 'rejected') throw malResult.reason;
+    for (let i = 1; i < results.length; i++) {
+      if (results[i].status === 'rejected') {
+        this.toaster.addError(
+          `${this.deleteServiceNames[i]} delete failed. Please try again later.`,
+          0,
+        );
+      }
+    }
     return true;
   }
 

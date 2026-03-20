@@ -189,7 +189,8 @@ export class TraktService {
       method,
       body,
     });
-    return result.ok;
+    if (!result.ok) throw new Error(`Trakt: HTTP ${result.status}`);
+    return true;
   }
 
   async searchMovie(q: string): Promise<Show[]> {
@@ -294,10 +295,10 @@ export class TraktService {
   async updateEntry(trakt?: { id?: string; season?: number }, data?: Partial<MyAnimeUpdate>) {
     if (!trakt || !trakt.id || !this.accessToken) return;
     if (data?.status === 'dropped') {
-      this.drop(trakt.id);
+      await this.drop(trakt.id);
     }
     if (data?.score) {
-      this.addRating(data.score, trakt.id, trakt.season);
+      await this.addRating(data.score, trakt.id, trakt.season);
     }
   }
 
@@ -330,11 +331,12 @@ export class TraktService {
       data.shows = [];
       data.movies.push({ rating, ids: { slug } });
     }
-    this.fetch(`${this.baseUrl}sync/ratings`, {
+    const result = await this.fetch(`${this.baseUrl}sync/ratings`, {
       method: 'POST',
       headers,
       body: JSON.stringify(data),
     });
+    if (!result.ok) throw new Error(`Trakt: HTTP ${result.status}`);
   }
 
   logoff() {

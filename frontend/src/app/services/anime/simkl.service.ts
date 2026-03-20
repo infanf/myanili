@@ -110,7 +110,7 @@ export class SimklService {
   async scrobble(ids: { simkl?: number; mal?: number }, number?: number) {
     if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal) || !number) return;
     const scrobbleData = { shows: [{ ids, seasons: [{ number: 1, episodes: [{ number }] }] }] };
-    return fetch(`${this.baseUrl}sync/history`, {
+    const response = await fetch(`${this.baseUrl}sync/history`, {
       method: 'POST',
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
@@ -118,6 +118,8 @@ export class SimklService {
       }),
       body: JSON.stringify(scrobbleData),
     });
+    if (!response.ok) throw new Error(`SIMKL: HTTP ${response.status}`);
+    return response;
   }
 
   async updateEntry(ids: { simkl?: number; mal?: number }, data: Partial<MyAnimeUpdate>) {
@@ -138,7 +140,7 @@ export class SimklService {
   async addToList(ids: { simkl?: number; mal?: number }, list?: SimklList) {
     if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal) || !list) return;
     const toListData = { shows: [{ to: list, ids }] };
-    return fetch(`${this.baseUrl}sync/add-to-list`, {
+    const response = await fetch(`${this.baseUrl}sync/add-to-list`, {
       method: 'POST',
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
@@ -146,12 +148,14 @@ export class SimklService {
       }),
       body: JSON.stringify(toListData),
     });
+    if (!response.ok) throw new Error(`SIMKL: HTTP ${response.status}`);
+    return response;
   }
 
   async deleteEntry(id?: number) {
     if (!this.clientId || !this.accessToken || !id) return;
     const deleteData = { shows: [{ ids: { simkl: id } }] };
-    return fetch(`${this.baseUrl}sync/history/remove`, {
+    const response = await fetch(`${this.baseUrl}sync/history/remove`, {
       method: 'POST',
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
@@ -159,12 +163,14 @@ export class SimklService {
       }),
       body: JSON.stringify(deleteData),
     });
+    if (!response.ok) throw new Error(`SIMKL: HTTP ${response.status}`);
+    return response;
   }
 
   async addRating(ids: { simkl?: number; mal?: number }, rating: number) {
     if (!this.clientId || !this.accessToken || (!ids.simkl && !ids.mal)) return;
     const ratingData = { shows: [{ rating, ids }] };
-    return fetch(`${this.baseUrl}sync/ratings`, {
+    const response = await fetch(`${this.baseUrl}sync/ratings`, {
       method: 'POST',
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
@@ -172,6 +178,8 @@ export class SimklService {
       }),
       body: JSON.stringify(ratingData),
     });
+    if (!response.ok) throw new Error(`SIMKL: HTTP ${response.status}`);
+    return response;
   }
 
   async getRating(id?: number): Promise<ExtRating | undefined> {

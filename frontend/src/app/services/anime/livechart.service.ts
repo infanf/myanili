@@ -293,8 +293,7 @@ export class LivechartService {
       }>(MUTATION, { animeId: id, attributes })
       .toPromise();
     if (error || !data) {
-      console.log(error);
-      return;
+      throw new Error(`Livechart: ${error?.message ?? 'unknown error'}`);
     }
   }
 
@@ -337,8 +336,7 @@ export class LivechartService {
       }>(MUTATION, { animeId: id, attributes })
       .toPromise();
     if (error || !data) {
-      console.log(error);
-      return false;
+      throw new Error(`Livechart: ${error?.message ?? 'unknown error'}`);
     }
     return true;
   }

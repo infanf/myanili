@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Button } from '@components/dialogue/dialogue.component';
 import { StreamPipe } from '@components/stream.pipe';
+import { ToasterService } from '@components/toaster/toaster.service';
 import {
   Anime,
   AnimeEpisodeRule,
@@ -77,6 +78,7 @@ export class AnimeDetailsComponent implements OnInit {
     private cache: CacheService,
     private dialogue: DialogueService,
     private malService: MalService,
+    private toaster: ToasterService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -437,7 +439,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     data.extension = Base64.encode(JSON.stringify(this.anime.my_extension));
-    const [animeStatus] = await Promise.all([
+    const plusOneResults = await Promise.allSettled([
       this.animeService.updateAnime(
         {
           malId: this.anime.id,
@@ -460,6 +462,15 @@ export class AnimeDetailsComponent implements OnInit {
         currentEpisode + 1,
       ),
     ]);
+    const malPlusOneResult = plusOneResults[0];
+    if (malPlusOneResult.status === 'rejected') throw malPlusOneResult.reason;
+    if (plusOneResults[1].status === 'rejected') {
+      this.toaster.addError('Trakt scrobble failed. Please try again later.', 0);
+    }
+    if (plusOneResults[2].status === 'rejected') {
+      this.toaster.addError('SIMKL scrobble failed. Please try again later.', 0);
+    }
+    const animeStatus = malPlusOneResult.value;
     if (completed) {
       animeStatus.is_rewatching = false;
       const sequels = this.anime.related_anime.filter(
