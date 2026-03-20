@@ -147,7 +147,7 @@ export class MangaupdatesService {
     data: { chapters?: number; volumes?: number; list?: ListType; rating?: number },
   ) {
     if (!id) return;
-    if (data.rating) this.addRating(id, data.rating);
+    if (data.rating) await this.addRating(id, data.rating);
     const updateData = {
       series: { id },
     } as {
@@ -169,7 +169,7 @@ export class MangaupdatesService {
           'Content-Type': 'application/json',
         }),
       });
-      if (!listsResponse.ok) return;
+      if (!listsResponse.ok) throw new Error(`MangaUpdates: HTTP ${listsResponse.status}`);
       this.myLists = (await listsResponse.json()) as BakaList[];
     }
     const newList = this.myLists.find(list => list.type === data.list);
@@ -185,7 +185,7 @@ export class MangaupdatesService {
     });
     if (updateResponse.ok) return;
 
-    await fetch(`${this.baseUrl}lists/series`, {
+    const createResponse = await fetch(`${this.baseUrl}lists/series`, {
       method: 'POST',
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
@@ -193,10 +193,11 @@ export class MangaupdatesService {
       }),
       body: JSON.stringify([updateData]),
     });
+    if (!createResponse.ok) throw new Error(`MangaUpdates: HTTP ${createResponse.status}`);
   }
 
   async addRating(id: number, rating: number) {
-    await fetch(`${this.baseUrl}series/${id}/rating`, {
+    const response = await fetch(`${this.baseUrl}series/${id}/rating`, {
       method: 'PUT',
       headers: new Headers({
         Authorization: `Bearer ${this.accessToken}`,
@@ -204,6 +205,7 @@ export class MangaupdatesService {
       }),
       body: JSON.stringify({ rating }),
     });
+    if (!response.ok) throw new Error(`MangaUpdates: HTTP ${response.status}`);
   }
 
   statusFromMal(malStatus?: ReadStatus): ListType | undefined {
