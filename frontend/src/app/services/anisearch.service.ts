@@ -151,7 +151,7 @@ export class AnisearchService {
       if (!secondTry && response.status === 401 && (await this.refreshTokens())) {
         return this.deleteEntry(id, type, true);
       }
-      console.error('Failed to delete entry');
+      throw new Error(`aniSearch: HTTP ${response.status}`);
     }
   }
 
@@ -173,7 +173,7 @@ export class AnisearchService {
       if (!secondTry && response.status === 401 && (await this.refreshTokens())) {
         return this.updateEntry(id, data, type, true);
       }
-      console.error('Failed to update entry');
+      throw new Error(`aniSearch: HTTP ${response.status}`);
     }
   }
 

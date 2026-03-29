@@ -297,11 +297,9 @@ export class KitsuService {
       }),
       body: JSON.stringify({ data }),
     });
-    if (result.ok) {
-      const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
-      return response;
-    }
-    return;
+    if (!result.ok) throw new Error(`Kitsu: HTTP ${result.status}`);
+    const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
+    return response;
   }
 
   async createEntry(
@@ -341,11 +339,9 @@ export class KitsuService {
         body: JSON.stringify({ data }),
       },
     );
-    if (result.ok) {
-      const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
-      return response;
-    }
-    return;
+    if (!result.ok) throw new Error(`Kitsu: HTTP ${result.status}`);
+    const { data: response } = (await result.json()) as KitsuResponse<KitsuEntry>;
+    return response;
   }
 
   async deleteEntry(
@@ -371,10 +367,8 @@ export class KitsuService {
         'Content-Type': 'application/vnd.api+json',
       }),
     });
-    if (result.ok) {
-      return true;
-    }
-    return false;
+    if (!result.ok) throw new Error(`Kitsu: HTTP ${result.status}`);
+    return true;
   }
 
   async getRating(id?: number, type: 'anime' | 'manga' = 'anime'): Promise<ExtRating | undefined> {
