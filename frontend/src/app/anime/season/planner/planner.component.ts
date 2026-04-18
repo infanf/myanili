@@ -19,6 +19,7 @@ export class SeasonPlannerComponent implements OnInit {
   current: Partial<Anime> | undefined;
   remaining = 0;
   busy = false;
+  loading = true;
 
   // swipe state
   dragX = 0;
@@ -40,6 +41,7 @@ export class SeasonPlannerComponent implements OnInit {
     this.queue = await this.plannerService.getUndecidedAnimes(this.animes, this.year, this.season);
     this.remaining = this.queue.length;
     this.next();
+    this.loading = false;
   }
 
   private next() {

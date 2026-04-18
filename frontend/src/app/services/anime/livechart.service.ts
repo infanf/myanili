@@ -341,6 +341,35 @@ export class LivechartService {
     return true;
   }
 
+  async getSkippedAnimeIds(): Promise<number[]> {
+    if (!this.loggedIn) return [];
+    const QUERY = gql`
+      query ViewerSkippedLibrary {
+        viewer {
+          library {
+            nodes {
+              animeDatabaseId
+              status
+            }
+          }
+        }
+      }
+    `;
+    const { data, error } = await this.client
+      .query<{
+        viewer?: {
+          library: {
+            nodes: Array<{ animeDatabaseId: string; status: LivechartStatus }>;
+          };
+        };
+      }>(QUERY, {}, { requestPolicy: 'network-only' })
+      .toPromise();
+    if (error || !data?.viewer) return [];
+    return data.viewer.library.nodes
+      .filter(n => n.status === 'SKIPPING')
+      .map(n => Number(n.animeDatabaseId));
+  }
+
   async getStreams(animeId: number): Promise<LegacyStream[]> {
     const QUERY = gql`
       query GetLegacyStreams($availableInViewerRegion: Boolean, $animeId: ID!) {
