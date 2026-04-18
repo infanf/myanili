@@ -82,8 +82,8 @@ export class SeasonComponent {
       return;
     }
     const filtered: Array<Partial<Anime>> = [];
-    const year = this.year as number;
-    const season = this.season as number;
+    year = this.year as number;
+    season = this.season as number;
     for (const anime of animes) {
       if (anime.id && !anime.my_list_status) {
         const skipped = await this.plannerService.isSkipped(anime.id, year, season);
