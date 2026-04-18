@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '5.0.0',
+      date: new Date('2026-04-18'),
+      features: ['Season Planner: review new season shows with a Tinder-style swipe UI'],
+    },
+    {
       version: '4.0.0',
       date: new Date('2026-04-18'),
       features: [

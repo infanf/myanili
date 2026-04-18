@@ -1,5 +1,11 @@
 <myanili-header [header]="title"></myanili-header>
 <section>
+  <div class="d-flex justify-content-center mb-3">
+    <button class="btn btn-outline-primary" (click)="openPlanner()">
+      <myanili-icon name="card-list" size="16" class="me-1"></myanili-icon>
+      Season Planner
+    </button>
+  </div>
   @if ((settings.layout$ | async) === 'list') {
     <myanili-anime-season-list [animes]="animes"></myanili-anime-season-list>
   }
