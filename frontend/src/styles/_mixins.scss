@@ -3,11 +3,17 @@
 
 @function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
     $min: map.get($breakpoints, $name);
-    @return if($min !=0, $min, null);
+    @if $min != 0 {
+        @return $min;
+    }
+    @return null;
 }
 
 @function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
-    @return if(breakpoint-min($name, $breakpoints)==null, "", "-#{$name}");
+    @if breakpoint-min($name, $breakpoints) == null {
+        @return "";
+    }
+    @return "-#{$name}";
 }
 
 @mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
