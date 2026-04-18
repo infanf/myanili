@@ -1,6 +1,18 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '4.0.0',
+      date: new Date('2026-04-18'),
+      features: [
+        'Allow browsing without login',
+        'Redirect home to watchlist when logged in',
+        'Switch from hash-based to path-based routing',
+      ],
+      other: [
+        'Improve reliability: fan-outs now use Promise.allSettled with centralized error handling',
+      ],
+    },
+    {
       version: '3.3.1',
       date: new Date('2026-03-08'),
       other: [
