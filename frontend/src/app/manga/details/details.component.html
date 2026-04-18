@@ -3,7 +3,7 @@
     <h2>
       {{ manga?.title || title || 'Loading…' }}
     </h2>
-    @if (manga?.title && !fromCache) {
+    @if (manga?.title && !fromCache && loggedIn) {
       <div class="ms-auto ps-3 cursor-pointer" style="white-space: nowrap">
         @if (manga?.my_list_status) {
           <myanili-icon
@@ -278,273 +278,265 @@
         </div>
       }
 
+      @if (manga && loggedIn) {
+        <div class="row">
+          <div class="col-4 fw-bold text-end">Chapters</div>
+          <div class="col-8">
+            <div class="progress rounded-pill my-1">
+              @if (manga.my_list_status?.num_chapters_read) {
+                <div
+                  class="progress-bar px-1"
+                  [ngClass]="{
+                    'bg-success':
+                      manga.my_list_status?.num_chapters_read == manga.num_chapters &&
+                      manga.num_chapters,
+                    'bg-gradient': !manga.num_chapters,
+                  }"
+                  [ngStyle]="{
+                    'min-width.%':
+                      manga!.num_chapters || manga!.my_list_status?.num_chapters_read == 0
+                        ? ((manga!.my_list_status?.num_chapters_read || 0) /
+                            (manga!.num_chapters || 1)) *
+                          100
+                        : 30,
+                  }"
+                >
+                  {{ manga!.my_list_status?.num_chapters_read }}/{{ manga!.num_chapters || '?' }}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
       @if (manga) {
         <div>
           <div class="row">
-            <div class="col-4 fw-bold text-end">Chapters</div>
+            <div class="col-4 fw-bold text-end">Links</div>
             <div class="col-8">
-              <div class="progress rounded-pill my-1">
-                @if (manga.my_list_status?.num_chapters_read) {
-                  <div
-                    class="progress-bar px-1"
-                    [ngClass]="{
-                      'bg-success':
-                        manga.my_list_status?.num_chapters_read == manga.num_chapters &&
-                        manga.num_chapters,
-                      'bg-gradient': !manga.num_chapters,
-                    }"
-                    [ngStyle]="{
-                      'min-width.%':
-                        manga!.num_chapters || manga!.my_list_status?.num_chapters_read == 0
-                          ? ((manga!.my_list_status?.num_chapters_read || 0) /
-                              (manga!.num_chapters || 1)) *
-                            100
-                          : 30,
-                    }"
+              <div class="row">
+                <div class="col-4">
+                  <td class="text-nowrap">
+                    <myanili-external-rating [rating]="getRating('mal')"></myanili-external-rating>
+                  </td>
+                </div>
+                <div class="col-8">
+                  <myanili-icon-mal class="text-primary"></myanili-icon-mal>
+                  <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
+                    >MyAnimeList</a
                   >
-                    {{ manga!.my_list_status?.num_chapters_read }}/{{ manga!.num_chapters || '?' }}
-                  </div>
-                }
+                </div>
               </div>
-            </div>
-          </div>
-          <div>
-            <div class="row">
-              <div class="col-4 fw-bold text-end">Links</div>
-              <div class="col-8">
+              @if (manga.my_extension?.anilistId) {
                 <div class="row">
                   <div class="col-4">
                     <td class="text-nowrap">
                       <myanili-external-rating
-                        [rating]="getRating('mal')"
+                        [rating]="getRating('anilist')"
                       ></myanili-external-rating>
                     </td>
                   </div>
                   <div class="col-8">
-                    <myanili-icon-mal class="text-primary"></myanili-icon-mal>
-                    <a [href]="'https://myanimelist.net/manga/' + id" target="_blank" class="ms-1"
-                      >MyAnimeList</a
+                    <myanili-icon-anilist></myanili-icon-anilist>
+                    <a
+                      class="ms-1"
+                      [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
+                      target="_blank"
+                      >AniList</a
                     >
                   </div>
                 </div>
-                @if (manga.my_extension?.anilistId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('anilist')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-anilist></myanili-icon-anilist>
-                      <a
-                        class="ms-1"
-                        [href]="'https://anilist.co/manga/' + manga.my_extension!.anilistId"
-                        target="_blank"
-                        >AniList</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (manga.my_extension?.kitsuId?.kitsuId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('kitsu')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
-                      <a
-                        class="ms-1"
-                        [href]="'https://kitsu.app/manga/' + manga.my_extension!.kitsuId!.kitsuId"
-                        target="_blank"
-                        >Kitsu</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (manga.id) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('shikimori')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-shikimori></myanili-icon-shikimori>
-                      <a
-                        class="ms-1"
-                        [href]="'https://shikimori.io/mangas/' + manga.id"
-                        target="_blank"
-                        >Shikimori</a
-                      >
-                    </div>
-                  </div>
-                }
+              }
+              @if (manga.my_extension?.kitsuId?.kitsuId) {
                 <div class="row">
                   <div class="col-4">
                     <td class="text-nowrap">
-                      @if (manga.my_extension?.bakaId) {
-                        <myanili-external-rating
-                          [rating]="getRating('bu')"
-                        ></myanili-external-rating>
-                      }
+                      <myanili-external-rating
+                        [rating]="getRating('kitsu')"
+                      ></myanili-external-rating>
                     </td>
                   </div>
                   <div class="col-8">
-                    <myanili-icon-bakamanga></myanili-icon-bakamanga>
+                    <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
                     <a
                       class="ms-1"
-                      [ngClass]="{ 'link-secondary': !manga.my_extension?.bakaId }"
-                      [href]="getBakaUrl()"
+                      [href]="'https://kitsu.app/manga/' + manga.my_extension!.kitsuId!.kitsuId"
                       target="_blank"
-                      >Baka-Updates</a
+                      >Kitsu</a
                     >
                   </div>
                 </div>
+              }
+              @if (manga.id) {
                 <div class="row">
                   <div class="col-4">
                     <td class="text-nowrap">
-                      @if (manga.my_extension?.mdId) {
-                        <myanili-external-rating
-                          [rating]="getRating('md')"
-                        ></myanili-external-rating>
-                      }
+                      <myanili-external-rating
+                        [rating]="getRating('shikimori')"
+                      ></myanili-external-rating>
                     </td>
                   </div>
                   <div class="col-8">
-                    <myanili-icon-mangadex></myanili-icon-mangadex>
+                    <myanili-icon-shikimori></myanili-icon-shikimori>
                     <a
                       class="ms-1"
-                      [ngClass]="{ 'link-secondary': !manga.my_extension?.mdId }"
-                      [href]="getMdUrl()"
+                      [href]="'https://shikimori.io/mangas/' + manga.id"
                       target="_blank"
-                      >MangaDex</a
+                      >Shikimori</a
                     >
                   </div>
                 </div>
-                @if (manga.my_extension?.anisearchId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('anisearch')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-anisearch></myanili-icon-anisearch>
-                      <a
-                        class="ms-1"
-                        [href]="'https://anisearch.com/manga/' + manga.my_extension!.anisearchId"
-                        target="_blank"
-                        >aniSearch</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (manga.my_extension?.annId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('ann')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-ann></myanili-icon-ann>
-                      <a
-                        class="ms-1"
-                        [href]="
-                          'https://www.animenewsnetwork.com/encyclopedia/manga.php?id=' +
-                          manga.my_extension!.annId
-                        "
-                        target="_blank"
-                        >ANN</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (manga.my_extension?.mangabakaId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap">
-                        <myanili-external-rating
-                          [rating]="getRating('mangabaka')"
-                        ></myanili-external-rating>
-                      </td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-mangabaka></myanili-icon-mangabaka>
-                      <a
-                        class="ms-1"
-                        [href]="'https://mangabaka.org/' + manga.my_extension!.mangabakaId"
-                        target="_blank"
-                        >MangaBaka</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (animePlanetId) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap"></td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-ap></myanili-icon-ap>
-                      <a
-                        class="ms-1"
-                        [href]="'https://www.anime-planet.com/manga/' + animePlanetId"
-                        target="_blank"
-                        >Anime-Planet</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (manga.my_extension?.mpasId) {
-                  <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-8">
-                      <myanili-icon-manga-passion></myanili-icon-manga-passion>
-                      <a
-                        class="ms-1"
-                        [href]="
-                          'https://www.manga-passion.de/editions/' + manga.my_extension!.mpasId
-                        "
-                        target="_blank"
-                        >Manga Passion</a
-                      >
-                    </div>
-                  </div>
-                }
-                @if (manga.my_extension?.fandomSlug) {
-                  <div class="row">
-                    <div class="col-4">
-                      <td class="text-nowrap"></td>
-                    </div>
-                    <div class="col-8">
-                      <myanili-icon-fandom></myanili-icon-fandom>
-                      <a
-                        class="ms-1"
-                        [href]="
-                          manga.my_extension?.fandomSlug?.includes('.')
-                            ? 'https://' + manga.my_extension!.fandomSlug
-                            : 'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
-                        "
-                        target="_blank"
-                        >Fandom</a
-                      >
-                    </div>
-                  </div>
-                }
+              }
+              <div class="row">
+                <div class="col-4">
+                  <td class="text-nowrap">
+                    @if (manga.my_extension?.bakaId) {
+                      <myanili-external-rating [rating]="getRating('bu')"></myanili-external-rating>
+                    }
+                  </td>
+                </div>
+                <div class="col-8">
+                  <myanili-icon-bakamanga></myanili-icon-bakamanga>
+                  <a
+                    class="ms-1"
+                    [ngClass]="{ 'link-secondary': !manga.my_extension?.bakaId }"
+                    [href]="getBakaUrl()"
+                    target="_blank"
+                    >Baka-Updates</a
+                  >
+                </div>
               </div>
+              <div class="row">
+                <div class="col-4">
+                  <td class="text-nowrap">
+                    @if (manga.my_extension?.mdId) {
+                      <myanili-external-rating [rating]="getRating('md')"></myanili-external-rating>
+                    }
+                  </td>
+                </div>
+                <div class="col-8">
+                  <myanili-icon-mangadex></myanili-icon-mangadex>
+                  <a
+                    class="ms-1"
+                    [ngClass]="{ 'link-secondary': !manga.my_extension?.mdId }"
+                    [href]="getMdUrl()"
+                    target="_blank"
+                    >MangaDex</a
+                  >
+                </div>
+              </div>
+              @if (manga.my_extension?.anisearchId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('anisearch')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-anisearch></myanili-icon-anisearch>
+                    <a
+                      class="ms-1"
+                      [href]="'https://anisearch.com/manga/' + manga.my_extension!.anisearchId"
+                      target="_blank"
+                      >aniSearch</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (manga.my_extension?.annId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('ann')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-ann></myanili-icon-ann>
+                    <a
+                      class="ms-1"
+                      [href]="
+                        'https://www.animenewsnetwork.com/encyclopedia/manga.php?id=' +
+                        manga.my_extension!.annId
+                      "
+                      target="_blank"
+                      >ANN</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (manga.my_extension?.mangabakaId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap">
+                      <myanili-external-rating
+                        [rating]="getRating('mangabaka')"
+                      ></myanili-external-rating>
+                    </td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-mangabaka></myanili-icon-mangabaka>
+                    <a
+                      class="ms-1"
+                      [href]="'https://mangabaka.org/' + manga.my_extension!.mangabakaId"
+                      target="_blank"
+                      >MangaBaka</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (animePlanetId) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap"></td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-ap></myanili-icon-ap>
+                    <a
+                      class="ms-1"
+                      [href]="'https://www.anime-planet.com/manga/' + animePlanetId"
+                      target="_blank"
+                      >Anime-Planet</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (manga.my_extension?.mpasId) {
+                <div class="row">
+                  <div class="col-4"></div>
+                  <div class="col-8">
+                    <myanili-icon-manga-passion></myanili-icon-manga-passion>
+                    <a
+                      class="ms-1"
+                      [href]="'https://www.manga-passion.de/editions/' + manga.my_extension!.mpasId"
+                      target="_blank"
+                      >Manga Passion</a
+                    >
+                  </div>
+                </div>
+              }
+              @if (manga.my_extension?.fandomSlug) {
+                <div class="row">
+                  <div class="col-4">
+                    <td class="text-nowrap"></td>
+                  </div>
+                  <div class="col-8">
+                    <myanili-icon-fandom></myanili-icon-fandom>
+                    <a
+                      class="ms-1"
+                      [href]="
+                        manga.my_extension?.fandomSlug?.includes('.')
+                          ? 'https://' + manga.my_extension!.fandomSlug
+                          : 'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
+                      "
+                      target="_blank"
+                      >Fandom</a
+                    >
+                  </div>
+                </div>
+              }
             </div>
           </div>
         </div>

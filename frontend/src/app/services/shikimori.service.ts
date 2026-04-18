@@ -184,8 +184,7 @@ export class ShikimoriService {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      console.log(response);
-      return;
+      throw new Error(`Shikimori: HTTP ${response.status}`);
     }
     const result = await response.json();
     return result;
@@ -203,8 +202,7 @@ export class ShikimoriService {
     headers.append('Authorization', `Bearer ${this.accessToken}`);
     const response = await fetch(getUrl, { headers });
     if (!response.ok) {
-      console.log(response);
-      return;
+      throw new Error(`Shikimori: HTTP ${response.status}`);
     }
     const result = await response.json();
     if (!result[0]) return;
@@ -214,8 +212,7 @@ export class ShikimoriService {
       headers,
     });
     if (!deleteResponse.ok) {
-      console.log(deleteResponse);
-      return;
+      throw new Error(`Shikimori: HTTP ${deleteResponse.status}`);
     }
     return true;
   }

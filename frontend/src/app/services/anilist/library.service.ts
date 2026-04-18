@@ -98,13 +98,7 @@ export class AnilistLibraryService {
     `;
     data.mediaId = id;
     const variables = JSON.parse(JSON.stringify(data) || '{}');
-    return this.client
-      .mutation(QUERY, variables)
-      .toPromise()
-      .catch(error => {
-        console.log({ error });
-        return undefined;
-      });
+    return this.client.mutation(QUERY, variables).toPromise();
   }
 
   async getMediaListId(id: number): Promise<number | undefined> {
@@ -147,11 +141,7 @@ export class AnilistLibraryService {
     return this.client
       .mutation<{ DeleteMediaListEntry: { deleted: boolean } }>(QUERY, { id })
       .toPromise()
-      .then(result => ({ deleted: result.data?.DeleteMediaListEntry.deleted || false }))
-      .catch(error => {
-        console.log({ error });
-        return { deleted: false, msg: error.message };
-      });
+      .then(result => ({ deleted: result.data?.DeleteMediaListEntry.deleted || false }));
   }
 
   async getStatusMapping(malIds: number[], type: 'ANIME' | 'MANGA') {

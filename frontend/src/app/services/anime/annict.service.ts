@@ -213,33 +213,37 @@ export class AnnictService {
   async updateEntry(annictId?: number, data?: Partial<MyAnimeUpdate>) {
     if (!annictId || !this.accessToken) return;
     if (data?.num_watched_episodes) {
-      this.updateProgress(annictId, data?.num_watched_episodes);
+      await this.updateProgress(annictId, data?.num_watched_episodes);
     }
     if (data?.status) {
-      this.updateStatus(annictId, this.statusFromMal(data.status));
+      await this.updateStatus(annictId, this.statusFromMal(data.status));
     }
     if (data?.score) {
-      this.addRating(annictId, data.score);
+      await this.addRating(annictId, data.score);
     }
   }
 
   async updateStatus(annictId?: number, status?: AnnictStatus) {
     if (!annictId || !this.accessToken || !status) return;
-    await fetch(`${this.baseUrl}me/statuses?work_id=${annictId}&kind=${status}`, {
+    const response = await fetch(`${this.baseUrl}me/statuses?work_id=${annictId}&kind=${status}`, {
       method: 'POST',
       headers: this.getFetchHeader(),
     });
+    if (!response.ok) throw new Error(`Annict: HTTP ${response.status}`);
   }
 
   async updateProgress(annictId: number, episodeMin: number, episodeMax?: number) {
     if (!this.accessToken) return;
     const episodes = await this.getEpisodeIds(annictId, episodeMin, episodeMax);
-    for (const episode of episodes) {
-      fetch(`${this.baseUrl}me/records?episode_id=${episode}`, {
-        method: 'POST',
-        headers: this.getFetchHeader(),
-      });
-    }
+    await Promise.all(
+      episodes.map(async episode => {
+        const response = await fetch(`${this.baseUrl}me/records?episode_id=${episode}`, {
+          method: 'POST',
+          headers: this.getFetchHeader(),
+        });
+        if (!response.ok) throw new Error(`Annict: HTTP ${response.status}`);
+      }),
+    );
   }
 
   async addRating(annictId: number, rating: number) {
@@ -250,10 +254,11 @@ export class AnnictService {
       `${'★'.repeat(Math.max(0, rating))}${'☆'.repeat(Math.max(0, 10 - rating))}
       _rated on myani.li_`,
     );
-    fetch(
+    const response = await fetch(
       `${this.baseUrl}me/reviews?work_id=${annictId}&rating_overall_state=${annictRating}&body=${body}`,
       { method: 'POST', headers: this.getFetchHeader() },
     );
+    if (!response.ok) throw new Error(`Annict: HTTP ${response.status}`);
   }
 
   async getEpisodeIds(

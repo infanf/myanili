@@ -1,10 +1,22 @@
 export const changelog: Changelog = {
   changes: [
     {
-      version: '3.3.1',
-      date: new Date('2026-03-09'),
+      version: '4.0.0',
+      date: new Date('2026-04-18'),
+      features: [
+        'Allow browsing without login',
+        'Redirect home to watchlist when logged in',
+        'Switch from hash-based to path-based routing',
+      ],
       other: [
-        'Change versioning schema: Even though we are now on version 3, nothing really changed. The first release was version 2 because it was on another app that I deemed v1.',
+        'Improve reliability: fan-outs now use Promise.allSettled with centralized error handling',
+      ],
+    },
+    {
+      version: '3.3.1',
+      date: new Date('2026-03-08'),
+      other: [
+        'Change versioning schema: Even though we are now on version 3, nothing really changed. The first release was named version 2 because it was based on another app that I deemed version 1.',
       ],
     },
     {

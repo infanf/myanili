@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ToasterService } from '@components/toaster/toaster.service';
 import { statusFromMal } from '@models/anilist';
 import { RelatedAnime } from '@models/anime';
 import { Jikan4MangaCharacter, Jikan4WorkRelation } from '@models/jikan';
@@ -31,6 +32,25 @@ import { MangaupdatesService } from './mangaupdates.service';
   providedIn: 'root',
 })
 export class MangaService {
+  private readonly updateServiceNames = [
+    null,
+    'AniList',
+    'Kitsu',
+    'aniSearch',
+    'Shikimori',
+    'MangaUpdates',
+    'MangaBaka',
+  ] as const;
+
+  private readonly deleteServiceNames = [
+    null,
+    'AniList',
+    'Kitsu',
+    'aniSearch',
+    'Shikimori',
+    'MangaBaka',
+  ] as const;
+
   constructor(
     private malService: MalService,
     private anilist: AnilistService,
@@ -41,6 +61,7 @@ export class MangaService {
     // @ts-ignore
     private mangabaka: MangabakaService,
     private cache: CacheService,
+    private toaster: ToasterService,
   ) {}
 
   async list(status?: ReadStatus, options?: { limit?: number; offset?: number }) {
@@ -108,7 +129,7 @@ export class MangaService {
     },
     data: MyMangaUpdateExtended,
   ): Promise<MyMangaStatus> {
-    const [malResponse] = await Promise.all([
+    const results = await Promise.allSettled([
       this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
@@ -193,30 +214,35 @@ export class MangaService {
         const state = data.is_rereading ? 'rereading' : this.mangabaka.statusFromMal(data.status);
         if (!state) return;
 
-        try {
-          // Build update object and filter out null/undefined values
-          const updates = {
-            state,
-            progress_chapter: data.num_chapters_read || null,
-            progress_volume: data.num_volumes_read || null,
-            rating: data.score ? Math.round(data.score * 10) : null,
-            start_date: data.start_date || null,
-            finish_date: data.finish_date || null,
-            number_of_rereads: data.num_times_reread || null,
-            note: data.comments || null,
-          };
-          // Remove null/undefined values before sending PATCH request
-          const filteredUpdates = Object.fromEntries(
-            Object.entries(updates).filter(([_, value]) => value != null),
-          );
-          return await this.mangabaka.updateLibraryEntry(ids.mangabakaId, filteredUpdates);
-        } catch (error) {
-          console.error('MangaBaka updateLibraryEntry error:', error);
-          return;
-        }
+        // Build update object and filter out null/undefined values
+        const updates = {
+          state,
+          progress_chapter: data.num_chapters_read || null,
+          progress_volume: data.num_volumes_read || null,
+          rating: data.score ? Math.round(data.score * 10) : null,
+          start_date: data.start_date || null,
+          finish_date: data.finish_date || null,
+          number_of_rereads: data.num_times_reread || null,
+          note: data.comments || null,
+        };
+        // Remove null/undefined values before sending PATCH request
+        const filteredUpdates = Object.fromEntries(
+          Object.entries(updates).filter(([_, value]) => value != null),
+        );
+        return await this.mangabaka.updateLibraryEntry(ids.mangabakaId, filteredUpdates);
       })(),
     ]);
-    return malResponse;
+    const malResult = results[0];
+    if (malResult.status === 'rejected') throw malResult.reason;
+    for (let i = 1; i < results.length; i++) {
+      if (results[i].status === 'rejected') {
+        this.toaster.addError(
+          `${this.updateServiceNames[i]} update failed. Please try again later.`,
+          0,
+        );
+      }
+    }
+    return malResult.value;
   }
 
   async deleteManga(ids: {
@@ -226,7 +252,7 @@ export class MangaService {
     anisearchId?: number;
     mangabakaId?: number;
   }) {
-    await Promise.all([
+    const results = await Promise.allSettled([
       this.malService.delete<boolean>('manga/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
       this.kitsu.deleteEntry(ids.kitsuId, 'manga'),
@@ -234,14 +260,19 @@ export class MangaService {
       this.shikimori.deleteMedia(ids.malId, 'Manga'),
       (async () => {
         if (!ids.mangabakaId) return;
-        try {
-          return await this.mangabaka.removeFromLibrary(ids.mangabakaId);
-        } catch (error) {
-          console.error('MangaBaka removeFromLibrary error:', error);
-          return;
-        }
+        return await this.mangabaka.removeFromLibrary(ids.mangabakaId);
       })(),
     ]);
+    const malResult = results[0];
+    if (malResult.status === 'rejected') throw malResult.reason;
+    for (let i = 1; i < results.length; i++) {
+      if (results[i].status === 'rejected') {
+        this.toaster.addError(
+          `${this.deleteServiceNames[i]} delete failed. Please try again later.`,
+          0,
+        );
+      }
+    }
     return true;
   }
 
