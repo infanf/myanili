@@ -1,6 +1,17 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '4.1.0',
+      date: new Date('2026-04-26'),
+      features: [
+        'Season Planner: swipe-based planning UI for seasonal anime',
+        'Season Planner: set AniSearch status "not interested" when skipping a series',
+      ],
+      fixes: [
+        'MangaBaka: correctly add new entries to library (was failing when series not yet tracked)',
+      ],
+    },
+    {
       version: '4.0.0',
       date: new Date('2026-04-18'),
       features: [
