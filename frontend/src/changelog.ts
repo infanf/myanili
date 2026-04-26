@@ -1,6 +1,13 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '4.1.0',
+      date: new Date('2026-04-26'),
+      fixes: [
+        'MangaBaka: correctly add new entries to library (was failing when series not yet tracked)',
+      ],
+    },
+    {
       version: '4.0.0',
       date: new Date('2026-04-18'),
       features: [
