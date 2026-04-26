@@ -225,11 +225,11 @@ export class MangaService {
           number_of_rereads: data.num_times_reread || null,
           note: data.comments || null,
         };
-        // Remove null/undefined values before sending PATCH request
+        // Remove null/undefined values before sending request
         const filteredUpdates = Object.fromEntries(
           Object.entries(updates).filter(([_, value]) => value != null),
         );
-        return await this.mangabaka.updateLibraryEntry(ids.mangabakaId, filteredUpdates);
+        return await this.mangabaka.upsertLibraryEntry(ids.mangabakaId, filteredUpdates);
       })(),
     ]);
     const malResult = results[0];
