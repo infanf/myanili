@@ -177,6 +177,26 @@ export class AnisearchService {
     }
   }
 
+  async setNotInterested(
+    id?: number,
+    type: 'anime' | 'manga' = 'anime',
+    secondTry = false,
+  ): Promise<void> {
+    if (!id || !this.accessToken) return;
+    const url = `${this.baseUrl}v1/my/${type}/${id}/ratings`;
+    const response = await fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify({ status: 'not_interested', touch: true }),
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${this.accessToken}` },
+    });
+    if (!response.ok) {
+      if (!secondTry && response.status === 401 && (await this.refreshTokens())) {
+        return this.setNotInterested(id, type, true);
+      }
+      throw new Error(`aniSearch: HTTP ${response.status}`);
+    }
+  }
+
   async getAnimes(query: string): Promise<AnisearchAnimeList> {
     if (query) {
       const url = `${this.backendUrl}anime/search/${encodeURI(

@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnimeService } from '@services/anime/anime.service';
 import { LivechartService } from '@services/anime/livechart.service';
 import { SeasonPlannerService } from '@services/anime/season-planner.service';
+import { AnisearchService } from '@services/anisearch.service';
 
 @Component({
   selector: 'myanili-season-planner',
@@ -35,6 +36,7 @@ export class SeasonPlannerComponent implements OnInit {
     private animeService: AnimeService,
     private plannerService: SeasonPlannerService,
     private livechart: LivechartService,
+    private anisearch: AnisearchService,
   ) {}
 
   async ngOnInit() {
@@ -121,14 +123,23 @@ export class SeasonPlannerComponent implements OnInit {
     const animeId = this.current.id;
     const title = this.current.title;
     this.plannerService.skip(animeId, this.year, this.season);
-    if (this.livechart.loggedIn) {
-      const livechartId =
-        this.current.my_extension?.livechartId ??
-        (title ? await this.livechart.getId(animeId, title) : undefined);
-      if (livechartId) {
-        await this.livechart.deleteAnime(livechartId).catch(() => {});
-      }
-    }
+    await Promise.all([
+      (async () => {
+        if (!this.livechart.loggedIn) return;
+        const livechartId =
+          this.current?.my_extension?.livechartId ??
+          (title ? await this.livechart.getId(animeId, title) : undefined);
+        if (livechartId) {
+          await this.livechart.deleteAnime(livechartId).catch(() => {});
+        }
+      })(),
+      (async () => {
+        if (!this.anisearch.loggedIn) return;
+        const anisearchId =
+          this.current?.my_extension?.anisearchId ?? (await this.anisearch.getId(animeId, 'anime'));
+        await this.anisearch.setNotInterested(anisearchId).catch(() => {});
+      })(),
+    ]);
     this.next();
   }
 
