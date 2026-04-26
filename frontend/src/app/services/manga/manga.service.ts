@@ -229,11 +229,7 @@ export class MangaService {
         const filteredUpdates = Object.fromEntries(
           Object.entries(updates).filter(([_, value]) => value != null),
         );
-        try {
-          return await this.mangabaka.updateLibraryEntry(ids.mangabakaId, filteredUpdates);
-        } catch {
-          return await this.mangabaka.addToLibrary(ids.mangabakaId, filteredUpdates);
-        }
+        return await this.mangabaka.upsertLibraryEntry(ids.mangabakaId, filteredUpdates);
       })(),
     ]);
     const malResult = results[0];

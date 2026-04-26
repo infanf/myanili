@@ -303,6 +303,20 @@ export class MangabakaService {
   }
 
   /**
+   * Add or update library entry
+   */
+  async upsertLibraryEntry(
+    seriesId: number,
+    entry: Partial<MangaBakaLibraryEntry>,
+  ): Promise<MangaBakaLibraryEntry | null> {
+    try {
+      return await this.updateLibraryEntry(seriesId, entry);
+    } catch {
+      return await this.addToLibrary(seriesId, entry);
+    }
+  }
+
+  /**
    * Remove series from library
    */
   async removeFromLibrary(seriesId: number): Promise<boolean> {
