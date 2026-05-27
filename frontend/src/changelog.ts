@@ -4,6 +4,7 @@ export const changelog: Changelog = {
       version: '5.0.0',
       date: new Date('2026-04-18'),
       features: ['Season Planner: review new season shows with a Tinder-style swipe UI'],
+      other: ['Update dependencies', 'Migrate MangaBaka API URL'],
     },
     {
       version: '4.1.0',
