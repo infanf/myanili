@@ -16,8 +16,15 @@ $router->group(['prefix' => 'animeschedule'], function () use ($router) {
                 . ' ' . htmlspecialchars($_GET['error_description'] ?? ''));
         }
         if (!isset($_GET['code'])) {
+            // Scopes must match the ones enabled for this application in the
+            // AnimeSchedule account API settings. Configure via env (comma
+            // separated); defaults to the documented "stats" scope.
+            $scopes = array_values(array_filter(array_map(
+                'trim',
+                explode(',', env('ANIMESCHEDULE_SCOPES', 'stats'))
+            )));
             $authorizationUrl = $provider->getAuthorizationUrl([
-                'scope' => ['animelist', 'stats'],
+                'scope' => $scopes,
             ]);
             $_SESSION['oauth2state'] = $provider->getState();
             $_SESSION['oauth2pkceCode'] = $provider->getPkceCode();
