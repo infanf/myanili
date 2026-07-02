@@ -1,9 +1,9 @@
-@if (related_anime) {
-  @for (type of getRelatedAnimes(); track type) {
+@if (relatedGroups.length) {
+  @for (type of relatedGroups; track type.name) {
     <div class="mb-3">
       <strong class="text-dark">{{ type.name }}</strong>
       <div class="grid my-2">
-        @for (anime of type.entries; track anime) {
+        @for (anime of type.entries; track anime.id) {
           <myanili-media-card
             [poster]="anime.main_picture?.medium || anime.main_picture?.large"
             [title]="anime.title"
