@@ -9,7 +9,9 @@ $router->group(['prefix' => 'animeschedule'], function () use ($router) {
     $router->get('auth', function () {
         $provider = AnimescheduleServiceProvider::getOauthProvider();
         if (!isset($_GET['code'])) {
-            $authorizationUrl = $provider->getAuthorizationUrl();
+            $authorizationUrl = $provider->getAuthorizationUrl([
+                'scope' => 'animelist,stats',
+            ]);
             $_SESSION['oauth2state'] = $provider->getState();
             $_SESSION['oauth2pkceCode'] = $provider->getPkceCode();
             header('Location: ' . $authorizationUrl);
