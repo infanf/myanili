@@ -8,9 +8,16 @@ $router->group(['prefix' => 'animeschedule'], function () use ($router) {
     // OAuth2 login (authorization code flow with PKCE)
     $router->get('auth', function () {
         $provider = AnimescheduleServiceProvider::getOauthProvider();
+        // Surface authorization errors instead of blindly re-initiating the
+        // flow, which would bounce between us and AnimeSchedule forever.
+        if (isset($_GET['error'])) {
+            exit('AnimeSchedule authorization error: '
+                . htmlspecialchars($_GET['error'])
+                . ' ' . htmlspecialchars($_GET['error_description'] ?? ''));
+        }
         if (!isset($_GET['code'])) {
             $authorizationUrl = $provider->getAuthorizationUrl([
-                'scope' => 'animelist,stats',
+                'scope' => ['animelist'],
             ]);
             $_SESSION['oauth2state'] = $provider->getState();
             $_SESSION['oauth2pkceCode'] = $provider->getPkceCode();
