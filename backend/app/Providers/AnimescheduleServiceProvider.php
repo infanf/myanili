@@ -29,7 +29,7 @@ class AnimescheduleServiceProvider extends ServiceProvider
         $config = [
             'clientId' => env('ANIMESCHEDULE_CLIENT_ID'),
             'clientSecret' => env('ANIMESCHEDULE_CLIENT_SECRET'),
-            'redirectUri' => env('APP_URL') . '/animescheduleauth',
+            'redirectUri' => env('APP_URL') . '/animeschedule/auth',
             'urlAuthorize' => 'https://animeschedule.net/api/v3/oauth2/authorize',
             'urlAccessToken' => 'https://animeschedule.net/api/v3/oauth2/token',
             'urlResourceOwnerDetails' => 'https://animeschedule.net/api/v3/users/oauth/stats',
