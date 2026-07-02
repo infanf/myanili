@@ -194,6 +194,7 @@ export interface AnimeExtension {
   anisearchId?: number;
   annId?: number;
   anidbId?: number;
+  animescheduleRoute?: string;
   apSlug?: string;
   fandomSlug?: string;
   displayName?: string;

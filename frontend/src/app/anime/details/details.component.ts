@@ -18,6 +18,7 @@ import { AnilistService } from '@services/anilist.service';
 import { AnimePlanetService } from '@services/anime-planet.service';
 import { AnidbService } from '@services/anime/anidb.service';
 import { AnimeService } from '@services/anime/anime.service';
+import { AnimescheduleService } from '@services/anime/animeschedule.service';
 import { AnnictService } from '@services/anime/annict.service';
 import { LegacyStream, LivechartService } from '@services/anime/livechart.service';
 import { SimklService } from '@services/anime/simkl.service';
@@ -72,6 +73,7 @@ export class AnimeDetailsComponent implements OnInit {
     private annict: AnnictService,
     private anisearch: AnisearchService,
     private livechart: LivechartService,
+    private animeschedule: AnimescheduleService,
     private ann: AnnService,
     private anidb: AnidbService,
     private ap: AnimePlanetService,
@@ -232,6 +234,16 @@ export class AnimeDetailsComponent implements OnInit {
       });
       promises.push(livechartPromise);
     }
+    if (!this.anime.my_extension.animescheduleRoute) {
+      const animeschedulePromise = new Promise(async resolve => {
+        const route = await this.animeschedule.getId(this.id, anime.title);
+        if (route && this?.anime?.my_extension) {
+          this.anime.my_extension.animescheduleRoute = route;
+        }
+        resolve(route);
+      });
+      promises.push(animeschedulePromise);
+    }
     if (!this.anime.my_extension.annId) {
       const annPromise = this.ann
         .getId(this.anime.alternative_titles?.en?.replace(/^The /, '') || this.anime.title)
@@ -365,6 +377,7 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
+        animescheduleRoute: this.anime.my_extension?.animescheduleRoute,
       },
       data,
     );
@@ -385,6 +398,7 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
+        animescheduleRoute: this.anime.my_extension?.animescheduleRoute,
       },
       {
         status: 'completed',
@@ -449,6 +463,7 @@ export class AnimeDetailsComponent implements OnInit {
           simklId: this.anime.my_extension?.simklId,
           annictId: this.anime.my_extension?.annictId,
           livechartId: this.anime.my_extension?.livechartId,
+          animescheduleRoute: this.anime.my_extension?.animescheduleRoute,
           trakt: {
             id: this.anime.my_extension?.trakt,
             season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
@@ -553,6 +568,7 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
+        animescheduleRoute: this.anime.my_extension?.animescheduleRoute,
         trakt: {
           id: this.anime.my_extension?.trakt,
           season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
@@ -605,6 +621,7 @@ export class AnimeDetailsComponent implements OnInit {
       annictId: this.anime.my_extension?.annictId,
       traktId: this.anime.my_extension?.trakt,
       livechartId: this.anime.my_extension?.livechartId,
+      animescheduleRoute: this.anime.my_extension?.animescheduleRoute,
     });
     this.ngOnInit();
     this.glob.notbusy();
@@ -662,6 +679,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.getRating('livechart')) {
       this.livechart.getRating(this.anime?.my_extension?.livechartId).then(rating => {
         this.setRating('livechart', rating);
+      });
+    }
+    if (!this.getRating('animeschedule')) {
+      this.animeschedule.getRating(this.anime?.my_extension?.animescheduleRoute).then(rating => {
+        this.setRating('animeschedule', rating);
       });
     }
     if (!this.getRating('ann')) {

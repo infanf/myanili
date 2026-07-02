@@ -28,6 +28,7 @@ import { ShikimoriService } from '@services/shikimori.service';
 import { Base64 } from 'js-base64';
 import { DateTime, WeekdayNumbers } from 'luxon';
 
+import { AnimescheduleService } from './animeschedule.service';
 import { LivechartService } from './livechart.service';
 
 @Injectable({
@@ -46,6 +47,7 @@ export class AnimeService {
     'Annict',
     'Trakt',
     'Livechart',
+    'AnimeSchedule',
   ] as const;
 
   private readonly deleteServiceNames = [
@@ -58,6 +60,7 @@ export class AnimeService {
     'Annict',
     'Trakt',
     'Livechart',
+    'AnimeSchedule',
   ] as const;
 
   constructor(
@@ -70,6 +73,7 @@ export class AnimeService {
     private annict: AnnictService,
     private trakt: TraktService,
     private livechart: LivechartService,
+    private animeschedule: AnimescheduleService,
     private cache: CacheService,
     private settings: SettingsService,
     private dialogue: DialogueService,
@@ -194,6 +198,7 @@ export class AnimeService {
         simklId: anime.my_extension?.simklId,
         annictId: anime.my_extension?.annictId,
         livechartId: anime.my_extension?.livechartId,
+        animescheduleRoute: anime.my_extension?.animescheduleRoute,
       },
       data,
     );
@@ -209,6 +214,7 @@ export class AnimeService {
       annictId?: number;
       trakt?: { id?: string; season?: number };
       livechartId?: number;
+      animescheduleRoute?: string;
     },
     data: MyAnimeUpdateExtended,
   ): Promise<MyAnimeStatus> {
@@ -282,6 +288,7 @@ export class AnimeService {
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
       this.livechart.updateAnime(ids.livechartId, data),
+      this.animeschedule.updateEntry(ids.animescheduleRoute, data),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;
@@ -305,6 +312,7 @@ export class AnimeService {
     annictId?: number;
     traktId?: string;
     livechartId?: number;
+    animescheduleRoute?: string;
   }) {
     const results = await Promise.allSettled([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
@@ -316,6 +324,7 @@ export class AnimeService {
       this.annict.updateStatus(ids.annictId, 'no_select'),
       this.trakt.drop(ids.traktId),
       this.livechart.deleteAnime(ids.livechartId),
+      this.animeschedule.deleteEntry(ids.animescheduleRoute),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;

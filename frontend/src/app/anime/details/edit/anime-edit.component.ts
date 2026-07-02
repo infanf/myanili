@@ -153,6 +153,7 @@ export class AnimeEditComponent implements OnInit {
             season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
           },
           livechartId: this.anime.my_extension?.livechartId,
+          animescheduleRoute: this.anime.my_extension?.animescheduleRoute,
         },
         updateData,
       );
@@ -216,6 +217,7 @@ export class AnimeEditComponent implements OnInit {
         annictId: this.anime.my_extension?.annictId,
         traktId: this.anime.my_extension?.trakt,
         livechartId: this.anime.my_extension?.livechartId,
+        animescheduleRoute: this.anime.my_extension?.animescheduleRoute,
       });
       this.modal.close('deleted'); // Signal deletion to parent
     } catch (error: unknown) {

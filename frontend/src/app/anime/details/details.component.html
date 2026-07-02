@@ -495,6 +495,28 @@
                 </div>
               </div>
             }
+            @if (anime.my_extension?.animescheduleRoute) {
+              <div class="row">
+                <div class="col-4">
+                  <td class="text-nowrap">
+                    <myanili-external-rating
+                      [rating]="getRating('animeschedule')"
+                    ></myanili-external-rating>
+                  </td>
+                </div>
+                <div class="col-8">
+                  <myanili-icon-animeschedule></myanili-icon-animeschedule>
+                  <a
+                    class="ms-1"
+                    [href]="
+                      'https://animeschedule.net/anime/' + anime.my_extension!.animescheduleRoute
+                    "
+                    target="_blank"
+                    >AnimeSchedule</a
+                  >
+                </div>
+              </div>
+            }
             <div class="row">
               <div class="col-4">
                 <td class="text-nowrap">
