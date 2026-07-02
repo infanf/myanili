@@ -17,7 +17,7 @@ $router->group(['prefix' => 'animeschedule'], function () use ($router) {
         }
         if (!isset($_GET['code'])) {
             $authorizationUrl = $provider->getAuthorizationUrl([
-                'scope' => ['animelist'],
+                'scope' => ['animelist', 'stats'],
             ]);
             $_SESSION['oauth2state'] = $provider->getState();
             $_SESSION['oauth2pkceCode'] = $provider->getPkceCode();
