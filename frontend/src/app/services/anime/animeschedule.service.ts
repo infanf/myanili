@@ -20,7 +20,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AnimescheduleService {
-  private readonly baseUrl = 'https://animeschedule.net/api/v3/';
+  // All API calls go through the backend: public reads need the secret app
+  // token, and the OAuth endpoints send no CORS headers for the browser.
   private readonly backendUrl = `${environment.backend}animeschedule/`;
   private accessToken = '';
   private refreshToken = '';
@@ -128,7 +129,7 @@ export class AnimescheduleService {
 
   async checkLogin(secondTry = false): Promise<AnimescheduleUser | undefined> {
     if (!this.accessToken || this.accessToken === 'null') return;
-    const result = await fetch(`${this.baseUrl}users/oauth/stats`, {
+    const result = await fetch(`${this.backendUrl}oauth/stats`, {
       headers: { Authorization: `Bearer ${this.accessToken}` },
     });
     if (result.ok) {
@@ -178,7 +179,7 @@ export class AnimescheduleService {
 
   async getEntry(route?: string): Promise<AnimescheduleListEntry | undefined> {
     if (!route || !this.accessToken) return;
-    const result = await fetch(`${this.baseUrl}animelists/oauth/${encodeURIComponent(route)}`, {
+    const result = await fetch(`${this.backendUrl}oauth/list/${encodeURIComponent(route)}`, {
       headers: { Authorization: `Bearer ${this.accessToken}` },
     });
     if (result.ok) return (await result.json()) as AnimescheduleListEntry;
@@ -196,7 +197,7 @@ export class AnimescheduleService {
       endDate: data.finish_date,
       note: data.comments?.substring(0, 1000),
     });
-    const result = await fetch(`${this.baseUrl}animelists/oauth/${encodeURIComponent(route)}`, {
+    const result = await fetch(`${this.backendUrl}oauth/list/${encodeURIComponent(route)}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
@@ -209,7 +210,7 @@ export class AnimescheduleService {
 
   async deleteEntry(route?: string): Promise<boolean> {
     if (!route || !this.accessToken) return false;
-    const result = await fetch(`${this.baseUrl}animelists/oauth/${encodeURIComponent(route)}`, {
+    const result = await fetch(`${this.backendUrl}oauth/list/${encodeURIComponent(route)}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${this.accessToken}` },
     });

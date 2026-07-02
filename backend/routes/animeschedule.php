@@ -3,6 +3,34 @@
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 use App\Providers\AnimescheduleServiceProvider as AnimescheduleServiceProvider;
+use Illuminate\Http\Request;
+
+/**
+ * Forward a request to the AnimeSchedule API server-to-server. The API sends no
+ * CORS headers, so OAuth (user token) calls cannot run from the browser; we
+ * relay the user's Authorization header instead of exposing it to CORS issues.
+ */
+function animescheduleForward(string $method, string $path, ?string $auth, ?string $body = null)
+{
+    $headers = ['Accept: application/json'];
+    if ($auth) {
+        $headers[] = 'Authorization: ' . $auth;
+    }
+    if ($body !== null) {
+        $headers[] = 'Content-Type: application/json';
+    }
+    $ch = curl_init('https://animeschedule.net/api/v3/' . $path);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_CUSTOMREQUEST => $method,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_POSTFIELDS => $body ?? '',
+    ]);
+    $result = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return response($result, $status ?: 502)->header('Content-Type', 'application/json');
+}
 
 $router->group(['prefix' => 'animeschedule'], function () use ($router) {
     // OAuth2 login (authorization code flow with PKCE)
@@ -16,15 +44,8 @@ $router->group(['prefix' => 'animeschedule'], function () use ($router) {
                 . ' ' . htmlspecialchars($_GET['error_description'] ?? ''));
         }
         if (!isset($_GET['code'])) {
-            // Scopes must match the ones enabled for this application in the
-            // AnimeSchedule account API settings. Configure via env (comma
-            // separated); defaults to the documented "stats" scope.
-            $scopes = array_values(array_filter(array_map(
-                'trim',
-                explode(',', env('ANIMESCHEDULE_SCOPES', 'stats'))
-            )));
             $authorizationUrl = $provider->getAuthorizationUrl([
-                'scope' => $scopes,
+                // 'scope' => 'animelist,stats',
             ]);
             $_SESSION['oauth2state'] = $provider->getState();
             $_SESSION['oauth2pkceCode'] = $provider->getPkceCode();
@@ -110,5 +131,30 @@ $router->group(['prefix' => 'animeschedule'], function () use ($router) {
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         return response($result, $status ?: 502)->header('Content-Type', 'application/json');
+    });
+
+    // Authenticated proxies for the OAuth (user token) endpoints. The frontend
+    // sends the user's bearer token, which is relayed to AnimeSchedule.
+    $router->get('oauth/stats', function (Request $request) {
+        return animescheduleForward('GET', 'users/oauth/stats', $request->header('Authorization'));
+    });
+    $router->get('oauth/list[/{route}]', function (Request $request, $route = null) {
+        $path = $route ? 'animelists/oauth/' . rawurlencode($route) : 'animelists/oauth';
+        return animescheduleForward('GET', $path, $request->header('Authorization'));
+    });
+    $router->put('oauth/list/{route}', function (Request $request, $route) {
+        return animescheduleForward(
+            'PUT',
+            'animelists/oauth/' . rawurlencode($route),
+            $request->header('Authorization'),
+            $request->getContent()
+        );
+    });
+    $router->delete('oauth/list/{route}', function (Request $request, $route) {
+        return animescheduleForward(
+            'DELETE',
+            'animelists/oauth/' . rawurlencode($route),
+            $request->header('Authorization')
+        );
     });
 });
