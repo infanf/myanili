@@ -237,6 +237,12 @@ export interface AnilistWorkRelation {
   node: { id: number; idMal?: number; type: 'ANIME' | 'MANGA'; title: string };
 }
 
+export function localizeAnilistLinks(html: string): string {
+  return html
+    .replace(/https?:\/\/anilist\.co\/character\/(\d+)(?:\/[^"'\s)]*)?/g, '/character/$1')
+    .replace(/https?:\/\/anilist\.co\/staff\/(\d+)(?:\/[^"'\s)]*)?/g, '/person/$1');
+}
+
 export function formatRelationType(relationType: string): string {
   return relationType
     .split('_')

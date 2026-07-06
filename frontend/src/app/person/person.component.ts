@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AnilistStaffDetail } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 import { GlobalService } from '@services/global.service';
@@ -17,6 +17,7 @@ export class PersonComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private glob: GlobalService,
     private anilist: AnilistService,
   ) {
@@ -29,7 +30,6 @@ export class PersonComponent {
         try {
           const person = await this.anilist.getPerson(this.id);
           if (!person) throw new Error('Person not found');
-          person.description = (person.description || '').replace(/\\n/g, '').trim();
           this.person = person;
           this.glob.notbusy();
           this.glob.setTitle(this.person.name.full);
@@ -51,5 +51,12 @@ export class PersonComponent {
     const parts = [String(date.month).padStart(2, '0'), String(date.day).padStart(2, '0')];
     if (date.year) parts.push(String(date.year));
     return parts.join('/');
+  }
+
+  onDescriptionClick(event: MouseEvent) {
+    const anchor = (event.target as HTMLElement).closest('a');
+    if (!anchor || anchor.origin !== location.origin) return;
+    event.preventDefault();
+    this.router.navigateByUrl(anchor.pathname);
   }
 }

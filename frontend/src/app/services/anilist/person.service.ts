@@ -1,4 +1,9 @@
-import { AnilistStaffDetail, AnilistStaffMediaRole, AnilistStaffVoiceRole } from '@models/anilist';
+import {
+  AnilistStaffDetail,
+  AnilistStaffMediaRole,
+  AnilistStaffVoiceRole,
+  localizeAnilistLinks,
+} from '@models/anilist';
 import { Client, gql } from '@urql/core';
 
 export class AnilistPersonService {
@@ -17,7 +22,7 @@ export class AnilistPersonService {
           image {
             large
           }
-          description
+          description(asHtml: true)
           primaryOccupations
           dateOfBirth {
             year
@@ -55,7 +60,7 @@ export class AnilistPersonService {
         alternative: staff.name.alternative?.filter(Boolean),
       },
       image: staff.image?.large,
-      description: staff.description,
+      description: staff.description && localizeAnilistLinks(staff.description),
       primaryOccupations: staff.primaryOccupations?.filter(Boolean),
       dateOfBirth: staff.dateOfBirth,
       siteUrl: staff.siteUrl,

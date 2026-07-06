@@ -2,12 +2,9 @@ import {
   AnilistCharacterDetail,
   AnilistCharacterMediaRole,
   AnilistCharacterVoiceActor,
+  localizeAnilistLinks,
 } from '@models/anilist';
 import { Client, gql } from '@urql/core';
-
-function localizeCharacterLinks(html: string): string {
-  return html.replace(/https?:\/\/anilist\.co\/character\/(\d+)(?:\/[^"'\s)]*)?/g, '/character/$1');
-}
 
 export class AnilistCharacterService {
   constructor(private client: Client) {}
@@ -59,7 +56,7 @@ export class AnilistCharacterService {
         alternative: character.name.alternative?.filter(Boolean),
       },
       image: character.image?.large,
-      description: character.description && localizeCharacterLinks(character.description),
+      description: character.description && localizeAnilistLinks(character.description),
       gender: character.gender,
       age: character.age,
       siteUrl: character.siteUrl,
@@ -128,7 +125,7 @@ export class AnilistCharacterService {
     const QUERY = gql`
       query ($id: Int) {
         Character(id: $id) {
-          media(perPage: 50) {
+          media(type: ANIME, perPage: 50) {
             edges {
               voiceActors {
                 id
