@@ -84,7 +84,10 @@
       @if (anime?.studios && anime!.studios.length) {
         <myanili-value-pair name="Studio">
           @for (studio of anime!.studios; track studio) {
-            <div class="link-primary cursor-pointer" [routerLink]="'/anime/producer/' + studio.id">
+            <div
+              class="link-primary cursor-pointer"
+              [routerLink]="['/anime/producer', studio.name]"
+            >
               {{ studio.name }}
             </div>
           }

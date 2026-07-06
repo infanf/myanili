@@ -19,14 +19,12 @@ import { MangaRecommendationsComponent } from './details/recommendations/recomme
 import { MangaListGridComponent } from './list/grid/grid.component';
 import { MangaListComponent } from './list/list.component';
 import { MangaListListComponent } from './list/list/list.component';
-import { MagazineComponent } from './magazine/magazine.component';
 import { PlatformComponent } from './widget/platform/platform.component';
 
 @NgModule({
   declarations: [
     BookshelfComponent,
     BookshelfWrapperComponent,
-    MagazineComponent,
     MangaCharactersComponent,
     MangaDetailsComponent,
     MangaEditComponent,
@@ -51,14 +49,12 @@ import { PlatformComponent } from './widget/platform/platform.component';
       { path: 'list/:status', canActivate: [authGuard], component: MangaListComponent },
       { path: 'bookshelf', canActivate: [authGuard], component: BookshelfWrapperComponent },
       { path: 'details/:id', component: MangaDetailsComponent },
-      { path: 'magazine/:id', component: MagazineComponent },
       { path: '', redirectTo: 'bookshelf', pathMatch: 'full' },
     ]),
   ],
   exports: [
     BookshelfComponent,
     BookshelfWrapperComponent,
-    MagazineComponent,
     MangaCharactersComponent,
     MangaDetailsComponent,
     MangaListComponent,

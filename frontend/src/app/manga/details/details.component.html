@@ -116,12 +116,7 @@
           <div class="col-4 fw-bold text-end">Serialization</div>
           <div class="col-8">
             @for (magazine of manga!.serialization!; track magazine) {
-              <div
-                class="link-primary cursor-pointer"
-                [routerLink]="'/manga/magazine/' + magazine.node.id"
-              >
-                {{ magazine.node.name }}
-              </div>
+              <div>{{ magazine.node.name }}</div>
             }
           </div>
         </div>

@@ -11,7 +11,7 @@ MyAniLi is a web client and Progressive Web App (PWA) for [MyAnimeList](https://
 - **Full MyAnimeList integration** — anime & manga lists, detailed pages, status/score/notes updates, seasonal schedule
 - **Multi-service anime tracking** — AniList, Kitsu, trakt.tv, SIMKL, Annict, Shikimori
 - **Manga support** — MangaBaka (OAuth 2.0), MangaDex, MangaUpdates, MangaPassion
-- **External metadata** — AniSearch, TMDB, AniDB, Jikan
+- **External metadata** — AniSearch, TMDB, AniDB, AniList
 - **PWA** — installable, offline-capable via Angular Service Worker and IndexedDB caching
 - **Responsive UI** — Bootstrap 5, dark/light mode, mobile-first
 
@@ -92,7 +92,7 @@ TMDB_API_KEY=
 
 ### Frontend environment
 
-The Angular environments are in `frontend/src/environments/`. The default development config points to `http://localhost:4280` for the backend and the public Jikan API.
+The Angular environments are in `frontend/src/environments/`. The default development config points to `http://localhost:4280` for the backend.
 
 ---
 
@@ -163,7 +163,6 @@ myanili/
 | SIMKL | OAuth 2.0 | |
 | Annict | OAuth 2.0 | |
 | Shikimori | OAuth 2.0 | |
-| Jikan | Public API | MAL scraper, no auth required |
 | AniSearch | — | |
 | AniDB | — | |
 | TMDB | API key | Movie metadata |
