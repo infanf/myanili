@@ -443,9 +443,14 @@ export class AnimeService {
         second: 0,
         millisecond: 0,
       });
-      anime.broadcast.weekday = date.setZone('system').weekday % 7;
-      anime.broadcast.day_of_the_week = date.setZone('system').toFormat('cccc');
-      anime.broadcast.start_time = date.setZone('system').toFormat('HH:mm');
+      const localDate = date.setZone('system');
+      let dateShift = weekday !== undefined ? localDate.weekday - weekday : 0;
+      if (dateShift > 1) dateShift -= 7;
+      if (dateShift < -1) dateShift += 7;
+      anime.broadcast.weekday = localDate.weekday % 7;
+      anime.broadcast.day_of_the_week = localDate.toFormat('cccc');
+      anime.broadcast.start_time = localDate.toFormat('HH:mm');
+      anime.broadcast.dateShift = dateShift;
     }
   }
 

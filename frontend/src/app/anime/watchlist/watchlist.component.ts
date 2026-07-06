@@ -293,7 +293,9 @@ export class WatchlistComponent implements OnInit {
     if (anime.my_extension?.hideWatchlist) return false;
     if (anime.list_status.status === 'plan_to_watch') {
       if (!anime.node.start_date) return false;
-      const startDate = DateTimeFrom(anime.node.start_date);
+      const startDate = DateTimeFrom(anime.node.start_date).plus({
+        days: anime.node.broadcast?.dateShift || 0,
+      });
       return startDate <= DateTimeFrom() && startDate >= DateTimeFrom().minus({ days: 4 });
     }
     if (!anime.my_extension) return true;
