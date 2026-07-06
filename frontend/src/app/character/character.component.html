@@ -43,7 +43,11 @@
         @if (character.description) {
           <div class="row">
             <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
-            <div class="col-12 col-md-8" [innerHTML]="character.description || ''"></div>
+            <div
+              class="col-12 col-md-8"
+              [innerHTML]="character.description || ''"
+              (click)="onDescriptionClick($event)"
+            ></div>
           </div>
         }
       </div>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AnilistCharacterDetail } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 import { GlobalService } from '@services/global.service';
@@ -17,6 +17,7 @@ export class CharacterComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private glob: GlobalService,
     private anilist: AnilistService,
   ) {
@@ -43,5 +44,12 @@ export class CharacterComponent {
         }
       }
     });
+  }
+
+  onDescriptionClick(event: MouseEvent) {
+    const anchor = (event.target as HTMLElement).closest('a');
+    if (!anchor || anchor.origin !== location.origin) return;
+    event.preventDefault();
+    this.router.navigateByUrl(anchor.pathname);
   }
 }
