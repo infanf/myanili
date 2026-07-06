@@ -1,8 +1,15 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '6.0.0',
+      date: new Date('2026-08-01'),
+      features: [
+        'Watchlist: show planned titles shortly after they start airing, so you can start watching directly from there',
+      ],
+    },
+    {
       version: '5.0.0',
-      date: new Date('2026-04-18'),
+      date: new Date('2026-07-06'),
       features: ['Season Planner: review new season shows with a Tinder-style swipe UI'],
       fixes: ['Anime/Manga: fix change-detection error in related media sections'],
       other: ['Update dependencies', 'Migrate MangaBaka API URL'],

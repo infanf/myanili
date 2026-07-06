@@ -74,7 +74,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   async getAnimes() {
-    return this.animeService.list(['watching', 'completed', 'dropped'], {
+    return this.animeService.list(['watching', 'completed', 'dropped', 'plan_to_watch'], {
       limit: 100,
       sort: 'list_updated_at',
     });
@@ -122,11 +122,13 @@ export class WatchlistComponent implements OnInit {
     }
     anime.busy = true;
     const currentEpisode = anime.list_status.num_episodes_watched;
+    const startingNow = anime.list_status.status === 'plan_to_watch';
     const data = {
       num_watched_episodes: currentEpisode + 1,
-      status: anime.list_status.status,
+      status: startingNow ? 'watching' : anime.list_status.status,
       is_rewatching: anime.list_status.is_rewatching,
     } as MyAnimeUpdateExtended;
+    if (startingNow) data.start_date = DateTime.local().toISODate() || undefined;
     if (anime.my_extension) anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
     if (currentEpisode + 1 === anime.node.num_episodes) {
@@ -230,6 +232,7 @@ export class WatchlistComponent implements OnInit {
     anime.list_status.is_rewatching = animeStatus.is_rewatching;
     anime.list_status.num_episodes_watched = animeStatus.num_episodes_watched;
     anime.list_status.updated_at = animeStatus.updated_at;
+    anime.list_status.status = animeStatus.status || anime.list_status.status;
     anime.busy = false;
     this.glob.notbusy();
   }
@@ -287,8 +290,13 @@ export class WatchlistComponent implements OnInit {
     if (['completed', 'dropped'].includes(anime.list_status.status || '')) {
       if (!anime.list_status.is_rewatching) return lastWatched > this.getLast8am();
     }
+    if (anime.my_extension?.hideWatchlist) return false;
+    if (anime.list_status.status === 'plan_to_watch') {
+      if (!anime.node.start_date) return false;
+      const startDate = DateTimeFrom(anime.node.start_date);
+      return startDate <= DateTimeFrom() && startDate >= DateTimeFrom().minus({ days: 4 });
+    }
     if (!anime.my_extension) return true;
-    if (anime.my_extension.hideWatchlist) return false;
     if (!anime.my_extension.simulcast.day?.length) return true;
     const simulDay = daysToLocal(anime.my_extension.simulcast);
     const lastAiredWeekday = this.animeService.getLastDay(simulDay);

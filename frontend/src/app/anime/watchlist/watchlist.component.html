@@ -26,7 +26,11 @@
             'text-green': anime.list_status.num_episodes_watched === 0,
           }"
         >
-          <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
+          <td
+            class="cursor-pointer"
+            [class.fst-italic]="anime.list_status.status === 'plan_to_watch'"
+            routerLink="/anime/details/{{ anime.node.id }}"
+          >
             {{
               anime.my_extension?.displayName ||
                 ((settings.language$ | async) === 'en'
