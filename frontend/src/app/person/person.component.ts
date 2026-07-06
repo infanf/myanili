@@ -55,8 +55,12 @@ export class PersonComponent {
 
   onDescriptionClick(event: MouseEvent) {
     const anchor = (event.target as HTMLElement).closest('a');
-    if (!anchor || anchor.origin !== location.origin) return;
+    if (!anchor) return;
     event.preventDefault();
-    this.router.navigateByUrl(anchor.pathname);
+    if (anchor.origin === location.origin) {
+      this.router.navigateByUrl(anchor.pathname);
+    } else {
+      window.open(anchor.href, '_blank', 'noopener');
+    }
   }
 }
