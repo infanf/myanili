@@ -34,6 +34,12 @@
             }
           </myanili-value-pair>
         }
+        @if (character.gender) {
+          <myanili-value-pair name="Gender" [value]="character.gender"></myanili-value-pair>
+        }
+        @if (character.age) {
+          <myanili-value-pair name="Age" [value]="character.age"></myanili-value-pair>
+        }
         @if (character.description) {
           <div class="row">
             <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>

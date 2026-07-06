@@ -22,6 +22,8 @@ export class AnilistCharacterService {
             large
           }
           description
+          gender
+          age
           siteUrl
         }
       }
@@ -33,6 +35,8 @@ export class AnilistCharacterService {
           name: { full: string; native?: string; alternative?: string[] };
           image?: { large?: string };
           description?: string;
+          gender?: string;
+          age?: string;
           siteUrl?: string;
         };
       }>(QUERY, { id })
@@ -52,6 +56,8 @@ export class AnilistCharacterService {
       },
       image: character.image?.large,
       description: character.description,
+      gender: character.gender,
+      age: character.age,
       siteUrl: character.siteUrl,
     };
   }

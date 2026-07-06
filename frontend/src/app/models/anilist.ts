@@ -179,6 +179,8 @@ export interface AnilistCharacterDetail {
   name: AnilistName;
   image?: string;
   description?: string;
+  gender?: string;
+  age?: string;
   siteUrl?: string;
 }
 
