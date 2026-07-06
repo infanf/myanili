@@ -5,7 +5,10 @@ export const changelog: Changelog = {
       date: new Date('2026-08-01'),
       features: [
         'Watchlist: show planned titles shortly after they start airing, so you can start watching directly from there',
+        'Character: show gender and age',
+        'Character/Person: link mentions of other characters or staff in the description to their myanili profile',
       ],
+      fixes: ['Character: Voice Actors tab was always empty'],
       other: [
         'Remove Jikan dependency: character, staff, studio and relation data now come from AniList',
       ],
