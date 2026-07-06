@@ -5,6 +5,10 @@ import {
 } from '@models/anilist';
 import { Client, gql } from '@urql/core';
 
+function localizeCharacterLinks(html: string): string {
+  return html.replace(/https?:\/\/anilist\.co\/character\/(\d+)(?:\/[^"'\s)]*)?/g, '/character/$1');
+}
+
 export class AnilistCharacterService {
   constructor(private client: Client) {}
 
@@ -21,7 +25,7 @@ export class AnilistCharacterService {
           image {
             large
           }
-          description
+          description(asHtml: true)
           gender
           age
           siteUrl
@@ -55,7 +59,7 @@ export class AnilistCharacterService {
         alternative: character.name.alternative?.filter(Boolean),
       },
       image: character.image?.large,
-      description: character.description,
+      description: character.description && localizeCharacterLinks(character.description),
       gender: character.gender,
       age: character.age,
       siteUrl: character.siteUrl,

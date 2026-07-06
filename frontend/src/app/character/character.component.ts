@@ -29,7 +29,6 @@ export class CharacterComponent {
         try {
           const character = await this.anilist.getCharacter(this.id);
           if (!character) throw new Error('Character not found');
-          character.description = character.description?.replace(/\\n/g, '').trim();
           this.character = character;
           this.glob.notbusy();
           this.glob.setTitle(this.character.name.full);

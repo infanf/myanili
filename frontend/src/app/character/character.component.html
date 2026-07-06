@@ -43,7 +43,7 @@
         @if (character.description) {
           <div class="row">
             <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
-            <div class="col-12 col-md-8" [innerHTML]="character.description || '' | nl2br"></div>
+            <div class="col-12 col-md-8" [innerHTML]="character.description || ''"></div>
           </div>
         }
       </div>
