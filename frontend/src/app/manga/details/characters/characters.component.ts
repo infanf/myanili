@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Jikan4MangaCharacter } from '@models/jikan';
+import { AnilistWorkCharacter } from '@models/anilist';
 import { MangaService } from '@services/manga/manga.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { MangaService } from '@services/manga/manga.service';
 })
 export class MangaCharactersComponent implements OnInit {
   @Input() id!: number;
-  characters: Jikan4MangaCharacter[] = [];
+  characters: AnilistWorkCharacter[] = [];
   constructor(private mangaService: MangaService) {}
 
   ngOnInit() {

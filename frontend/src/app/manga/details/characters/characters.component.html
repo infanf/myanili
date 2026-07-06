@@ -1,10 +1,10 @@
 <div class="grid my-2">
   @for (character of characters; track character) {
     <myanili-media-card
-      [poster]="(character.character.images.webp || character.character.images.jpg).image_url"
+      [poster]="character.character.image"
       [title]="character.character.name"
-      [icon]="character.role === 'Main' ? 'star-fill' : undefined"
-      [routerLink]="'/character/' + character.character.mal_id"
+      [icon]="character.role === 'MAIN' ? 'star-fill' : undefined"
+      [routerLink]="'/character/' + character.character.id"
     ></myanili-media-card>
   }
 </div>

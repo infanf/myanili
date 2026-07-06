@@ -158,6 +158,90 @@ export interface AnilistActivity {
   siteUrl: string;
 }
 
+export interface AnilistName {
+  full: string;
+  native?: string;
+  alternative?: string[];
+}
+
+export interface AnilistMediaRef {
+  id: number;
+  idMal?: number;
+  type: 'ANIME' | 'MANGA';
+  title: string;
+  image?: string;
+  format?: string;
+  source?: string;
+}
+
+export interface AnilistCharacterDetail {
+  id: number;
+  name: AnilistName;
+  image?: string;
+  description?: string;
+  siteUrl?: string;
+}
+
+export interface AnilistCharacterMediaRole {
+  role: 'MAIN' | 'SUPPORTING' | 'BACKGROUND';
+  media: AnilistMediaRef;
+}
+
+export interface AnilistCharacterVoiceActor {
+  language: string;
+  actor: { id: number; name: string; image?: string };
+}
+
+export interface AnilistStaffDetail {
+  id: number;
+  name: AnilistName;
+  image?: string;
+  description?: string;
+  primaryOccupations?: string[];
+  dateOfBirth?: { year?: number; month?: number; day?: number };
+  siteUrl?: string;
+}
+
+export interface AnilistStaffVoiceRole {
+  role: 'MAIN' | 'SUPPORTING' | 'BACKGROUND';
+  character: { id: number; name: string; image?: string };
+  media: AnilistMediaRef;
+}
+
+export interface AnilistStaffMediaRole {
+  role?: string;
+  media: AnilistMediaRef;
+}
+
+export interface AnilistStudioDetail {
+  id: number;
+  name: string;
+  siteUrl?: string;
+}
+
+export interface AnilistWorkCharacter {
+  character: { id: number; name: string; image?: string };
+  role: 'MAIN' | 'SUPPORTING' | 'BACKGROUND';
+  voiceActors: Array<{ id: number; name: string; image?: string; language?: string }>;
+}
+
+export interface AnilistWorkStaff {
+  person: { id: number; name: string; image?: string };
+  positions: string[];
+}
+
+export interface AnilistWorkRelation {
+  relationType: string;
+  node: { id: number; idMal?: number; type: 'ANIME' | 'MANGA'; title: string };
+}
+
+export function formatRelationType(relationType: string): string {
+  return relationType
+    .split('_')
+    .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
 export function statusFromMal(
   malStatus?: WatchStatus | ReadStatus,
   repeating = false,

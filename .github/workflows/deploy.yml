@@ -93,6 +93,28 @@ jobs:
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
+      - name: Deploy Jikan to Google Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: myanili-jikan-beta
+          image: jikanme/jikan-rest:latest
+          region: europe-west1
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          env_vars: |
+            APP_ENV=production
+            DB_CONNECTION=mongodb
+            DB_HOST=${{ secrets.JIKAN_DB_HOST }}
+            DB_DATABASE=jikan
+            DB_USERNAME=${{ secrets.JIKAN_DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.JIKAN_DB_PASSWORD }}
+            CACHING=true
+            CACHE_DRIVER=redis
+            REDIS_HOST=${{ secrets.JIKAN_REDIS_HOST }}
+            REDIS_PASSWORD=${{ secrets.JIKAN_REDIS_PASSWORD }}
+            MICROCACHING=true
+            MICROCACHING_EXPIRE=60
+            CORS_MIDDLEWARE=true
+
   deploy-production:
     if: startsWith(github.ref, 'refs/tags/')
     needs: build
@@ -110,3 +132,25 @@ jobs:
           image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}@${{ needs.build.outputs.frontend_digest }}
           region: europe-west1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy Jikan to Google Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: myanili-jikan
+          image: jikanme/jikan-rest:latest
+          region: europe-west1
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          env_vars: |
+            APP_ENV=production
+            DB_CONNECTION=mongodb
+            DB_HOST=${{ secrets.JIKAN_DB_HOST }}
+            DB_DATABASE=jikan
+            DB_USERNAME=${{ secrets.JIKAN_DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.JIKAN_DB_PASSWORD }}
+            CACHING=true
+            CACHE_DRIVER=redis
+            REDIS_HOST=${{ secrets.JIKAN_REDIS_HOST }}
+            REDIS_PASSWORD=${{ secrets.JIKAN_REDIS_PASSWORD }}
+            MICROCACHING=true
+            MICROCACHING_EXPIRE=60
+            CORS_MIDDLEWARE=true

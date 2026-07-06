@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Jikan4PersonRoles } from '@models/jikan';
-import { MalService } from '@services/mal.service';
+import { AnilistStaffVoiceRole } from '@models/anilist';
+import { AnilistService } from '@services/anilist.service';
 
 @Component({
   selector: 'myanili-person-anime',
@@ -9,13 +9,13 @@ import { MalService } from '@services/mal.service';
   standalone: false,
 })
 export class PersonAnimeComponent implements OnInit {
-  @Input() malId!: number;
-  animes: Jikan4PersonRoles = [];
+  @Input() personId!: number;
+  animes: AnilistStaffVoiceRole[] = [];
 
-  constructor(private mal: MalService) {}
+  constructor(private anilist: AnilistService) {}
 
   async ngOnInit() {
-    const data = await this.mal.getJikanData<Jikan4PersonRoles>(`people/${this.malId}/voices`);
-    this.animes = data.sort((a, b) => (a.anime.title < b.anime.title ? -1 : 1));
+    const data = await this.anilist.getPersonVoiceRoles(this.personId);
+    this.animes = data.sort((a, b) => (a.media.title < b.media.title ? -1 : 1));
   }
 }
