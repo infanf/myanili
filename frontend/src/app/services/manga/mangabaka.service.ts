@@ -18,7 +18,7 @@ import { CacheService } from '../cache.service';
   providedIn: 'root',
 })
 export class MangabakaService {
-  private readonly baseUrl = 'https://api.mangabaka.dev/v1';
+  private readonly baseUrl = 'https://api.mangabaka.org/v1';
   private readonly authUrl = `${environment.backend}mangabaka/auth`;
   private accessToken = '';
   private refreshToken = '';

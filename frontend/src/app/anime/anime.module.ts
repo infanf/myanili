@@ -26,6 +26,7 @@ import { ProducerComponent } from './producer/producer.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { SeasonGridComponent } from './season/grid/grid.component';
 import { SeasonListComponent } from './season/list/list.component';
+import { SeasonPlannerComponent } from './season/planner/planner.component';
 import { SeasonComponent } from './season/season.component';
 import { WatchlistComponent } from './watchlist/watchlist.component';
 import { StreamingComponent } from './widget/streaming/streaming.component';
@@ -46,6 +47,7 @@ import { StreamingComponent } from './widget/streaming/streaming.component';
     SeasonComponent,
     SeasonGridComponent,
     SeasonListComponent,
+    SeasonPlannerComponent,
     StaffComponent,
     StreamingComponent,
     WatchlistComponent,
