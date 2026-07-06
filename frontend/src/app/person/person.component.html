@@ -1,20 +1,22 @@
 <div class="container my-sm-3 border-sm-x border-sm-y rounded">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ person?.name || 'Loading…' }}
-      <a [href]="'https://myanimelist.net/people/' + id" target="_blank">
-        <myanili-icon-mal
-          size="38"
-          style="vertical-align: bottom; line-height: 0.5"
-        ></myanili-icon-mal>
-      </a>
+      {{ person?.name?.full || 'Loading…' }}
+      @if (person?.siteUrl) {
+        <a [href]="person?.siteUrl" target="_blank">
+          <myanili-icon-anilist
+            size="38"
+            style="vertical-align: bottom; line-height: 0.5"
+          ></myanili-icon-anilist>
+        </a>
+      }
     </h2>
   </header>
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <picture>
-        @if (person?.images?.jpg?.image_url) {
-          <source srcset="{{ person?.images?.jpg?.image_url }}" />
+        @if (person?.image) {
+          <source srcset="{{ person?.image }}" />
         }
         <source srcset="/assets/blank-poster.svg" />
         <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
@@ -22,31 +24,31 @@
     </div>
     @if (person) {
       <div class="col-sm-7 col-md-8 mb-3">
-        @if (person.given_name || person.family_name) {
-          <myanili-value-pair name="Name">
-            {{ person.family_name }} {{ person.given_name }}
-          </myanili-value-pair>
+        @if (person.name.native) {
+          <myanili-value-pair name="Name" [value]="person.name.native"></myanili-value-pair>
         }
-        @if (person.birthday) {
-          <myanili-value-pair name="Birthday">
-            {{ person.birthday | date }}
-          </myanili-value-pair>
+        @if (birthday) {
+          <myanili-value-pair name="Birthday" [value]="birthday"></myanili-value-pair>
         }
-        @if (person.alternate_names.length) {
+        @if (person.name.alternative?.length) {
           <myanili-value-pair name="Alias">
-            @for (name of person.alternate_names; track name) {
+            @for (name of person.name.alternative; track name) {
               <div>{{ name }}</div>
             }
           </myanili-value-pair>
         }
-        @if (person.website_url) {
-          <myanili-value-pair name="Website">
-            <a [href]="person.website_url" target="_blank">{{ person.website_url }}</a>
+        @if (person.primaryOccupations?.length) {
+          <myanili-value-pair name="Occupation">
+            {{ person.primaryOccupations?.join(', ') }}
           </myanili-value-pair>
         }
         <div class="row">
           <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
-          <div class="col-12 col-md-8" [innerHTML]="person.about || '' | nl2br"></div>
+          <div
+            class="col-12 col-md-8"
+            [innerHTML]="person.description || ''"
+            (click)="onDescriptionClick($event)"
+          ></div>
         </div>
       </div>
     }
@@ -57,19 +59,19 @@
       <li [ngbNavItem]="1">
         <a ngbNavLink>Anime</a>
         <ng-template ngbNavContent>
-          <myanili-person-anime [malId]="id"></myanili-person-anime>
+          <myanili-person-anime [personId]="id"></myanili-person-anime>
         </ng-template>
       </li>
       <li [ngbNavItem]="2">
         <a ngbNavLink>Manga</a>
         <ng-template ngbNavContent>
-          <myanili-person-manga [malId]="id"></myanili-person-manga>
+          <myanili-person-manga [personId]="id"></myanili-person-manga>
         </ng-template>
       </li>
       <li [ngbNavItem]="3">
         <a ngbNavLink>Staff</a>
         <ng-template ngbNavContent>
-          <myanili-person-staff [malId]="id"></myanili-person-staff>
+          <myanili-person-staff [personId]="id"></myanili-person-staff>
         </ng-template>
       </li>
     </ul>

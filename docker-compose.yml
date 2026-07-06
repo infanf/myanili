@@ -1,13 +1,13 @@
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: dev.Dockerfile
     container_name: myanili_app
     ports:
       - 4280:80
       - 4200:4200
-    volumes: 
+    volumes:
       - ./backend:/app
       - ./frontend:/frontend
     dns:

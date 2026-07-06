@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Jikan4CharacterAnimeRoles } from '@models/jikan';
-import { MalService } from '@services/mal.service';
+import { AnilistCharacterMediaRole } from '@models/anilist';
+import { AnilistService } from '@services/anilist.service';
 
 @Component({
   selector: 'myanili-character-anime',
@@ -8,14 +8,12 @@ import { MalService } from '@services/mal.service';
   standalone: false,
 })
 export class CharacterAnimeComponent implements OnInit {
-  @Input() malId!: number;
-  roles: Jikan4CharacterAnimeRoles = [];
+  @Input() characterId!: number;
+  roles: AnilistCharacterMediaRole[] = [];
 
-  constructor(private mal: MalService) {}
+  constructor(private anilist: AnilistService) {}
 
   async ngOnInit() {
-    this.roles = await this.mal.getJikanData<Jikan4CharacterAnimeRoles>(
-      `characters/${this.malId}/anime`,
-    );
+    this.roles = await this.anilist.getCharacterMediaRoles(this.characterId, 'ANIME');
   }
 }

@@ -6,6 +6,9 @@ export const changelog: Changelog = {
       features: [
         'Watchlist: show planned titles shortly after they start airing, so you can start watching directly from there',
       ],
+      other: [
+        'Remove Jikan dependency: character, staff, studio and relation data now come from AniList',
+      ],
     },
     {
       version: '5.0.0',

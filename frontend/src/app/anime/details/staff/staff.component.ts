@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Jikan4Staff } from '@models/jikan';
+import { AnilistWorkStaff } from '@models/anilist';
 import { AnimeService } from '@services/anime/anime.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AnimeService } from '@services/anime/anime.service';
 })
 export class StaffComponent implements OnInit {
   @Input() id!: number;
-  persons: Jikan4Staff[] = [];
+  persons: AnilistWorkStaff[] = [];
   constructor(private animeService: AnimeService) {}
 
   async ngOnInit() {
