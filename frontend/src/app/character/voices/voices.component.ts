@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AnilistCharacterVoiceActor } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 
 @Component({
   selector: 'myanili-character-voices',
   templateUrl: './voices.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CharacterVoicesComponent implements OnInit {

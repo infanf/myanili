@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SeasonPlannerComponent } from '@app/anime/season/planner/planner.component';
 import { Anime } from '@models/anime';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +11,7 @@ import { Observable, switchMap } from 'rxjs';
 @Component({
   selector: 'myanili-season',
   templateUrl: './season.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SeasonComponent {
@@ -55,7 +56,9 @@ export class SeasonComponent {
       .pipe(
         switchMap(inList => {
           return new Observable<Array<Partial<Anime>> | undefined>(observer => {
-            if (!this.year || this.season === undefined || this.onlyInList === inList) return;
+            if (!this.year || this.season === undefined || this.onlyInList === inList) {
+              return;
+            }
             this.onlyInList = inList;
             this.glob.busy();
             this.update().then(animes => {

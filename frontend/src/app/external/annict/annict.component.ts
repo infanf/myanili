@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ExternalComponent } from '@external/external.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnictService } from '@services/anime/annict.service';
@@ -6,6 +6,7 @@ import { AnnictService } from '@services/anime/annict.service';
 @Component({
   selector: 'myanili-annict',
   templateUrl: '../external.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnnictComponent extends ExternalComponent {

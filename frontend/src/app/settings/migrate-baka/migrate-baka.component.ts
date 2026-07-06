@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MangaExtension } from '@models/manga';
 import { MalService } from '@services/mal.service';
 import { MangaService } from '@services/manga/manga.service';
@@ -8,6 +8,7 @@ import { Base64 } from 'js-base64';
 @Component({
   selector: 'myanili-migrate-baka',
   templateUrl: './migrate-baka.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MigrateBakaComponent {

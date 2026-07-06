@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SimklService, SimklUser } from '@services/anime/simkl.service';
 import { GlobalService } from '@services/global.service';
 
 @Component({
   selector: 'myanili-simkl-login',
   templateUrl: './simkl-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SimklLoginComponent implements OnInit {

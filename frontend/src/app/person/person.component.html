@@ -3,7 +3,7 @@
     <h2>
       {{ person?.name?.full || 'Loading…' }}
       @if (person?.siteUrl) {
-        <a [href]="person?.siteUrl" target="_blank">
+        <a [href]="$safeNavigationMigration(person?.siteUrl)" target="_blank">
           <myanili-icon-anilist
             size="38"
             style="vertical-align: bottom; line-height: 0.5"

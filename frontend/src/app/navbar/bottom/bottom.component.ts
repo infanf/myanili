@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GlobalService } from '@services/global.service';
 import { MalService } from '@services/mal.service';
 import { NavbarService } from '@services/navbar.service';
@@ -7,6 +7,7 @@ import { NavbarService } from '@services/navbar.service';
   selector: 'myanili-navbar-bottom',
   templateUrl: './bottom.component.html',
   styleUrls: ['./bottom.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class NavbarBottomComponent {

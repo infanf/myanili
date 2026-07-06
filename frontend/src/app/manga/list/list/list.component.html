@@ -57,8 +57,8 @@
         </td>
         <td>
           <myanili-platform
-            [provider]="manga.my_extension?.platform"
-            [publisher]="manga.my_extension?.publisher"
+            [provider]="$safeNavigationMigration(manga.my_extension?.platform)"
+            [publisher]="$safeNavigationMigration(manga.my_extension?.publisher)"
           ></myanili-platform>
         </td>
         <td style="white-space: nowrap">

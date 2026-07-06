@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AnilistStaffVoiceRole } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 
@@ -6,6 +6,7 @@ import { AnilistService } from '@services/anilist.service';
   selector: 'myanili-person-anime',
   styleUrls: ['./anime.component.scss'],
   templateUrl: './anime.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PersonAnimeComponent implements OnInit {

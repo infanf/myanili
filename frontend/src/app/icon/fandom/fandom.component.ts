@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 import { IconComponent } from '../icon.component';
 
@@ -6,6 +6,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-fandom',
   templateUrl: './fandom.component.html',
   styleUrls: ['../icon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FandomIconComponent extends IconComponent implements OnInit {

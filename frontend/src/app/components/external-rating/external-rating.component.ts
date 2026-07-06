@@ -1,11 +1,12 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ExtRating } from '@models/components';
 import { ScoreDisplay, SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-external-rating',
   templateUrl: './external-rating.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ExternalRatingComponent {

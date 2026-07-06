@@ -3,7 +3,7 @@
     <h2>
       {{ title }}
       @if (producer?.siteUrl) {
-        <a [href]="producer?.siteUrl" target="_blank">
+        <a [href]="$safeNavigationMigration(producer?.siteUrl)" target="_blank">
           <myanili-icon-anilist
             size="38"
             style="vertical-align: bottom; line-height: 0.5"

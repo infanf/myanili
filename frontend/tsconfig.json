@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -18,28 +19,28 @@
     "module": "es2020",
     "paths": {
       "@models/*": [
-        "src/app/models/*"
+        "./src/app/models/*"
       ],
       "@icon/*": [
-        "src/app/icon/*"
+        "./src/app/icon/*"
       ],
       "@external/*": [
-        "src/app/external/*"
+        "./src/app/external/*"
       ],
       "@anime/*": [
-        "src/app/anime/*"
+        "./src/app/anime/*"
       ],
       "@manga/*": [
-        "src/app/manga/*"
+        "./src/app/manga/*"
       ],
       "@components/*": [
-        "src/app/components/*"
+        "./src/app/components/*"
       ],
       "@services/*": [
-        "src/app/services/*"
+        "./src/app/services/*"
       ],
       "@app/*": [
-        "src/app/*"
+        "./src/app/*"
       ],
       "stream": [
         "./node_modules/stream-browserify"

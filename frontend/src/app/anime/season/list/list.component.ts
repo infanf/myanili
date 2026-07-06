@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Anime } from '@models/anime';
 
 import { SeasonComponent } from '../season.component';
@@ -6,6 +6,7 @@ import { SeasonComponent } from '../season.component';
 @Component({
   selector: 'myanili-anime-season-list',
   templateUrl: './list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SeasonListComponent extends SeasonComponent {

@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AnilistStaffMediaRole } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 
 @Component({
   selector: 'myanili-person-staff',
   templateUrl: './staff.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PersonStaffComponent implements OnInit {

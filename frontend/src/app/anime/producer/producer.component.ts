@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AnilistMediaRef, AnilistStudioDetail } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
@@ -8,6 +8,7 @@ import { GlobalService } from '@services/global.service';
   selector: 'myanili-producer',
   templateUrl: './producer.component.html',
   styleUrls: ['./producer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ProducerComponent {

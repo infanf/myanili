@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnnService } from '@services/ann.service';
 
@@ -7,6 +7,7 @@ import { ExternalComponent, Node } from '../external.component';
 @Component({
   selector: 'myanili-ann',
   templateUrl: '../external.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnnComponent extends ExternalComponent {

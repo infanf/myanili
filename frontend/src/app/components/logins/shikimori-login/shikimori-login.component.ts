@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ShikimoriUser } from '@models/shikimori';
 import { GlobalService } from '@services/global.service';
 import { ShikimoriService } from '@services/shikimori.service';
@@ -6,6 +6,7 @@ import { ShikimoriService } from '@services/shikimori.service';
 @Component({
   selector: 'myanili-shikimori-login',
   templateUrl: './shikimori-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ShikimoriLoginComponent implements OnInit {

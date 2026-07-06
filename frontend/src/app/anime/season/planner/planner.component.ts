@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Anime } from '@models/anime';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnimeService } from '@services/anime/anime.service';
@@ -9,6 +9,7 @@ import { AnisearchService } from '@services/anisearch.service';
 @Component({
   selector: 'myanili-season-planner',
   templateUrl: './planner.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SeasonPlannerComponent implements OnInit {

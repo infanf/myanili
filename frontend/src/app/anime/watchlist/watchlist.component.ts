@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Button } from '@components/dialogue/dialogue.component';
 import { DateTimeFrom } from '@components/luxon-helper';
 import {
@@ -24,6 +24,7 @@ import { DateTime } from 'luxon';
   selector: 'myanili-watchlist',
   templateUrl: './watchlist.component.html',
   styleUrls: ['./watchlist.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class WatchlistComponent implements OnInit {
@@ -128,7 +129,9 @@ export class WatchlistComponent implements OnInit {
       status: startingNow ? 'watching' : anime.list_status.status,
       is_rewatching: anime.list_status.is_rewatching,
     } as MyAnimeUpdateExtended;
-    if (startingNow) data.start_date = DateTime.local().toISODate() || undefined;
+    if (startingNow) {
+      data.start_date = DateTime.local().toISODate() || undefined;
+    }
     if (anime.my_extension) anime.my_extension.lastWatchedAt = new Date();
     let completed = false;
     if (currentEpisode + 1 === anime.node.num_episodes) {
@@ -200,7 +203,11 @@ export class WatchlistComponent implements OnInit {
           if (startSequel) {
             await this.animeService.updateAnime(
               { malId: sequel.id },
-              { status: 'completed', is_rewatching: true, num_watched_episodes: 0 },
+              {
+                status: 'completed',
+                is_rewatching: true,
+                num_watched_episodes: 0,
+              },
             );
           }
         } else {
@@ -219,7 +226,10 @@ export class WatchlistComponent implements OnInit {
             false,
           );
           if (status) {
-            const sequelData = { status, is_rewatching: false } as MyAnimeUpdateExtended;
+            const sequelData = {
+              status,
+              is_rewatching: false,
+            } as MyAnimeUpdateExtended;
             if (status === 'watching') {
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
@@ -288,7 +298,9 @@ export class WatchlistComponent implements OnInit {
   filterAnime(anime: ListAnime): boolean {
     const lastWatched = DateTimeFrom(anime.my_extension?.lastWatchedAt || 'yesterday');
     if (['completed', 'dropped'].includes(anime.list_status.status || '')) {
-      if (!anime.list_status.is_rewatching) return lastWatched > this.getLast8am();
+      if (!anime.list_status.is_rewatching) {
+        return lastWatched > this.getLast8am();
+      }
     }
     if (anime.my_extension?.hideWatchlist) return false;
     if (anime.list_status.status === 'plan_to_watch') {

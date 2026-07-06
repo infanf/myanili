@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { LegacyStream } from '@services/anime/livechart.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { LegacyStream } from '@services/anime/livechart.service';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class StreamsComponent implements OnInit {

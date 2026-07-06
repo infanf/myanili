@@ -29,7 +29,7 @@
       <myanili-poster-rating
         [poster]="manga?.main_picture?.large || manga?.main_picture?.medium"
         [meanRating]="meanRating"
-        [rating]="manga?.my_list_status?.score"
+        [rating]="$safeNavigationMigration(manga?.my_list_status?.score)"
       ></myanili-poster-rating>
       <div class="my-3">
         @if (manga?.rank) {
@@ -173,12 +173,16 @@
             @if (manga!.my_list_status?.start_date || manga!.my_list_status?.finish_date) {
               <div class="small text-muted">
                 @if (manga!.my_list_status?.start_date) {
-                  <span>{{ manga!.my_list_status?.start_date | date }}</span>
+                  <span>{{
+                    $safeNavigationMigration(manga!.my_list_status?.start_date) | date
+                  }}</span>
                 }
                 @if (manga!.my_list_status?.start_date !== manga!.my_list_status?.finish_date) {
                   <span> &ndash; </span>
                   @if (manga!.my_list_status?.finish_date) {
-                    <span>{{ manga!.my_list_status?.finish_date | date }}</span>
+                    <span>{{
+                      $safeNavigationMigration(manga!.my_list_status?.finish_date) | date
+                    }}</span>
                   }
                 }
               </div>
@@ -231,16 +235,20 @@
           <div class="col-4 fw-bold text-end">Publisher</div>
           <div class="col-8">
             @if (manga.my_extension?.publisherWebsite) {
-              <a [href]="manga.my_extension?.publisherWebsite" target="_blank" class="link-primary">
+              <a
+                [href]="$safeNavigationMigration(manga.my_extension?.publisherWebsite)"
+                target="_blank"
+                class="link-primary"
+              >
                 <myanili-svg-icon
-                  [alt]="manga.my_extension?.publisher"
+                  [alt]="$safeNavigationMigration(manga.my_extension?.publisher)"
                   [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
                   src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
                 ></myanili-svg-icon>
               </a>
             } @else {
               <myanili-svg-icon
-                [alt]="manga.my_extension?.publisher"
+                [alt]="$safeNavigationMigration(manga.my_extension?.publisher)"
                 [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
                 src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
               ></myanili-svg-icon>
@@ -393,7 +401,9 @@
                   <myanili-icon-bakamanga></myanili-icon-bakamanga>
                   <a
                     class="ms-1"
-                    [ngClass]="{ 'link-secondary': !manga.my_extension?.bakaId }"
+                    [ngClass]="{
+                      'link-secondary': !manga.my_extension?.bakaId,
+                    }"
                     [href]="getBakaUrl()"
                     target="_blank"
                     >Baka-Updates</a
@@ -524,7 +534,9 @@
                       [href]="
                         manga.my_extension?.fandomSlug?.includes('.')
                           ? 'https://' + manga.my_extension!.fandomSlug
-                          : 'https://' + manga.my_extension?.fandomSlug + '.fandom.com/'
+                          : 'https://' +
+                            $safeNavigationMigration(manga.my_extension?.fandomSlug) +
+                            '.fandom.com/'
                       "
                       target="_blank"
                       >Fandom</a

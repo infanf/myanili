@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AnilistWorkCharacter } from '@models/anilist';
 import { AnimeService } from '@services/anime/anime.service';
 
@@ -6,6 +6,7 @@ import { AnimeService } from '@services/anime/anime.service';
   selector: 'myanili-anime-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnimeCharactersComponent implements OnInit {

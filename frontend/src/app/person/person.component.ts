@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnilistStaffDetail } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
@@ -8,6 +8,7 @@ import { GlobalService } from '@services/global.service';
   selector: 'myanili-person',
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PersonComponent {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ExternalComponent } from '@external/external.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { LivechartService } from '@services/anime/livechart.service';
@@ -6,6 +6,7 @@ import { LivechartService } from '@services/anime/livechart.service';
 @Component({
   selector: 'myanili-livechart',
   templateUrl: '../external.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LivechartComponent extends ExternalComponent {

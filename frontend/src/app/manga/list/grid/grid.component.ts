@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ListManga, MangaNode } from '@models/manga';
 import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-manga-grid',
   templateUrl: './grid.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MangaListGridComponent {

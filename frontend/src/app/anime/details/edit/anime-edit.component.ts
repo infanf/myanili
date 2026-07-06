@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 import { StreamPipe } from '@components/stream.pipe';
 import { AnnComponent } from '@external/ann/ann.component';
 import { AnnictComponent } from '@external/annict/annict.component';
@@ -21,6 +21,7 @@ import Timezone from 'timezone-enum';
 @Component({
   selector: 'myanili-anime-edit',
   templateUrl: './anime-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnimeEditComponent implements OnInit {
@@ -257,7 +258,9 @@ export class AnimeEditComponent implements OnInit {
 
   changeWatchlist() {
     const hideWatchlist = !this.editExtension?.hideWatchlist;
-    if (!this.editExtension) this.editExtension = { hideWatchlist, simulcast: {} };
+    if (!this.editExtension) {
+      this.editExtension = { hideWatchlist, simulcast: {} };
+    }
     this.editExtension.hideWatchlist = hideWatchlist;
   }
 
@@ -285,7 +288,9 @@ export class AnimeEditComponent implements OnInit {
     const modal = this.modalService.open(KitsuComponent);
     modal.componentInstance.title = this.anime.title;
     modal.closed.subscribe(value => {
-      if (this.editExtension) this.editExtension.kitsuId = { kitsuId: Number(value) };
+      if (this.editExtension) {
+        this.editExtension.kitsuId = { kitsuId: Number(value) };
+      }
     });
   }
 

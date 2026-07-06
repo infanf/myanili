@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ListAnime, WatchStatus } from '@models/anime';
 import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-anime-grid',
   templateUrl: './grid.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnimeListGridComponent {

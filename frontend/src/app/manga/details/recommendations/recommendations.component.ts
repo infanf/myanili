@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MangaRecommendations, MyMangaStatus, ReadStatus } from '@models/manga';
 import { AnilistService } from '@services/anilist.service';
 
 @Component({
   selector: 'myanili-manga-recommendations',
   templateUrl: './recommendations.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MangaRecommendationsComponent implements OnInit {

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { LivechartService } from '@services/anime/livechart.service';
 import { GlobalService } from '@services/global.service';
 
 @Component({
   selector: 'myanili-livechart-login',
   templateUrl: './livechart-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LivechartLoginComponent implements OnInit {

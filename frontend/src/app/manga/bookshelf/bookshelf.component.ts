@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Weekday } from '@models/components';
 import { ListManga, MyMangaUpdateExtended } from '@models/manga';
 import { DialogueService } from '@services/dialogue.service';
@@ -12,6 +12,7 @@ import { DateTime } from 'luxon';
   selector: 'myanili-bookshelf-wrapper',
   templateUrl: './bookshelf-wrapper.component.html',
   styles: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class BookshelfWrapperComponent implements OnInit {
@@ -58,6 +59,7 @@ function defaultSort(a: ListManga, b: ListManga) {
 @Component({
   selector: '[myanili-bookshelf]',
   templateUrl: './bookshelf.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class BookshelfComponent {
@@ -99,7 +101,9 @@ export class BookshelfComponent {
       this.glob.busy();
       data.status = 'completed';
       data.finish_date = manga.list_status.finish_date || DateTime.local().toISODate() || undefined;
-      if (manga.node.num_chapters) data.num_chapters_read = manga.node.num_chapters;
+      if (manga.node.num_chapters) {
+        data.num_chapters_read = manga.node.num_chapters;
+      }
       if (!manga.list_status?.score) {
         const myScore = await this.dialogue.rating(manga.node.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
@@ -147,7 +151,9 @@ export class BookshelfComponent {
       this.glob.busy();
       data.status = 'completed';
       data.finish_date = manga.list_status.finish_date || DateTime.local().toISODate() || undefined;
-      if (manga.node.num_volumes) data.num_volumes_read = manga.node.num_volumes;
+      if (manga.node.num_volumes) {
+        data.num_volumes_read = manga.node.num_volumes;
+      }
       if (!manga.list_status?.score) {
         const myScore = await this.dialogue.rating(manga.node.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
