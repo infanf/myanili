@@ -5,6 +5,7 @@ import { ExtRating, Weekday } from '@models/components';
 import { Manga, MyMangaUpdateExtended, ReadStatus } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
+import { BangumiService } from '@services/anime/bangumi.service';
 import { AnisearchService } from '@services/anisearch.service';
 import { AnnService } from '@services/ann.service';
 import { CacheService } from '@services/cache.service';
@@ -55,6 +56,7 @@ export class MangaDetailsComponent implements OnInit {
     private baka: MangaupdatesService,
     private mangadex: MangadexService,
     private mangapassion: MangapassionService,
+    private bangumi: BangumiService,
     private mangabaka: MangabakaService,
     private anisearch: AnisearchService,
     private ann: AnnService,
@@ -201,6 +203,15 @@ export class MangaDetailsComponent implements OnInit {
           }),
       );
     }
+    if (!this.manga.my_extension.bangumiId) {
+      promises.push(
+        this.bangumi.getId(manga.alternative_titles?.ja || manga.title, 'manga').then(bangumiId => {
+          if (bangumiId && this?.manga?.my_extension) {
+            this.manga.my_extension.bangumiId = bangumiId;
+          }
+        }),
+      );
+    }
     if (!this.manga.my_extension.mdId) {
       promises.push(
         this.mangadex.getByMalId(this.manga.id, this.manga.title).then(mdmanga => {
@@ -286,6 +297,7 @@ export class MangaDetailsComponent implements OnInit {
           anisearchId: this.manga.my_extension.anisearchId,
           bakaId: this.manga.my_extension.bakaId,
           mangabakaId: this.manga.my_extension.mangabakaId,
+          bangumiId: this.manga.my_extension.bangumiId,
         },
         {
           status: manga.my_list_status.status || 'plan_to_read',
@@ -350,6 +362,7 @@ export class MangaDetailsComponent implements OnInit {
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
         mangabakaId: this.manga.my_extension?.mangabakaId,
+        bangumiId: this.manga.my_extension?.bangumiId,
       },
       data,
     );
@@ -369,6 +382,7 @@ export class MangaDetailsComponent implements OnInit {
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
         mangabakaId: this.manga.my_extension?.mangabakaId,
+        bangumiId: this.manga.my_extension?.bangumiId,
       },
       {
         status: 'completed',
@@ -403,6 +417,7 @@ export class MangaDetailsComponent implements OnInit {
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
         mangabakaId: this.manga.my_extension?.mangabakaId,
+        bangumiId: this.manga.my_extension?.bangumiId,
       },
       {
         status: 'reading',
@@ -484,6 +499,7 @@ export class MangaDetailsComponent implements OnInit {
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
         mangabakaId: this.manga.my_extension?.mangabakaId,
+        bangumiId: this.manga.my_extension?.bangumiId,
       },
       data,
     );
@@ -632,6 +648,11 @@ export class MangaDetailsComponent implements OnInit {
           }
         });
       }
+    }
+    if (!this.getRating('bangumi')) {
+      this.bangumi.getRating(this.manga?.my_extension?.bangumiId).then(rating => {
+        this.setRating('bangumi', rating);
+      });
     }
   }
 

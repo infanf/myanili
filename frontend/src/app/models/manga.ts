@@ -151,6 +151,7 @@ interface MangaExtensionInterface {
   bakaId?: number | string;
   bakaMigrated?: boolean;
   mangabakaId?: number;
+  bangumiId?: number;
   mdId?: string;
   anisearchId?: number;
   annId?: number;

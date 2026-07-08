@@ -1,6 +1,16 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '6.1.0',
+      date: new Date('2026-07-08'),
+      features: [
+        'Bangumi: OAuth login, aligned with the other providers (silent token refresh, plain tab instead of a popup)',
+        'Bangumi: auto-match anime/manga on load, plus manual title search in the edit forms',
+        'Bangumi: sync watch/read status, score and episode/chapter/volume progress',
+      ],
+      fixes: ['Manga: restore missing Bangumi rating/link on details page'],
+    },
+    {
       version: '6.0.0',
       date: new Date('2026-07-08'),
       features: [
