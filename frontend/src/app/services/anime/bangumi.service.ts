@@ -12,6 +12,16 @@ interface BangumiUser {
   avatar?: { large?: string; medium?: string; small?: string };
 }
 
+export interface BangumiSubject {
+  id: number;
+  name: string;
+  name_cn: string;
+  date?: string;
+  summary?: string;
+  meta_tags?: string[];
+  images?: { large?: string; common?: string; medium?: string; small?: string; grid?: string };
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -112,6 +122,41 @@ export class BangumiService {
     localStorage.removeItem('bangumiRefreshToken');
     this.user.next(undefined);
     this.isLoggedIn.next(false);
+  }
+
+  async getAnimes(keyword: string): Promise<BangumiSubject[]> {
+    return this.search(keyword, 2);
+  }
+
+  async getMangas(keyword: string): Promise<BangumiSubject[]> {
+    return this.search(keyword, 1);
+  }
+
+  async getId(title: string, type: 'anime' | 'manga' = 'anime'): Promise<number | undefined> {
+    if (!title) return undefined;
+    const subjects = type === 'anime' ? await this.getAnimes(title) : await this.getMangas(title);
+    const match = subjects.find(subject => subject.name === title || subject.name_cn === title);
+    return match?.id;
+  }
+
+  private async search(keyword: string, type: 1 | 2): Promise<BangumiSubject[]> {
+    if (!keyword) return [];
+    try {
+      const response = await fetch(`${this.baseUrl}/v0/search/subjects?limit=20`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'User-Agent': this.userAgent,
+        },
+        body: JSON.stringify({ keyword, filter: { type: [type] } }),
+      });
+      if (!response.ok) return [];
+      const data = (await response.json()) as { data?: BangumiSubject[] };
+      return data.data || [];
+    } catch {
+      return [];
+    }
   }
 
   async getRating(subjectId: number | undefined): Promise<ExtRating | undefined> {

@@ -203,6 +203,15 @@ export class MangaDetailsComponent implements OnInit {
           }),
       );
     }
+    if (!this.manga.my_extension.bangumiId) {
+      promises.push(
+        this.bangumi.getId(manga.alternative_titles?.ja || manga.title, 'manga').then(bangumiId => {
+          if (bangumiId && this?.manga?.my_extension) {
+            this.manga.my_extension.bangumiId = bangumiId;
+          }
+        }),
+      );
+    }
     if (!this.manga.my_extension.mdId) {
       promises.push(
         this.mangadex.getByMalId(this.manga.id, this.manga.title).then(mdmanga => {

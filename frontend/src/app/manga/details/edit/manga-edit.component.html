@@ -339,14 +339,9 @@
             [disabled]="busy"
             enterkeyhint="done"
           />
-          <a
-            class="btn btn-primary"
-            href="https://bgm.tv/subject/{{ editExtension!.bangumiId }}"
-            target="_blank"
-            [class.disabled]="!editExtension!.bangumiId"
-          >
+          <button class="btn btn-primary" (click)="findBangumi()" [disabled]="busy">
             <myanili-icon-bangumi></myanili-icon-bangumi>
-          </a>
+          </button>
         </div>
       </div>
     </div>

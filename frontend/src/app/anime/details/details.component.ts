@@ -225,6 +225,15 @@ export class AnimeDetailsComponent implements OnInit {
         }),
       );
     }
+    if (!this.anime.my_extension.bangumiId) {
+      promises.push(
+        this.bangumi.getId(anime.alternative_titles?.ja || anime.title, 'anime').then(bangumiId => {
+          if (bangumiId && this?.anime?.my_extension) {
+            this.anime.my_extension.bangumiId = bangumiId;
+          }
+        }),
+      );
+    }
     if (!this.anime.my_extension.livechartId) {
       const livechartPromise = new Promise(async resolve => {
         const livechartId = await this.livechart.getId(this.id, anime.title);
