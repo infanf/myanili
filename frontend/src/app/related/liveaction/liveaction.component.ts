@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { AnisearchRelated, AnisearchService } from '@services/anisearch.service';
 
 @Component({
   selector: 'myanili-liveaction-related',
   templateUrl: './liveaction.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class LiveactionRelatedComponent implements OnInit, OnChanges {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { statusFromMal } from '@models/anilist';
+import { ToasterService } from '@components/toaster/toaster.service';
+import { AnilistWorkCharacter, formatRelationType, statusFromMal } from '@models/anilist';
 import { RelatedAnime } from '@models/anime';
-import { Jikan4MangaCharacter, Jikan4WorkRelation } from '@models/jikan';
 import {
   BakaManga,
   BakaMangaList,
@@ -31,6 +31,25 @@ import { MangaupdatesService } from './mangaupdates.service';
   providedIn: 'root',
 })
 export class MangaService {
+  private readonly updateServiceNames = [
+    null,
+    'AniList',
+    'Kitsu',
+    'aniSearch',
+    'Shikimori',
+    'MangaUpdates',
+    'MangaBaka',
+  ] as const;
+
+  private readonly deleteServiceNames = [
+    null,
+    'AniList',
+    'Kitsu',
+    'aniSearch',
+    'Shikimori',
+    'MangaBaka',
+  ] as const;
+
   constructor(
     private malService: MalService,
     private anilist: AnilistService,
@@ -41,6 +60,7 @@ export class MangaService {
     // @ts-ignore
     private mangabaka: MangabakaService,
     private cache: CacheService,
+    private toaster: ToasterService,
   ) {}
 
   async list(status?: ReadStatus, options?: { limit?: number; offset?: number }) {
@@ -108,7 +128,7 @@ export class MangaService {
     },
     data: MyMangaUpdateExtended,
   ): Promise<MyMangaStatus> {
-    const [malResponse] = await Promise.all([
+    const results = await Promise.allSettled([
       this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
@@ -193,30 +213,35 @@ export class MangaService {
         const state = data.is_rereading ? 'rereading' : this.mangabaka.statusFromMal(data.status);
         if (!state) return;
 
-        try {
-          // Build update object and filter out null/undefined values
-          const updates = {
-            state,
-            progress_chapter: data.num_chapters_read || null,
-            progress_volume: data.num_volumes_read || null,
-            rating: data.score ? Math.round(data.score * 10) : null,
-            start_date: data.start_date || null,
-            finish_date: data.finish_date || null,
-            number_of_rereads: data.num_times_reread || null,
-            note: data.comments || null,
-          };
-          // Remove null/undefined values before sending PATCH request
-          const filteredUpdates = Object.fromEntries(
-            Object.entries(updates).filter(([_, value]) => value != null),
-          );
-          return await this.mangabaka.updateLibraryEntry(ids.mangabakaId, filteredUpdates);
-        } catch (error) {
-          console.error('MangaBaka updateLibraryEntry error:', error);
-          return;
-        }
+        // Build update object and filter out null/undefined values
+        const updates = {
+          state,
+          progress_chapter: data.num_chapters_read || null,
+          progress_volume: data.num_volumes_read || null,
+          rating: data.score ? Math.round(data.score * 10) : null,
+          start_date: data.start_date || null,
+          finish_date: data.finish_date || null,
+          number_of_rereads: data.num_times_reread || null,
+          note: data.comments || null,
+        };
+        // Remove null/undefined values before sending request
+        const filteredUpdates = Object.fromEntries(
+          Object.entries(updates).filter(([_, value]) => value != null),
+        );
+        return await this.mangabaka.upsertLibraryEntry(ids.mangabakaId, filteredUpdates);
       })(),
     ]);
-    return malResponse;
+    const malResult = results[0];
+    if (malResult.status === 'rejected') throw malResult.reason;
+    for (let i = 1; i < results.length; i++) {
+      if (results[i].status === 'rejected') {
+        this.toaster.addError(
+          `${this.updateServiceNames[i]} update failed. Please try again later.`,
+          0,
+        );
+      }
+    }
+    return malResult.value;
   }
 
   async deleteManga(ids: {
@@ -226,7 +251,7 @@ export class MangaService {
     anisearchId?: number;
     mangabakaId?: number;
   }) {
-    await Promise.all([
+    const results = await Promise.allSettled([
       this.malService.delete<boolean>('manga/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
       this.kitsu.deleteEntry(ids.kitsuId, 'manga'),
@@ -234,40 +259,39 @@ export class MangaService {
       this.shikimori.deleteMedia(ids.malId, 'Manga'),
       (async () => {
         if (!ids.mangabakaId) return;
-        try {
-          return await this.mangabaka.removeFromLibrary(ids.mangabakaId);
-        } catch (error) {
-          console.error('MangaBaka removeFromLibrary error:', error);
-          return;
-        }
+        return await this.mangabaka.removeFromLibrary(ids.mangabakaId);
       })(),
     ]);
+    const malResult = results[0];
+    if (malResult.status === 'rejected') throw malResult.reason;
+    for (let i = 1; i < results.length; i++) {
+      if (results[i].status === 'rejected') {
+        this.toaster.addError(
+          `${this.deleteServiceNames[i]} delete failed. Please try again later.`,
+          0,
+        );
+      }
+    }
     return true;
   }
 
   async getAnimes(id: number): Promise<RelatedAnime[]> {
-    const relationTypes =
-      (await this.malService.getJikanData<Jikan4WorkRelation[]>(`manga/${id}/relations`)) || [];
-    const animes = [] as RelatedAnime[];
-    for (const relationType of relationTypes) {
-      for (const related of relationType.entry) {
-        if (related.type === 'anime') {
-          animes.push({
-            node: { id: related.mal_id, title: related.name },
-            relation_type: relationType.relation.replace(' ', '_').toLowerCase(),
-            relation_type_formatted: relationType.relation,
-          });
-        }
-      }
-    }
-    return animes;
+    const anilistId = await this.anilist.getId(id, 'MANGA');
+    if (!anilistId) return [];
+    const relations = await this.anilist.getRelations(anilistId);
+    return relations
+      .filter(relation => relation.node.type === 'ANIME' && relation.node.idMal)
+      .map(relation => ({
+        node: { id: relation.node.idMal as number, title: relation.node.title },
+        relation_type: relation.relationType.toLowerCase(),
+        relation_type_formatted: formatRelationType(relation.relationType),
+      }));
   }
 
-  async getCharacters(id: number): Promise<Jikan4MangaCharacter[]> {
-    const characters = await this.malService.getJikanData<Jikan4MangaCharacter[]>(
-      `manga/${id}/characters`,
-    );
-    return characters || [];
+  async getCharacters(id: number): Promise<AnilistWorkCharacter[]> {
+    const anilistId = await this.anilist.getId(id, 'MANGA');
+    if (!anilistId) return [];
+    return this.anilist.getWorkCharacters(anilistId);
   }
 
   async getBakaManga(id?: number | string): Promise<BakaManga | undefined> {

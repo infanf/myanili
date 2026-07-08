@@ -2,15 +2,15 @@
   @for (role of animes; track role) {
     <myanili-double-card
       [left]="{
-        poster: role.character.images.jpg.image_url,
+        poster: role.character.image,
         title: role.character.name,
         subtitle: role.role,
-        link: '/character/' + role.character.mal_id,
+        link: '/character/' + role.character.id,
       }"
       [right]="{
-        poster: role.anime.images.jpg.image_url,
-        title: role.anime.title,
-        link: '/anime/details/' + role.anime.mal_id,
+        poster: role.media.image,
+        title: role.media.title,
+        link: '/anime/details/' + role.media.idMal,
       }"
     ></myanili-double-card>
   }

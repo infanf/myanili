@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnilistActivity } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-feed',
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class FeedComponent implements OnInit, OnDestroy {
@@ -187,7 +188,10 @@ export class FeedComponent implements OnInit, OnDestroy {
     // Parse markdown to HTML
     if (text) {
       try {
-        const html = marked.parse(text, { async: false, breaks: true }) as string;
+        const html = marked.parse(text, {
+          async: false,
+          breaks: true,
+        }) as string;
         return html;
       } catch (error) {
         console.error('Error parsing markdown:', error);

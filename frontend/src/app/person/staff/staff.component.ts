@@ -1,22 +1,23 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Jikan4PersonAnimes } from '@models/jikan';
-import { MalService } from '@services/mal.service';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { AnilistStaffMediaRole } from '@models/anilist';
+import { AnilistService } from '@services/anilist.service';
 
 @Component({
   selector: 'myanili-person-staff',
   templateUrl: './staff.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PersonStaffComponent implements OnInit {
-  @Input() malId!: number;
-  credits: Jikan4PersonAnimes = [];
+  @Input() personId!: number;
+  credits: AnilistStaffMediaRole[] = [];
 
-  constructor(private mal: MalService) {}
+  constructor(private anilist: AnilistService) {}
 
   async ngOnInit() {
-    const data = await this.mal.getJikanData<Jikan4PersonAnimes>(`people/${this.malId}/anime`);
+    const data = await this.anilist.getPersonMediaRoles(this.personId, 'ANIME');
     if (data?.length) {
-      this.credits = data.sort((a, b) => (a.anime.title < b.anime.title ? -1 : 1));
+      this.credits = data.sort((a, b) => (a.media.title < b.media.title ? -1 : 1));
     }
   }
 }

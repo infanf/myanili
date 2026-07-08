@@ -2,10 +2,10 @@
   @for (anime of credits; track anime) {
     <myanili-double-card
       [left]="{
-        poster: anime.anime.images.webp?.image_url || anime.anime.images.jpg.image_url,
-        title: anime.anime.title,
-        subtitle: anime.position,
-        link: '/anime/details/' + anime.anime.mal_id,
+        poster: anime.media.image,
+        title: anime.media.title,
+        subtitle: anime.role,
+        link: '/anime/details/' + anime.media.idMal,
       }"
     ></myanili-double-card>
   }

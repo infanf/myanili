@@ -1,15 +1,33 @@
 import { Injectable } from '@angular/core';
-import { AnilistNotification, AnilistSaveMedialistEntry, AnilistUser } from '@models/anilist';
+import {
+  AnilistCharacterDetail,
+  AnilistCharacterMediaRole,
+  AnilistCharacterVoiceActor,
+  AnilistMediaRef,
+  AnilistNotification,
+  AnilistSaveMedialistEntry,
+  AnilistStaffDetail,
+  AnilistStaffMediaRole,
+  AnilistStaffVoiceRole,
+  AnilistStudioDetail,
+  AnilistUser,
+  AnilistWorkCharacter,
+  AnilistWorkRelation,
+  AnilistWorkStaff,
+} from '@models/anilist';
 import { ExtRating } from '@models/components';
 import { DialogueService } from '@services/dialogue.service';
 import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+import { AnilistCharacterService } from './anilist/character.service';
 import { AnilistFeedService } from './anilist/feed.service';
 import { AnilistLibraryService } from './anilist/library.service';
 import { AnilistMediaService } from './anilist/media.service';
 import { AnilistNotificationsService } from './anilist/notifications.service';
+import { AnilistPersonService } from './anilist/person.service';
+import { AnilistStudioService } from './anilist/studio.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +41,9 @@ export class AnilistService {
   private anilistNotifications: AnilistNotificationsService;
   private anilistLibrary: AnilistLibraryService;
   private anilistFeed: AnilistFeedService;
+  private anilistCharacter: AnilistCharacterService;
+  private anilistPerson: AnilistPersonService;
+  private anilistStudio: AnilistStudioService;
   private client!: Client;
 
   loggedIn = false;
@@ -60,6 +81,9 @@ export class AnilistService {
     this.anilistNotifications = new AnilistNotificationsService(this.client);
     this.anilistLibrary = new AnilistLibraryService(this.client, this.user);
     this.anilistFeed = new AnilistFeedService(this.client);
+    this.anilistCharacter = new AnilistCharacterService(this.client);
+    this.anilistPerson = new AnilistPersonService(this.client);
+    this.anilistStudio = new AnilistStudioService(this.client);
   }
 
   async login() {
@@ -208,5 +232,56 @@ export class AnilistService {
 
   get feedLoading() {
     return this.anilistFeed.loading;
+  }
+
+  async getExternalWebsite(id: number): Promise<string | undefined> {
+    return this.anilistMedia.getExternalWebsite(id);
+  }
+
+  async getRelations(id: number): Promise<AnilistWorkRelation[]> {
+    return this.anilistMedia.getRelations(id);
+  }
+
+  async getWorkCharacters(id: number): Promise<AnilistWorkCharacter[]> {
+    return this.anilistMedia.getCharacters(id);
+  }
+
+  async getWorkStaff(id: number): Promise<AnilistWorkStaff[]> {
+    return this.anilistMedia.getStaff(id);
+  }
+
+  async getCharacter(id: number): Promise<AnilistCharacterDetail | undefined> {
+    return this.anilistCharacter.getCharacter(id);
+  }
+
+  async getCharacterMediaRoles(
+    id: number,
+    type: 'ANIME' | 'MANGA',
+  ): Promise<AnilistCharacterMediaRole[]> {
+    return this.anilistCharacter.getMediaRoles(id, type);
+  }
+
+  async getCharacterVoiceActors(id: number): Promise<AnilistCharacterVoiceActor[]> {
+    return this.anilistCharacter.getVoiceActors(id);
+  }
+
+  async getPerson(id: number): Promise<AnilistStaffDetail | undefined> {
+    return this.anilistPerson.getPerson(id);
+  }
+
+  async getPersonVoiceRoles(id: number): Promise<AnilistStaffVoiceRole[]> {
+    return this.anilistPerson.getVoiceRoles(id);
+  }
+
+  async getPersonMediaRoles(id: number, type: 'ANIME' | 'MANGA'): Promise<AnilistStaffMediaRole[]> {
+    return this.anilistPerson.getMediaRoles(id, type);
+  }
+
+  async findStudioByName(name: string): Promise<AnilistStudioDetail | undefined> {
+    return this.anilistStudio.findByName(name);
+  }
+
+  async getStudioMedia(id: number): Promise<AnilistMediaRef[]> {
+    return this.anilistStudio.getMedia(id);
   }
 }

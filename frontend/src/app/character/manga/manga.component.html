@@ -2,10 +2,10 @@
   <div class="grid my-2">
     @for (role of roles; track role) {
       <myanili-media-card
-        [poster]="role.manga.images.webp?.image_url || role.manga.images.jpg.image_url"
-        [title]="role.manga.title"
-        routerLink="/manga/details/{{ role.manga.mal_id }}"
-        [icon]="role.role === 'Main' ? 'star-fill' : undefined"
+        [poster]="role.media.image"
+        [title]="role.media.title"
+        routerLink="/manga/details/{{ role.media.idMal }}"
+        [icon]="role.role === 'MAIN' ? 'star-fill' : undefined"
         [attr.title]="role.role"
       ></myanili-media-card>
     }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SettingsComponent } from '@app/settings/settings.component';
 import { AnilistUser } from '@models/anilist';
 import { MalUser } from '@models/user';
@@ -11,6 +11,7 @@ import { NavbarService } from '@services/navbar.service';
   selector: 'myanili-navbar-top',
   templateUrl: './top.component.html',
   styleUrls: ['./top.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class NavbarTopComponent {

@@ -51,6 +51,23 @@ class MalServiceProvider extends ServiceProvider
         return curl_exec($ch);
     }
 
+    private static function getPublic(string $url, $params = null)
+    {
+        if ($params) {
+            $url = $url . '?' . http_build_query($params);
+        }
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi");
+        $headers = ["X-Mal-Client-Id: " . env('MAL_CLIENT_ID')];
+        if (isset($_COOKIE['MAL_ACCESS_TOKEN'])) {
+            array_unshift($headers, "Authorization: Bearer {$_COOKIE['MAL_ACCESS_TOKEN']}");
+        }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        return curl_exec($ch);
+    }
+
     private static function post(string $url, $params = [], $requestType = "POST")
     {
         if (!isset($_COOKIE['MAL_ACCESS_TOKEN'])) {
@@ -81,7 +98,7 @@ class MalServiceProvider extends ServiceProvider
     {
         $params = ['fields' => implode(',', $fields)];
         $response = json_decode(
-            self::get(
+            self::getPublic(
                 implode('/', [self::baseUrl, $type, $id]),
                 $params
             ),
@@ -211,7 +228,7 @@ class MalServiceProvider extends ServiceProvider
             "nsfw" => 1,
         ];
         $response = json_decode(
-            self::get(
+            self::getPublic(
                 self::baseUrl . "/anime/season/$year/{$seasons[$season]}",
                 $params
             ),
@@ -219,7 +236,7 @@ class MalServiceProvider extends ServiceProvider
         );
         $list = $response['data'];
         while ($response['paging'] && isset($response['paging']['next'])) {
-            $response = json_decode(self::get($response['paging']['next']), true);
+            $response = json_decode(self::getPublic($response['paging']['next']), true);
             $list = array_merge($list, $response['data']);
         }
         usort($list, function ($a, $b) {
@@ -349,7 +366,7 @@ class MalServiceProvider extends ServiceProvider
             "nsfw" => 1,
         ];
         $response = json_decode(
-            self::get(
+            self::getPublic(
                 self::baseUrl . "/" . $type,
                 $params
             ),

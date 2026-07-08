@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Button } from '@components/dialogue/dialogue.component';
 import { StreamPipe } from '@components/stream.pipe';
+import { ToasterService } from '@components/toaster/toaster.service';
 import {
   Anime,
   AnimeEpisodeRule,
@@ -28,6 +29,7 @@ import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
+import { MalService } from '@services/mal.service';
 import { ShikimoriService } from '@services/shikimori.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
@@ -39,6 +41,7 @@ import { AnimeEditComponent } from './edit/anime-edit.component';
   selector: 'myanili-anime-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnimeDetailsComponent implements OnInit {
@@ -55,6 +58,7 @@ export class AnimeDetailsComponent implements OnInit {
   @Input() inModal = false;
   streams: LegacyStream[] = [];
   originalLanguage = 'Japanese';
+  loggedIn: string | false = false;
 
   constructor(
     private animeService: AnimeService,
@@ -76,6 +80,8 @@ export class AnimeDetailsComponent implements OnInit {
     private bangumi: BangumiService,
     private cache: CacheService,
     private dialogue: DialogueService,
+    private malService: MalService,
+    private toaster: ToasterService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -95,6 +101,9 @@ export class AnimeDetailsComponent implements OnInit {
     });
     this.annict.user.subscribe(user => {
       this.annictUser = user;
+    });
+    this.malService.loggedIn.subscribe(loggedIn => {
+      if (loggedIn !== '***loading***') this.loggedIn = loggedIn;
     });
   }
 
@@ -399,7 +408,9 @@ export class AnimeDetailsComponent implements OnInit {
       status: this.anime.my_list_status.status,
       is_rewatching: this.anime.my_list_status.is_rewatching,
     } as MyAnimeUpdateExtended;
-    if (this.anime.my_extension) this.anime.my_extension.lastWatchedAt = new Date();
+    if (this.anime.my_extension) {
+      this.anime.my_extension.lastWatchedAt = new Date();
+    }
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
@@ -433,7 +444,7 @@ export class AnimeDetailsComponent implements OnInit {
       }
     }
     data.extension = Base64.encode(JSON.stringify(this.anime.my_extension));
-    const [animeStatus] = await Promise.all([
+    const plusOneResults = await Promise.allSettled([
       this.animeService.updateAnime(
         {
           malId: this.anime.id,
@@ -456,6 +467,15 @@ export class AnimeDetailsComponent implements OnInit {
         currentEpisode + 1,
       ),
     ]);
+    const malPlusOneResult = plusOneResults[0];
+    if (malPlusOneResult.status === 'rejected') throw malPlusOneResult.reason;
+    if (plusOneResults[1].status === 'rejected') {
+      this.toaster.addError('Trakt scrobble failed. Please try again later.', 0);
+    }
+    if (plusOneResults[2].status === 'rejected') {
+      this.toaster.addError('SIMKL scrobble failed. Please try again later.', 0);
+    }
+    const animeStatus = malPlusOneResult.value;
     if (completed) {
       animeStatus.is_rewatching = false;
       const sequels = this.anime.related_anime.filter(
@@ -471,7 +491,11 @@ export class AnimeDetailsComponent implements OnInit {
           if (startSequel) {
             await this.animeService.updateAnime(
               { malId: sequel.id },
-              { status: 'completed', is_rewatching: true, num_watched_episodes: 0 },
+              {
+                status: 'completed',
+                is_rewatching: true,
+                num_watched_episodes: 0,
+              },
             );
           }
         } else {
@@ -667,7 +691,9 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   get meanRating(): number {
-    if (this.anime?.my_list_status?.score) return this.anime?.my_list_status?.score * 10;
+    if (this.anime?.my_list_status?.score) {
+      return this.anime?.my_list_status?.score * 10;
+    }
     let count = 0;
     const weighted = this.ratings.map(rating => {
       count += rating.rating.ratings || 0;

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TraktService } from '@services/anime/trakt.service';
 import { environment } from 'src/environments/environment';
@@ -8,6 +8,7 @@ import { ExternalComponent } from '../external.component';
 @Component({
   selector: 'myanili-trakt',
   templateUrl: '../external.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TraktComponent extends ExternalComponent {

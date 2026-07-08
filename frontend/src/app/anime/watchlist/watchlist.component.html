@@ -26,7 +26,11 @@
             'text-green': anime.list_status.num_episodes_watched === 0,
           }"
         >
-          <td class="cursor-pointer" routerLink="/anime/details/{{ anime.node.id }}">
+          <td
+            class="cursor-pointer"
+            [class.fst-italic]="anime.list_status.status === 'plan_to_watch'"
+            routerLink="/anime/details/{{ anime.node.id }}"
+          >
             {{
               anime.my_extension?.displayName ||
                 ((settings.language$ | async) === 'en'
@@ -61,8 +65,8 @@
           </td>
           <td>
             <myanili-streaming
-              [provider]="anime.my_extension?.externalStreaming"
-              [country]="anime.my_extension?.simulcast?.country"
+              [provider]="$safeNavigationMigration(anime.my_extension?.externalStreaming)"
+              [country]="$safeNavigationMigration(anime.my_extension?.simulcast?.country)"
             ></myanili-streaming>
           </td>
           <td>
@@ -71,7 +75,7 @@
                 ? anime.my_extension?.simulcast?.day?.includes(getLast8am().weekday % 7)
                   ? (anime.my_extension!.simulcast.time!.substr(0, 5)
                     | time: anime.my_extension!.simulcast.tz)
-                  : (getLastDay(anime.my_extension?.simulcast?.day) | day)
+                  : (getLastDay($safeNavigationMigration(anime.my_extension?.simulcast?.day)) | day)
                 : ''
             }}
           </td>

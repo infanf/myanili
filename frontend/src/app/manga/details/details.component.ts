@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformPipe } from '@components/platform.pipe';
 import { ExtRating, Weekday } from '@models/components';
@@ -12,6 +12,7 @@ import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
+import { MalService } from '@services/mal.service';
 import { MangaService } from '@services/manga/manga.service';
 import { MangabakaService } from '@services/manga/mangabaka.service';
 import { MangadexService } from '@services/manga/mangadex.service';
@@ -27,6 +28,7 @@ import { MangaEditComponent } from './edit/manga-edit.component';
   selector: 'myanili-manga-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MangaDetailsComponent implements OnInit {
@@ -41,6 +43,7 @@ export class MangaDetailsComponent implements OnInit {
   activeTab = 1;
   originalLanguage = 'Japanese';
   animePlanetId?: number;
+  loggedIn: string | false = false;
 
   constructor(
     private mangaService: MangaService,
@@ -60,6 +63,7 @@ export class MangaDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private cache: CacheService,
     private dialogue: DialogueService,
+    private malService: MalService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -71,6 +75,9 @@ export class MangaDetailsComponent implements OnInit {
         this.glob.busy();
         await this.ngOnInit();
       }
+    });
+    this.malService.loggedIn.subscribe(loggedIn => {
+      if (loggedIn !== '***loading***') this.loggedIn = loggedIn;
     });
   }
 
@@ -460,8 +467,12 @@ export class MangaDetailsComponent implements OnInit {
       if (this.manga.my_list_status.is_rereading) {
         data.num_times_reread = this.manga.my_list_status.num_times_reread + 1 || 1;
       }
-      if (this.manga.num_chapters) data.num_chapters_read = this.manga.num_chapters;
-      if (this.manga.num_volumes) data.num_volumes_read = this.manga.num_volumes;
+      if (this.manga.num_chapters) {
+        data.num_chapters_read = this.manga.num_chapters;
+      }
+      if (this.manga.num_volumes) {
+        data.num_volumes_read = this.manga.num_volumes;
+      }
       if (!this.manga.my_list_status?.score) {
         const myScore = await this.dialogue.rating(this.manga.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
@@ -632,7 +643,9 @@ export class MangaDetailsComponent implements OnInit {
   }
 
   get meanRating(): number {
-    if (this.manga?.my_list_status?.score) return this.manga?.my_list_status?.score * 10;
+    if (this.manga?.my_list_status?.score) {
+      return this.manga?.my_list_status?.score * 10;
+    }
     let count = 0;
     const weighted = this.ratings.map(rating => {
       count += rating.rating.ratings || 0;
@@ -680,7 +693,9 @@ export class MangaDetailsComponent implements OnInit {
     if (!simulpub) return '';
     return simulpub
       .map(day => {
-        const date = DateTime.local().set({ weekday: this.glob.toWeekday(day) });
+        const date = DateTime.local().set({
+          weekday: this.glob.toWeekday(day),
+        });
         return date.weekdayLong;
       })
       .join(', ');

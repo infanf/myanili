@@ -1,9 +1,9 @@
-@if (related_manga) {
-  @for (type of getRelatedMangas(); track type) {
+@if (relatedGroups.length) {
+  @for (type of relatedGroups; track type.name) {
     <div class="mb-3">
       <strong class="text-dark">{{ type.name }}</strong>
       <div class="grid my-2">
-        @for (manga of type.entries; track manga) {
+        @for (manga of type.entries; track manga.id) {
           <myanili-media-card
             [poster]="manga.main_picture?.medium || manga.main_picture?.large"
             [title]="manga.title"

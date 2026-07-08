@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AnilistUser } from '@models/anilist';
 import { AnilistService } from '@services/anilist.service';
 import { GlobalService } from '@services/global.service';
@@ -6,6 +6,7 @@ import { GlobalService } from '@services/global.service';
 @Component({
   selector: 'myanili-anilist-login',
   templateUrl: './anilist-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnilistLoginComponent implements OnInit {

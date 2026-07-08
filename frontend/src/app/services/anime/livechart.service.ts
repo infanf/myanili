@@ -293,8 +293,7 @@ export class LivechartService {
       }>(MUTATION, { animeId: id, attributes })
       .toPromise();
     if (error || !data) {
-      console.log(error);
-      return;
+      throw new Error(`Livechart: ${error?.message ?? 'unknown error'}`);
     }
   }
 
@@ -337,10 +336,38 @@ export class LivechartService {
       }>(MUTATION, { animeId: id, attributes })
       .toPromise();
     if (error || !data) {
-      console.log(error);
-      return false;
+      throw new Error(`Livechart: ${error?.message ?? 'unknown error'}`);
     }
     return true;
+  }
+
+  async getSkippedAnimeIds(): Promise<number[]> {
+    if (!this.loggedIn) return [];
+    const QUERY = gql`
+      query ViewerSkippedLibrary {
+        viewer {
+          library {
+            nodes {
+              animeDatabaseId
+              status
+            }
+          }
+        }
+      }
+    `;
+    const { data, error } = await this.client
+      .query<{
+        viewer?: {
+          library: {
+            nodes: Array<{ animeDatabaseId: string; status: LivechartStatus }>;
+          };
+        };
+      }>(QUERY, {}, { requestPolicy: 'network-only' })
+      .toPromise();
+    if (error || !data?.viewer) return [];
+    return data.viewer.library.nodes
+      .filter(n => n.status === 'SKIPPING')
+      .map(n => Number(n.animeDatabaseId));
   }
 
   async getStreams(animeId: number): Promise<LegacyStream[]> {

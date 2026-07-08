@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { WatchStatus } from '@models/anime';
 import { ReadStatus } from '@models/manga';
 
@@ -8,6 +8,7 @@ import { IconComponent } from '../icon.component';
   selector: 'myanili-icon-status',
   templateUrl: './icon-status.component.html',
   styleUrls: ['../icon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class IconStatusComponent extends IconComponent implements OnInit {

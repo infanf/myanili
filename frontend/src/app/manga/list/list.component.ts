@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ListManga, ReadStatus } from '@models/manga';
 import { GlobalService } from '@services/global.service';
@@ -8,6 +8,7 @@ import { SettingsService } from '@services/settings.service';
 @Component({
   selector: 'myanili-list',
   templateUrl: './list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MangaListComponent implements OnInit {
@@ -36,7 +37,9 @@ export class MangaListComponent implements OnInit {
         this.glob.setTitle(`Bookshelf – ${newStatus.replace(/_/g, ' ')}`);
         this.glob.busy();
         this.loadedAll = false;
-        this.nextMangas = await this.mangaService.list(this.status, { limit: 50 });
+        this.nextMangas = await this.mangaService.list(this.status, {
+          limit: 50,
+        });
         this.loadMore();
         this.glob.notbusy();
       }

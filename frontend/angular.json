@@ -81,7 +81,8 @@
               "@services/anime/annict.service",
               "@services/anime/livechart.service",
               "@services/shikimori.service",
-              "timestamp-enum"
+              "timezone-enum",
+              "@zma-lab/user-geolocation"
             ],
             "browser": "src/main.ts",
             "preserveSymlinks": false

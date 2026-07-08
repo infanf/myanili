@@ -1,24 +1,70 @@
 export const changelog: Changelog = {
   changes: [
     {
-      version: '2.36.3',
+      version: '6.0.0',
+      date: new Date('2026-07-08'),
+      features: [
+        'Watchlist: show planned titles shortly after they start airing, so you can start watching directly from there',
+        'Character: show gender and age',
+        'Character/Person: link mentions of other characters or staff in the description to their myanili profile',
+      ],
+      fixes: ['Character: Voice Actors tab was always empty'],
+      other: [
+        'Remove Jikan dependency: character, staff, studio and relation data now come from AniList',
+      ],
+    },
+    {
+      version: '5.0.0',
+      date: new Date('2026-07-06'),
+      features: ['Season Planner: review new season shows with a Tinder-style swipe UI'],
+      fixes: ['Anime/Manga: fix change-detection error in related media sections'],
+      other: ['Update dependencies', 'Migrate MangaBaka API URL'],
+    },
+    {
+      version: '4.1.0',
+      date: new Date('2026-04-26'),
+      fixes: [
+        'MangaBaka: correctly add new entries to library (was failing when series not yet tracked)',
+      ],
+    },
+    {
+      version: '4.0.0',
+      date: new Date('2026-04-18'),
+      features: [
+        'Allow browsing without login',
+        'Redirect home to watchlist when logged in',
+        'Switch from hash-based to path-based routing',
+      ],
+      other: [
+        'Improve reliability: fan-outs now use Promise.allSettled with centralized error handling',
+      ],
+    },
+    {
+      version: '3.3.1',
+      date: new Date('2026-03-08'),
+      other: [
+        'Change versioning schema: Even though we are now on version 3, nothing really changed. The first release was named version 2 because it was based on another app that I deemed version 1.',
+      ],
+    },
+    {
+      version: '3.3.0',
       date: new Date('2026-03-06'),
       fixes: ['MangaBaka: implement OAuth login'],
     },
     {
-      version: '2.36.2',
+      version: '3.2.0',
       date: new Date('2026-02-21'),
       fixes: ['aniDB: Bring back ratings', 'Optimize colours of some logos and icons'],
       other: ['Update dependencies'],
     },
     {
-      version: '2.36.1',
+      version: '3.1.0',
       date: new Date('2026-02-17'),
       fixes: ['Manga: mangaupdates rating not showing up on details page'],
       other: ['Update dependencies'],
     },
     {
-      version: '2.36.0',
+      version: '3.0.0',
       date: new Date('2026-01-29'),
       features: [
         'Manga: MangaBaka integration - automatic library synchronization',

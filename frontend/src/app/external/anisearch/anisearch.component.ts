@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnisearchService } from '@services/anisearch.service';
 
@@ -7,6 +7,7 @@ import { ExternalComponent } from '../external.component';
 @Component({
   selector: 'myanili-anisearch',
   templateUrl: '../external.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnisearchComponent extends ExternalComponent {

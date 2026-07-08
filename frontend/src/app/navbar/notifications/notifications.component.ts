@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnilistService } from '@services/anilist.service';
 import { KitsuService } from '@services/kitsu.service';
@@ -18,6 +18,7 @@ import { KitsuService } from '@services/kitsu.service';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class NotificationsComponent implements OnInit, OnDestroy {

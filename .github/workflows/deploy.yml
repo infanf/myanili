@@ -2,7 +2,7 @@ name: Deployment
 on:
   push:
     tags:
-      - '2.*'
+      - '\d+\.\d+\.\d+'
     branches:
       - beta
 
@@ -94,7 +94,7 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
   deploy-production:
-    if: startsWith(github.ref, 'refs/tags/2.')
+    if: startsWith(github.ref, 'refs/tags/')
     needs: build
     runs-on: ubuntu-latest
     steps:

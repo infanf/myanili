@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'myanili-poster-rating',
   templateUrl: './poster-rating.component.html',
   styleUrls: ['./poster-rating.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PosterRatingComponent {

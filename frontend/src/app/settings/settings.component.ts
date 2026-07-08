@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AnilistUser } from '@models/anilist';
 import { BakaUser } from '@models/baka';
 import { KitsuUser } from '@models/kitsu';
@@ -21,6 +21,7 @@ import { ShikimoriService } from '@services/shikimori.service';
 @Component({
   selector: 'myanili-settings',
   templateUrl: './settings.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class SettingsComponent implements OnInit {

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AnnictService } from '@services/anime/annict.service';
 import { GlobalService } from '@services/global.service';
 
 @Component({
   selector: 'myanili-annict-login',
   templateUrl: './annict-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnnictLoginComponent implements OnInit {

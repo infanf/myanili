@@ -1,20 +1,22 @@
 <div class="container my-sm-3 border-sm-x border-sm-y rounded">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
-      {{ character?.name || 'Loading…' }}
-      <a [href]="'https://myanimelist.net/character/' + id" target="_blank">
-        <myanili-icon-mal
-          size="38"
-          style="vertical-align: bottom; line-height: 0.5"
-        ></myanili-icon-mal>
-      </a>
+      {{ character?.name?.full || 'Loading…' }}
+      @if (character?.siteUrl) {
+        <a [href]="$safeNavigationMigration(character?.siteUrl)" target="_blank">
+          <myanili-icon-anilist
+            size="38"
+            style="vertical-align: bottom; line-height: 0.5"
+          ></myanili-icon-anilist>
+        </a>
+      }
     </h2>
   </header>
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
       <picture>
-        @if (character?.images?.jpg?.image_url) {
-          <source srcset="{{ character?.images?.jpg?.image_url }}" />
+        @if (character?.image) {
+          <source srcset="{{ character?.image }}" />
         }
         <source srcset="/assets/blank-poster.svg" />
         <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
@@ -22,20 +24,30 @@
     </div>
     @if (character) {
       <div class="col-sm-7 col-md-8 mb-3">
-        @if (character.name_kanji) {
-          <myanili-value-pair name="Name" [value]="character.name_kanji"></myanili-value-pair>
+        @if (character.name.native) {
+          <myanili-value-pair name="Name" [value]="character.name.native"></myanili-value-pair>
         }
-        @if (character.nicknames.length) {
+        @if (character.name.alternative?.length) {
           <myanili-value-pair name="Nickname">
-            @for (name of character.nicknames; track name) {
+            @for (name of character.name.alternative; track name) {
               <div>{{ name }}</div>
             }
           </myanili-value-pair>
         }
-        @if (character.about) {
+        @if (character.gender) {
+          <myanili-value-pair name="Gender" [value]="character.gender"></myanili-value-pair>
+        }
+        @if (character.age) {
+          <myanili-value-pair name="Age" [value]="character.age"></myanili-value-pair>
+        }
+        @if (character.description) {
           <div class="row">
             <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
-            <div class="col-12 col-md-8" [innerHTML]="character.about || '' | nl2br"></div>
+            <div
+              class="col-12 col-md-8"
+              [innerHTML]="character.description || ''"
+              (click)="onDescriptionClick($event)"
+            ></div>
           </div>
         }
       </div>
@@ -47,19 +59,19 @@
       <li [ngbNavItem]="1">
         <a ngbNavLink>Anime</a>
         <ng-template ngbNavContent>
-          <myanili-character-anime [malId]="id"></myanili-character-anime>
+          <myanili-character-anime [characterId]="id"></myanili-character-anime>
         </ng-template>
       </li>
       <li [ngbNavItem]="2">
         <a ngbNavLink>Manga</a>
         <ng-template ngbNavContent>
-          <myanili-character-manga [malId]="id"></myanili-character-manga>
+          <myanili-character-manga [characterId]="id"></myanili-character-manga>
         </ng-template>
       </li>
       <li [ngbNavItem]="3">
         <a ngbNavLink>Voice Actors</a>
         <ng-template ngbNavContent>
-          <myanili-character-voices [malId]="id"></myanili-character-voices>
+          <myanili-character-voices [characterId]="id"></myanili-character-voices>
         </ng-template>
       </li>
     </ul>

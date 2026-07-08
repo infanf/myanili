@@ -3,10 +3,10 @@
     @for (manga of mangas; track manga) {
       <myanili-double-card
         [left]="{
-          poster: manga.manga.images.webp?.image_url || manga.manga.images.jpg.image_url,
-          title: manga.manga.title,
-          subtitle: manga.position,
-          link: '/manga/details/' + manga.manga.mal_id,
+          poster: manga.media.image,
+          title: manga.media.title,
+          subtitle: manga.role,
+          link: '/manga/details/' + manga.media.idMal,
         }"
       ></myanili-double-card>
     }

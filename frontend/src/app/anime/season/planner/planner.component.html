@@ -1,0 +1,133 @@
+<div class="modal-header">
+  <h5 class="modal-title">Season Planner</h5>
+  <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+</div>
+
+<div class="modal-body p-0 d-flex flex-column align-items-center" style="min-height: 70vh">
+  @if (loading) {
+    <div class="d-flex flex-column align-items-center justify-content-center flex-grow-1">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Laden…</span>
+      </div>
+    </div>
+  } @else if (!current) {
+    <div
+      class="d-flex flex-column align-items-center justify-content-center flex-grow-1 p-4 text-center"
+    >
+      <div class="fs-1 mb-3">🎉</div>
+      <h5>All done!</h5>
+      <p class="text-muted">You've reviewed all shows for this season.</p>
+      <button class="btn btn-primary mt-2" (click)="modal.close()">Close</button>
+    </div>
+  } @else {
+    <div class="w-100 px-3 pt-3">
+      <div class="text-muted text-center small mb-2">
+        {{ remaining }} show{{ remaining === 1 ? '' : 's' }} remaining
+      </div>
+    </div>
+
+    <div
+      class="planner-card-wrapper position-relative"
+      style="width: 100%; max-width: 400px; padding: 0 1rem 1rem"
+    >
+      <!-- Card -->
+      <div
+        class="card shadow"
+        [ngStyle]="cardStyle"
+        (pointerdown)="onPointerDown($event)"
+        (pointermove)="onPointerMove($event)"
+        (pointerup)="onPointerUp($event)"
+        (pointercancel)="onPointerUp($event)"
+        style="cursor: grab; user-select: none; touch-action: none"
+      >
+        <!-- Cover -->
+        @if (current.main_picture?.large || current.main_picture?.medium) {
+          <img
+            [src]="current.main_picture?.large || current.main_picture?.medium"
+            class="card-img-top"
+            style="max-height: 300px; object-fit: cover; pointer-events: none"
+            alt=""
+          />
+        }
+
+        <!-- WATCH / SKIP overlay label -->
+        @if (swipeLabel) {
+          <div
+            class="position-absolute top-0 w-100 d-flex justify-content-center pt-3"
+            [style.opacity]="swipeLabelOpacity"
+          >
+            <span
+              class="badge fs-5 px-3 py-2"
+              [class.bg-success]="swipeLabel === 'WATCH'"
+              [class.bg-danger]="swipeLabel === 'SKIP'"
+            >
+              {{ swipeLabel }}
+            </span>
+          </div>
+        }
+
+        <div class="card-body">
+          <h5 class="card-title mb-1" style="pointer-events: none">{{ current.title }}</h5>
+
+          @if (current.genres?.length) {
+            <div class="mb-2" style="pointer-events: none">
+              @for (genre of current.genres; track genre) {
+                <span class="badge text-bg-primary rounded-pill me-1">{{ genre.name }}</span>
+              }
+            </div>
+          }
+
+          @if (current.studios?.length) {
+            <div class="small text-muted mb-2" style="pointer-events: none">
+              @for (studio of current.studios; track studio) {
+                <span class="dot-between fw-bold">{{ studio.name }}</span>
+              }
+            </div>
+          }
+
+          @if (current.synopsis) {
+            <p
+              class="card-text small hyphens"
+              style="pointer-events: none; max-height: 120px; overflow: hidden"
+            >
+              {{ current.synopsis }}
+            </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="d-flex gap-3 justify-content-center pb-4 mt-2">
+      <button
+        class="btn btn-outline-danger rounded-circle d-flex align-items-center justify-content-center"
+        style="width: 56px; height: 56px"
+        title="Skip"
+        [disabled]="busy"
+        (click)="skip()"
+      >
+        <myanili-icon name="x" size="24"></myanili-icon>
+      </button>
+
+      <button
+        class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
+        style="width: 56px; height: 56px"
+        title="Ask Again Next Session"
+        [disabled]="busy"
+        (click)="askAgain()"
+      >
+        <myanili-icon name="clock" size="24"></myanili-icon>
+      </button>
+
+      <button
+        class="btn btn-outline-success rounded-circle d-flex align-items-center justify-content-center"
+        style="width: 56px; height: 56px"
+        title="Watch"
+        [disabled]="busy"
+        (click)="watch()"
+      >
+        <myanili-icon name="plus" size="24"></myanili-icon>
+      </button>
+    </div>
+  }
+</div>

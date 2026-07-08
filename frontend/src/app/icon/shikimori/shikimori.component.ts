@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IconComponent } from '@icon/icon.component';
 
 @Component({
   selector: 'myanili-icon-shikimori',
   templateUrl: './shikimori.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ShikimoriIconComponent extends IconComponent {

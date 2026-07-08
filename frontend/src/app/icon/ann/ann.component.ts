@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IconComponent } from '@icon/icon.component';
 
 @Component({
   selector: 'myanili-icon-ann',
   templateUrl: './ann.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnnComponent extends IconComponent {

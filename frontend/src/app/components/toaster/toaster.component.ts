@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GlobalService } from '@services/global.service';
 
 import { ToasterService } from './toaster.service';
@@ -7,6 +7,7 @@ import { ToasterService } from './toaster.service';
   selector: 'myanili-toaster',
   templateUrl: './toaster.component.html',
   styleUrls: ['./toaster.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ToasterComponent {

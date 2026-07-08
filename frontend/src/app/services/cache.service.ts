@@ -2,11 +2,21 @@ import { Injectable } from '@angular/core';
 import { Anime } from '@models/anime';
 import { Manga } from '@models/manga';
 
+export type PlannerDecision = 'skip' | 'ask_again';
+
+export interface PlannerEntry {
+  key: string;
+  animeId: number;
+  year: number;
+  season: number;
+  decision: PlannerDecision;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class CacheService {
-  dbVersion = 3;
+  dbVersion = 4;
   constructor() {
     // initialize indexedDB
     const request = indexedDB.open('mal-cache', this.dbVersion);
@@ -24,6 +34,9 @@ export class CacheService {
       }
       if (!db.objectStoreNames.contains('fetchRaw')) {
         db.createObjectStore('fetchRaw', { keyPath: 'url' });
+      }
+      if (!db.objectStoreNames.contains('seasonPlanner')) {
+        db.createObjectStore('seasonPlanner', { keyPath: 'key' });
       }
     };
   }
@@ -143,5 +156,43 @@ export class CacheService {
     const data = await response.json();
     this.fetchToStore(url, data, ttl);
     return data;
+  }
+
+  getPlannerDecision(
+    animeId: number,
+    year: number,
+    season: number,
+  ): Promise<PlannerDecision | undefined> {
+    const key = `${animeId}-${year}-${season}`;
+    return new Promise(resolve => {
+      const request = indexedDB.open('mal-cache', this.dbVersion);
+      request.onsuccess = () => {
+        const db = request.result;
+        const transaction = db.transaction('seasonPlanner', 'readonly');
+        const objectStore = transaction.objectStore('seasonPlanner');
+        const storeRequest = objectStore.get(key);
+        storeRequest.onsuccess = () => {
+          resolve(storeRequest.result?.decision ?? undefined);
+        };
+        storeRequest.onerror = () => resolve(undefined);
+      };
+      request.onerror = () => resolve(undefined);
+    });
+  }
+
+  setPlannerDecision(
+    animeId: number,
+    year: number,
+    season: number,
+    decision: PlannerDecision,
+  ): void {
+    const key = `${animeId}-${year}-${season}`;
+    const entry: PlannerEntry = { key, animeId, year, season, decision };
+    const request = indexedDB.open('mal-cache', this.dbVersion);
+    request.onsuccess = () => {
+      const db = request.result;
+      const transaction = db.transaction('seasonPlanner', 'readwrite');
+      transaction.objectStore('seasonPlanner').put(entry);
+    };
   }
 }

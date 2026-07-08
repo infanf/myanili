@@ -42,6 +42,8 @@ export interface Anime {
     weekday?: number;
     day_of_the_week: string;
     start_time?: string;
+    /** days to add to start_date/end_date to get the local air date (-1, 0 or 1) */
+    dateShift?: number;
   };
   source?: string;
   average_episode_duration?: number;
@@ -140,6 +142,8 @@ export interface AnimeNode {
     weekday?: number;
     day_of_the_week: string;
     start_time?: string;
+    /** days to add to start_date/end_date to get the local air date (-1, 0 or 1) */
+    dateShift?: number;
   };
   start_season?: MalSeason;
   genres?: Genre[];

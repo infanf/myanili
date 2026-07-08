@@ -18,7 +18,7 @@ import { CacheService } from '../cache.service';
   providedIn: 'root',
 })
 export class MangabakaService {
-  private readonly baseUrl = 'https://api.mangabaka.dev/v1';
+  private readonly baseUrl = 'https://api.mangabaka.org/v1';
   private readonly authUrl = `${environment.backend}mangabaka/auth`;
   private accessToken = '';
   private refreshToken = '';
@@ -73,7 +73,7 @@ export class MangabakaService {
     if (!this.accessToken) return null;
 
     try {
-      const response = await fetch(`${environment.backend}mangabaka/userinfo`, {
+      const response = await fetch('https://mangabaka.org/auth/oauth2/userinfo', {
         headers: {
           Authorization: `Bearer ${this.accessToken}`,
         },
@@ -303,6 +303,20 @@ export class MangabakaService {
   }
 
   /**
+   * Add or update library entry
+   */
+  async upsertLibraryEntry(
+    seriesId: number,
+    entry: Partial<MangaBakaLibraryEntry>,
+  ): Promise<MangaBakaLibraryEntry | null> {
+    try {
+      return await this.updateLibraryEntry(seriesId, entry);
+    } catch {
+      return await this.addToLibrary(seriesId, entry);
+    }
+  }
+
+  /**
    * Remove series from library
    */
   async removeFromLibrary(seriesId: number): Promise<boolean> {
@@ -315,7 +329,7 @@ export class MangabakaService {
       return true;
     } catch (error) {
       console.error('MangaBaka removeFromLibrary error:', error);
-      return false;
+      throw error;
     }
   }
 
