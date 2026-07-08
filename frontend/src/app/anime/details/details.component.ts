@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Button } from '@components/dialogue/dialogue.component';
 import { StreamPipe } from '@components/stream.pipe';
@@ -40,6 +40,7 @@ import { AnimeEditComponent } from './edit/anime-edit.component';
   selector: 'myanili-anime-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnimeDetailsComponent implements OnInit {
@@ -405,7 +406,9 @@ export class AnimeDetailsComponent implements OnInit {
       status: this.anime.my_list_status.status,
       is_rewatching: this.anime.my_list_status.is_rewatching,
     } as MyAnimeUpdateExtended;
-    if (this.anime.my_extension) this.anime.my_extension.lastWatchedAt = new Date();
+    if (this.anime.my_extension) {
+      this.anime.my_extension.lastWatchedAt = new Date();
+    }
     let completed = false;
     if (currentEpisode + 1 === this.anime.num_episodes) {
       data.status = 'completed';
@@ -486,7 +489,11 @@ export class AnimeDetailsComponent implements OnInit {
           if (startSequel) {
             await this.animeService.updateAnime(
               { malId: sequel.id },
-              { status: 'completed', is_rewatching: true, num_watched_episodes: 0 },
+              {
+                status: 'completed',
+                is_rewatching: true,
+                num_watched_episodes: 0,
+              },
             );
           }
         } else {
@@ -677,7 +684,9 @@ export class AnimeDetailsComponent implements OnInit {
   }
 
   get meanRating(): number {
-    if (this.anime?.my_list_status?.score) return this.anime?.my_list_status?.score * 10;
+    if (this.anime?.my_list_status?.score) {
+      return this.anime?.my_list_status?.score * 10;
+    }
     let count = 0;
     const weighted = this.ratings.map(rating => {
       count += rating.rating.ratings || 0;

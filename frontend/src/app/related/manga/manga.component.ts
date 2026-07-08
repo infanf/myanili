@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { MangaNode, RelatedManga } from '@models/manga';
 import { MangaService } from '@services/manga/manga.service';
 
@@ -10,6 +10,7 @@ interface RelatedMangaGroup {
 @Component({
   selector: 'myanili-manga-related',
   templateUrl: './manga.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MangaRelatedComponent implements OnChanges {

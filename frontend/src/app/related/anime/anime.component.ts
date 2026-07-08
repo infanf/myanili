@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 import { AnimeNode, RelatedAnime } from '@models/anime';
 import { AnimeService } from '@services/anime/anime.service';
 
@@ -10,6 +10,7 @@ interface RelatedAnimeGroup {
 @Component({
   selector: 'myanili-anime-related',
   templateUrl: './anime.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnimeRelatedComponent implements OnChanges {

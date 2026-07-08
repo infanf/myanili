@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ListAnime, WatchStatus } from '@models/anime';
 import { AnimeService } from '@services/anime/anime.service';
@@ -8,6 +8,7 @@ import { SettingsService } from '@services/settings.service';
 @Component({
   selector: 'myanili-list',
   templateUrl: './list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnimeListComponent {

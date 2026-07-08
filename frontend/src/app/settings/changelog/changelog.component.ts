@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GlobalService } from '@services/global.service';
 
 @Component({
   selector: 'myanili-changelog',
   templateUrl: './changelog.component.html',
   styleUrls: ['./changelog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ChangelogComponent {

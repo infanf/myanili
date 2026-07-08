@@ -1,7 +1,7 @@
 <div class="grid m-2">
   @for (anime of animes; track anime) {
     <myanili-media-card
-      [status]="anime.my_list_status?.status"
+      [status]="$safeNavigationMigration(anime.my_list_status?.status)"
       [poster]="anime.main_picture?.medium || anime.main_picture?.large"
       [title]="
         anime.my_extension?.displayName ||
@@ -13,7 +13,7 @@
         anime.title ||
         ''
       "
-      [progress]="anime.my_list_status?.num_episodes_watched"
+      [progress]="$safeNavigationMigration(anime.my_list_status?.num_episodes_watched)"
       [parts]="anime.num_episodes"
       [mediaType]="anime.media_type"
     >
@@ -66,8 +66,8 @@
           </div>
           @if (anime.my_extension?.externalStreaming) {
             <myanili-streaming
-              [provider]="anime.my_extension?.externalStreaming"
-              [country]="anime.my_extension?.simulcast?.country"
+              [provider]="$safeNavigationMigration(anime.my_extension?.externalStreaming)"
+              [country]="$safeNavigationMigration(anime.my_extension?.simulcast?.country)"
               variant="full"
             ></myanili-streaming>
           }

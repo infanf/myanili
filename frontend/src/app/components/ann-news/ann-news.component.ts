@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AnnNews, AnnService } from '@services/ann.service';
 
 @Component({
   selector: 'myanili-ann-news',
   templateUrl: './ann-news.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnnNewsComponent implements OnInit {

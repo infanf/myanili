@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MalUser } from '@models/user';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
@@ -7,6 +7,7 @@ import { MalService } from '@services/mal.service';
 @Component({
   selector: 'myanili-mal-login',
   templateUrl: './mal-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MalLoginComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SwUpdate, VersionEvent } from '@angular/service-worker';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
@@ -8,6 +8,7 @@ import { MalService } from '@services/mal.service';
   selector: 'myanili-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AppComponent {

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AnisearchService, AnisearchUser } from '@services/anisearch.service';
 import { GlobalService } from '@services/global.service';
 
 @Component({
   selector: 'myanili-anisearch-login',
   templateUrl: './anisearch-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AnisearchLoginComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformPipe } from '@components/platform.pipe';
 import { ExtRating, Weekday } from '@models/components';
@@ -27,6 +27,7 @@ import { MangaEditComponent } from './edit/manga-edit.component';
   selector: 'myanili-manga-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MangaDetailsComponent implements OnInit {
@@ -464,8 +465,12 @@ export class MangaDetailsComponent implements OnInit {
       if (this.manga.my_list_status.is_rereading) {
         data.num_times_reread = this.manga.my_list_status.num_times_reread + 1 || 1;
       }
-      if (this.manga.num_chapters) data.num_chapters_read = this.manga.num_chapters;
-      if (this.manga.num_volumes) data.num_volumes_read = this.manga.num_volumes;
+      if (this.manga.num_chapters) {
+        data.num_chapters_read = this.manga.num_chapters;
+      }
+      if (this.manga.num_volumes) {
+        data.num_volumes_read = this.manga.num_volumes;
+      }
       if (!this.manga.my_list_status?.score) {
         const myScore = await this.dialogue.rating(this.manga.title);
         if (myScore > 0 && myScore <= 10) data.score = myScore;
@@ -631,7 +636,9 @@ export class MangaDetailsComponent implements OnInit {
   }
 
   get meanRating(): number {
-    if (this.manga?.my_list_status?.score) return this.manga?.my_list_status?.score * 10;
+    if (this.manga?.my_list_status?.score) {
+      return this.manga?.my_list_status?.score * 10;
+    }
     let count = 0;
     const weighted = this.ratings.map(rating => {
       count += rating.rating.ratings || 0;
@@ -679,7 +686,9 @@ export class MangaDetailsComponent implements OnInit {
     if (!simulpub) return '';
     return simulpub
       .map(day => {
-        const date = DateTime.local().set({ weekday: this.glob.toWeekday(day) });
+        const date = DateTime.local().set({
+          weekday: this.glob.toWeekday(day),
+        });
         return date.weekdayLong;
       })
       .join(', ');

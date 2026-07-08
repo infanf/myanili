@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ToasterService } from '@components/toaster/toaster.service';
-import { statusFromMal } from '@models/anilist';
+import {
+  AnilistWorkCharacter,
+  AnilistWorkStaff,
+  formatRelationType,
+  statusFromMal,
+} from '@models/anilist';
 import {
   Anime,
   AnimeNode,
@@ -11,7 +16,6 @@ import {
   WatchStatus,
 } from '@models/anime';
 import { Weekday } from '@models/components';
-import { Jikan4AnimeCharacter, Jikan4Staff, Jikan4WorkRelation } from '@models/jikan';
 import { RelatedManga } from '@models/manga';
 import { AnilistService } from '@services/anilist.service';
 import { AnnictService } from '@services/anime/annict.service';
@@ -331,42 +335,34 @@ export class AnimeService {
   }
 
   async getWebsite(id: number): Promise<string | undefined> {
-    const links = await this.malService.getJikanData<Array<{ name: string; url: string }>>(
-      `anime/${id}/external`,
-    );
-    const website = links?.find(link => link.name.includes('Official'));
-    return website?.url;
+    const anilistId = await this.anilist.getId(id, 'ANIME');
+    if (!anilistId) return undefined;
+    return this.anilist.getExternalWebsite(anilistId);
   }
 
   async getManga(id: number): Promise<RelatedManga[]> {
-    const relationTypes = await this.malService.getJikanData<Jikan4WorkRelation[]>(
-      `anime/${id}/relations`,
-    );
-    const mangas = [] as RelatedManga[];
-    for (const relationType of relationTypes) {
-      for (const related of relationType.entry) {
-        if (related.type === 'manga') {
-          mangas.push({
-            node: { id: related.mal_id, title: related.name },
-            relation_type: relationType.relation.replace(' ', '_').toLowerCase(),
-            relation_type_formatted: relationType.relation,
-          });
-        }
-      }
-    }
-    return mangas;
+    const anilistId = await this.anilist.getId(id, 'ANIME');
+    if (!anilistId) return [];
+    const relations = await this.anilist.getRelations(anilistId);
+    return relations
+      .filter(relation => relation.node.type === 'MANGA' && relation.node.idMal)
+      .map(relation => ({
+        node: { id: relation.node.idMal as number, title: relation.node.title },
+        relation_type: relation.relationType.toLowerCase(),
+        relation_type_formatted: formatRelationType(relation.relationType),
+      }));
   }
 
-  async getCharacters(id: number): Promise<Jikan4AnimeCharacter[]> {
-    const characters = await this.malService.getJikanData<Jikan4AnimeCharacter[]>(
-      `anime/${id}/characters`,
-    );
-    return characters || [];
+  async getCharacters(id: number): Promise<AnilistWorkCharacter[]> {
+    const anilistId = await this.anilist.getId(id, 'ANIME');
+    if (!anilistId) return [];
+    return this.anilist.getWorkCharacters(anilistId);
   }
 
-  async getStaff(id: number): Promise<Jikan4Staff[]> {
-    const staff = await this.malService.getJikanData<Jikan4Staff[]>(`anime/${id}/staff`);
-    return staff || [];
+  async getStaff(id: number): Promise<AnilistWorkStaff[]> {
+    const anilistId = await this.anilist.getId(id, 'ANIME');
+    if (!anilistId) return [];
+    return this.anilist.getWorkStaff(anilistId);
   }
 
   /**
@@ -447,9 +443,14 @@ export class AnimeService {
         second: 0,
         millisecond: 0,
       });
-      anime.broadcast.weekday = date.setZone('system').weekday % 7;
-      anime.broadcast.day_of_the_week = date.setZone('system').toFormat('cccc');
-      anime.broadcast.start_time = date.setZone('system').toFormat('HH:mm');
+      const localDate = date.setZone('system');
+      let dateShift = weekday !== undefined ? localDate.weekday - weekday : 0;
+      if (dateShift > 1) dateShift -= 7;
+      if (dateShift < -1) dateShift += 7;
+      anime.broadcast.weekday = localDate.weekday % 7;
+      anime.broadcast.day_of_the_week = localDate.toFormat('cccc');
+      anime.broadcast.start_time = localDate.toFormat('HH:mm');
+      anime.broadcast.dateShift = dateShift;
     }
   }
 

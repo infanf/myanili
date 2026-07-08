@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 import { PlatformPipe } from '@components/platform.pipe';
 import { AnnComponent } from '@external/ann/ann.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
@@ -12,6 +12,7 @@ import { Base64 } from 'js-base64';
 @Component({
   selector: 'myanili-manga-edit',
   templateUrl: './manga-edit.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MangaEditComponent implements OnInit {
@@ -257,7 +258,9 @@ export class MangaEditComponent implements OnInit {
     modal.componentInstance.type = 'manga';
     modal.componentInstance.title = this.manga.title;
     modal.closed.subscribe((value: number) => {
-      if (this.editExtension) this.editExtension.kitsuId = { kitsuId: Number(value) };
+      if (this.editExtension) {
+        this.editExtension.kitsuId = { kitsuId: Number(value) };
+      }
     });
   }
 

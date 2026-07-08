@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ExternalComponent } from '@external/external.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { KitsuService } from '@services/kitsu.service';
@@ -6,6 +6,7 @@ import { KitsuService } from '@services/kitsu.service';
 @Component({
   selector: 'myanili-kitsu',
   templateUrl: '../external.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class KitsuComponent extends ExternalComponent {

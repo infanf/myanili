@@ -2,56 +2,29 @@
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
     <h2>
       {{ title }}
-      <a [href]="'https://myanimelist.net/anime/producer/' + id" target="_blank">
-        <myanili-icon-mal
-          size="38"
-          style="vertical-align: bottom; line-height: 0.5"
-        ></myanili-icon-mal>
-      </a>
+      @if (producer?.siteUrl) {
+        <a [href]="$safeNavigationMigration(producer?.siteUrl)" target="_blank">
+          <myanili-icon-anilist
+            size="38"
+            style="vertical-align: bottom; line-height: 0.5"
+          ></myanili-icon-anilist>
+        </a>
+      }
     </h2>
   </header>
-
-  @if (producer && (producer.images.jpg || producer.about)) {
-    <div class="row">
-      <div class="col-sm-5 col-md-4 mb-3">
-        <picture>
-          @if (producer.images.jpg.image_url) {
-            <source [attr.srcset]="producer.images.jpg.image_url" />
-          }
-          <source srcset="/assets/blank-poster.svg" />
-          <img src="/assets/blank-poster.svg" alt="poster" width="100%" class="rounded" />
-        </picture>
-      </div>
-      <div class="col-sm-7 col-md-8 mb-3">
-        @for (title of producer.titles; track title) {
-          <myanili-value-pair [name]="title.type" [value]="title.title"></myanili-value-pair>
-        }
-        @if (producer.about) {
-          <div class="row">
-            <div class="d-none d-md-block col-md-4 fw-bold text-end">About</div>
-            <div class="col-12 col-md-8" [innerHTML]="producer.about || '' | nl2br"></div>
-          </div>
-        }
-      </div>
-    </div>
-  }
 
   @if (producer) {
     <div class="grid grid-2x">
       @for (anime of animes; track anime) {
         <div
           class="d-flex border rounded justify-content-between cursor-pointer"
-          [routerLink]="'/anime/details/' + anime.mal_id"
+          [routerLink]="'/anime/details/' + anime.idMal"
         >
-          <img
-            loading="lazy"
-            [src]="anime.images?.jpg?.image_url"
-            class="poster rounded-start cursor-pointer"
-          />
+          <img loading="lazy" [src]="anime.image" class="poster rounded-start cursor-pointer" />
           <div class="d-flex flex-fill justify-content-between flex-column p-3">
             <div>
               <div class="fw-bold">{{ anime.title }}</div>
-              <div><span class="text-muted">Type:</span> {{ anime.type }}</div>
+              <div><span class="text-muted">Type:</span> {{ anime.format }}</div>
               <div><span class="text-muted">Source:</span> {{ anime.source }}</div>
             </div>
           </div>

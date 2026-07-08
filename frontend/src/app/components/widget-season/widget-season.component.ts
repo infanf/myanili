@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Season, SeasonNumber } from '@models/components';
 import { GlobalService } from '@services/global.service';
 import { SettingsService } from '@services/settings.service';
@@ -7,6 +7,7 @@ import { SettingsService } from '@services/settings.service';
   selector: 'myanili-widget-season',
   templateUrl: './widget-season.component.html',
   styleUrls: ['./widget-season.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class WidgetSeasonComponent implements OnInit {

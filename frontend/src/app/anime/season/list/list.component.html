@@ -78,8 +78,8 @@
         </td>
         <td routerLink="/anime/details/{{ anime.id }}">
           <myanili-streaming
-            [provider]="anime.my_extension?.externalStreaming"
-            [country]="anime.my_extension?.simulcast?.country"
+            [provider]="$safeNavigationMigration(anime.my_extension?.externalStreaming)"
+            [country]="$safeNavigationMigration(anime.my_extension?.simulcast?.country)"
           ></myanili-streaming>
         </td>
         <td style="white-space: nowrap">

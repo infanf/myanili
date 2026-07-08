@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TraktService } from '@services/anime/trakt.service';
 import { GlobalService } from '@services/global.service';
 
 @Component({
   selector: 'myanili-trakt-login',
   templateUrl: './trakt-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TraktLoginComponent implements OnInit {

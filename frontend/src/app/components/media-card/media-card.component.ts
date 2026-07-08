@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { WatchStatus } from '@models/anime';
 import { ReadStatus } from '@models/manga';
 
@@ -6,6 +6,7 @@ import { ReadStatus } from '@models/manga';
   selector: 'myanili-media-card',
   templateUrl: './media-card.component.html',
   styleUrls: ['./media-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class MediaCardComponent {

@@ -29,7 +29,7 @@
       <myanili-poster-rating
         [poster]="anime?.main_picture?.large || anime?.main_picture?.medium"
         [meanRating]="meanRating"
-        [rating]="anime?.my_list_status?.score"
+        [rating]="$safeNavigationMigration(anime?.my_list_status?.score)"
       ></myanili-poster-rating>
       <div class="my-3">
         @if (anime?.rank) {
@@ -68,23 +68,26 @@
       @if (anime?.alternative_titles?.en) {
         <myanili-value-pair
           name="English"
-          [value]="anime?.alternative_titles?.en"
+          [value]="$safeNavigationMigration(anime?.alternative_titles?.en)"
         ></myanili-value-pair>
       }
       @if (anime?.alternative_titles?.ja) {
         <myanili-value-pair
           name="{{ originalLanguage }}"
-          [value]="anime?.alternative_titles?.ja"
+          [value]="$safeNavigationMigration(anime?.alternative_titles?.ja)"
         ></myanili-value-pair>
       }
       <myanili-value-pair-array
         name="Synonyms"
-        [value]="anime?.alternative_titles?.synonyms"
+        [value]="$safeNavigationMigration(anime?.alternative_titles?.synonyms)"
       ></myanili-value-pair-array>
       @if (anime?.studios && anime!.studios.length) {
         <myanili-value-pair name="Studio">
           @for (studio of anime!.studios; track studio) {
-            <div class="link-primary cursor-pointer" [routerLink]="'/anime/producer/' + studio.id">
+            <div
+              class="link-primary cursor-pointer"
+              [routerLink]="['/anime/producer', studio.name]"
+            >
               {{ studio.name }}
             </div>
           }
@@ -162,12 +165,16 @@
             @if (anime!.my_list_status?.start_date || anime!.my_list_status?.finish_date) {
               <div class="small text-muted">
                 @if (anime!.my_list_status?.start_date) {
-                  <span>{{ anime!.my_list_status?.start_date | date }}</span>
+                  <span>{{
+                    $safeNavigationMigration(anime!.my_list_status?.start_date) | date
+                  }}</span>
                 }
                 @if (anime!.my_list_status?.start_date !== anime!.my_list_status?.finish_date) {
                   <span> &ndash; </span>
                   @if (anime!.my_list_status?.finish_date) {
-                    <span>{{ anime!.my_list_status?.finish_date | date }}</span>
+                    <span>{{
+                      $safeNavigationMigration(anime!.my_list_status?.finish_date) | date
+                    }}</span>
                   }
                 }
               </div>
@@ -257,7 +264,9 @@
             {{ anime.num_episodes || '?' }}
             @if (anime.average_episode_duration) {
               <span>
-                &times; {{ (anime.average_episode_duration || 0) / 60 | number: '1.0-0' }} min
+                &times;
+                {{ (anime.average_episode_duration || 0) / 60 | number: '1.0-0' }}
+                min
               </span>
             }
           </div>
@@ -507,10 +516,13 @@
                 <myanili-icon-livechart></myanili-icon-livechart>
                 <a
                   class="ms-1"
-                  [ngClass]="{ 'link-secondary': !anime.my_extension?.livechartId }"
+                  [ngClass]="{
+                    'link-secondary': !anime.my_extension?.livechartId,
+                  }"
                   [href]="
                     anime.my_extension?.livechartId
-                      ? 'https://www.livechart.me/anime/' + anime.my_extension?.livechartId
+                      ? 'https://www.livechart.me/anime/' +
+                        $safeNavigationMigration(anime.my_extension?.livechartId)
                       : 'https://www.livechart.me/search?q=' + anime.title
                   "
                   target="_blank"

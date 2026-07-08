@@ -2,10 +2,10 @@
   @for (person of persons; track person) {
     <myanili-double-card
       [left]="{
-        poster: person.person.images?.jpg?.image_url || '/assets/blank-poster.svg',
+        poster: person.person.image || '/assets/blank-poster.svg',
         title: person.person.name,
         subtitle: person.positions.join(', '),
-        link: '/person/' + person.person.mal_id,
+        link: '/person/' + person.person.id,
       }"
     ></myanili-double-card>
   }

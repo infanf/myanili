@@ -3,10 +3,10 @@
     @for (actor of actors; track actor) {
       <myanili-double-card
         [left]="{
-          poster: actor.person.images.webp?.image_url || actor.person.images.jpg.image_url,
-          title: actor.person.name,
+          poster: actor.actor.image,
+          title: actor.actor.name,
           subtitle: actor.language,
-          link: '/person/' + actor.person.mal_id,
+          link: '/person/' + actor.actor.id,
         }"
       ></myanili-double-card>
     }

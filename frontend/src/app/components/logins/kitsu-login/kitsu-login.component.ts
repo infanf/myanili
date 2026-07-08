@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { KitsuUser } from '@models/kitsu';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
@@ -6,6 +6,7 @@ import { KitsuService } from '@services/kitsu.service';
 @Component({
   selector: 'myanili-kitsu-login',
   templateUrl: './kitsu-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class KitsuLoginComponent implements OnInit {

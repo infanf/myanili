@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToasterService } from '@components/toaster/toaster.service';
-import { statusFromMal } from '@models/anilist';
+import { AnilistWorkCharacter, formatRelationType, statusFromMal } from '@models/anilist';
 import { RelatedAnime } from '@models/anime';
-import { Jikan4MangaCharacter, Jikan4WorkRelation } from '@models/jikan';
 import {
   BakaManga,
   BakaMangaList,
@@ -277,28 +276,22 @@ export class MangaService {
   }
 
   async getAnimes(id: number): Promise<RelatedAnime[]> {
-    const relationTypes =
-      (await this.malService.getJikanData<Jikan4WorkRelation[]>(`manga/${id}/relations`)) || [];
-    const animes = [] as RelatedAnime[];
-    for (const relationType of relationTypes) {
-      for (const related of relationType.entry) {
-        if (related.type === 'anime') {
-          animes.push({
-            node: { id: related.mal_id, title: related.name },
-            relation_type: relationType.relation.replace(' ', '_').toLowerCase(),
-            relation_type_formatted: relationType.relation,
-          });
-        }
-      }
-    }
-    return animes;
+    const anilistId = await this.anilist.getId(id, 'MANGA');
+    if (!anilistId) return [];
+    const relations = await this.anilist.getRelations(anilistId);
+    return relations
+      .filter(relation => relation.node.type === 'ANIME' && relation.node.idMal)
+      .map(relation => ({
+        node: { id: relation.node.idMal as number, title: relation.node.title },
+        relation_type: relation.relationType.toLowerCase(),
+        relation_type_formatted: formatRelationType(relation.relationType),
+      }));
   }
 
-  async getCharacters(id: number): Promise<Jikan4MangaCharacter[]> {
-    const characters = await this.malService.getJikanData<Jikan4MangaCharacter[]>(
-      `manga/${id}/characters`,
-    );
-    return characters || [];
+  async getCharacters(id: number): Promise<AnilistWorkCharacter[]> {
+    const anilistId = await this.anilist.getId(id, 'MANGA');
+    if (!anilistId) return [];
+    return this.anilist.getWorkCharacters(anilistId);
   }
 
   async getBakaManga(id?: number | string): Promise<BakaManga | undefined> {

@@ -1,8 +1,21 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '6.0.0',
+      date: new Date('2026-07-08'),
+      features: [
+        'Watchlist: show planned titles shortly after they start airing, so you can start watching directly from there',
+        'Character: show gender and age',
+        'Character/Person: link mentions of other characters or staff in the description to their myanili profile',
+      ],
+      fixes: ['Character: Voice Actors tab was always empty'],
+      other: [
+        'Remove Jikan dependency: character, staff, studio and relation data now come from AniList',
+      ],
+    },
+    {
       version: '5.0.0',
-      date: new Date('2026-04-18'),
+      date: new Date('2026-07-06'),
       features: ['Season Planner: review new season shows with a Tinder-style swipe UI'],
       fixes: ['Anime/Manga: fix change-detection error in related media sections'],
       other: ['Update dependencies', 'Migrate MangaBaka API URL'],

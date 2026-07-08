@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { LivechartService, LiveChartVideo } from '@services/anime/livechart.service';
 
 @Component({
   selector: 'myanili-videos',
   templateUrl: './videos.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class VideosComponent implements OnInit {

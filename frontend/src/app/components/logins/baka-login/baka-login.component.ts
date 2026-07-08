@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BakaUser } from '@models/baka';
 import { GlobalService } from '@services/global.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
@@ -6,6 +6,7 @@ import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 @Component({
   selector: 'myanili-baka-login',
   templateUrl: './baka-login.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class BakaLoginComponent implements OnInit {
