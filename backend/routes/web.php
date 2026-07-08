@@ -560,6 +560,25 @@ JAVASCRIPT;
     }
 });
 
+$router->get('/bangumi/token', function () {
+    try {
+        $provider = BangumiServiceProvider::getOauthProvider();
+        $refreshToken = $_GET['refresh_token'];
+        $accessToken = $provider->getAccessToken('refresh_token', [
+            'refresh_token' => $refreshToken,
+        ]);
+        return response()->json([
+            'access_token' => $accessToken->getToken(),
+            'refresh_token' => $accessToken->getRefreshToken(),
+            'expires' => $accessToken->getExpires(),
+        ], 201);
+    } catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+        ], 401);
+    }
+});
+
 $router->get('/bangumi/userinfo', function () {
     $authHeader = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
     if (empty($authHeader)) {
