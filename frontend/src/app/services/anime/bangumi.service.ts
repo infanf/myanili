@@ -78,7 +78,7 @@ export class BangumiService {
       return;
     }
     return new Promise((resolve, reject) => {
-      const popup = window.open(this.authUrl, 'bangumi_auth', 'width=600,height=700');
+      const popup = window.open(this.authUrl);
       const handler = (event: MessageEvent) => {
         if (!event.data?.bangumi) return;
         window.removeEventListener('message', handler);
