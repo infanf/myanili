@@ -134,6 +134,7 @@ export class MangaEditComponent implements OnInit {
           anisearchId: this.manga.my_extension?.anisearchId,
           bakaId: this.manga.my_extension?.bakaId,
           mangabakaId: this.manga.my_extension?.mangabakaId,
+          bangumiId: this.manga.my_extension?.bangumiId,
         },
         updateData,
       );

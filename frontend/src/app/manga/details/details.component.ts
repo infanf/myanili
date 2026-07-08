@@ -297,6 +297,7 @@ export class MangaDetailsComponent implements OnInit {
           anisearchId: this.manga.my_extension.anisearchId,
           bakaId: this.manga.my_extension.bakaId,
           mangabakaId: this.manga.my_extension.mangabakaId,
+          bangumiId: this.manga.my_extension.bangumiId,
         },
         {
           status: manga.my_list_status.status || 'plan_to_read',
@@ -361,6 +362,7 @@ export class MangaDetailsComponent implements OnInit {
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
         mangabakaId: this.manga.my_extension?.mangabakaId,
+        bangumiId: this.manga.my_extension?.bangumiId,
       },
       data,
     );
@@ -380,6 +382,7 @@ export class MangaDetailsComponent implements OnInit {
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
         mangabakaId: this.manga.my_extension?.mangabakaId,
+        bangumiId: this.manga.my_extension?.bangumiId,
       },
       {
         status: 'completed',
@@ -414,6 +417,7 @@ export class MangaDetailsComponent implements OnInit {
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
         mangabakaId: this.manga.my_extension?.mangabakaId,
+        bangumiId: this.manga.my_extension?.bangumiId,
       },
       {
         status: 'reading',
@@ -495,6 +499,7 @@ export class MangaDetailsComponent implements OnInit {
         anisearchId: this.manga.my_extension?.anisearchId,
         bakaId: this.manga.my_extension?.bakaId,
         mangabakaId: this.manga.my_extension?.mangabakaId,
+        bangumiId: this.manga.my_extension?.bangumiId,
       },
       data,
     );

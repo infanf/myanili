@@ -155,6 +155,7 @@ export class AnimeEditComponent implements OnInit {
             season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
           },
           livechartId: this.anime.my_extension?.livechartId,
+          bangumiId: this.anime.my_extension?.bangumiId,
         },
         updateData,
       );

@@ -12,6 +12,7 @@ import {
   MyMangaUpdateExtended,
   ReadStatus,
 } from '@models/manga';
+import { BangumiService } from '@services/anime/bangumi.service';
 import { ShikimoriService } from '@services/shikimori.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
@@ -39,6 +40,7 @@ export class MangaService {
     'Shikimori',
     'MangaUpdates',
     'MangaBaka',
+    'Bangumi',
   ] as const;
 
   private readonly deleteServiceNames = [
@@ -59,6 +61,7 @@ export class MangaService {
     private baka: MangaupdatesService,
     // @ts-ignore
     private mangabaka: MangabakaService,
+    private bangumi: BangumiService,
     private cache: CacheService,
     private toaster: ToasterService,
   ) {}
@@ -125,6 +128,7 @@ export class MangaService {
       anisearchId?: number;
       bakaId?: number | string;
       mangabakaId?: number;
+      bangumiId?: number;
     },
     data: MyMangaUpdateExtended,
   ): Promise<MyMangaStatus> {
@@ -230,6 +234,7 @@ export class MangaService {
         );
         return await this.mangabaka.upsertLibraryEntry(ids.mangabakaId, filteredUpdates);
       })(),
+      this.bangumi.updateEntry(ids.bangumiId, data, 'manga'),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;

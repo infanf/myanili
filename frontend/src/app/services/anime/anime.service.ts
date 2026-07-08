@@ -19,6 +19,7 @@ import { Weekday } from '@models/components';
 import { RelatedManga } from '@models/manga';
 import { AnilistService } from '@services/anilist.service';
 import { AnnictService } from '@services/anime/annict.service';
+import { BangumiService } from '@services/anime/bangumi.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { AnisearchService } from '@services/anisearch.service';
@@ -50,6 +51,7 @@ export class AnimeService {
     'Annict',
     'Trakt',
     'Livechart',
+    'Bangumi',
   ] as const;
 
   private readonly deleteServiceNames = [
@@ -74,6 +76,7 @@ export class AnimeService {
     private annict: AnnictService,
     private trakt: TraktService,
     private livechart: LivechartService,
+    private bangumi: BangumiService,
     private cache: CacheService,
     private settings: SettingsService,
     private dialogue: DialogueService,
@@ -198,6 +201,7 @@ export class AnimeService {
         simklId: anime.my_extension?.simklId,
         annictId: anime.my_extension?.annictId,
         livechartId: anime.my_extension?.livechartId,
+        bangumiId: anime.my_extension?.bangumiId,
       },
       data,
     );
@@ -213,6 +217,7 @@ export class AnimeService {
       annictId?: number;
       trakt?: { id?: string; season?: number };
       livechartId?: number;
+      bangumiId?: number;
     },
     data: MyAnimeUpdateExtended,
   ): Promise<MyAnimeStatus> {
@@ -286,6 +291,7 @@ export class AnimeService {
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
       this.livechart.updateAnime(ids.livechartId, data),
+      this.bangumi.updateEntry(ids.bangumiId, data, 'anime'),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { MyAnimeUpdate, WatchStatus } from '@models/anime';
+import { MyMangaUpdate, ReadStatus } from '@models/manga';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -159,6 +161,80 @@ export class BangumiService {
     }
   }
 
+  async updateEntry(
+    subjectId?: number,
+    data?: Partial<MyAnimeUpdate | MyMangaUpdate> & { status: WatchStatus | ReadStatus },
+    type: 'anime' | 'manga' = 'anime',
+    secondTry = false,
+  ): Promise<void> {
+    if (!subjectId || !data || !this.accessToken) return;
+    const body: { type?: number; rate?: number; ep_status?: number; vol_status?: number } = {
+      type: mapStatus(data.status),
+    };
+    if (data.score) body.rate = data.score;
+    if (type === 'manga') {
+      if ('num_chapters_read' in data) body.ep_status = data.num_chapters_read;
+      if ('num_volumes_read' in data) body.vol_status = data.num_volumes_read;
+    }
+    const response = await fetch(`${this.baseUrl}/v0/users/-/collections/${subjectId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      if (!secondTry && response.status === 401 && (await this.refreshTokens())) {
+        return this.updateEntry(subjectId, data, type, true);
+      }
+      throw new Error(`Bangumi: HTTP ${response.status}`);
+    }
+    if (type === 'anime' && 'num_watched_episodes' in data && data.num_watched_episodes) {
+      await this.updateEpisodes(subjectId, data.num_watched_episodes);
+    }
+  }
+
+  private async updateEpisodes(subjectId: number, watched: number): Promise<void> {
+    const episodeIds = await this.getEpisodeIds(subjectId);
+    const ids = episodeIds.slice(0, watched);
+    if (!ids.length) return;
+    await fetch(`${this.baseUrl}/v0/users/-/collections/${subjectId}/episodes`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+      body: JSON.stringify({ episode_id: ids, type: 2 }),
+    }).catch(() => undefined);
+  }
+
+  private async getEpisodeIds(subjectId: number): Promise<number[]> {
+    const episodes: Array<{ id: number; sort: number }> = [];
+    const limit = 200;
+    let offset = 0;
+    try {
+      for (;;) {
+        const response = await fetch(
+          `${this.baseUrl}/v0/episodes?subject_id=${subjectId}&type=0&limit=${limit}&offset=${offset}`,
+          { headers: { Accept: 'application/json', 'User-Agent': this.userAgent } },
+        );
+        if (!response.ok) break;
+        const page = (await response.json()) as {
+          total?: number;
+          data?: Array<{ id: number; sort: number }>;
+        };
+        if (!page.data?.length) break;
+        episodes.push(...page.data);
+        offset += limit;
+        if (offset >= (page.total || 0)) break;
+      }
+    } catch {
+      return [];
+    }
+    return episodes.sort((a, b) => a.sort - b.sort).map(episode => episode.id);
+  }
+
   async getRating(subjectId: number | undefined): Promise<ExtRating | undefined> {
     if (!subjectId) return undefined;
     try {
@@ -177,5 +253,24 @@ export class BangumiService {
     } catch {
       return undefined;
     }
+  }
+}
+
+function mapStatus(status?: WatchStatus | ReadStatus): number | undefined {
+  switch (status) {
+    case 'watching':
+    case 'reading':
+      return 3;
+    case 'completed':
+      return 2;
+    case 'on_hold':
+      return 4;
+    case 'dropped':
+      return 5;
+    case 'plan_to_watch':
+    case 'plan_to_read':
+      return 1;
+    default:
+      return undefined;
   }
 }

@@ -290,6 +290,7 @@ export class AnimeDetailsComponent implements OnInit {
           anilistId: this.anime.my_extension.anilistId,
           simklId: this.anime.my_extension.simklId,
           annictId: this.anime.my_extension.annictId,
+          bangumiId: this.anime.my_extension.bangumiId,
         },
         {
           status: anime.my_list_status.status,
@@ -377,6 +378,7 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
+        bangumiId: this.anime.my_extension?.bangumiId,
       },
       data,
     );
@@ -397,6 +399,7 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
+        bangumiId: this.anime.my_extension?.bangumiId,
       },
       {
         status: 'completed',
@@ -463,6 +466,7 @@ export class AnimeDetailsComponent implements OnInit {
           simklId: this.anime.my_extension?.simklId,
           annictId: this.anime.my_extension?.annictId,
           livechartId: this.anime.my_extension?.livechartId,
+          bangumiId: this.anime.my_extension?.bangumiId,
           trakt: {
             id: this.anime.my_extension?.trakt,
             season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
@@ -571,6 +575,7 @@ export class AnimeDetailsComponent implements OnInit {
         simklId: this.anime.my_extension?.simklId,
         annictId: this.anime.my_extension?.annictId,
         livechartId: this.anime.my_extension?.livechartId,
+        bangumiId: this.anime.my_extension?.bangumiId,
         trakt: {
           id: this.anime.my_extension?.trakt,
           season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
