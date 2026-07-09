@@ -282,35 +282,24 @@ export class AnimeDetailsComponent implements OnInit {
     if (promises.length && anime.my_extension && anime.my_list_status?.status) {
       // tslint:disable-next-line deprecation
       if ('series' in anime.my_extension) delete anime.my_extension.series;
-      await this.animeService.updateAnime(
-        {
-          malId: anime.id,
-          kitsuId: this.anime.my_extension.kitsuId,
-          anisearchId: this.anime.my_extension.anisearchId,
-          anilistId: this.anime.my_extension.anilistId,
-          simklId: this.anime.my_extension.simklId,
-          annictId: this.anime.my_extension.annictId,
-          bangumiId: this.anime.my_extension.bangumiId,
-        },
-        {
-          status: anime.my_list_status.status,
-          is_rewatching: anime.my_list_status.is_rewatching,
-          extension: Base64.encode(
-            JSON.stringify({
-              ...anime.my_extension,
-              kitsuId: this.anime.my_extension.kitsuId,
-              anilistId: this.anime.my_extension.anilistId,
-              simklId: this.anime.my_extension.simklId,
-              annictId: this.anime.my_extension.annictId,
-              anisearchId: this.anime.my_extension.anisearchId,
-              livechartId: this.anime.my_extension.livechartId,
-              bangumiId: this.anime.my_extension.bangumiId,
-              trakt: this.anime.my_extension.trakt,
-              seasonNumber: this.anime.my_extension.seasonNumber,
-            }),
-          ),
-        },
-      );
+      await this.animeService.updateAnime(this.anime, {
+        status: anime.my_list_status.status,
+        is_rewatching: anime.my_list_status.is_rewatching,
+        extension: Base64.encode(
+          JSON.stringify({
+            ...anime.my_extension,
+            kitsuId: this.anime.my_extension.kitsuId,
+            anilistId: this.anime.my_extension.anilistId,
+            simklId: this.anime.my_extension.simklId,
+            annictId: this.anime.my_extension.annictId,
+            anisearchId: this.anime.my_extension.anisearchId,
+            livechartId: this.anime.my_extension.livechartId,
+            bangumiId: this.anime.my_extension.bangumiId,
+            trakt: this.anime.my_extension.trakt,
+            seasonNumber: this.anime.my_extension.seasonNumber,
+          }),
+        ),
+      });
     }
   }
 
@@ -370,19 +359,7 @@ export class AnimeDetailsComponent implements OnInit {
     if (status === 'watching' && !this.anime.my_list_status?.start_date) {
       data.start_date = DateTime.local().toISODate() || undefined;
     }
-    await this.animeService.updateAnime(
-      {
-        malId: this.anime.id,
-        anilistId: this.anime.my_extension?.anilistId,
-        kitsuId: this.anime.my_extension?.kitsuId,
-        anisearchId: this.anime.my_extension?.anisearchId,
-        simklId: this.anime.my_extension?.simklId,
-        annictId: this.anime.my_extension?.annictId,
-        livechartId: this.anime.my_extension?.livechartId,
-        bangumiId: this.anime.my_extension?.bangumiId,
-      },
-      data,
-    );
+    await this.animeService.updateAnime(this.anime, data);
     await this.ngOnInit();
     this.busy = false;
   }
@@ -391,23 +368,11 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
-    await this.animeService.updateAnime(
-      {
-        malId: this.anime.id,
-        anilistId: this.anime.my_extension?.anilistId,
-        kitsuId: this.anime.my_extension?.kitsuId,
-        anisearchId: this.anime.my_extension?.anisearchId,
-        simklId: this.anime.my_extension?.simklId,
-        annictId: this.anime.my_extension?.annictId,
-        livechartId: this.anime.my_extension?.livechartId,
-        bangumiId: this.anime.my_extension?.bangumiId,
-      },
-      {
-        status: 'completed',
-        is_rewatching: true,
-        num_watched_episodes: 0,
-      },
-    );
+    await this.animeService.updateAnime(this.anime, {
+      status: 'completed',
+      is_rewatching: true,
+      num_watched_episodes: 0,
+    });
     await this.ngOnInit();
     this.busy = false;
   }
@@ -458,23 +423,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     data.extension = Base64.encode(JSON.stringify(this.anime.my_extension));
     const plusOneResults = await Promise.allSettled([
-      this.animeService.updateAnime(
-        {
-          malId: this.anime.id,
-          anilistId: this.anime.my_extension?.anilistId,
-          kitsuId: this.anime.my_extension?.kitsuId,
-          anisearchId: this.anime.my_extension?.anisearchId,
-          simklId: this.anime.my_extension?.simklId,
-          annictId: this.anime.my_extension?.annictId,
-          livechartId: this.anime.my_extension?.livechartId,
-          bangumiId: this.anime.my_extension?.bangumiId,
-          trakt: {
-            id: this.anime.my_extension?.trakt,
-            season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
-          },
-        },
-        data,
-      ),
+      this.animeService.updateAnime(this.anime, data),
       this.scrobbleTrakt(data),
       this.simkl.scrobble(
         { simkl: this.anime.my_extension?.simklId, mal: this.anime.id },
@@ -503,14 +452,11 @@ export class AnimeDetailsComponent implements OnInit {
             'Rewatch sequel',
           );
           if (startSequel) {
-            await this.animeService.updateAnime(
-              { malId: sequel.id },
-              {
-                status: 'completed',
-                is_rewatching: true,
-                num_watched_episodes: 0,
-              },
-            );
+            await this.animeService.updateAnime(sequel, {
+              status: 'completed',
+              is_rewatching: true,
+              num_watched_episodes: 0,
+            });
           }
         } else {
           const futureShow =
@@ -535,7 +481,7 @@ export class AnimeDetailsComponent implements OnInit {
             if (status === 'watching') {
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
-            await this.animeService.updateAnime({ malId: sequel.id }, sequelData);
+            await this.animeService.updateAnime(sequel, sequelData);
           }
         }
         this.ngOnInit();
@@ -567,23 +513,7 @@ export class AnimeDetailsComponent implements OnInit {
       status: this.anime.my_list_status.status,
       is_rewatching: this.anime.my_list_status.is_rewatching,
     } as MyAnimeUpdateExtended;
-    await this.animeService.updateAnime(
-      {
-        malId: this.anime.id,
-        anilistId: this.anime.my_extension?.anilistId,
-        kitsuId: this.anime.my_extension?.kitsuId,
-        anisearchId: this.anime.my_extension?.anisearchId,
-        simklId: this.anime.my_extension?.simklId,
-        annictId: this.anime.my_extension?.annictId,
-        livechartId: this.anime.my_extension?.livechartId,
-        bangumiId: this.anime.my_extension?.bangumiId,
-        trakt: {
-          id: this.anime.my_extension?.trakt,
-          season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
-        },
-      },
-      data,
-    );
+    await this.animeService.updateAnime(this.anime, data);
     this.glob.notbusy();
   }
 
@@ -620,16 +550,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     this.glob.busy();
     this.busy = true;
-    await this.animeService.deleteAnime({
-      malId: this.anime.id,
-      anilistId: this.anime.my_extension?.anilistId,
-      kitsuId: this.anime.my_extension?.kitsuId,
-      anisearchId: this.anime.my_extension?.anisearchId,
-      simklId: this.anime.my_extension?.simklId,
-      annictId: this.anime.my_extension?.annictId,
-      traktId: this.anime.my_extension?.trakt,
-      livechartId: this.anime.my_extension?.livechartId,
-    });
+    await this.animeService.deleteAnime(this.anime);
     this.ngOnInit();
     this.glob.notbusy();
     this.busy = false;

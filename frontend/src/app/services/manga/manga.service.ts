@@ -120,18 +120,26 @@ export class MangaService {
     return manga;
   }
 
-  async updateManga(
-    ids: {
-      malId: number;
-      anilistId?: number;
-      kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-      anisearchId?: number;
-      bakaId?: number | string;
-      mangabakaId?: number;
-      bangumiId?: number;
-    },
-    data: MyMangaUpdateExtended,
-  ): Promise<MyMangaStatus> {
+  /**
+   * Collect all external provider ids for a manga from its extension, so callers
+   * only need to hand over the whole entry instead of assembling the id list.
+   */
+  private extractMangaIds(manga: Manga | ListManga) {
+    const malId = 'node' in manga ? manga.node.id : manga.id;
+    const ext = manga.my_extension;
+    return {
+      malId,
+      anilistId: ext?.anilistId,
+      kitsuId: ext?.kitsuId,
+      anisearchId: ext?.anisearchId,
+      bakaId: ext?.bakaId,
+      mangabakaId: ext?.mangabakaId,
+      bangumiId: ext?.bangumiId,
+    };
+  }
+
+  async updateManga(manga: Manga | ListManga, data: MyMangaUpdateExtended): Promise<MyMangaStatus> {
+    const ids = this.extractMangaIds(manga);
     const results = await Promise.allSettled([
       this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
       (async () => {
@@ -249,13 +257,8 @@ export class MangaService {
     return malResult.value;
   }
 
-  async deleteManga(ids: {
-    malId: number;
-    anilistId?: number;
-    kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-    anisearchId?: number;
-    mangabakaId?: number;
-  }) {
+  async deleteManga(manga: Manga | ListManga) {
+    const ids = this.extractMangaIds(manga);
     const results = await Promise.allSettled([
       this.malService.delete<boolean>('manga/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),

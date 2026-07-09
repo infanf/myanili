@@ -142,23 +142,7 @@ export class AnimeEditComponent implements OnInit {
         updateData.finish_date = this.editBackup?.finish_date;
       }
 
-      await this.animeService.updateAnime(
-        {
-          malId: this.anime.id,
-          anilistId: this.anime.my_extension?.anilistId,
-          kitsuId: this.anime.my_extension?.kitsuId,
-          anisearchId: this.anime.my_extension?.anisearchId,
-          simklId: this.anime.my_extension?.simklId,
-          annictId: this.anime.my_extension?.annictId,
-          trakt: {
-            id: this.anime.my_extension?.trakt,
-            season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
-          },
-          livechartId: this.anime.my_extension?.livechartId,
-          bangumiId: this.anime.my_extension?.bangumiId,
-        },
-        updateData,
-      );
+      await this.animeService.updateAnime(this.anime, updateData);
 
       this.busy = false;
       this.modal.close(true); // Signal success
@@ -210,16 +194,7 @@ export class AnimeEditComponent implements OnInit {
 
     this.busy = true;
     try {
-      await this.animeService.deleteAnime({
-        malId: this.anime.id,
-        anilistId: this.anime.my_extension?.anilistId,
-        kitsuId: this.anime.my_extension?.kitsuId,
-        anisearchId: this.anime.my_extension?.anisearchId,
-        simklId: this.anime.my_extension?.simklId,
-        annictId: this.anime.my_extension?.annictId,
-        traktId: this.anime.my_extension?.trakt,
-        livechartId: this.anime.my_extension?.livechartId,
-      });
+      await this.animeService.deleteAnime(this.anime);
       this.modal.close('deleted'); // Signal deletion to parent
     } catch (error: unknown) {
       this.busy = false;

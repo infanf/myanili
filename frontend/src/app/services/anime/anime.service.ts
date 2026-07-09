@@ -192,35 +192,34 @@ export class AnimeService {
         data.extension = Base64.encode(JSON.stringify({ episodeRule }));
       }
     }
-    return await this.updateAnime(
-      {
-        malId: anime.id,
-        anilistId: anime.my_extension?.anilistId,
-        kitsuId: anime.my_extension?.kitsuId,
-        anisearchId: anime.my_extension?.anisearchId,
-        simklId: anime.my_extension?.simklId,
-        annictId: anime.my_extension?.annictId,
-        livechartId: anime.my_extension?.livechartId,
-        bangumiId: anime.my_extension?.bangumiId,
-      },
-      data,
-    );
+    return await this.updateAnime(anime as Anime, data);
   }
 
-  async updateAnime(
-    ids: {
-      malId: number;
-      anilistId?: number;
-      kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-      anisearchId?: number;
-      simklId?: number;
-      annictId?: number;
-      trakt?: { id?: string; season?: number };
-      livechartId?: number;
-      bangumiId?: number;
-    },
-    data: MyAnimeUpdateExtended,
-  ): Promise<MyAnimeStatus> {
+  /**
+   * Collect all external provider ids for an anime from its extension, so callers
+   * only need to hand over the whole entry instead of assembling the id list.
+   */
+  private extractAnimeIds(anime: Anime | ListAnime) {
+    const node: Anime | AnimeNode = 'node' in anime ? anime.node : anime;
+    const ext = anime.my_extension;
+    return {
+      malId: node.id,
+      anilistId: ext?.anilistId,
+      kitsuId: ext?.kitsuId,
+      anisearchId: ext?.anisearchId,
+      simklId: ext?.simklId,
+      annictId: ext?.annictId,
+      trakt: {
+        id: ext?.trakt,
+        season: node.media_type === 'movie' ? -1 : ext?.seasonNumber,
+      },
+      livechartId: ext?.livechartId,
+      bangumiId: ext?.bangumiId,
+    };
+  }
+
+  async updateAnime(anime: Anime | ListAnime, data: MyAnimeUpdateExtended): Promise<MyAnimeStatus> {
+    const ids = this.extractAnimeIds(anime);
     const results = await Promise.allSettled([
       this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),
       (async () => {
@@ -306,16 +305,8 @@ export class AnimeService {
     return malResult.value;
   }
 
-  async deleteAnime(ids: {
-    malId: number;
-    anilistId?: number;
-    kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-    anisearchId?: number;
-    simklId?: number;
-    annictId?: number;
-    traktId?: string;
-    livechartId?: number;
-  }) {
+  async deleteAnime(anime: Anime | ListAnime) {
+    const ids = this.extractAnimeIds(anime);
     const results = await Promise.allSettled([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
@@ -324,7 +315,7 @@ export class AnimeService {
       this.shikimori.deleteMedia(ids.malId, 'Anime'),
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
-      this.trakt.drop(ids.traktId),
+      this.trakt.drop(ids.trakt?.id),
       this.livechart.deleteAnime(ids.livechartId),
     ]);
     const malResult = results[0];

@@ -126,18 +126,7 @@ export class MangaEditComponent implements OnInit {
         updateData.finish_date = this.editBackup?.finish_date;
       }
 
-      await this.mangaService.updateManga(
-        {
-          malId: this.manga.id,
-          anilistId: this.manga.my_extension?.anilistId,
-          kitsuId: this.manga.my_extension?.kitsuId,
-          anisearchId: this.manga.my_extension?.anisearchId,
-          bakaId: this.manga.my_extension?.bakaId,
-          mangabakaId: this.manga.my_extension?.mangabakaId,
-          bangumiId: this.manga.my_extension?.bangumiId,
-        },
-        updateData,
-      );
+      await this.mangaService.updateManga(this.manga, updateData);
 
       this.busy = false;
       this.modal.close(true); // Signal success
@@ -189,12 +178,7 @@ export class MangaEditComponent implements OnInit {
 
     this.busy = true;
     try {
-      await this.mangaService.deleteManga({
-        malId: this.manga.id,
-        anilistId: this.manga.my_extension?.anilistId,
-        kitsuId: this.manga.my_extension?.kitsuId,
-        anisearchId: this.manga.my_extension?.anisearchId,
-      });
+      await this.mangaService.deleteManga(this.manga);
       this.modal.close('deleted'); // Signal deletion to parent
     } catch (error: unknown) {
       this.busy = false;

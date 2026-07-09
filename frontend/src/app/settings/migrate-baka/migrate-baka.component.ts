@@ -71,14 +71,11 @@ export class MigrateBakaComponent {
         extension.bakaId = bakaId;
         extension.bakaMigrated = true;
         const comments = Base64.encode(JSON.stringify(extension));
-        await this.manga.updateManga(
-          { malId: manga.node.id },
-          {
-            comments,
-            status: manga.list_status.status || 'plan_to_read',
-            is_rereading: manga.list_status.is_rereading,
-          },
-        );
+        await this.manga.updateManga(manga, {
+          comments,
+          status: manga.list_status.status || 'plan_to_read',
+          is_rereading: manga.list_status.is_rereading,
+        });
       }
     }
     this.migrating = false;

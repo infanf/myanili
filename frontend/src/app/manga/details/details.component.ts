@@ -289,35 +289,24 @@ export class MangaDetailsComponent implements OnInit {
     }
     await Promise.all(promises);
     if (promises.length && manga.my_extension && manga.my_list_status) {
-      await this.mangaService.updateManga(
-        {
-          malId: manga.id,
-          kitsuId: this.manga.my_extension.kitsuId,
-          anilistId: this.manga.my_extension.anilistId,
-          anisearchId: this.manga.my_extension.anisearchId,
-          bakaId: this.manga.my_extension.bakaId,
-          mangabakaId: this.manga.my_extension.mangabakaId,
-          bangumiId: this.manga.my_extension.bangumiId,
-        },
-        {
-          status: manga.my_list_status.status || 'plan_to_read',
-          is_rereading: manga.my_list_status.is_rereading,
-          extension: Base64.encode(
-            JSON.stringify({
-              ...manga.my_extension,
-              kitsuId: this.manga.my_extension.kitsuId,
-              anilistId: this.manga.my_extension.anilistId,
-              anisearchId: this.manga.my_extension.anisearchId,
-              bakaId: this.manga.my_extension.bakaId,
-              mangabakaId: this.manga.my_extension.mangabakaId,
-              bangumiId: this.manga.my_extension.bangumiId,
-              annId: this.manga.my_extension.annId,
-              mdId: this.manga.my_extension.mdId,
-              mpasId: this.manga.my_extension.mpasId,
-            }),
-          ),
-        },
-      );
+      await this.mangaService.updateManga(this.manga, {
+        status: manga.my_list_status.status || 'plan_to_read',
+        is_rereading: manga.my_list_status.is_rereading,
+        extension: Base64.encode(
+          JSON.stringify({
+            ...manga.my_extension,
+            kitsuId: this.manga.my_extension.kitsuId,
+            anilistId: this.manga.my_extension.anilistId,
+            anisearchId: this.manga.my_extension.anisearchId,
+            bakaId: this.manga.my_extension.bakaId,
+            mangabakaId: this.manga.my_extension.mangabakaId,
+            bangumiId: this.manga.my_extension.bangumiId,
+            annId: this.manga.my_extension.annId,
+            mdId: this.manga.my_extension.mdId,
+            mpasId: this.manga.my_extension.mpasId,
+          }),
+        ),
+      });
     }
   }
 
@@ -355,18 +344,7 @@ export class MangaDetailsComponent implements OnInit {
     if (status === 'reading' && !this.manga.my_list_status?.start_date) {
       data.start_date = DateTime.local().toISODate() || undefined;
     }
-    await this.mangaService.updateManga(
-      {
-        malId: this.manga.id,
-        anilistId: this.manga.my_extension?.anilistId,
-        kitsuId: this.manga.my_extension?.kitsuId,
-        anisearchId: this.manga.my_extension?.anisearchId,
-        bakaId: this.manga.my_extension?.bakaId,
-        mangabakaId: this.manga.my_extension?.mangabakaId,
-        bangumiId: this.manga.my_extension?.bangumiId,
-      },
-      data,
-    );
+    await this.mangaService.updateManga(this.manga, data);
     await this.ngOnInit();
     this.busy = false;
   }
@@ -375,23 +353,12 @@ export class MangaDetailsComponent implements OnInit {
     if (!this.manga) return;
     this.glob.busy();
     this.busy = true;
-    await this.mangaService.updateManga(
-      {
-        malId: this.manga.id,
-        anilistId: this.manga.my_extension?.anilistId,
-        kitsuId: this.manga.my_extension?.kitsuId,
-        anisearchId: this.manga.my_extension?.anisearchId,
-        bakaId: this.manga.my_extension?.bakaId,
-        mangabakaId: this.manga.my_extension?.mangabakaId,
-        bangumiId: this.manga.my_extension?.bangumiId,
-      },
-      {
-        status: 'completed',
-        is_rereading: true,
-        num_chapters_read: 0,
-        num_volumes_read: 0,
-      },
-    );
+    await this.mangaService.updateManga(this.manga, {
+      status: 'completed',
+      is_rereading: true,
+      num_chapters_read: 0,
+      num_volumes_read: 0,
+    });
     await this.ngOnInit();
     this.busy = false;
   }
@@ -410,24 +377,13 @@ export class MangaDetailsComponent implements OnInit {
       this.glob.notbusy();
       return;
     }
-    await this.mangaService.updateManga(
-      {
-        malId: this.manga.id,
-        anilistId: this.manga.my_extension?.anilistId,
-        kitsuId: this.manga.my_extension?.kitsuId,
-        anisearchId: this.manga.my_extension?.anisearchId,
-        bakaId: this.manga.my_extension?.bakaId,
-        mangabakaId: this.manga.my_extension?.mangabakaId,
-        bangumiId: this.manga.my_extension?.bangumiId,
-      },
-      {
-        status: 'reading',
-        is_rereading: false,
-        num_chapters_read: 0,
-        num_volumes_read: 0,
-        start_date: DateTime.local().toISODate() || undefined,
-      },
-    );
+    await this.mangaService.updateManga(this.manga, {
+      status: 'reading',
+      is_rereading: false,
+      num_chapters_read: 0,
+      num_volumes_read: 0,
+      start_date: DateTime.local().toISODate() || undefined,
+    });
     await this.ngOnInit();
     this.busy = false;
   }
@@ -492,18 +448,7 @@ export class MangaDetailsComponent implements OnInit {
         if (myScore > 0 && myScore <= 10) data.score = myScore;
       }
     }
-    const statusResponse = await this.mangaService.updateManga(
-      {
-        malId: this.manga.id,
-        anilistId: this.manga.my_extension?.anilistId,
-        kitsuId: this.manga.my_extension?.kitsuId,
-        anisearchId: this.manga.my_extension?.anisearchId,
-        bakaId: this.manga.my_extension?.bakaId,
-        mangabakaId: this.manga.my_extension?.mangabakaId,
-        bangumiId: this.manga.my_extension?.bangumiId,
-      },
-      data,
-    );
+    const statusResponse = await this.mangaService.updateManga(this.manga, data);
     this.manga.my_list_status.num_chapters_read = statusResponse.num_chapters_read;
     this.manga.my_list_status.num_volumes_read = statusResponse.num_volumes_read;
     this.manga.my_list_status.status = statusResponse.status;
@@ -528,13 +473,7 @@ export class MangaDetailsComponent implements OnInit {
     }
     this.glob.busy();
     this.busy = true;
-    await this.mangaService.deleteManga({
-      malId: this.manga.id,
-      anilistId: this.manga.my_extension?.anilistId,
-      kitsuId: this.manga.my_extension?.kitsuId,
-      anisearchId: this.manga.my_extension?.anisearchId,
-      mangabakaId: this.manga.my_extension?.mangabakaId,
-    });
+    await this.mangaService.deleteManga(this.manga);
     await this.ngOnInit();
     this.glob.notbusy();
     this.busy = false;

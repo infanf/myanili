@@ -167,23 +167,7 @@ export class WatchlistComponent implements OnInit {
     data.extension = Base64.encode(JSON.stringify(anime.my_extension));
     const fullAnime = await this.animeService.getAnime(anime.node.id);
     const [animeStatus] = await Promise.all([
-      this.animeService.updateAnime(
-        {
-          malId: anime.node.id,
-          anilistId: anime.my_extension?.anilistId,
-          kitsuId: anime.my_extension?.kitsuId,
-          anisearchId: anime.my_extension?.anisearchId,
-          simklId: anime.my_extension?.simklId,
-          annictId: anime.my_extension?.annictId,
-          trakt: {
-            id: anime.my_extension?.trakt,
-            season: anime.node.media_type === 'movie' ? -1 : anime.my_extension?.seasonNumber,
-          },
-          livechartId: anime.my_extension?.livechartId,
-          bangumiId: anime.my_extension?.bangumiId,
-        },
-        data,
-      ),
+      this.animeService.updateAnime(anime, data),
       this.scrobbleTrakt(fullAnime, currentEpisode + 1),
       this.simkl.scrobble(
         { simkl: anime.my_extension?.simklId, mal: anime.node.id },
@@ -202,14 +186,11 @@ export class WatchlistComponent implements OnInit {
             'Rewatch sequel',
           );
           if (startSequel) {
-            await this.animeService.updateAnime(
-              { malId: sequel.id },
-              {
-                status: 'completed',
-                is_rewatching: true,
-                num_watched_episodes: 0,
-              },
-            );
+            await this.animeService.updateAnime(sequel, {
+              status: 'completed',
+              is_rewatching: true,
+              num_watched_episodes: 0,
+            });
           }
         } else {
           const futureShow =
@@ -234,7 +215,7 @@ export class WatchlistComponent implements OnInit {
             if (status === 'watching') {
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
-            await this.animeService.updateAnime({ malId: sequel.id }, sequelData);
+            await this.animeService.updateAnime(sequel, sequelData);
           }
         }
         this.ngOnInit();
