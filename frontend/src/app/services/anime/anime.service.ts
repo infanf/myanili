@@ -64,6 +64,7 @@ export class AnimeService {
     'Annict',
     'Trakt',
     'Livechart',
+    'Bangumi',
   ] as const;
 
   constructor(
@@ -317,6 +318,7 @@ export class AnimeService {
       this.annict.updateStatus(ids.annictId, 'no_select'),
       this.trakt.drop(ids.trakt?.id),
       this.livechart.deleteAnime(ids.livechartId),
+      this.bangumi.deleteEntry(ids.bangumiId),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;

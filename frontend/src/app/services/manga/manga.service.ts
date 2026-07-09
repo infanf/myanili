@@ -50,6 +50,7 @@ export class MangaService {
     'aniSearch',
     'Shikimori',
     'MangaBaka',
+    'Bangumi',
   ] as const;
 
   constructor(
@@ -269,6 +270,7 @@ export class MangaService {
         if (!ids.mangabakaId) return;
         return await this.mangabaka.removeFromLibrary(ids.mangabakaId);
       })(),
+      this.bangumi.deleteEntry(ids.bangumiId),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;

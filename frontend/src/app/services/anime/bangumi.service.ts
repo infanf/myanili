@@ -195,6 +195,22 @@ export class BangumiService {
     }
   }
 
+  async deleteEntry(subjectId?: number, secondTry = false): Promise<void> {
+    if (!subjectId || !this.accessToken) return;
+    const response = await fetch(`${this.baseUrl}/v0/users/-/collections/${subjectId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!response.ok) {
+      if (!secondTry && response.status === 401 && (await this.refreshTokens())) {
+        return this.deleteEntry(subjectId, true);
+      }
+      throw new Error(`Bangumi: HTTP ${response.status}`);
+    }
+  }
+
   private async updateEpisodes(subjectId: number, watched: number): Promise<void> {
     const episodeIds = await this.getEpisodeIds(subjectId);
     const ids = episodeIds.slice(0, watched);
