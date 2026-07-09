@@ -304,6 +304,7 @@ export class AnimeDetailsComponent implements OnInit {
               annictId: this.anime.my_extension.annictId,
               anisearchId: this.anime.my_extension.anisearchId,
               livechartId: this.anime.my_extension.livechartId,
+              bangumiId: this.anime.my_extension.bangumiId,
               trakt: this.anime.my_extension.trakt,
               seasonNumber: this.anime.my_extension.seasonNumber,
             }),

@@ -310,6 +310,7 @@ export class MangaDetailsComponent implements OnInit {
               anisearchId: this.manga.my_extension.anisearchId,
               bakaId: this.manga.my_extension.bakaId,
               mangabakaId: this.manga.my_extension.mangabakaId,
+              bangumiId: this.manga.my_extension.bangumiId,
               annId: this.manga.my_extension.annId,
               mdId: this.manga.my_extension.mdId,
               mpasId: this.manga.my_extension.mpasId,
