@@ -177,7 +177,10 @@ export class BangumiService {
     const body: { type?: number; rate?: number; ep_status?: number; vol_status?: number } = {
       type: mapStatus(data.status),
     };
-    if (data.score) body.rate = data.score;
+    // Send rate whenever a score is explicitly present, including 0, which
+    // Bangumi treats as "remove rating". Paths that only change progress/status
+    // leave score undefined, so an existing rating is never wiped by accident.
+    if (data.score !== undefined) body.rate = data.score;
     if (type === 'manga') {
       if ('num_chapters_read' in data) body.ep_status = data.num_chapters_read;
       if ('num_volumes_read' in data) body.vol_status = data.num_volumes_read;
