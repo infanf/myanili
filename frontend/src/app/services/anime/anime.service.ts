@@ -226,7 +226,8 @@ export class AnimeService {
       (async () => {
         if (this.anilist.loggedIn) {
           if (!ids.anilistId) {
-            ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME');
+            // lookup failure just means "no id" – only actual updates may warn
+            ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME').catch(() => undefined);
           }
           if (!ids.anilistId) return;
           const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
@@ -257,7 +258,7 @@ export class AnimeService {
       })(),
       (async () => {
         if (!ids.kitsuId) {
-          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'anime');
+          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'anime').catch(() => undefined);
         }
         if (!ids.kitsuId) return;
         return this.kitsu.updateEntry(ids.kitsuId, 'anime', {
@@ -273,7 +274,7 @@ export class AnimeService {
       })(),
       (async () => {
         if (!ids.anisearchId) {
-          ids.anisearchId = await this.anisearch.getId(ids.malId, 'anime');
+          ids.anisearchId = await this.anisearch.getId(ids.malId, 'anime').catch(() => undefined);
         }
         if (!ids.anisearchId) return;
         return this.anisearch.updateEntry(ids.anisearchId, data, 'anime');

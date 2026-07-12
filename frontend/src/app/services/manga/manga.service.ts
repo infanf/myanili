@@ -146,7 +146,8 @@ export class MangaService {
       (async () => {
         if (this.anilist.loggedIn) {
           if (!ids.anilistId) {
-            ids.anilistId = await this.anilist.getId(ids.malId, 'MANGA');
+            // lookup failure just means "no id" – only actual updates may warn
+            ids.anilistId = await this.anilist.getId(ids.malId, 'MANGA').catch(() => undefined);
           }
           if (!ids.anilistId) return;
           const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
@@ -178,7 +179,7 @@ export class MangaService {
       })(),
       (async () => {
         if (!ids.kitsuId) {
-          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'manga');
+          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'manga').catch(() => undefined);
         }
         if (!ids.kitsuId) return;
         return this.kitsu.updateEntry(ids.kitsuId, 'manga', {
@@ -194,7 +195,7 @@ export class MangaService {
       })(),
       (async () => {
         if (!ids.anisearchId) {
-          ids.anisearchId = await this.anisearch.getId(ids.malId, 'manga');
+          ids.anisearchId = await this.anisearch.getId(ids.malId, 'manga').catch(() => undefined);
         }
         if (!ids.anisearchId) return;
         return this.anisearch.updateEntry(ids.anisearchId, data, 'manga');
