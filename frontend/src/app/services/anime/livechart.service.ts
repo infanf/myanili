@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
-import { DialogueService } from '@services/dialogue.service';
+import { ConnectionStatusService } from '@services/connection-status.service';
+import { readStoredToken } from '@services/global.service';
 import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -16,7 +17,7 @@ export class LivechartService {
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
   loggedIn = false;
 
-  constructor(private dialogue: DialogueService) {
+  constructor(private connection: ConnectionStatusService) {
     this.client = new Client({
       url: 'https://www.livechart.me/graphql',
       preferGetMethod: false,
@@ -30,28 +31,30 @@ export class LivechartService {
       },
       exchanges: [cacheExchange, fetchExchange],
     });
-    this.accessToken = String(localStorage.getItem('livechartAccessToken'));
-    if (this.accessToken === 'null') this.accessToken = '';
-    this.refreshToken = String(localStorage.getItem('livechartRefreshToken'));
-    if (this.refreshToken === 'null') this.refreshToken = '';
+    this.accessToken = readStoredToken('livechartAccessToken');
+    this.refreshToken = readStoredToken('livechartRefreshToken');
     this.expires = Number(localStorage.getItem('livechartExpires') || 0);
     if (this.accessToken) {
       this.login()
         .then(user => {
           if (user) {
             this.userSubject.next(user);
+            this.connection.clearError('livechart');
           } else {
             throw new Error('User not found');
           }
         })
-        .catch(e => {
-          this.dialogue.alert(
-            'Could not connect to Livechart.me, please check your account settings.',
-            'Livechart.me Connection Error',
-          );
-          this.logoff();
+        .catch(() => {
+          this.reportConnectionError();
         });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'livechart',
+      'Could not verify your Livechart.me session. It may have expired – reconnect to renew it.',
+    );
   }
 
   async getId(malId: number, title: string): Promise<number | undefined> {
@@ -457,7 +460,6 @@ export class LivechartService {
   async login(username?: string, password?: string): Promise<string | undefined> {
     if (!username || !password) {
       if (!this.refreshToken) {
-        this.logoff();
         return;
       }
       const resultRefresh = await fetch('https://www.livechart.me/api/v1/auth/refresh', {
@@ -524,11 +526,12 @@ export class LivechartService {
       .catch(() => ({ data: undefined, error: false }));
     if (!refresh && (error || !data)) {
       console.log(error);
-      this.logoff();
+      this.reportConnectionError();
       return;
     }
     this.loggedIn = true;
     const username = data?.viewer?.username;
+    if (username) this.connection.clearError('livechart');
     if (!username && refresh) {
       return this.login();
     }
@@ -541,6 +544,7 @@ export class LivechartService {
     this.expires = 0;
     this.userSubject.next(undefined);
     this.loggedIn = false;
+    this.connection.clearError('livechart');
     localStorage.removeItem('livechartAccessToken');
     localStorage.removeItem('livechartRefreshToken');
     localStorage.removeItem('livechartExpires');

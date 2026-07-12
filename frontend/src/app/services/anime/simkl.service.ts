@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
-import { DialogueService } from '@services/dialogue.service';
+import { ConnectionStatusService } from '@services/connection-status.service';
+import { readStoredToken } from '@services/global.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -14,22 +15,30 @@ export class SimklService {
   private accessToken = '';
   private userSubject = new BehaviorSubject<SimklUser | undefined>(undefined);
 
-  constructor(private dialogue: DialogueService) {
-    this.clientId = String(localStorage.getItem('simklClientId'));
-    this.accessToken = String(localStorage.getItem('simklAccessToken'));
-    if (this.accessToken) {
+  constructor(private connection: ConnectionStatusService) {
+    this.clientId = readStoredToken('simklClientId');
+    this.accessToken = readStoredToken('simklAccessToken');
+    if (this.accessToken && this.clientId) {
       this.checkLogin()
         .then(user => {
           this.userSubject.next(user);
+          if (user) {
+            this.connection.clearError('simkl');
+          } else {
+            this.reportConnectionError();
+          }
         })
-        .catch(e => {
-          this.dialogue.alert(
-            'Could not connect to SIMKL, please check your account settings.',
-            'SIMKL Connection Error',
-          );
-          localStorage.removeItem('simklAccessToken');
+        .catch(() => {
+          this.reportConnectionError();
         });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'simkl',
+      'Could not verify your SIMKL session. It may have expired – reconnect to renew it.',
+    );
   }
 
   async login() {
@@ -42,7 +51,9 @@ export class SimklService {
           localStorage.setItem('simklAccessToken', this.accessToken);
           this.clientId = data.ci;
           localStorage.setItem('simklClientId', this.clientId);
-          this.userSubject.next(await this.checkLogin());
+          const user = await this.checkLogin();
+          this.userSubject.next(user);
+          if (user) this.connection.clearError('simkl');
         }
         loginWindow?.close();
         r(undefined);
@@ -203,6 +214,7 @@ export class SimklService {
     this.clientId = '';
     this.accessToken = '';
     this.userSubject.next(undefined);
+    this.connection.clearError('simkl');
     localStorage.removeItem('simklAccessToken');
     localStorage.removeItem('simklClientId');
   }

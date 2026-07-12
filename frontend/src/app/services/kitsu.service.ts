@@ -11,7 +11,8 @@ import {
   KitsuUser,
 } from '@models/kitsu';
 import { ReadStatus } from '@models/manga';
-import { DialogueService } from '@services/dialogue.service';
+import { ConnectionStatusService } from '@services/connection-status.service';
+import { readStoredToken } from '@services/global.service';
 import { KitsuNotificationsService } from '@services/kitsu/notifications.service';
 import CryptoJS from 'crypto-js';
 import { BehaviorSubject } from 'rxjs';
@@ -32,29 +33,33 @@ export class KitsuService {
   loggedIn = false;
   private kitsuNotifications: KitsuNotificationsService;
 
-  constructor(private dialogue: DialogueService) {
-    this.accessToken = String(localStorage.getItem('kitsuAccessToken'));
-    this.refreshToken = String(localStorage.getItem('kitsuRefreshToken'));
+  constructor(private connection: ConnectionStatusService) {
+    this.accessToken = readStoredToken('kitsuAccessToken');
+    this.refreshToken = readStoredToken('kitsuRefreshToken');
     this.kitsuNotifications = new KitsuNotificationsService();
-    if (this.accessToken && this.accessToken !== 'null') {
+    if (this.accessToken) {
       this.kitsuNotifications.updateAccess = this.accessToken;
       this.login()
         .then(user => {
           if (user) {
             this.kitsuNotifications.updateUserId = user.id;
             this.userSubject.next(user);
+            this.connection.clearError('kitsu');
           } else {
             throw new Error('User not found');
           }
         })
-        .catch(e => {
-          this.dialogue.alert(
-            'Could not connect to Kitsu, please check your account settings.',
-            'Kitsu Connection Error',
-          );
-          // this.logoff();
+        .catch(() => {
+          this.reportConnectionError();
         });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'kitsu',
+      'Could not verify your Kitsu session. It may have expired – reconnect to renew it.',
+    );
   }
 
   async getId(
@@ -222,6 +227,7 @@ export class KitsuService {
     this.refreshToken = '';
     this.userSubject.next(undefined);
     this.loggedIn = false;
+    this.connection.clearError('kitsu');
     localStorage.removeItem('kitsuAccessToken');
     localStorage.removeItem('kitsuRefreshToken');
   }
@@ -238,6 +244,7 @@ export class KitsuService {
         const userdata = response.data[0];
         this.kitsuNotifications.updateUserId = userdata.id;
         this.userSubject.next(userdata);
+        this.connection.clearError('kitsu');
         return userdata;
       }
     }

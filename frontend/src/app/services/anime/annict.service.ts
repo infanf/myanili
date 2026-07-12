@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
-import { DialogueService } from '@services/dialogue.service';
+import { ConnectionStatusService } from '@services/connection-status.service';
+import { readStoredToken } from '@services/global.service';
 import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -16,9 +17,8 @@ export class AnnictService {
   private client!: Client;
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
 
-  constructor(private dialogue: DialogueService) {
-    this.accessToken = String(localStorage.getItem('annictAccessToken'));
-    if (this.accessToken === 'null') this.accessToken = undefined;
+  constructor(private connection: ConnectionStatusService) {
+    this.accessToken = readStoredToken('annictAccessToken') || undefined;
     this.client = new Client({
       url: this.graphqlUrl,
       preferGetMethod: false,
@@ -35,15 +35,23 @@ export class AnnictService {
       this.checkLogin()
         .then(user => {
           this.userSubject.next(user);
+          if (user) {
+            this.connection.clearError('annict');
+          } else {
+            this.reportConnectionError();
+          }
         })
-        .catch(e => {
-          this.dialogue.alert(
-            'Could not connect to Annict, please check your account settings.',
-            'Annict Connection Error',
-          );
-          localStorage.removeItem('annictAccessToken');
+        .catch(() => {
+          this.reportConnectionError();
         });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'annict',
+      'Could not verify your Annict session. It may have expired – reconnect to renew it.',
+    );
   }
 
   private getFetchHeader() {
@@ -62,7 +70,9 @@ export class AnnictService {
           this.accessToken = data.at;
           localStorage.setItem('annictAccessToken', this.accessToken);
           localStorage.setItem('annictClientId', data.ci);
-          this.userSubject.next(await this.checkLogin());
+          const user = await this.checkLogin();
+          this.userSubject.next(user);
+          if (user) this.connection.clearError('annict');
         }
         loginWindow?.close();
         r(undefined);
@@ -83,6 +93,7 @@ export class AnnictService {
   logoff() {
     this.accessToken = '';
     this.userSubject.next(undefined);
+    this.connection.clearError('annict');
     localStorage.removeItem('annictAccessToken');
     localStorage.removeItem('annictClientId');
   }

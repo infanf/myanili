@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BakaList, BakaSeries, BakaUser, ListType } from '@models/baka';
 import { BakaManga, Manga, ReadStatus } from '@models/manga';
+import { ConnectionStatusService } from '@services/connection-status.service';
+import { readStoredToken } from '@services/global.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { compareTwoStrings } from 'string-similarity';
@@ -14,13 +16,29 @@ export class MangaupdatesService {
   private userSubject = new BehaviorSubject<BakaUser | undefined>(undefined);
   private myLists?: BakaList[];
 
-  constructor() {
-    this.accessToken = String(localStorage.getItem('bakaAccessToken'));
-    if (this.accessToken && this.accessToken !== 'null') {
-      this.login().then(user => {
-        this.userSubject.next(user);
-      });
+  constructor(private connection: ConnectionStatusService) {
+    this.accessToken = readStoredToken('bakaAccessToken');
+    if (this.accessToken) {
+      this.login()
+        .then(user => {
+          this.userSubject.next(user);
+          if (user) {
+            this.connection.clearError('baka');
+          } else {
+            this.reportConnectionError();
+          }
+        })
+        .catch(() => {
+          this.reportConnectionError();
+        });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'baka',
+      'Could not verify your MangaUpdates session. It may have expired – reconnect to renew it.',
+    );
   }
 
   async login(
@@ -55,12 +73,14 @@ export class MangaupdatesService {
     if (!result.ok) return undefined;
     const response = (await result.json()) as BakaUser;
     this.userSubject.next(response);
+    this.connection.clearError('baka');
     return response;
   }
 
   logoff() {
     this.accessToken = '';
     this.userSubject.next(undefined);
+    this.connection.clearError('baka');
     localStorage.removeItem('bakaAccessToken');
   }
 

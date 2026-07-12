@@ -7,6 +7,7 @@
       <myanili-icon class="cursor-pointer" name="x" size="20" (click)="bakaLogoff()"></myanili-icon>
       <myanili-migrate-baka></myanili-migrate-baka>
     } @else {
+      <myanili-connection-error service="baka"></myanili-connection-error>
       @if (bakaData) {
         <input class="form-control mb-1" placeholder="Username" [(ngModel)]="bakaData.username" />
         <input

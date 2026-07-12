@@ -13,6 +13,7 @@ import {
   MangaBakaUser,
 } from '../../models/mangabaka';
 import { CacheService } from '../cache.service';
+import { ConnectionStatusService } from '../connection-status.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,10 @@ export class MangabakaService {
   user = new BehaviorSubject<MangaBakaUser | undefined>(undefined);
   needsReauth = new BehaviorSubject<boolean>(false);
 
-  constructor(private cache: CacheService) {
+  constructor(
+    private cache: CacheService,
+    private connection: ConnectionStatusService,
+  ) {
     // Load saved tokens
     this.accessToken = String(localStorage.getItem('mangabakaAccessToken') || '');
     this.refreshToken = String(localStorage.getItem('mangabakaRefreshToken') || '');
@@ -53,16 +57,26 @@ export class MangabakaService {
       if (userInfo) {
         this.user.next(userInfo);
         this.isLoggedIn.next(true);
+        this.connection.clearError('mangabaka');
         return true;
       }
       this.user.next(undefined);
       this.isLoggedIn.next(false);
+      if (this.accessToken) this.reportConnectionError();
       return false;
     } catch (error) {
       this.user.next(undefined);
       this.isLoggedIn.next(false);
+      if (this.accessToken) this.reportConnectionError();
       return false;
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'mangabaka',
+      'Could not verify your MangaBaka session. It may have expired – reconnect to renew it.',
+    );
   }
 
   /**
@@ -80,11 +94,7 @@ export class MangabakaService {
       });
 
       if (!response.ok) {
-        if (response.status === 401 && this.refreshToken) {
-          // Token expired, should refresh here if implemented
-          // For now, just logout
-          this.logout();
-        }
+        // keep the session – the user can renew it manually from the connection list
         return null;
       }
 
@@ -139,6 +149,7 @@ export class MangabakaService {
   logout(): void {
     this.accessToken = '';
     this.refreshToken = '';
+    this.connection.clearError('mangabaka');
     localStorage.removeItem('mangabakaAccessToken');
     localStorage.removeItem('mangabakaRefreshToken');
     this.user.next(undefined);

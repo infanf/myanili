@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { CacheService } from './cache.service';
-import { DialogueService } from './dialogue.service';
+import { ConnectionStatusService } from './connection-status.service';
 import { cleanupObject } from './global.service';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class AnisearchService {
 
   constructor(
     private cache: CacheService,
-    private dialogue: DialogueService,
+    private connection: ConnectionStatusService,
   ) {
     this.clientId = String(localStorage.getItem('anisearchClientId') || '');
     this.accessToken = String(localStorage.getItem('anisearchAccessToken') || '');
@@ -34,15 +34,23 @@ export class AnisearchService {
       this.checkLogin()
         .then(user => {
           this.userSubject.next(user);
+          if (user) {
+            this.connection.clearError('anisearch');
+          } else {
+            this.reportConnectionError();
+          }
         })
-        .catch(e => {
-          this.dialogue.alert(
-            'Could not connect to aniSearch, please check your account settings.',
-            'aniSearch Connection Error',
-          );
-          localStorage.removeItem('anisearchAccessToken');
+        .catch(() => {
+          this.reportConnectionError();
         });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'anisearch',
+      'Could not verify your aniSearch session. It may have expired – reconnect to renew it.',
+    );
   }
 
   get user() {
@@ -87,6 +95,7 @@ export class AnisearchService {
             localStorage.setItem('anisearchClientId', this.clientId);
             this.checkLogin().then(user => {
               this.userSubject.next(user);
+              if (user) this.connection.clearError('anisearch');
               resolve();
             });
           } else {
@@ -130,6 +139,7 @@ export class AnisearchService {
     this.refreshToken = '';
     this.clientId = '';
     this.loggedIn = false;
+    this.connection.clearError('anisearch');
     localStorage.removeItem('anisearchAccessToken');
     localStorage.removeItem('anisearchRefreshToken');
     localStorage.removeItem('anisearchClientId');

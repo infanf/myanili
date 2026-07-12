@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { ExtRating } from '../../models/components';
-import { DialogueService } from '../dialogue.service';
+import { ConnectionStatusService } from '../connection-status.service';
 
 interface BangumiUser {
   id: number;
@@ -39,22 +39,26 @@ export class BangumiService {
   isLoggedIn = new BehaviorSubject<boolean>(false);
   user = new BehaviorSubject<BangumiUser | undefined>(undefined);
 
-  constructor(private dialogue: DialogueService) {
+  constructor(private connection: ConnectionStatusService) {
     this.accessToken = String(localStorage.getItem('bangumiAccessToken') || '');
     this.refreshToken = String(localStorage.getItem('bangumiRefreshToken') || '');
     if (this.accessToken) {
       this.checkLogin()
         .then(user => {
           this.user.next(user);
+          if (user) this.connection.clearError('bangumi');
         })
         .catch(() => {
-          this.dialogue.alert(
-            'Could not connect to Bangumi, please check your account settings.',
-            'Bangumi Connection Error',
-          );
-          localStorage.removeItem('bangumiAccessToken');
+          this.reportConnectionError();
         });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'bangumi',
+      'Could not verify your Bangumi session. It may have expired – reconnect to renew it.',
+    );
   }
 
   async checkLogin(secondTry = false): Promise<BangumiUser | undefined> {
@@ -65,12 +69,13 @@ export class BangumiService {
     if (response.ok) {
       const user: BangumiUser = await response.json();
       this.isLoggedIn.next(true);
+      this.connection.clearError('bangumi');
       return user;
     }
     if (response.status === 401 && !secondTry && (await this.refreshTokens())) {
       return this.checkLogin(true);
     }
-    this.logout();
+    this.reportConnectionError();
     return undefined;
   }
 
@@ -120,6 +125,7 @@ export class BangumiService {
   logout(): void {
     this.accessToken = '';
     this.refreshToken = '';
+    this.connection.clearError('bangumi');
     localStorage.removeItem('bangumiAccessToken');
     localStorage.removeItem('bangumiRefreshToken');
     this.user.next(undefined);

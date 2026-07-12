@@ -13,6 +13,7 @@
         (click)="livechartLogoff()"
       ></myanili-icon>
     } @else {
+      <myanili-connection-error service="livechart"></myanili-connection-error>
       @if (livechartData) {
         <input
           class="form-control mb-1"

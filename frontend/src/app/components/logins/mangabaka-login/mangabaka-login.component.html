@@ -11,6 +11,7 @@
         (click)="mangabakaLogoff()"
       ></myanili-icon>
     } @else {
+      <myanili-connection-error service="mangabaka"></myanili-connection-error>
       @if (needsReauth) {
         <small class="text-warning d-block mb-1">
           MangaBaka now uses OAuth. Please reconnect your account.

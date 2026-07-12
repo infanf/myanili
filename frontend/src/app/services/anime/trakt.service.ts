@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ToasterService } from '@components/toaster/toaster.service';
 import { MyAnimeUpdate } from '@models/anime';
 import { ExtRating } from '@models/components';
-import { DialogueService } from '@services/dialogue.service';
-import { GlobalService } from '@services/global.service';
+import { ConnectionStatusService } from '@services/connection-status.service';
+import { GlobalService, readStoredToken } from '@services/global.service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -17,26 +17,34 @@ export class TraktService {
   private refreshToken = '';
   private userSubject = new BehaviorSubject<string | undefined>(undefined);
   constructor(
-    private dialogue: DialogueService,
+    private connection: ConnectionStatusService,
     private toaster: ToasterService,
     private glob: GlobalService,
   ) {
-    this.clientId = String(localStorage.getItem('traktClientId'));
-    this.accessToken = String(localStorage.getItem('traktAccessToken'));
-    this.refreshToken = String(localStorage.getItem('traktRefreshToken'));
-    if (this.accessToken && this.accessToken !== 'null') {
+    this.clientId = readStoredToken('traktClientId');
+    this.accessToken = readStoredToken('traktAccessToken');
+    this.refreshToken = readStoredToken('traktRefreshToken');
+    if (this.accessToken) {
       this.login()
         .then(user => {
           this.userSubject.next(user);
+          if (user) {
+            this.connection.clearError('trakt');
+          } else {
+            this.reportConnectionError();
+          }
         })
-        .catch(e => {
-          this.dialogue.alert(
-            'Could not connect to trakt, please check your account settings.',
-            'Trakt Connection Error',
-          );
-          localStorage.removeItem('traktAccessToken');
+        .catch(() => {
+          this.reportConnectionError();
         });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'trakt',
+      'Could not verify your trakt.tv session. It may have expired – reconnect to renew it.',
+    );
   }
 
   async login(): Promise<string | undefined> {
@@ -83,7 +91,9 @@ export class TraktService {
           localStorage.setItem('traktRefreshToken', this.refreshToken);
           this.clientId = data.ci;
           localStorage.setItem('traktClientId', this.clientId);
-          this.userSubject.next(await this.checkLogin());
+          const user = await this.checkLogin();
+          this.userSubject.next(user);
+          if (user) this.connection.clearError('trakt');
         }
         loginWindow?.close();
         r(undefined);
@@ -344,6 +354,7 @@ export class TraktService {
     this.accessToken = '';
     this.refreshToken = '';
     this.userSubject.next(undefined);
+    this.connection.clearError('trakt');
     localStorage.removeItem('traktAccessToken');
     localStorage.removeItem('traktRefreshToken');
     localStorage.removeItem('traktClientId');

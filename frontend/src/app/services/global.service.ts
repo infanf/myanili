@@ -170,3 +170,12 @@ export function cleanupObject<T extends object>(obj: T): Partial<T> {
   }
   return obj as Partial<T>;
 }
+
+/**
+ * Read a credential from localStorage, treating missing values and the literal
+ * string "null" (a legacy artifact of `String(localStorage.getItem(...))`) as empty.
+ */
+export function readStoredToken(key: string): string {
+  const value = localStorage.getItem(key);
+  return value && value !== 'null' && value !== 'undefined' ? value : '';
+}
