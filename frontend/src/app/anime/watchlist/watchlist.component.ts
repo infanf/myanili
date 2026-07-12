@@ -28,8 +28,10 @@ import { DateTime } from 'luxon';
   standalone: false,
 })
 export class WatchlistComponent implements OnInit {
+  private _rawAnimes: ListAnime[] = [];
   private _animes: ListAnime[] = [];
   autoFilter = false;
+  startingSoon = true;
   showDate = false;
   private _airDates: AirDate[] = [];
 
@@ -47,15 +49,24 @@ export class WatchlistComponent implements OnInit {
     this.settings.autoFilter$.asObservable().subscribe(autoFilter => {
       this.autoFilter = autoFilter;
     });
+    this.settings.startingSoon$.asObservable().subscribe(startingSoon => {
+      const changed = this.startingSoon !== startingSoon;
+      this.startingSoon = startingSoon;
+      if (changed && this._rawAnimes.length) this.applyFilter();
+    });
   }
 
   async ngOnInit() {
-    const animes = await this.getAnimes();
-    this._animes = animes
-      .filter(anime => this.filterAnime(anime))
-      .sort((a, b) => this.toSortIndex(a) - this.toSortIndex(b));
+    this._rawAnimes = await this.getAnimes();
+    this.applyFilter();
     this._airDates = await this.anilist.getAirDates(this._animes.map(a => a.node.id));
     this.glob.notbusy();
+  }
+
+  private applyFilter() {
+    this._animes = this._rawAnimes
+      .filter(anime => this.filterAnime(anime))
+      .sort((a, b) => this.toSortIndex(a) - this.toSortIndex(b));
   }
 
   get animes() {
@@ -306,6 +317,7 @@ export class WatchlistComponent implements OnInit {
     }
     if (anime.my_extension?.hideWatchlist) return false;
     if (anime.list_status.status === 'plan_to_watch') {
+      if (!this.startingSoon) return false;
       if (!anime.node.start_date) return false;
       const startDate = DateTimeFrom(anime.node.start_date).plus({
         days: anime.node.broadcast?.dateShift || 0,

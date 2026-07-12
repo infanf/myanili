@@ -7,6 +7,7 @@ export type ViewSettingKey =
   | 'layout'
   | 'scoreDisplay'
   | 'autoFilter'
+  | 'startingSoon'
   | 'inList'
   | 'nsfw';
 
@@ -56,6 +57,16 @@ const VIEW_SETTING_DEFINITIONS: ViewSettingDefinition[] = [
     options: [
       { value: 'false', label: 'Show on Watchlist' },
       { value: 'true', label: 'Hide on Watchlist' },
+    ],
+  },
+  {
+    key: 'startingSoon',
+    label: 'Starting Shows',
+    description:
+      'Show planned anime on the watchlist as soon as their first episode is about to air.',
+    options: [
+      { value: 'true', label: 'Show on Watchlist' },
+      { value: 'false', label: 'Hide on Watchlist' },
     ],
   },
   {
@@ -109,6 +120,8 @@ export class ViewSettingsComponent {
         return this.settings.scoreDisplay$.value;
       case 'autoFilter':
         return String(this.settings.autoFilter$.value);
+      case 'startingSoon':
+        return String(this.settings.startingSoon$.value);
       case 'inList':
         return String(this.settings.inList$.value);
       case 'nsfw':
@@ -131,6 +144,9 @@ export class ViewSettingsComponent {
         break;
       case 'autoFilter':
         this.settings.autoFilter = value === 'true';
+        break;
+      case 'startingSoon':
+        this.settings.startingSoon = value === 'true';
         break;
       case 'inList':
         this.settings.inList = value === 'true';

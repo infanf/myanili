@@ -18,9 +18,13 @@ export class SettingsService {
   layout$ = new BehaviorSubject<string>('list');
   nsfw$ = new BehaviorSubject<boolean>(false);
   autoFilter$ = new BehaviorSubject<boolean>(false);
+  startingSoon$ = new BehaviorSubject<boolean>(true);
   scoreDisplay$ = new BehaviorSubject<ScoreDisplay>('default');
 
-  constructor(private glob: GlobalService, private modalService: NgbModal) {
+  constructor(
+    private glob: GlobalService,
+    private modalService: NgbModal,
+  ) {
     try {
       const list = Boolean(JSON.parse(localStorage.getItem('inList') || 'false'));
       this.inList = list;
@@ -34,6 +38,8 @@ export class SettingsService {
       }
       const autoFilter = Boolean(JSON.parse(localStorage.getItem('autoFilter') || 'false'));
       this.autoFilter = autoFilter;
+      const startingSoon = Boolean(JSON.parse(localStorage.getItem('startingSoon') || 'true'));
+      this.startingSoon = startingSoon;
       const scoreDisplay = String(localStorage.getItem('scoreDisplay') || 'default');
       this.scoreDisplay$.next(scoreDisplay as ScoreDisplay);
       const nsfw = Boolean(JSON.parse(localStorage.getItem('nsfw') || 'false'));
@@ -85,6 +91,11 @@ export class SettingsService {
   set autoFilter(autoFilter: boolean) {
     this.autoFilter$.next(autoFilter);
     localStorage.setItem('autoFilter', JSON.stringify(autoFilter));
+  }
+
+  set startingSoon(startingSoon: boolean) {
+    this.startingSoon$.next(startingSoon);
+    localStorage.setItem('startingSoon', JSON.stringify(startingSoon));
   }
 
   set layout(layout: string) {
