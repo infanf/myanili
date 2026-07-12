@@ -31,442 +31,463 @@
         [meanRating]="meanRating"
         [rating]="$safeNavigationMigration(anime?.my_list_status?.score)"
       ></myanili-poster-rating>
-      <div class="my-3">
-        @if (anime?.rank) {
-          <myanili-value-pair
-            [cols]="6"
-            name="Ranking"
-            value="#{{ anime!.rank | number }}"
-          ></myanili-value-pair>
-        }
-        @if (anime?.popularity) {
-          <myanili-value-pair
-            [cols]="6"
-            name="Popularity"
-            value="#{{ anime!.popularity | number }}"
-          ></myanili-value-pair>
-        }
-        @if (anime?.num_list_users) {
-          <myanili-value-pair
-            [cols]="6"
-            name="Members"
-            value="{{ anime!.num_list_users | number }}"
-          ></myanili-value-pair>
-        }
-      </div>
     </div>
 
     <!-- right column -->
 
     <div class="col-sm-7 col-md-8 mb-3">
       @if (anime?.my_extension?.displayName) {
-        <div class="row">
-          <div class="col-4 fw-bold text-end">Display</div>
-          <div class="col-8">{{ anime?.my_extension?.displayName }}</div>
-        </div>
+        <div class="fw-bold">{{ anime?.my_extension?.displayName }}</div>
       }
       @if (anime?.alternative_titles?.en) {
-        <myanili-value-pair
-          name="English"
-          [value]="$safeNavigationMigration(anime?.alternative_titles?.en)"
-        ></myanili-value-pair>
+        <div class="text-body-secondary">{{ anime?.alternative_titles?.en }}</div>
       }
       @if (anime?.alternative_titles?.ja) {
-        <myanili-value-pair
-          name="{{ originalLanguage }}"
-          [value]="$safeNavigationMigration(anime?.alternative_titles?.ja)"
-        ></myanili-value-pair>
+        <div class="text-body-secondary">{{ anime?.alternative_titles?.ja }}</div>
       }
-      <myanili-value-pair-array
-        name="Synonyms"
-        [value]="$safeNavigationMigration(anime?.alternative_titles?.synonyms)"
-      ></myanili-value-pair-array>
-      @if (anime?.studios && anime!.studios.length) {
-        <myanili-value-pair name="Studio">
-          @for (studio of anime!.studios; track studio) {
-            <div
-              class="link-primary cursor-pointer"
-              [routerLink]="['/anime/producer', studio.name]"
-            >
-              {{ studio.name }}
-            </div>
+      @if (anime?.alternative_titles?.synonyms?.length) {
+        <div class="small text-body-secondary fst-italic">
+          @for (title of anime!.alternative_titles!.synonyms; track title; let last = $last) {
+            <span [innerHtml]="title"></span>
+            @if (!last) {
+              <span> &middot; </span>
+            }
           }
-        </myanili-value-pair>
+        </div>
       }
       @if (anime) {
-        <myanili-value-pair name="Type">
-          <myanili-icon
-            name="{{ anime.media_type | mal: 'mediaicon' }}"
-            class="me-1"
-          ></myanili-icon>
-          {{ anime!.media_type | mal: 'mediatype' }}
-        </myanili-value-pair>
-      }
-      @if (anime && anime.start_date) {
-        <myanili-value-pair name="Aired">
-          <span class="text-nowrap">{{
-            (anime.start_date + '').length === 10 ? (anime.start_date | date) : anime.start_date
-          }}</span>
-          @if (anime.start_date !== anime.end_date) {
-            <span> &ndash; </span>
+        <div
+          class="meta-line text-body-secondary d-flex flex-wrap column-gap-2 align-items-center mt-2 mb-3"
+        >
+          <span>
+            <myanili-icon
+              name="{{ anime.media_type | mal: 'mediaicon' }}"
+              class="me-1"
+            ></myanili-icon>
+            {{ anime.media_type | mal: 'mediatype' }}
+          </span>
+          @if (anime.source) {
+            <span>&middot;</span>
+            <span>{{ anime.source | mal: 'mediatype' }}</span>
           }
-          @if (anime.end_date && anime.start_date !== anime.end_date) {
-            <span class="text-nowrap">{{
-              (anime.end_date + '').length === 10 ? (anime.end_date | date) : anime.end_date
-            }}</span>
+          @if (anime.rating) {
+            <span>&middot;</span>
+            <span>{{ anime.rating | mal: 'rating' }}</span>
           }
-        </myanili-value-pair>
-      }
-      @if (anime) {
-        <myanili-value-pair name="Source">
-          {{ anime!.source | mal: 'mediatype' }}
-        </myanili-value-pair>
-      }
-      @if (anime?.rating) {
-        <myanili-value-pair name="Rating">
-          {{ anime!.rating | mal: 'rating' }}
-        </myanili-value-pair>
+          <span>&middot;</span>
+          <span>
+            {{ anime.num_episodes || '?' }} Ep.
+            @if (anime.average_episode_duration) {
+              <span
+                >&times;
+                {{ (anime.average_episode_duration || 0) / 60 | number: '1.0-0' }} min</span
+              >
+            }
+          </span>
+        </div>
+        <myanili-genres-badges class="d-block mb-3" [genres]="anime.genres"></myanili-genres-badges>
       }
       @if (anime?.my_list_status) {
-        <div class="row">
-          <div class="col-4 fw-bold text-end">My&nbsp;List</div>
-          <div class="col-8">
-            {{
-              anime!.my_list_status!.is_rewatching
-                ? 'Rewatching'
-                : (anime!.my_list_status!.status | mal: 'mystatus')
-            }}
-            @if (
-              anime!.my_list_status?.status === 'plan_to_watch' ||
-              anime!.my_list_status?.status === 'on_hold'
-            ) {
-              <myanili-icon
-                name="play-circle"
-                class="cursor-pointer me-1"
-                (click)="setStatus('watching')"
-              ></myanili-icon>
-            }
-            @if (anime!.my_list_status?.status === 'watching') {
-              <myanili-icon
-                name="pause-circle"
-                class="cursor-pointer me-1"
-                (click)="setStatus('on_hold')"
-              ></myanili-icon>
-            }
-            @if (
-              anime!.my_list_status?.status === 'completed' && !anime!.my_list_status?.is_rewatching
-            ) {
-              <myanili-icon
-                name="arrow-counterclockwise"
-                class="cursor-pointer me-1"
-                (click)="rewatch()"
-              ></myanili-icon>
-            }
-            @if (anime!.my_list_status?.start_date || anime!.my_list_status?.finish_date) {
-              <div class="small text-muted">
-                @if (anime!.my_list_status?.start_date) {
-                  <span>{{
-                    $safeNavigationMigration(anime!.my_list_status?.start_date) | date
-                  }}</span>
-                }
-                @if (anime!.my_list_status?.start_date !== anime!.my_list_status?.finish_date) {
-                  <span> &ndash; </span>
-                  @if (anime!.my_list_status?.finish_date) {
+        <div class="card status-card mb-3">
+          <div class="card-body py-2 px-3">
+            <div class="d-flex align-items-center flex-wrap">
+              <span class="fw-bold me-2">
+                {{
+                  anime!.my_list_status!.is_rewatching
+                    ? 'Rewatching'
+                    : (anime!.my_list_status!.status | mal: 'mystatus')
+                }}
+              </span>
+              @if (
+                anime!.my_list_status?.status === 'plan_to_watch' ||
+                anime!.my_list_status?.status === 'on_hold'
+              ) {
+                <myanili-icon
+                  name="play-circle"
+                  class="cursor-pointer me-1"
+                  (click)="setStatus('watching')"
+                ></myanili-icon>
+              }
+              @if (anime!.my_list_status?.status === 'watching') {
+                <myanili-icon
+                  name="pause-circle"
+                  class="cursor-pointer me-1"
+                  (click)="setStatus('on_hold')"
+                ></myanili-icon>
+              }
+              @if (
+                anime!.my_list_status?.status === 'completed' &&
+                !anime!.my_list_status?.is_rewatching
+              ) {
+                <myanili-icon
+                  name="arrow-counterclockwise"
+                  class="cursor-pointer me-1"
+                  (click)="rewatch()"
+                ></myanili-icon>
+              }
+              @if (anime!.my_list_status?.start_date || anime!.my_list_status?.finish_date) {
+                <span class="ms-auto small text-body-secondary">
+                  @if (anime!.my_list_status?.start_date) {
                     <span>{{
-                      $safeNavigationMigration(anime!.my_list_status?.finish_date) | date
+                      $safeNavigationMigration(anime!.my_list_status?.start_date) | date
                     }}</span>
                   }
+                  @if (anime!.my_list_status?.start_date !== anime!.my_list_status?.finish_date) {
+                    <span> &ndash; </span>
+                    @if (anime!.my_list_status?.finish_date) {
+                      <span>{{
+                        $safeNavigationMigration(anime!.my_list_status?.finish_date) | date
+                      }}</span>
+                    }
+                  }
+                </span>
+              }
+            </div>
+            @if (loggedIn) {
+              <div class="d-flex align-items-center gap-2 my-2">
+                @if (
+                  anime!.my_list_status?.status === 'watching' ||
+                  anime!.my_list_status?.is_rewatching
+                ) {
+                  <myanili-icon
+                    name="plus-circle"
+                    class="cursor-pointer"
+                    (click)="plusOne()"
+                  ></myanili-icon>
+                }
+                <div class="progress rounded-pill flex-grow-1">
+                  @if (anime!.my_list_status?.num_episodes_watched) {
+                    <div
+                      class="progress-bar px-1"
+                      [ngClass]="{
+                        'bg-success':
+                          anime!.my_list_status?.num_episodes_watched == anime!.num_episodes &&
+                          anime!.num_episodes,
+                        'bg-gradient': !anime!.num_episodes,
+                      }"
+                      [ngStyle]="{
+                        'min-width.%':
+                          anime!.num_episodes || anime!.my_list_status?.num_episodes_watched == 0
+                            ? ((anime!.my_list_status?.num_episodes_watched || 0) /
+                                anime!.num_episodes) *
+                              100
+                            : 30,
+                      }"
+                    >
+                      {{ anime!.my_list_status?.num_episodes_watched }}/{{
+                        anime!.num_episodes || '?'
+                      }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+            @if (
+              anime!.my_extension?.simulcast?.day?.length ||
+              anime!.broadcast?.day_of_the_week ||
+              anime!.my_extension?.externalStreaming ||
+              (anime!.my_extension?.episodeRule &&
+                anime!.my_extension!.episodeRule! >
+                  (anime!.my_list_status?.num_episodes_watched || 0))
+            ) {
+              <div class="small d-flex flex-wrap column-gap-2 align-items-center">
+                @if (anime!.my_extension?.simulcast?.day?.length) {
+                  <span>
+                    {{ getDay(anime!.my_extension!.simulcast) }}
+                    @if (anime!.my_extension!.simulcast.time) {
+                      <span>
+                        <myanili-icon class="ms-1 me-1" name="clock"></myanili-icon>
+                        {{
+                          anime!.my_extension!.simulcast.time
+                            | time: anime!.my_extension!.simulcast.tz
+                        }}
+                      </span>
+                    }
+                    @if (
+                      anime!.my_list_status?.status === 'watching' ||
+                      anime!.my_list_status?.is_rewatching
+                    ) {
+                      <myanili-icon
+                        name="skip-forward"
+                        class="cursor-pointer ms-1"
+                        (click)="skip()"
+                      ></myanili-icon>
+                    }
+                  </span>
+                } @else {
+                  @if (anime!.broadcast?.day_of_the_week) {
+                    <span>
+                      {{ anime!.broadcast!.day_of_the_week }}
+                      @if (anime!.broadcast?.start_time) {
+                        <span>
+                          <myanili-icon class="ms-1 me-1" name="clock"></myanili-icon>
+                          {{ anime!.broadcast!.start_time }}
+                        </span>
+                      }
+                    </span>
+                  }
+                }
+                @if (anime!.my_extension?.externalStreaming) {
+                  <span>&middot;</span>
+                  @if (anime!.my_extension?.externalStreamingId) {
+                    <a
+                      href="{{ anime!.my_extension!.externalStreaming | stream: 'urlprefix' }}{{
+                        anime!.my_extension!.externalStreamingId
+                      }}"
+                      target="_blank"
+                    >
+                      <myanili-streaming
+                        [provider]="anime!.my_extension!.externalStreaming"
+                        [country]="anime!.my_extension!.simulcast.country"
+                        variant="full"
+                      ></myanili-streaming>
+                    </a>
+                  } @else {
+                    <myanili-streaming
+                      [provider]="anime!.my_extension!.externalStreaming"
+                      [country]="anime!.my_extension!.simulcast.country"
+                      variant="full"
+                    ></myanili-streaming>
+                  }
+                }
+                @if (
+                  anime!.my_extension?.episodeRule &&
+                  anime!.my_extension!.episodeRule! >
+                    (anime!.my_list_status?.num_episodes_watched || 0)
+                ) {
+                  <span>&middot;</span>
+                  <span>
+                    Ep. Rule: {{ anime!.my_extension!.episodeRule || 0 }} ({{
+                      (anime!.my_extension!.episodeRule || 0) -
+                        (anime!.my_list_status?.num_episodes_watched || 0)
+                    }}
+                    left)
+                  </span>
                 }
               </div>
             }
           </div>
         </div>
       }
-      @if (
-        anime &&
-        anime.my_extension?.episodeRule &&
-        anime.my_extension!.episodeRule! > (anime.my_list_status?.num_episodes_watched || 0)
-      ) {
-        <myanili-value-pair name="Ep. Rule">
-          {{ anime.my_extension!.episodeRule || 0 }} Ep. ({{
-            (anime.my_extension!.episodeRule || 0) -
-              (anime.my_list_status?.num_episodes_watched || 0)
-          }}
-          left)
-        </myanili-value-pair>
-      }
-      @if (anime && anime.my_extension && anime.my_extension.simulcast.day?.length) {
-        <myanili-value-pair name="Watch on">
-          {{ getDay(anime.my_extension.simulcast) }}
-          @if (anime.my_extension.simulcast.time) {
-            <span>
-              <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
-              {{ anime.my_extension.simulcast.time | time: anime.my_extension.simulcast.tz }}</span
-            >
-          }
-          @if (anime.my_list_status?.status === 'watching' || anime.my_list_status?.is_rewatching) {
-            <myanili-icon
-              name="skip-forward"
-              class="cursor-pointer ms-2"
-              (click)="skip()"
-            ></myanili-icon>
-          }
-        </myanili-value-pair>
-      } @else {
-        @if (anime?.broadcast?.day_of_the_week) {
-          <myanili-value-pair name="Broadcast">
+      <div class="facts my-3">
+        @if (anime?.studios && anime!.studios.length) {
+          <div class="fact-label">Studio</div>
+          <div>
+            @for (studio of anime!.studios; track studio) {
+              <div
+                class="link-primary cursor-pointer"
+                [routerLink]="['/anime/producer', studio.name]"
+              >
+                {{ studio.name }}
+              </div>
+            }
+          </div>
+        }
+        @if (anime && anime.start_date) {
+          <div class="fact-label">Aired</div>
+          <div>
+            <span class="text-nowrap">{{
+              (anime.start_date + '').length === 10 ? (anime.start_date | date) : anime.start_date
+            }}</span>
+            @if (anime.start_date !== anime.end_date) {
+              <span> &ndash; </span>
+            }
+            @if (anime.end_date && anime.start_date !== anime.end_date) {
+              <span class="text-nowrap">{{
+                (anime.end_date + '').length === 10 ? (anime.end_date | date) : anime.end_date
+              }}</span>
+            }
+          </div>
+        }
+        @if (!anime?.my_list_status && anime?.broadcast?.day_of_the_week) {
+          <div class="fact-label">Broadcast</div>
+          <div>
             {{ anime!.broadcast!.day_of_the_week }}
             @if (anime?.broadcast?.start_time) {
               <span>
                 <myanili-icon class="ms-2 me-1" name="clock"></myanili-icon>
-                {{ anime!.broadcast!.start_time }}</span
-              >
-            }
-          </myanili-value-pair>
-        }
-      }
-      @if (anime && anime.my_extension && anime.my_extension.externalStreaming) {
-        <div class="row">
-          <div class="col-4 fw-bold text-end">Streaming</div>
-          <div class="col-8">
-            @if (anime.my_extension.externalStreamingId) {
-              <a
-                href="{{ anime.my_extension.externalStreaming | stream: 'urlprefix' }}{{
-                  anime.my_extension.externalStreamingId
-                }}"
-                target="_blank"
-              >
-              </a>
-            }
-            @if (anime.my_extension.externalStreaming) {
-              <myanili-streaming
-                [provider]="anime.my_extension.externalStreaming"
-                [country]="anime.my_extension.simulcast.country"
-                variant="full"
-              ></myanili-streaming>
-            }
-          </div>
-        </div>
-      }
-      @if (anime) {
-        <div class="row">
-          <div class="col-4 fw-bold text-end">Duration</div>
-          <div class="col-8">
-            @if (
-              anime.my_list_status?.status === 'watching' || anime.my_list_status?.is_rewatching
-            ) {
-              <myanili-icon
-                name="plus-circle"
-                class="cursor-pointer me-1"
-                (click)="plusOne()"
-              ></myanili-icon>
-            }
-            {{ anime.num_episodes || '?' }}
-            @if (anime.average_episode_duration) {
-              <span>
-                &times;
-                {{ (anime.average_episode_duration || 0) / 60 | number: '1.0-0' }}
-                min
+                {{ anime!.broadcast!.start_time }}
               </span>
             }
           </div>
-        </div>
-      }
-
-      @if (anime && loggedIn) {
-        <div class="row">
-          <div class="col-4 fw-bold text-end">Episodes</div>
-          <div class="col-8">
-            <div class="progress rounded-pill my-1">
-              @if (anime.my_list_status?.num_episodes_watched) {
-                <div
-                  class="progress-bar px-1"
-                  [ngClass]="{
-                    'bg-success':
-                      anime.my_list_status?.num_episodes_watched == anime.num_episodes &&
-                      anime.num_episodes,
-                    'bg-gradient': !anime.num_episodes,
-                  }"
-                  [ngStyle]="{
-                    'min-width.%':
-                      anime!.num_episodes || anime!.my_list_status?.num_episodes_watched == 0
-                        ? ((anime!.my_list_status?.num_episodes_watched || 0) /
-                            anime!.num_episodes) *
-                          100
-                        : 30,
-                  }"
-                >
-                  {{ anime!.my_list_status?.num_episodes_watched }}/{{ anime!.num_episodes || '?' }}
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-      }
-      @if (anime) {
-        @if (anime.website) {
-          <div class="row">
-            <div class="col-4 fw-bold text-end">Website</div>
-            <div class="col-8">
-              <myanili-icon-fandom [url]="anime.website"></myanili-icon-fandom>
-              <a class="ms-1" [href]="anime.website" target="_blank">{{ websiteHost }}</a>
-            </div>
+        }
+        @if (anime?.website) {
+          <div class="fact-label">Website</div>
+          <div>
+            <myanili-icon-fandom [url]="anime!.website!"></myanili-icon-fandom>
+            <a class="ms-1" [href]="anime!.website" target="_blank">{{ websiteHost }}</a>
           </div>
         }
-        <div class="row mt-3">
-          <div class="col-8 offset-4">
-            <div class="d-flex flex-wrap gap-2">
-              <myanili-external-link
-                [href]="'https://myanimelist.net/anime/' + id"
-                label="MyAnimeList"
-                [rating]="getRating('mal')"
-              >
-                <myanili-icon-mal class="text-primary"></myanili-icon-mal>
-              </myanili-external-link>
-              @if (anime.my_extension?.anilistId) {
-                <myanili-external-link
-                  [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId"
-                  label="AniList"
-                  [rating]="getRating('anilist')"
-                >
-                  <myanili-icon-anilist></myanili-icon-anilist>
-                </myanili-external-link>
-              }
-              @if (anime.my_extension?.kitsuId?.kitsuId) {
-                <myanili-external-link
-                  [href]="'https://kitsu.app/anime/' + anime.my_extension!.kitsuId!.kitsuId"
-                  label="Kitsu"
-                  [rating]="getRating('kitsu')"
-                >
-                  <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
-                </myanili-external-link>
-              }
-              @if (anime.id) {
-                <myanili-external-link
-                  [href]="'https://shikimori.io/animes/' + anime.id"
-                  label="Shikimori"
-                  [rating]="getRating('shikimori')"
-                >
-                  <myanili-icon-shikimori></myanili-icon-shikimori>
-                </myanili-external-link>
-              }
-              @if (anime.my_extension?.anidbId) {
-                <myanili-external-link
-                  [href]="'https://anidb.net/anime/' + anime.my_extension!.anidbId"
-                  label="aniDB"
-                  [rating]="getRating('anidb')"
-                >
-                  <myanili-icon-anidb></myanili-icon-anidb>
-                </myanili-external-link>
-              }
-              @if (anime.my_extension?.apSlug) {
-                <myanili-external-link
-                  [href]="'https://www.anime-planet.com/anime/' + anime.my_extension!.apSlug"
-                  label="Anime-Planet"
-                  [rating]="getRating('ap')"
-                >
-                  <myanili-icon-ap></myanili-icon-ap>
-                </myanili-external-link>
-              }
-              @if (anime && anime.my_extension && anime.my_extension.trakt) {
-                <myanili-external-link
-                  [href]="
-                    anime.media_type === 'movie'
-                      ? 'https://trakt.tv/movies/' + anime.my_extension.trakt
-                      : 'https://trakt.tv/shows/' +
-                        anime.my_extension.trakt +
-                        '/seasons/' +
-                        (anime.my_extension.seasonNumber === 0
-                          ? 0
-                          : anime.my_extension.seasonNumber || 1)
-                  "
-                  label="Trakt"
-                  [rating]="getRating('trakt')"
-                >
-                  <myanili-icon-trakt style="color: #ed1c24"></myanili-icon-trakt>
-                </myanili-external-link>
-              }
-              @if (anime.my_extension?.simklId) {
-                <myanili-external-link
-                  [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId"
-                  label="SIMKL"
-                  [rating]="getRating('simkl')"
-                >
-                  <myanili-icon-simkl></myanili-icon-simkl>
-                </myanili-external-link>
-              }
-              @if (anime.my_extension?.annictId) {
-                <myanili-external-link
-                  [href]="'https://annict.com/works/' + anime.my_extension!.annictId"
-                  label="Annict"
-                  [rating]="getRating('annict')"
-                >
-                  <myanili-icon-annict></myanili-icon-annict>
-                </myanili-external-link>
-              }
-              @if (anime.my_extension?.anisearchId) {
-                <myanili-external-link
-                  [href]="'https://anisearch.com/anime/' + anime.my_extension!.anisearchId"
-                  label="aniSearch"
-                  [rating]="getRating('anisearch')"
-                >
-                  <myanili-icon-anisearch></myanili-icon-anisearch>
-                </myanili-external-link>
-              }
-              <myanili-external-link
-                [href]="
-                  anime.my_extension?.livechartId
-                    ? 'https://www.livechart.me/anime/' +
-                      $safeNavigationMigration(anime.my_extension?.livechartId)
-                    : 'https://www.livechart.me/search?q=' + anime.title
-                "
-                label="LiveChart"
-                [rating]="getRating('livechart')"
-                [muted]="!anime.my_extension?.livechartId"
-              >
-                <myanili-icon-livechart></myanili-icon-livechart>
-              </myanili-external-link>
-              @if (anime.my_extension?.annId) {
-                <myanili-external-link
-                  [href]="
-                    'https://www.animenewsnetwork.com/encyclopedia/anime.php?id=' +
-                    anime.my_extension!.annId
-                  "
-                  label="Anime News Network"
-                  [rating]="getRating('ann')"
-                >
-                  <myanili-icon-ann></myanili-icon-ann>
-                </myanili-external-link>
-              }
-              @if (anime.my_extension?.bangumiId) {
-                <myanili-external-link
-                  [href]="'https://bgm.tv/subject/' + anime.my_extension?.bangumiId"
-                  label="Bangumi"
-                  [rating]="getRating('bangumi')"
-                >
-                  <myanili-icon-bangumi></myanili-icon-bangumi>
-                </myanili-external-link>
-              }
-              @if (anime.my_extension?.fandomSlug) {
-                <myanili-external-link
-                  [href]="
-                    anime.my_extension!.fandomSlug!.includes('.')
-                      ? 'https://' + anime.my_extension!.fandomSlug
-                      : 'https://' + anime.my_extension!.fandomSlug + '.fandom.com/'
-                  "
-                  [label]="
-                    anime.my_extension!.fandomSlug!.includes('.')
-                      ? anime.my_extension!.fandomSlug!.replace('www.', '')
-                      : 'Fandom'
-                  "
-                >
-                  <myanili-icon-fandom
-                    [url]="anime.my_extension!.fandomSlug!"
-                  ></myanili-icon-fandom>
-                </myanili-external-link>
-              }
+      </div>
+      @if (anime) {
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <myanili-external-link
+            [href]="'https://myanimelist.net/anime/' + id"
+            label="MyAnimeList"
+            [rating]="getRating('mal')"
+          >
+            <myanili-icon-mal class="text-primary"></myanili-icon-mal>
+          </myanili-external-link>
+          @if (anime.my_extension?.anilistId) {
+            <myanili-external-link
+              [href]="'https://anilist.co/anime/' + anime.my_extension!.anilistId"
+              label="AniList"
+              [rating]="getRating('anilist')"
+            >
+              <myanili-icon-anilist></myanili-icon-anilist>
+            </myanili-external-link>
+          }
+          @if (anime.my_extension?.kitsuId?.kitsuId) {
+            <myanili-external-link
+              [href]="'https://kitsu.app/anime/' + anime.my_extension!.kitsuId!.kitsuId"
+              label="Kitsu"
+              [rating]="getRating('kitsu')"
+            >
+              <myanili-icon-kitsu style="color: #e75e45"></myanili-icon-kitsu>
+            </myanili-external-link>
+          }
+          @if (anime.id) {
+            <myanili-external-link
+              [href]="'https://shikimori.io/animes/' + anime.id"
+              label="Shikimori"
+              [rating]="getRating('shikimori')"
+            >
+              <myanili-icon-shikimori></myanili-icon-shikimori>
+            </myanili-external-link>
+          }
+          @if (anime.my_extension?.anidbId) {
+            <myanili-external-link
+              [href]="'https://anidb.net/anime/' + anime.my_extension!.anidbId"
+              label="aniDB"
+              [rating]="getRating('anidb')"
+            >
+              <myanili-icon-anidb></myanili-icon-anidb>
+            </myanili-external-link>
+          }
+          @if (anime.my_extension?.apSlug) {
+            <myanili-external-link
+              [href]="'https://www.anime-planet.com/anime/' + anime.my_extension!.apSlug"
+              label="Anime-Planet"
+              [rating]="getRating('ap')"
+            >
+              <myanili-icon-ap></myanili-icon-ap>
+            </myanili-external-link>
+          }
+          @if (anime && anime.my_extension && anime.my_extension.trakt) {
+            <myanili-external-link
+              [href]="
+                anime.media_type === 'movie'
+                  ? 'https://trakt.tv/movies/' + anime.my_extension.trakt
+                  : 'https://trakt.tv/shows/' +
+                    anime.my_extension.trakt +
+                    '/seasons/' +
+                    (anime.my_extension.seasonNumber === 0
+                      ? 0
+                      : anime.my_extension.seasonNumber || 1)
+              "
+              label="Trakt"
+              [rating]="getRating('trakt')"
+            >
+              <myanili-icon-trakt style="color: #ed1c24"></myanili-icon-trakt>
+            </myanili-external-link>
+          }
+          @if (anime.my_extension?.simklId) {
+            <myanili-external-link
+              [href]="'https://simkl.com/anime/' + anime.my_extension!.simklId"
+              label="SIMKL"
+              [rating]="getRating('simkl')"
+            >
+              <myanili-icon-simkl></myanili-icon-simkl>
+            </myanili-external-link>
+          }
+          @if (anime.my_extension?.annictId) {
+            <myanili-external-link
+              [href]="'https://annict.com/works/' + anime.my_extension!.annictId"
+              label="Annict"
+              [rating]="getRating('annict')"
+            >
+              <myanili-icon-annict></myanili-icon-annict>
+            </myanili-external-link>
+          }
+          @if (anime.my_extension?.anisearchId) {
+            <myanili-external-link
+              [href]="'https://anisearch.com/anime/' + anime.my_extension!.anisearchId"
+              label="aniSearch"
+              [rating]="getRating('anisearch')"
+            >
+              <myanili-icon-anisearch></myanili-icon-anisearch>
+            </myanili-external-link>
+          }
+          <myanili-external-link
+            [href]="
+              anime.my_extension?.livechartId
+                ? 'https://www.livechart.me/anime/' +
+                  $safeNavigationMigration(anime.my_extension?.livechartId)
+                : 'https://www.livechart.me/search?q=' + anime.title
+            "
+            label="LiveChart"
+            [rating]="getRating('livechart')"
+            [muted]="!anime.my_extension?.livechartId"
+          >
+            <myanili-icon-livechart></myanili-icon-livechart>
+          </myanili-external-link>
+          @if (anime.my_extension?.annId) {
+            <myanili-external-link
+              [href]="
+                'https://www.animenewsnetwork.com/encyclopedia/anime.php?id=' +
+                anime.my_extension!.annId
+              "
+              label="Anime News Network"
+              [rating]="getRating('ann')"
+            >
+              <myanili-icon-ann></myanili-icon-ann>
+            </myanili-external-link>
+          }
+          @if (anime.my_extension?.bangumiId) {
+            <myanili-external-link
+              [href]="'https://bgm.tv/subject/' + anime.my_extension?.bangumiId"
+              label="Bangumi"
+              [rating]="getRating('bangumi')"
+            >
+              <myanili-icon-bangumi></myanili-icon-bangumi>
+            </myanili-external-link>
+          }
+          @if (anime.my_extension?.fandomSlug) {
+            <myanili-external-link
+              [href]="
+                anime.my_extension!.fandomSlug!.includes('.')
+                  ? 'https://' + anime.my_extension!.fandomSlug
+                  : 'https://' + anime.my_extension!.fandomSlug + '.fandom.com/'
+              "
+              [label]="
+                anime.my_extension!.fandomSlug!.includes('.')
+                  ? anime.my_extension!.fandomSlug!.replace('www.', '')
+                  : 'Fandom'
+              "
+            >
+              <myanili-icon-fandom [url]="anime.my_extension!.fandomSlug!"></myanili-icon-fandom>
+            </myanili-external-link>
+          }
+        </div>
+        <div class="d-flex flex-wrap column-gap-4 row-gap-2 mt-4 justify-content-around">
+          @if (anime.rank) {
+            <div class="text-center">
+              <div class="stat-value">#{{ anime.rank | number }}</div>
+              <div class="fact-label">Ranking</div>
             </div>
-          </div>
+          }
+          @if (anime.popularity) {
+            <div class="text-center">
+              <div class="stat-value">#{{ anime.popularity | number }}</div>
+              <div class="fact-label">Popularity</div>
+            </div>
+          }
+          @if (anime.num_list_users) {
+            <div class="text-center">
+              <div class="stat-value">{{ anime.num_list_users | number }}</div>
+              <div class="fact-label">Members</div>
+            </div>
+          }
         </div>
       }
     </div>
@@ -479,10 +500,6 @@
         [innerHTML]="anime!.my_extension!.comment! | nl2br"
       ></blockquote>
     </div>
-  }
-
-  @if (anime) {
-    <myanili-genres-badges class="mb-3 d-block" [genres]="anime.genres"></myanili-genres-badges>
   }
 
   @if (anime) {
