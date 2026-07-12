@@ -217,16 +217,40 @@
                     }}{{ manga!.my_extension!.platform | platform: 'urlpostfix' }}"
                     target="_blank"
                   >
-                    <svg-icon
+                    <myanili-svg-icon
+                      [alt]="manga!.my_extension!.platform | platform"
                       [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
                       src="/assets/platform/{{ manga!.my_extension!.platform }}.svg"
-                    ></svg-icon>
+                    ></myanili-svg-icon>
                   </a>
                 } @else {
-                  <svg-icon
+                  <myanili-svg-icon
+                    [alt]="manga!.my_extension!.platform | platform"
                     [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
                     src="/assets/platform/{{ manga!.my_extension!.platform }}.svg"
-                  ></svg-icon>
+                  ></myanili-svg-icon>
+                }
+              }
+              @if (manga!.my_extension?.publisher) {
+                <span>&middot;</span>
+                @if (manga!.my_extension?.publisherWebsite) {
+                  <a
+                    [href]="$safeNavigationMigration(manga!.my_extension?.publisherWebsite)"
+                    target="_blank"
+                    class="link-primary"
+                  >
+                    <myanili-svg-icon
+                      [alt]="$safeNavigationMigration(manga!.my_extension?.publisher)"
+                      [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+                      src="/assets/publisher/{{ publisherLogo }}.svg"
+                    ></myanili-svg-icon>
+                  </a>
+                } @else {
+                  <myanili-svg-icon
+                    [alt]="$safeNavigationMigration(manga!.my_extension?.publisher)"
+                    [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
+                    src="/assets/publisher/{{ publisherLogo }}.svg"
+                  ></myanili-svg-icon>
                 }
               }
             </div>
@@ -249,30 +273,6 @@
           <div>
             @for (magazine of manga!.serialization!; track magazine) {
               <div>{{ magazine.node.name }}</div>
-            }
-          </div>
-        }
-        @if (manga && manga.my_extension?.publisher) {
-          <div class="fact-label">Publisher</div>
-          <div>
-            @if (manga.my_extension?.publisherWebsite) {
-              <a
-                [href]="$safeNavigationMigration(manga.my_extension?.publisherWebsite)"
-                target="_blank"
-                class="link-primary"
-              >
-                <myanili-svg-icon
-                  [alt]="$safeNavigationMigration(manga.my_extension?.publisher)"
-                  [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-                  src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
-                ></myanili-svg-icon>
-              </a>
-            } @else {
-              <myanili-svg-icon
-                [alt]="$safeNavigationMigration(manga.my_extension?.publisher)"
-                [svgStyle]="{ 'maxWidth.rem': '5', 'maxHeight.rem': '1' }"
-                src="/assets/publisher/{{ manga.my_extension?.publisher }}.svg"
-              ></myanili-svg-icon>
             }
           </div>
         }

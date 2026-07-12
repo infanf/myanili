@@ -337,60 +337,76 @@ export class MangaDetailsComponent implements OnInit {
     if (!this.manga) return;
     this.glob.busy();
     this.busy = true;
-    const data = { status, is_rereading: false } as MyMangaUpdateExtended;
-    if (status === 'reading' && !this.manga.my_list_status?.start_date) {
-      data.start_date = DateTime.local().toISODate() || undefined;
+    try {
+      const data = { status, is_rereading: false } as MyMangaUpdateExtended;
+      if (status === 'reading' && !this.manga.my_list_status?.start_date) {
+        data.start_date = DateTime.local().toISODate() || undefined;
+      }
+      await this.mangaService.updateManga(this.manga, data);
+      await this.ngOnInit();
+    } finally {
+      this.glob.notbusy();
+      this.busy = false;
     }
-    await this.mangaService.updateManga(this.manga, data);
-    await this.ngOnInit();
-    this.glob.notbusy();
-    this.busy = false;
   }
 
   async reread() {
     if (!this.manga) return;
     this.glob.busy();
     this.busy = true;
-    await this.mangaService.updateManga(this.manga, {
-      status: 'completed',
-      is_rereading: true,
-      num_chapters_read: 0,
-      num_volumes_read: 0,
-    });
-    await this.ngOnInit();
-    this.glob.notbusy();
-    this.busy = false;
+    try {
+      await this.mangaService.updateManga(this.manga, {
+        status: 'completed',
+        is_rereading: true,
+        num_chapters_read: 0,
+        num_volumes_read: 0,
+      });
+      await this.ngOnInit();
+    } finally {
+      this.glob.notbusy();
+      this.busy = false;
+    }
   }
 
   async startOver() {
     if (!this.manga) return;
     this.glob.busy();
     this.busy = true;
-    if (
-      !(await this.dialogue.confirm(
-        `Are you sure you want to read "${this.manga.title}" from the start again?`,
-        'Start over',
-      ))
-    ) {
-      this.busy = false;
+    try {
+      if (
+        !(await this.dialogue.confirm(
+          `Are you sure you want to read "${this.manga.title}" from the start again?`,
+          'Start over',
+        ))
+      ) {
+        return;
+      }
+      await this.mangaService.updateManga(this.manga, {
+        status: 'reading',
+        is_rereading: false,
+        num_chapters_read: 0,
+        num_volumes_read: 0,
+        start_date: DateTime.local().toISODate() || undefined,
+      });
+      await this.ngOnInit();
+    } finally {
       this.glob.notbusy();
-      return;
+      this.busy = false;
     }
-    await this.mangaService.updateManga(this.manga, {
-      status: 'reading',
-      is_rereading: false,
-      num_chapters_read: 0,
-      num_volumes_read: 0,
-      start_date: DateTime.local().toISODate() || undefined,
-    });
-    await this.ngOnInit();
-    this.glob.notbusy();
-    this.busy = false;
   }
 
   async plusOne(type: 'chapter' | 'volume') {
     if (!this.manga || !this.manga.my_list_status) return;
     this.glob.busy();
+    try {
+      await this.doPlusOne(type);
+    } finally {
+      this.glob.notbusy();
+    }
+  }
+
+  private async doPlusOne(type: 'chapter' | 'volume') {
+    if (!this.manga || !this.manga.my_list_status) return;
     const currentChapter = this.manga.my_list_status.num_chapters_read || 0;
     const currentVolume = this.manga.my_list_status.num_volumes_read || 0;
     const data = {
@@ -458,7 +474,6 @@ export class MangaDetailsComponent implements OnInit {
     this.manga.my_list_status.updated_at = statusResponse.updated_at;
     this.manga.my_list_status.start_date = statusResponse.start_date;
     this.manga.my_list_status.finish_date = statusResponse.finish_date;
-    this.glob.notbusy();
   }
 
   async deleteEntry(): Promise<boolean> {
@@ -473,10 +488,13 @@ export class MangaDetailsComponent implements OnInit {
     }
     this.glob.busy();
     this.busy = true;
-    await this.mangaService.deleteManga(this.manga);
-    await this.ngOnInit();
-    this.glob.notbusy();
-    this.busy = false;
+    try {
+      await this.mangaService.deleteManga(this.manga);
+      await this.ngOnInit();
+    } finally {
+      this.glob.notbusy();
+      this.busy = false;
+    }
     return true;
   }
 
@@ -653,5 +671,15 @@ export class MangaDetailsComponent implements OnInit {
         return date.weekdayLong;
       })
       .join(', ');
+  }
+
+  /** publisher logo asset name, normalized like the platform widget ("Carlsen Manga" → "carlsen") */
+  get publisherLogo(): string | undefined {
+    const publisher = this.manga?.my_extension?.publisher;
+    if (!publisher) return undefined;
+    return publisher
+      .toLowerCase()
+      .replace(/manga\s*$/, '')
+      .replace(/\s/g, '');
   }
 }
