@@ -1,5 +1,6 @@
 <myanili-header
   header="{{ !showDate ? 'Watchlist' : (getLast8am().toJSDate() | date: 'EEE, MMM d') }}"
+  [settings]="['language', 'autoFilter']"
   (click)="showDate = !showDate"
 ></myanili-header>
 <section>

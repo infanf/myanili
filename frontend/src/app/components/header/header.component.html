@@ -1,3 +1,13 @@
-<header class="container-fluid my-4 text-center">
+<header class="container-fluid my-4 position-relative text-center">
+  @if (settings?.length) {
+    <button
+      type="button"
+      class="btn btn-link text-reset position-absolute start-0 top-50 translate-middle-y"
+      title="Settings for this view"
+      (click)="openSettings($event)"
+    >
+      <myanili-icon name="gear" size="20"></myanili-icon>
+    </button>
+  }
   <h1>{{ header }}</h1>
 </header>

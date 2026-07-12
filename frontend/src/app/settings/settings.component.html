@@ -11,67 +11,6 @@
   ></button>
 </div>
 <div class="modal-body">
-  <div class="card">
-    <div class="card-header">Anime/Manga</div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-5">Language</div>
-        <div class="col-7">
-          <select class="form-control" [(ngModel)]="lang">
-            <option value="default">Rōmaji</option>
-            <option value="en">English</option>
-            <option value="jp">Native</option>
-          </select>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-5">Pausing Shows</div>
-        <div class="col-7">
-          <select class="form-control" [(ngModel)]="autoFilter">
-            <option value="false">Show on Watchlist</option>
-            <option value="true">Hide on Watchlist</option>
-          </select>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-5">Seasonal</div>
-        <div class="col-7">
-          <select class="form-control" [(ngModel)]="inlist">
-            <option value="false">Show all Airing</option>
-            <option value="true">Show only in my list</option>
-          </select>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-5">Lists</div>
-        <div class="col-7">
-          <select class="form-control" [(ngModel)]="nsfw">
-            <option value="false">Hide Hentai in Search/Season</option>
-            <option value="true">Show Hentai in Search/Season</option>
-          </select>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-5">Layout</div>
-        <div class="col-7">
-          <select class="form-control" [(ngModel)]="layout">
-            <option value="list">List</option>
-            <option value="grid">Grid</option>
-          </select>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-5">Scores</div>
-        <div class="col-7">
-          <select class="form-control" [(ngModel)]="scoreDisplay">
-            <option value="display">Default</option>
-            <option value="10">X.YY / 10</option>
-            <option value="100">XX%</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
   <!-- Use the new combined login component -->
   <myanili-logins></myanili-logins>
   <myanili-changelog></myanili-changelog>

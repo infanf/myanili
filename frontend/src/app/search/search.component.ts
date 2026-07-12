@@ -8,6 +8,7 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ViewSettingsComponent } from '@components/view-settings/view-settings.component';
 import { Anime } from '@models/anime';
 import { Manga } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -75,6 +76,12 @@ export class SearchComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.sb?.first.nativeElement.focus();
+  }
+
+  openSettings() {
+    const modalRef = this.modal.open(ViewSettingsComponent);
+    modalRef.componentInstance.keys = ['language', 'nsfw'];
+    modalRef.componentInstance.title = 'Search Settings';
   }
 
   async search() {

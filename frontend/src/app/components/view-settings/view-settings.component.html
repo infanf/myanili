@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ title }}</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="modal.dismiss()"
+  ></button>
+</div>
+<div class="modal-body">
+  @for (def of definitions; track def.key) {
+    <div class="mb-3">
+      <label class="form-label mb-1" [for]="'view-setting-' + def.key">{{ def.label }}</label>
+      <select
+        class="form-control"
+        [id]="'view-setting-' + def.key"
+        [ngModel]="getValue(def.key)"
+        (ngModelChange)="setValue(def.key, $event)"
+      >
+        @for (option of def.options; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+      <small class="form-text text-muted">{{ def.description }}</small>
+    </div>
+  }
+</div>

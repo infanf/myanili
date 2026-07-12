@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SeasonPlannerComponent } from '@app/anime/season/planner/planner.component';
+import { ViewSettingsComponent } from '@components/view-settings/view-settings.component';
 import { Anime } from '@models/anime';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnimeService } from '@services/anime/anime.service';
@@ -107,6 +108,12 @@ export class SeasonComponent {
     const statusResponse = await this.animeService.addAnime(anime);
     if (statusResponse) anime.my_list_status = statusResponse;
     delete anime.busy;
+  }
+
+  openSettings() {
+    const modalRef = this.modalService.open(ViewSettingsComponent);
+    modalRef.componentInstance.keys = ['language', 'inList', 'nsfw', 'layout', 'scoreDisplay'];
+    modalRef.componentInstance.title = 'Season Settings';
   }
 
   async openPlanner() {

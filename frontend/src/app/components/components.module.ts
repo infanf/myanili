@@ -30,6 +30,7 @@ import { TimePipe } from './time.pipe';
 import { ToasterComponent } from './toaster/toaster.component';
 import { ValuePairArrayComponent } from './value-pair-array/value-pair-array.component';
 import { ValuePairComponent } from './value-pair/value-pair.component';
+import { ViewSettingsComponent } from './view-settings/view-settings.component';
 import { WidgetSeasonComponent } from './widget-season/widget-season.component';
 
 @NgModule({
@@ -54,6 +55,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     PosterRatingComponent,
     MySvgIconComponent,
     HeaderComponent,
+    ViewSettingsComponent,
     WidgetSeasonComponent,
     ToasterComponent,
     DateAgoPipe,
@@ -81,6 +83,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     RatingComponent,
     MySvgIconComponent,
     HeaderComponent,
+    ViewSettingsComponent,
     WidgetSeasonComponent,
     ToasterComponent,
     MalPipe,

@@ -1,4 +1,7 @@
-<myanili-header [header]="title"></myanili-header>
+<myanili-header
+  [header]="title"
+  [settings]="['language', 'layout', 'scoreDisplay']"
+></myanili-header>
 <section>
   @if ((settings.layout$ | async) === 'list') {
     <myanili-manga-list [mangas]="mangas"></myanili-manga-list>
