@@ -164,7 +164,15 @@ export class WatchlistComponent implements OnInit {
     const zone = simulcast.tz || 'UTC';
     const time = simulcast.time || '00:00';
     const [hour, minute] = time.split(':').map(Number);
-    const airTime = DateTime.fromObject({ hour, minute }, { zone }).setZone('local');
+    // anchor the air time to the current watchlist day; fromObject alone would
+    // use today's date in the source zone, which may already be tomorrow
+    const localAirTime = DateTime.fromObject({ hour, minute }, { zone }).setZone('local');
+    const airTime = this.getLast8am().set({
+      hour: localAirTime.hour,
+      minute: localAirTime.minute,
+      second: 0,
+      millisecond: 0,
+    });
     return airTime > DateTime.local();
   }
 
@@ -196,6 +204,15 @@ export class WatchlistComponent implements OnInit {
       return;
     }
     anime.busy = true;
+    try {
+      await this.doMarkSeen(anime);
+    } finally {
+      anime.busy = false;
+      this.glob.notbusy();
+    }
+  }
+
+  private async doMarkSeen(anime: ListAnime) {
     const currentEpisode = anime.list_status.num_episodes_watched;
     const startingNow = anime.list_status.status === 'plan_to_watch';
     const data = {
@@ -299,8 +316,6 @@ export class WatchlistComponent implements OnInit {
     anime.list_status.num_episodes_watched = animeStatus.num_episodes_watched;
     anime.list_status.updated_at = animeStatus.updated_at;
     anime.list_status.status = animeStatus.status || anime.list_status.status;
-    anime.busy = false;
-    this.glob.notbusy();
   }
 
   async scrobbleTrakt(anime: Anime, episode: number): Promise<boolean> {

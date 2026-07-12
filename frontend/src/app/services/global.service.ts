@@ -12,7 +12,7 @@ import { changelog } from '../../changelog';
   providedIn: 'root',
 })
 export class GlobalService {
-  private isBusySubject = new BehaviorSubject<boolean>(true);
+  private isBusySubject = new BehaviorSubject<boolean>(false);
   private loadingPercentSubject = new BehaviorSubject<number>(0);
   private darkModeSubject = new BehaviorSubject<boolean>(false);
   private readonly titlePostfix = ' – MyAniLi';
