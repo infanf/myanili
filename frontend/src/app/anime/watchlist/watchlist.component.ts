@@ -112,6 +112,48 @@ export class WatchlistComponent implements OnInit {
     );
   }
 
+  getTitle(anime: ListAnime): string {
+    const lang = this.settings.language$.value;
+    return (
+      anime.my_extension?.displayName ||
+      (lang === 'en'
+        ? anime.node.alternative_titles?.en
+        : lang === 'jp'
+          ? anime.node.alternative_titles?.ja
+          : anime.node.title) ||
+      anime.node.title
+    );
+  }
+
+  getPoster(anime: ListAnime): string {
+    return (
+      anime.node.main_picture?.medium || anime.node.main_picture?.large || 'assets/blank-poster.svg'
+    );
+  }
+
+  /** "SxE" label of the episode to watch next, empty for movies */
+  episodeText(anime: ListAnime): string {
+    if (anime.node.media_type === 'movie') return '';
+    const season =
+      anime.my_extension?.seasonNumber === 0 ? 0 : anime.my_extension?.seasonNumber || 1;
+    const episode =
+      anime.list_status.num_episodes_watched +
+      (anime.my_extension?.episodeCorOffset || 0) +
+      (this.isSeen(anime) ? 0 : 1);
+    return `${season}x${episode}`;
+  }
+
+  checkIcon(anime: ListAnime): string {
+    if (anime.busy) return 'loading-circle';
+    if (anime.my_extension?.simulcast?.day && this.isInSeason(anime)) {
+      if (anime.list_status.status === 'dropped') return 'trash';
+      return this.isSeen(anime) ? 'check-circle' : 'circle';
+    }
+    return anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
+      ? 'check-circle'
+      : 'plus-circle';
+  }
+
   /** true if the anime airs today but its episode has not been released yet */
   airsLaterToday(anime: ListAnime): boolean {
     const simulcast = anime.my_extension?.simulcast;

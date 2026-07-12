@@ -1,125 +1,198 @@
 <myanili-header
   header="{{ !showDate ? 'Watchlist' : (getLast8am().toJSDate() | date: 'EEE, MMM d') }}"
-  [settings]="['language', 'autoFilter', 'startingSoon']"
+  [settings]="['language', 'watchlistLayout', 'autoFilter', 'startingSoon']"
   (click)="showDate = !showDate"
 ></myanili-header>
-<section>
-  <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
-    <thead class="sticky">
-      <tr>
-        <th>Name</th>
-        <th colspan="2">Episode</th>
-        <th colspan="2">Stream<span class="d-none d-md-inline">ing</span></th>
-        <th>
-          <span class="mx-2">
-            <myanili-icon-progress
-              [percent]="(seenCount / animes.length) * 100"
-            ></myanili-icon-progress>
-          </span>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
+@if ((settings.watchlistLayout$ | async) === 'grid') {
+  <section class="container-fluid pb-3">
+    <div class="watchlist-grid">
       @for (anime of animes; track anime; let i = $index) {
         @if (isFirstUpcoming(i)) {
-          <tr class="upcoming-divider">
-            <td colspan="6" class="text-center">
-              <myanili-icon name="clock" size="14" class="me-1"></myanili-icon>
-              airing later today
+          <div class="upcoming-divider-grid text-center">
+            <myanili-icon name="clock" size="14" class="me-1"></myanili-icon>
+            airing later today
+          </div>
+        }
+        <div class="card watchlist-card" [class.seen]="isSeen(anime)">
+          <img
+            class="poster cursor-pointer"
+            [src]="getPoster(anime)"
+            [alt]="getTitle(anime)"
+            routerLink="/anime/details/{{ anime.node.id }}"
+          />
+          <div class="card-body p-2 d-flex flex-column">
+            <div
+              class="fw-bold cursor-pointer"
+              [class.fst-italic]="anime.list_status.status === 'plan_to_watch'"
+              [class.text-green]="anime.list_status.num_episodes_watched === 0"
+              routerLink="/anime/details/{{ anime.node.id }}"
+            >
+              {{ getTitle(anime) }}
+            </div>
+            <div
+              class="small text-body-secondary mt-auto d-flex flex-wrap column-gap-2 align-items-center"
+            >
+              <myanili-icon-progress
+                [percent]="
+                  anime.node.num_episodes
+                    ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) *
+                      100
+                    : 0
+                "
+              ></myanili-icon-progress>
+              @if (episodeText(anime)) {
+                <span>Ep. {{ episodeText(anime) }}</span>
+              }
+              @if (anime.my_extension?.simulcast?.time) {
+                <span>
+                  {{
+                    anime.my_extension?.simulcast?.day?.includes(getLast8am().weekday % 7)
+                      ? (anime.my_extension!.simulcast.time!.substr(0, 5)
+                        | time: anime.my_extension!.simulcast.tz)
+                      : (getLastDay($safeNavigationMigration(anime.my_extension?.simulcast?.day))
+                        | day)
+                  }}
+                </span>
+              }
+              <myanili-streaming
+                [provider]="$safeNavigationMigration(anime.my_extension?.externalStreaming)"
+                [country]="$safeNavigationMigration(anime.my_extension?.simulcast?.country)"
+              ></myanili-streaming>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="check-btn"
+            [title]="isSeen(anime) ? 'Seen' : 'Mark as seen'"
+            (click)="markSeen(anime)"
+          >
+            <myanili-icon [name]="checkIcon(anime)" size="28"></myanili-icon>
+          </button>
+        </div>
+      }
+    </div>
+  </section>
+} @else {
+  <section>
+    <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
+      <thead class="sticky">
+        <tr>
+          <th>Name</th>
+          <th colspan="2">Episode</th>
+          <th colspan="2">Stream<span class="d-none d-md-inline">ing</span></th>
+          <th>
+            <span class="mx-2">
+              <myanili-icon-progress
+                [percent]="(seenCount / animes.length) * 100"
+              ></myanili-icon-progress>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (anime of animes; track anime; let i = $index) {
+          @if (isFirstUpcoming(i)) {
+            <tr class="upcoming-divider">
+              <td colspan="6" class="text-center">
+                <myanili-icon name="clock" size="14" class="me-1"></myanili-icon>
+                airing later today
+              </td>
+            </tr>
+          }
+          <tr
+            [class]="{
+              seen: isSeen(anime),
+              'text-green': anime.list_status.num_episodes_watched === 0,
+            }"
+          >
+            <td
+              class="cursor-pointer"
+              [class.fst-italic]="anime.list_status.status === 'plan_to_watch'"
+              routerLink="/anime/details/{{ anime.node.id }}"
+            >
+              {{
+                anime.my_extension?.displayName ||
+                  ((settings.language$ | async) === 'en'
+                    ? anime.node.alternative_titles?.en
+                    : (settings.language$ | async) === 'jp'
+                      ? anime.node.alternative_titles?.ja
+                      : anime.node.title) ||
+                  anime.node.title
+              }}
+            </td>
+            <td>
+              <myanili-icon-progress
+                [percent]="
+                  anime.node.num_episodes
+                    ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) *
+                      100
+                    : 0
+                "
+              ></myanili-icon-progress>
+            </td>
+            <td style="white-space: nowrap">
+              @if (anime.node.media_type !== 'movie') {
+                {{
+                  anime.my_extension?.seasonNumber === 0
+                    ? anime.my_extension?.seasonNumber
+                    : anime.my_extension?.seasonNumber || 1
+                }}x{{
+                  anime.list_status.num_episodes_watched +
+                    (anime.my_extension?.episodeCorOffset || 0) +
+                    (isSeen(anime) ? 0 : 1)
+                }}
+              }
+            </td>
+            <td>
+              <myanili-streaming
+                [provider]="$safeNavigationMigration(anime.my_extension?.externalStreaming)"
+                [country]="$safeNavigationMigration(anime.my_extension?.simulcast?.country)"
+              ></myanili-streaming>
+            </td>
+            <td>
+              {{
+                anime.my_extension?.simulcast?.time
+                  ? anime.my_extension?.simulcast?.day?.includes(getLast8am().weekday % 7)
+                    ? (anime.my_extension!.simulcast.time!.substr(0, 5)
+                      | time: anime.my_extension!.simulcast.tz)
+                    : (getLastDay($safeNavigationMigration(anime.my_extension?.simulcast?.day))
+                      | day)
+                  : ''
+              }}
+            </td>
+            <td>
+              @if (anime.my_extension?.simulcast?.day && isInSeason(anime)) {
+                <myanili-icon
+                  [class]="{ 'cursor-pointer': !isSeen(anime) }"
+                  class="mx-2"
+                  [name]="
+                    anime.busy
+                      ? 'loading-circle'
+                      : anime.list_status.status === 'dropped'
+                        ? 'trash'
+                        : isSeen(anime)
+                          ? 'check-circle'
+                          : 'circle'
+                  "
+                  (click)="markSeen(anime)"
+                ></myanili-icon>
+              } @else {
+                <myanili-icon
+                  class="cursor-pointer mx-2"
+                  [name]="
+                    anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
+                      ? 'check-circle'
+                      : anime.busy
+                        ? 'loading-circle'
+                        : 'plus-circle'
+                  "
+                  (click)="markSeen(anime)"
+                ></myanili-icon>
+              }
             </td>
           </tr>
         }
-        <tr
-          [class]="{
-            seen: isSeen(anime),
-            'text-green': anime.list_status.num_episodes_watched === 0,
-          }"
-        >
-          <td
-            class="cursor-pointer"
-            [class.fst-italic]="anime.list_status.status === 'plan_to_watch'"
-            routerLink="/anime/details/{{ anime.node.id }}"
-          >
-            {{
-              anime.my_extension?.displayName ||
-                ((settings.language$ | async) === 'en'
-                  ? anime.node.alternative_titles?.en
-                  : (settings.language$ | async) === 'jp'
-                    ? anime.node.alternative_titles?.ja
-                    : anime.node.title) ||
-                anime.node.title
-            }}
-          </td>
-          <td>
-            <myanili-icon-progress
-              [percent]="
-                anime.node.num_episodes
-                  ? (anime.list_status.num_episodes_watched / (anime.node.num_episodes || 0)) * 100
-                  : 0
-              "
-            ></myanili-icon-progress>
-          </td>
-          <td style="white-space: nowrap">
-            @if (anime.node.media_type !== 'movie') {
-              {{
-                anime.my_extension?.seasonNumber === 0
-                  ? anime.my_extension?.seasonNumber
-                  : anime.my_extension?.seasonNumber || 1
-              }}x{{
-                anime.list_status.num_episodes_watched +
-                  (anime.my_extension?.episodeCorOffset || 0) +
-                  (isSeen(anime) ? 0 : 1)
-              }}
-            }
-          </td>
-          <td>
-            <myanili-streaming
-              [provider]="$safeNavigationMigration(anime.my_extension?.externalStreaming)"
-              [country]="$safeNavigationMigration(anime.my_extension?.simulcast?.country)"
-            ></myanili-streaming>
-          </td>
-          <td>
-            {{
-              anime.my_extension?.simulcast?.time
-                ? anime.my_extension?.simulcast?.day?.includes(getLast8am().weekday % 7)
-                  ? (anime.my_extension!.simulcast.time!.substr(0, 5)
-                    | time: anime.my_extension!.simulcast.tz)
-                  : (getLastDay($safeNavigationMigration(anime.my_extension?.simulcast?.day)) | day)
-                : ''
-            }}
-          </td>
-          <td>
-            @if (anime.my_extension?.simulcast?.day && isInSeason(anime)) {
-              <myanili-icon
-                [class]="{ 'cursor-pointer': !isSeen(anime) }"
-                class="mx-2"
-                [name]="
-                  anime.busy
-                    ? 'loading-circle'
-                    : anime.list_status.status === 'dropped'
-                      ? 'trash'
-                      : isSeen(anime)
-                        ? 'check-circle'
-                        : 'circle'
-                "
-                (click)="markSeen(anime)"
-              ></myanili-icon>
-            } @else {
-              <myanili-icon
-                class="cursor-pointer mx-2"
-                [name]="
-                  anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
-                    ? 'check-circle'
-                    : anime.busy
-                      ? 'loading-circle'
-                      : 'plus-circle'
-                "
-                (click)="markSeen(anime)"
-              ></myanili-icon>
-            }
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
-</section>
+      </tbody>
+    </table>
+  </section>
+}

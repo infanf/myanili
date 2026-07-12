@@ -5,6 +5,7 @@ import { Language, ScoreDisplay, SettingsService } from '@services/settings.serv
 export type ViewSettingKey =
   | 'language'
   | 'layout'
+  | 'watchlistLayout'
   | 'scoreDisplay'
   | 'autoFilter'
   | 'startingSoon'
@@ -47,6 +48,15 @@ const VIEW_SETTING_DEFINITIONS: ViewSettingDefinition[] = [
       { value: 'default', label: 'Default' },
       { value: '10', label: 'X.YY / 10' },
       { value: '100', label: 'XX%' },
+    ],
+  },
+  {
+    key: 'watchlistLayout',
+    label: 'Layout',
+    description: 'Display the watchlist as a compact table or as cards with posters.',
+    options: [
+      { value: 'list', label: 'List' },
+      { value: 'grid', label: 'Cards' },
     ],
   },
   {
@@ -116,6 +126,8 @@ export class ViewSettingsComponent {
         return this.settings.language$.value;
       case 'layout':
         return this.settings.layout$.value;
+      case 'watchlistLayout':
+        return this.settings.watchlistLayout$.value;
       case 'scoreDisplay':
         return this.settings.scoreDisplay$.value;
       case 'autoFilter':
@@ -138,6 +150,9 @@ export class ViewSettingsComponent {
         break;
       case 'layout':
         this.settings.layout = value;
+        break;
+      case 'watchlistLayout':
+        this.settings.watchlistLayout = value;
         break;
       case 'scoreDisplay':
         this.settings.scoreDisplay = value as ScoreDisplay;
