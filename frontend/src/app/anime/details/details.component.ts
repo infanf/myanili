@@ -643,6 +643,15 @@ export class AnimeDetailsComponent implements OnInit {
     return this.ratings.filter(rat => rat.provider === provider).pop();
   }
 
+  get websiteHost(): string {
+    if (!this.anime?.website) return '';
+    try {
+      return new URL(this.anime.website).hostname.replace(/^www\./, '');
+    } catch (e) {
+      return this.anime.website;
+    }
+  }
+
   setRating(provider: string, rating?: ExtRating) {
     if (rating) {
       let exists = false;

@@ -12,6 +12,7 @@ import { DayPipe } from './day.pipe';
 import { DialogueComponent } from './dialogue/dialogue.component';
 import { RatingDialogueComponent } from './dialogue/rating/rating.component';
 import { DoubleCardComponent } from './double-card/double-card.component';
+import { ExternalLinkComponent } from './external-link/external-link.component';
 import { ExternalRatingComponent } from './external-rating/external-rating.component';
 import { FlagPipe } from './flag.pipe';
 import { GenresBadgesComponent } from './genres-badges/genres-badges.component';
@@ -51,6 +52,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     RatingDialogueComponent,
     RatingComponent,
     DoubleCardComponent,
+    ExternalLinkComponent,
     ExternalRatingComponent,
     PosterRatingComponent,
     MySvgIconComponent,
@@ -78,6 +80,7 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     GenresBadgesComponent,
     DoubleCardComponent,
     StatusBadgeComponent,
+    ExternalLinkComponent,
     ExternalRatingComponent,
     PosterRatingComponent,
     RatingComponent,
