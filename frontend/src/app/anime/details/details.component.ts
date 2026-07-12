@@ -349,36 +349,51 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
-    const data = {
-      status,
-      is_rewatching: this.anime.my_list_status?.is_rewatching,
-    } as MyAnimeUpdateExtended;
-    if (status === 'watching' && !this.anime.my_list_status?.start_date) {
-      data.start_date = DateTime.local().toISODate() || undefined;
+    try {
+      const data = {
+        status,
+        is_rewatching: this.anime.my_list_status?.is_rewatching,
+      } as MyAnimeUpdateExtended;
+      if (status === 'watching' && !this.anime.my_list_status?.start_date) {
+        data.start_date = DateTime.local().toISODate() || undefined;
+      }
+      await this.animeService.updateAnime(this.anime, data);
+      await this.ngOnInit();
+    } finally {
+      this.glob.notbusy();
+      this.busy = false;
     }
-    await this.animeService.updateAnime(this.anime, data);
-    await this.ngOnInit();
-    this.glob.notbusy();
-    this.busy = false;
   }
 
   async rewatch() {
     if (!this.anime) return;
     this.glob.busy();
     this.busy = true;
-    await this.animeService.updateAnime(this.anime, {
-      status: 'completed',
-      is_rewatching: true,
-      num_watched_episodes: 0,
-    });
-    await this.ngOnInit();
-    this.glob.notbusy();
-    this.busy = false;
+    try {
+      await this.animeService.updateAnime(this.anime, {
+        status: 'completed',
+        is_rewatching: true,
+        num_watched_episodes: 0,
+      });
+      await this.ngOnInit();
+    } finally {
+      this.glob.notbusy();
+      this.busy = false;
+    }
   }
 
   async plusOne() {
     if (!this.anime || !this.anime.my_list_status) return;
     this.glob.busy();
+    try {
+      await this.doPlusOne();
+    } finally {
+      this.glob.notbusy();
+    }
+  }
+
+  private async doPlusOne() {
+    if (!this.anime || !this.anime.my_list_status) return;
     const currentEpisode = this.anime.my_list_status?.num_episodes_watched || 0;
     const data = {
       num_watched_episodes: currentEpisode + 1,
@@ -493,7 +508,6 @@ export class AnimeDetailsComponent implements OnInit {
     this.anime.my_list_status.num_times_rewatched = animeStatus.num_times_rewatched;
     this.anime.my_list_status.start_date = animeStatus.start_date;
     this.anime.my_list_status.finish_date = animeStatus.finish_date;
-    this.glob.notbusy();
   }
 
   async skip() {
@@ -501,19 +515,22 @@ export class AnimeDetailsComponent implements OnInit {
     const reallySkip = await this.dialogue.confirm(`Skip ${this.anime.title} this week?`, 'Skip');
     if (!reallySkip) return;
     this.glob.busy();
-    if (!this.anime.my_extension) {
-      this.anime.my_extension = {
-        simulcast: {},
-      };
+    try {
+      if (!this.anime.my_extension) {
+        this.anime.my_extension = {
+          simulcast: {},
+        };
+      }
+      this.anime.my_extension.lastWatchedAt = new Date();
+      const data = {
+        extension: Base64.encode(JSON.stringify(this.anime.my_extension)),
+        status: this.anime.my_list_status.status,
+        is_rewatching: this.anime.my_list_status.is_rewatching,
+      } as MyAnimeUpdateExtended;
+      await this.animeService.updateAnime(this.anime, data);
+    } finally {
+      this.glob.notbusy();
     }
-    this.anime.my_extension.lastWatchedAt = new Date();
-    const data = {
-      extension: Base64.encode(JSON.stringify(this.anime.my_extension)),
-      status: this.anime.my_list_status.status,
-      is_rewatching: this.anime.my_list_status.is_rewatching,
-    } as MyAnimeUpdateExtended;
-    await this.animeService.updateAnime(this.anime, data);
-    this.glob.notbusy();
   }
 
   async scrobbleTrakt(data: Partial<MyAnimeUpdate> = {}): Promise<boolean> {
@@ -549,10 +566,13 @@ export class AnimeDetailsComponent implements OnInit {
     }
     this.glob.busy();
     this.busy = true;
-    await this.animeService.deleteAnime(this.anime);
-    this.ngOnInit();
-    this.glob.notbusy();
-    this.busy = false;
+    try {
+      await this.animeService.deleteAnime(this.anime);
+      this.ngOnInit();
+    } finally {
+      this.glob.notbusy();
+      this.busy = false;
+    }
     return true;
   }
 

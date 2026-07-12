@@ -37,18 +37,24 @@ export class SeasonComponent {
           this.season = season.season;
           this.glob.busy();
           return new Observable<Array<Partial<Anime>> | undefined>(observer => {
-            this.update(season.year, season.season).then(animes => {
-              observer.next(animes);
-              observer.complete();
-            });
+            this.update(season.year, season.season).then(
+              animes => {
+                observer.next(animes);
+                observer.complete();
+              },
+              () => {
+                observer.next(undefined);
+                observer.complete();
+              },
+            );
           });
         }),
       )
       .subscribe(animes => {
+        this.glob.notbusy();
         if (animes) {
           const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
           this.glob.setTitle(`${this.year} ${seasons[this.season || 0]} – Schedule`);
-          this.glob.notbusy();
           this.animes = animes;
         }
       });
@@ -62,16 +68,22 @@ export class SeasonComponent {
             }
             this.onlyInList = inList;
             this.glob.busy();
-            this.update().then(animes => {
-              observer.next(animes);
-              observer.complete();
-            });
+            this.update().then(
+              animes => {
+                observer.next(animes);
+                observer.complete();
+              },
+              () => {
+                observer.next(undefined);
+                observer.complete();
+              },
+            );
           });
         }),
       )
       .subscribe(animes => {
+        this.glob.notbusy();
         if (animes) {
-          this.glob.notbusy();
           this.animes = animes;
         }
       });
@@ -128,8 +140,11 @@ export class SeasonComponent {
     modal.componentInstance.season = this.season;
     await modal.result.catch(() => {});
     this.glob.busy();
-    const animes = await this.update();
-    if (animes) this.animes = animes;
-    this.glob.notbusy();
+    try {
+      const animes = await this.update();
+      if (animes) this.animes = animes;
+    } finally {
+      this.glob.notbusy();
+    }
   }
 }

@@ -34,18 +34,24 @@ export class ScheduleComponent {
           this.season = season.season;
           this.glob.busy();
           return new Observable<Array<Partial<Anime>> | undefined>(observer => {
-            this.update(season.year, season.season).then(animes => {
-              observer.next(animes);
-              observer.complete();
-            });
+            this.update(season.year, season.season).then(
+              animes => {
+                observer.next(animes);
+                observer.complete();
+              },
+              () => {
+                observer.next(undefined);
+                observer.complete();
+              },
+            );
           });
         }),
       )
       .subscribe(animes => {
+        this.glob.notbusy();
         if (animes) {
           const seasons = ['Winter', 'Spring', 'Summer', 'Fall'];
           this.glob.setTitle(`${this.year} ${seasons[this.season || 0]} – Schedule`);
-          this.glob.notbusy();
           this.animes = animes;
         }
       });
