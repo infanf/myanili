@@ -5,6 +5,7 @@
       [title]="anime.node.title"
       [recommendations]="anime.num_recommendations"
       [status]="$safeNavigationMigration(anime.node.my_list_status?.status)"
+      [myaniliViewTransition]="'anime-' + anime.node.id"
       routerLink="/anime/details/{{ anime.node.id }}"
     ></myanili-media-card>
   }

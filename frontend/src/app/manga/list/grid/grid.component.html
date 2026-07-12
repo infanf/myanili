@@ -15,6 +15,7 @@
       [progress]="manga.list_status.num_chapters_read"
       [parts]="manga.node.num_chapters"
       [mediaType]="manga.node.media_type"
+      [myaniliViewTransition]="'manga-' + manga.node.id"
       routerLink="/manga/details/{{ manga.node.id }}"
     ></myanili-media-card>
   }

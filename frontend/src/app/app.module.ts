@@ -55,7 +55,7 @@ const routes: Routes = [
     ExternalModule,
     ComponentsModule,
     NavbarModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, { enableViewTransitions: true }),
     SettingsModule,
   ],
   providers: [Title],

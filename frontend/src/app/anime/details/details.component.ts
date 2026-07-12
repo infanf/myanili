@@ -31,6 +31,7 @@ import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { ShikimoriService } from '@services/shikimori.service';
+import { ViewTransitionService } from '@services/view-transition.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 import Timezone from 'timezone-enum';
@@ -48,6 +49,8 @@ export class AnimeDetailsComponent implements OnInit {
   @Input() id = 0;
   anime?: Anime;
   title?: string;
+  previewPoster?: string;
+  previewTitle?: string;
   imageCache?: string;
   fromCache = false;
   busy = false;
@@ -82,6 +85,7 @@ export class AnimeDetailsComponent implements OnInit {
     private dialogue: DialogueService,
     private malService: MalService,
     private toaster: ToasterService,
+    private viewTransition: ViewTransitionService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -92,6 +96,9 @@ export class AnimeDetailsComponent implements OnInit {
         delete this.title;
         delete this.anime;
         this.busy = false;
+        const preview = this.viewTransition.consumePreview();
+        this.previewPoster = preview?.poster;
+        this.previewTitle = preview?.title;
         await this.ngOnInit();
       }
     });

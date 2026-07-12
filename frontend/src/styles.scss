@@ -239,3 +239,24 @@ overlay.overlay-shown {
   height: 1.75rem;
   margin: 0.875rem 0;
 }
+
+/* view transitions: slightly slower than the browser default so the
+   poster/title morph is actually perceivable */
+::view-transition-group(*) {
+  animation-duration: 350ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 300ms;
+}
+
+/* view transitions: respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

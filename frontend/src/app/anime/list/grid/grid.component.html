@@ -15,6 +15,7 @@
       [progress]="anime.list_status.num_episodes_watched"
       [parts]="anime.node.num_episodes"
       [mediaType]="anime.node.media_type"
+      [myaniliViewTransition]="'anime-' + anime.node.id"
       routerLink="/anime/details/{{ anime.node.id }}"
     ></myanili-media-card>
   }

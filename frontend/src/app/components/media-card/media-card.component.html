@@ -4,10 +4,16 @@
       <source [srcset]="poster" />
     }
     <source srcset="/assets/blank-poster.svg" />
-    <img loading="lazy" src="/assets/blank-poster.svg" alt="poster" class="card-img" />
+    <img
+      loading="lazy"
+      src="/assets/blank-poster.svg"
+      alt="poster"
+      class="card-img"
+      data-vt-poster
+    />
   </picture>
   <div class="card-overlay">
-    <span class="line-clamp">
+    <span class="line-clamp" data-vt-title>
       @if (mediaType) {
         <myanili-icon name="{{ mediaType | mal: 'mediaicon' }}" class="me-1"></myanili-icon>
       }

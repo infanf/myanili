@@ -1,8 +1,8 @@
 <div class="container my-sm-3 border-sm-x border-sm-y rounded" [class]="{ 'modal-body': inModal }">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
-    <h2 class="flex-grow-1">
-      @if (manga?.title || title) {
-        {{ manga?.title || title }}
+    <h2 class="flex-grow-1" [style.view-transition-name]="'title-manga-' + id">
+      @if (manga?.title || title || previewTitle) {
+        {{ manga?.title || title || previewTitle }}
       } @else {
         <span class="skeleton d-inline-block w-50">&nbsp;</span>
       }
@@ -32,12 +32,24 @@
     <div class="col-sm-5 col-md-4 mb-3">
       @if (manga) {
         <myanili-poster-rating
+          [style.view-transition-name]="'poster-manga-' + id"
           [poster]="manga.main_picture?.large || manga.main_picture?.medium"
           [meanRating]="meanRating"
           [rating]="$safeNavigationMigration(manga.my_list_status?.score)"
         ></myanili-poster-rating>
       } @else {
-        <div class="skeleton w-100" style="aspect-ratio: 2 / 3"></div>
+        @if (previewPoster) {
+          <myanili-poster-rating
+            [style.view-transition-name]="'poster-manga-' + id"
+            [poster]="previewPoster"
+          ></myanili-poster-rating>
+        } @else {
+          <div
+            class="skeleton w-100"
+            style="aspect-ratio: 2 / 3"
+            [style.view-transition-name]="'poster-manga-' + id"
+          ></div>
+        }
       }
     </div>
 

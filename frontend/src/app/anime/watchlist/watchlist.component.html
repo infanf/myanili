@@ -29,11 +29,16 @@
             airing later today
           </div>
         }
-        <div class="card watchlist-card" [class.seen]="isSeen(anime)">
+        <div
+          class="card watchlist-card"
+          [class.seen]="isSeen(anime)"
+          [myaniliViewTransition]="'anime-' + anime.node.id"
+        >
           <img
             class="poster cursor-pointer"
             [src]="getPoster(anime)"
             [alt]="getTitle(anime)"
+            data-vt-poster
             routerLink="/anime/details/{{ anime.node.id }}"
           />
           <div class="card-body p-2 d-flex flex-column">
@@ -41,6 +46,7 @@
               class="fw-bold cursor-pointer"
               [class.fst-italic]="anime.list_status.status === 'plan_to_watch'"
               [class.text-green]="anime.list_status.num_episodes_watched === 0"
+              data-vt-title
               routerLink="/anime/details/{{ anime.node.id }}"
             >
               {{ getTitle(anime) }}

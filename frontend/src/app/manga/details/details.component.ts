@@ -19,6 +19,7 @@ import { MangadexService } from '@services/manga/mangadex.service';
 import { MangapassionService } from '@services/manga/mangapassion.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
 import { ShikimoriService } from '@services/shikimori.service';
+import { ViewTransitionService } from '@services/view-transition.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
 
@@ -36,6 +37,8 @@ export class MangaDetailsComponent implements OnInit {
   @Input() inModal = false;
   manga?: Manga;
   title?: string;
+  previewPoster?: string;
+  previewTitle?: string;
   shortsyn = true;
   fromCache = false;
   busy = false;
@@ -64,6 +67,7 @@ export class MangaDetailsComponent implements OnInit {
     private cache: CacheService,
     private dialogue: DialogueService,
     private malService: MalService,
+    private viewTransition: ViewTransitionService,
   ) {
     this.route.paramMap.subscribe(async params => {
       const newId = Number(params.get('id'));
@@ -72,6 +76,9 @@ export class MangaDetailsComponent implements OnInit {
         this.id = newId;
         delete this.title;
         delete this.manga;
+        const preview = this.viewTransition.consumePreview();
+        this.previewPoster = preview?.poster;
+        this.previewTitle = preview?.title;
         await this.ngOnInit();
       }
     });

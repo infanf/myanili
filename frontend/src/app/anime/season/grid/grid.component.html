@@ -16,6 +16,7 @@
       [progress]="$safeNavigationMigration(anime.my_list_status?.num_episodes_watched)"
       [parts]="anime.num_episodes"
       [mediaType]="anime.media_type"
+      [myaniliViewTransition]="'anime-' + anime.id"
     >
       <div class="p-2" style="min-height: 100%" routerLink="/anime/details/{{ anime.id }}">
         <div class="fw-bold">

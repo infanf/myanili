@@ -7,6 +7,7 @@
           <myanili-media-card
             [poster]="anime.main_picture?.medium || anime.main_picture?.large"
             [title]="anime.title"
+            [myaniliViewTransition]="'anime-' + anime.id"
             routerLink="/anime/details/{{ anime.id }}"
           ></myanili-media-card>
         }

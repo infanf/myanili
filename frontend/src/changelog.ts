@@ -15,6 +15,7 @@ export const changelog: Changelog = {
         'Details: restructured layout – alternative titles as subtitle, meta line, genre badges, status card with progress and airing info, compact fact list and stat tiles',
         'Details: links to external databases as compact, uniform icon tiles with ratings; official website as its own entry',
         'Loading: skeleton screens replace the blocking loading overlay on details pages, lists and the watchlist',
+        'Navigation: native view transitions – poster and title of a clicked card morph into the details page, which shows the known image and title while the rest loads',
       ],
       fixes: [
         'Manga: restore missing Bangumi rating/link on details page',

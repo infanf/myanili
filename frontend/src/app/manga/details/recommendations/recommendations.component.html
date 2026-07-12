@@ -5,6 +5,7 @@
       [title]="manga.node.title"
       [status]="$safeNavigationMigration(manga.node.my_list_status?.status)"
       [recommendations]="manga.num_recommendations"
+      [myaniliViewTransition]="'manga-' + manga.node.id"
       routerLink="/manga/details/{{ manga.node.id }}"
     ></myanili-media-card>
   }

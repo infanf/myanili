@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DirectivesModule } from '@app/directives/directives.module';
 import { ComponentsModule } from '@components/components.module';
 
 import { AnimeRelatedComponent } from './anime/anime.component';
@@ -9,7 +10,7 @@ import { MangaRelatedComponent } from './manga/manga.component';
 
 @NgModule({
   declarations: [AnimeRelatedComponent, LiveactionRelatedComponent, MangaRelatedComponent],
-  imports: [CommonModule, ComponentsModule, RouterModule],
+  imports: [CommonModule, ComponentsModule, DirectivesModule, RouterModule],
   exports: [AnimeRelatedComponent, LiveactionRelatedComponent, MangaRelatedComponent],
 })
 export class RelatedModule {}
