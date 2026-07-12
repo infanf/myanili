@@ -92,7 +92,6 @@ export class AnimeDetailsComponent implements OnInit {
         delete this.title;
         delete this.anime;
         this.busy = false;
-        this.glob.busy();
         await this.ngOnInit();
       }
     });
@@ -117,7 +116,6 @@ export class AnimeDetailsComponent implements OnInit {
           this.anime = animeCached;
           this.glob.setTitle(animeCached.title);
           this.fromCache = true;
-          this.glob.notbusy();
         }
       })
       .catch(() => {});
@@ -157,7 +155,6 @@ export class AnimeDetailsComponent implements OnInit {
     if (!this.streams.length) {
       this.initStreams();
     }
-    this.glob.notbusy();
     await this.getRatings();
   }
 
@@ -361,6 +358,7 @@ export class AnimeDetailsComponent implements OnInit {
     }
     await this.animeService.updateAnime(this.anime, data);
     await this.ngOnInit();
+    this.glob.notbusy();
     this.busy = false;
   }
 
@@ -374,6 +372,7 @@ export class AnimeDetailsComponent implements OnInit {
       num_watched_episodes: 0,
     });
     await this.ngOnInit();
+    this.glob.notbusy();
     this.busy = false;
   }
 

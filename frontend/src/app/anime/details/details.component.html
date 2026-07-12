@@ -1,7 +1,11 @@
 <div class="container my-sm-3 border-sm-x border-sm-y rounded" [class]="{ 'modal-body': inModal }">
   <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
-    <h2>
-      {{ anime?.title || title || 'Loading…' }}
+    <h2 class="flex-grow-1">
+      @if (anime?.title || title) {
+        {{ anime?.title || title }}
+      } @else {
+        <span class="skeleton d-inline-block w-50">&nbsp;</span>
+      }
     </h2>
     @if (anime?.title && !fromCache && loggedIn) {
       <div class="ms-auto ps-3 cursor-pointer" style="white-space: nowrap">
@@ -26,16 +30,28 @@
 
   <div class="row">
     <div class="col-sm-5 col-md-4 mb-3">
-      <myanili-poster-rating
-        [poster]="anime?.main_picture?.large || anime?.main_picture?.medium"
-        [meanRating]="meanRating"
-        [rating]="$safeNavigationMigration(anime?.my_list_status?.score)"
-      ></myanili-poster-rating>
+      @if (anime) {
+        <myanili-poster-rating
+          [poster]="anime.main_picture?.large || anime.main_picture?.medium"
+          [meanRating]="meanRating"
+          [rating]="$safeNavigationMigration(anime.my_list_status?.score)"
+        ></myanili-poster-rating>
+      } @else {
+        <div class="skeleton w-100" style="aspect-ratio: 2 / 3"></div>
+      }
     </div>
 
     <!-- right column -->
 
     <div class="col-sm-7 col-md-8 mb-3">
+      @if (!anime) {
+        <div class="skeleton skeleton-text w-75"></div>
+        <div class="skeleton skeleton-text w-50"></div>
+        <div class="skeleton skeleton-text my-3" style="max-width: 24rem"></div>
+        <div class="skeleton mb-3" style="height: 6.5rem"></div>
+        <div class="skeleton skeleton-text w-50"></div>
+        <div class="skeleton skeleton-text w-25"></div>
+      }
       @if (anime?.my_extension?.displayName) {
         <div class="fw-bold">{{ anime?.my_extension?.displayName }}</div>
       }
@@ -320,7 +336,7 @@
         }
       </div>
       @if (anime) {
-        <div class="d-flex flex-wrap gap-2 mt-3">
+        <div class="external-links mt-3">
           <myanili-external-link
             [href]="'https://myanimelist.net/anime/' + id"
             label="MyAnimeList"
@@ -492,6 +508,14 @@
       }
     </div>
   </div>
+
+  @if (!anime) {
+    <div class="mt-4">
+      <div class="skeleton skeleton-text w-100"></div>
+      <div class="skeleton skeleton-text w-100"></div>
+      <div class="skeleton skeleton-text w-75"></div>
+    </div>
+  }
 
   @if (anime?.my_extension?.comment) {
     <div class="my-3">

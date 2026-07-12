@@ -68,3 +68,10 @@ a.link-red {
 .modal-body {
   border: none !important;
 }
+
+.external-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+  justify-items: center;
+  row-gap: 0.5rem;
+}

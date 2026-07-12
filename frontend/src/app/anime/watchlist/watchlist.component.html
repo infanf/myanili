@@ -3,7 +3,23 @@
   [settings]="['language', 'watchlistLayout', 'autoFilter', 'startingSoon']"
   (click)="showDate = !showDate"
 ></myanili-header>
-@if ((settings.watchlistLayout$ | async) === 'grid') {
+@if (initialLoading) {
+  <section class="container-fluid pb-3">
+    @if ((settings.watchlistLayout$ | async) === 'grid') {
+      <div class="watchlist-grid">
+        @for (i of skeletons; track i) {
+          <div class="skeleton" style="height: 6rem"></div>
+        }
+      </div>
+    } @else {
+      <div class="skeleton-rows">
+        @for (i of skeletons; track i) {
+          <div class="skeleton"></div>
+        }
+      </div>
+    }
+  </section>
+} @else if ((settings.watchlistLayout$ | async) === 'grid') {
   <section class="container-fluid pb-3">
     <div class="watchlist-grid">
       @for (anime of animes; track anime; let i = $index) {

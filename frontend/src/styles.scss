@@ -6,7 +6,8 @@
 
 /* You can add global styles to this file, and also import other style files */
 
-@use 'bootstrap/scss/bootstrap' with ($primary: $primary,
+@use 'bootstrap/scss/bootstrap' with (
+  $primary: $primary,
   $secondary: $secondary,
   $info: $info,
   $success: $success,
@@ -16,7 +17,8 @@
   $dark: $dark,
   $border-radius: $border-radius,
   $border-radius-sm: $border-radius-sm,
-  $theme-colors: $theme-colors);
+  $theme-colors: $theme-colors
+);
 
 .cursor-pointer:not(.selectable) {
   cursor: pointer;
@@ -124,7 +126,7 @@ overlay.overlay-shown {
   }
 }
 
-.table> :not(:first-child) {
+.table > :not(:first-child) {
   border-top: unset;
 }
 
@@ -188,3 +190,52 @@ overlay.overlay-shown {
 }
 
 @include dark-theme.styles;
+/* skeleton screen loading placeholders */
+.skeleton {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.375rem;
+  background-color: color-mix(in srgb, currentColor 12%, transparent);
+  color: inherit;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, currentColor 10%, transparent),
+      transparent
+    );
+    animation: skeleton-shimmer 1.4s infinite;
+  }
+}
+
+.skeleton-text {
+  height: 1em;
+  margin: 0.25em 0;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: 0.5rem;
+
+  > .skeleton {
+    aspect-ratio: 2 / 3;
+  }
+}
+
+.skeleton-rows > .skeleton {
+  height: 1.75rem;
+  margin: 0.875rem 0;
+}

@@ -33,6 +33,8 @@ export class WatchlistComponent implements OnInit {
   autoFilter = false;
   startingSoon = true;
   showDate = false;
+  initialLoading = true;
+  readonly skeletons = Array.from({ length: 8 }, (_, i) => i);
   private _airDates: AirDate[] = [];
 
   constructor(
@@ -45,7 +47,6 @@ export class WatchlistComponent implements OnInit {
     private dialogue: DialogueService,
   ) {
     this.glob.setTitle('Watchlist – Today');
-    this.glob.busy();
     this.settings.autoFilter$.asObservable().subscribe(autoFilter => {
       this.autoFilter = autoFilter;
     });
@@ -59,8 +60,8 @@ export class WatchlistComponent implements OnInit {
   async ngOnInit() {
     this._rawAnimes = await this.getAnimes();
     this.applyFilter();
+    this.initialLoading = false;
     this._airDates = await this.anilist.getAirDates(this._animes.map(a => a.node.id));
-    this.glob.notbusy();
   }
 
   private applyFilter() {

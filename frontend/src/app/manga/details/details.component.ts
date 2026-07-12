@@ -72,7 +72,6 @@ export class MangaDetailsComponent implements OnInit {
         this.id = newId;
         delete this.title;
         delete this.manga;
-        this.glob.busy();
         await this.ngOnInit();
       }
     });
@@ -90,7 +89,6 @@ export class MangaDetailsComponent implements OnInit {
           this.title = mangaCached.title;
           this.fromCache = true;
           this.glob.setTitle(mangaCached.title);
-          this.glob.notbusy();
         }
       })
       .catch(() => {});
@@ -121,7 +119,6 @@ export class MangaDetailsComponent implements OnInit {
         if (this.manga) this.manga.related_anime = relatedAnime;
       });
     }
-    this.glob.notbusy();
     await this.getRatings();
   }
 
@@ -346,6 +343,7 @@ export class MangaDetailsComponent implements OnInit {
     }
     await this.mangaService.updateManga(this.manga, data);
     await this.ngOnInit();
+    this.glob.notbusy();
     this.busy = false;
   }
 
@@ -360,6 +358,7 @@ export class MangaDetailsComponent implements OnInit {
       num_volumes_read: 0,
     });
     await this.ngOnInit();
+    this.glob.notbusy();
     this.busy = false;
   }
 
@@ -385,6 +384,7 @@ export class MangaDetailsComponent implements OnInit {
       start_date: DateTime.local().toISODate() || undefined,
     });
     await this.ngOnInit();
+    this.glob.notbusy();
     this.busy = false;
   }
 

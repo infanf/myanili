@@ -14,6 +14,7 @@ export const changelog: Changelog = {
         'Watchlist: new setting to hide shows that are about to start airing',
         'Details: restructured layout – alternative titles as subtitle, meta line, genre badges, status card with progress and airing info, compact fact list and stat tiles',
         'Details: links to external databases as compact, uniform icon tiles with ratings; official website as its own entry',
+        'Loading: skeleton screens replace the blocking loading overlay on details pages, lists and the watchlist',
       ],
       fixes: [
         'Manga: restore missing Bangumi rating/link on details page',
