@@ -11,3 +11,10 @@
 .text-green > td {
   color: rgba(var(--bs-green-rgb), var(--bs-text-opacity)) !important;
 }
+
+.upcoming-divider > td {
+  border-top: 2px solid currentColor;
+  color: var(--bs-secondary-color, #6c757d);
+  font-size: 0.875em;
+  font-style: italic;
+}

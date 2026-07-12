@@ -20,7 +20,15 @@
       </tr>
     </thead>
     <tbody>
-      @for (anime of animes; track anime) {
+      @for (anime of animes; track anime; let i = $index) {
+        @if (isFirstUpcoming(i)) {
+          <tr class="upcoming-divider">
+            <td colspan="6" class="text-center">
+              <myanili-icon name="clock" size="14" class="me-1"></myanili-icon>
+              airing later today
+            </td>
+          </tr>
+        }
         <tr
           [class]="{
             seen: isSeen(anime),

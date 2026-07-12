@@ -101,6 +101,26 @@ export class WatchlistComponent implements OnInit {
     );
   }
 
+  /** true if the anime airs today but its episode has not been released yet */
+  airsLaterToday(anime: ListAnime): boolean {
+    const simulcast = anime.my_extension?.simulcast;
+    if (!simulcast?.day?.length || !this.isInSeason(anime)) return false;
+    const days = daysToLocal(simulcast);
+    if (this.animeService.getLastDay(days) !== this.getLast8am().weekday % 7) return false;
+    const zone = simulcast.tz || 'UTC';
+    const time = simulcast.time || '00:00';
+    const [hour, minute] = time.split(':').map(Number);
+    const airTime = DateTime.fromObject({ hour, minute }, { zone }).setZone('local');
+    return airTime > DateTime.local();
+  }
+
+  /** true if this row is the first upcoming release, i.e. the divider goes above it */
+  isFirstUpcoming(index: number): boolean {
+    const animes = this.animes;
+    if (!animes[index] || !this.airsLaterToday(animes[index])) return false;
+    return index === 0 || !this.airsLaterToday(animes[index - 1]);
+  }
+
   isSeen(anime: ListAnime): boolean {
     if (anime.busy) return false;
     if (anime.list_status.num_episodes_watched === 0) return false;
