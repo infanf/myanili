@@ -150,7 +150,7 @@ export class BangumiService {
   private async search(keyword: string, type: 1 | 2): Promise<BangumiSubject[]> {
     if (!keyword) return [];
     try {
-      const response = await fetch(`${this.baseUrl}/v0/search/subjects?limit=20`, {
+      const response = await this.fetchWithRetry(`${this.baseUrl}/v0/search/subjects?limit=20`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ export class BangumiService {
         },
         body: JSON.stringify({ keyword, filter: { type: [type] } }),
       });
-      if (!response.ok) return [];
+      if (!response?.ok) return [];
       const data = (await response.json()) as { data?: BangumiSubject[] };
       return data.data || [];
     } catch {
@@ -240,11 +240,11 @@ export class BangumiService {
     let offset = 0;
     try {
       for (;;) {
-        const response = await fetch(
+        const response = await this.fetchWithRetry(
           `${this.baseUrl}/v0/episodes?subject_id=${subjectId}&type=0&limit=${limit}&offset=${offset}`,
           { headers: { Accept: 'application/json', 'User-Agent': this.userAgent } },
         );
-        if (!response.ok) break;
+        if (!response?.ok) break;
         const page = (await response.json()) as {
           total?: number;
           data?: Array<{ id: number; sort: number }>;
@@ -263,13 +263,13 @@ export class BangumiService {
   async getRating(subjectId: number | undefined): Promise<ExtRating | undefined> {
     if (!subjectId) return undefined;
     try {
-      const response = await fetch(`${this.baseUrl}/v0/subjects/${subjectId}`, {
+      const response = await this.fetchWithRetry(`${this.baseUrl}/v0/subjects/${subjectId}`, {
         headers: {
           Accept: 'application/json',
           'User-Agent': this.userAgent,
         },
       });
-      if (!response.ok) return undefined;
+      if (!response?.ok) return undefined;
       const data = await response.json();
       const score: number = data?.rating?.score ?? 0;
       const total: number = data?.rating?.total ?? 0;
@@ -278,6 +278,41 @@ export class BangumiService {
     } catch {
       return undefined;
     }
+  }
+
+  /**
+   * Bangumi's API (behind Cloudflare) intermittently answers read requests with
+   * a 504 Gateway Timeout. Retry transient 5xx and network failures with a short
+   * backoff so lookups usually succeed on the next attempt. Never retries 4xx.
+   * Resolves to undefined when every attempt fails on a network error.
+   */
+  private async fetchWithRetry(
+    url: string,
+    init?: RequestInit,
+    retries = 2,
+  ): Promise<Response | undefined> {
+    const backoffs = [300, 800];
+    for (let attempt = 0; ; attempt++) {
+      const wait = backoffs[Math.min(attempt, backoffs.length - 1)];
+      try {
+        const response = await fetch(url, init);
+        if (response.status >= 500 && attempt < retries) {
+          await this.delay(wait);
+          continue;
+        }
+        return response;
+      } catch (error) {
+        if (attempt < retries) {
+          await this.delay(wait);
+          continue;
+        }
+        return undefined;
+      }
+    }
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
 
