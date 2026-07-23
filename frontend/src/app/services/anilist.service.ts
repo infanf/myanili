@@ -16,7 +16,8 @@ import {
   AnilistWorkStaff,
 } from '@models/anilist';
 import { ExtRating } from '@models/components';
-import { DialogueService } from '@services/dialogue.service';
+import { ConnectionStatusService } from '@services/connection-status.service';
+import { readStoredToken } from '@services/global.service';
 import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -47,10 +48,10 @@ export class AnilistService {
   private client!: Client;
 
   loggedIn = false;
-  constructor(private dialogue: DialogueService) {
-    this.clientId = String(localStorage.getItem('anilistClientId'));
-    this.accessToken = String(localStorage.getItem('anilistAccessToken'));
-    this.refreshToken = String(localStorage.getItem('anilistRefreshToken'));
+  constructor(private connection: ConnectionStatusService) {
+    this.clientId = readStoredToken('anilistClientId');
+    this.accessToken = readStoredToken('anilistAccessToken');
+    this.refreshToken = readStoredToken('anilistRefreshToken');
 
     this.client = new Client({
       url: 'https://graphql.anilist.co',
@@ -68,13 +69,14 @@ export class AnilistService {
       this.checkLogin()
         .then(user => {
           this.userSubject.next(user);
+          if (user) {
+            this.connection.clearError('anilist');
+          } else {
+            this.reportConnectionError();
+          }
         })
-        .catch(e => {
-          this.dialogue.alert(
-            'Could not connect to AniList, please check your account settings.',
-            'AniList Connection Error',
-          );
-          localStorage.removeItem('anilistAccessToken');
+        .catch(() => {
+          this.reportConnectionError();
         });
     }
     this.anilistMedia = new AnilistMediaService(this.client);
@@ -98,7 +100,9 @@ export class AnilistService {
           localStorage.setItem('anilistRefreshToken', this.refreshToken);
           this.clientId = data.ci;
           localStorage.setItem('anilistClientId', this.clientId);
-          this.userSubject.next(await this.checkLogin());
+          const user = await this.checkLogin();
+          this.userSubject.next(user);
+          if (user) this.connection.clearError('anilist');
         }
         loginWindow?.close();
         r(undefined);
@@ -136,12 +140,20 @@ export class AnilistService {
     return requestResult;
   }
 
+  private reportConnectionError() {
+    this.connection.reportError(
+      'anilist',
+      'Could not verify your AniList session. It may have expired – reconnect to renew it.',
+    );
+  }
+
   logoff() {
     this.clientId = '';
     this.accessToken = '';
     this.refreshToken = '';
     this.userSubject.next(undefined);
     this.loggedIn = false;
+    this.connection.clearError('anilist');
     localStorage.removeItem('anilistAccessToken');
     localStorage.removeItem('anilistRefreshToken');
     localStorage.removeItem('anilistClientId');

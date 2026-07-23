@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from 
 import { PlatformPipe } from '@components/platform.pipe';
 import { AnnComponent } from '@external/ann/ann.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
+import { BangumiComponent } from '@external/bangumi/bangumi.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { Manga, MangaExtension, MyMangaUpdate, MyMangaUpdateExtended } from '@models/manga';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -125,17 +126,7 @@ export class MangaEditComponent implements OnInit {
         updateData.finish_date = this.editBackup?.finish_date;
       }
 
-      await this.mangaService.updateManga(
-        {
-          malId: this.manga.id,
-          anilistId: this.manga.my_extension?.anilistId,
-          kitsuId: this.manga.my_extension?.kitsuId,
-          anisearchId: this.manga.my_extension?.anisearchId,
-          bakaId: this.manga.my_extension?.bakaId,
-          mangabakaId: this.manga.my_extension?.mangabakaId,
-        },
-        updateData,
-      );
+      await this.mangaService.updateManga(this.manga, updateData);
 
       this.busy = false;
       this.modal.close(true); // Signal success
@@ -187,12 +178,7 @@ export class MangaEditComponent implements OnInit {
 
     this.busy = true;
     try {
-      await this.mangaService.deleteManga({
-        malId: this.manga.id,
-        anilistId: this.manga.my_extension?.anilistId,
-        kitsuId: this.manga.my_extension?.kitsuId,
-        anisearchId: this.manga.my_extension?.anisearchId,
-      });
+      await this.mangaService.deleteManga(this.manga);
       this.modal.close('deleted'); // Signal deletion to parent
     } catch (error: unknown) {
       this.busy = false;
@@ -281,6 +267,16 @@ export class MangaEditComponent implements OnInit {
     modal.componentInstance.type = 'manga';
     modal.closed.subscribe((value: number) => {
       if (this.editExtension) this.editExtension.annId = Number(value);
+    });
+  }
+
+  async findBangumi() {
+    if (!this.manga || !this.editExtension) return;
+    const modal = this.modalService.open(BangumiComponent);
+    modal.componentInstance.title = this.manga.alternative_titles?.ja || this.manga.title;
+    modal.componentInstance.type = 'manga';
+    modal.closed.subscribe((value: number) => {
+      if (this.editExtension) this.editExtension.bangumiId = Number(value);
     });
   }
 }

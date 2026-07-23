@@ -11,6 +11,7 @@
         (click)="annictLogoff()"
       ></myanili-icon>
     } @else {
+      <myanili-connection-error service="annict"></myanili-connection-error>
       <button class="btn btn-sm btn-primary" (click)="annictConnect()" [disabled]="annictLoading">
         @if (annictLoading) {
           <myanili-icon-loading></myanili-icon-loading>

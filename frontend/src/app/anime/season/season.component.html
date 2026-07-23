@@ -1,4 +1,12 @@
-<header class="container-fluid my-4 text-center">
+<header class="container-fluid my-4 position-relative text-center">
+  <button
+    type="button"
+    class="btn btn-link text-reset position-absolute start-0 top-50 translate-middle-y"
+    title="Settings for this view"
+    (click)="openSettings()"
+  >
+    <myanili-icon name="gear" size="20"></myanili-icon>
+  </button>
   <div class="d-flex align-items-center justify-content-center gap-2">
     <h1 class="mb-0">{{ title }}</h1>
     <button class="btn btn-primary btn-sm" (click)="openPlanner()" title="Season Planner">

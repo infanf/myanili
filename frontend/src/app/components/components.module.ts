@@ -12,6 +12,7 @@ import { DayPipe } from './day.pipe';
 import { DialogueComponent } from './dialogue/dialogue.component';
 import { RatingDialogueComponent } from './dialogue/rating/rating.component';
 import { DoubleCardComponent } from './double-card/double-card.component';
+import { ExternalLinkComponent } from './external-link/external-link.component';
 import { ExternalRatingComponent } from './external-rating/external-rating.component';
 import { FlagPipe } from './flag.pipe';
 import { GenresBadgesComponent } from './genres-badges/genres-badges.component';
@@ -30,6 +31,7 @@ import { TimePipe } from './time.pipe';
 import { ToasterComponent } from './toaster/toaster.component';
 import { ValuePairArrayComponent } from './value-pair-array/value-pair-array.component';
 import { ValuePairComponent } from './value-pair/value-pair.component';
+import { ViewSettingsComponent } from './view-settings/view-settings.component';
 import { WidgetSeasonComponent } from './widget-season/widget-season.component';
 
 @NgModule({
@@ -50,10 +52,12 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     RatingDialogueComponent,
     RatingComponent,
     DoubleCardComponent,
+    ExternalLinkComponent,
     ExternalRatingComponent,
     PosterRatingComponent,
     MySvgIconComponent,
     HeaderComponent,
+    ViewSettingsComponent,
     WidgetSeasonComponent,
     ToasterComponent,
     DateAgoPipe,
@@ -76,11 +80,13 @@ import { WidgetSeasonComponent } from './widget-season/widget-season.component';
     GenresBadgesComponent,
     DoubleCardComponent,
     StatusBadgeComponent,
+    ExternalLinkComponent,
     ExternalRatingComponent,
     PosterRatingComponent,
     RatingComponent,
     MySvgIconComponent,
     HeaderComponent,
+    ViewSettingsComponent,
     WidgetSeasonComponent,
     ToasterComponent,
     MalPipe,

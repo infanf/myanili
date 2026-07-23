@@ -8,6 +8,8 @@ import { AnilistLoginComponent } from './anilist-login/anilist-login.component';
 import { AnisearchLoginComponent } from './anisearch-login/anisearch-login.component';
 import { AnnictLoginComponent } from './annict-login/annict-login.component';
 import { BakaLoginComponent } from './baka-login/baka-login.component';
+import { BangumiLoginComponent } from './bangumi-login/bangumi-login.component';
+import { ConnectionErrorComponent } from './connection-error/connection-error.component';
 import { KitsuLoginComponent } from './kitsu-login/kitsu-login.component';
 import { LivechartLoginComponent } from './livechart-login/livechart-login.component';
 import { LoginsComponent } from './logins.component';
@@ -21,6 +23,7 @@ import { TraktLoginComponent } from './trakt-login/trakt-login.component';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     LoginsComponent,
+    ConnectionErrorComponent,
     MalLoginComponent,
     AnilistLoginComponent,
     AnisearchLoginComponent,
@@ -30,6 +33,7 @@ import { TraktLoginComponent } from './trakt-login/trakt-login.component';
     SimklLoginComponent,
     AnnictLoginComponent,
     BakaLoginComponent,
+    BangumiLoginComponent,
     LivechartLoginComponent,
     MangabakaLoginComponent,
   ],

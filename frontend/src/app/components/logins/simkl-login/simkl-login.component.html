@@ -13,6 +13,7 @@
         (click)="simklLogoff()"
       ></myanili-icon>
     } @else {
+      <myanili-connection-error service="simkl"></myanili-connection-error>
       <button class="btn btn-sm btn-primary" (click)="simklConnect()" [disabled]="simklLoading">
         @if (simklLoading) {
           <myanili-icon-loading></myanili-icon-loading>

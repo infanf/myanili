@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from 
 import { StreamPipe } from '@components/stream.pipe';
 import { AnnComponent } from '@external/ann/ann.component';
 import { AnnictComponent } from '@external/annict/annict.component';
+import { BangumiComponent } from '@external/bangumi/bangumi.component';
 import { KitsuComponent } from '@external/kitsu/kitsu.component';
 import { LivechartComponent } from '@external/livechart/livechart.component';
 import { TraktComponent } from '@external/trakt/trakt.component';
@@ -141,22 +142,7 @@ export class AnimeEditComponent implements OnInit {
         updateData.finish_date = this.editBackup?.finish_date;
       }
 
-      await this.animeService.updateAnime(
-        {
-          malId: this.anime.id,
-          anilistId: this.anime.my_extension?.anilistId,
-          kitsuId: this.anime.my_extension?.kitsuId,
-          anisearchId: this.anime.my_extension?.anisearchId,
-          simklId: this.anime.my_extension?.simklId,
-          annictId: this.anime.my_extension?.annictId,
-          trakt: {
-            id: this.anime.my_extension?.trakt,
-            season: this.anime.media_type === 'movie' ? -1 : this.anime.my_extension?.seasonNumber,
-          },
-          livechartId: this.anime.my_extension?.livechartId,
-        },
-        updateData,
-      );
+      await this.animeService.updateAnime(this.anime, updateData);
 
       this.busy = false;
       this.modal.close(true); // Signal success
@@ -208,16 +194,7 @@ export class AnimeEditComponent implements OnInit {
 
     this.busy = true;
     try {
-      await this.animeService.deleteAnime({
-        malId: this.anime.id,
-        anilistId: this.anime.my_extension?.anilistId,
-        kitsuId: this.anime.my_extension?.kitsuId,
-        anisearchId: this.anime.my_extension?.anisearchId,
-        simklId: this.anime.my_extension?.simklId,
-        annictId: this.anime.my_extension?.annictId,
-        traktId: this.anime.my_extension?.trakt,
-        livechartId: this.anime.my_extension?.livechartId,
-      });
+      await this.animeService.deleteAnime(this.anime);
       this.modal.close('deleted'); // Signal deletion to parent
     } catch (error: unknown) {
       this.busy = false;
@@ -320,6 +297,16 @@ export class AnimeEditComponent implements OnInit {
     modal.componentInstance.type = 'anime';
     modal.closed.subscribe(value => {
       if (this.editExtension) this.editExtension.annId = Number(value);
+    });
+  }
+
+  async findBangumi() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(BangumiComponent);
+    modal.componentInstance.title = this.anime.alternative_titles?.ja || this.anime.title;
+    modal.componentInstance.type = 'anime';
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.bangumiId = Number(value);
     });
   }
 

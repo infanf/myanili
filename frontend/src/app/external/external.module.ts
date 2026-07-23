@@ -9,6 +9,7 @@ import { AnisearchComponent } from './anisearch/anisearch.component';
 import { AnnComponent } from './ann/ann.component';
 import { AnnictComponent } from './annict/annict.component';
 import { BakamangaComponent } from './bakamanga/bakamanga.component';
+import { BangumiComponent } from './bangumi/bangumi.component';
 import { ExternalComponent } from './external.component';
 import { KitsuComponent } from './kitsu/kitsu.component';
 import { LivechartComponent } from './livechart/livechart.component';
@@ -24,6 +25,7 @@ import { TraktComponent } from './trakt/trakt.component';
     KitsuComponent,
     LivechartComponent,
     AnnComponent,
+    BangumiComponent,
   ],
   imports: [FormsModule, CommonModule, IconModule, DirectivesModule],
   exports: [],

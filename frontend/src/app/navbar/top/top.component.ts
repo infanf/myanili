@@ -4,6 +4,7 @@ import { AnilistUser } from '@models/anilist';
 import { MalUser } from '@models/user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
+import { ConnectionStatusService } from '@services/connection-status.service';
 import { MalService } from '@services/mal.service';
 import { NavbarService } from '@services/navbar.service';
 
@@ -20,6 +21,7 @@ export class NavbarTopComponent {
     private modal: NgbModal,
     private navbarService: NavbarService,
     private alService: AnilistService,
+    private connectionStatus: ConnectionStatusService,
   ) {
     this.malService.loggedIn.subscribe(loggedIn => {
       this.loggedIn = loggedIn;
@@ -33,11 +35,15 @@ export class NavbarTopComponent {
     this.alService.user.subscribe(user => {
       this.alUser = user;
     });
+    this.connectionStatus.hasErrors$.subscribe(hasErrors => {
+      this.connectionErrors = hasErrors;
+    });
   }
   loggedIn: string | false = 'loading';
   user?: MalUser;
   module?: 'anime' | 'manga';
   alUser?: AnilistUser;
+  connectionErrors = false;
 
   async showSettings() {
     this.modal.open(SettingsComponent);

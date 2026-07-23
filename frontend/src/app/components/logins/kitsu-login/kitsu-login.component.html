@@ -15,6 +15,7 @@
         (click)="kitsuLogoff()"
       ></myanili-icon>
     } @else {
+      <myanili-connection-error service="kitsu"></myanili-connection-error>
       @if (kitsuData) {
         <input
           class="form-control mb-1"

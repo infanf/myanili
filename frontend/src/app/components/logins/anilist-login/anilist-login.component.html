@@ -13,6 +13,7 @@
         (click)="anilistLogoff()"
       ></myanili-icon>
     } @else {
+      <myanili-connection-error service="anilist"></myanili-connection-error>
       <button class="btn btn-sm btn-primary" (click)="anilistConnect()" [disabled]="anilistLoading">
         @if (anilistLoading) {
           <myanili-icon-loading></myanili-icon-loading>

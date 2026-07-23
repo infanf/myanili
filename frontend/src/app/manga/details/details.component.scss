@@ -23,6 +23,31 @@
   }
 }
 
+.fact-label {
+  font-size: 0.75rem;
+  line-height: 2;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--bs-secondary-color);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 1.5rem;
+  align-items: baseline;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.status-card .progress {
+  min-width: 8rem;
+}
+
 .nav {
   flex-wrap: nowrap;
   overflow-x: auto;
@@ -31,4 +56,11 @@
 
 .modal-body {
   border: none !important;
+}
+
+.external-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+  justify-items: center;
+  row-gap: 0.5rem;
 }

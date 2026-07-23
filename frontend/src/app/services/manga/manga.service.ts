@@ -12,6 +12,7 @@ import {
   MyMangaUpdateExtended,
   ReadStatus,
 } from '@models/manga';
+import { BangumiService } from '@services/anime/bangumi.service';
 import { ShikimoriService } from '@services/shikimori.service';
 import { Base64 } from 'js-base64';
 import { DateTime } from 'luxon';
@@ -39,6 +40,7 @@ export class MangaService {
     'Shikimori',
     'MangaUpdates',
     'MangaBaka',
+    'Bangumi',
   ] as const;
 
   private readonly deleteServiceNames = [
@@ -48,6 +50,7 @@ export class MangaService {
     'aniSearch',
     'Shikimori',
     'MangaBaka',
+    'Bangumi',
   ] as const;
 
   constructor(
@@ -59,6 +62,7 @@ export class MangaService {
     private baka: MangaupdatesService,
     // @ts-ignore
     private mangabaka: MangabakaService,
+    private bangumi: BangumiService,
     private cache: CacheService,
     private toaster: ToasterService,
   ) {}
@@ -117,23 +121,33 @@ export class MangaService {
     return manga;
   }
 
-  async updateManga(
-    ids: {
-      malId: number;
-      anilistId?: number;
-      kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-      anisearchId?: number;
-      bakaId?: number | string;
-      mangabakaId?: number;
-    },
-    data: MyMangaUpdateExtended,
-  ): Promise<MyMangaStatus> {
+  /**
+   * Collect all external provider ids for a manga from its extension, so callers
+   * only need to hand over the whole entry instead of assembling the id list.
+   */
+  private extractMangaIds(manga: Manga | ListManga) {
+    const malId = 'node' in manga ? manga.node.id : manga.id;
+    const ext = manga.my_extension;
+    return {
+      malId,
+      anilistId: ext?.anilistId,
+      kitsuId: ext?.kitsuId,
+      anisearchId: ext?.anisearchId,
+      bakaId: ext?.bakaId,
+      mangabakaId: ext?.mangabakaId,
+      bangumiId: ext?.bangumiId,
+    };
+  }
+
+  async updateManga(manga: Manga | ListManga, data: MyMangaUpdateExtended): Promise<MyMangaStatus> {
+    const ids = this.extractMangaIds(manga);
     const results = await Promise.allSettled([
       this.malService.put<MyMangaStatus>('manga/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
           if (!ids.anilistId) {
-            ids.anilistId = await this.anilist.getId(ids.malId, 'MANGA');
+            // lookup failure just means "no id" – only actual updates may warn
+            ids.anilistId = await this.anilist.getId(ids.malId, 'MANGA').catch(() => undefined);
           }
           if (!ids.anilistId) return;
           const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
@@ -165,7 +179,7 @@ export class MangaService {
       })(),
       (async () => {
         if (!ids.kitsuId) {
-          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'manga');
+          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'manga').catch(() => undefined);
         }
         if (!ids.kitsuId) return;
         return this.kitsu.updateEntry(ids.kitsuId, 'manga', {
@@ -181,7 +195,7 @@ export class MangaService {
       })(),
       (async () => {
         if (!ids.anisearchId) {
-          ids.anisearchId = await this.anisearch.getId(ids.malId, 'manga');
+          ids.anisearchId = await this.anisearch.getId(ids.malId, 'manga').catch(() => undefined);
         }
         if (!ids.anisearchId) return;
         return this.anisearch.updateEntry(ids.anisearchId, data, 'manga');
@@ -230,6 +244,7 @@ export class MangaService {
         );
         return await this.mangabaka.upsertLibraryEntry(ids.mangabakaId, filteredUpdates);
       })(),
+      this.bangumi.updateEntry(ids.bangumiId, data, 'manga'),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;
@@ -244,13 +259,8 @@ export class MangaService {
     return malResult.value;
   }
 
-  async deleteManga(ids: {
-    malId: number;
-    anilistId?: number;
-    kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-    anisearchId?: number;
-    mangabakaId?: number;
-  }) {
+  async deleteManga(manga: Manga | ListManga) {
+    const ids = this.extractMangaIds(manga);
     const results = await Promise.allSettled([
       this.malService.delete<boolean>('manga/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
@@ -261,6 +271,7 @@ export class MangaService {
         if (!ids.mangabakaId) return;
         return await this.mangabaka.removeFromLibrary(ids.mangabakaId);
       })(),
+      this.bangumi.deleteEntry(ids.bangumiId),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;

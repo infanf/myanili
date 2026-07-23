@@ -1,5 +1,13 @@
 <section class="container-fluid sticky-header py-3 bg-white">
   <form class="input-group" (submit)="search()">
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      title="Settings for this view"
+      (click)="openSettings()"
+    >
+      <myanili-icon name="gear"></myanili-icon>
+    </button>
     <div class="btn btn-primary" routerLink="/search/anime" routerLinkActive="active">
       <myanili-icon name="film"></myanili-icon>
     </div>

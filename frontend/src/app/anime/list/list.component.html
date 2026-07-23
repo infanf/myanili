@@ -1,9 +1,27 @@
-<myanili-header [header]="title"></myanili-header>
+<myanili-header
+  [header]="title"
+  [settings]="['language', 'layout', 'scoreDisplay']"
+></myanili-header>
 <section>
-  @if ((settings.layout$ | async) === 'list') {
+  @if (initialLoading) {
+    @if ((settings.layout$ | async) === 'list') {
+      <div class="skeleton-rows container-fluid">
+        @for (i of skeletons; track i) {
+          <div class="skeleton"></div>
+        }
+      </div>
+    } @else {
+      <div class="skeleton-grid m-2">
+        @for (i of skeletons; track i) {
+          <div class="skeleton"></div>
+        }
+      </div>
+    }
+  }
+  @if (!initialLoading && (settings.layout$ | async) === 'list') {
     <myanili-anime-list [animes]="animes"></myanili-anime-list>
   }
-  @if ((settings.layout$ | async) !== 'list') {
+  @if (!initialLoading && (settings.layout$ | async) !== 'list') {
     <myanili-anime-grid [animes]="animes"></myanili-anime-grid>
   }
   @if (animes.length && !loadedAll) {

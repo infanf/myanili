@@ -1,0 +1,8 @@
+<a class="chip" [class.muted]="muted" [href]="href" [title]="label" target="_blank" rel="noopener">
+  <ng-content></ng-content>
+  @if (rating) {
+    <myanili-external-rating [rating]="rating"></myanili-external-rating>
+  } @else {
+    <span class="placeholder-rating">–</span>
+  }
+</a>

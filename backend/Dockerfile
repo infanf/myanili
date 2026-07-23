@@ -1,4 +1,4 @@
-FROM webdevops/php-apache:8.5
+FROM webdevops/php-apache:8.5-alpine
 ADD . /app
 WORKDIR /app
 RUN mkdir -p /dbs && chmod 777 /dbs

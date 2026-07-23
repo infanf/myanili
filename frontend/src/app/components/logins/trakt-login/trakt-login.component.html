@@ -11,6 +11,7 @@
         (click)="traktLogoff()"
       ></myanili-icon>
     } @else {
+      <myanili-connection-error service="trakt"></myanili-connection-error>
       <button class="btn btn-sm btn-primary" (click)="traktConnect()" [disabled]="traktLoading">
         @if (traktLoading) {
           <myanili-icon-loading></myanili-icon-loading>

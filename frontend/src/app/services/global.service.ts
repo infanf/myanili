@@ -12,7 +12,7 @@ import { changelog } from '../../changelog';
   providedIn: 'root',
 })
 export class GlobalService {
-  private isBusySubject = new BehaviorSubject<boolean>(true);
+  private isBusySubject = new BehaviorSubject<boolean>(false);
   private loadingPercentSubject = new BehaviorSubject<number>(0);
   private darkModeSubject = new BehaviorSubject<boolean>(false);
   private readonly titlePostfix = ' – MyAniLi';
@@ -169,4 +169,13 @@ export function cleanupObject<T extends object>(obj: T): Partial<T> {
     }
   }
   return obj as Partial<T>;
+}
+
+/**
+ * Read a credential from localStorage, treating missing values and the literal
+ * string "null" (a legacy artifact of `String(localStorage.getItem(...))`) as empty.
+ */
+export function readStoredToken(key: string): string {
+  const value = localStorage.getItem(key);
+  return value && value !== 'null' && value !== 'undefined' ? value : '';
 }

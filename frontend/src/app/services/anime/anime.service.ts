@@ -19,6 +19,7 @@ import { Weekday } from '@models/components';
 import { RelatedManga } from '@models/manga';
 import { AnilistService } from '@services/anilist.service';
 import { AnnictService } from '@services/anime/annict.service';
+import { BangumiService } from '@services/anime/bangumi.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
 import { AnisearchService } from '@services/anisearch.service';
@@ -50,6 +51,7 @@ export class AnimeService {
     'Annict',
     'Trakt',
     'Livechart',
+    'Bangumi',
   ] as const;
 
   private readonly deleteServiceNames = [
@@ -62,6 +64,7 @@ export class AnimeService {
     'Annict',
     'Trakt',
     'Livechart',
+    'Bangumi',
   ] as const;
 
   constructor(
@@ -74,6 +77,7 @@ export class AnimeService {
     private annict: AnnictService,
     private trakt: TraktService,
     private livechart: LivechartService,
+    private bangumi: BangumiService,
     private cache: CacheService,
     private settings: SettingsService,
     private dialogue: DialogueService,
@@ -189,39 +193,41 @@ export class AnimeService {
         data.extension = Base64.encode(JSON.stringify({ episodeRule }));
       }
     }
-    return await this.updateAnime(
-      {
-        malId: anime.id,
-        anilistId: anime.my_extension?.anilistId,
-        kitsuId: anime.my_extension?.kitsuId,
-        anisearchId: anime.my_extension?.anisearchId,
-        simklId: anime.my_extension?.simklId,
-        annictId: anime.my_extension?.annictId,
-        livechartId: anime.my_extension?.livechartId,
-      },
-      data,
-    );
+    return await this.updateAnime(anime as Anime, data);
   }
 
-  async updateAnime(
-    ids: {
-      malId: number;
-      anilistId?: number;
-      kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-      anisearchId?: number;
-      simklId?: number;
-      annictId?: number;
-      trakt?: { id?: string; season?: number };
-      livechartId?: number;
-    },
-    data: MyAnimeUpdateExtended,
-  ): Promise<MyAnimeStatus> {
+  /**
+   * Collect all external provider ids for an anime from its extension, so callers
+   * only need to hand over the whole entry instead of assembling the id list.
+   */
+  private extractAnimeIds(anime: Anime | ListAnime) {
+    const node: Anime | AnimeNode = 'node' in anime ? anime.node : anime;
+    const ext = anime.my_extension;
+    return {
+      malId: node.id,
+      anilistId: ext?.anilistId,
+      kitsuId: ext?.kitsuId,
+      anisearchId: ext?.anisearchId,
+      simklId: ext?.simklId,
+      annictId: ext?.annictId,
+      trakt: {
+        id: ext?.trakt,
+        season: node.media_type === 'movie' ? -1 : ext?.seasonNumber,
+      },
+      livechartId: ext?.livechartId,
+      bangumiId: ext?.bangumiId,
+    };
+  }
+
+  async updateAnime(anime: Anime | ListAnime, data: MyAnimeUpdateExtended): Promise<MyAnimeStatus> {
+    const ids = this.extractAnimeIds(anime);
     const results = await Promise.allSettled([
       this.malService.put<MyAnimeStatus>('anime/' + ids.malId, data),
       (async () => {
         if (this.anilist.loggedIn) {
           if (!ids.anilistId) {
-            ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME');
+            // lookup failure just means "no id" – only actual updates may warn
+            ids.anilistId = await this.anilist.getId(ids.malId, 'ANIME').catch(() => undefined);
           }
           if (!ids.anilistId) return;
           const startDate = data.start_date ? DateTime.fromISO(data.start_date) : undefined;
@@ -252,7 +258,7 @@ export class AnimeService {
       })(),
       (async () => {
         if (!ids.kitsuId) {
-          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'anime');
+          ids.kitsuId = await this.kitsu.getId({ id: ids.malId }, 'anime').catch(() => undefined);
         }
         if (!ids.kitsuId) return;
         return this.kitsu.updateEntry(ids.kitsuId, 'anime', {
@@ -268,7 +274,7 @@ export class AnimeService {
       })(),
       (async () => {
         if (!ids.anisearchId) {
-          ids.anisearchId = await this.anisearch.getId(ids.malId, 'anime');
+          ids.anisearchId = await this.anisearch.getId(ids.malId, 'anime').catch(() => undefined);
         }
         if (!ids.anisearchId) return;
         return this.anisearch.updateEntry(ids.anisearchId, data, 'anime');
@@ -286,6 +292,7 @@ export class AnimeService {
       this.annict.updateEntry(ids.annictId, data),
       this.trakt.updateEntry(ids.trakt, data),
       this.livechart.updateAnime(ids.livechartId, data),
+      this.bangumi.updateEntry(ids.bangumiId, data, 'anime'),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;
@@ -300,16 +307,8 @@ export class AnimeService {
     return malResult.value;
   }
 
-  async deleteAnime(ids: {
-    malId: number;
-    anilistId?: number;
-    kitsuId?: { kitsuId: number | string; entryId?: string | undefined };
-    anisearchId?: number;
-    simklId?: number;
-    annictId?: number;
-    traktId?: string;
-    livechartId?: number;
-  }) {
+  async deleteAnime(anime: Anime | ListAnime) {
+    const ids = this.extractAnimeIds(anime);
     const results = await Promise.allSettled([
       this.malService.delete<MyAnimeStatus>('anime/' + ids.malId),
       this.anilist.deleteEntry(ids.anilistId),
@@ -318,8 +317,9 @@ export class AnimeService {
       this.shikimori.deleteMedia(ids.malId, 'Anime'),
       this.simkl.deleteEntry(ids.simklId),
       this.annict.updateStatus(ids.annictId, 'no_select'),
-      this.trakt.drop(ids.traktId),
+      this.trakt.drop(ids.trakt?.id),
       this.livechart.deleteAnime(ids.livechartId),
+      this.bangumi.deleteEntry(ids.bangumiId),
     ]);
     const malResult = results[0];
     if (malResult.status === 'rejected') throw malResult.reason;

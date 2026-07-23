@@ -17,6 +17,8 @@ export class AnimeListComponent {
   nextAnimes: ListAnime[] = [];
   loadedAll = false;
   loading = false;
+  initialLoading = true;
+  readonly skeletons = Array.from({ length: 12 }, (_, i) => i);
   title = 'Watchlist';
 
   constructor(
@@ -33,7 +35,7 @@ export class AnimeListComponent {
         const status = newStatus.replace(/_/g, ' ');
         this.title = status.charAt(0).toUpperCase() + status.slice(1);
         this.glob.setTitle(`Watchlist – ${this.title}`);
-        this.glob.busy();
+        this.initialLoading = true;
         this.update();
       }
     });
@@ -45,7 +47,7 @@ export class AnimeListComponent {
       limit: 50,
     });
     this.loadMore();
-    this.glob.notbusy();
+    this.initialLoading = false;
   }
 
   async handleScroll(event: { target: Element; visible: boolean }) {

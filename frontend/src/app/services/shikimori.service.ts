@@ -6,7 +6,7 @@ import { cacheExchange, Client, fetchExchange, gql } from '@urql/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-import { DialogueService } from './dialogue.service';
+import { ConnectionStatusService } from './connection-status.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class ShikimoriService {
   private loggedIn = false;
   private client!: Client;
 
-  constructor(private dialogue: DialogueService) {
+  constructor(private connection: ConnectionStatusService) {
     this.accessToken = String(localStorage.getItem('shikimoriAccessToken') || '');
     this.refreshToken = String(localStorage.getItem('shikimoriRefreshToken') || '');
 
@@ -39,15 +39,23 @@ export class ShikimoriService {
       this.checkLogin()
         .then(user => {
           this.userSubject.next(user);
+          if (user) {
+            this.connection.clearError('shikimori');
+          } else {
+            this.reportConnectionError();
+          }
         })
-        .catch(e => {
-          this.dialogue.alert(
-            'Could not connect to Shikimori, please check your account settings.',
-            'Shikimori Connection Error',
-          );
-          localStorage.removeItem('shikimoriAccessToken');
+        .catch(() => {
+          this.reportConnectionError();
         });
     }
+  }
+
+  private reportConnectionError() {
+    this.connection.reportError(
+      'shikimori',
+      'Could not verify your Shikimori session. It may have expired – reconnect to renew it.',
+    );
   }
 
   async login() {
@@ -61,7 +69,9 @@ export class ShikimoriService {
           localStorage.setItem('shikimoriAccessToken', this.accessToken);
           this.refreshToken = data.rt;
           localStorage.setItem('shikimoriRefreshToken', this.refreshToken);
-          this.userSubject.next(await this.checkLogin());
+          const user = await this.checkLogin();
+          this.userSubject.next(user);
+          if (user) this.connection.clearError('shikimori');
         }
         loginWindow?.close();
         r(true);
@@ -75,7 +85,7 @@ export class ShikimoriService {
     url.searchParams.append('refresh_token', this.refreshToken);
     const response = await fetch(url);
     if (!response.ok) {
-      this.logoff();
+      // keep the session – the user can renew it manually from the connection list
       return false;
     }
     const data = (await response.json()) as { access_token: string; refresh_token: string };
@@ -91,6 +101,7 @@ export class ShikimoriService {
     this.refreshToken = '';
     this.userSubject.next(undefined);
     this.loggedIn = false;
+    this.connection.clearError('shikimori');
     localStorage.removeItem('shikimoriAccessToken');
     localStorage.removeItem('shikimoriRefreshToken');
   }
@@ -117,7 +128,7 @@ export class ShikimoriService {
       if (refresh && (await this.login())) {
         return this.checkLogin(false);
       }
-      this.logoff();
+      this.reportConnectionError();
       return;
     }
     const requestResult = result?.data?.currentUser;

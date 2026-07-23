@@ -44,12 +44,22 @@
               <div class="d-flex cursor-pointer">
                 <span class="my-auto me-3 text-white">{{ user!.name }}</span>
                 <myanili-notifications></myanili-notifications>
-                <img
-                  [src]="user!.picture"
-                  style="height: 32px; border-radius: 50%"
-                  alt="{{ user!.name }}"
-                  (click)="showSettings()"
-                />
+                <span class="position-relative">
+                  <img
+                    [src]="user!.picture"
+                    style="height: 32px; border-radius: 50%"
+                    alt="{{ user!.name }}"
+                    (click)="showSettings()"
+                  />
+                  @if (connectionErrors) {
+                    <span
+                      class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+                      title="A service connection failed – open settings for details"
+                    >
+                      <span class="visually-hidden">Connection error</span>
+                    </span>
+                  }
+                </span>
               </div>
             }
           </div>

@@ -1,6 +1,30 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '7.0.0',
+      date: new Date('2026-07-23'),
+      features: [
+        'Bangumi: OAuth login, aligned with the other providers (silent token refresh, plain tab instead of a popup)',
+        'Bangumi: auto-match anime/manga on load, plus manual title search in the edit forms',
+        'Bangumi: sync watch/read status, score and episode/chapter/volume progress',
+        'Settings: view-related settings move to the views they affect – a gear button (top left) opens a popup with a short description for every setting',
+        'Accounts: no more automatic logoff when a session expires – a red badge on the user icon and a note in the connection list show which service needs a manual reconnect',
+        'Watchlist: optional card layout with poster thumbnails and a large check button, switchable via the new per-view settings',
+        'Watchlist: divider between already released episodes and shows airing later today',
+        'Watchlist: new setting to hide shows that are about to start airing',
+        'Details: restructured layout – alternative titles as subtitle, meta line, genre badges, status card with progress and airing info, compact fact list and stat tiles',
+        'Details: links to external databases as compact, uniform icon tiles with ratings; official website as its own entry',
+        'Loading: skeleton screens replace the blocking loading overlay on details pages, lists and the watchlist',
+      ],
+      fixes: [
+        'Manga: restore missing Bangumi rating/link on details page',
+        'Sync: no more error toasts for providers that have no id for the current title',
+        'Accounts: no more false session errors for services that were never connected',
+        'Details: streaming provider logo now actually links to the stream',
+        'Watchlist: more spacing between rows to avoid checking off the wrong show',
+      ],
+    },
+    {
       version: '6.0.0',
       date: new Date('2026-07-08'),
       features: [

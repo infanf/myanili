@@ -28,9 +28,13 @@ import { DateTime } from 'luxon';
   standalone: false,
 })
 export class WatchlistComponent implements OnInit {
+  private _rawAnimes: ListAnime[] = [];
   private _animes: ListAnime[] = [];
   autoFilter = false;
+  startingSoon = true;
   showDate = false;
+  initialLoading = true;
+  readonly skeletons = Array.from({ length: 8 }, (_, i) => i);
   private _airDates: AirDate[] = [];
 
   constructor(
@@ -43,19 +47,27 @@ export class WatchlistComponent implements OnInit {
     private dialogue: DialogueService,
   ) {
     this.glob.setTitle('Watchlist – Today');
-    this.glob.busy();
     this.settings.autoFilter$.asObservable().subscribe(autoFilter => {
       this.autoFilter = autoFilter;
+    });
+    this.settings.startingSoon$.asObservable().subscribe(startingSoon => {
+      const changed = this.startingSoon !== startingSoon;
+      this.startingSoon = startingSoon;
+      if (changed && this._rawAnimes.length) this.applyFilter();
     });
   }
 
   async ngOnInit() {
-    const animes = await this.getAnimes();
-    this._animes = animes
+    this._rawAnimes = await this.getAnimes();
+    this.applyFilter();
+    this.initialLoading = false;
+    this._airDates = await this.anilist.getAirDates(this._animes.map(a => a.node.id));
+  }
+
+  private applyFilter() {
+    this._animes = this._rawAnimes
       .filter(anime => this.filterAnime(anime))
       .sort((a, b) => this.toSortIndex(a) - this.toSortIndex(b));
-    this._airDates = await this.anilist.getAirDates(this._animes.map(a => a.node.id));
-    this.glob.notbusy();
   }
 
   get animes() {
@@ -101,6 +113,76 @@ export class WatchlistComponent implements OnInit {
     );
   }
 
+  getTitle(anime: ListAnime): string {
+    const lang = this.settings.language$.value;
+    return (
+      anime.my_extension?.displayName ||
+      (lang === 'en'
+        ? anime.node.alternative_titles?.en
+        : lang === 'jp'
+          ? anime.node.alternative_titles?.ja
+          : anime.node.title) ||
+      anime.node.title
+    );
+  }
+
+  getPoster(anime: ListAnime): string {
+    return (
+      anime.node.main_picture?.medium || anime.node.main_picture?.large || 'assets/blank-poster.svg'
+    );
+  }
+
+  /** "SxE" label of the episode to watch next, empty for movies */
+  episodeText(anime: ListAnime): string {
+    if (anime.node.media_type === 'movie') return '';
+    const season =
+      anime.my_extension?.seasonNumber === 0 ? 0 : anime.my_extension?.seasonNumber || 1;
+    const episode =
+      anime.list_status.num_episodes_watched +
+      (anime.my_extension?.episodeCorOffset || 0) +
+      (this.isSeen(anime) ? 0 : 1);
+    return `${season}x${episode}`;
+  }
+
+  checkIcon(anime: ListAnime): string {
+    if (anime.busy) return 'loading-circle';
+    if (anime.my_extension?.simulcast?.day && this.isInSeason(anime)) {
+      if (anime.list_status.status === 'dropped') return 'trash';
+      return this.isSeen(anime) ? 'check-circle' : 'circle';
+    }
+    return anime.list_status.status === 'completed' && !anime.list_status.is_rewatching
+      ? 'check-circle'
+      : 'plus-circle';
+  }
+
+  /** true if the anime airs today but its episode has not been released yet */
+  airsLaterToday(anime: ListAnime): boolean {
+    const simulcast = anime.my_extension?.simulcast;
+    if (!simulcast?.day?.length || !this.isInSeason(anime)) return false;
+    const days = daysToLocal(simulcast);
+    if (this.animeService.getLastDay(days) !== this.getLast8am().weekday % 7) return false;
+    const zone = simulcast.tz || 'UTC';
+    const time = simulcast.time || '00:00';
+    const [hour, minute] = time.split(':').map(Number);
+    // anchor the air time to the current watchlist day; fromObject alone would
+    // use today's date in the source zone, which may already be tomorrow
+    const localAirTime = DateTime.fromObject({ hour, minute }, { zone }).setZone('local');
+    const airTime = this.getLast8am().set({
+      hour: localAirTime.hour,
+      minute: localAirTime.minute,
+      second: 0,
+      millisecond: 0,
+    });
+    return airTime > DateTime.local();
+  }
+
+  /** true if this row is the first upcoming release, i.e. the divider goes above it */
+  isFirstUpcoming(index: number): boolean {
+    const animes = this.animes;
+    if (!animes[index] || !this.airsLaterToday(animes[index])) return false;
+    return index === 0 || !this.airsLaterToday(animes[index - 1]);
+  }
+
   isSeen(anime: ListAnime): boolean {
     if (anime.busy) return false;
     if (anime.list_status.num_episodes_watched === 0) return false;
@@ -122,6 +204,15 @@ export class WatchlistComponent implements OnInit {
       return;
     }
     anime.busy = true;
+    try {
+      await this.doMarkSeen(anime);
+    } finally {
+      anime.busy = false;
+      this.glob.notbusy();
+    }
+  }
+
+  private async doMarkSeen(anime: ListAnime) {
     const currentEpisode = anime.list_status.num_episodes_watched;
     const startingNow = anime.list_status.status === 'plan_to_watch';
     const data = {
@@ -167,22 +258,7 @@ export class WatchlistComponent implements OnInit {
     data.extension = Base64.encode(JSON.stringify(anime.my_extension));
     const fullAnime = await this.animeService.getAnime(anime.node.id);
     const [animeStatus] = await Promise.all([
-      this.animeService.updateAnime(
-        {
-          malId: anime.node.id,
-          anilistId: anime.my_extension?.anilistId,
-          kitsuId: anime.my_extension?.kitsuId,
-          anisearchId: anime.my_extension?.anisearchId,
-          simklId: anime.my_extension?.simklId,
-          annictId: anime.my_extension?.annictId,
-          trakt: {
-            id: anime.my_extension?.trakt,
-            season: anime.node.media_type === 'movie' ? -1 : anime.my_extension?.seasonNumber,
-          },
-          livechartId: anime.my_extension?.livechartId,
-        },
-        data,
-      ),
+      this.animeService.updateAnime(anime, data),
       this.scrobbleTrakt(fullAnime, currentEpisode + 1),
       this.simkl.scrobble(
         { simkl: anime.my_extension?.simklId, mal: anime.node.id },
@@ -201,14 +277,11 @@ export class WatchlistComponent implements OnInit {
             'Rewatch sequel',
           );
           if (startSequel) {
-            await this.animeService.updateAnime(
-              { malId: sequel.id },
-              {
-                status: 'completed',
-                is_rewatching: true,
-                num_watched_episodes: 0,
-              },
-            );
+            await this.animeService.updateAnime(sequel, {
+              status: 'completed',
+              is_rewatching: true,
+              num_watched_episodes: 0,
+            });
           }
         } else {
           const futureShow =
@@ -233,7 +306,7 @@ export class WatchlistComponent implements OnInit {
             if (status === 'watching') {
               sequelData.start_date = DateTime.local().toISODate() || undefined;
             }
-            await this.animeService.updateAnime({ malId: sequel.id }, sequelData);
+            await this.animeService.updateAnime(sequel, sequelData);
           }
         }
         this.ngOnInit();
@@ -243,8 +316,6 @@ export class WatchlistComponent implements OnInit {
     anime.list_status.num_episodes_watched = animeStatus.num_episodes_watched;
     anime.list_status.updated_at = animeStatus.updated_at;
     anime.list_status.status = animeStatus.status || anime.list_status.status;
-    anime.busy = false;
-    this.glob.notbusy();
   }
 
   async scrobbleTrakt(anime: Anime, episode: number): Promise<boolean> {
@@ -304,6 +375,7 @@ export class WatchlistComponent implements OnInit {
     }
     if (anime.my_extension?.hideWatchlist) return false;
     if (anime.list_status.status === 'plan_to_watch') {
+      if (!this.startingSoon) return false;
       if (!anime.node.start_date) return false;
       const startDate = DateTimeFrom(anime.node.start_date).plus({
         days: anime.node.broadcast?.dateShift || 0,

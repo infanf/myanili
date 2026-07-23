@@ -13,6 +13,7 @@
         (click)="anisearchLogoff()"
       ></myanili-icon>
     } @else {
+      <myanili-connection-error service="anisearch"></myanili-connection-error>
       <button
         class="btn btn-sm btn-primary"
         (click)="anisearchConnect()"

@@ -17,6 +17,8 @@ export class MangaListComponent implements OnInit {
   nextMangas: ListManga[] = [];
   loadedAll = false;
   loading = false;
+  initialLoading = true;
+  readonly skeletons = Array.from({ length: 12 }, (_, i) => i);
   title = 'Mangalist';
 
   constructor(
@@ -35,13 +37,13 @@ export class MangaListComponent implements OnInit {
         const status = newStatus.replace(/_/g, ' ');
         this.title = status.charAt(0).toUpperCase() + status.slice(1);
         this.glob.setTitle(`Bookshelf – ${newStatus.replace(/_/g, ' ')}`);
-        this.glob.busy();
+        this.initialLoading = true;
         this.loadedAll = false;
         this.nextMangas = await this.mangaService.list(this.status, {
           limit: 50,
         });
         this.loadMore();
-        this.glob.notbusy();
+        this.initialLoading = false;
       }
     });
   }

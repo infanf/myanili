@@ -15,7 +15,6 @@ import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
 import { MalService } from '@services/mal.service';
 import { MangaupdatesService } from '@services/manga/mangaupdates.service';
-import { Language, ScoreDisplay, SettingsService } from '@services/settings.service';
 import { ShikimoriService } from '@services/shikimori.service';
 
 @Component({
@@ -25,7 +24,6 @@ import { ShikimoriService } from '@services/shikimori.service';
   standalone: false,
 })
 export class SettingsComponent implements OnInit {
-  private _lang: Language = 'default';
   malLoggedIn?: MalUser;
   traktLoggedIn?: string;
   annictLoggedIn?: string;
@@ -38,14 +36,8 @@ export class SettingsComponent implements OnInit {
   bakaData?: { username: string; password: string; saveLogin: boolean };
   livechartLoggedIn?: string;
   livechartData?: { username: string; password: string; saveLogin: boolean };
-  private _inlist: BooleanString = 'false';
-  private _autoFilter: BooleanString = 'false';
-  private _layout = 'list';
-  private _nsfw: BooleanString = 'true';
-  private _scoreDisplay: ScoreDisplay = 'default';
   version = '0.0.0';
   constructor(
-    private settings: SettingsService,
     private glob: GlobalService,
     private mal: MalService,
     private trakt: TraktService,
@@ -59,9 +51,6 @@ export class SettingsComponent implements OnInit {
     public modal: NgbActiveModal,
     private dialogue: DialogueService,
   ) {
-    this.settings.language$.asObservable().subscribe(lang => {
-      this._lang = lang;
-    });
     this.mal.user.subscribe(user => {
       this.malLoggedIn = user;
     });
@@ -89,74 +78,11 @@ export class SettingsComponent implements OnInit {
     this.livechart.user.subscribe(user => {
       this.livechartLoggedIn = user;
     });
-    this.settings.inList$.asObservable().subscribe(inList => {
-      this._inlist = JSON.stringify(inList) as BooleanString;
-    });
-    this.settings.layout$.asObservable().subscribe(layout => {
-      this._layout = layout || 'list';
-    });
-    this.settings.nsfw$.asObservable().subscribe(nsfw => {
-      this._nsfw = JSON.stringify(nsfw) as BooleanString;
-    });
-    this.settings.autoFilter$.asObservable().subscribe(autoFilter => {
-      this._autoFilter = JSON.stringify(autoFilter) as BooleanString;
-    });
-    this.settings.scoreDisplay$.asObservable().subscribe(scoreDisplay => {
-      this._scoreDisplay = scoreDisplay;
-    });
     this.version = this.glob.version;
   }
 
   async ngOnInit() {
     setTimeout(() => this.glob.notbusy(), 100);
-  }
-
-  get lang() {
-    return this._lang;
-  }
-
-  set lang(value: Language) {
-    this.settings.language = value;
-  }
-
-  get inlist() {
-    return this._inlist;
-  }
-
-  set inlist(value: string) {
-    this.settings.inList = Boolean(JSON.parse(value));
-  }
-
-  get nsfw() {
-    return this._nsfw;
-  }
-
-  set nsfw(value: BooleanString) {
-    this.settings.nsfw = Boolean(JSON.parse(value));
-  }
-
-  get layout() {
-    return this._layout;
-  }
-
-  set layout(value: string) {
-    this.settings.layout = value;
-  }
-
-  get autoFilter() {
-    return this._autoFilter;
-  }
-
-  set autoFilter(value: BooleanString) {
-    this.settings.autoFilter = Boolean(JSON.parse(value));
-  }
-
-  get scoreDisplay() {
-    return this._scoreDisplay;
-  }
-
-  set scoreDisplay(value: ScoreDisplay) {
-    this.settings.scoreDisplay = value;
   }
 
   malConnect() {
@@ -291,5 +217,3 @@ export class SettingsComponent implements OnInit {
     this.livechart.logoff();
   }
 }
-
-type BooleanString = 'true' | 'false';
