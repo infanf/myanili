@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 import { PlatformPipe } from '@components/platform.pipe';
+import { AnilistComponent } from '@external/anilist/anilist.component';
 import { AnnComponent } from '@external/ann/ann.component';
 import { BakamangaComponent } from '@external/bakamanga/bakamanga.component';
 import { BangumiComponent } from '@external/bangumi/bangumi.component';
@@ -242,6 +243,16 @@ export class MangaEditComponent implements OnInit {
   }
 
   // External ID search methods (copied from manga details component)
+  async findAnilist() {
+    if (!this.manga || !this.editExtension) return;
+    const modal = this.modalService.open(AnilistComponent);
+    modal.componentInstance.type = 'manga';
+    modal.componentInstance.title = this.manga.title;
+    modal.closed.subscribe((value: number) => {
+      if (this.editExtension) this.editExtension.anilistId = Number(value);
+    });
+  }
+
   async findKitsu() {
     if (!this.manga || !this.editExtension) return;
     const modal = this.modalService.open(KitsuComponent);

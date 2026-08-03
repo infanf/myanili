@@ -174,6 +174,17 @@ export interface AnilistMediaRef {
   source?: string;
 }
 
+export interface AnilistMediaSearchResult {
+  id: number;
+  idMal?: number;
+  title: string;
+  year?: number;
+  image?: string;
+  description?: string;
+  genres?: string[];
+  format?: string;
+}
+
 export interface AnilistCharacterDetail {
   id: number;
   name: AnilistName;

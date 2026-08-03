@@ -237,13 +237,18 @@
     <div class="row mb-2">
       <div class="col-4 fw-bold text-end">Anilist</div>
       <div class="col-8">
-        <input
-          class="form-control form-control-sm"
-          externalId="anilist"
-          [(ngModel)]="editExtension!.anilistId"
-          [disabled]="busy"
-          enterkeyhint="done"
-        />
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-sm"
+            externalId="anilist"
+            [(ngModel)]="editExtension!.anilistId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <button class="btn btn-primary" (click)="findAnilist()" [disabled]="busy">
+            <myanili-icon-anilist></myanili-icon-anilist>
+          </button>
+        </div>
       </div>
     </div>
 

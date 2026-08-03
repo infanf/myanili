@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 import { StreamPipe } from '@components/stream.pipe';
+import { AnilistComponent } from '@external/anilist/anilist.component';
 import { AnnComponent } from '@external/ann/ann.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { BangumiComponent } from '@external/bangumi/bangumi.component';
@@ -254,6 +255,16 @@ export class AnimeEditComponent implements OnInit {
   }
 
   // External ID search methods (copied from details component)
+  async findAnilist() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(AnilistComponent);
+    modal.componentInstance.type = 'anime';
+    modal.componentInstance.title = this.anime.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.anilistId = Number(value);
+    });
+  }
+
   async findTrakt() {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(TraktComponent);
