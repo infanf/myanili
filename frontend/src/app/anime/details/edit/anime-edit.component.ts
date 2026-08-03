@@ -13,6 +13,7 @@ import {
   MyAnimeUpdateExtended,
   parseExtension,
 } from '@models/anime';
+import { normalizeExtensionIds } from '@models/external-id';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnimeService } from '@services/anime/anime.service';
 import { DialogueService } from '@services/dialogue.service';
@@ -101,6 +102,9 @@ export class AnimeEditComponent implements OnInit {
     }
 
     this.busy = true;
+
+    // Pasted links may never have lost focus, so extract IDs once more
+    normalizeExtensionIds(this.editExtension);
 
     try {
       const updateData = {

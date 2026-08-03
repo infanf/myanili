@@ -125,6 +125,7 @@
       <div class="col-8">
         <input
           class="form-control form-control-sm"
+          externalId
           [(ngModel)]="editExtension!.platformId"
           [disabled]="busy"
           enterkeyhint="done"
@@ -238,6 +239,7 @@
       <div class="col-8">
         <input
           class="form-control form-control-sm"
+          externalId="anilist"
           [(ngModel)]="editExtension!.anilistId"
           [disabled]="busy"
           enterkeyhint="done"
@@ -253,6 +255,7 @@
           <div class="input-group input-group-sm">
             <input
               class="form-control form-control-sm"
+              externalId="kitsu"
               [(ngModel)]="editExtension!.kitsuId!.kitsuId"
               [disabled]="busy"
               enterkeyhint="done"
@@ -272,6 +275,7 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control form-control-sm"
+            externalId="baka"
             [(ngModel)]="editExtension!.bakaId"
             [disabled]="busy"
             enterkeyhint="done"
@@ -289,6 +293,7 @@
       <div class="col-8">
         <input
           class="form-control form-control-sm"
+          externalId="mangadex"
           [(ngModel)]="editExtension!.mdId"
           [disabled]="busy"
           enterkeyhint="done"
@@ -302,6 +307,7 @@
       <div class="col-8">
         <input
           class="form-control form-control-sm"
+          externalId="anisearch"
           [(ngModel)]="editExtension!.anisearchId"
           [disabled]="busy"
           enterkeyhint="done"
@@ -316,6 +322,7 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control form-control-sm"
+            externalId="ann"
             [(ngModel)]="editExtension!.annId"
             [disabled]="busy"
             enterkeyhint="done"
@@ -334,7 +341,8 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control form-control-sm"
-            type="number"
+            inputmode="numeric"
+            externalId="bangumi"
             [(ngModel)]="editExtension!.bangumiId"
             [disabled]="busy"
             enterkeyhint="done"
@@ -353,6 +361,7 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control"
+            externalId="fandom"
             [(ngModel)]="editExtension!.fandomSlug"
             [disabled]="busy"
             enterkeyhint="done"
