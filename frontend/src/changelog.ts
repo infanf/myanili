@@ -1,6 +1,24 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '7.1.0',
+      date: new Date('2026-08-03'),
+      features: [
+        'Anime/Manga: search AniList by title from the edit form, like the other external databases',
+        'Anime/Manga: external ID fields select their content on focus, so it can be copied or overwritten right away',
+        'Anime/Manga: paste a link from AniList, MangaUpdates, aniSearch and the others into an ID field – the id is extracted for you',
+      ],
+      fixes: [
+        'Watchlist: "airing later today" divider no longer counted every episode as upcoming once Japan rolled over to the next day',
+        'Watchlist/Details: loading overlay no longer stays on screen after a failed action',
+        'Manga: publisher moved next to the platform in the status box, linked to its website',
+        'Manga: platform and publisher logos were invisible on the details page',
+        'Bangumi: removing a rating on MyAnimeList now also clears it on Bangumi',
+        'Bangumi: retry transient gateway errors on reads instead of showing empty results',
+      ],
+      other: ['Smaller Docker image based on alpine'],
+    },
+    {
       version: '7.0.0',
       date: new Date('2026-07-23'),
       features: [
