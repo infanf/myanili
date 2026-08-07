@@ -1,6 +1,11 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '7.2.0',
+      date: new Date('2026-08-07'),
+      features: ['Manga: Add platform MANGA MILLION'],
+    },
+    {
       version: '7.1.0',
       date: new Date('2026-08-07'),
       features: [
