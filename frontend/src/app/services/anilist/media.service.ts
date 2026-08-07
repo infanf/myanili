@@ -1,4 +1,9 @@
-import { AnilistWorkCharacter, AnilistWorkRelation, AnilistWorkStaff } from '@models/anilist';
+import {
+  AnilistMediaSearchResult,
+  AnilistWorkCharacter,
+  AnilistWorkRelation,
+  AnilistWorkStaff,
+} from '@models/anilist';
 import { ExtRating } from '@models/components';
 import { Client, gql } from '@urql/core';
 
@@ -42,6 +47,68 @@ export class AnilistMediaService {
         return undefined;
       });
     return result?.data?.Media?.idMal;
+  }
+
+  async search(
+    search: string,
+    type: 'ANIME' | 'MANGA',
+    perPage = 25,
+  ): Promise<AnilistMediaSearchResult[]> {
+    if (!search) return [];
+    const QUERY = gql`
+      query ($search: String, $type: MediaType, $perPage: Int) {
+        Page(perPage: $perPage) {
+          media(search: $search, type: $type, sort: SEARCH_MATCH) {
+            id
+            idMal
+            format
+            genres
+            description(asHtml: true)
+            title {
+              romaji
+              english
+              native
+            }
+            startDate {
+              year
+            }
+            coverImage {
+              medium
+            }
+          }
+        }
+      }
+    `;
+    const result = await this.client
+      .query<{
+        Page?: {
+          media?: Array<{
+            id: number;
+            idMal?: number;
+            format?: string;
+            genres?: string[];
+            description?: string;
+            title: { romaji?: string; english?: string; native?: string };
+            startDate?: { year?: number };
+            coverImage?: { medium?: string };
+          }>;
+        };
+      }>(QUERY, { search, type, perPage })
+      .toPromise()
+      .catch(error => {
+        console.log({ error });
+        return undefined;
+      });
+    return (result?.data?.Page?.media || []).map(media => ({
+      id: media.id,
+      idMal: media.idMal,
+      title: media.title.romaji || media.title.english || media.title.native || String(media.id),
+      year: media.startDate?.year,
+      image: media.coverImage?.medium,
+      description: media.description,
+      genres: media.genres,
+      format: media.format,
+    }));
   }
 
   async getRating(id?: number, type: 'ANIME' | 'MANGA' = 'ANIME'): Promise<ExtRating | undefined> {

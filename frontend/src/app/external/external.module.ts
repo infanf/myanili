@@ -5,6 +5,7 @@ import { IconModule } from '@icon/icon.module';
 
 import { DirectivesModule } from '../directives/directives.module';
 
+import { AnilistComponent } from './anilist/anilist.component';
 import { AnisearchComponent } from './anisearch/anisearch.component';
 import { AnnComponent } from './ann/ann.component';
 import { AnnictComponent } from './annict/annict.component';
@@ -19,6 +20,7 @@ import { TraktComponent } from './trakt/trakt.component';
   declarations: [
     ExternalComponent,
     TraktComponent,
+    AnilistComponent,
     AnisearchComponent,
     BakamangaComponent,
     AnnictComponent,

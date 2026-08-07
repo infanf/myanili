@@ -4,6 +4,7 @@ import {
   AnilistCharacterMediaRole,
   AnilistCharacterVoiceActor,
   AnilistMediaRef,
+  AnilistMediaSearchResult,
   AnilistNotification,
   AnilistSaveMedialistEntry,
   AnilistStaffDetail,
@@ -165,6 +166,10 @@ export class AnilistService {
 
   async getMalId(id: number, type: 'ANIME' | 'MANGA'): Promise<number | undefined> {
     return this.anilistMedia.getMalId(id, type);
+  }
+
+  async searchMedia(search: string, type: 'ANIME' | 'MANGA'): Promise<AnilistMediaSearchResult[]> {
+    return this.anilistMedia.search(search, type);
   }
   async updateEntry(id: number, data: Partial<AnilistSaveMedialistEntry>) {
     return this.anilistLibrary.updateEntry(id, data);

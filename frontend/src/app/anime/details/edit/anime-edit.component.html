@@ -179,6 +179,7 @@
       <div class="col-8">
         <input
           class="form-control form-control-sm"
+          externalId
           [(ngModel)]="editExtension!.externalStreamingId"
           [disabled]="busy"
           enterkeyhint="done"
@@ -192,12 +193,18 @@
     <div class="row mb-2">
       <div class="col-4 fw-bold text-end">Anilist</div>
       <div class="col-8">
-        <input
-          class="form-control form-control-sm"
-          [(ngModel)]="editExtension!.anilistId"
-          [disabled]="busy"
-          enterkeyhint="done"
-        />
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-sm"
+            externalId="anilist"
+            [(ngModel)]="editExtension!.anilistId"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <button class="btn btn-primary" (click)="findAnilist()" [disabled]="busy">
+            <myanili-icon-anilist></myanili-icon-anilist>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -209,6 +216,7 @@
           <div class="input-group input-group-sm">
             <input
               class="form-control form-control-sm"
+              externalId="kitsu"
               [(ngModel)]="editExtension!.kitsuId!.kitsuId"
               [disabled]="busy"
               enterkeyhint="done"
@@ -227,7 +235,12 @@
         <div class="col-4 fw-bold text-end">Trakt</div>
         <div class="col-8">
           <div class="input-group input-group-sm">
-            <input class="form-control" [(ngModel)]="editExtension!.trakt" [disabled]="busy" />
+            <input
+              class="form-control"
+              externalId="trakt"
+              [(ngModel)]="editExtension!.trakt"
+              [disabled]="busy"
+            />
             <button class="btn btn-primary" (click)="findTrakt()" [disabled]="busy">
               <myanili-icon-trakt></myanili-icon-trakt>
             </button>
@@ -242,6 +255,7 @@
       <div class="col-8">
         <input
           class="form-control form-control-sm"
+          externalId="simkl"
           [(ngModel)]="editExtension!.simklId"
           [disabled]="busy"
           enterkeyhint="done"
@@ -256,6 +270,7 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control form-control-sm"
+            externalId="annict"
             [(ngModel)]="editExtension!.annictId"
             [disabled]="busy"
             enterkeyhint="done"
@@ -276,6 +291,7 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control"
+            externalId="anisearch"
             [(ngModel)]="editExtension!.anisearchId"
             [disabled]="busy"
             enterkeyhint="done"
@@ -291,6 +307,7 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control form-control-sm"
+            externalId="livechart"
             [(ngModel)]="editExtension!.livechartId"
             [disabled]="busy"
             enterkeyhint="done"
@@ -309,6 +326,7 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control form-control-sm"
+            externalId="ann"
             [(ngModel)]="editExtension!.annId"
             [disabled]="busy"
             enterkeyhint="done"
@@ -327,7 +345,8 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control form-control-sm"
-            type="number"
+            inputmode="numeric"
+            externalId="bangumi"
             [(ngModel)]="editExtension!.bangumiId"
             [disabled]="busy"
             enterkeyhint="done"
@@ -346,6 +365,7 @@
         <div class="input-group input-group-sm">
           <input
             class="form-control"
+            externalId="fandom"
             [(ngModel)]="editExtension!.fandomSlug"
             [disabled]="busy"
             enterkeyhint="done"

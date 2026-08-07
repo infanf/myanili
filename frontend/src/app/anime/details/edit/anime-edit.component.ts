@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 import { StreamPipe } from '@components/stream.pipe';
+import { AnilistComponent } from '@external/anilist/anilist.component';
 import { AnnComponent } from '@external/ann/ann.component';
 import { AnnictComponent } from '@external/annict/annict.component';
 import { BangumiComponent } from '@external/bangumi/bangumi.component';
@@ -13,6 +14,7 @@ import {
   MyAnimeUpdateExtended,
   parseExtension,
 } from '@models/anime';
+import { normalizeExtensionIds } from '@models/external-id';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnimeService } from '@services/anime/anime.service';
 import { DialogueService } from '@services/dialogue.service';
@@ -101,6 +103,9 @@ export class AnimeEditComponent implements OnInit {
     }
 
     this.busy = true;
+
+    // Pasted links may never have lost focus, so extract IDs once more
+    normalizeExtensionIds(this.editExtension);
 
     try {
       const updateData = {
@@ -250,6 +255,16 @@ export class AnimeEditComponent implements OnInit {
   }
 
   // External ID search methods (copied from details component)
+  async findAnilist() {
+    if (!this.anime || !this.editExtension) return;
+    const modal = this.modalService.open(AnilistComponent);
+    modal.componentInstance.type = 'anime';
+    modal.componentInstance.title = this.anime.title;
+    modal.closed.subscribe(value => {
+      if (this.editExtension) this.editExtension.anilistId = Number(value);
+    });
+  }
+
   async findTrakt() {
     if (!this.anime || !this.editExtension) return;
     const modal = this.modalService.open(TraktComponent);
