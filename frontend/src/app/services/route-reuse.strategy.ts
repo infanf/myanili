@@ -48,8 +48,14 @@ export class CachedRouteReuseStrategy implements RouteReuseStrategy {
   store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null) {
     const key = this.key(route);
     if (!key) return;
+    if (!handle) {
+      // The router clears the entry right before it reattaches the view, so the
+      // handle is about to be used again – only drop the reference to it here,
+      // destroying it would hand back a dead view without bindings or styles.
+      this.cache.delete(key);
+      return;
+    }
     this.destroy(key);
-    if (!handle) return;
     this.cache.set(key, {
       handle,
       volatile: route.data['reuse'] === 'volatile',
