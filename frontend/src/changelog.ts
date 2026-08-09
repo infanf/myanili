@@ -3,7 +3,13 @@ export const changelog: Changelog = {
     {
       version: '7.2.0',
       date: new Date('2026-08-07'),
-      features: ['Manga: Add platform MANGA MILLION'],
+      features: [
+        'Manga: Add platform MANGA MILLION',
+        'Navigation: going back keeps the view you came from – search results, lists and details pages are no longer rebuilt and reloaded, including their scroll position',
+      ],
+      fixes: [
+        'Navigation: opening a view no longer inherits the scroll position of the previous one, new views start at the top',
+      ],
     },
     {
       version: '7.1.0',

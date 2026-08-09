@@ -22,7 +22,9 @@ import { CharacterVoicesComponent } from './voices/voices.component';
     ComponentsModule,
     IconModule,
     NgbNavModule,
-    RouterModule.forChild([{ path: ':id', component: CharacterComponent }]),
+    RouterModule.forChild([
+      { path: ':id', component: CharacterComponent, data: { reuse: 'volatile' } },
+    ]),
   ],
   exports: [
     CharacterAnimeComponent,

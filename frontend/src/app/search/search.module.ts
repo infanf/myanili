@@ -27,10 +27,12 @@ import { SearchComponent } from './search.component';
       {
         path: ':type',
         component: SearchComponent,
+        data: { reuse: true },
       },
       {
         path: ':type/:query',
         component: SearchComponent,
+        data: { reuse: true },
       },
     ]),
   ],
