@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   backend: 'http://localhost:4280/',
-  anisearchUrl: 'https://anisearch.myani.li/',
 };
 
 /*

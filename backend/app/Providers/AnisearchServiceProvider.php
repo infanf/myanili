@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\AnisearchDatabase;
 use DOMElement;
 use Illuminate\Support\ServiceProvider;
 
@@ -49,7 +50,7 @@ class AnisearchServiceProvider extends ServiceProvider
         ];
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
+        curl_setopt($ch, CURLOPT_USERAGENT, AnisearchDatabase::userAgent());
         $response = curl_exec($ch);
         $doc = new \DOMDocument();
         @$doc->loadHTML($response);
@@ -97,7 +98,7 @@ class AnisearchServiceProvider extends ServiceProvider
         ];
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
+        curl_setopt($ch, CURLOPT_USERAGENT, AnisearchDatabase::userAgent());
         $response = curl_exec($ch);
         $doc = new \DOMDocument();
         @$doc->loadHTML($response);
@@ -136,10 +137,26 @@ class AnisearchServiceProvider extends ServiceProvider
 
     public static function getRating(int $id, string $type = "anime")
     {
+        $rating = AnisearchDatabase::getRating($type, $id);
+        if ($rating) {
+            // score uses a 0–100 scale
+            $score = $rating['rating_count'] > 0 ? $rating['score'] : 0;
+            return [
+                "nom" => $score / 20,
+                "norm" => $score,
+                "ratings" => $rating['rating_count'],
+            ];
+        }
+        // title not (yet) in the bulk export
+        return static::scrapeRating($id, $type);
+    }
+
+    private static function scrapeRating(int $id, string $type)
+    {
         $url = static::$baseUrl . "{$type}/{$id}";
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
+        curl_setopt($ch, CURLOPT_USERAGENT, AnisearchDatabase::userAgent());
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $response = curl_exec($ch);
         $doc = new \DOMDocument();
@@ -168,12 +185,29 @@ class AnisearchServiceProvider extends ServiceProvider
         ];
     }
 
+    public static function getIdByMalId(int $malId, string $type = "anime")
+    {
+        $id = AnisearchDatabase::getIdByMalId($type, $malId);
+        if ($id) {
+            return [$id];
+        }
+        if (AnisearchDatabase::hasData($type, 'associated')) {
+            return [];
+        }
+        // bulk export not available yet (e.g. rate limited), use legacy mapping service
+        $ch = curl_init("https://anisearch.myani.li/{$type}/{$malId}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $ids = json_decode(curl_exec($ch) ?: '[]', true);
+        return is_array($ids) ? $ids : [];
+    }
+
     public static function getRelations(int $id, string $type = "anime")
     {
         $url = static::$baseUrl . "{$type}/{$id}";
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, "MyAniLi (myani.li)");
+        curl_setopt($ch, CURLOPT_USERAGENT, AnisearchDatabase::userAgent());
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_COOKIE, "page_relation_mode=overall");
         $response = curl_exec($ch);
