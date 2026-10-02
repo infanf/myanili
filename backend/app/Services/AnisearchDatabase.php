@@ -26,7 +26,7 @@ class AnisearchDatabase
 
     public static function userAgent(): string
     {
-        return env('ANISEARCH_USER_AGENT', 'MyAniLi/7.1 (https://myani.li; cs@infanf.de)');
+        return env('ANISEARCH_USER_AGENT', 'MyAniLi/7.1 (https://myani.li; myanili@infanf.de)');
     }
 
     /**
