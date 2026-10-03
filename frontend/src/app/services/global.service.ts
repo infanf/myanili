@@ -57,6 +57,15 @@ export class GlobalService {
     };
   }
 
+  /**
+   * Scrolls the window to an absolute position without the scroll listener
+   * mistaking the jump for the user scrolling down and hiding the navbar.
+   */
+  scrollTo(position: number) {
+    this.lastPosition = position;
+    window.scrollTo(0, position);
+  }
+
   setTitle(title: string) {
     const newTitle = `${title}${this.titlePostfix}`;
     this.titleService.setTitle(newTitle);

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ListAnime, WatchStatus } from '@models/anime';
 import { ListManga, ReadStatus } from '@models/manga';
 import { MalUser, UserResponse } from '@models/user';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,6 +12,7 @@ export class MalService {
   private backendUrl = `${environment.backend}mal/`;
   private isLoggedIn = new BehaviorSubject<string | false>('***loading***');
   private malUser = new BehaviorSubject<MalUser | undefined>(undefined);
+  private hasChanged = new Subject<void>();
 
   constructor() {
     const malUser = JSON.parse(localStorage.getItem('malUser') || 'false') as MalUser | false;
@@ -50,6 +51,7 @@ export class MalService {
     if (!request.ok) {
       throw new Error(`Error ${request.status}: ${request.statusText}`);
     }
+    this.hasChanged.next();
     return request.json() as Promise<T>;
   }
 
@@ -116,6 +118,11 @@ export class MalService {
 
   get user() {
     return this.malUser.asObservable();
+  }
+
+  /** Emits after every write to MyAnimeList, so cached list views can be dropped. */
+  get changed() {
+    return this.hasChanged.asObservable();
   }
 
   async maintenace(): Promise<boolean> {
