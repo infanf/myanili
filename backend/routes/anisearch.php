@@ -22,7 +22,11 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
         return AnisearchServiceProvider::searchManga($text, $page);
     });
 
-    $router->get('{type}/rating/{id}', function (string $type, int $id) {
+    $router->get('{type:anime|manga}/mal/{malId:\d+}', function (string $type, int $malId) {
+        return AnisearchServiceProvider::getIdByMalId($malId, $type);
+    });
+
+    $router->get('{type:anime|manga}/rating/{id}', function (string $type, int $id) {
         return AnisearchServiceProvider::getRating($id, $type);
     });
 
