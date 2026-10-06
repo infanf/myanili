@@ -258,7 +258,7 @@ export class AnisearchService {
   }
 
   async getId(malId: number, type: 'anime' | 'manga'): Promise<number | undefined> {
-    const url = `${environment.anisearchUrl}${type}/${malId}`;
+    const url = `${this.backendUrl}${type}/mal/${malId}`;
     const ids = await this.cache.fetch<number[]>(url);
     return ids?.[0];
   }

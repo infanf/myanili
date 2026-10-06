@@ -7,9 +7,9 @@ import { IconModule } from '@icon/icon.module';
 import { FeedComponent } from './feed.component';
 
 const routes: Routes = [
-  { path: '', component: FeedComponent },
-  { path: 'user/:userId', component: FeedComponent },
-  { path: 'activity/:activityId', component: FeedComponent },
+  { path: '', component: FeedComponent, data: { reuse: true } },
+  { path: 'user/:userId', component: FeedComponent, data: { reuse: true } },
+  { path: 'activity/:activityId', component: FeedComponent, data: { reuse: true } },
 ];
 
 @NgModule({

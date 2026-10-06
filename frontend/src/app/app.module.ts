@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
+import { RouteReuseStrategy, RouterModule, Routes } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ComponentsModule } from '@components/components.module';
 import { ExternalModule } from '@external/external.module';
 import { IconModule } from '@icon/icon.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CachedRouteReuseStrategy } from '@services/route-reuse.strategy';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { environment } from 'src/environments/environment';
 
@@ -58,7 +59,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     SettingsModule,
   ],
-  providers: [Title],
+  providers: [Title, { provide: RouteReuseStrategy, useExisting: CachedRouteReuseStrategy }],
 
   bootstrap: [AppComponent],
 })

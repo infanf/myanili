@@ -3,6 +3,7 @@ import { SwUpdate, VersionEvent } from '@angular/service-worker';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { MalService } from '@services/mal.service';
+import { RouteScrollService } from '@services/route-scroll.service';
 
 @Component({
   selector: 'myanili-root',
@@ -19,7 +20,9 @@ export class AppComponent {
     private swUpdate: SwUpdate,
     private glob: GlobalService,
     private dialogue: DialogueService,
+    private routeScroll: RouteScrollService,
   ) {
+    this.routeScroll.start();
     this.setupUpdates();
     this.initializeApp();
     this.malService.loggedIn.subscribe(loggedIn => {

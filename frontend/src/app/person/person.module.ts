@@ -17,7 +17,9 @@ import { PersonStaffComponent } from './staff/staff.component';
     ComponentsModule,
     IconModule,
     NgbNavModule,
-    RouterModule.forChild([{ path: ':id', component: PersonComponent }]),
+    RouterModule.forChild([
+      { path: ':id', component: PersonComponent, data: { reuse: 'volatile' } },
+    ]),
   ],
   exports: [PersonAnimeComponent, PersonComponent, PersonMangaComponent, PersonStaffComponent],
 })
