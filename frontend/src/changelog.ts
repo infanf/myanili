@@ -1,14 +1,18 @@
 export const changelog: Changelog = {
   changes: [
     {
-      version: '7.2.0',
-      date: new Date('2026-08-07'),
+      version: '8.0.0',
+      date: new Date('2026-10-06'),
       features: [
         'Manga: Add platform MANGA MILLION',
         'Navigation: going back keeps the view you came from – search results, lists and details pages are no longer rebuilt and reloaded, including their scroll position',
+        'aniSearch: ratings and MyAnimeList mapping now come from the official aniSearch Database API, refreshed daily',
       ],
       fixes: [
         'Navigation: opening a view no longer inherits the scroll position of the previous one, new views start at the top',
+      ],
+      other: [
+        'aniSearch: the separate anisearch.myani.li service is no longer needed, all requests go through the myanili backend',
       ],
     },
     {
