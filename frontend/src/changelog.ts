@@ -2,7 +2,7 @@ export const changelog: Changelog = {
   changes: [
     {
       version: '8.0.0',
-      date: new Date('2026-10-06'),
+      date: new Date('2026-10-14'),
       features: [
         'Manga: Add platform MANGA MILLION',
         'Navigation: going back keeps the view you came from – search results, lists and details pages are no longer rebuilt and reloaded, including their scroll position',
