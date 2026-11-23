@@ -1,6 +1,14 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '8.0.1',
+      date: new Date('2026-11-23'),
+      fixes: [
+        'LiveChart: adapt to the changed LiveChart API – search, ratings, videos and list updates work again',
+        'LiveChart: removing a score on MyAnimeList now also clears the rating on LiveChart',
+      ],
+    },
+    {
       version: '8.0.0',
       date: new Date('2026-10-14'),
       features: [

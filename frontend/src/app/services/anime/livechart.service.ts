@@ -61,7 +61,7 @@ export class LivechartService {
     if (!malId || !title) return undefined;
     const QUERY = gql`
       query AnimeSearch($term: String) {
-        anime(term: $term) {
+        anime(search: $term) {
           nodes {
             databaseId
             malUrl
@@ -157,11 +157,11 @@ export class LivechartService {
   async getAnimes(term: string) {
     const QUERY = gql`
       query AnimeSearch($term: String) {
-        anime(term: $term) {
+        anime(search: $term) {
           __typename
           nodes {
             databaseId
-            romajiTitle
+            romanizedNativeTitle
             englishTitle
             nativeTitle
             alternativeTitles
@@ -189,7 +189,7 @@ export class LivechartService {
           nodes: [
             {
               databaseId: number;
-              romajiTitle: string;
+              romanizedNativeTitle: string;
               englishTitle: string;
               nativeTitle: string;
               alternativeTitles: string[];
@@ -226,7 +226,7 @@ export class LivechartService {
       query GetFullSingleAnime($id: ID!) {
         singleAnime(id: $id) {
           aggregateRating {
-            count
+            ratingCount
             weightedValue
           }
         }
@@ -234,7 +234,7 @@ export class LivechartService {
     `;
     const { data, error } = await this.client
       .query<{
-        singleAnime: { aggregateRating?: { count: number; weightedValue: number } };
+        singleAnime: { aggregateRating?: { ratingCount: number; weightedValue: number } };
       }>(QUERY, { id })
       .toPromise();
     if (error || !data) {
@@ -245,7 +245,7 @@ export class LivechartService {
     if (!aggregateRating) return;
     return {
       norm: aggregateRating.weightedValue * 10,
-      ratings: aggregateRating.count,
+      ratings: aggregateRating.ratingCount,
       nom: aggregateRating.weightedValue,
     };
   }
@@ -254,7 +254,7 @@ export class LivechartService {
     if (!id || !updateData || !(await this.checkLogin())) return;
     const attributes = {
       status: this.statusFromMal(updateData.status, updateData.is_rewatching),
-      rating: updateData.score,
+      rating: updateData.score === 0 ? null : updateData.score,
       episodesWatched: updateData.num_watched_episodes,
       startedAt: updateData.start_date,
       finishedAt: updateData.finish_date,
@@ -263,36 +263,33 @@ export class LivechartService {
     } as Partial<Attributes>;
     const MUTATION = gql`
       mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
-        upsertLibraryEntry(animeId: $animeId, attributes: $attributes, ratingScale: RATING_10) {
+        upsertLibraryEntry(animeId: $animeId, attributes: $attributes) {
           libraryEntry {
-            ...viewerLibraryEntryFields
+            ...libraryEntryFields
           }
           problems {
-            ...problemFields
+            ... on Problem {
+              message
+              path
+            }
           }
         }
       }
-      fragment viewerLibraryEntryFields on LibraryEntry {
+      fragment libraryEntryFields on ViewerLibraryEntry {
         animeDatabaseId
         episodesWatched
         status
         rating
-        ratingScale
-        updatedAt
-        createdAt
-      }
-      fragment problemFields on Problem {
-        message
-        shortMessage
-        path
-        pathString
+        rewatches
+        startedAt
+        finishedAt
+        notes
       }
     `;
     const { data, error } = await this.client
       .mutation<{
         animeId: string;
         attributes: Partial<Attributes>;
-        ratingScale: 'RATING_10';
       }>(MUTATION, { animeId: id, attributes })
       .toPromise();
     if (error || !data) {
@@ -307,26 +304,21 @@ export class LivechartService {
     } as Partial<Attributes>;
     const MUTATION = gql`
       mutation UpsertLibraryEntry($animeId: ID!, $attributes: LibraryEntryAttributes!) {
-        upsertLibraryEntry(animeId: $animeId, attributes: $attributes, ratingScale: RATING_10) {
+        upsertLibraryEntry(animeId: $animeId, attributes: $attributes) {
           libraryEntry {
-            ...viewerLibraryEntryFields
+            ...libraryEntryFields
           }
           problems {
-            ...problemFields
+            ... on Problem {
+              message
+              path
+            }
           }
         }
       }
-      fragment viewerLibraryEntryFields on LibraryEntry {
+      fragment libraryEntryFields on ViewerLibraryEntry {
         animeDatabaseId
         status
-        updatedAt
-        createdAt
-      }
-      fragment problemFields on Problem {
-        message
-        shortMessage
-        path
-        pathString
       }
     `;
     const { data, error } = await this.client
@@ -335,7 +327,6 @@ export class LivechartService {
         attributes: {
           status?: LivechartStatus;
         };
-        ratingScale: 'RATING_10';
       }>(MUTATION, { animeId: id, attributes })
       .toPromise();
     if (error || !data) {
@@ -427,17 +418,20 @@ export class LivechartService {
 
   async getVideos(animeId: number): Promise<LiveChartVideo[]> {
     const QUERY = gql`
-      query GetVideos($animeId: ID!) {
-        animeVideos(animeId: $animeId, category: PROMOS) {
-          nodes {
-            embedUrl
-            title
-            video {
-              tracks {
-                type
-                languageCode
+      query GetVideos($id: ID!) {
+        singleAnime(id: $id) {
+          videos(category: PROMOS, foldGroups: false) {
+            nodes {
+              embedUrl
+              title
+              video {
+                tracks {
+                  type
+                  language {
+                    name
+                  }
+                }
               }
-              thumbnailUrl
             }
           }
         }
@@ -445,16 +439,29 @@ export class LivechartService {
     `;
     const { data, error } = await this.client
       .query<{
-        animeVideos: {
-          nodes: LiveChartVideo[];
+        singleAnime?: {
+          videos: {
+            nodes: LiveChartVideo[];
+          };
         };
-      }>(QUERY, { animeId })
+      }>(QUERY, { id: animeId })
       .toPromise();
-    if (error || !data) {
+    if (error || !data?.singleAnime) {
       console.log(error);
       return [];
     }
-    return data.animeVideos.nodes;
+    return data.singleAnime.videos.nodes.map(node => ({
+      ...node,
+      video: {
+        ...node.video,
+        thumbnailUrl: node.video?.thumbnailUrl ?? this.thumbnailFromEmbedUrl(node.embedUrl),
+      },
+    }));
+  }
+
+  private thumbnailFromEmbedUrl(embedUrl: string): string | undefined {
+    const match = /youtube(?:-nocookie)?\.com\/embed\/([\w-]+)/.exec(embedUrl);
+    return match ? `https://i.ytimg.com/vi/${match[1]}/hqdefault.jpg` : undefined;
   }
 
   async login(username?: string, password?: string): Promise<string | undefined> {
@@ -612,7 +619,7 @@ type LivechartStatus =
 interface Attributes {
   status: LivechartStatus;
   episodesWatched: number;
-  rating: number;
+  rating: number | null;
   rewatches: number;
   startedAt: string;
   finishedAt: string;
@@ -650,8 +657,10 @@ export interface LiveChartVideo {
   video: {
     tracks: Array<{
       type: 'SUBTITLES' | 'AUDIO' | 'VIDEO';
-      languageCode: string;
+      language?: {
+        name: string;
+      };
     }>;
-    thumbnailUrl: string;
+    thumbnailUrl?: string;
   };
 }

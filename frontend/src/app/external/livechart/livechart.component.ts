@@ -24,7 +24,7 @@ export class LivechartComponent extends ExternalComponent {
     const animes = (await this.livechart.getAnimes(this.title)) || [];
     this.nodes =
       animes.map(anime => ({
-        title: anime.romajiTitle,
+        title: anime.romanizedNativeTitle,
         id: anime.databaseId,
         url: `https://www.livechart.me/anime/${anime.databaseId}`,
         year:
