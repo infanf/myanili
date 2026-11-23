@@ -59,6 +59,9 @@ export interface LiveactionMeta {
   backdrop?: string | null;
   year?: number | null;
   genres?: string[];
+  /** TMDB user score (0–10) and number of votes */
+  rating?: number | null;
+  votes?: number;
   seasons?: Array<{ number: number; episodes: number; name: string }>;
   /** Trakt slug and SIMKL ID, resolved by the backend with the app's client IDs */
   trakt?: string | null;

@@ -98,6 +98,13 @@ export class LiveactionDetailsComponent implements OnInit {
     const meta = this.liveaction?.meta;
     if (!meta) return;
     const id = this.id;
+    if (meta.rating && meta.votes) {
+      this.setRating('tmdb', {
+        nom: Math.round(meta.rating * 10) / 10,
+        norm: meta.rating * 10,
+        ratings: meta.votes,
+      });
+    }
     this.traktSlug = meta.trakt || undefined;
     this.simklId = meta.simkl || undefined;
     if (this.traktSlug) {

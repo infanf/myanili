@@ -300,6 +300,6 @@ export class LiveactionService {
 
   private metaUrl(id: number) {
     // Bump the version when the meta format changes to invalidate cached entries
-    return `${environment.backend}liveaction/meta/${id}?v=5`;
+    return `${environment.backend}liveaction/meta/${id}?v=6`;
   }
 }

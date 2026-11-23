@@ -29,7 +29,7 @@ class LiveactionResolver
     const MISS_AGE = 60 * 60 * 24;
 
     /** Bump when the format of the resolved data changes, to re-resolve cached entries */
-    const CACHE_VERSION = 4;
+    const CACHE_VERSION = 5;
 
     /** Bangumi platform names of movies */
     const MOVIE_PLATFORMS = ['电影'];
@@ -167,6 +167,9 @@ class LiveactionResolver
         $data['imdb'] = $item['imdb_id'] ?? $item['external_ids']['imdb_id'] ?? null;
         $data['tvdb'] = $item['external_ids']['tvdb_id'] ?? null;
         $data['genres'] = array_map(fn($genre) => $genre['name'], $item['genres'] ?? []);
+        // TMDB user score on a 0–10 scale; for TV shows it covers all seasons
+        $data['rating'] = isset($item['vote_average']) ? floatval($item['vote_average']) : null;
+        $data['votes'] = intval($item['vote_count'] ?? 0);
         if ($type === 'tv') {
             $data['seasons'] = array_values(array_map(fn($season) => [
                 'number' => $season['season_number'],
