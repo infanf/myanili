@@ -1,6 +1,22 @@
 export const changelog: Changelog = {
   changes: [
     {
+      version: '8.1.0',
+      date: new Date('2026-11-23'),
+      features: [
+        'Live Action: new section for live action adaptations – watchlist, lists per status, details and editing, with data from Bangumi and English titles and synopses from TMDB',
+        'Live Action: your list is stored in your Bangumi collection and synced to Trakt and SIMKL',
+        'Live Action: links to Bangumi, TMDB, Trakt, SIMKL, aniSearch and MyDramaList, mapped automatically and correctable in the edit form',
+        'Live Action: dramas are labelled by origin, e.g. Korean or Thai Drama',
+        'Search: search live action next to anime and manga, paste a Bangumi link to open its details',
+        'Anime/Manga: related live action adaptations now come from Bangumi and open in MyAniLi',
+      ],
+      fixes: [
+        'Bangumi: search finds entries missing from the Bangumi search index, e.g. some webtoons',
+        'Bangumi: requests were blocked by Firefox because of a custom User-Agent header',
+      ],
+    },
+    {
       version: '8.0.1',
       date: new Date('2026-11-23'),
       fixes: [
