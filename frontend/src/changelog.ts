@@ -1,7 +1,7 @@
 export const changelog: Changelog = {
   changes: [
     {
-      version: '8.1.0',
+      version: '9.0.0',
       date: new Date('2026-11-23'),
       features: [
         'Live Action: new section for live action adaptations – watchlist, lists per status, details and editing, with data from Bangumi and English titles and synopses from TMDB',
