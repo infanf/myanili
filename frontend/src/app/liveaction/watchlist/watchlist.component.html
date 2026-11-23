@@ -1,0 +1,143 @@
+<myanili-header
+  header="{{ !showDate ? 'Watchlist' : (getLast8am().toJSDate() | date: 'EEE, MMM d') }}"
+  [settings]="['language', 'watchlistLayout', 'autoFilter', 'startingSoon']"
+  (click)="showDate = !showDate"
+></myanili-header>
+@if (loggedIn === false && !initialLoading) {
+  <div class="container text-center my-5">
+    <p>Your live action list is stored in your Bangumi collection.</p>
+    <button class="btn btn-primary" (click)="bangumi.login()">
+      <myanili-icon-bangumi class="me-1"></myanili-icon-bangumi>
+      Connect Bangumi
+    </button>
+  </div>
+} @else if (initialLoading) {
+  <section class="container-fluid pb-3">
+    @if ((settings.watchlistLayout$ | async) === 'grid') {
+      <div class="watchlist-grid">
+        @for (i of skeletons; track i) {
+          <div class="skeleton" style="height: 6rem"></div>
+        }
+      </div>
+    } @else {
+      <div class="skeleton-rows">
+        @for (i of skeletons; track i) {
+          <div class="skeleton"></div>
+        }
+      </div>
+    }
+  </section>
+} @else if ((settings.watchlistLayout$ | async) === 'grid') {
+  <section class="container-fluid pb-3">
+    <div class="watchlist-grid">
+      @for (entry of entries; track entry.subject.id; let i = $index) {
+        @if (isFirstUpcoming(i)) {
+          <div class="upcoming-divider-grid text-center">
+            <myanili-icon name="clock" size="14" class="me-1"></myanili-icon>
+            airing later
+          </div>
+        }
+        <div class="card watchlist-card" [class.seen]="isSeen(entry)">
+          <img
+            class="poster cursor-pointer"
+            [src]="getPoster(entry)"
+            [alt]="getTitle(entry)"
+            routerLink="/liveaction/details/{{ entry.subject.id }}"
+          />
+          <div class="card-body p-2 d-flex flex-column">
+            <div
+              class="fw-bold cursor-pointer"
+              [class.fst-italic]="entry.list_status?.status === 'plan_to_watch'"
+              [class.text-green]="watched(entry) === 0"
+              routerLink="/liveaction/details/{{ entry.subject.id }}"
+            >
+              {{ getTitle(entry) }}
+            </div>
+            <div
+              class="small text-body-secondary mt-auto d-flex flex-wrap column-gap-2 align-items-center"
+            >
+              <myanili-icon-progress [percent]="progress(entry)"></myanili-icon-progress>
+              @if (episodeText(entry)) {
+                <span>Ep. {{ episodeText(entry) }}</span>
+              }
+              @if (nextAirdate(entry); as airdate) {
+                <span>{{ airdate.toJSDate() | date: 'EEE, MMM d' }}</span>
+              }
+            </div>
+          </div>
+          <button
+            type="button"
+            class="check-btn"
+            [title]="isSeen(entry) ? 'Seen' : 'Mark as seen'"
+            (click)="markSeen(entry)"
+          >
+            <myanili-icon [name]="checkIcon(entry)" size="28"></myanili-icon>
+          </button>
+        </div>
+      } @empty {
+        <p class="text-center text-body-secondary my-5">Nothing to watch today.</p>
+      }
+    </div>
+  </section>
+} @else {
+  <section>
+    <table class="table table-sm table-hover table-striped table-responsive-md" darkTable>
+      <thead class="sticky">
+        <tr>
+          <th>Name</th>
+          <th colspan="2">Episode</th>
+          <th>Aired</th>
+          <th>
+            <span class="mx-2">
+              <myanili-icon-progress
+                [percent]="entries.length ? (seenCount / entries.length) * 100 : 0"
+              ></myanili-icon-progress>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (entry of entries; track entry.subject.id; let i = $index) {
+          @if (isFirstUpcoming(i)) {
+            <tr class="upcoming-divider">
+              <td colspan="5" class="text-center">
+                <myanili-icon name="clock" size="14" class="me-1"></myanili-icon>
+                airing later
+              </td>
+            </tr>
+          }
+          <tr [class]="{ seen: isSeen(entry), 'text-green': watched(entry) === 0 }">
+            <td
+              class="cursor-pointer"
+              [class.fst-italic]="entry.list_status?.status === 'plan_to_watch'"
+              routerLink="/liveaction/details/{{ entry.subject.id }}"
+            >
+              {{ getTitle(entry) }}
+            </td>
+            <td>
+              <myanili-icon-progress [percent]="progress(entry)"></myanili-icon-progress>
+            </td>
+            <td style="white-space: nowrap">{{ episodeText(entry) }}</td>
+            <td style="white-space: nowrap">
+              @if (nextAirdate(entry); as airdate) {
+                {{ airdate.toJSDate() | date: 'EEE, MMM d' }}
+              }
+            </td>
+            <td>
+              <myanili-icon
+                class="mx-2"
+                [class.cursor-pointer]="!isSeen(entry)"
+                [name]="checkIcon(entry)"
+                (click)="markSeen(entry)"
+              ></myanili-icon>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="text-center text-body-secondary">Nothing to watch today.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+}

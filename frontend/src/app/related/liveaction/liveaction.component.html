@@ -2,12 +2,17 @@
   <div class="mb-3">
     <strong class="text-dark">Live Action</strong>
     <div class="grid my-2">
-      @for (movie of related_liveaction; track movie) {
+      @for (entry of related_liveaction; track entry) {
         <myanili-media-card
-          [poster]="movie.poster"
-          [title]="movie.title"
-          (click)="open(movie.link)"
-        ></myanili-media-card>
+          [poster]="entry.poster"
+          [title]="entry.title"
+          [mediaType]="entry.mediaType"
+          (click)="open(entry)"
+        >
+          @if (entry.year) {
+            <div class="small">{{ entry.year }}</div>
+          }
+        </myanili-media-card>
       }
     </div>
   </div>

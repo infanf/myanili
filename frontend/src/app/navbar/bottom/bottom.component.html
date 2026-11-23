@@ -60,6 +60,51 @@
             <span class="ms-2 d-none d-lg-inline">Search</span>
           </a>
         </li>
+      } @else if (module === 'liveaction') {
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/liveaction/watchlist" routerLinkActive="active">
+            <myanili-icon name="view-list"></myanili-icon>
+            <span class="ms-2 d-none d-lg-inline">Watchlist</span>
+          </a>
+        </li>
+        <li class="nav-divider"></li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/liveaction/list/watching" routerLinkActive="active">
+            <myanili-icon-status status="watching"></myanili-icon-status>
+            <span class="ms-2 d-none d-lg-inline">Watching</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/liveaction/list/plan_to_watch" routerLinkActive="active">
+            <myanili-icon-status status="plan_to_watch"></myanili-icon-status>
+            <span class="ms-2 d-none d-lg-inline">Planning</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/liveaction/list/on_hold" routerLinkActive="active">
+            <myanili-icon-status status="on_hold"></myanili-icon-status>
+            <span class="ms-2 d-none d-lg-inline">On Hold</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/liveaction/list/completed" routerLinkActive="active">
+            <myanili-icon-status status="completed"></myanili-icon-status>
+            <span class="ms-2 d-none d-lg-inline">Completed</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/liveaction/list/dropped" routerLinkActive="active">
+            <myanili-icon-status status="dropped"></myanili-icon-status>
+            <span class="ms-2 d-none d-lg-inline">Dropped</span>
+          </a>
+        </li>
+        <li class="nav-divider"></li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/search/liveaction" routerLinkActive="active">
+            <myanili-icon name="search"></myanili-icon>
+            <span class="ms-2 d-none d-lg-inline">Search</span>
+          </a>
+        </li>
       } @else {
         @if (loggedIn) {
           <li class="nav-item">

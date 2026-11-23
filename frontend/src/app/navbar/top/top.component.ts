@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
 import { ConnectionStatusService } from '@services/connection-status.service';
 import { MalService } from '@services/mal.service';
-import { NavbarService } from '@services/navbar.service';
+import { NavbarModule, NavbarService } from '@services/navbar.service';
 
 @Component({
   selector: 'myanili-navbar-top',
@@ -41,7 +41,7 @@ export class NavbarTopComponent {
   }
   loggedIn: string | false = 'loading';
   user?: MalUser;
-  module?: 'anime' | 'manga';
+  module?: NavbarModule;
   alUser?: AnilistUser;
   connectionErrors = false;
 

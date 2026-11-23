@@ -23,6 +23,11 @@ const routes: Routes = [
   { path: 'anime', loadChildren: () => import('@anime/anime.module').then(m => m.AnimeModule) },
   { path: 'manga/search', redirectTo: 'search/manga', pathMatch: 'full' },
   { path: 'manga', loadChildren: () => import('@manga/manga.module').then(m => m.MangaModule) },
+  { path: 'liveaction/search', redirectTo: 'search/liveaction', pathMatch: 'full' },
+  {
+    path: 'liveaction',
+    loadChildren: () => import('./liveaction/liveaction.module').then(m => m.LiveactionModule),
+  },
   {
     path: 'search',
     loadChildren: () => import('./search/search.module').then(m => m.SearchModule),

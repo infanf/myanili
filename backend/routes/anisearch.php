@@ -26,7 +26,7 @@ $router->group(['prefix' => 'anisearch'], function () use ($router) {
         return AnisearchServiceProvider::getIdByMalId($malId, $type);
     });
 
-    $router->get('{type:anime|manga}/rating/{id}', function (string $type, int $id) {
+    $router->get('{type:anime|manga|movie}/rating/{id}', function (string $type, int $id) {
         return AnisearchServiceProvider::getRating($id, $type);
     });
 

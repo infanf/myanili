@@ -14,6 +14,9 @@
     <div class="btn btn-primary" routerLink="/search/manga" routerLinkActive="active">
       <myanili-icon name="book-half"></myanili-icon>
     </div>
+    <div class="btn btn-primary" routerLink="/search/liveaction" routerLinkActive="active">
+      <myanili-icon name="camera-reels"></myanili-icon>
+    </div>
     <input
       class="form-control"
       [(ngModel)]="query"
@@ -35,7 +38,7 @@
           <select class="form-control" [(ngModel)]="filter.type" multiple>
             @for (type of allFilters.type; track type) {
               <option [value]="type">
-                {{ type | mal: 'mediatype' }}
+                {{ this.type === 'liveaction' ? type : (type | mal: 'mediatype') }}
               </option>
             }
           </select>
@@ -49,7 +52,7 @@
             }
           </select>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 mb-3" [class.d-none]="this.type === 'liveaction'">
           <select class="form-control" [(ngModel)]="filter.status" multiple>
             @for (status of allFilters.status; track status) {
               <option [value]="status">
@@ -180,9 +183,77 @@
           </td>
         </tr>
       }
+      @for (result of liveResultsFiltered; track result.subject.id) {
+        <tr class="cursor-pointer">
+          <td routerLink="/liveaction/details/{{ result.subject.id }}"></td>
+          <td
+            routerLink="/liveaction/details/{{ result.subject.id }}"
+            class="d-lg-table-cell"
+            [class]="{
+              'd-none': (settings.language$ | async) !== 'default',
+              'd-md-table-cell': (settings.language$ | async) === 'en',
+            }"
+          >
+            {{ liveTitle(result) }}
+          </td>
+          <td
+            routerLink="/liveaction/details/{{ result.subject.id }}"
+            class="d-md-table-cell"
+            [class]="{ 'd-none': (settings.language$ | async) !== 'en' }"
+          >
+            {{ liveTitle(result) }}
+          </td>
+          <td
+            routerLink="/liveaction/details/{{ result.subject.id }}"
+            class="d-lg-table-cell"
+            [class]="{ 'd-none': (settings.language$ | async) !== 'jp' }"
+          >
+            {{ result.subject.name }}
+          </td>
+          <td
+            routerLink="/liveaction/details/{{ result.subject.id }}"
+            class="d-none d-md-table-cell"
+          >
+            @for (genre of result.meta?.genres; track genre) {
+              <span class="badge text-bg-primary rounded-pill me-1">
+                {{ genre }}
+              </span>
+            }
+          </td>
+          <td routerLink="/liveaction/details/{{ result.subject.id }}">
+            <myanili-icon
+              [name]="result.meta?.mediaType === 'movie' ? 'film' : 'tv'"
+            ></myanili-icon>
+            <span class="d-none d-md-inline ms-1">{{ liveType(result) }}</span>
+          </td>
+          <td routerLink="/liveaction/details/{{ result.subject.id }}" class="text-nowrap">
+            @if (result.subject.rating?.score; as score) {
+              <circle-progress
+                [percent]="score * 10"
+                [outerStrokeColor]="
+                  score >= 8
+                    ? '#4a8220'
+                    : score >= 7
+                      ? '#204a82'
+                      : score >= 5
+                        ? '#825820'
+                        : '#82204a'
+                "
+              ></circle-progress>
+              <span class="ms-1">{{ score | number: '1.1-2' }}</span>
+            }
+          </td>
+          <td routerLink="/liveaction/details/{{ result.subject.id }}">
+            {{ result.subject.date | date: 'y' }}
+          </td>
+          <td (click)="open(result.subject.id)">
+            <myanili-icon [name]="'window-stack'"></myanili-icon>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
-  @if (results.length && !loadedAll) {
+  @if ((results.length || liveResults.length) && !loadedAll) {
     <div
       style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
       inViewport

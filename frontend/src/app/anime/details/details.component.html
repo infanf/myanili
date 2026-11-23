@@ -610,7 +610,8 @@
                 ></myanili-manga-related>
                 <myanili-liveaction-related
                   type="anime"
-                  [anisearchId]="anime.my_extension?.anisearchId || 0"
+                  [anisearchId]="anime.my_extension?.anisearchId"
+                  [bangumiId]="anime.my_extension?.bangumiId"
                 ></myanili-liveaction-related>
               </section>
             }

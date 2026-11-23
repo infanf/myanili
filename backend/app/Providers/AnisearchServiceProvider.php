@@ -135,6 +135,45 @@ class AnisearchServiceProvider extends ServiceProvider
         return $mangas;
     }
 
+    /**
+     * Live action entries from aniSearch's global quick search, which works
+     * without an API token (unlike the live action bulk export).
+     *
+     * @return array<array{id: int, title: string, type: string, episodes: int, year: int}>
+     */
+    public static function searchMovies(string $query): array
+    {
+        $ch = curl_init(static::$baseUrl . "search?q=" . rawurlencode($query));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_USERAGENT, AnisearchDatabase::userAgent());
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        $response = curl_exec($ch);
+        if (!$response) {
+            return [];
+        }
+        $doc = new \DOMDocument();
+        @$doc->loadHTML($response);
+        $finder = new \DOMXPath($doc);
+        $movies = [];
+        foreach ($finder->query("//a[contains(@class, 'movie-item')]") as $link) {
+            /** @var \DOMElement $link */
+            if (!preg_match('/^movie\/(\d+)/', $link->getAttribute('href'), $matches)) {
+                continue;
+            }
+            $date = $finder->query(".//span[@class='date']", $link)->item(0)?->nodeValue ?? '';
+            // e.g. "Movie, 2 (2015)", "TV-Series, 16 (2022)", "Web, ? (2015)"
+            preg_match('/^(?P<type>[^,]+),\s*(?P<episodes>\d+|\?)?\s*(\((?P<year>\d+)\))?/', $date, $meta);
+            $movies[] = [
+                'id' => intval($matches[1]),
+                'title' => $finder->query(".//span[@class='title']", $link)->item(0)?->nodeValue ?? '',
+                'type' => trim($meta['type'] ?? ''),
+                'episodes' => intval($meta['episodes'] ?? 0),
+                'year' => intval($meta['year'] ?? 0),
+            ];
+        }
+        return $movies;
+    }
+
     public static function getRating(int $id, string $type = "anime")
     {
         $rating = AnisearchDatabase::getRating($type, $id);

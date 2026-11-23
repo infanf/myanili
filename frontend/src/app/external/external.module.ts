@@ -14,11 +14,13 @@ import { BangumiComponent } from './bangumi/bangumi.component';
 import { ExternalComponent } from './external.component';
 import { KitsuComponent } from './kitsu/kitsu.component';
 import { LivechartComponent } from './livechart/livechart.component';
+import { TmdbComponent } from './tmdb/tmdb.component';
 import { TraktComponent } from './trakt/trakt.component';
 
 @NgModule({
   declarations: [
     ExternalComponent,
+    TmdbComponent,
     TraktComponent,
     AnilistComponent,
     AnisearchComponent,

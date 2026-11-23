@@ -15,7 +15,13 @@ namespace App\Services;
 class AnisearchDatabase
 {
     const API_URL = "https://api.anisearch.com/v1/";
-    const TYPES = ['anime', 'manga'];
+    const TYPES = ['anime', 'manga', 'movie'];
+
+    /**
+     * Live action ("movie") data requires an API token with live action access
+     * and is mapped by IMDb instead of MyAnimeList IDs.
+     */
+    const TOKEN_TYPES = ['movie'];
 
     /** Minimum age before a dataset is refreshed (seconds) */
     const MAX_AGE = 60 * 60 * 24;
@@ -56,6 +62,40 @@ class AnisearchDatabase
         return $row ? intval($row['anisearch_id']) : null;
     }
 
+    /**
+     * aniSearch live action ID by external (IMDb) ID.
+     * Returns null if unknown or no API token with live action access is set.
+     */
+    public static function getMovieIdByExternalId(string $externalId): ?int
+    {
+        if (!self::hasToken()) {
+            return null;
+        }
+        self::ensureFresh('movie', 'associated');
+        $stmt = self::db()->prepare(
+            "SELECT anisearch_id FROM movie_mapping WHERE external_id = :external_id"
+        );
+        $stmt->bindValue(':external_id', $externalId);
+        $row = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        return $row ? intval($row['anisearch_id']) : null;
+    }
+
+    private static function hasToken(): bool
+    {
+        return !empty(env('ANISEARCH_API_TOKEN'));
+    }
+
+    /**
+     * Source of the associated export, i.e. the key of the mapping.
+     * TODO: verify the live action source name once access is granted
+     */
+    private static function associatedSource(string $type): string
+    {
+        return $type === 'movie'
+            ? env('ANISEARCH_MOVIE_SOURCE', 'imdb_unique')
+            : 'myanimelist_unique';
+    }
+
     /** Whether the dataset has been imported at least once */
     public static function hasData(string $type, string $dataset): bool
     {
@@ -90,6 +130,10 @@ class AnisearchDatabase
             anisearch_id INTEGER NOT NULL,
             PRIMARY KEY (type, mal_id)
         )");
+        $db->exec("CREATE TABLE IF NOT EXISTS movie_mapping (
+            external_id TEXT PRIMARY KEY,
+            anisearch_id INTEGER NOT NULL
+        )");
         $db->exec("CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value INTEGER NOT NULL)");
         return self::$db = $db;
     }
@@ -118,6 +162,9 @@ class AnisearchDatabase
     {
         $key = "{$type}_{$dataset}";
         $now = time();
+        if (in_array($type, self::TOKEN_TYPES, true) && !self::hasToken()) {
+            return;
+        }
         if (self::getMeta("{$key}_updated") > $now - self::MAX_AGE) {
             return;
         }
@@ -140,7 +187,7 @@ class AnisearchDatabase
             // block further attempts until this one is done or the retry delay passed
             self::setMeta("{$key}_next_attempt", time() + self::RETRY_DELAY);
 
-            $query = $dataset === 'associated' ? 'source=myanimelist_unique&gzip' : 'gzip';
+            $query = $dataset === 'associated' ? 'source=' . self::associatedSource($type) . '&gzip' : 'gzip';
             [$status, $data, $retryAfter] = self::download(self::API_URL . "{$type}/{$dataset}?{$query}");
             if ($status !== 200 || !is_array($data)) {
                 error_log("aniSearch: refreshing {$key} failed with HTTP {$status}");
@@ -150,7 +197,13 @@ class AnisearchDatabase
                 return;
             }
 
-            $dataset === 'associated' ? self::importMapping($type, $data) : self::importRatings($type, $data);
+            if ($dataset !== 'associated') {
+                self::importRatings($type, $data);
+            } elseif ($type === 'movie') {
+                self::importMovieMapping($data);
+            } else {
+                self::importMapping($type, $data);
+            }
             self::setMeta("{$key}_updated", time());
             self::setMeta("{$key}_next_attempt", 0);
         } finally {
@@ -242,6 +295,32 @@ class AnisearchDatabase
                 }
                 $stmt->bindValue(':type', $type);
                 $stmt->bindValue(':mal_id', intval($malId), SQLITE3_INTEGER);
+                $stmt->bindValue(':anisearch_id', intval($entry['id']), SQLITE3_INTEGER);
+                $stmt->execute();
+                $stmt->reset();
+            }
+            $db->exec("COMMIT");
+        } catch (\Throwable $e) {
+            $db->exec("ROLLBACK");
+            throw $e;
+        }
+    }
+
+    /** Same shape as the anime/manga export, keyed by external (IMDb) ID */
+    private static function importMovieMapping(array $data): void
+    {
+        $db = self::db();
+        $db->exec("BEGIN");
+        try {
+            $db->exec("DELETE FROM movie_mapping");
+            $stmt = $db->prepare(
+                "INSERT OR REPLACE INTO movie_mapping (external_id, anisearch_id) VALUES (:external_id, :anisearch_id)"
+            );
+            foreach ($data as $externalId => $entry) {
+                if (empty($entry['id'])) {
+                    continue;
+                }
+                $stmt->bindValue(':external_id', strval($externalId));
                 $stmt->bindValue(':anisearch_id', intval($entry['id']), SQLITE3_INTEGER);
                 $stmt->execute();
                 $stmt->reset();

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ToasterService } from '@components/toaster/toaster.service';
 import { MyAnimeUpdate } from '@models/anime';
 import { ExtRating } from '@models/components';
+import { LiveactionIds, LiveactionUpdate } from '@models/liveaction';
 import { ConnectionStatusService } from '@services/connection-status.service';
 import { GlobalService, readStoredToken } from '@services/global.service';
 import { BehaviorSubject } from 'rxjs';
@@ -347,6 +348,86 @@ export class TraktService {
       body: JSON.stringify(data),
     });
     if (!result.ok) throw new Error(`Trakt: HTTP ${result.status}`);
+  }
+
+  /**
+   * Mirror a live action list update to Trakt. Trakt does not deduplicate
+   * history entries, so only newly watched episodes (or a newly completed
+   * movie) are added.
+   */
+  async updateLiveaction(
+    ids: LiveactionIds,
+    data: LiveactionUpdate,
+    previous?: { status?: string; episodes?: number },
+  ) {
+    const item = this.liveactionItem(ids);
+    if (!this.clientId || !this.accessToken || !item) return;
+    const isMovie = ids.mediaType === 'movie';
+    const key = isMovie ? 'movies' : 'shows';
+    const season = ids.season || 1;
+    if (data.status === 'plan_to_watch' && previous?.status !== 'plan_to_watch') {
+      await this.post('sync/watchlist', { [key]: [item] });
+    }
+    if (isMovie && data.status === 'completed' && previous?.status !== 'completed') {
+      await this.post('sync/history', { movies: [{ ...item, watched_at: 'released' }] });
+    }
+    const watched = data.num_watched_episodes || 0;
+    const before = previous?.episodes || 0;
+    if (!isMovie && watched > before) {
+      const watchedAt = new Date().toISOString();
+      const episodes = Array.from({ length: watched - before }, (_, i) => ({
+        number: before + i + 1,
+        watched_at: watchedAt,
+      }));
+      await this.post('sync/history', {
+        shows: [{ ...item, seasons: [{ number: season, episodes }] }],
+      });
+    }
+    if (!isMovie && data.status === 'dropped' && previous?.status !== 'dropped') {
+      await this.post('users/hidden/dropped', { shows: [item] });
+    }
+    if (data.score) {
+      const ratings = isMovie
+        ? { movies: [{ ...item, rating: data.score }] }
+        : {
+            shows: [
+              season === 1
+                ? { ...item, rating: data.score, seasons: [{ number: 1, rating: data.score }] }
+                : { ...item, seasons: [{ number: season, rating: data.score }] },
+            ],
+          };
+      await this.post('sync/ratings', ratings);
+    }
+  }
+
+  async deleteLiveaction(ids: LiveactionIds) {
+    const item = this.liveactionItem(ids);
+    if (!this.clientId || !this.accessToken || !item) return;
+    await this.post('sync/watchlist/remove', {
+      [ids.mediaType === 'movie' ? 'movies' : 'shows']: [item],
+    });
+  }
+
+  private liveactionItem(ids: LiveactionIds) {
+    const itemIds: { tmdb?: number; imdb?: string } = {};
+    if (ids.tmdb) itemIds.tmdb = ids.tmdb;
+    if (ids.imdb) itemIds.imdb = ids.imdb;
+    return Object.keys(itemIds).length ? { ids: itemIds } : undefined;
+  }
+
+  private async post(path: string, body: unknown): Promise<Response> {
+    const result = await this.fetch(`${this.baseUrl}${path}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        'trakt-api-version': '2',
+        'trakt-api-key': this.clientId,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!result.ok) throw new Error(`Trakt: HTTP ${result.status}`);
+    return result;
   }
 
   logoff() {

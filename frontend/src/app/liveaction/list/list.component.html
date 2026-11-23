@@ -1,0 +1,51 @@
+<myanili-header [header]="title" [settings]="['language']"></myanili-header>
+<section>
+  @if (loggedIn === false && !initialLoading) {
+    <div class="container text-center my-5">
+      <p>Your live action list is stored in your Bangumi collection.</p>
+      <button class="btn btn-primary" (click)="login()">
+        <myanili-icon-bangumi class="me-1"></myanili-icon-bangumi>
+        Connect Bangumi
+      </button>
+    </div>
+  }
+  @if (initialLoading) {
+    <div class="skeleton-grid m-2">
+      @for (i of skeletons; track i) {
+        <div class="skeleton"></div>
+      }
+    </div>
+  } @else if (loggedIn) {
+    @if (!entries.length) {
+      <p class="text-center text-body-secondary my-5">Nothing here yet.</p>
+    }
+    <div class="grid m-2">
+      @for (entry of entries; track entry.subject.id) {
+        <myanili-media-card
+          [status]="entry.list_status?.status"
+          [poster]="getPoster(entry)"
+          [title]="getTitle(entry, settings.language$ | async)"
+          [progress]="entry.list_status?.num_watched_episodes"
+          [parts]="getEpisodes(entry)"
+          [mediaType]="getMediaType(entry)"
+          routerLink="/liveaction/details/{{ entry.subject.id }}"
+        ></myanili-media-card>
+      }
+    </div>
+    @if (entries.length && !loadedAll) {
+      <div
+        style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
+        inViewport
+        (inViewportAction)="handleScroll($event)"
+      >
+        &nbsp;
+      </div>
+    }
+    @if (loading) {
+      <div class="text-center">
+        <myanili-icon name="loading"></myanili-icon>
+        Loading more...
+      </div>
+    }
+  }
+</section>

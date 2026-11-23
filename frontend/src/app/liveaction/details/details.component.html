@@ -1,0 +1,286 @@
+<div class="container my-sm-3 border-sm-x border-sm-y rounded" [class]="{ 'modal-body': inModal }">
+  <header class="d-flex pt-2 mb-3 border-bottom sticky-header bg-white">
+    <h2 class="flex-grow-1">
+      @if (liveaction) {
+        {{ title }}
+      } @else if (notFound) {
+        Not found
+      } @else {
+        <span class="skeleton d-inline-block w-50">&nbsp;</span>
+      }
+    </h2>
+    @if (liveaction && loggedIn) {
+      <div class="ms-auto ps-3 cursor-pointer" style="white-space: nowrap">
+        <myanili-icon
+          [name]="busy ? 'loading' : liveaction.my_list_status ? 'pencil' : 'plus'"
+          size="24"
+          (click)="editSave()"
+        ></myanili-icon>
+      </div>
+    }
+  </header>
+
+  @if (notFound) {
+    <p>This live action entry could not be loaded from Bangumi.</p>
+  }
+
+  @if (!notFound) {
+    <div class="row">
+      <div class="col-sm-5 col-md-4 mb-3">
+        @if (liveaction) {
+          <myanili-poster-rating
+            [poster]="poster"
+            [meanRating]="meanRating"
+            [rating]="liveaction.my_list_status?.score"
+          ></myanili-poster-rating>
+        } @else {
+          <div class="skeleton w-100" style="aspect-ratio: 2 / 3"></div>
+        }
+      </div>
+
+      <div class="col-sm-7 col-md-8 mb-3">
+        @if (!liveaction) {
+          <div class="skeleton skeleton-text w-75"></div>
+          <div class="skeleton skeleton-text w-50"></div>
+          <div class="skeleton mb-3" style="height: 6.5rem"></div>
+        }
+        @for (alternative of alternativeTitles; track alternative) {
+          <div class="text-body-secondary">{{ alternative }}</div>
+        }
+        @if (liveaction) {
+          <div
+            class="meta-line text-body-secondary d-flex flex-wrap column-gap-2 align-items-center mt-2 mb-3"
+          >
+            <span>
+              <myanili-icon [name]="isMovie ? 'film' : 'tv'" class="me-1"></myanili-icon>
+              {{ platform }}
+            </span>
+            @if (!isMovie) {
+              <span>&middot;</span>
+              <span>{{ episodes || '?' }} Ep.</span>
+            }
+            @if (liveaction.date) {
+              <span>&middot;</span>
+              <span>{{ liveaction.date | date }}</span>
+            }
+          </div>
+          @if (liveaction.meta?.genres?.length) {
+            <div class="mb-3">
+              @for (genre of liveaction.meta!.genres; track genre) {
+                <span class="badge rounded-pill bg-primary me-1">{{ genre }}</span>
+              }
+            </div>
+          }
+        }
+
+        @if (liveaction?.my_list_status; as status) {
+          <div class="card status-card mb-3">
+            <div class="card-body py-2 px-3">
+              <div class="d-flex align-items-center flex-wrap">
+                <span class="fw-bold me-2">{{ status.status | mal: 'mystatus' }}</span>
+                @if (
+                  loggedIn && (status.status === 'plan_to_watch' || status.status === 'on_hold')
+                ) {
+                  <myanili-icon
+                    name="play-circle"
+                    class="cursor-pointer me-1"
+                    (click)="setStatus('watching')"
+                  ></myanili-icon>
+                }
+                @if (loggedIn && status.status === 'watching') {
+                  <myanili-icon
+                    name="pause-circle"
+                    class="cursor-pointer me-1"
+                    (click)="setStatus('on_hold')"
+                  ></myanili-icon>
+                }
+                @if (loggedIn && isMovie && status.status !== 'completed') {
+                  <myanili-icon
+                    name="check-circle"
+                    class="cursor-pointer me-1"
+                    (click)="setStatus('completed')"
+                  ></myanili-icon>
+                }
+              </div>
+              @if (!isMovie) {
+                <div class="d-flex align-items-center gap-2 my-2">
+                  @if (loggedIn && status.status === 'watching') {
+                    <myanili-icon
+                      name="plus-circle"
+                      class="cursor-pointer"
+                      (click)="plusOne()"
+                    ></myanili-icon>
+                  }
+                  <div class="progress rounded-pill flex-grow-1">
+                    @if (status.num_watched_episodes) {
+                      <div
+                        class="progress-bar px-1"
+                        [ngClass]="{
+                          'bg-success': episodes && status.num_watched_episodes >= episodes,
+                          'bg-gradient': !episodes,
+                        }"
+                        [ngStyle]="{
+                          'min-width.%': episodes
+                            ? (status.num_watched_episodes / episodes) * 100
+                            : 30,
+                        }"
+                      >
+                        {{ status.num_watched_episodes }}/{{ episodes || '?' }}
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (liveaction) {
+          <div class="facts my-3">
+            @if (info('导演').length) {
+              <div class="fact-label">Director</div>
+              <div>{{ info('导演').join(', ') }}</div>
+            }
+            @if (info('主演').length) {
+              <div class="fact-label">Cast</div>
+              <div>{{ info('主演').join(', ') }}</div>
+            }
+            @if (info('原作').length) {
+              <div class="fact-label">Original Work</div>
+              <div>{{ info('原作').join(', ') }}</div>
+            }
+            @if (info('国家/地区').length) {
+              <div class="fact-label">Country</div>
+              <div>{{ info('国家/地区').join(', ') }}</div>
+            }
+          </div>
+
+          <div class="external-links mt-3">
+            <myanili-external-link
+              [href]="'https://bgm.tv/subject/' + liveaction.id"
+              label="Bangumi"
+              [rating]="getRating('bangumi')"
+            >
+              <myanili-icon-bangumi></myanili-icon-bangumi>
+            </myanili-external-link>
+            @if (liveaction.meta?.tmdb) {
+              <myanili-external-link
+                [href]="
+                  'https://www.themoviedb.org/' +
+                  liveaction.meta!.mediaType +
+                  '/' +
+                  liveaction.meta!.tmdb
+                "
+                label="TMDB"
+              >
+                <img src="/assets/tmdb-favicon.png" alt="TMDB" width="16" height="16" />
+              </myanili-external-link>
+            }
+            @if (traktUrl) {
+              <myanili-external-link [href]="traktUrl" label="Trakt" [rating]="getRating('trakt')">
+                <myanili-icon-trakt></myanili-icon-trakt>
+              </myanili-external-link>
+            }
+            @if (simklUrl) {
+              <myanili-external-link [href]="simklUrl" label="SIMKL" [rating]="getRating('simkl')">
+                <myanili-icon-simkl></myanili-icon-simkl>
+              </myanili-external-link>
+            }
+            @if (liveaction.meta?.anisearch) {
+              <myanili-external-link
+                [href]="'https://www.anisearch.com/movie/' + liveaction.meta!.anisearch"
+                label="aniSearch"
+                [rating]="getRating('anisearch')"
+              >
+                <myanili-icon-anisearch></myanili-icon-anisearch>
+              </myanili-external-link>
+            }
+            @if (liveaction.meta?.mdl) {
+              <myanili-external-link
+                [href]="'https://mydramalist.com/' + liveaction.meta!.mdl"
+                label="MyDramaList"
+              >
+                <img src="/assets/mydramalist.svg" alt="MyDramaList" width="16" height="16" />
+              </myanili-external-link>
+            }
+          </div>
+          @if (liveaction.meta?.source === 'none') {
+            <div class="form-text mt-2">
+              No English data found. Link this entry to TMDB in the edit dialogue.
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  @if (liveaction?.my_list_status?.comment) {
+    <div class="my-3">
+      <blockquote
+        class="quotes border-start ps-3 fst-italic"
+        [innerHTML]="liveaction!.my_list_status!.comment! | nl2br"
+      ></blockquote>
+    </div>
+  }
+
+  @if (liveaction) {
+    <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+      <li [ngbNavItem]="1">
+        <a ngbNavLink>Synopsis</a>
+        <ng-template ngbNavContent>
+          @if (liveaction.meta?.overview && !showOriginalSummary) {
+            <div [innerHTML]="liveaction.meta!.overview! | nl2br"></div>
+            <div class="small text-body-secondary mb-3">
+              Source:
+              <a
+                [href]="
+                  'https://www.themoviedb.org/' +
+                  liveaction.meta!.mediaType +
+                  '/' +
+                  liveaction.meta!.tmdb
+                "
+                target="_blank"
+                rel="noopener"
+                >TMDB</a
+              >
+            </div>
+          } @else if (liveaction.summary) {
+            <div lang="zh" [innerHTML]="liveaction.summary | nl2br"></div>
+            <div class="small text-body-secondary mb-3">
+              Source:
+              <a [href]="'https://bgm.tv/subject/' + liveaction.id" target="_blank" rel="noopener"
+                >Bangumi</a
+              >
+            </div>
+          }
+          @if (liveaction.meta?.overview && liveaction.summary) {
+            <button
+              class="btn btn-link btn-sm p-0"
+              (click)="showOriginalSummary = !showOriginalSummary"
+            >
+              {{ showOriginalSummary ? 'Show English synopsis' : 'Show Chinese synopsis' }}
+            </button>
+          }
+        </ng-template>
+      </li>
+      @if (!inModal && related.length) {
+        <li [ngbNavItem]="2">
+          <a ngbNavLink>Related</a>
+          <ng-template ngbNavContent>
+            <div class="grid my-2">
+              @for (subject of related; track subject.id) {
+                <myanili-media-card
+                  [poster]="subject.images?.common || subject.images?.medium"
+                  [title]="subject.name"
+                  [mediaType]="subject.type === 6 ? 'movie' : subject.type === 2 ? 'tv' : 'manga'"
+                  (click)="openRelated(subject)"
+                ></myanili-media-card>
+              }
+            </div>
+          </ng-template>
+        </li>
+      }
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  }
+</div>

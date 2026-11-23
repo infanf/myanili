@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
+import {
+  LiveactionCollection,
+  LiveactionSubject,
+  LiveactionUpdate,
+  statusToCollection,
+} from '@models/liveaction';
 import { MyMangaUpdate, ReadStatus } from '@models/manga';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -24,6 +30,25 @@ export interface BangumiSubject {
   images?: { large?: string; common?: string; medium?: string; small?: string; grid?: string };
 }
 
+export interface BangumiEpisode {
+  id: number;
+  sort: number;
+  ep?: number;
+  name?: string;
+  name_cn?: string;
+  /** YYYY-MM-DD, empty if unknown */
+  airdate?: string;
+}
+
+export interface BangumiRelatedSubject {
+  id: number;
+  type: number;
+  name: string;
+  name_cn: string;
+  relation: string;
+  images?: { large?: string; common?: string; medium?: string; small?: string; grid?: string };
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -32,7 +57,6 @@ export class BangumiService {
   private readonly authUrl = `${environment.backend}bangumi/auth`;
   private readonly tokenUrl = `${environment.backend}bangumi/token`;
   private readonly userinfoUrl = `${environment.backend}bangumi/userinfo`;
-  private readonly userAgent = 'myanili/2.0 (https://github.com/infanf/myanili)';
   private accessToken = '';
   private refreshToken = '';
 
@@ -147,21 +171,173 @@ export class BangumiService {
     return match?.id;
   }
 
-  private async search(keyword: string, type: 1 | 2): Promise<BangumiSubject[]> {
+  /** Unfiltered page of live action subjects; stage plays etc. are filtered by the caller */
+  async getLiveactions(keyword: string, limit = 20, offset = 0): Promise<LiveactionSubject[]> {
+    return (await this.search(keyword, 6, limit, offset)) as LiveactionSubject[];
+  }
+
+  async getSubject(subjectId: number): Promise<LiveactionSubject | undefined> {
+    const response = await this.fetchWithRetry(`${this.baseUrl}/v0/subjects/${subjectId}`, {
+      headers: this.readHeaders(),
+    });
+    if (!response?.ok) return undefined;
+    return response.json();
+  }
+
+  async getRelatedSubjects(subjectId: number): Promise<BangumiRelatedSubject[]> {
+    const response = await this.fetchWithRetry(
+      `${this.baseUrl}/v0/subjects/${subjectId}/subjects`,
+      { headers: this.readHeaders() },
+    );
+    if (!response?.ok) return [];
+    return response.json();
+  }
+
+  get accessTokenHeader(): string | undefined {
+    return this.accessToken ? `Bearer ${this.accessToken}` : undefined;
+  }
+
+  private async getUsername(): Promise<string | undefined> {
+    const user = this.user.value || (await this.checkLogin());
+    return user?.username;
+  }
+
+  async getCollections(
+    subjectType: 1 | 2 | 6,
+    collectionType?: number,
+    limit = 50,
+    offset = 0,
+  ): Promise<LiveactionCollection[]> {
+    const username = await this.getUsername();
+    if (!username) return [];
+    const url = new URL(`${this.baseUrl}/v0/users/${username}/collections`);
+    url.searchParams.set('subject_type', String(subjectType));
+    if (collectionType) url.searchParams.set('type', String(collectionType));
+    url.searchParams.set('limit', String(limit));
+    url.searchParams.set('offset', String(offset));
+    const response = await this.fetchWithRetry(url.toString(), { headers: this.readHeaders() });
+    if (!response?.ok) return [];
+    const data = (await response.json()) as { data?: LiveactionCollection[] };
+    return data.data || [];
+  }
+
+  async getCollection(subjectId: number): Promise<LiveactionCollection | undefined> {
+    const username = await this.getUsername();
+    if (!username) return undefined;
+    const response = await this.fetchWithRetry(
+      `${this.baseUrl}/v0/users/${username}/collections/${subjectId}`,
+      { headers: this.readHeaders() },
+    );
+    if (!response?.ok) return undefined;
+    return response.json();
+  }
+
+  async updateLiveaction(
+    subjectId: number,
+    data: LiveactionUpdate,
+    secondTry = false,
+  ): Promise<void> {
+    if (!this.accessToken) throw new Error('Bangumi: not logged in');
+    const body: { type: number; rate?: number; comment?: string } = {
+      type: statusToCollection(data.status),
+    };
+    if (data.score !== undefined) body.rate = data.score;
+    if (data.comment !== undefined) body.comment = data.comment;
+    const response = await fetch(`${this.baseUrl}/v0/users/-/collections/${subjectId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      if (!secondTry && response.status === 401 && (await this.refreshTokens())) {
+        return this.updateLiveaction(subjectId, data, true);
+      }
+      throw new Error(`Bangumi: HTTP ${response.status}`);
+    }
+    if (data.num_watched_episodes) {
+      await this.updateEpisodes(subjectId, data.num_watched_episodes);
+    }
+  }
+
+  private readHeaders(): Record<string, string> {
+    // No custom User-Agent: Bangumi's CORS preflight does not allow it, so
+    // browsers that send it (Firefox) would block the request
+    const headers: Record<string, string> = { Accept: 'application/json' };
+    // Private collections and NSFW subjects are only visible with a token
+    if (this.accessToken) headers['Authorization'] = `Bearer ${this.accessToken}`;
+    return headers;
+  }
+
+  /**
+   * Search with the v0 API. Its index misses some subjects (e.g. the webtoon
+   * 393869 "이상한 변호사 우영우"), so the first page is completed with hits of
+   * the legacy search API, and exact title matches are moved to the front.
+   */
+  private async search(
+    keyword: string,
+    type: 1 | 2 | 6,
+    limit = 20,
+    offset = 0,
+  ): Promise<BangumiSubject[]> {
     if (!keyword) return [];
+    const [subjects, legacyIds] = await Promise.all([
+      this.searchV0(keyword, type, limit, offset),
+      offset ? Promise.resolve([]) : this.searchLegacy(keyword, type),
+    ]);
+    const missing = legacyIds
+      .filter(id => !subjects.some(subject => subject.id === id))
+      .slice(0, 5);
+    const legacySubjects = await Promise.all(missing.map(id => this.getSubject(id)));
+    const results = [
+      ...subjects,
+      ...legacySubjects.filter(
+        (subject): subject is LiveactionSubject => !!subject && subject.type === type,
+      ),
+    ];
+    const isExact = (subject: BangumiSubject) =>
+      subject.name === keyword || subject.name_cn === keyword;
+    return [...results.filter(isExact), ...results.filter(subject => !isExact(subject))];
+  }
+
+  private async searchV0(
+    keyword: string,
+    type: 1 | 2 | 6,
+    limit: number,
+    offset: number,
+  ): Promise<BangumiSubject[]> {
     try {
-      const response = await this.fetchWithRetry(`${this.baseUrl}/v0/search/subjects?limit=20`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          'User-Agent': this.userAgent,
+      const response = await this.fetchWithRetry(
+        `${this.baseUrl}/v0/search/subjects?limit=${limit}&offset=${offset}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({ keyword, filter: { type: [type] } }),
         },
-        body: JSON.stringify({ keyword, filter: { type: [type] } }),
-      });
+      );
       if (!response?.ok) return [];
       const data = (await response.json()) as { data?: BangumiSubject[] };
       return data.data || [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** IDs found by the legacy search API, best match first */
+  private async searchLegacy(keyword: string, type: 1 | 2 | 6): Promise<number[]> {
+    try {
+      const response = await this.fetchWithRetry(
+        `${this.baseUrl}/search/subject/${encodeURIComponent(keyword)}?type=${type}&responseGroup=small&max_results=10`,
+        { headers: { Accept: 'application/json' } },
+      );
+      if (!response?.ok) return [];
+      const data = (await response.json()) as { list?: Array<{ id: number }> | null };
+      return (data.list || []).map(subject => subject.id);
     } catch {
       return [];
     }
@@ -235,20 +411,22 @@ export class BangumiService {
   }
 
   private async getEpisodeIds(subjectId: number): Promise<number[]> {
-    const episodes: Array<{ id: number; sort: number }> = [];
+    return (await this.getEpisodes(subjectId)).map(episode => episode.id);
+  }
+
+  /** Main episodes of a subject, sorted by number */
+  async getEpisodes(subjectId: number): Promise<BangumiEpisode[]> {
+    const episodes: BangumiEpisode[] = [];
     const limit = 200;
     let offset = 0;
     try {
       for (;;) {
         const response = await this.fetchWithRetry(
           `${this.baseUrl}/v0/episodes?subject_id=${subjectId}&type=0&limit=${limit}&offset=${offset}`,
-          { headers: { Accept: 'application/json', 'User-Agent': this.userAgent } },
+          { headers: { Accept: 'application/json' } },
         );
         if (!response?.ok) break;
-        const page = (await response.json()) as {
-          total?: number;
-          data?: Array<{ id: number; sort: number }>;
-        };
+        const page = (await response.json()) as { total?: number; data?: BangumiEpisode[] };
         if (!page.data?.length) break;
         episodes.push(...page.data);
         offset += limit;
@@ -257,7 +435,7 @@ export class BangumiService {
     } catch {
       return [];
     }
-    return episodes.sort((a, b) => a.sort - b.sort).map(episode => episode.id);
+    return episodes.sort((a, b) => a.sort - b.sort);
   }
 
   async getRating(subjectId: number | undefined): Promise<ExtRating | undefined> {
@@ -266,7 +444,6 @@ export class BangumiService {
       const response = await this.fetchWithRetry(`${this.baseUrl}/v0/subjects/${subjectId}`, {
         headers: {
           Accept: 'application/json',
-          'User-Agent': this.userAgent,
         },
       });
       if (!response?.ok) return undefined;

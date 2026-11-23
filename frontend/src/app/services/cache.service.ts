@@ -158,6 +158,11 @@ export class CacheService {
     return data;
   }
 
+  /** Replace a cached fetch result, e.g. after the underlying data was changed */
+  updateFetch<T>(url: string, data: T, ttl = 3600) {
+    this.fetchToStore(url, data, ttl);
+  }
+
   getPlannerDecision(
     animeId: number,
     year: number,

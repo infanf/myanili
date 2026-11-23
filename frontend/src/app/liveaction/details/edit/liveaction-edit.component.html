@@ -1,0 +1,185 @@
+<div class="modal-header">
+  <h5 class="modal-title">Edit {{ title }}</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="cancel()"
+  ></button>
+</div>
+
+<div class="modal-body">
+  @if (liveaction && edit && mapping) {
+    <!-- My Score -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">My Score</div>
+      <div class="col-8">
+        <myanili-rating [(rating)]="edit.score" [size]="16"></myanili-rating>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">My Status</div>
+      <div class="col-8">
+        <select class="form-select form-select-sm" [(ngModel)]="edit.status" [disabled]="busy">
+          @for (
+            value of ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'];
+            track value
+          ) {
+            <option [value]="value">{{ value | mal: 'mystatus' }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Progress (episodes watched) -->
+    @if (!isMovie) {
+      <div class="row mb-2">
+        <div class="col-4 fw-bold text-end">Progress</div>
+        <div class="col-8">
+          <div class="input-group input-group-sm">
+            <input
+              class="form-control"
+              type="number"
+              min="0"
+              [max]="episodes || 9999"
+              [(ngModel)]="edit.num_watched_episodes"
+              [disabled]="busy"
+              enterkeyhint="done"
+            />
+            <span class="input-group-text">/ {{ episodes || '?' }}</span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- TMDB mapping (shared with all users, used for English data, Trakt and SIMKL) -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">TMDB</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <select
+            class="form-select flex-grow-0 w-auto"
+            [(ngModel)]="mapping.type"
+            [disabled]="busy"
+          >
+            <option value="tv">TV</option>
+            <option value="movie">Movie</option>
+          </select>
+          <input
+            class="form-control"
+            type="number"
+            [(ngModel)]="mapping.tmdb"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          <button class="btn btn-outline-secondary" (click)="findTmdb()" [disabled]="busy">
+            <myanili-icon name="search" size="16"></myanili-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    @if (!isMovie) {
+      <div class="row mb-2">
+        <div class="col-4 fw-bold text-end">Season</div>
+        <div class="col-8">
+          <input
+            class="form-control form-control-sm"
+            type="number"
+            min="1"
+            [(ngModel)]="mapping.season"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+        </div>
+      </div>
+    }
+
+    <!-- aniSearch (shared mapping like TMDB) -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">aniSearch</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control"
+            type="number"
+            [(ngModel)]="mapping.anisearch"
+            [disabled]="busy"
+            enterkeyhint="done"
+          />
+          @if (mapping.anisearch) {
+            <a
+              class="btn btn-outline-secondary"
+              [href]="'https://www.anisearch.com/movie/' + mapping.anisearch"
+              target="_blank"
+            >
+              <myanili-icon name="box-arrow-up-right" size="16"></myanili-icon>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- MyDramaList (slug or URL, shared mapping) -->
+    <div class="row mb-2">
+      <div class="col-4 fw-bold text-end">MyDramaList</div>
+      <div class="col-8">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control"
+            [(ngModel)]="mapping.mdl"
+            [disabled]="busy"
+            placeholder="ID, slug or URL"
+            enterkeyhint="done"
+          />
+          @if (mapping.mdl) {
+            <a
+              class="btn btn-outline-secondary"
+              [href]="'https://mydramalist.com/' + mapping.mdl"
+              target="_blank"
+            >
+              <myanili-icon name="box-arrow-up-right" size="16"></myanili-icon>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment -->
+    <div class="mb-2">
+      <div class="fw-bold">Comment</div>
+      <textarea
+        class="form-control"
+        [(ngModel)]="edit.comment"
+        [disabled]="busy"
+        enterkeyhint="done"
+      ></textarea>
+      <div class="form-text">The comment is public on Bangumi.</div>
+    </div>
+  }
+</div>
+
+<div class="modal-footer">
+  @if (liveaction?.my_list_status) {
+    <button
+      type="button"
+      class="btn btn-danger me-auto"
+      (click)="deleteEntry()"
+      [disabled]="busy"
+      title="Remove from list"
+    >
+      <myanili-icon name="trash"></myanili-icon>
+      <span class="d-none d-sm-inline ms-1">Remove from list</span>
+    </button>
+  }
+  <button type="button" class="btn btn-primary" (click)="save()" [disabled]="busy">
+    @if (busy) {
+      <myanili-icon name="loading" size="16"></myanili-icon>
+      <span class="ms-1">Saving...</span>
+    } @else {
+      <myanili-icon name="check2" size="16"></myanili-icon>
+      <span class="ms-1">Save Changes</span>
+    }
+  </button>
+</div>

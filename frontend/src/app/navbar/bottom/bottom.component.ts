@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GlobalService } from '@services/global.service';
 import { MalService } from '@services/mal.service';
-import { NavbarService } from '@services/navbar.service';
+import { NavbarModule, NavbarService } from '@services/navbar.service';
 
 @Component({
   selector: 'myanili-navbar-bottom',
@@ -11,7 +11,7 @@ import { NavbarService } from '@services/navbar.service';
   standalone: false,
 })
 export class NavbarBottomComponent {
-  module?: 'anime' | 'manga';
+  module?: NavbarModule;
   lastPosition = 0;
   hide = false;
   loggedIn: string | false = false;

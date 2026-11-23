@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MyAnimeUpdate, WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
+import { LiveactionIds, LiveactionUpdate } from '@models/liveaction';
 import { ConnectionStatusService } from '@services/connection-status.service';
 import { readStoredToken } from '@services/global.service';
 import { BehaviorSubject } from 'rxjs';
@@ -208,6 +209,64 @@ export class SimklService {
       }
     }
     return;
+  }
+
+  /**
+   * Live action entries are no anime on SIMKL but movies or TV shows,
+   * identified by their TMDB/IMDb IDs.
+   */
+  async updateLiveaction(ids: LiveactionIds, data: LiveactionUpdate, previousEpisodes = 0) {
+    const item = this.liveactionItem(ids);
+    if (!this.clientId || !this.accessToken || !item) return;
+    const key = ids.mediaType === 'movie' ? 'movies' : 'shows';
+    const list = this.statusFromMal(data.status);
+    const promises: Array<Promise<Response>> = [];
+    // SIMKL movies only know planned, completed and dropped
+    if (list && (key === 'shows' || !['watching', 'hold'].includes(list))) {
+      promises.push(this.post('sync/add-to-list', { [key]: [{ ...item, to: list }] }));
+    }
+    if (data.score) {
+      promises.push(this.post('sync/ratings', { [key]: [{ ...item, rating: data.score }] }));
+    }
+    const watched = data.num_watched_episodes || 0;
+    if (key === 'shows' && watched > previousEpisodes) {
+      const episodes = Array.from({ length: watched - previousEpisodes }, (_, i) => ({
+        number: previousEpisodes + i + 1,
+      }));
+      promises.push(
+        this.post('sync/history', {
+          shows: [{ ...item, seasons: [{ number: ids.season || 1, episodes }] }],
+        }),
+      );
+    }
+    await Promise.all(promises);
+  }
+
+  async deleteLiveaction(ids: LiveactionIds) {
+    const item = this.liveactionItem(ids);
+    if (!this.clientId || !this.accessToken || !item) return;
+    const key = ids.mediaType === 'movie' ? 'movies' : 'shows';
+    await this.post('sync/history/remove', { [key]: [item] });
+  }
+
+  private liveactionItem(ids: LiveactionIds) {
+    const itemIds: { tmdb?: string; imdb?: string } = {};
+    if (ids.tmdb) itemIds.tmdb = String(ids.tmdb);
+    if (ids.imdb) itemIds.imdb = ids.imdb;
+    return Object.keys(itemIds).length ? { ids: itemIds } : undefined;
+  }
+
+  private async post(path: string, body: unknown): Promise<Response> {
+    const response = await fetch(`${this.baseUrl}${path}`, {
+      method: 'POST',
+      headers: new Headers({
+        Authorization: `Bearer ${this.accessToken}`,
+        'simkl-api-key': this.clientId,
+      }),
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) throw new Error(`SIMKL: HTTP ${response.status}`);
+    return response;
   }
 
   logoff() {
