@@ -2,7 +2,13 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { ActivatedRoute, Router } from '@angular/router';
 import { WatchStatus } from '@models/anime';
 import { ExtRating } from '@models/components';
-import { infoboxValue, Liveaction, platformName } from '@models/liveaction';
+import {
+  countryNames,
+  infoboxValue,
+  Liveaction,
+  liveactionPoster,
+  platformName,
+} from '@models/liveaction';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BangumiRelatedSubject, BangumiService } from '@services/anime/bangumi.service';
 import { SimklService } from '@services/anime/simkl.service';
@@ -139,11 +145,12 @@ export class LiveactionDetailsComponent implements OnInit {
   }
 
   get poster(): string | undefined {
-    return (
-      this.liveaction?.meta?.poster ||
-      this.liveaction?.images?.large ||
-      this.liveaction?.images?.common
-    );
+    if (!this.liveaction) return undefined;
+    return liveactionPoster(this.liveaction, this.liveaction.meta, 'large');
+  }
+
+  get countries(): string[] {
+    return this.liveaction ? countryNames(this.liveaction) : [];
   }
 
   get platform(): string {

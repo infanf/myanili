@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WatchStatus } from '@models/anime';
-import { ListLiveaction } from '@models/liveaction';
+import { ListLiveaction, liveactionPoster } from '@models/liveaction';
 import { BangumiService } from '@services/anime/bangumi.service';
 import { GlobalService } from '@services/global.service';
 import { LiveactionService } from '@services/liveaction/liveaction.service';
@@ -84,7 +84,7 @@ export class LiveactionListComponent implements OnInit {
   }
 
   getPoster(entry: ListLiveaction): string | undefined {
-    return entry.meta?.poster || entry.subject.images?.common || entry.subject.images?.medium;
+    return liveactionPoster(entry.subject, entry.meta);
   }
 
   getMediaType(entry: ListLiveaction): string {

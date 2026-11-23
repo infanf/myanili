@@ -9,6 +9,7 @@ import {
   LiveactionCollection,
   LiveactionIds,
   LiveactionMeta,
+  liveactionPoster,
   LiveactionSubject,
   LiveactionUpdate,
   RelatedLiveaction,
@@ -265,7 +266,7 @@ export class LiveactionService {
             const meta = await this.getMeta(subject.id);
             return {
               title: meta?.title || subject.name,
-              poster: meta?.poster || subject.images?.common || subject.images?.medium,
+              poster: liveactionPoster(subject, meta),
               mediaType:
                 meta?.mediaType === 'movie' || subject.platform === '电影' ? 'movie' : 'tv',
               year: subject.date?.substring(0, 4),

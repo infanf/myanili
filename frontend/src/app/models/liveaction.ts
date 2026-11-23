@@ -172,6 +172,71 @@ export function statusToCollection(status: WatchStatus): BangumiCollectionType {
   }
 }
 
+/**
+ * Poster of a subject. Bangumi's poster shows the original language version,
+ * so TMDB's (usually English) poster is only a fallback.
+ */
+export function liveactionPoster(
+  subject: Pick<LiveactionSubject, 'images'>,
+  meta?: Pick<LiveactionMeta, 'poster'>,
+  size: 'large' | 'common' = 'common',
+): string | undefined {
+  const images = subject.images;
+  const bangumi =
+    size === 'large' ? images?.large || images?.common : images?.common || images?.medium;
+  return bangumi || meta?.poster || undefined;
+}
+
+/** English names of the countries used in the Bangumi infobox (国家/地区) */
+const COUNTRY_NAMES: Record<string, string> = {
+  日本: 'Japan',
+  韩国: 'South Korea',
+  大韩民国: 'South Korea',
+  朝鲜: 'North Korea',
+  中国: 'China',
+  中国大陆: 'Mainland China',
+  台湾: 'Taiwan',
+  中国台湾: 'Taiwan',
+  香港: 'Hong Kong',
+  中国香港: 'Hong Kong',
+  澳门: 'Macau',
+  中国澳门: 'Macau',
+  泰国: 'Thailand',
+  越南: 'Vietnam',
+  菲律宾: 'Philippines',
+  印度尼西亚: 'Indonesia',
+  印尼: 'Indonesia',
+  马来西亚: 'Malaysia',
+  新加坡: 'Singapore',
+  印度: 'India',
+  美国: 'United States',
+  加拿大: 'Canada',
+  英国: 'United Kingdom',
+  爱尔兰: 'Ireland',
+  法国: 'France',
+  德国: 'Germany',
+  意大利: 'Italy',
+  西班牙: 'Spain',
+  澳大利亚: 'Australia',
+  新西兰: 'New Zealand',
+  哥伦比亚: 'Colombia',
+  墨西哥: 'Mexico',
+  巴西: 'Brazil',
+  俄罗斯: 'Russia',
+};
+
+/**
+ * Countries of a subject in English. Unknown and already English values
+ * ("United States of America") are kept as they are.
+ */
+export function countryNames(subject: LiveactionSubject): string[] {
+  return infoboxValue(subject, '国家/地区')
+    .flatMap(value => value.split(/[、,，/]+/))
+    .map(country => country.trim())
+    .filter(country => country)
+    .map(country => COUNTRY_NAMES[country] || country);
+}
+
 /** Origin of a subject by Bangumi infobox country (国家/地区) */
 const COUNTRY_ORIGINS: Record<string, string> = {
   韩国: 'Korean',

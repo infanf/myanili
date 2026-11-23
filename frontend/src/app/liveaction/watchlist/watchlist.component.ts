@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DateTimeFrom } from '@components/luxon-helper';
-import { ListLiveaction, Liveaction, LiveactionUpdate } from '@models/liveaction';
+import { ListLiveaction, Liveaction, liveactionPoster, LiveactionUpdate } from '@models/liveaction';
 import { BangumiEpisode, BangumiService } from '@services/anime/bangumi.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
@@ -115,12 +115,7 @@ export class LiveactionWatchlistComponent implements OnInit {
   }
 
   getPoster(entry: ListLiveaction): string {
-    return (
-      entry.meta?.poster ||
-      entry.subject.images?.common ||
-      entry.subject.images?.medium ||
-      'assets/blank-poster.svg'
-    );
+    return liveactionPoster(entry.subject, entry.meta) || 'assets/blank-poster.svg';
   }
 
   isMovie(entry: ListLiveaction): boolean {

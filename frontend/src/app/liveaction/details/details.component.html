@@ -149,9 +149,9 @@
               <div class="fact-label">Original Work</div>
               <div>{{ info('原作').join(', ') }}</div>
             }
-            @if (info('国家/地区').length) {
+            @if (countries.length) {
               <div class="fact-label">Country</div>
-              <div>{{ info('国家/地区').join(', ') }}</div>
+              <div>{{ countries.join(', ') }}</div>
             }
           </div>
 
