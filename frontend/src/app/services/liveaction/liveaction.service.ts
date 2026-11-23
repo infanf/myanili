@@ -11,12 +11,14 @@ import {
   LiveactionMeta,
   LiveactionSubject,
   LiveactionUpdate,
+  RelatedLiveaction,
   statusToCollection,
   TmdbSearchResult,
 } from '@models/liveaction';
 import { BangumiService } from '@services/anime/bangumi.service';
 import { SimklService } from '@services/anime/simkl.service';
 import { TraktService } from '@services/anime/trakt.service';
+import { AnisearchService } from '@services/anisearch.service';
 import { CacheService } from '@services/cache.service';
 import { environment } from 'src/environments/environment';
 
@@ -40,6 +42,7 @@ export class LiveactionService {
     private trakt: TraktService,
     private simkl: SimklService,
     private mydramalist: MydramalistService,
+    private anisearch: AnisearchService,
     private cache: CacheService,
     private toaster: ToasterService,
   ) {}
@@ -244,6 +247,45 @@ export class LiveactionService {
       .filter((subject): subject is LiveactionSubject => !!subject)
       .filter(subject => !EXCLUDED_PLATFORMS.includes(subject.platform || ''))
       .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+  }
+
+  /**
+   * Live action adaptations for anime/manga details: Bangumi entries open in
+   * MyAniLi; aniSearch (external links only) is the fallback without Bangumi data.
+   */
+  async getRelatedAdaptations(
+    ids: { bangumiId?: number; anisearchId?: number },
+    type: 'anime' | 'manga',
+  ): Promise<RelatedLiveaction[]> {
+    if (ids.bangumiId) {
+      const subjects = await this.getRelated(ids.bangumiId, type);
+      if (subjects.length) {
+        return Promise.all(
+          subjects.map(async subject => {
+            const meta = await this.getMeta(subject.id);
+            return {
+              title: meta?.title || subject.name,
+              poster: meta?.poster || subject.images?.common || subject.images?.medium,
+              mediaType:
+                meta?.mediaType === 'movie' || subject.platform === '电影' ? 'movie' : 'tv',
+              year: subject.date?.substring(0, 4),
+              route: `/liveaction/details/${subject.id}`,
+            } as RelatedLiveaction;
+          }),
+        );
+      }
+    }
+    if (!ids.anisearchId) return [];
+    const related = await this.anisearch.getRelated(ids.anisearchId, type);
+    return related
+      .filter(entry => entry.type === 'movie')
+      .map(entry => ({
+        title: entry.title,
+        poster: entry.poster,
+        mediaType: entry.media_type?.toLowerCase().includes('movie') ? 'movie' : 'tv',
+        year: entry.year ? String(entry.year) : undefined,
+        link: entry.link,
+      }));
   }
 
   private toListStatus(collection: LiveactionCollection) {

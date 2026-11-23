@@ -488,7 +488,10 @@
           </ng-template>
         </li>
       }
-      @if (!inModal && (manga.related_anime.length || manga.related_manga.length)) {
+      @if (
+        !inModal &&
+        (manga.related_anime.length || manga.related_manga.length || relatedLiveaction.length)
+      ) {
         <li [ngbNavItem]="2">
           <a ngbNavLink>Related</a>
           <ng-template ngbNavContent>
@@ -502,9 +505,7 @@
                   [has_covers]="false"
                 ></myanili-anime-related>
                 <myanili-liveaction-related
-                  type="manga"
-                  [anisearchId]="manga.my_extension?.anisearchId"
-                  [bangumiId]="manga.my_extension?.bangumiId"
+                  [related_liveaction]="relatedLiveaction"
                 ></myanili-liveaction-related>
               </section>
             }

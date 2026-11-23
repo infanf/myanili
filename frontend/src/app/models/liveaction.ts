@@ -113,6 +113,17 @@ export interface Liveaction extends LiveactionSubject {
   my_list_status?: LiveactionListStatus;
 }
 
+/** Live action adaptation shown on anime/manga details */
+export interface RelatedLiveaction {
+  title: string;
+  poster?: string;
+  mediaType: 'movie' | 'tv';
+  year?: string;
+  /** Internal route for Bangumi entries, external URL for aniSearch entries */
+  route?: string;
+  link?: string;
+}
+
 export interface LiveactionUpdate {
   status: WatchStatus;
   score?: number;

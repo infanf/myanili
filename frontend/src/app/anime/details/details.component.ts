@@ -13,6 +13,7 @@ import {
   WatchStatus,
 } from '@models/anime';
 import { ExtRating } from '@models/components';
+import { RelatedLiveaction } from '@models/liveaction';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
 import { AnimePlanetService } from '@services/anime-planet.service';
@@ -29,6 +30,7 @@ import { CacheService } from '@services/cache.service';
 import { DialogueService } from '@services/dialogue.service';
 import { GlobalService } from '@services/global.service';
 import { KitsuService } from '@services/kitsu.service';
+import { LiveactionService } from '@services/liveaction/liveaction.service';
 import { MalService } from '@services/mal.service';
 import { ShikimoriService } from '@services/shikimori.service';
 import { Base64 } from 'js-base64';
@@ -55,6 +57,7 @@ export class AnimeDetailsComponent implements OnInit {
   annictUser?: string;
   activeTab = 1;
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
+  relatedLiveaction: RelatedLiveaction[] = [];
   @Input() inModal = false;
   streams: LegacyStream[] = [];
   originalLanguage = 'Japanese';
@@ -78,6 +81,7 @@ export class AnimeDetailsComponent implements OnInit {
     private anidb: AnidbService,
     private ap: AnimePlanetService,
     private bangumi: BangumiService,
+    private liveaction: LiveactionService,
     private cache: CacheService,
     private dialogue: DialogueService,
     private malService: MalService,
@@ -87,6 +91,7 @@ export class AnimeDetailsComponent implements OnInit {
       const newId = Number(params.get('id'));
       if (newId !== this.id) {
         this.ratings = [];
+        this.relatedLiveaction = [];
         this.streams = [];
         this.id = newId;
         delete this.title;
@@ -142,6 +147,7 @@ export class AnimeDetailsComponent implements OnInit {
       this.anime.my_extension.malId = anime.id;
     }
     await this.checkExternalIds(anime);
+    this.loadRelatedLiveaction();
     if (!this.anime.related_manga.length) {
       this.anime.related_manga_promise.then(relatedManga => {
         if (this.anime) this.anime.related_manga = relatedManga;
@@ -580,6 +586,19 @@ export class AnimeDetailsComponent implements OnInit {
     const day = daysToLocal(simulcast);
     const names = day.map(d => this.animeService.getDay(d));
     return names.join(', ');
+  }
+
+  /** Live action adaptations, needed up front to decide whether the Related tab is shown */
+  private async loadRelatedLiveaction() {
+    const id = this.id;
+    const related = await this.liveaction.getRelatedAdaptations(
+      {
+        bangumiId: this.anime?.my_extension?.bangumiId,
+        anisearchId: this.anime?.my_extension?.anisearchId,
+      },
+      'anime',
+    );
+    if (id === this.id) this.relatedLiveaction = related;
   }
 
   async getRatings() {
