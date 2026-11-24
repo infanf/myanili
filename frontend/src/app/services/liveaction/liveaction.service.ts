@@ -55,6 +55,9 @@ export class LiveactionService {
   /**
    * Search Bangumi for live action subjects. `more` tells whether Bangumi has
    * further pages, since excluded platforms may shrink a page.
+   * English metadata is only taken from the local cache: resolving it for
+   * every search result is slow and risks the TMDB rate limit, so it is
+   * resolved on the details page only.
    */
   async search(
     keyword: string,
@@ -65,7 +68,7 @@ export class LiveactionService {
     const results = await Promise.all(
       subjects
         .filter(subject => !EXCLUDED_PLATFORMS.includes(subject.platform || ''))
-        .map(async subject => ({ subject, meta: await this.getMeta(subject.id) })),
+        .map(async subject => ({ subject, meta: await this.getCachedMeta(subject.id) })),
     );
     return { results, more: subjects.length >= limit };
   }
@@ -93,6 +96,11 @@ export class LiveactionService {
     } catch {
       return undefined;
     }
+  }
+
+  /** Meta from the local cache only, never triggers a backend/TMDB lookup */
+  async getCachedMeta(id: number): Promise<LiveactionMeta | undefined> {
+    return this.cache.getCachedFetch<LiveactionMeta>(this.metaUrl(id));
   }
 
   async list(status: WatchStatus, limit = 50, offset = 0): Promise<ListLiveaction[]> {

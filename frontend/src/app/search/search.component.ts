@@ -210,7 +210,10 @@ export class SearchComponent implements AfterViewInit {
     return platformName(result.subject);
   }
 
-  /** English title from TMDB; the native title is the Bangumi subject name */
+  /**
+   * English title from TMDB if already cached (search never resolves it);
+   * the native title is the Bangumi subject name
+   */
   liveTitle(result: ListLiveaction): string {
     return result.meta?.title || result.subject.name;
   }

@@ -222,7 +222,11 @@
           </td>
           <td routerLink="/liveaction/details/{{ result.subject.id }}">
             <myanili-icon
-              [name]="result.meta?.mediaType === 'movie' ? 'film' : 'tv'"
+              [name]="
+                result.meta?.mediaType === 'movie' || result.subject.platform === '电影'
+                  ? 'film'
+                  : 'tv'
+              "
             ></myanili-icon>
             <span class="d-none d-md-inline ms-1">{{ liveType(result) }}</span>
           </td>
