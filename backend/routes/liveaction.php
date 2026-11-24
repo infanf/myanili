@@ -15,6 +15,25 @@ $router->group(['prefix' => 'liveaction'], function () use ($router) {
         return response()->json($meta);
     });
 
+    /** English search (TMDB, Asian productions only) */
+    $router->get('search', function (Request $request) {
+        $query = trim((string) $request->input('query', ''));
+        if (!$query) {
+            return response()->json(['results' => [], 'more' => false]);
+        }
+        $page = max(1, min(50, intval($request->input('page', 1))));
+        return response()->json(LiveactionResolver::searchLive($query, $page));
+    });
+
+    /** Bangumi subject of a TMDB entry, searched on Bangumi if not known yet */
+    $router->get('resolve/{type:movie|tv}/{id:\d+}', function (string $type, int $id) {
+        $bangumiId = LiveactionResolver::resolveTmdb($type, $id);
+        if (!$bangumiId) {
+            return response()->json(['error' => 'Not found'], 404);
+        }
+        return response()->json(['bangumiId' => $bangumiId]);
+    });
+
     $router->get('tmdb/search/{type:movie|tv}', function (Request $request, string $type) {
         $query = trim((string) $request->input('query', ''));
         if (!$query) {

@@ -82,6 +82,46 @@ export interface TmdbSearchResult {
   year?: number | null;
 }
 
+/**
+ * Result of the English live action search (TMDB, Asian productions only).
+ * `bangumiId` is set if the backend already knows the Bangumi subject,
+ * otherwise it is resolved when the result is opened.
+ */
+export interface LiveactionSearchResult {
+  tmdb: number;
+  mediaType: 'movie' | 'tv';
+  title?: string | null;
+  originalTitle?: string | null;
+  originCountry: string[];
+  originalLanguage: string;
+  year?: number | null;
+  date?: string | null;
+  /** TMDB user score (0–10) */
+  rating?: number | null;
+  popularity: number;
+  bangumiId?: number | null;
+}
+
+/** Origin by ISO 3166-1 country code, see COUNTRY_ORIGINS */
+const COUNTRY_CODE_ORIGINS: Record<string, string> = {
+  JP: 'Japanese',
+  KR: 'Korean',
+  CN: 'Chinese',
+  TW: 'Taiwanese',
+  HK: 'Hong Kong',
+  TH: 'Thai',
+  VN: 'Vietnamese',
+  PH: 'Filipino',
+  ID: 'Indonesian',
+};
+
+/** Type of an English search result, in the style of platformName() */
+export function searchResultTypeName(result: LiveactionSearchResult): string {
+  if (result.mediaType === 'movie') return 'Movie';
+  const origin = result.originCountry.map(code => COUNTRY_CODE_ORIGINS[code]).find(Boolean);
+  return origin ? `${origin} Drama` : 'TV Drama';
+}
+
 /** Bangumi collection type: 1 wish, 2 collect, 3 do, 4 on_hold, 5 dropped */
 export type BangumiCollectionType = 1 | 2 | 3 | 4 | 5;
 

@@ -10,6 +10,7 @@ import {
   LiveactionIds,
   LiveactionMeta,
   liveactionPoster,
+  LiveactionSearchResult,
   LiveactionSubject,
   LiveactionUpdate,
   RelatedLiveaction,
@@ -71,6 +72,37 @@ export class LiveactionService {
         .map(async subject => ({ subject, meta: await this.getCachedMeta(subject.id) })),
     );
     return { results, more: subjects.length >= limit };
+  }
+
+  /**
+   * English search, temporarily via TMDB (see the backend's searchLive()).
+   * Bangumi is only queried when a result is opened, see resolveTmdb().
+   */
+  async searchEnglish(
+    query: string,
+    page = 1,
+  ): Promise<{ results: LiveactionSearchResult[]; more: boolean }> {
+    const url = new URL(`${environment.backend}liveaction/search`);
+    url.searchParams.set('query', query);
+    url.searchParams.set('page', String(page));
+    try {
+      return await this.cache.fetch(url.toString());
+    } catch {
+      return { results: [], more: false };
+    }
+  }
+
+  /** Bangumi subject of an English search result, undefined if there is none */
+  async resolveTmdb(result: LiveactionSearchResult): Promise<number | undefined> {
+    if (result.bangumiId) return result.bangumiId;
+    const response = await fetch(
+      `${environment.backend}liveaction/resolve/${result.mediaType}/${result.tmdb}`,
+    );
+    if (response.status === 404) return undefined;
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const { bangumiId } = (await response.json()) as { bangumiId: number };
+    result.bangumiId = bangumiId;
+    return bangumiId;
   }
 
   async getLiveaction(id: number): Promise<Liveaction | undefined> {
