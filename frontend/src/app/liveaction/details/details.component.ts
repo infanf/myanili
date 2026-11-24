@@ -39,6 +39,8 @@ export class LiveactionDetailsComponent implements OnInit {
   showOriginalSummary = false;
   ratings: Array<{ provider: string; rating: ExtRating }> = [];
   related: BangumiRelatedSubject[] = [];
+  /** Air date of the last episode, only known once that episode has a date */
+  endDate?: string;
   traktSlug?: string;
   simklId?: number;
   language: 'default' | 'en' | 'jp' = 'default';
@@ -74,6 +76,7 @@ export class LiveactionDetailsComponent implements OnInit {
     delete this.liveaction;
     delete this.traktSlug;
     delete this.simklId;
+    delete this.endDate;
     this.notFound = false;
     this.activeTab = 1;
   }
@@ -95,9 +98,27 @@ export class LiveactionDetailsComponent implements OnInit {
       });
     }
     this.loadExternal();
+    this.loadEndDate();
     this.bangumi.getRelatedSubjects(this.id).then(related => {
       this.related = related.filter(subject => [1, 2, 6].includes(subject.type));
     });
+  }
+
+  /**
+   * Bangumi subjects only carry the start date, the end date is the air date
+   * of the last episode. It stays empty while the last episode has no date or
+   * Bangumi does not list all episodes yet.
+   */
+  private async loadEndDate() {
+    if (this.isMovie) return;
+    const id = this.id;
+    const episodes = await this.bangumi.getEpisodes(id);
+    if (id !== this.id) return;
+    const last = episodes[episodes.length - 1];
+    if (!last?.airdate) return;
+    if (this.episodes && episodes.length < this.episodes) return;
+    if (last.airdate === this.liveaction?.date) return;
+    this.endDate = last.airdate;
   }
 
   private loadExternal() {

@@ -61,7 +61,12 @@
             }
             @if (liveaction.date) {
               <span>&middot;</span>
-              <span>{{ liveaction.date | date }}</span>
+              <span>
+                {{ liveaction.date | date }}
+                @if (endDate) {
+                  &ndash; {{ endDate | date }}
+                }
+              </span>
             }
           </div>
           @if (liveaction.meta?.genres?.length) {
