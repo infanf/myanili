@@ -41,6 +41,9 @@ class LiveactionResolver
     const SEARCH_COUNTRIES = ['JP', 'KR', 'KP', 'CN', 'TW', 'HK', 'MO', 'TH', 'PH', 'VN', 'ID', 'MY', 'SG'];
     const SEARCH_LANGUAGES = ['ja', 'ko', 'zh', 'cn', 'th', 'tl', 'vi', 'id', 'ms'];
 
+    /** TMDB genre ID of animation, excluded from the live action search */
+    const TMDB_ANIMATION = 16;
+
     /** Cache lifetime of TMDB → Bangumi lookups without a match (seconds) */
     const RESOLVE_MISS_AGE = 60 * 60 * 24;
 
@@ -189,6 +192,10 @@ class LiveactionResolver
             $response = self::tmdb("/search/$type", $params);
             $more = $more || ($response['page'] ?? 1) < ($response['total_pages'] ?? 1);
             foreach ($response['results'] ?? [] as $item) {
+                // TMDB lists anime as Japanese TV shows and movies
+                if (in_array(self::TMDB_ANIMATION, $item['genre_ids'] ?? [], true)) {
+                    continue;
+                }
                 $countries = $item['origin_country'] ?? [];
                 $language = $item['original_language'] ?? '';
                 if (
