@@ -84,7 +84,7 @@ export class LiveactionListComponent implements OnInit {
   }
 
   getPoster(entry: ListLiveaction): string | undefined {
-    return liveactionPoster(entry.subject, entry.meta);
+    return liveactionPoster(entry.subject);
   }
 
   getMediaType(entry: ListLiveaction): string {

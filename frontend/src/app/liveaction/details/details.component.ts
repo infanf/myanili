@@ -146,7 +146,7 @@ export class LiveactionDetailsComponent implements OnInit {
 
   get poster(): string | undefined {
     if (!this.liveaction) return undefined;
-    return liveactionPoster(this.liveaction, this.liveaction.meta, 'large');
+    return liveactionPoster(this.liveaction, 'large');
   }
 
   get countries(): string[] {

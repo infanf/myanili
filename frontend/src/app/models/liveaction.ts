@@ -173,18 +173,18 @@ export function statusToCollection(status: WatchStatus): BangumiCollectionType {
 }
 
 /**
- * Poster of a subject. Bangumi's poster shows the original language version,
- * so TMDB's (usually English) poster is only a fallback.
+ * Poster of a subject. Only Bangumi's poster (original language version) is
+ * used, TMDB posters are never shown.
  */
 export function liveactionPoster(
   subject: Pick<LiveactionSubject, 'images'>,
-  meta?: Pick<LiveactionMeta, 'poster'>,
   size: 'large' | 'common' = 'common',
 ): string | undefined {
   const images = subject.images;
-  const bangumi =
-    size === 'large' ? images?.large || images?.common : images?.common || images?.medium;
-  return bangumi || meta?.poster || undefined;
+  return (
+    (size === 'large' ? images?.large || images?.common : images?.common || images?.medium) ||
+    undefined
+  );
 }
 
 /** English names of the countries used in the Bangumi infobox (国家/地区) */

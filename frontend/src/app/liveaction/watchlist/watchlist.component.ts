@@ -115,7 +115,7 @@ export class LiveactionWatchlistComponent implements OnInit {
   }
 
   getPoster(entry: ListLiveaction): string {
-    return liveactionPoster(entry.subject, entry.meta) || 'assets/blank-poster.svg';
+    return liveactionPoster(entry.subject) || 'assets/blank-poster.svg';
   }
 
   isMovie(entry: ListLiveaction): boolean {

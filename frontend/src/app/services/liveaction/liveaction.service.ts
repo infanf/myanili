@@ -281,7 +281,7 @@ export class LiveactionService {
             const meta = await this.getMeta(subject.id);
             return {
               title: meta?.title || subject.name,
-              poster: liveactionPoster(subject, meta),
+              poster: liveactionPoster(subject),
               mediaType:
                 meta?.mediaType === 'movie' || subject.platform === '电影' ? 'movie' : 'tv',
               year: subject.date?.substring(0, 4),
