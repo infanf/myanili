@@ -197,6 +197,8 @@ export class LiveactionWatchlistComponent implements OnInit {
   }
 
   private async doMarkSeen(entry: WatchlistEntry) {
+    // The list only carries cached metadata; episode count and mirror IDs need it
+    entry.meta ??= await this.liveactionService.getMeta(entry.subject.id);
     const status = entry.list_status;
     const watched = this.isMovie(entry) ? 1 : this.watched(entry) + 1;
     const total = this.totalEpisodes(entry);

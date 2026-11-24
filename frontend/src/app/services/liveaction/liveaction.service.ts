@@ -103,6 +103,10 @@ export class LiveactionService {
     return this.cache.getCachedFetch<LiveactionMeta>(this.metaUrl(id));
   }
 
+  /**
+   * The user's list on Bangumi. Like the search, English metadata is only
+   * taken from the local cache; update() and delete() resolve it on demand.
+   */
   async list(status: WatchStatus, limit = 50, offset = 0): Promise<ListLiveaction[]> {
     const collections = await this.bangumi.getCollections(
       6,
@@ -117,7 +121,7 @@ export class LiveactionService {
               (async () => ({
                 subject: collection.subject as LiveactionSubject,
                 list_status: this.toListStatus(collection),
-                meta: await this.getMeta(collection.subject_id),
+                meta: await this.getCachedMeta(collection.subject_id),
               }))(),
             ]
           : [],
@@ -131,7 +135,9 @@ export class LiveactionService {
    */
   async update(liveaction: Liveaction, data: LiveactionUpdate): Promise<void> {
     await this.bangumi.updateLiveaction(liveaction.id, data);
-    const ids = this.getIds(liveaction.meta);
+    // Lists only carry cached metadata, the mirrors need the TMDB/IMDb IDs
+    const meta = liveaction.meta || (await this.getMeta(liveaction.id));
+    const ids = this.getIds(meta);
     const previous = liveaction.my_list_status;
     const results = await Promise.allSettled([
       ids
@@ -143,7 +149,7 @@ export class LiveactionService {
       ids
         ? this.simkl.updateLiveaction(ids, data, previous?.num_watched_episodes)
         : Promise.resolve(),
-      this.mydramalist.updateEntry(liveaction.meta?.mdl, data),
+      this.mydramalist.updateEntry(meta?.mdl, data),
     ]);
     results.forEach((result, i) => {
       if (result.status === 'rejected') {
@@ -157,11 +163,12 @@ export class LiveactionService {
 
   async delete(liveaction: Liveaction): Promise<void> {
     await this.bangumi.deleteEntry(liveaction.id);
-    const ids = this.getIds(liveaction.meta);
+    const meta = liveaction.meta || (await this.getMeta(liveaction.id));
+    const ids = this.getIds(meta);
     const results = await Promise.allSettled([
       ids ? this.trakt.deleteLiveaction(ids) : Promise.resolve(),
       ids ? this.simkl.deleteLiveaction(ids) : Promise.resolve(),
-      this.mydramalist.deleteEntry(liveaction.meta?.mdl),
+      this.mydramalist.deleteEntry(meta?.mdl),
     ]);
     results.forEach((result, i) => {
       if (result.status === 'rejected') {
