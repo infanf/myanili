@@ -72,41 +72,41 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: 'google-github-actions/auth@v2'
+      - uses: 'actions/checkout@v4'
+      - uses: 'google-github-actions/auth@v3'
         with:
           service_account: ${{ secrets.GCP_SA_NAME }}
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - uses: 'google-github-actions/setup-gcloud@v3'
 
+      # Cloud Run pulls Docker Hub images through mirror.gcr.io, where a freshly
+      # pushed digest may not be available yet ("Image ... not found"), so retry.
       - name: Deploy Frontend to Google Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          service: myanili-frontend-beta
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}@${{ needs.build.outputs.frontend_digest }}
-          region: europe-west1
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+        run: ./.github/scripts/deploy-cloudrun.sh myanili-frontend-beta "$IMAGE"
+        env:
+          IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}@${{ needs.build.outputs.frontend_digest }}
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Deploy Backend to Google Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          service: myanili-backend-release
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_BACKEND }}@${{ needs.build.outputs.backend_digest }}
-          region: europe-west1
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+        run: ./.github/scripts/deploy-cloudrun.sh myanili-backend-release "$IMAGE"
+        env:
+          IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_BACKEND }}@${{ needs.build.outputs.backend_digest }}
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
   deploy-production:
     if: startsWith(github.ref, 'refs/tags/')
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: 'google-github-actions/auth@v2'
+      - uses: 'actions/checkout@v4'
+      - uses: 'google-github-actions/auth@v3'
         with:
           service_account: ${{ secrets.GCP_SA_NAME }}
           credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - uses: 'google-github-actions/setup-gcloud@v3'
 
       - name: Deploy to Google Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          service: myanili
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}@${{ needs.build.outputs.frontend_digest }}
-          region: europe-west1
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+        run: ./.github/scripts/deploy-cloudrun.sh myanili "$IMAGE"
+        env:
+          IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE_FRONTEND }}@${{ needs.build.outputs.frontend_digest }}
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
