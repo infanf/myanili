@@ -17,20 +17,6 @@
     <div class="btn btn-primary" routerLink="/search/liveaction" routerLinkActive="active">
       <myanili-icon name="camera-reels"></myanili-icon>
     </div>
-    @if (type === 'liveaction') {
-      <button
-        type="button"
-        class="btn btn-outline-primary"
-        [title]="
-          liveMode === 'en'
-            ? 'Searching English titles, click to search Chinese/native titles'
-            : 'Searching Chinese/native titles, click to search English titles'
-        "
-        (click)="toggleLiveMode()"
-      >
-        {{ liveMode === 'en' ? 'EN' : '原' }}
-      </button>
-    }
     <input
       class="form-control"
       [(ngModel)]="query"
@@ -269,64 +255,9 @@
           </td>
         </tr>
       }
-      @for (result of tmdbResultsFiltered; track result.mediaType + result.tmdb) {
-        <tr class="cursor-pointer">
-          <td (click)="openTmdb(result)"></td>
-          <td
-            (click)="openTmdb(result)"
-            class="d-lg-table-cell"
-            [class]="{
-              'd-none': (settings.language$ | async) !== 'default',
-              'd-md-table-cell': (settings.language$ | async) === 'en',
-            }"
-          >
-            {{ result.title || result.originalTitle }}
-          </td>
-          <td
-            (click)="openTmdb(result)"
-            class="d-md-table-cell"
-            [class]="{ 'd-none': (settings.language$ | async) !== 'en' }"
-          >
-            {{ result.title || result.originalTitle }}
-          </td>
-          <td
-            (click)="openTmdb(result)"
-            class="d-lg-table-cell"
-            [class]="{ 'd-none': (settings.language$ | async) !== 'jp' }"
-          >
-            {{ result.originalTitle }}
-          </td>
-          <td (click)="openTmdb(result)" class="d-none d-md-table-cell"></td>
-          <td (click)="openTmdb(result)">
-            <myanili-icon [name]="result.mediaType === 'movie' ? 'film' : 'tv'"></myanili-icon>
-            <span class="d-none d-md-inline ms-1">{{ tmdbType(result) }}</span>
-          </td>
-          <td (click)="openTmdb(result)" class="text-nowrap">
-            @if (result.rating; as score) {
-              <circle-progress
-                [percent]="score * 10"
-                [outerStrokeColor]="
-                  score >= 8
-                    ? '#4a8220'
-                    : score >= 7
-                      ? '#204a82'
-                      : score >= 5
-                        ? '#825820'
-                        : '#82204a'
-                "
-              ></circle-progress>
-              <span class="ms-1">{{ score | number: '1.1-1' }}</span>
-            }
-          </td>
-          <td (click)="openTmdb(result)">{{ result.year }}</td>
-          <td (click)="openTmdb(result, true)">
-            <myanili-icon [name]="'window-stack'"></myanili-icon>
-          </td>
-        </tr>
-      }
     </tbody>
   </table>
-  @if ((results.length || liveResults.length || tmdbResults.length) && !loadedAll) {
+  @if ((results.length || liveResults.length) && !loadedAll) {
     <div
       style="position: absolute; margin-top: -500px; padding-top: 450px; height: 50px"
       inViewport

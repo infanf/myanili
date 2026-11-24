@@ -34,19 +34,6 @@ class LiveactionResolver
     /** Bangumi platform names of movies */
     const MOVIE_PLATFORMS = ['电影'];
 
-    /** Bangumi platforms that are no adaptations (stage plays, variety shows) */
-    const EXCLUDED_PLATFORMS = ['演出', '综艺'];
-
-    /** Origin countries / original languages of the English search (TMDB) */
-    const SEARCH_COUNTRIES = ['JP', 'KR', 'KP', 'CN', 'TW', 'HK', 'MO', 'TH', 'PH', 'VN', 'ID', 'MY', 'SG'];
-    const SEARCH_LANGUAGES = ['ja', 'ko', 'zh', 'cn', 'th', 'tl', 'vi', 'id', 'ms'];
-
-    /** TMDB genre ID of animation, excluded from the live action search */
-    const TMDB_ANIMATION = 16;
-
-    /** Cache lifetime of TMDB → Bangumi lookups without a match (seconds) */
-    const RESOLVE_MISS_AGE = 60 * 60 * 24;
-
     private static ?\SQLite3 $db = null;
 
     /** Whether an external request failed (e.g. invalid key) while resolving */
@@ -73,10 +60,6 @@ class LiveactionResolver
         $imdbId = self::infobox($subject, 'imdb_id');
         if (!$tmdb && $imdbId) {
             $tmdb = self::findByImdb($imdbId);
-        }
-        if (!$tmdb) {
-            // Subject opened from the English search: keep the TMDB entry it was found by
-            $tmdb = self::getResolvedTmdb($bangumiId);
         }
         if (!$tmdb) {
             $tmdb = self::search($subject);
@@ -171,209 +154,6 @@ class LiveactionResolver
         }
         $result = self::tmdb("/search/$type", $params);
         return array_map(fn($item) => self::mapTmdbItem($type, $item), $result['results'] ?? []);
-    }
-
-    /**
-     * English search for live action, temporarily via TMDB until a better
-     * source is available. Only Asian productions are returned (origin
-     * country for TV shows, original language for movies, since TMDB's movie
-     * search has no origin country). Bangumi is not queried here; a subject
-     * already known to this backend is attached as `bangumiId`, all others
-     * are resolved when opened (see resolveTmdb()).
-     *
-     * @return array{results: array, more: bool}
-     */
-    public static function searchLive(string $query, int $page = 1): array
-    {
-        $params = ['query' => $query, 'language' => 'en-US', 'include_adult' => 'false', 'page' => $page];
-        $results = [];
-        $more = false;
-        foreach (['tv', 'movie'] as $type) {
-            $response = self::tmdb("/search/$type", $params);
-            $more = $more || ($response['page'] ?? 1) < ($response['total_pages'] ?? 1);
-            foreach ($response['results'] ?? [] as $item) {
-                // TMDB lists anime as Japanese TV shows and movies
-                if (in_array(self::TMDB_ANIMATION, $item['genre_ids'] ?? [], true)) {
-                    continue;
-                }
-                $countries = $item['origin_country'] ?? [];
-                $language = $item['original_language'] ?? '';
-                if (
-                    !array_intersect($countries, self::SEARCH_COUNTRIES)
-                    && !($type === 'movie' || !$countries ? in_array($language, self::SEARCH_LANGUAGES, true) : false)
-                ) {
-                    continue;
-                }
-                $date = $item['release_date'] ?? $item['first_air_date'] ?? '';
-                $results[] = [
-                    'tmdb' => $item['id'],
-                    'mediaType' => $type,
-                    'title' => $item['title'] ?? $item['name'] ?? null,
-                    'originalTitle' => $item['original_title'] ?? $item['original_name'] ?? null,
-                    'originCountry' => $countries,
-                    'originalLanguage' => $language,
-                    'year' => $date ? intval(substr($date, 0, 4)) : null,
-                    'date' => $date ?: null,
-                    'rating' => isset($item['vote_average']) && ($item['vote_count'] ?? 0) > 0
-                        ? floatval($item['vote_average']) : null,
-                    'popularity' => floatval($item['popularity'] ?? 0),
-                    'bangumiId' => self::getKnownBangumiId($type, $item['id']),
-                ];
-            }
-        }
-        usort($results, fn($a, $b) => $b['popularity'] <=> $a['popularity']);
-        return ['results' => $results, 'more' => $more];
-    }
-
-    /**
-     * Bangumi subject of a TMDB entry: known mappings first, otherwise a
-     * Bangumi search by original title (then Chinese title) and year.
-     * Results, including misses, are stored and shared by all users.
-     */
-    public static function resolveTmdb(string $type, int $tmdbId): ?int
-    {
-        $type = $type === 'movie' ? 'movie' : 'tv';
-        $known = self::getKnownBangumiId($type, $tmdbId, true);
-        if ($known !== null) {
-            return $known ?: null;
-        }
-
-        self::$requestFailed = false;
-        $item = self::tmdb("/$type/$tmdbId", ['language' => 'en-US', 'append_to_response' => 'translations']);
-        if (!$item || !isset($item['id'])) {
-            return null;
-        }
-        $date = $item['release_date'] ?? $item['first_air_date'] ?? '';
-        $year = $date ? intval(substr($date, 0, 4)) : null;
-        $chinese = null;
-        foreach ($item['translations']['translations'] ?? [] as $translation) {
-            if (($translation['iso_639_1'] ?? '') !== 'zh') {
-                continue;
-            }
-            $name = trim($translation['data']['title'] ?? $translation['data']['name'] ?? '');
-            if ($name && (!$chinese || ($translation['iso_3166_1'] ?? '') === 'CN')) {
-                $chinese = $name;
-            }
-        }
-        $queries = array_unique(array_filter([
-            trim($item['original_title'] ?? $item['original_name'] ?? ''),
-            $chinese,
-        ]));
-
-        $bangumiId = null;
-        foreach ($queries as $query) {
-            $bangumiId = self::searchBangumi($query, $type, $year);
-            if ($bangumiId) {
-                break;
-            }
-        }
-        if ($bangumiId || !self::$requestFailed) {
-            self::setResolved($type, $tmdbId, $bangumiId);
-        }
-        return $bangumiId;
-    }
-
-    /**
-     * Best Bangumi live action subject for a title: same movie/TV type, year
-     * within ±1 (Bangumi and TMDB may differ around new year), an exact title
-     * match and the same year rank higher.
-     */
-    private static function searchBangumi(string $query, string $type, ?int $year): ?int
-    {
-        $response = self::request(
-            self::BANGUMI_URL . '/v0/search/subjects?limit=20',
-            ['Accept: application/json', 'Content-Type: application/json'],
-            2,
-            json_encode(['keyword' => $query, 'filter' => ['type' => [6]]])
-        );
-        if ($response === null) {
-            self::$requestFailed = true;
-            return null;
-        }
-        $best = null;
-        $bestScore = -1;
-        foreach ($response['data'] ?? [] as $subject) {
-            if (in_array($subject['platform'] ?? '', self::EXCLUDED_PLATFORMS, true)) {
-                continue;
-            }
-            if (self::isMovie($subject) !== ($type === 'movie')) {
-                continue;
-            }
-            $subjectYear = intval(substr($subject['date'] ?? '', 0, 4)) ?: null;
-            if ($year && $subjectYear && abs($subjectYear - $year) > 1) {
-                continue;
-            }
-            $exact = in_array($query, [$subject['name'] ?? '', $subject['name_cn'] ?? ''], true);
-            if (!$exact && (!$year || !$subjectYear)) {
-                continue;
-            }
-            $score = ($exact ? 2 : 0) + ($year && $subjectYear === $year ? 1 : 0);
-            if ($score > $bestScore) {
-                $best = intval($subject['id']);
-                $bestScore = $score;
-            }
-        }
-        return $best;
-    }
-
-    /**
-     * Bangumi ID of a TMDB entry from this backend's tables, without any
-     * external request: manual mappings, stored resolutions and resolved
-     * metadata. With $withMisses a recent miss is returned as 0.
-     */
-    private static function getKnownBangumiId(string $type, int $tmdbId, bool $withMisses = false): ?int
-    {
-        $stmt = self::db()->prepare("SELECT bangumi_id FROM mapping WHERE tmdb_type = :type AND tmdb_id = :id");
-        $stmt->bindValue(':type', $type);
-        $stmt->bindValue(':id', $tmdbId, SQLITE3_INTEGER);
-        $row = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        if ($row) {
-            return intval($row['bangumi_id']);
-        }
-
-        $stmt = self::db()->prepare("SELECT bangumi_id, updated FROM tmdb_bangumi WHERE tmdb_type = :type AND tmdb_id = :id");
-        $stmt->bindValue(':type', $type);
-        $stmt->bindValue(':id', $tmdbId, SQLITE3_INTEGER);
-        $row = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        if ($row && $row['bangumi_id']) {
-            return intval($row['bangumi_id']);
-        }
-        $recentMiss = $row && time() - $row['updated'] < self::RESOLVE_MISS_AGE;
-
-        $stmt = self::db()->prepare(
-            "SELECT bangumi_id FROM meta
-            WHERE json_extract(data, '$.tmdb') = :id AND json_extract(data, '$.mediaType') = :type
-            LIMIT 1"
-        );
-        $stmt->bindValue(':type', $type);
-        $stmt->bindValue(':id', $tmdbId, SQLITE3_INTEGER);
-        $row = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        if ($row) {
-            return intval($row['bangumi_id']);
-        }
-        return $withMisses && $recentMiss ? 0 : null;
-    }
-
-    /** TMDB entry a Bangumi subject was resolved from by the English search */
-    private static function getResolvedTmdb(int $bangumiId): ?array
-    {
-        $stmt = self::db()->prepare("SELECT tmdb_type, tmdb_id FROM tmdb_bangumi WHERE bangumi_id = :id LIMIT 1");
-        $stmt->bindValue(':id', $bangumiId, SQLITE3_INTEGER);
-        $row = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        return $row ? ['type' => $row['tmdb_type'], 'id' => intval($row['tmdb_id'])] : null;
-    }
-
-    private static function setResolved(string $type, int $tmdbId, ?int $bangumiId): void
-    {
-        $stmt = self::db()->prepare(
-            "INSERT OR REPLACE INTO tmdb_bangumi (tmdb_type, tmdb_id, bangumi_id, updated)
-            VALUES (:type, :tmdb, :bangumi, :updated)"
-        );
-        $stmt->bindValue(':type', $type);
-        $stmt->bindValue(':tmdb', $tmdbId, SQLITE3_INTEGER);
-        $stmt->bindValue(':bangumi', $bangumiId ?: 0, SQLITE3_INTEGER);
-        $stmt->bindValue(':updated', time(), SQLITE3_INTEGER);
-        $stmt->execute();
     }
 
     public static function tmdbDetails(string $type, int $id): ?array
@@ -583,7 +363,7 @@ class LiveactionResolver
         return $result;
     }
 
-    private static function request(string $url, array $headers = [], int $retries = 2, ?string $body = null): ?array
+    private static function request(string $url, array $headers = [], int $retries = 2): ?array
     {
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -592,17 +372,13 @@ class LiveactionResolver
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_TIMEOUT => 15,
         ]);
-        if ($body !== null) {
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-        }
         $response = curl_exec($ch);
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         // Bangumi intermittently answers with 5xx behind Cloudflare
         if (($response === false || $status >= 500) && $retries > 0) {
             usleep(500000);
-            return self::request($url, $headers, $retries - 1, $body);
+            return self::request($url, $headers, $retries - 1);
         }
         if ($response === false || $status >= 400) {
             return null;
@@ -674,15 +450,13 @@ class LiveactionResolver
             user TEXT NOT NULL,
             updated INTEGER NOT NULL
         )");
-        // TMDB entries resolved to Bangumi by the English search; bangumi_id 0 is a miss
-        $db->exec("CREATE TABLE IF NOT EXISTS tmdb_bangumi (
-            tmdb_type TEXT NOT NULL,
-            tmdb_id INTEGER NOT NULL,
-            bangumi_id INTEGER NOT NULL,
-            updated INTEGER NOT NULL,
-            PRIMARY KEY (tmdb_type, tmdb_id)
-        )");
-        $db->exec("CREATE INDEX IF NOT EXISTS tmdb_bangumi_bangumi ON tmdb_bangumi (bangumi_id)");
+        // Cleanup of the removed English search (TMDB): its automatic TMDB → Bangumi
+        // resolutions were unreliable, so drop them and the metadata built from them
+        $exists = $db->querySingle("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'tmdb_bangumi'");
+        if ($exists) {
+            $db->exec("DELETE FROM meta WHERE bangumi_id IN (SELECT bangumi_id FROM tmdb_bangumi WHERE bangumi_id > 0)");
+            $db->exec("DROP TABLE tmdb_bangumi");
+        }
         $columns = [];
         $result = $db->query("PRAGMA table_info(mapping)");
         while ($column = $result->fetchArray(SQLITE3_ASSOC)) {

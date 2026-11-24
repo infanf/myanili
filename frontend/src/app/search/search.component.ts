@@ -8,15 +8,9 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToasterService } from '@components/toaster/toaster.service';
 import { ViewSettingsComponent } from '@components/view-settings/view-settings.component';
 import { Anime } from '@models/anime';
-import {
-  ListLiveaction,
-  LiveactionSearchResult,
-  platformName,
-  searchResultTypeName,
-} from '@models/liveaction';
+import { ListLiveaction, platformName } from '@models/liveaction';
 import { Manga } from '@models/manga';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnilistService } from '@services/anilist.service';
@@ -50,15 +44,6 @@ export class SearchComponent implements AfterViewInit {
   liveResultsFiltered: ListLiveaction[] = [];
   private liveOffset = 0;
   private liveMore = false;
-  /**
-   * Live action search mode: English titles via TMDB (temporary, until a
-   * better source is available) or Chinese/native titles via Bangumi
-   */
-  liveMode: 'en' | 'native' = 'en';
-  tmdbResults: LiveactionSearchResult[] = [];
-  tmdbResultsFiltered: LiveactionSearchResult[] = [];
-  private tmdbPage = 0;
-  private tmdbMore = false;
   loadedAll = false;
   loading = false;
   query = '';
@@ -87,11 +72,7 @@ export class SearchComponent implements AfterViewInit {
     private glob: GlobalService,
     private modal: NgbModal,
     private liveaction: LiveactionService,
-    private toaster: ToasterService,
   ) {
-    try {
-      if (localStorage.getItem('liveactionSearchMode') === 'native') this.liveMode = 'native';
-    } catch {}
     this.route.paramMap.subscribe(params => {
       const type = params.get('type');
       this.type = type === 'manga' || type === 'liveaction' ? type : 'anime';
@@ -99,8 +80,6 @@ export class SearchComponent implements AfterViewInit {
       this.results = [];
       this.liveResults = [];
       this.liveResultsFiltered = [];
-      this.tmdbResults = [];
-      this.tmdbResultsFiltered = [];
       if (params.get('query')) {
         this.query = params.get('query') || '';
         this.search();
@@ -144,20 +123,7 @@ export class SearchComponent implements AfterViewInit {
       return this.addFromBangumi(this.query);
     }
     this.glob.setTitle(`Search: ${this.query}`);
-    if (this.type === 'liveaction' && this.liveMode === 'en') {
-      this.liveResults = [];
-      this.liveResultsFiltered = [];
-      this.tmdbResults = [];
-      this.tmdbPage = 0;
-      this.tmdbMore = true;
-      this.loadedAll = false;
-      await this.loadMoreTmdb();
-      this.glob.notbusy();
-      return;
-    }
     if (this.type === 'liveaction') {
-      this.tmdbResults = [];
-      this.tmdbResultsFiltered = [];
       this.liveResults = [];
       this.liveOffset = 0;
       await this.fetchLiveResults(50);
@@ -190,9 +156,7 @@ export class SearchComponent implements AfterViewInit {
   }
 
   async loadMore() {
-    if (this.type === 'liveaction') {
-      return this.liveMode === 'en' ? this.loadMoreTmdb() : this.loadMoreLive();
-    }
+    if (this.type === 'liveaction') return this.loadMoreLive();
     if (this.nextResults.length < 20) this.loadedAll = true;
     this.results.push(...this.nextResults);
     this.allFilters.type = [...new Set(this.results.map(result => result.media_type))].sort();
@@ -242,70 +206,6 @@ export class SearchComponent implements AfterViewInit {
     this.loading = false;
   }
 
-  private async loadMoreTmdb() {
-    if (!this.tmdbMore || this.loading) {
-      this.loadedAll = !this.tmdbMore;
-      return;
-    }
-    this.loading = true;
-    const query = this.query;
-    const { results, more } = await this.liveaction.searchEnglish(query, this.tmdbPage + 1);
-    this.loading = false;
-    if (query !== this.query) return;
-    this.tmdbPage++;
-    this.tmdbMore = more;
-    this.loadedAll = !more;
-    const known = new Set(this.tmdbResults.map(result => `${result.mediaType}${result.tmdb}`));
-    this.tmdbResults.push(
-      ...results.filter(result => !known.has(`${result.mediaType}${result.tmdb}`)),
-    );
-    this.allFilters.type = [
-      ...new Set(this.tmdbResults.map(result => this.tmdbType(result))),
-    ].sort();
-    this.allFilters.status = [];
-    this.allFilters.genre = [];
-    this.filterResults();
-  }
-
-  toggleLiveMode() {
-    this.liveMode = this.liveMode === 'en' ? 'native' : 'en';
-    try {
-      localStorage.setItem('liveactionSearchMode', this.liveMode);
-    } catch {}
-    this.filter = { type: [], status: [], genre: [] };
-    if (this.query) this.search();
-  }
-
-  tmdbType(result: LiveactionSearchResult): string {
-    return searchResultTypeName(result);
-  }
-
-  /** Open an English search result; its Bangumi subject is looked up first if unknown */
-  async openTmdb(result: LiveactionSearchResult, inModal = false) {
-    this.glob.busy();
-    let id: number | undefined;
-    try {
-      id = await this.liveaction.resolveTmdb(result);
-    } catch {
-      this.toaster.addError('Bangumi lookup failed. Please try again later.');
-      return;
-    } finally {
-      this.glob.notbusy();
-    }
-    if (!id) {
-      this.toaster.addError(
-        `"${result.title || result.originalTitle}" was not found on Bangumi. ` +
-          'Try the native title search instead.',
-      );
-      return;
-    }
-    if (inModal) {
-      this.open(id);
-    } else {
-      this._router.navigate(['liveaction', 'details', id]);
-    }
-  }
-
   liveType(result: ListLiveaction): string {
     return platformName(result.subject);
   }
@@ -319,21 +219,6 @@ export class SearchComponent implements AfterViewInit {
   }
 
   filterResults() {
-    if (this.type === 'liveaction' && this.liveMode === 'en') {
-      this.tmdbResultsFiltered = this.tmdbResults.filter(
-        result => !this.filter.type.length || this.filter.type.includes(this.tmdbType(result)),
-      );
-      // Few Asian hits per TMDB page: fill up automatically, but only a few pages
-      if (
-        this.tmdbResultsFiltered.length < 20 &&
-        this.tmdbPage < 3 &&
-        !this.loadedAll &&
-        !this.loading
-      ) {
-        this.loadMore();
-      }
-      return;
-    }
     if (this.type === 'liveaction') {
       this.liveResultsFiltered = this.liveResults.filter(result => {
         if (this.filter.type.length > 0 && !this.filter.type.includes(this.liveType(result))) {
