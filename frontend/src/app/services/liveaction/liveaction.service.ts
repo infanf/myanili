@@ -268,6 +268,7 @@ export class LiveactionService {
   /**
    * Live action adaptations for anime/manga details: Bangumi entries open in
    * MyAniLi; aniSearch (external links only) is the fallback without Bangumi data.
+   * English titles only come from the local cache, never from a TMDB lookup.
    */
   async getRelatedAdaptations(
     ids: { bangumiId?: number; anisearchId?: number },
@@ -278,7 +279,7 @@ export class LiveactionService {
       if (subjects.length) {
         return Promise.all(
           subjects.map(async subject => {
-            const meta = await this.getMeta(subject.id);
+            const meta = await this.getCachedMeta(subject.id);
             return {
               title: meta?.title || subject.name,
               poster: liveactionPoster(subject),
